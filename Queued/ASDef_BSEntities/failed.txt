@@ -1,0 +1,22 @@
+First DecompilationOptions fail IPlayerController`1
+First DecompilationOptions fail ISimulationController`1
+First DecompilationOptions fail CommandsSnapshot`1
+First DecompilationOptions fail GlobalSnapshot`2
+First DecompilationOptions fail IdentifiedData`1
+First DecompilationOptions fail TimestampedData`1
+First DecompilationOptions fail TimestampedIdentifiedData`1
+First DecompilationOptions fail TimestampedIdentifiedConnectionData`1
+First DecompilationOptions fail SimulationSystem`3
+First DecompilationOptions fail PlayerData
+First DecompilationOptions fail PlayerClientLoadedMsg
+DecompilationOptions fail IPlayerController`1
+DecompilationOptions fail ISimulationController`1
+DecompilationOptions fail CommandsSnapshot`1
+DecompilationOptions fail GlobalSnapshot`2
+DecompilationOptions fail IdentifiedData`1
+DecompilationOptions fail TimestampedData`1
+DecompilationOptions fail TimestampedIdentifiedData`1
+DecompilationOptions fail TimestampedIdentifiedConnectionData`1
+DecompilationOptions fail SimulationSystem`3
+DecompilationOptions fail PlayerData
+DecompilationOptions fail PlayerClientLoadedMsg

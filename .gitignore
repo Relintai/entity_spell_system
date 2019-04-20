@@ -1,0 +1,5 @@
+.import
+*.d
+*.o
+*.meta
+
