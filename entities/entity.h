@@ -29,6 +29,8 @@ class SpellDamageInfo;
 class SpellCastInfo;
 
 class EntityCreateInfo : public Object {
+    GDCLASS(EntityCreateInfo, Object);
+    
 public:
 	int get_guid() { return _guid; }
 	void set_guid(int value) { _guid = value; }
@@ -123,9 +125,17 @@ enum PlayerSendFlags {
 	SEND_FLAG_AURAS,
 };
 
+#ifdef ENTITIES_2D
 class Entity : public KinematicBody {
-	GDCLASS(Entity, KinematicBody)
-
+	GDCLASS(Entity, KinematicBody);
+    
+#else
+    
+class Entity : public KinematicBody {
+	GDCLASS(Entity, KinematicBody);
+    
+#endif
+    
 public:
 	Entity();
 	~Entity();

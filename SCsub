@@ -2,6 +2,9 @@ Import('env')
 
 if ARGUMENTS.get('entity_mem_tools', 'no') == 'yes':
     env.Append(CPPDEFINES=['ENTITY_MEM_TOOLS'])
+    
+if ARGUMENTS.get('entities_2d', 'no') == 'yes':
+    env.Append(CPPDEFINES=['ENTITIES_2D'])
 
 module_env = env.Clone()
 
