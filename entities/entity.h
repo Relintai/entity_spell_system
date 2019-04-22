@@ -11,7 +11,7 @@
 #include "core/vector.h"
 #include "item_instance.h"
 #include "player_talent.h"
-#include "scene/3d/physics_body.h"
+#include "scene/2d/physics_body_2d.h"
 
 #include "../data/spell.h"
 #include "stats/stat.h"
@@ -126,8 +126,8 @@ enum PlayerSendFlags {
 };
 
 #ifdef ENTITIES_2D
-class Entity : public KinematicBody {
-	GDCLASS(Entity, KinematicBody);
+class Entity : public KinematicBody2D {
+	GDCLASS(Entity, KinematicBody2D);
     
 #else
     
