@@ -111,7 +111,7 @@ void Spell::start_casting(Ref<SpellCastInfo> info) {
 		return;
 	}
 
-	_start_casting(info);
+	//_start_casting(info);
 }
 
 void Spell::_start_casting(Ref<SpellCastInfo> info) {
@@ -198,7 +198,7 @@ void Spell::casting_finished(Ref<SpellCastInfo> info) {
 		return;
 	}
 
-	print_error("casting_finished"); // + info->get_spell()->get_name_key());
+	//print_error("casting_finished"); // + info->get_spell()->get_name_key());
 }
 
 void Spell::casting_failed(Ref<SpellCastInfo> info) {
@@ -370,8 +370,8 @@ Spell::~Spell() {
 }
 
 void Spell::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_start_casting", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "CastStartInfo")));
-	BIND_VMETHOD(MethodInfo("_casting_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "CastFinishedInfo")));
+	BIND_VMETHOD(MethodInfo("_start_casting", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_casting_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_calculate_initial_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_handle_spell_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
@@ -621,6 +621,7 @@ void Spell::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_cooldown_mainpulation_data_count"), "set_spell_cooldown_mainpulation_data_count", "get_spell_cooldown_mainpulation_data_count");
 
 	ClassDB::bind_method(D_METHOD("start_casting", "info"), &Spell::start_casting);
+	ClassDB::bind_method(D_METHOD("_start_casting", "info"), &Spell::_start_casting);
 
 	BIND_ENUM_CONSTANT(TARGET_SELF);
 	BIND_ENUM_CONSTANT(TARGET_ENEMY);
