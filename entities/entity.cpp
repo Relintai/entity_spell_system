@@ -1804,13 +1804,37 @@ void Entity::just_remove_aura(int auraId) {
        */
 }
 
+void Entity::remove_aura(Ref<AuraData> data) {
+	for (int i = 0; i < _s_auras->size(); i++) {
+		if (_s_auras->get(i) == data) {
+			_s_auras->remove(i);
+			break;
+		}
+	}
+
+	for (int i = 0; i < _c_auras->size(); i++) {
+		if (_c_auras->get(i) == data) {
+			_c_auras->remove(i);
+			break;
+		}
+	}
+
+	emit_signal("saura_removed", data);
+	emit_signal("caura_removed", data);
+}
+
 void Entity::add_aura(Ref<AuraData> data) {
 	son_before_aura_applied(data);
 
 	data->set_owner(this);
+
 	_s_auras->push_back(data);
+	_c_auras->push_back(data);
 
 	son_after_aura_applied(data);
+
+	emit_signal("saura_added", data);
+	emit_signal("caura_added", data);
 }
 
 void Entity::remove_auras_with_group(int auraGroup) {
@@ -3443,6 +3467,12 @@ void Entity::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("scharacter_class_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("ccharacter_class_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
+	ADD_SIGNAL(MethodInfo("saura_added", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	ADD_SIGNAL(MethodInfo("caura_added", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+
+	ADD_SIGNAL(MethodInfo("saura_removed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	ADD_SIGNAL(MethodInfo("caura_removed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 
 	////    SpellCastSignals    ////

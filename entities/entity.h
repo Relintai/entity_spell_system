@@ -326,6 +326,7 @@ public:
 
 	//rename to remove_aura()
 	virtual void just_remove_aura(int auraId);
+	virtual void remove_aura(Ref<AuraData> data);
 	virtual void add_aura(Ref<AuraData> data);
 	virtual void remove_auras_with_group(int auraGroup);
 	virtual void refresh_aura(int auraId, float time);
