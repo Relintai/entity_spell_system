@@ -48,6 +48,8 @@
 
 #include "drag_and_drop/es_drag_and_drop.h"
 
+#include "skeleton/character_skeleton.h"
+
 void register_entity_spell_system_types() {
 
 	//data
@@ -110,6 +112,8 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<UnitFrame>();
 
 	ClassDB::register_class<ESDragAndDrop>();
+
+	ClassDB::register_class<CharacterSkeleton>();
 }
 
 void unregister_entity_spell_system_types() {

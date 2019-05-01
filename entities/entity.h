@@ -22,6 +22,8 @@
 
 #include "../spells/spell_cast_info.h"
 
+#include "../skeleton/character_skeleton.h"
+
 class CharacterClass;
 class AuraData;
 class Spell;
@@ -155,6 +157,12 @@ public:
 	void InitVariables();
 
 	////    Base    ////
+
+	NodePath get_character_skeleton_path();
+	void set_character_skeleton_path(NodePath value);
+
+	CharacterSkeleton *get_character_skeleton();
+
 
 	int getc_guid();
 	void setc_guid(int value);
@@ -534,11 +542,17 @@ public:
 
 protected:
 	static void _bind_methods();
-	virtual void _notification(int p_notification);
+	virtual void _notification(int p_what);
 	virtual void update(float delta);
 
 private:
 	const float SAVE_BASE_SECONDS = 10.0;
+
+	////    Paths    ////
+
+	NodePath _character_skeleton_path;
+	CharacterSkeleton *_character_skeleton;
+
 
 	////    PlayerData    ////
 

@@ -5,6 +5,26 @@
 #include "../entities/auras/aura_data.h"
 #include "../pipelines/spell_damage_info.h"
 
+NodePath Entity::get_character_skeleton_path() {
+	return _character_skeleton_path;
+}
+
+void Entity::set_character_skeleton_path(NodePath value) {
+	_character_skeleton_path = value;
+
+	Node *node = get_node_or_null(_character_skeleton_path);
+
+	if (node != NULL) {
+		_character_skeleton = Object::cast_to<CharacterSkeleton>(node);
+	} else {
+		_character_skeleton = NULL;
+	}
+}
+
+CharacterSkeleton *Entity::get_character_skeleton() {
+	return _character_skeleton;
+}
+
 int Entity::getc_guid() {
 	return _c_guid;
 }
@@ -3446,6 +3466,14 @@ void Entity::_notification(int p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			if (!Engine::get_singleton()->is_editor_hint())
 				set_process(true);
+
+			Node *node = get_node_or_null(_character_skeleton_path);
+
+			if (node != NULL) {
+				_character_skeleton = Object::cast_to<CharacterSkeleton>(node);
+			} else {
+				_character_skeleton = NULL;
+			}
 		} break;
 		case NOTIFICATION_PROCESS: {
 			update(get_process_delta_time());
@@ -3488,6 +3516,10 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("ccast_finished", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("ccast_interrupted", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
+	ClassDB::bind_method(D_METHOD("get_character_skeleton_path"), &Entity::get_character_skeleton_path);
+	ClassDB::bind_method(D_METHOD("set_character_skeleton_path", "value"), &Entity::set_character_skeleton_path);
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "character_skeleton_path"), "set_character_skeleton_path", "get_character_skeleton_path");
+
 
 	ClassDB::bind_method(D_METHOD("gets_entity_type"), &Entity::gets_entity_type);
 	ClassDB::bind_method(D_METHOD("sets_entity_type", "value"), &Entity::sets_entity_type);
@@ -3504,6 +3536,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_player_name"), &Entity::getc_player_name);
 	ClassDB::bind_method(D_METHOD("setc_player_name", "value"), &Entity::setc_player_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "c_player_name"), "setc_player_name", "getc_player_name");
+	
 
 	ClassDB::bind_method(D_METHOD("gets_xp"), &Entity::gets_xp);
 	ClassDB::bind_method(D_METHOD("sets_xp", "value"), &Entity::sets_xp);
@@ -3543,6 +3576,8 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_stat_enum", "index"), &Entity::get_stat_enum);
 	ClassDB::bind_method(D_METHOD("set_stat_enum", "stat_id", "entry"), &Entity::set_stat_enum);
+
+	ClassDB::bind_method(D_METHOD("get_character_skeleton"), &Entity::get_character_skeleton);
 
 	////    Targeting System    ////
 
