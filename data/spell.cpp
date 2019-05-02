@@ -107,21 +107,75 @@ void Spell::start_casting_triggered_simple(Entity *caster) {
 
 void Spell::start_casting(Ref<SpellCastInfo> info) {
 	if (has_method("_start_casting")) {
-		call_multilevel("_start_casting", info);
+		call("_start_casting", info);
 		return;
 	}
+}
 
-	//_start_casting(info);
+void Spell::casting_finished(Ref<SpellCastInfo> info) {
+	if (has_method("_casting_finished")) {
+		call("_casting_finished", info);
+		return;
+	}
+}
+
+void Spell::casting_failed(Ref<SpellCastInfo> info) {
+	if (has_method("_casting_failed")) {
+		call("_casting_failed", info);
+		return;
+	}
+}
+
+void Spell::start_casting_triggered(Ref<SpellCastInfo> info) {
+	if (has_method("_start_casting_triggered")) {
+		call("_start_casting_triggered", info);
+		return;
+	}
+}
+
+void Spell::spell_hit(Entity *caster, Entity *target, Node *worldSpell, Spell *spell, float spell_scale) {
+}
+
+void Spell::on_player_move(Entity *player) {
+		call("_on_player_move", player);
+}
+
+void Spell::c_on_spell_cast_started(Entity *player) {
+		call("_start_casting_triggered", player);
+}
+
+void Spell::c_on_spell_cast_success(Entity *player) {
+		call("_c_on_spell_cast_success", player);
+}
+
+void Spell::c_on_spell_cast_failed(Entity *player) {
+		call("_c_on_spell_cast_failed", player);
+}
+
+void Spell::c_on_spell_cast_ended(Entity *player) {
+	call("_c_on_spell_cast_ended", player);
+}
+
+void Spell::on_cast_state_changed(Entity *caster) {
+	//if (IsStunned(caster)) {
+	//	DoCastFail(caster, true);
+	//}
+}
+
+void Spell::calculate_initial_damage(Ref<SpellDamageInfo> data) {
+	call("_calculate_initial_damage", data);
+}
+
+void Spell::handle_spell_damage(Ref<SpellDamageInfo> data) {
+	call("_handle_spell_damage", data);
 }
 
 void Spell::_start_casting(Ref<SpellCastInfo> info) {
 	Ref<Spell> spell = info->get_spell();
 
-	//if !cancast reutrn
-
 	if (spell->get_needs_target() || spell->get_has_damage()) {
 		if (!info->get_target()) {
-			print_error("no target, return");
+			//print_error("no target, return");
 
 			return;
 		}
@@ -149,7 +203,7 @@ void Spell::_start_casting(Ref<SpellCastInfo> info) {
 
 		if (spell->get_caster_aura_apply() != NULL) {
 			Ref<AuraApplyInfo> aainfo(memnew(AuraApplyInfo(info->get_caster(), info->get_caster(), info->get_spell_scale())));
-			print_error("apply");
+
 			spell->get_caster_aura_apply()->sapply(aainfo);
 		}
 
@@ -192,76 +246,51 @@ void Spell::_start_casting(Ref<SpellCastInfo> info) {
 	}*/
 }
 
-void Spell::casting_finished(Ref<SpellCastInfo> info) {
-	if (has_method("_casting_finished")) {
-		call_multilevel("_casting_finished", info);
-		return;
-	}
+void Spell::_casting_finished(Ref<SpellCastInfo> info) {
 
-	//print_error("casting_finished"); // + info->get_spell()->get_name_key());
 }
 
-void Spell::casting_failed(Ref<SpellCastInfo> info) {
-	print_error("casting_failed"); // + info->get_spell()->get_name_key());
+void Spell::_casting_failed(Ref<SpellCastInfo> info) {
+
 }
 
-void Spell::start_casting_triggered(Ref<SpellCastInfo> info) {
-	print_error("start_casting_triggered"); // + info->get_spell()->get_name_key());
+void Spell::_start_casting_triggered(Ref<SpellCastInfo> info) {
+
 }
 
-void Spell::spell_hit(Entity *caster, Entity *target, Node *worldSpell, Spell *spell, float spell_scale) {
+void Spell::_calculate_initial_damage(Ref<SpellDamageInfo> data) {
+	data->set_damage(get_damage_min());
 }
 
-void Spell::on_player_move(Entity *caster) {
-}
-
-void Spell::c_on_spell_cast_started(Entity *player) {
-}
-
-void Spell::c_on_spell_cast_success(Entity *player) {
-}
-
-void Spell::c_on_spell_cast_failed(Entity *player) {
-}
-
-void Spell::c_on_spell_cast_ended(Entity *player) {
-}
-
-void Spell::on_cast_state_changed(Entity *caster) {
-	//if (IsStunned(caster)) {
-	//	DoCastFail(caster, true);
-	//}
-}
-
-void Spell::calculate_initial_damage(Ref<SpellDamageInfo> data) {
-	if (has_method("_calculate_initial_damage")) {
-		call_multilevel("_calculate_initial_damage", data);
-		return;
-	}
-
-	data->set_damage(300);
-}
-
-void Spell::handle_spell_damage(Ref<SpellDamageInfo> data) {
+void Spell::_handle_spell_damage(Ref<SpellDamageInfo> data) {
 	calculate_initial_damage(data);
-
-	if (has_method("_handle_spell_damage")) {
-		call_multilevel("_handle_spell_damage", data);
-		return;
-	}
 
 	data->get_dealer()->sdeal_damage_to(data);
 }
 
+void Spell::_on_player_move(Entity *player) {
+}
+
+void Spell::_c_on_spell_cast_started(Entity *player) {
+}
+
+void Spell::_c_on_spell_cast_success(Entity *player) {
+}
+
+void Spell::_c_on_spell_cast_failed(Entity *player) {
+}
+
+void Spell::_c_on_spell_cast_ended(Entity *player) {
+}
+
+
 String Spell::get_name() {
-	return "stubname";
+	return _spell_name;
 }
 
 String Spell::get_description(int level) {
-	return "stubdesc";
+	return _spell_description;
 }
-
-
 
 Spell::Spell() {
 	PLAYER_HIT_RADIUS = (float)0.5;
@@ -370,11 +399,53 @@ Spell::~Spell() {
 }
 
 void Spell::_bind_methods() {
+	//Virtuals
 	BIND_VMETHOD(MethodInfo("_start_casting", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_start_casting_triggered", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_casting_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_casting_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	
 	BIND_VMETHOD(MethodInfo("_calculate_initial_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_handle_spell_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
+	BIND_VMETHOD(MethodInfo("_on_player_move", PropertyInfo(Variant::OBJECT, "player", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_c_on_spell_cast_started", PropertyInfo(Variant::OBJECT, "player", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_c_on_spell_cast_success", PropertyInfo(Variant::OBJECT, "player", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_c_on_spell_cast_failed", PropertyInfo(Variant::OBJECT, "player", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_c_on_spell_cast_ended", PropertyInfo(Variant::OBJECT, "player", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
+	
+	ClassDB::bind_method(D_METHOD("start_casting", "info"), &Spell::start_casting);
+	ClassDB::bind_method(D_METHOD("casting_finished", "info"), &Spell::casting_finished);
+	ClassDB::bind_method(D_METHOD("casting_failed", "info"), &Spell::casting_failed);
+	ClassDB::bind_method(D_METHOD("start_casting_triggered", "info"), &Spell::start_casting_triggered);
+
+	//ClassDB::bind_method(D_METHOD("on_player_move", "player"), &Spell::on_player_move);
+	//ClassDB::bind_method(D_METHOD("c_on_spell_cast_started", "player"), &Spell::c_on_spell_cast_started);
+	//ClassDB::bind_method(D_METHOD("c_on_spell_cast_success", "player"), &Spell::c_on_spell_cast_success);
+	//ClassDB::bind_method(D_METHOD("c_on_spell_cast_failed", "player"), &Spell::c_on_spell_cast_failed);
+	//ClassDB::bind_method(D_METHOD("c_on_spell_cast_ended", "player"), &Spell::c_on_spell_cast_ended);
+
+	ClassDB::bind_method(D_METHOD("calculate_initial_damage", "data"), &Spell::calculate_initial_damage);
+	ClassDB::bind_method(D_METHOD("handle_spell_damage", "data"), &Spell::handle_spell_damage);
+
+
+	ClassDB::bind_method(D_METHOD("_start_casting", "info"), &Spell::_start_casting);
+	ClassDB::bind_method(D_METHOD("_casting_finished", "info"), &Spell::_casting_finished);
+	ClassDB::bind_method(D_METHOD("_casting_failed", "info"), &Spell::_casting_failed);
+	ClassDB::bind_method(D_METHOD("_start_casting_triggered", "info"), &Spell::_start_casting_triggered);
+
+	ClassDB::bind_method(D_METHOD("_calculate_initial_damage", "info"), &Spell::_calculate_initial_damage);
+	ClassDB::bind_method(D_METHOD("_handle_spell_damage", "info"), &Spell::_handle_spell_damage);
+
+	//ClassDB::bind_method(D_METHOD("_on_player_move", "player"), &Spell::_on_player_move);
+	//ClassDB::bind_method(D_METHOD("_c_on_spell_cast_started", "player"), &Spell::_c_on_spell_cast_started);
+	//ClassDB::bind_method(D_METHOD("_c_on_spell_cast_success", "player"), &Spell::_c_on_spell_cast_success);
+	//ClassDB::bind_method(D_METHOD("_c_on_spell_cast_failed", "player"), &Spell::_c_on_spell_cast_failed);
+	//ClassDB::bind_method(D_METHOD("_c_on_spell_cast_ended", "player"), &Spell::_c_on_spell_cast_ended);
+
+
+	//Properties
 	ClassDB::bind_method(D_METHOD("get_spell_id"), &Spell::get_spell_id);
 	ClassDB::bind_method(D_METHOD("set_spell_id", "value"), &Spell::set_spell_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_id"), "set_spell_id", "get_spell_id");
@@ -619,9 +690,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_spell_cooldown_mainpulation_data_count"), &Spell::get_spell_cooldown_mainpulation_data_count);
 	ClassDB::bind_method(D_METHOD("set_spell_cooldown_mainpulation_data_count", "value"), &Spell::set_spell_cooldown_mainpulation_data_count);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_cooldown_mainpulation_data_count"), "set_spell_cooldown_mainpulation_data_count", "get_spell_cooldown_mainpulation_data_count");
-
-	ClassDB::bind_method(D_METHOD("start_casting", "info"), &Spell::start_casting);
-	ClassDB::bind_method(D_METHOD("_start_casting", "info"), &Spell::_start_casting);
 
 	BIND_ENUM_CONSTANT(TARGET_SELF);
 	BIND_ENUM_CONSTANT(TARGET_ENEMY);
