@@ -242,102 +242,143 @@ void Aura::sapply_simple(Entity *caster, Entity *target, float spell_scale) {
 	sapply(info);
 }
 
-
 void Aura::sapply(Ref<AuraApplyInfo> info) {
+	//always exists
 	call("_sapply", info);
 }
 
 void Aura::sremove(Ref<AuraData> aura) {
+	//always exists
 	call("_sremove", aura);
 }
 
 void Aura::sremove_expired(Ref<AuraData> aura) {
+	//always exists
 	call("_sremove_expired", aura);
 }
 
+void Aura::sremove_dispell(Ref<AuraData> aura) {
+	//always exists
+	call("_sremove_dispell", aura);
+}
+
 void Aura::supdate(Ref<AuraData> aura, float delta) {
+	//always exists
 	call("_supdate", aura, delta);
 }
 
-void Aura::sdispell(Entity *target, AuraData *data) {
-}
-
 void Aura::son_before_cast(Ref<SpellCastInfo> info) {
-	call("_son_before_cast", info);
+	if (has_method("_son_before_cast"))
+		call("_son_before_cast", info);
 }
 
 void Aura::son_before_cast_target(Ref<SpellCastInfo> info) {
-	call("_son_before_cast_target", info);
+	if (has_method("_son_before_cast_target"))
+		call("_son_before_cast_target", info);
 }
 
 void Aura::son_cast_finished(Ref<SpellCastInfo> info) {
-	call("_son_cast_finished", info);
+	if (has_method("_son_cast_finished"))
+		call("_son_cast_finished", info);
+}
+
+void Aura::son_cast_started(Ref<SpellCastInfo> info) {
+	if (has_method("_son_cast_started"))
+		call("_son_cast_started", info);
+}
+
+void Aura::son_cast_failed(Ref<SpellCastInfo> info) {
+	if (has_method("_son_cast_failed"))
+		call("_son_cast_failed", info);
+}
+
+void Aura::son_cast_finished_target(Ref<SpellCastInfo> info) {
+	if (has_method("_son_cast_finished_target"))
+		call("_son_cast_finished_target", info);
+}
+
+void Aura::son_before_damage(Ref<SpellDamageInfo> data) {
+	if (has_method("_son_before_damage"))
+		call("_son_before_damage", data);
+}
+
+void Aura::son_damage_receive(Ref<SpellDamageInfo> data) {
+	if (has_method("_son_damage_receive"))
+		call("_son_damage_receive", data);
+}
+
+void Aura::son_hit(Ref<SpellDamageInfo> data) {
+	if (has_method("_son_hit"))
+		call("_son_hit", data);
+}
+
+void Aura::son_damage_dealt(Ref<SpellDamageInfo> data) {
+	if (has_method("_son_damage_dealt"))
+		call("_son_damage_dealt", data);
+}
+
+void Aura::son_remove_expired(Ref<AuraData> aura) {
+	if (has_method("_son_remove_expired"))
+		call("_son_remove_expired", aura);
+}
+
+void Aura::son_remove(Ref<AuraData> aura) {
+	if (has_method("_son_remove"))
+		call("_son_remove", aura);
+}
+
+void Aura::son_remove_dispell(Ref<AuraData> aura) {
+	if (has_method("_son_remove_dispell"))
+		call("_son_remove_dispell", aura);
+}
+
+void Aura::son_before_aura_applied(Ref<AuraData> data) {
+	if (has_method("_son_before_aura_applied"))
+		call("_son_before_aura_applied", data);
+}
+
+void Aura::son_after_aura_applied(Ref<AuraData> data) {
+	if (has_method("_son_after_aura_applied"))
+		call("_son_after_aura_applied", data);
+}
+
+void Aura::con_added(Ref<AuraData> data) {
+	if (has_method("_con_added"))
+		call("_con_added", data);
+}
+
+void Aura::con_removed(Ref<AuraData> data) {
+	if (has_method("_con_removed"))
+		call("_con_removed", data);
+}
+
+void Aura::con_refresh(Ref<AuraData> data) {
+	if (has_method("_con_refresh"))
+		call("_con_refresh", data);
 }
 
 void Aura::sapply_passives_damage_receive(Ref<SpellDamageInfo> data) {
+	//always exists
 	call("_sapply_passives_damage_receive", data);
 }
 
 void Aura::sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
+	//always exists
 	call("_sapply_passives_damage_deal", data);
 }
 
-void Aura::son_before_damage(Ref<SpellDamageInfo> data) {
-	call("_son_before_damage", data);
-}
-
-void Aura::son_damage_receive(Ref<SpellDamageInfo> data) {
-	call("_son_damage_receive", data);
-}
-
-void Aura::son_hit(Ref<SpellDamageInfo> data) {
-	call("_son_hit", data);
-}
-
-void Aura::son_damage_dealt(Ref<SpellDamageInfo> data) {
-	call("_son_damage_dealt", data);
-}
-
-void Aura::son_remove_expired(Ref<AuraData> aura) {
-	call("_son_remove_expired", aura);
-}
-
-void Aura::son_remove(Ref<AuraData> aura) {
-	//Debug::Log(new String("OnRemove called, Deprecated!"));
-	//this->DeApply(caster, null);
-	call("_son_remove", aura);
-}
-
-void Aura::son_dispell(Ref<AuraData> aura) {
-	call("_son_dispell", aura);
-}
-
-void Aura::son_before_aura_applied(Ref<AuraData> data) {
-	call("_son_before_aura_applied", data);
-}
-
-void Aura::son_after_aura_applied(Ref<AuraData> data) {
-	call("_son_after_aura_applied", data);
-}
-
-void Aura::con_added(Entity *target, Aura *data, AuraData *aura) {
-}
-
-void Aura::con_removed(Entity *target, Aura *data) {
-}
-
-void Aura::con_refresh(Entity *target, Object *data, AuraData *aura) {
-}
-
 void Aura::setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
+	//always exists
 	call("setup_aura_data", data, info);
 }
 
 void Aura::calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
+	//always exists
 	call("_calculate_initial_damage", aura_data, info);
 }
 
 void Aura::handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data) {
+	//always exists
 	call("_handle_aura_damage", aura_data, data);
 }
 
@@ -347,7 +388,7 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 	Ref<AuraData> ad(memnew(AuraData()));
 	setup_aura_data(ad, info);
 
-	info->get_target()->add_aura(ad);
+	info->get_target()->sadd_aura(ad);
 }
 
 void Aura::_sremove(Ref<AuraData> aura) {
@@ -356,6 +397,10 @@ void Aura::_sremove(Ref<AuraData> aura) {
 
 void Aura::_sremove_expired(Ref<AuraData> aura) {
 	aura->get_owner()->sremove_aura_expired(aura);
+}
+
+void Aura::_sremove_dispell(Ref<AuraData> aura) {
+	aura->get_owner()->sremove_aura_dispelled(aura);
 }
 
 void Aura::_supdate(Ref<AuraData> aura, float delta) {
@@ -383,62 +428,6 @@ void Aura::_supdate(Ref<AuraData> aura, float delta) {
 	}
 }
 
-void Aura::_sdispell(Entity *target, AuraData *data) {
-}
-
-void Aura::_son_before_cast(Ref<SpellCastInfo> info) {
-}
-
-void Aura::_son_before_cast_target(Ref<SpellCastInfo> info) {
-}
-
-void Aura::_son_cast_finished(Ref<SpellCastInfo> info) {
-}
-
-void Aura::_sapply_passives_damage_receive(Ref<SpellDamageInfo> data) {
-}
-
-void Aura::_sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
-}
-
-void Aura::_son_before_damage(Ref<SpellDamageInfo> data) {
-}
-
-void Aura::_son_damage_receive(Ref<SpellDamageInfo> data) {
-}
-
-void Aura::_son_hit(Ref<SpellDamageInfo> data) {
-}
-
-void Aura::_son_damage_dealt(Ref<SpellDamageInfo> data) {
-}
-
-void Aura::_son_remove_expired(Ref<AuraData> aura) {
-}
-
-void Aura::_son_remove(Ref<AuraData> aura) {
-	//Debug::Log(new String("OnRemove called, Deprecated!"));
-	//this->DeApply(caster, null);
-}
-
-void Aura::_son_dispell(Ref<AuraData> aura) {
-}
-
-void Aura::_son_before_aura_applied(Ref<AuraData> data) {
-}
-
-void Aura::_son_after_aura_applied(Ref<AuraData> data) {
-}
-
-void Aura::_con_added(Entity *target, Aura *data, AuraData *aura) {
-}
-
-void Aura::_con_removed(Entity *target, Aura *data) {
-}
-
-void Aura::_con_refresh(Entity *target, Object *data, AuraData *aura) {
-}
-
 void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
 	data->set_aura(Ref<Aura>(this));
 	data->set_caster(info->get_caster());
@@ -458,7 +447,6 @@ void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> dat
 	data->get_dealer()->sdeal_damage_to(data);
 }
 
-
 void Aura::_validate_property(PropertyInfo &property) const {
 
 	String prop = property.name;
@@ -476,51 +464,32 @@ void Aura::_validate_property(PropertyInfo &property) const {
 }
 
 void Aura::_bind_methods() {
-	//VMethods
-	BIND_VMETHOD(MethodInfo("_sapply", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
-	BIND_VMETHOD(MethodInfo("_sremove", PropertyInfo(Variant::OBJECT, "aura", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_sremove_expired", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_supdate", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::REAL, "delta")));
-	//BIND_VMETHOD(MethodInfo("_sdispell", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
-
-	BIND_VMETHOD(MethodInfo("_sapply_passives_damage_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	BIND_VMETHOD(MethodInfo("_sapply_passives_damage_deal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-
-	BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_son_cast_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-
-	BIND_VMETHOD(MethodInfo("_son_before_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	BIND_VMETHOD(MethodInfo("_son_damage_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	BIND_VMETHOD(MethodInfo("_son_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	BIND_VMETHOD(MethodInfo("_son_damage_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-
-	BIND_VMETHOD(MethodInfo("_son_remove", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_son_remove_expired", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_son_dispell", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-
-	BIND_VMETHOD(MethodInfo("_son_before_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_son_after_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-
-	//virtual void _con_added(Entity * target, Aura * data, AuraData * aura);
-	//virtual void _con_removed(Entity * target, Aura * data);
-	//virtual void _con_refresh(Entity * target, Object * data, AuraData * aura);
-
-	BIND_VMETHOD(MethodInfo("_setup_aura_data", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
-	BIND_VMETHOD(MethodInfo("_calculate_initial_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData") , PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
-	BIND_VMETHOD(MethodInfo("_handle_aura_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData") , PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-
+	//Commands
 	ClassDB::bind_method(D_METHOD("sapply", "info"), &Aura::sapply);
 	ClassDB::bind_method(D_METHOD("sremove", "aura"), &Aura::sremove);
 	ClassDB::bind_method(D_METHOD("sremove_expired", "aura"), &Aura::sremove_expired);
-	ClassDB::bind_method(D_METHOD("supdate","aura", "delta"), &Aura::supdate);
+	ClassDB::bind_method(D_METHOD("sremove_dispell", "aura"), &Aura::sremove_dispell);
+	ClassDB::bind_method(D_METHOD("supdate", "aura", "delta"), &Aura::supdate);
 
-	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Aura::sapply_passives_damage_receive);
-	ClassDB::bind_method(D_METHOD("sapply_passives_damage_deal", "data"), &Aura::sapply_passives_damage_deal);
+	BIND_VMETHOD(MethodInfo("_sapply", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
+	BIND_VMETHOD(MethodInfo("_sremove", PropertyInfo(Variant::OBJECT, "aura", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_sremove_expired", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_sremove_dispell", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_supdate", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::REAL, "delta")));
 
+	ClassDB::bind_method(D_METHOD("_sapply", "info"), &Aura::_sapply);
+	ClassDB::bind_method(D_METHOD("_sremove", "aura"), &Aura::_sremove);
+	ClassDB::bind_method(D_METHOD("_sremove_expired", "aura"), &Aura::_sremove_expired);
+	ClassDB::bind_method(D_METHOD("_sremove_dispell", "aura"), &Aura::_sremove_dispell);
+	ClassDB::bind_method(D_METHOD("_supdate", "aura", "delta"), &Aura::_supdate);
+
+	//EventHandlers
 	ClassDB::bind_method(D_METHOD("son_before_cast", "info"), &Aura::son_before_cast);
 	ClassDB::bind_method(D_METHOD("son_before_cast_target", "info"), &Aura::son_before_cast_target);
+	ClassDB::bind_method(D_METHOD("son_cast_started", "info"), &Aura::son_cast_started);
+	ClassDB::bind_method(D_METHOD("son_cast_failed", "info"), &Aura::son_cast_failed);
 	ClassDB::bind_method(D_METHOD("son_cast_finished", "info"), &Aura::son_cast_finished);
+	ClassDB::bind_method(D_METHOD("son_cast_finished_target", "info"), &Aura::son_cast_finished_target);
 
 	ClassDB::bind_method(D_METHOD("son_before_damage", "data"), &Aura::son_before_damage);
 	ClassDB::bind_method(D_METHOD("son_damage_receive", "data"), &Aura::son_damage_receive);
@@ -529,19 +498,57 @@ void Aura::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("son_remove", "aura"), &Aura::son_remove);
 	ClassDB::bind_method(D_METHOD("son_remove_expired", "aura"), &Aura::son_remove_expired);
-	ClassDB::bind_method(D_METHOD("son_dispell", "aura"), &Aura::son_dispell);
+	ClassDB::bind_method(D_METHOD("son_remove_dispell", "aura"), &Aura::son_remove_dispell);
 
 	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &Aura::son_before_aura_applied);
 	ClassDB::bind_method(D_METHOD("son_after_aura_applied", "data"), &Aura::son_after_aura_applied);
+
+	BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_finished_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+
+	BIND_VMETHOD(MethodInfo("_son_before_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_damage_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_damage_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	BIND_VMETHOD(MethodInfo("_son_remove", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_son_remove_expired", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("son_remove_dispell", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+
+	BIND_VMETHOD(MethodInfo("_son_before_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_son_after_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+
+	//Clientside Event Handlers
+	ClassDB::bind_method(D_METHOD("con_added", "info"), &Aura::con_added);
+	ClassDB::bind_method(D_METHOD("con_removed", "info"), &Aura::con_removed);
+	ClassDB::bind_method(D_METHOD("con_refresh", "info"), &Aura::con_refresh);
+
+	BIND_VMETHOD(MethodInfo("_con_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_con_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_con_refresh", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+
+	//Calculations / Queries
+	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Aura::sapply_passives_damage_receive);
+	ClassDB::bind_method(D_METHOD("sapply_passives_damage_deal", "data"), &Aura::sapply_passives_damage_deal);
 
 	ClassDB::bind_method(D_METHOD("setup_aura_data", "data", "info"), &Aura::setup_aura_data);
 	ClassDB::bind_method(D_METHOD("calculate_initial_damage", "aura_data", "info"), &Aura::calculate_initial_damage);
 	ClassDB::bind_method(D_METHOD("handle_aura_damage", "aura_data", "data"), &Aura::handle_aura_damage);
 
-	//void con_added(Entity * target, Aura * data, AuraData * aura);
-	//void con_removed(Entity * target, Aura * data);
-	//void con_refresh(Entity * target, Object * data, AuraData * aura);
+	BIND_VMETHOD(MethodInfo("_sapply_passives_damage_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_sapply_passives_damage_deal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
+	BIND_VMETHOD(MethodInfo("_setup_aura_data", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
+	BIND_VMETHOD(MethodInfo("_calculate_initial_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
+	BIND_VMETHOD(MethodInfo("_handle_aura_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	ClassDB::bind_method(D_METHOD("_setup_aura_data", "data", "info"), &Aura::_setup_aura_data);
+	ClassDB::bind_method(D_METHOD("_calculate_initial_damage", "aura_data", "info"), &Aura::_calculate_initial_damage);
+	ClassDB::bind_method(D_METHOD("_handle_aura_damage", "aura_data", "data"), &Aura::_handle_aura_damage);
 
 	//Properties
 	ClassDB::bind_method(D_METHOD("get_id"), &Aura::get_id);
@@ -703,10 +710,6 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_aura_stat_attribute_percent_mod", "index", "value"), &Aura::set_aura_stat_attribute_percent_mod);
 
 	ClassDB::bind_method(D_METHOD("get_aura_stat_attribute", "index"), &Aura::get_aura_stat_attribute);
-	//ClassDB::bind_method(D_METHOD("sremove", "info"), &Aura::sremove);
-	//ClassDB::bind_method(D_METHOD("supdate", "info"), &Aura::supdate);
-	//ClassDB::bind_method(D_METHOD("sdispell", "info"), &Aura::sdispell);
-
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "attribute_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_AURA_STATS), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_aura_stat_attribute_count", "get_aura_stat_attribute_count");
 
@@ -717,7 +720,6 @@ void Aura::_bind_methods() {
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura_stat_attribute_percent_mod", "get_aura_stat_attribute_percent_mod", i);
 	}
 
-
 	BIND_CONSTANT(MAX_AURA_STATS);
 	BIND_CONSTANT(MAX_TRIGGER_DATA);
 
@@ -725,8 +727,6 @@ void Aura::_bind_methods() {
 	//ClassDB::bind_method(D_METHOD("get_heal_scale_for_level"), &Aura::get_heal_scale_for_level);
 	//ClassDB::bind_method(D_METHOD("get_absorb_scale_for_level"), &Aura::get_absorb_scale_for_level);
 }
-
-
 
 /*
 
@@ -1252,8 +1252,7 @@ bool AuraScript::IsZero(float x)
 
 */
 
-
-		/*
+/*
 GenericAuraScript::GenericAuraScript() {
     if (aura->GenericAuraScriptData->AttributeModifiers->Count > 0) {
         this->hasModifiers = true;
@@ -1356,7 +1355,3 @@ void GenericAuraScript::RemoveModifiers(WorldEntity* target)
     }
 }
 */
-
-
-
-

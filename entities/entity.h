@@ -31,8 +31,8 @@ class SpellDamageInfo;
 class SpellCastInfo;
 
 class EntityCreateInfo : public Object {
-    GDCLASS(EntityCreateInfo, Object);
-    
+	GDCLASS(EntityCreateInfo, Object);
+
 public:
 	int get_guid() { return _guid; }
 	void set_guid(int value) { _guid = value; }
@@ -130,31 +130,21 @@ enum PlayerSendFlags {
 #ifdef ENTITIES_2D
 class Entity : public KinematicBody2D {
 	GDCLASS(Entity, KinematicBody2D);
-    
+
 #else
-    
+
 class Entity : public KinematicBody {
 	GDCLASS(Entity, KinematicBody);
-    
+
 #endif
-    
+
 public:
 	Entity();
 	~Entity();
 
 	void initialize(EntityCreateInfo *info);
 
-	//EntityType getType();
-
-	void AfterLoadFinished();
-	void Update();
-	void Awake();
-	void Start();
-	void LateUpdate();
-	void init();
-	void update();
-	void Init();
-	void InitVariables();
+	void Update(); //old, remove
 
 	////    Base    ////
 
@@ -162,7 +152,6 @@ public:
 	void set_character_skeleton_path(NodePath value);
 
 	CharacterSkeleton *get_character_skeleton();
-
 
 	int getc_guid();
 	void setc_guid(int value);
@@ -265,9 +254,6 @@ public:
 	Entity *getc_spell_target();
 	void setc_spell_target(Node *p_target);
 
-	//Game_object *gets_spell_cast_game_object() { return _s_spell_cast_game_object; }
-	//void sets_spell_cast_game_object(Game_object *value) { _s_spell_cast_game_object = value; }
-
 	int gets_target_guid() { return _s_target_guid; }
 	int gets_spell_cast_game_object_guid() { return _s_spell_cast_game_object_guid; }
 
@@ -298,59 +284,73 @@ public:
 
 	////    SpellSystem    ////
 
-	void scast_spell(int spell_id);
-	void crequest_spell_cast(int spell_id);
-	void casting_finished(Entity *caster, int spellId, float scale);
-	void update_auras(float delta);
-	void son_before_cast(Ref<SpellCastInfo> info);
-	void son_before_cast_target(Ref<SpellCastInfo> info);
+	//add heal pipeline
+
+	//EventHandlers
+	void son_before_aura_applied(Ref<AuraData> data);
+	void son_after_aura_applied(Ref<AuraData> data);
+	
 	void son_hit(Ref<SpellDamageInfo> data);
 	void son_before_damage(Ref<SpellDamageInfo> data);
 	void son_damage_receive(Ref<SpellDamageInfo> data);
 	void son_dealt_damage(Ref<SpellDamageInfo> data);
+	void son_damage_dealt(Ref<SpellDamageInfo> data);
+
+	void son_before_cast(Ref<SpellCastInfo> info);
+	void son_before_cast_target(Ref<SpellCastInfo> info);
+	void son_cast_finished_target(Ref<SpellCastInfo> info);
+	void son_cast_finished(Ref<SpellCastInfo> info);
+	void son_cast_started(Ref<SpellCastInfo> info);
+	void son_cast_failed(Ref<SpellCastInfo> info);
+	
+	//Clientside EventHandlers
+	void con_cast_failed(Ref<SpellCastInfo> info);
+	void con_cast_started(Ref<SpellCastInfo> info);
+	void con_cast_state_changed(Ref<SpellCastInfo> info);
+	void con_cast_finished(Ref<SpellCastInfo> info);
+	void con_spell_cast_success(Ref<SpellCastInfo> info);
+
+	//Modifiers/Requesters
 	void sapply_passives_damage_receive(Ref<SpellDamageInfo> data);
 	void sapply_passives_damage_deal(Ref<SpellDamageInfo> data);
-	void remove_auras_with_group(Entity *ac, int auraGroup);
 
-	void sremove_aura_expired(Ref<AuraData> aura);
-	void cremove_aura_expired(Ref<AuraData> aura);
+	//Spell operations
+	void scast_spell(int spell_id);
+	void crequest_spell_cast(int spell_id);
 
-	void sremove_aura(Ref<AuraData> aura);
-	void cremove_aura(Ref<AuraData> aura);
-
-	void crefresh_aura(Entity *ac, int auraId, float time);
-	void crefresh_caster_aura(Entity *ac, int auraId, Entity *caster, float time);
-	void caura_added(Entity *ac, int id, float remaining, Entity *caster, int casterGUID);
-	void caura_removed(Entity *ac, int id);
-	void con_cast_failed(Entity *caster, int spellId);
-	void setup_on_player_moves(Entity *bopmccc, Vector<int> *sspells);
-	void con_cast_started(Entity *caster, int spellId);
-	void con_cast_state_changed(Entity *caster, int spellId);
-	void con_cast_finished(Entity *caster, int spellId);
-	void con_spell_cast_success(Entity *caster, int spellId);
-
-	void son_before_aura_applied(Ref<AuraData> data);
-	void son_after_aura_applied(Ref<AuraData> data);
-
-	//rename to remove_aura()
-	virtual void just_remove_aura(int auraId);
-	virtual void remove_aura(Ref<AuraData> data);
-	virtual void add_aura(Ref<AuraData> data);
-	virtual void remove_auras_with_group(int auraGroup);
-	virtual void refresh_aura(int auraId, float time);
-	virtual void refresh_aura(int auraId, Entity *caster, float time);
-	virtual void ssend_refresh_aura(int auraId, float time);
-	virtual void ssend_refresh_caster_aura(int auraId, Entity *caster, float time);
-	virtual void ssend_aura_added(int auraId, float time, Entity *caster);
-	virtual void ssend_aura_removed(int auraId);
-	virtual void creceive_refresh_aura(int auraId, float time);
-	virtual void creceive_refresh_caster_aura(int auraId, Entity *caster, float time);
-	virtual void creceive_aura_added(int id, float remaining, Entity *caster);
-	virtual void creceive_aura_removed(int id);
-
+	//Damage Operations
 	void stake_damage(Ref<SpellDamageInfo> data);
-	void son_damage_dealt(Ref<SpellDamageInfo> data);
 	void sdeal_damage_to(Ref<SpellDamageInfo> data);
+
+	//Aura Manipulation
+	void sadd_aura(Ref<AuraData> aura);
+	void sremove_aura(Ref<AuraData> aura);
+	void sremove_aura_expired(Ref<AuraData> aura);
+	void sremove_aura_dispelled(Ref<AuraData> aura);
+
+	void cadd_aura(Ref<AuraData> aura);
+	void cremove_aura(Ref<AuraData> aura);
+	void cremove_aura_expired(Ref<AuraData> aura);
+	void cremove_aura_dispelled(Ref<AuraData> aura);
+
+	void sremove_auras_with_group(int aura_group);
+
+	int sget_aura_count();
+	Ref<Aura> sget_aura(int index);
+
+	int cget_aura_count();
+	Ref<Aura> cget_aura(int index);
+
+	//Hooks
+	void moved();
+	
+	//Update
+	void update_auras(float delta);
+
+	//Old, hook loading update when needed
+	void setup_on_player_moves(Entity *bopmccc, Vector<int> *sspells); //load -> remove, just store spellIds
+
+	//Old stuff, remove or update
 	void take_heal(int heal, bool crit, Entity *dealer);
 	void die();
 	void resurrect();
@@ -362,37 +362,21 @@ public:
 	void creceive_mana_changed(int amount);
 	void trigger_global_cooldown();
 	void creceive_trigger_global_cooldown();
-	//void Set(bool SIsDead, float SRezTimer, bool SHasGlobalCooldown);
 
 	bool gets_is_dead();
 	bool getc_is_dead();
 	bool getc_has_global_cooldown();
 	bool gets_has_global_cooldown();
 
-	/*
-	void SendDamageTakenMessage(int damage, bool crit, Entity *dealer);
-	void SendHealTakenMessage(int heal, bool crit, Entity *dealer);
-	void SendResurrectMessage();
-	void SendDieMessage();
-	void SendTriggerGCDMessage();
-	Ref<Stat> GetSStatFromId(int id);
-	Ref<Stat> GetCStatFromId(int id);
-
-	static int GetStatIdFromString(String *name);*/
-
-	/*
-	void AddStat(CStatUpdateMsg &msg, Ref<Stat> stat);
-	void AddStat(CStatUpdateMsg &msg, Ref<Stat> stat);
-	void AddStat(CStatUpdateMsg &msg, Ref<Stat> stat);
-	void AddStat(CStatUpdateMsg &msg, Stat *stat);
-	void CHandleStatUpdateMsg(CStatUpdateMsg &msg);
-	void CReadStat(CStatUpdateMsg &msg);
-	void ReadStat(CStatUpdateMsg &msg, Stat *stat);
-	void ReadStat(CStatUpdateMsg &msg, Stat *stat);
-	void ReadStat(CStatUpdateMsg &msg, Stat *stat);
-*/
-	//void OnStateChanged(PlayerStates newState);
 	void son_death();
+
+	Ref<SpellCastInfo> gets_spell_cast_info();
+	void sets_spell_cast_info(Ref<SpellCastInfo> info);
+
+	Ref<SpellCastInfo> getc_spell_cast_info();
+	void setc_spell_cast_info(Ref<SpellCastInfo> info);
+
+	////    Casting System    ////
 
 	void sstart_casting(Ref<SpellCastInfo> info);
 	void sfail_cast();
@@ -406,32 +390,6 @@ public:
 	void cfinish_cast();
 	void cinterrupt_cast();
 
-	void scast_finished();
-	void ccast_finished();
-
-	void on_cast_state_change();
-
-	void scast_started(Ref<SpellCastInfo> info);
-
-
-	Ref<SpellCastInfo> gets_spell_cast_info();
-	void sets_spell_cast_info(Ref<SpellCastInfo> info);
-
-	Ref<SpellCastInfo> getc_spell_cast_info();
-	void setc_spell_cast_info(Ref<SpellCastInfo> info);
-
-	//networking
-	//void ssend_start_casting(int spellId, float castTime);
-	//void ssend_cast_failed();
-	//void ssend_cast_finished(int spellId);
-
-	//void creceive_start_casting(int spellId, float castTime);
-	//void creceive_cast_finished();
-	//void creceive_cast_failed();
-
-
-	void start_animation_time(float time);
-
 	////    TargetComponent    ////
 
 	Entity *gets_target();
@@ -439,15 +397,6 @@ public:
 
 	Entity *getc_target();
 	void setc_target(Node *p_target);
-
-	int get_starget_guid();
-	void set_starget_guid(int value);
-	void set_target(Entity *t);
-	void sreceive_ctarget_change(Entity *t);
-	void ai_set_target(Entity *t);
-	void csend_target();
-	void sbroadcast_target_change();
-	void on_state_changed(PlayerStates newState);
 
 	////    TalentComponent    ////
 
@@ -465,9 +414,6 @@ public:
 	Vector<int> *gets_spell_data();
 	Vector<int> *getc_spell_data();
 	//HashMap<int, PlayerLocalSpellData> *getLocalSpellData(); //this should be the same object
-
-	bool get_send();
-	void set_send(bool value);
 	//void AddSSpellData(PlayerSpellData *psd);
 	//void AddCSpellData(PlayerSpellData *psd);
 	//void RemoveSSpellData(PlayerSpellData *psd);
@@ -532,14 +478,6 @@ public:
 	String request_spell_name(int spellId);
 	String request_spell_description(int spellId, int level);
 
-	/*
-	void AddGraphicScripts();
-	static Entity *SEntitySpawn(EntityType type, int classId, int level, String name, int Guid = 0u, CxConnection *connection = null, bool owner = false, Vector3 *position =, Quaternion *rotation =);
-	static Entity *NetworkSpawnCharacter(int Guid, EntityType type, int classId, int level, String name, CxConnection *connection = null, bool owner = false, Vector3 *position =, Quaternion *rotation =);
-	static Entity *CEntitySpawn(int Guid, EntityType type, int classId, int level, String name, CxConnection *connection = null, bool owner = false, Vector3 *position =, Quaternion *rotation =);
-	void OnPlayerSpawneds(Entity *player, bool isClientPlayer, bool is_serverPlayer, bool isLocalPlayerPlayer);
-	*/
-
 protected:
 	static void _bind_methods();
 	virtual void _notification(int p_what);
@@ -552,7 +490,6 @@ private:
 
 	NodePath _character_skeleton_path;
 	CharacterSkeleton *_character_skeleton;
-
 
 	////    PlayerData    ////
 
@@ -605,11 +542,9 @@ private:
 	Ref<Stat> _melee_damage;
 	Ref<Stat> _spell_damage;
 
-
 	Ref<Stat> _stats[Stat::STAT_ID_TOTAL_STATS];
 
-
-
+	//old
 	bool sIsDead;
 	bool cIsDead;
 	bool localClient;

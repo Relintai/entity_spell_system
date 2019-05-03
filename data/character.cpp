@@ -127,7 +127,7 @@ void CharacterClass::start_casting(int spell_id, Entity *caster, float spellScal
 		}
 
 		if (s->get_spell_id() == spell_id) {
-			s->start_casting_simple(caster, spellScale);
+			s->sstart_casting_simple(caster, spellScale);
 			return;
 		}
 	}

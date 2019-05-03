@@ -279,45 +279,37 @@ public:
 
 	float PLAYER_HIT_RADIUS;
 
-	void start_casting_simple(Entity *caster, float spell_scale);
-	void casting_failed_simple(Entity *caster);
-	void start_casting_triggered_simple(Entity *caster);
+	//Commands, c++ only
+	void sstart_casting_simple(Entity *caster, float spell_scale);
+	void sinterrupt_cast_simple(Entity *caster);
+	void sstart_casting_triggered_simple(Entity *caster);
 
-	void start_casting(Ref<SpellCastInfo> info);
-	void casting_finished(Ref<SpellCastInfo> info);
-	void casting_failed(Ref<SpellCastInfo> info);
-	void start_casting_triggered(Ref<SpellCastInfo> info);
+	//Commands
+	void sstart_casting(Ref<SpellCastInfo> info);
+	void sstart_casting_triggered(Ref<SpellCastInfo> info);
+	void sinterrupt_cast(Ref<SpellCastInfo> info);
+	void sfinish_cast(Ref<SpellCastInfo> info);
 
-	//SpellHitInfo
-	
-	void on_player_move(Entity *player);
-	void c_on_spell_cast_started(Entity *player);
-	void c_on_spell_cast_success(Entity *player);
-	void c_on_spell_cast_failed(Entity *player);
-	void c_on_spell_cast_ended(Entity *player);
-	void on_cast_state_changed(Entity *player);
+	virtual void _sstart_casting(Ref<SpellCastInfo> info);
 
-	void spell_hit(Entity *caster, Entity *target, Node *worldSpell, Spell *spell, float spellScale);
+	//eventhandlers
+	void son_cast_player_moved(Ref<SpellCastInfo> info); 
+	void son_cast_damage_received(Ref<SpellCastInfo> info);
+	void son_spell_hit(Ref<SpellCastInfo> info);
 
+	//Clientside Event Handlers
+	void con_spell_cast_started(Ref<SpellCastInfo> info);
+	void con_spell_cast_success(Ref<SpellCastInfo> info);
+	void con_spell_cast_failed(Ref<SpellCastInfo> info);
+	void con_spell_cast_ended(Ref<SpellCastInfo> info);
+	void con_spell_cast_interrupted(Ref<SpellCastInfo> info);
+
+	//Calculations / Queries
 	void calculate_initial_damage(Ref<SpellDamageInfo> data);
 	void handle_spell_damage(Ref<SpellDamageInfo> data);
 
-	virtual void _start_casting(Ref<SpellCastInfo> info);
-	virtual void _casting_finished(Ref<SpellCastInfo> info);
-	virtual void _casting_failed(Ref<SpellCastInfo> info);
-	virtual void _start_casting_triggered(Ref<SpellCastInfo> info);
-
 	virtual void _calculate_initial_damage(Ref<SpellDamageInfo> data);
 	virtual void _handle_spell_damage(Ref<SpellDamageInfo> data);
-
-	virtual void _on_player_move(Entity *player);
-	virtual void _c_on_spell_cast_started(Entity *player);
-	virtual void _c_on_spell_cast_success(Entity *player);
-	virtual void _c_on_spell_cast_failed(Entity *player);
-	virtual void _c_on_spell_cast_ended(Entity *player);
-	
-	//virtual void _on_cast_state_changed(Entity *caster);
-	
 
 	String get_name();
 	String get_description(int level);

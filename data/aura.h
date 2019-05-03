@@ -253,21 +253,30 @@ public:
 	Ref<AuraStatAttribute> get_aura_stat_attribute(int index) { return _aura_stat_attributes[index]; }
 
 	////    SpellSystem    ////
-	void sdispell(Entity *target, AuraData *data);
 
+	//Commands, c++ only
 	void sapply_simple(Entity *caster, Entity *target, float spell_scale);
 
+	//Commands
 	void sapply(Ref<AuraApplyInfo> info);
 	void sremove(Ref<AuraData> aura);
 	void sremove_expired(Ref<AuraData> aura);
+	void sremove_dispell(Ref<AuraData> aura);
 	void supdate(Ref<AuraData> aura, float delta);
 
-	void sapply_passives_damage_receive(Ref<SpellDamageInfo> data);
-	void sapply_passives_damage_deal(Ref<SpellDamageInfo> data);
+	virtual void _sapply(Ref<AuraApplyInfo> info);
+	virtual void _sremove(Ref<AuraData> aura);
+	virtual void _sremove_expired(Ref<AuraData> aura);
+	virtual void _supdate(Ref<AuraData> aura, float delta);
+	virtual void _sremove_dispell(Ref<AuraData> aura);
 
+	//EventHandlers
 	void son_before_cast(Ref<SpellCastInfo> info);
 	void son_before_cast_target(Ref<SpellCastInfo> info);
+	void son_cast_started(Ref<SpellCastInfo> info);
+	void son_cast_failed(Ref<SpellCastInfo> info);
 	void son_cast_finished(Ref<SpellCastInfo> info);
+	void son_cast_finished_target(Ref<SpellCastInfo> info);
 
 	void son_before_damage(Ref<SpellDamageInfo> data);
 	void son_damage_receive(Ref<SpellDamageInfo> data);
@@ -276,52 +285,26 @@ public:
 
 	void son_remove(Ref<AuraData> aura);
 	void son_remove_expired(Ref<AuraData> aura);
-	void son_dispell(Ref<AuraData> aura);
+	void son_remove_dispell(Ref<AuraData> aura);
 
 	void son_before_aura_applied(Ref<AuraData> data);
 	void son_after_aura_applied(Ref<AuraData> data);
 
-	void con_added(Entity *target, Aura *data, AuraData *aura);
-	void con_removed(Entity *target, Aura *data);
-	void con_refresh(Entity *target, Object *data, AuraData *aura);
+	//Clientside Event Handlers
+	void con_added(Ref<AuraData> data);
+	void con_removed(Ref<AuraData> data);
+	void con_refresh(Ref<AuraData> data);
 
+	//Calculations / Queries
+	void sapply_passives_damage_receive(Ref<SpellDamageInfo> data);
+	void sapply_passives_damage_deal(Ref<SpellDamageInfo> data);
 	void setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
 	void calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
 	void handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data);
 
-
-	virtual void _sapply(Ref<AuraApplyInfo> info);
-	virtual void _sremove(Ref<AuraData> aura);
-	virtual void _sremove_expired(Ref<AuraData> aura);
-	virtual void _supdate(Ref<AuraData> aura, float delta);
-	virtual void _sdispell(Entity *target, AuraData *data);
-
-	virtual void _sapply_passives_damage_receive(Ref<SpellDamageInfo> data);
-	virtual void _sapply_passives_damage_deal(Ref<SpellDamageInfo> data);
-
-	virtual void _son_before_cast(Ref<SpellCastInfo> info);
-	virtual void _son_before_cast_target(Ref<SpellCastInfo> info);
-	virtual void _son_cast_finished(Ref<SpellCastInfo> info);
-
-	virtual void _son_before_damage(Ref<SpellDamageInfo> data);
-	virtual void _son_damage_receive(Ref<SpellDamageInfo> data);
-	virtual void _son_hit(Ref<SpellDamageInfo> data);
-	virtual void _son_damage_dealt(Ref<SpellDamageInfo> data);
-
-	virtual void _son_remove(Ref<AuraData> aura);
-	virtual void _son_remove_expired(Ref<AuraData> aura);
-	virtual void _son_dispell(Ref<AuraData> aura);
-
-	virtual void _son_before_aura_applied(Ref<AuraData> data);
-	virtual void _son_after_aura_applied(Ref<AuraData> data);
-
-	virtual void _con_added(Entity *target, Aura *data, AuraData *aura);
-	virtual void _con_removed(Entity *target, Aura *data);
-	virtual void _con_refresh(Entity *target, Object *data, AuraData *aura);
-
-	virtual void _setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
 	virtual void _calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
 	virtual void _handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data);
+	virtual void _setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
 
 	Aura();
 	~Aura();

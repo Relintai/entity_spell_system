@@ -261,7 +261,6 @@ Entity::Entity() {
 	_s_entity_type = EntityEnums::EntityType::ENITIY_TYPE_NONE;
 	_c_entity_type = EntityEnums::EntityType::ENITIY_TYPE_NONE;
 
-	_s_target_guid = 0;
 	_s_target = NULL;
 	_c_target = NULL;
 
@@ -286,7 +285,6 @@ Entity::Entity() {
        cInventory->Add(null);
        sInventory->Add(null);
        }*/
-
 
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
 		_stats[i] = Ref<Stat>(memnew(Stat(static_cast<Stat::StatId>(i))));
@@ -325,7 +323,6 @@ Entity::Entity() {
 
 	_s_auras = memnew(Vector<Ref<AuraData> >());
 	_c_auras = memnew(Vector<Ref<AuraData> >());
-
 }
 
 Entity::~Entity() {
@@ -391,7 +388,6 @@ void Entity::sinitialize_stats() {
 	gets_character_class()->get_stat_data()->get_stat_for_stat(get_spell_damage());
 }
 
-
 //////     Stat System      //////
 
 bool Entity::gets_is_dead() {
@@ -440,346 +436,6 @@ void Entity::set_stat_enum(Stat::StatId stat_id, Ref<Stat> entry) {
 
 	_stats[stat_id] = Ref<Stat>(entry);
 }
-
-/*
-float Entity::getSRezTimer() {
-	return sRezTimer;
-}
-
-float Entity::getCRezTimer() {
-	return cRezTimer;
-}*/
-/*
-void Entity::Init() {
-	s = true;
-	if (s && c) {
-		localClient = true;
-	}
-	StatData *stats = owner->PlayerData->Character->Stats;
-	if (owner->isServer) {
-		stats->GetStatForStat(SHealth);
-		stats->GetStatForStat(SMana);
-		stats->GetStatForStat(SSpeed);
-		stats->GetStatForStat(SGCD);
-		stats->GetStatForStat(SMeleeCrit);
-		stats->GetStatForStat(SMeleeCritBonus);
-		stats->GetStatForStat(SSpellCrit);
-		stats->GetStatForStat(SSpellCritBonus);
-		stats->GetStatForStat(SBlock);
-		stats->GetStatForStat(SParry);
-		stats->GetStatForStat(SDamageReduction);
-		stats->GetStatForStat(SMeleeDamageReduction);
-		stats->GetStatForStat(SSpellDamageReduction);
-		stats->GetStatForStat(SDamageTaken);
-		stats->GetStatForStat(SMeleeDamage);
-		stats->GetStatForStat(SSpellDamage);
-		SHealth->Dirty = true;
-		SMana->Dirty = true;
-		SSpeed->Dirty = true;
-		SGCD->Dirty = true;
-		SMeleeCrit->Dirty = true;
-		SMeleeCritBonus->Dirty = true;
-		SSpellCrit->Dirty = true;
-		SSpellCritBonus->Dirty = true;
-		SBlock->Dirty = true;
-		SParry->Dirty = true;
-		SDamageReduction->Dirty = true;
-		SMeleeDamageReduction->Dirty = true;
-		SSpellDamageReduction->Dirty = true;
-		SDamageTaken->Dirty = true;
-		SMeleeDamage->Dirty = true;
-		SSpellDamage->Dirty = true;
-	}
-	stats->GetStatForStat(CHealth);
-	stats->GetStatForStat(CMana);
-	stats->GetStatForStat(CSpeed);
-	stats->GetStatForStat(CGCD);
-	stats->GetStatForStat(CMeleeCrit);
-	stats->GetStatForStat(CMeleeCritBonus);
-	stats->GetStatForStat(CSpellCrit);
-	stats->GetStatForStat(CSpellCritBonus);
-	stats->GetStatForStat(CBlock);
-	stats->GetStatForStat(CParry);
-	stats->GetStatForStat(CDamageReduction);
-	stats->GetStatForStat(CMeleeDamageReduction);
-	stats->GetStatForStat(CSpellDamageReduction);
-	stats->GetStatForStat(CDamageTaken);
-	stats->GetStatForStat(CMeleeDamage);
-	stats->GetStatForStat(CSpellDamage);
-	init = true;
-}*/
-/*
-void Entity::Update() {
-	if (!init) {
-		return;
-	}
-
-	if (cHasGlobalCooldown) {
-		Stat *expr_49 = CGCD;
-		expr_49->GCDTime -= Time::deltaTime;
-		CGCD->Dirty = false;
-		if (!CGCD->hasGCD()) {
-			cHasGlobalCooldown = false;
-		}
-	}
-
-	if (owner->isServer) {
-		if (sHasGlobalCooldown) {
-			Stat *expr_C5 = SGCD;
-			expr_C5->GCDTime -= Time::deltaTime;
-			SGCD->Dirty = false;
-			if (!SGCD->hasGCD()) {
-				sHasGlobalCooldown = false;
-				if (SOnStatChanged != null) {
-					DELEGATE_INVOKE(SOnStatChanged, 3, SGCD);
-				}
-			}
-		}
-	}
-}
-
-void Entity::LateUpdate() {
-	if (!CxNet::IsServer || !init) {
-		return;
-	}
-	if (SHealth->Dirty || SMana->Dirty) {
-		CStatUpdateMsg cStatUpdateMsg = CStatUpdateMsg();
-		cStatUpdateMsg.Guid = owner->PlayerData->GUID;
-		cStatUpdateMsg.Initialize(CxNet::NetBuffer);
-		if (SHealth->Dirty) {
-			AddStat(cStatUpdateMsg, SHealth);
-		}
-		if (SMana->Dirty) {
-			AddStat(cStatUpdateMsg, SMana);
-		}
-		cStatUpdateMsg.FinishMessage();
-		CxNet::SendBufferToAllClientsExcept(owner->Connection, 0);
-	}
-	if ((((((((((((((SHealth->Dirty || SMana->Dirty) || SSpeed->Dirty) || SMeleeCrit->Dirty) || SMeleeCritBonus->Dirty) || SSpellCrit->Dirty) || SSpellCritBonus->Dirty) || SBlock->Dirty) || SParry->Dirty) || SDamageReduction->Dirty) || SMeleeDamageReduction->Dirty) || SSpellDamageReduction->Dirty) || SDamageTaken->Dirty) || SMeleeDamage->Dirty) || SSpellDamage->Dirty) {
-		CStatUpdateMsg cStatUpdateMsg2 = CStatUpdateMsg();
-		cStatUpdateMsg2.Guid = owner->PlayerData->GUID;
-		cStatUpdateMsg2.Initialize(CxNet::NetBuffer);
-		if (SHealth->Dirty) {
-			AddStat(cStatUpdateMsg2, SHealth);
-		}
-		if (SMana->Dirty) {
-			AddStat(cStatUpdateMsg2, SMana);
-		}
-		if (SSpeed->Dirty) {
-			AddStat(cStatUpdateMsg2, SSpeed);
-		}
-		if (SMeleeCrit->Dirty) {
-			AddStat(cStatUpdateMsg2, SMeleeCrit);
-		}
-		if (SMeleeCritBonus->Dirty) {
-			AddStat(cStatUpdateMsg2, SMeleeCritBonus);
-		}
-		if (SSpellCrit->Dirty) {
-			AddStat(cStatUpdateMsg2, SSpellCrit);
-		}
-		if (SSpellCritBonus->Dirty) {
-			AddStat(cStatUpdateMsg2, SSpellCritBonus);
-		}
-		if (SBlock->Dirty) {
-			AddStat(cStatUpdateMsg2, SBlock);
-		}
-		if (SParry->Dirty) {
-			AddStat(cStatUpdateMsg2, SParry);
-		}
-		if (SDamageReduction->Dirty) {
-			AddStat(cStatUpdateMsg2, SDamageReduction);
-		}
-		if (SMeleeDamageReduction->Dirty) {
-			AddStat(cStatUpdateMsg2, SMeleeDamageReduction);
-		}
-		if (SSpellDamageReduction->Dirty) {
-			AddStat(cStatUpdateMsg2, SSpellDamageReduction);
-		}
-		if (SDamageTaken->Dirty) {
-			AddStat(cStatUpdateMsg2, SDamageTaken);
-		}
-		if (SMeleeDamage->Dirty) {
-			AddStat(cStatUpdateMsg2, SMeleeCrit);
-		}
-		if (SSpellDamage->Dirty) {
-			AddStat(cStatUpdateMsg2, SSpellDamage);
-		}
-		cStatUpdateMsg2.FinishMessage();
-		if (owner->Connection != null) {
-			owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-		} else {
-			cStatUpdateMsg2.ResetToStats();
-			CHandleStatUpdateMsg(cStatUpdateMsg2);
-		}
-	}
-	if (SHealth->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SHealth->Id, SHealth);
-		}
-		SHealth->Dirty = false;
-	}
-	if (SMana->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SMana->Id, SMana);
-		}
-		SMana->Dirty = false;
-	}
-	if (SSpeed->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SSpeed->Id, SSpeed);
-		}
-		SSpeed->Dirty = false;
-	}
-	if (SGCD->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SGCD->Id, SGCD);
-		}
-		SGCD->Dirty = false;
-	}
-	if (SMeleeCrit->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SMeleeCrit->Id, SMeleeCrit);
-		}
-		SMeleeCrit->Dirty = false;
-	}
-	if (SMeleeCritBonus->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SMeleeCritBonus->Id, SMeleeCritBonus);
-		}
-		SMeleeCritBonus->Dirty = false;
-	}
-	if (SSpellCrit->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SSpellCrit->Id, SSpellCrit);
-		}
-		SSpellCrit->Dirty = false;
-	}
-	if (SSpellCritBonus->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SSpellCritBonus->Id, SSpellCritBonus);
-		}
-		SSpellCritBonus->Dirty = false;
-	}
-	if (SBlock->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SBlock->Id, SBlock);
-		}
-		SBlock->Dirty = false;
-	}
-	if (SParry->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SParry->Id, SParry);
-		}
-		SParry->Dirty = false;
-	}
-	if (SDamageReduction->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SDamageReduction->Id, SDamageReduction);
-		}
-		SDamageReduction->Dirty = false;
-	}
-	if (SMeleeDamageReduction->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SMeleeDamageReduction->Id, SMeleeDamageReduction);
-		}
-		SMeleeDamageReduction->Dirty = false;
-	}
-	if (SSpellDamageReduction->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SSpellDamageReduction->Id, SSpellDamageReduction);
-		}
-		SSpellDamageReduction->Dirty = false;
-	}
-	if (SDamageTaken->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SDamageTaken->Id, SDamageTaken);
-		}
-		SDamageTaken->Dirty = false;
-	}
-	if (SMeleeDamage->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SMeleeCrit->Id, SMeleeCrit);
-		}
-		SMeleeCrit->Dirty = false;
-	}
-	if (SSpellDamage->Dirty) {
-		if (SOnStatChanged != null) {
-			DELEGATE_INVOKE(SOnStatChanged, SSpellDamage->Id, SSpellDamage);
-		}
-		SSpellDamage->Dirty = false;
-	}
-}
-
-void Entity::AddStat(CStatUpdateMsg &msg, Stat *stat) {
-	msg.Buffer->WriteInt(stat.Id);
-	msg.Buffer->WriteFloat(stat.ModCurrent);
-	msg.Buffer->WriteFloat(stat.ModMax);
-	msg.Buffer->WriteFloat(stat.ModPercent);
-}
-
-void Entity::AddStat(CStatUpdateMsg &msg, Stat *stat) {
-	msg.Buffer->WriteInt(stat.Id);
-	msg.Buffer->WriteFloat(stat.ModCurrent);
-	msg.Buffer->WriteFloat(stat.ModMax);
-	msg.Buffer->WriteFloat(stat.ModPercent);
-}
-
-void Entity::AddStat(CStatUpdateMsg &msg, Stat *stat) {
-	msg.Buffer->WriteInt(stat.Id);
-	msg.Buffer->WriteFloat(stat.ModPercent);
-}
-
-void Entity::AddStat(CStatUpdateMsg &msg, Stat *stat) {
-	msg.Buffer->WriteInt(stat.Id);
-	msg.Buffer->WriteFloat(stat.ModPercent);
-}
-
-void Entity::CHandleStatUpdateMsg(CStatUpdateMsg &msg) {
-	while (msg.HasNext()) {
-		CReadStat(msg);
-		msg.Step();
-	}
-}
-
-void Entity::CReadStat(CStatUpdateMsg &msg) {
-	if ((msg.Next() >= 16) || (msg.Next() < 0)) {
-		return;
-	}
-	Stat *cStatFromId = GetCStatFromId(msg.Next());
-	if (is_inst_of<Stat *>(cStatFromId)) {
-		ReadStat(msg, (Stat *)(cStatFromId));
-	} else {
-		if (is_inst_of<Stat *>(cStatFromId)) {
-			ReadStat(msg, (Stat *)(cStatFromId));
-		} else {
-			if (is_inst_of<Stat *>(cStatFromId)) {
-				ReadStat(msg, (Stat *)(cStatFromId));
-			}
-		}
-	}
-	cStatFromId.Dirty = false;
-	if (OnStatChanged != null) {
-		DELEGATE_INVOKE(OnStatChanged, cStatFromId.Id, cStatFromId);
-	}
-}
-
-void Entity::ReadStat(CStatUpdateMsg &msg, Stat *stat) {
-	if ((msg.Next() >= 16) || (msg.Next() < 0)) {
-		return;
-	}
-	stat.ModCurrent = msg.Buffer->ReadFloat();
-	stat.ModMax = msg.Buffer->ReadFloat();
-	stat.ModPercent = msg.Buffer->ReadFloat();
-}
-
-void Entity::ReadStat(CStatUpdateMsg &msg, Stat *stat) {
-	stat.ModPercent = msg.Buffer->ReadFloat();
-}
-
-void Entity::ReadStat(CStatUpdateMsg &msg, Stat *stat) {
-	stat.ModPercent = msg.Buffer->ReadFloat();
-}
-*/
 
 void Entity::stake_damage(Ref<SpellDamageInfo> data) {
 	//serverside
@@ -880,90 +536,6 @@ void Entity::resurrect() {
 	owner->transform->rotation = graveyardSpawnPoint->transform->rotation;
 	SendResurrectMessage();*/
 }
-
-/*
-void Entity::SendDamageTakenMessage(int damage, bool crit, Entity *dealer) {
-	CDamageTakenMsg cDamageTakenMsg = CDamageTakenMsg();
-	cDamageTakenMsg.Guid = owner->PlayerData->GUID;
-	if (dealer != null) {
-		cDamageTakenMsg.DealerGuid = dealer->getPlayerData()->GUID;
-	}
-	cDamageTakenMsg.Crit = crit;
-	cDamageTakenMsg.Value = damage;
-	cDamageTakenMsg.Serialize(CxNet::NetBuffer);
-	bool flag = false;
-	if (owner->Connection != null) {
-		owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-	} else {
-		CReceiveDamageTaken(damage, crit, dealer);
-		flag = true;
-	}
-	if ((dealer != null) && (dealer->getConnection() != null)) {
-		dealer->getConnection()->SendBuffer(0, CxNet::NetBuffer);
-		return;
-	}
-	if (!flag) {
-		CReceiveDamageTaken(damage, crit, dealer);
-	}
-}
-
-void Entity::SendHealTakenMessage(int heal, bool crit, Entity *dealer) {
-	CHealTakenMsg cHealTakenMsg = CHealTakenMsg();
-	cHealTakenMsg.Guid = owner->PlayerData->GUID;
-	if (dealer != null) {
-		cHealTakenMsg.DealerGuid = dealer->getPlayerData()->GUID;
-	}
-	cHealTakenMsg.Crit = crit;
-	cHealTakenMsg.Value = heal;
-	cHealTakenMsg.Serialize(CxNet::NetBuffer);
-	bool flag = false;
-	if (owner->Connection != null) {
-		owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-	} else {
-		CReceiveHealTaken(heal, crit, dealer);
-		flag = true;
-	}
-	if ((dealer != null) && (dealer->getConnection() != null)) {
-		dealer->getConnection()->SendBuffer(0, CxNet::NetBuffer);
-		return;
-	}
-	if (!flag) {
-		CReceiveHealTaken(heal, crit, dealer);
-	}
-}
-
-void Entity::SendResurrectMessage() {
-	if (owner->Connection != null) {
-		CResurrectMsg cResurrectMsg = CResurrectMsg();
-		cResurrectMsg.Guid = owner->PlayerData->GUID;
-		cResurrectMsg.Serialize(CxNet::NetBuffer);
-		owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-		return;
-	}
-	CReceiveResurrect();
-}
-
-void Entity::SendDieMessage() {
-	if (owner->Connection != null) {
-		CDiedMsg cDiedMsg = CDiedMsg();
-		cDiedMsg.Guid = owner->PlayerData->GUID;
-		cDiedMsg.Serialize(CxNet::NetBuffer);
-		owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-		return;
-	}
-	CReceiveDied();
-}
-
-void Entity::SendTriggerGCDMessage() {
-	if (owner->Connection != null) {
-		CTriggerGCDMsg cTriggerGCDMsg = CTriggerGCDMsg();
-		cTriggerGCDMsg.Guid = owner->PlayerData->GUID;
-		cTriggerGCDMsg.Serialize(CxNet::NetBuffer);
-		owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-		return;
-	}
-	CReceiveTriggerGlobalCooldown();
-}*/
 
 void Entity::creceive_resurrect() {
 	/*
@@ -1066,232 +638,7 @@ void Entity::creceive_trigger_global_cooldown() {
 		DELEGATE_INVOKE(OnStatChanged, 3, CGCD);
 	}*/
 }
-/*
-Stat *Entity::GetSStatFromId(int id) {
-	switch (id) {
-		case 0:
-			return SHealth;
 
-		case 1:
-			return SSpeed;
-
-		case 2:
-			return SMana;
-
-		case 3:
-			return SGCD;
-
-		case 4:
-			return SMeleeCrit;
-
-		case 5:
-			return SMeleeCrit;
-
-		case 6:
-			return SSpellCrit;
-
-		case 7:
-			return SSpellCritBonus;
-
-		case 8:
-			return SBlock;
-
-		case 9:
-			return SParry;
-
-		case 10:
-			return SDamageReduction;
-
-		case 11:
-			return SMeleeDamageReduction;
-
-		case 12:
-			return SSpellDamageReduction;
-
-		case 13:
-			return SDamageTaken;
-
-		case 14:
-			return SMeleeDamage;
-
-		case 15:
-			return SSpellDamage;
-
-		default:
-			return null;
-	}
-}
-
-Stat *Entity::GetCStatFromId(int id) {
-	switch (id) {
-		case 0:
-			return CHealth;
-
-		case 1:
-			return CSpeed;
-
-		case 2:
-			return CMana;
-
-		case 3:
-			return CGCD;
-
-		case 4:
-			return CMeleeCrit;
-
-		case 5:
-			return CMeleeCrit;
-
-		case 6:
-			return CSpellCrit;
-
-		case 7:
-			return CSpellCritBonus;
-
-		case 8:
-			return CBlock;
-
-		case 9:
-			return CParry;
-
-		case 10:
-			return CDamageReduction;
-
-		case 11:
-			return CMeleeDamageReduction;
-
-		case 12:
-			return CSpellDamageReduction;
-
-		case 13:
-			return CDamageTaken;
-
-		case 14:
-			return CMeleeDamage;
-
-		case 15:
-			return CSpellDamage;
-
-		default:
-			return null;
-	}
-}
-
-int Entity::GetStatIdFromString(String *name) {
-	uint num = <PrivateImplementationDetails>::ComputeStringHash(name);
-	if (num <= 2653573473u) {
-		if (num <= 792771830u) {
-			if (num <= 637686477u) {
-				if (num != 310003575u) {
-					if (num == 637686477u) {
-						if (*name == *(new String("STAT_MELEE_CRIT_BONUS"))) {
-							return 5;
-						}
-					}
-				} else {
-					if (*name == *(new String("STAT_MANA"))) {
-						return 2;
-					}
-				}
-			} else {
-				if (num != 755108934u) {
-					if (num == 792771830u) {
-						if (*name == *(new String("STAT_SPELL_DAMAGE"))) {
-							return 15;
-						}
-					}
-				} else {
-					if (*name == *(new String("STAT_PARRY"))) {
-						return 9;
-					}
-				}
-			}
-		} else {
-			if (num <= 1547871327u) {
-				if (num != 858277321u) {
-					if (num == 1547871327u) {
-						if (*name == *(new String("STAT_SPELL_CRIT_BONUS"))) {
-							return 7;
-						}
-					}
-				} else {
-					if (*name == *(new String("STAT_BLOCK"))) {
-						return 8;
-					}
-				}
-			} else {
-				if (num != 2430374284u) {
-					if (num == 2653573473u) {
-						if (*name == *(new String("STAT_GLOBAL_COOLDOWN"))) {
-							return 3;
-						}
-					}
-				} else {
-					if (*name == *(new String("STAT_MELEE_DAMAGE"))) {
-						return 14;
-					}
-				}
-			}
-		}
-	} else {
-		if (num <= 3359549743u) {
-			if (num <= 3041242134u) {
-				if (num != 2914522126u) {
-					if (num == 3041242134u) {
-						if (*name == *(new String("STAT_MELEE_REDUCTION"))) {
-							return 11;
-						}
-					}
-				} else {
-					if (*name == *(new String("STAT_HEALTH"))) {
-						return 0;
-					}
-				}
-			} else {
-				if (num != 3083148548u) {
-					if (num == 3359549743u) {
-						if (*name == *(new String("STAT_DAMAGE_REDUCTION"))) {
-							return 10;
-						}
-					}
-				} else {
-					if (*name == *(new String("STAT_SPELL_DAMAGE_REDUCTION"))) {
-						return 12;
-					}
-				}
-			}
-		} else {
-			if (num <= 3609862625u) {
-				if (num != 3408551541u) {
-					if (num == 3609862625u) {
-						if (*name == *(new String("STAT_MELEE_CRIT"))) {
-							return 4;
-						}
-					}
-				} else {
-					if (*name == *(new String("STAT_DAMAGE_TAKEN"))) {
-						return 13;
-					}
-				}
-			} else {
-				if (num != 4043142103u) {
-					if (num == 4290636275u) {
-						if (*name == *(new String("STAT_SPEED"))) {
-							return 1;
-						}
-					}
-				} else {
-					if (*name == *(new String("STAT_SPELL_CRIT"))) {
-						return 6;
-					}
-				}
-			}
-		}
-	}
-	Debug::Log((*(new String("Stat: ")) + *name) + *(new String(" doesn't exists!")));
-	return 0;
-}
-*/
 ////    Spell System    ////
 
 void Entity::scast_spell(int spell_id) {
@@ -1305,9 +652,6 @@ void Entity::scast_spell(int spell_id) {
 
 void Entity::crequest_spell_cast(int spell_id) {
 	scast_spell(spell_id);
-}
-
-void Entity::casting_finished(Entity *caster, int spellId, float scale) {
 }
 
 void Entity::update_auras(float delta) {
@@ -1382,206 +726,188 @@ void Entity::sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
 	}
 }
 
-
-void Entity::remove_auras_with_group(Entity *ac, int auraGroup) {
-}
-
-void Entity::sremove_aura_expired(Ref<AuraData> aura) {
+void Entity::son_cast_finished(Ref<SpellCastInfo> info) {
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
-		ad->get_aura()->son_remove(aura);
-	}
-
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		if (_s_auras->get(i) == aura) {
-			_s_auras->remove(i);
-		}
+		ad->get_aura()->son_cast_finished(info);
 	}
 }
 
-void Entity::cremove_aura_expired(Ref<AuraData> aura) {
+void Entity::son_cast_started(Ref<SpellCastInfo> info) {
 	for (int i = 0; i < _s_auras->size(); ++i) {
-		if (_c_auras->get(i) == aura) {
-			_c_auras->remove(i);
-		}
+		Ref<AuraData> ad = _s_auras->get(i);
+
+		ad->get_aura()->son_cast_started(info);
 	}
+}
+
+void Entity::son_cast_failed(Ref<SpellCastInfo> info) {
+	for (int i = 0; i < _s_auras->size(); ++i) {
+		Ref<AuraData> ad = _s_auras->get(i);
+
+		ad->get_aura()->son_cast_failed(info);
+	}
+}
+
+void Entity::son_cast_finished_target(Ref<SpellCastInfo> info) {
+	for (int i = 0; i < _s_auras->size(); ++i) {
+		Ref<AuraData> ad = _s_auras->get(i);
+
+		ad->get_aura()->son_cast_finished_target(info);
+	}
+}
+
+void Entity::sadd_aura(Ref<AuraData> aura) {
+	son_before_aura_applied(aura);
+
+	aura->set_owner(this);
+
+	_s_auras->push_back(aura);
+	
+	son_after_aura_applied(aura);
+
+	emit_signal("saura_added", aura);
+
+	cadd_aura(aura);
 }
 
 void Entity::sremove_aura(Ref<AuraData> aura) {
-	for (int i = 0; i < _s_auras->size(); ++i) {
+	for (int i = 0; i < _s_auras->size(); i++) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
-		ad->get_aura()->son_remove(aura);
-	}
+		if (ad == aura) {
+			ad->get_aura()->son_remove(ad);
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		if (_s_auras->get(i) == aura) {
 			_s_auras->remove(i);
+
+			break;
 		}
 	}
+
+	emit_signal("saura_removed", aura);
+
+	cremove_aura(aura);
+}
+
+
+void Entity::sremove_aura_expired(Ref<AuraData> aura) {
+	for (int i = 0; i < _s_auras->size(); i++) {
+		Ref<AuraData> ad = _s_auras->get(i);
+
+		if (ad == aura) {
+			ad->get_aura()->son_remove(ad);
+
+			_s_auras->remove(i);
+
+			break;
+		}
+	}
+
+	emit_signal("saura_removed_expired", aura);
+
+	cremove_aura(aura);
+}
+
+void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
+	for (int i = 0; i < _s_auras->size(); i++) {
+		Ref<AuraData> ad = _s_auras->get(i);
+
+		if (ad == aura) {
+			ad->get_aura()->son_remove(ad);
+
+			_s_auras->remove(i);
+
+			break;
+		}
+	}
+
+	emit_signal("saura_removed_dispelled", aura);
+
+	cremove_aura(aura);
+}
+
+void Entity::cadd_aura(Ref<AuraData> data) {
+	_c_auras->push_back(data);
+	emit_signal("caura_added", data);
 }
 
 void Entity::cremove_aura(Ref<AuraData> aura) {
-	for (int i = 0; i < _s_auras->size(); ++i) {
+	for (int i = 0; i < _c_auras->size(); i++) {
 		if (_c_auras->get(i) == aura) {
 			_c_auras->remove(i);
+			break;
 		}
 	}
+
+	emit_signal("caura_removed", aura);
 }
 
-void Entity::crefresh_aura(Entity *ac, int auraId, float time) {
+void Entity::cremove_aura_dispelled(Ref<AuraData> aura) {
+	for (int i = 0; i < _c_auras->size(); i++) {
+		if (_c_auras->get(i) == aura) {
+			_c_auras->remove(i);
+			break;
+		}
+	}
+
+	emit_signal("caura_removed_dispelled", aura);
 }
 
-void Entity::crefresh_caster_aura(Entity *ac, int auraId, Entity *caster, float time) {
+void Entity::cremove_aura_expired(Ref<AuraData> aura) {
+	for (int i = 0; i < _c_auras->size(); i++) {
+		if (_c_auras->get(i) == aura) {
+			_c_auras->remove(i);
+			break;
+		}
+	}
+
+	emit_signal("caura_removed_expired", aura);
 }
 
-void Entity::caura_added(Entity *ac, int id, float remaining, Entity *caster, int casterGUID) {
+int Entity::sget_aura_count() {
+	return _s_auras->size();
 }
 
-void Entity::caura_removed(Entity *ac, int id) {
+Ref<Aura> Entity::sget_aura(int index) {
+	ERR_FAIL_INDEX_V(index, _s_auras->size(), Ref<Aura>(NULL));
+
+	return Ref<Aura>(_s_auras->get(index));
+}
+
+int Entity::cget_aura_count() {
+	return _s_auras->size();
+}
+
+Ref<Aura> Entity::cget_aura(int index) {
+	ERR_FAIL_INDEX_V(index, _c_auras->size(), Ref<Aura>(NULL));
+
+	return Ref<Aura>(_c_auras->get(index));
+}
+
+void Entity::moved() {
+	
+}
+
+void Entity::con_cast_failed(Ref<SpellCastInfo> info) {
+}
+
+void Entity::con_cast_started(Ref<SpellCastInfo> info) {
+}
+
+void Entity::con_cast_state_changed(Ref<SpellCastInfo> info) {
+}
+
+void Entity::con_cast_finished(Ref<SpellCastInfo> info) {
+}
+
+void Entity::con_spell_cast_success(Ref<SpellCastInfo> info) {
 }
 
 void Entity::setup_on_player_moves(Entity *bopmccc, Vector<int> *sspells) {
 }
 
-void Entity::con_cast_failed(Entity *caster, int spellId) {
-}
-
-void Entity::con_cast_started(Entity *caster, int spellId) {
-}
-
-void Entity::con_cast_state_changed(Entity *caster, int spellId) {
-}
-
-void Entity::con_cast_finished(Entity *caster, int spellId) {
-}
-
-void Entity::con_spell_cast_success(Entity *caster, int spellId) {
-}
-
 ////    Casting System    ////
-
-void Entity::AfterLoadFinished() {
-	/*
-       for (int i = 0; i < serverAuras->Count; i += 1) {
-       AuraData *auraData = serverAuras->GetData(i);
-       if (auraData->CasterGUID != 0u) {
-       auraData->Caster = Entity::SGetPLayerWithGUID(auraData->CasterGUID)->GetComponent<Entity>();
-       }
-       }
-
-       if (serverAuras->Count > 0) {
-       send = true;
-       }
-
-    //targetComponent
-    if (getSTargetGUID() != 0u) {
-    AISetTarget((Entity *)(Entity::SGetPLayerWithGUID(getSTargetGUID())));
-    }
-
-    state = PlayerStates.STATE_NORMAL;
-
-    if (owner.isServer) {
-    if (Type != (int)EntityType.Mob && ClassId != 0) {
-    character = CharacterDataLoader.Instance[ClassId];
-    } else {
-    character = CharacterDataLoader.Instance[ClassId];
-    }
-
-    //itemDataLoader = GameObject.FindGameObjectWithTag("Data").GetComponent<CG>().GetChild("Items").GetComponent<ItemDataLoader>();
-    itemDataLoader = ItemDataLoader.Instance;
-
-    weaponId = GetWeaponForClass();
-
-    OnWeaponChangedHook(WeaponId);
-
-    if (applyModifiersOnInit) {
-    applyModifiersOnInit = false;
-
-    ApplyLevelModifiers();
-    }
-    }*/
-}
-
-//void Entity::ssend_start_casting(int spellId, float castTime) {
-	/*
-       if (CxNet::IsServer) {
-       SSpellCastStartedMsg sSpellCastStartedMsg = SSpellCastStartedMsg();
-       sSpellCastStartedMsg.Guid = owner->PlayerData->GUID;
-       sSpellCastStartedMsg.SpellId = spellId;
-       sSpellCastStartedMsg.CastTime = castTime;
-       sSpellCastStartedMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToAllClients(0);
-       }*/
-//}
-
-//void Entity::ssend_cast_failed() {
-	/*
-       if (CxNet::IsServer) {
-       SSpellCastFailedMsg sSpellCastFailedMsg = SSpellCastFailedMsg();
-       sSpellCastFailedMsg.Guid = owner->PlayerData->GUID;
-       sSpellCastFailedMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToAllClients(0);
-       }*/
-//}
-
-//void Entity::ssend_cast_finished(int spellId) {
-	/*
-       if (CxNet::IsServer) {
-       SSpellCastFinishedMsg sSpellCastFinishedMsg = SSpellCastFinishedMsg();
-       sSpellCastFinishedMsg.Guid = owner->PlayerData->GUID;
-       sSpellCastFinishedMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToAllClients(0);
-       }*/
-//}
-
-//void Entity::creceive_start_casting(int spellId, float castTime) {
-
-	/*
-       Spell *spell = Spells::Instance->GetData(spellId);
-       setCSpellName(spell->SpellName);
-       setCCastTime(castTime);
-       setCCasting(true);
-       setCCurrentCastTime((float)0);
-       SpellMgr::COnCastStarted(owner, spellId);
-       if (COnCastStart != null) {
-       DELEGATE_INVOKE(COnCastStart, spellId);
-       }*/
-//}
-
-//void Entity::creceive_cast_finished() {
-	/*
-       setCCasting(false);
-       if (COnCastFinished != null) {
-       DELEGATE_INVOKE(COnCastFinished, getCSpellId());
-       }
-       if (COnCastEnded != null) {
-       DELEGATE_INVOKE(COnCastEnded, getCSpellId());
-       }
-       DELEGATE_INVOKE(SpellMgr::COnCastFinished, owner, getCSpellId());
-       */
-//}
-
-//void Entity::creceive_cast_failed() {
-	/*
-       setCCasting(false);
-       if (COnCastFailed != null) {
-       DELEGATE_INVOKE(COnCastFailed, getCSpellId());
-       }
-       if (COnCastEnded != null) {
-       DELEGATE_INVOKE(COnCastEnded, getCSpellId());
-       }
-       DELEGATE_INVOKE(SpellMgr::COnCastFailed, owner, getCSpellId());
-       */
-//}
-
-//void Entity::on_cast_state_change() {
-	/*
-       if (getCCasting()) {
-       SpellMgr::COnCastStateChanged(owner, getCSpellId());
-       }*/
-//}
 
 void Entity::sstart_casting(Ref<SpellCastInfo> info) {
 	_s_spell_cast_info = Ref<SpellCastInfo>(info);
@@ -1609,7 +935,7 @@ void Entity::sfail_cast() {
 	emit_signal("scast_failed", _s_spell_cast_info);
 }
 
-void Entity::sdelay_cast()  {
+void Entity::sdelay_cast() {
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -1619,7 +945,7 @@ void Entity::sdelay_cast()  {
 	emit_signal("scast_delayed", _s_spell_cast_info);
 }
 
-void Entity::sfinish_cast()  {
+void Entity::sfinish_cast() {
 
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
@@ -1627,7 +953,7 @@ void Entity::sfinish_cast()  {
 		ad->get_aura()->son_cast_finished(_s_spell_cast_info);
 	}
 
-	_s_spell_cast_info->get_spell()->casting_finished(_s_spell_cast_info);
+	_s_spell_cast_info->get_spell()->sfinish_cast(_s_spell_cast_info);
 
 	emit_signal("scast_finished", _s_spell_cast_info);
 
@@ -1636,7 +962,7 @@ void Entity::sfinish_cast()  {
 	cfinish_cast();
 }
 
-void Entity::sinterrupt_cast()  {
+void Entity::sinterrupt_cast() {
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -1661,7 +987,6 @@ void Entity::cfail_cast() {
 void Entity::cdelay_cast() {
 
 	emit_signal("ccast_delayed", _c_spell_cast_info);
-
 }
 
 void Entity::cfinish_cast() {
@@ -1675,14 +1000,14 @@ void Entity::cinterrupt_cast() {
 }
 
 //void Entity::sstart_casting(int PspellId, float PcastTime, float scale) {
-	/*
+/*
        Spell *spell = Spells::Instance->GetData(PspellId);
        StartCasting(spell, PspellId, PcastTime, scale);
        */
 //}
 
 //void Entity::sstart_casting(Spell *spell, int PspellId, float PcastTime, float spellScale) {
-	/*
+/*
        animReduction = (float)0;
        if (BSSettings::Getinstance()->AnimStopEnabled) {
        animReduction = BSSettings::Getinstance()->GetBSTestAnimStopDataForClass(owner->PlayerData->ClassId)->Value;
@@ -1704,7 +1029,7 @@ void Entity::cinterrupt_cast() {
 //}
 
 //void Entity::sstart_casting(int PspellId, String PspellName, float PcastTime, float spellScale) {
-	/*
+/*
        animReduction = (float)0;
        if (BSSettings::Getinstance()->AnimStopEnabled) {
        animReduction = BSSettings::Getinstance()->GetBSTestAnimStopDataForClass(owner->PlayerData->ClassId)->Value;
@@ -1725,39 +1050,6 @@ void Entity::cinterrupt_cast() {
        }*/
 //}
 
-
-void Entity::start_animation_time(float time) {
-	/*
-       setSSpellId(-1);
-       setSCastTime(time);
-       setSSpellScale((float)0);
-       setSCasting(true);
-       setSCurrentCastTime((float)0);
-       setCSpellId(-1);
-       setCSpellName(new String(""));
-       setCCastTime(time);
-       setCCasting(true);
-       setCCurrentCastTime((float)0);
-       */
-}
-
-void Entity::scast_finished() {
-	/*
-       setSCasting(false);
-       if (CxNet::IsServer) {
-       if (getSSpellId() == -1) {
-       return;
-       }
-       int spellId = getSSpellId();
-       SpellMgr::CastingFinished(owner, getSSpellId(), getSSpellScale());
-       SSendCastFinished(spellId);
-       }*/
-}
-
-void Entity::ccast_finished() {
-	//setCCasting(false);
-}
-
 Ref<SpellCastInfo> Entity::gets_spell_cast_info() {
 	return Ref<SpellCastInfo>(_s_spell_cast_info);
 }
@@ -1774,188 +1066,26 @@ void Entity::setc_spell_cast_info(Ref<SpellCastInfo> info) {
 	_c_spell_cast_info = Ref<SpellCastInfo>(info);
 }
 
-void Entity::on_state_changed(PlayerStates newState) {
-	/*
-       if (getSSpellId() == -1) {
-       setSCasting(false);
-       return;
-       }
-       if (getCSpellId() == -1) {
-       setCCasting(false);
-       return;
-       }
-       if ((newState != PlayerStates::STATE_NORMAL) && getCCasting()) {
-       DELEGATE_INVOKE(SpellMgr::COnCastFailed, owner, getCSpellId());
-       }*/
-}
-
-
-
-//void Entity::Set(bool casting, int spellId, float currentCastTime, float castTime, String spellName, float spellScale, int _s_targetGUID, int sSpellCastGameObjectGUID) {
-
-/*
-   setSCasting(casting);
-   setSSpellId(spellId);
-   setSCurrentCastTime(currentCastTime);
-   setSCastTime(castTime);
-   setCSpellName(spellName);
-   setSSpellScale(spellScale);
-   _s_targetGUID = _s_targetGUID;
-   sSpellCastGameObjectGUID = sSpellCastGameObjectGUID;
-   */
-//}
-
 void Entity::son_death() {
 }
 
-void Entity::just_remove_aura(int auraId) {
-	/*
-       if (!owner->isServer) {
-       return;
-       }
-       for (int i = 0; i < serverAuras->Count; i += 1) {
-       AuraData *auraData = serverAuras->GetData(i);
-       if (auraData->AuraId == auraId) {
-       serverAuras->RemoveAt(i);
-       SSendAuraRemoved(auraData->AuraId);
-       return;
-       }
-       }
-       */
-}
+void Entity::sremove_auras_with_group(int aura_group) {
+	for (int i = 0; i < _s_auras->size(); ++i) {
+		Ref<AuraData> ad = _s_auras->get(i);
 
-void Entity::remove_aura(Ref<AuraData> data) {
-	for (int i = 0; i < _s_auras->size(); i++) {
-		if (_s_auras->get(i) == data) {
+		if (ad->get_aura()->get_aura_group() == aura_group) {
+
+			cremove_aura(ad);
+
 			_s_auras->remove(i);
-			break;
+
+			emit_signal("saura_removed", ad);
+
+			cremove_aura(ad);
+
+			i--;
 		}
 	}
-
-	for (int i = 0; i < _c_auras->size(); i++) {
-		if (_c_auras->get(i) == data) {
-			_c_auras->remove(i);
-			break;
-		}
-	}
-
-	emit_signal("saura_removed", data);
-	emit_signal("caura_removed", data);
-}
-
-void Entity::add_aura(Ref<AuraData> data) {
-	son_before_aura_applied(data);
-
-	data->set_owner(this);
-
-	_s_auras->push_back(data);
-	_c_auras->push_back(data);
-
-	son_after_aura_applied(data);
-
-	emit_signal("saura_added", data);
-	emit_signal("caura_added", data);
-}
-
-void Entity::remove_auras_with_group(int auraGroup) {
-	/*
-       if (!owner->isServer) {
-       return;
-       }
-       SpellMgr::RemoveAurasWithGroup(this, auraGroup);
-       */
-}
-
-void Entity::refresh_aura(int auraId, float time) {
-	/*
-       if (!owner->isServer) {
-       return;
-       }
-       for (int i = 0; i < serverAuras->Count; i += 1) {
-       if (serverAuras->GetData(i)->AuraId == auraId) {
-       serverAuras->GetData(i)->Refresh(time);
-       SSendRefreshAura(auraId, time);
-       }
-       }*/
-}
-
-void Entity::refresh_aura(int auraId, Entity *caster, float time) {
-	/*
-       if (!owner->isServer) {
-       return;
-       }
-       for (int i = 0; i < serverAuras->Count; i += 1) {
-       if ((serverAuras->GetData(i)->AuraId == auraId) && (serverAuras->GetData(i)->Caster == *caster)) {
-       serverAuras->GetData(i)->Refresh(time);
-       SSendRefreshCasterAura(auraId, caster, time);
-       }
-       }*/
-}
-
-void Entity::ssend_refresh_aura(int auraId, float time) {
-	/*
-       if (CxNet::IsServer) {
-       CRefreshAuraMsg cRefreshAuraMsg = CRefreshAuraMsg();
-       cRefreshAuraMsg.Guid = owner->PlayerData->GUID;
-       cRefreshAuraMsg.AuraId = auraId;
-       cRefreshAuraMsg.Time = time;
-       cRefreshAuraMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToAllClients(0);
-       }
-       */
-}
-
-void Entity::ssend_refresh_caster_aura(int auraId, Entity *caster, float time) {
-	/*
-       if (CxNet::IsServer) {
-       CRefreshCasterAuraMsg cRefreshCasterAuraMsg = CRefreshCasterAuraMsg();
-       cRefreshCasterAuraMsg.Guid = owner->PlayerData->GUID;
-       cRefreshCasterAuraMsg.CasterGuid = (Entity *)(caster)->PlayerData->GUID;
-       cRefreshCasterAuraMsg.AuraId = auraId;
-       cRefreshCasterAuraMsg.Time = time;
-       cRefreshCasterAuraMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToAllClients(0);
-       }*/
-}
-
-void Entity::ssend_aura_added(int auraId, float time, Entity *caster) {
-	/*
-       if (CxNet::IsServer) {
-       CAuraAddedMsg cAuraAddedMsg = CAuraAddedMsg();
-       cAuraAddedMsg.Guid = owner->PlayerData->GUID;
-       cAuraAddedMsg.CasterGuid = (Entity *)(caster)->PlayerData->GUID;
-       cAuraAddedMsg.AuraId = auraId;
-       cAuraAddedMsg.Time = time;
-       cAuraAddedMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToAllClients(0);
-       }*/
-}
-
-void Entity::ssend_aura_removed(int auraId) {
-	/*
-       if (CxNet::IsServer) {
-       CAuraRemovedMsg cAuraRemovedMsg = CAuraRemovedMsg();
-       cAuraRemovedMsg.Guid = owner->PlayerData->GUID;
-       cAuraRemovedMsg.AuraId = auraId;
-       cAuraRemovedMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToAllClients(0);
-       }*/
-}
-
-void Entity::creceive_refresh_aura(int auraId, float time) {
-	//SpellMgr::CRefreshAura(this, auraId, time);
-}
-
-void Entity::creceive_refresh_caster_aura(int auraId, Entity *caster, float time) {
-	//SpellMgr::CRefreshCasterAura(this, auraId, caster, time);
-}
-
-void Entity::creceive_aura_added(int id, float remaining, Entity *caster) {
-	//SpellMgr::CAuraAdded(this, id, remaining, caster, owner->PlayerData->GUID);
-}
-
-void Entity::creceive_aura_removed(int id) {
-	//SpellMgr::CAuraRemoved(this, id);
 }
 
 Entity *Entity::gets_target() {
@@ -2005,83 +1135,6 @@ void Entity::setc_target(Node *p_target) {
 	_c_target = e;
 
 	emit_signal("ctarget_changed", _c_target);
-}
-
-int Entity::get_starget_guid() {
-	return _s_target_guid;
-}
-
-void Entity::set_starget_guid(int value) {
-	_s_target_guid = value;
-}
-
-void Entity::set_target(Entity *t) {
-	/*
-       if (_c_target == *t) {
-       return;
-       }
-       _c_target = t;
-       if (OnTargetChange != null) {
-       DELEGATE_INVOKE(OnTargetChange, t);
-       }
-       if (CxNet::IsClient) {
-       CSendTarget();
-       }*/
-}
-
-void Entity::sbroadcast_target_change() {
-	/*
-       STargetChangedMsg _s_targetChangedMsg = STargetChangedMsg();
-       _s_targetChangedMsg.Guid = owner->PlayerData->GUID;
-       if (getSTarget() != null) {
-       _s_targetChangedMsg.TargetGuid = getSTarget()->PlayerData->GUID;
-       }
-       _s_targetChangedMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToAllClientsExcept(owner->Connection, 0);
-       */
-}
-
-void Entity::csend_target() {
-	/*
-       CTargetChangedMsg _c_targetChangedMsg = CTargetChangedMsg();
-       _c_targetChangedMsg.Guid = owner->PlayerData->GUID;
-       if (getCTarget() != null) {
-       _c_targetChangedMsg.TargetGuid = getCTarget()->PlayerData->GUID;
-       }
-       _c_targetChangedMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToServer(0);
-       */
-}
-
-void Entity::sreceive_ctarget_change(Entity *t) {
-	/*
-       _s_target = t;
-       if (t != null) {
-       _s_targetGUID = t->getPlayerData()->GUID;
-       } else {
-       _s_targetGUID = 0u;
-       }
-       if (SOnTargetChange != null) {
-       DELEGATE_INVOKE(SOnTargetChange, t);
-       }
-       */
-}
-
-void Entity::ai_set_target(Entity *t) {
-	/*
-       if (_c_target == *t) {
-       return;
-       }
-       _c_target = t;
-       if (OnTargetChange != null) {
-       DELEGATE_INVOKE(OnTargetChange, t);
-       }
-       _s_target = t;
-       if (SOnTargetChange != null) {
-       DELEGATE_INVOKE(SOnTargetChange, t);
-       }
-       CSendTarget();
-       */
 }
 
 ////    TalentCOmponent    ////
@@ -3010,8 +2063,8 @@ void Entity::registers() {
 
 void Entity::update(float delta) {
 	update_auras(delta);
-	
-	if (_s_spell_cast_info.is_valid() && _s_spell_cast_info->get_is_casting() ) {
+
+	if (_s_spell_cast_info.is_valid() && _s_spell_cast_info->get_is_casting()) {
 		if (_s_spell_cast_info->update_cast_time(delta)) {
 			sfinish_cast();
 		}
@@ -3070,12 +2123,6 @@ void Entity::Update() {
        }*/
 }
 
-void Entity::LateUpdate() {
-	/*
-       playerResourceComponent->LateUpdate();
-       getStats()->LateUpdate();*/
-}
-
 String Entity::request_spell_name(int spellId) {
 	return "";
 }
@@ -3083,275 +2130,6 @@ String Entity::request_spell_name(int spellId) {
 String Entity::request_spell_description(int spellId, int level) {
 	return "";
 }
-
-/*
-   void Entity::AddGraphicScripts() {
-   if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Sprites) {
-   Entity::gameObject->AddComponent<PlayerGraphicBuilder>()->characterGraphicPrefab = characterGraphicPrefab;
-   Entity::gameObject->AddComponent<CharacterEffectPointGetter>();
-   return;
-   }
-   if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Test) {
-   GameObject *gameObject = new GameObject(new String("Container"));
-   gameObject->transform->SetParent(Entity::gameObject->transform);
-   gameObject->transform->localPosition = new Vector3((float)0, (float)1.1, (float)0.4);
-   gameObject->transform->localRotation = Quaternion::Euler((float)30, (float)-45, (float)0);
-   GameObject *expr_BE = UnityEngine::Object::Instantiate<GameObject>(testCharacterGraphicPrefab, new Vector3((float)0, (float)0, (float)0), Quaternion::identity, gameObject->transform);
-   expr_BE->transform->localPosition = new Vector3((float)0, (float)0, (float)0);
-   expr_BE->transform->localRotation = Quaternion::identity;
-   Entity::gameObject->AddComponent<SimpleCharacterEffectPointGetter>();
-   return;
-   }
-   if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Voxel) {
-   ModelMaker *expr_10C = Entity::gameObject->AddComponent<ModelMaker>();
-   expr_10C->malePrefab = malePrefab;
-   expr_10C->femalePrefab = femalePrefab;
-   expr_10C->outlineMaterial = outlineMaterial;
-   expr_10C->useOutline = useOutline;
-   expr_10C->generateOnStart = generateOnStart;
-   expr_10C->defaultGender = defaultGender;
-   Entity::gameObject->AddComponent<VoxelCharacterEffectPointGetter>();
-   }
-   }
-
-   GameObject *Entity::SEntitySpawn(EntityType type, int classId, int level, String name, int Guid, CxConnection *connection, bool owner, Vector3 *position, Quaternion *rotation) {
-   if (Guid == 0u) {
-   Guid = Entity::GetNextEntityGUID();
-   }
-   if (BrokenSeals::Instance->Networking) {
-   return Entity::NetworkSpawnCharacter(Guid, type, classId, level, name, connection, owner, position, rotation);
-   }
-   return Entity::CEntitySpawn(Guid, type, classId, level, name, connection, owner, position, rotation);
-   }
-
-   GameObject *Entity::NetworkSpawnCharacter(int Guid, EntityType type, int classId, int level, String name, CxConnection *connection, bool owner, Vector3 *position, Quaternion *rotation) {
-   SpawnCharacterMsg spawnCharacterMsg = SpawnCharacterMsg();
-   spawnCharacterMsg.Guid = Guid;
-   spawnCharacterMsg.ClassId = classId;
-   spawnCharacterMsg.Type = type;
-   spawnCharacterMsg.Name = name;
-   spawnCharacterMsg.SpawnPosition = position;
-   spawnCharacterMsg.SpawnRotation = rotation;
-   spawnCharacterMsg.Serialize(CxNet::NetBuffer);
-   if (connection == null) {
-   spawnCharacterMsg.IsLocalPlayer = false;
-   spawnCharacterMsg.Serialize(CxNet::NetBuffer);
-   CxNet::SendBufferToAllClients(0);
-   return Entity::CEntitySpawn(Guid, type, classId, level, name, connection, false, position, rotation);
-   }
-   spawnCharacterMsg.IsLocalPlayer = owner;
-   spawnCharacterMsg.Serialize(CxNet::NetBuffer);
-   CxNet::SendBufferToConnection(connection->ConnectionGUID, 0);
-   spawnCharacterMsg.IsLocalPlayer = false;
-   spawnCharacterMsg.Serialize(CxNet::NetBuffer);
-   CxNet::SendBufferToAllClientsExcept(connection->ConnectionGUID, 0);
-   if (connection->IsLocal) {
-   return Entity::CEntitySpawn(Guid, type, classId, level, name, connection, true, position, rotation);
-   }
-   return Entity::CEntitySpawn(Guid, type, classId, level, name, connection, false, position, rotation);
-   }
-
-   GameObject *Entity::CEntitySpawn(int Guid, EntityType type, int classId, int level, String name, CxConnection *connection, bool owner, Vector3 *position, Quaternion *rotation) {
-   if (!CharacterDataLoader::Instance->IsCharacterExists(classId)) {
-   Debug::LogError(new String("Class doesn't exists!"));
-   return null;
-}
-GameObject *gameObject = null;
-if ((type == EntityType::Player) || (type == EntityType::Ai)) {
-    gameObject = UnityEngine::Object::Instantiate<GameObject>(PrefabLoader::Instance->GetData(1)->Asset, position, rotation);
-}
-if (type == EntityType::Mob) {
-    gameObject = UnityEngine::Object::Instantiate<GameObject>(PrefabLoader::Instance->GetData(2)->Asset, position, rotation);
-}
-Entity *component = gameObject->GetComponent<Entity>();
-component->setConnection(connection);
-component->type = type;
-Character *arg_7C_0 = CharacterDataLoader::Instance->GetData(classId);
-PlayerData *expr_83 = component->getPlayerData();
-expr_83->setClassId(classId);
-expr_83->setType((int)(type));
-expr_83->setName(name);
-component->gameObject->name = name;
-expr_83->setLevel(level);
-expr_83->setGUID(BrokenSeals::BSState->GameData->NextPlayerGUID);
-expr_83->GetWeaponForClass();
-expr_83->setGender(UnityEngine::Random::Range(0, 2));
-component->isLocalPlayer = owner;
-if (owner) {
-    BSInputManager::GetInstance()->CharacterId = classId;
-}
-if (BrokenSeals::CameraType != BrokenSealsCameraType::MMO) {
-    gameObject->gameObject->AddComponent<CharacterController>();
-    if ((type == EntityType::Player) & owner) {
-        gameObject->gameObject->AddComponent<PlayerController>();
-    }
-}
-if (BSState::Instance->IsClient) {
-    component->AddGraphicScripts();
-}
-if (BSState::Instance->IsClient & owner) {
-    if (BrokenSeals::CameraType == BrokenSealsCameraType::Isometric) {
-        GameObject::FindGameObjectWithTag(new String("MainCamera"))->AddComponent<IsometricCamera>();
-    } else {
-        if (BrokenSeals::CameraType == BrokenSealsCameraType::MMO) {
-            GameObject::FindGameObjectWithTag(new String("MainCamera"))->GetComponent<Camera>()->orthographic = false;
-            UnityEngine::Object::Destroy(gameObject->GetComponent<KinematicCharacterMotor>());
-            UnityEngine::Object::Destroy(gameObject->GetComponent<CapsuleCollider>());
-            gameObject->gameObject->AddComponent<RPGMotor>();
-            gameObject->gameObject->AddComponent<RPGViewFrustum>();
-            gameObject->gameObject->AddComponent<RPGCamera>();
-            gameObject->gameObject->AddComponent<RPGController>();
-            if (owner) {
-                gameObject->gameObject->AddComponent<VoxelPlayerController>();
-            }
-            CharacterController *expr_1D1 = gameObject->GetComponent<CharacterController>();
-            expr_1D1->radius = (float)0.3;
-            expr_1D1->center = new Vector3((float)0, (float)0.8, (float)0);
-            expr_1D1->height = (float)1.6;
-        }
-    }
-    if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Sprites) {
-        gameObject->gameObject->AddComponent<LocalPlayerAnimationController>();
-    } else {
-        if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Test) {
-            gameObject->gameObject->AddComponent<SpriteAnimationController>();
-        } else {
-            if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Voxel) {
-                gameObject->gameObject->AddComponent<VoxelLocalPlayerAnimationController>();
-            }
-        }
-    }
-}
-if (BSState::Instance->IsClient && !owner) {
-    if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Sprites) {
-        gameObject->gameObject->AddComponent<NetworkedPlayerAnimationController>();
-    } else {
-        if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Test) {
-            gameObject->gameObject->AddComponent<SpriteAnimationController>();
-        } else {
-            if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Voxel) {
-                gameObject->gameObject->AddComponent<VoxelNetworkedPlayerAnimationController>();
-            }
-        }
-    }
-}
-if (!owner) {
-    UnityEngine::Object::Instantiate<GameObject>(PrefabLoader::Instance->GetData(3)->Asset, Vector3::zero, Quaternion::identity)->transform->SetParent(gameObject->transform);
-}
-if (BSState::Instance->IsServer) {
-    PlayerData *arg_2D3_0 = component->getPlayerData();
-    if (type == EntityType::Player) {
-        component->getFactionComponent()->STeam = 3;
-    }
-    if (type == EntityType::Ai) {
-        component->transform->name = component->getPlayerData()->Name;
-    }
-    if (BSState::Instance->IsServer && (type == EntityType::Mob)) {
-        component->getFactionComponent()->STeam = 4;
-        component->gameObject->AddComponent<AIComponent>();
-        gameObject->transform->name = component->getPlayerData()->Name;
-    }
-}
-component->components->Refresh(gameObject);
-if (BSState::Instance->IsClient) {
-    if (owner) {
-        Entity::RegisterLocalPlayer(Guid, component);
-    } else {
-        if ((type == EntityType::Ai) || (type == EntityType::Mob)) {
-            Entity::CRegisterAIPlayer(Guid, component);
-        } else {
-            Entity::CRegisterNetworkedPlayer(Guid, component);
-        }
-    }
-}
-if (BSState::Instance->IsServer) {
-    if ((type == EntityType::Ai) || (type == EntityType::Mob)) {
-        Entity::SRegisterAIPlayer(Guid, component);
-    } else {
-        Entity::SRegisterNetworkedPlayer(Guid, component);
-    }
-}
-if (CxNet::IsServer) {
-    EntityNetworkManager::getInstance()->OnSPlayerAdded(component);
-}
-if (CxNet::IsClient) {
-    EntityNetworkManager::getInstance()->OnCPlayerAdded(component);
-}
-return gameObject;
-}
-
-void Entity::OnPlayerSpawneds(Entity *player, bool isClientPlayer, bool isServerPlayer, bool isLocalPlayerPlayer) {
-    if (isClientPlayer | isLocalPlayerPlayer) {
-        AddGraphicScripts();
-    }
-    if (isLocalPlayerPlayer) {
-        if (BrokenSeals::CameraType == BrokenSealsCameraType::Isometric) {
-            GameObject::FindGameObjectWithTag(new String("MainCamera"))->AddComponent<IsometricCamera>();
-        } else {
-            if (BrokenSeals::CameraType == BrokenSealsCameraType::MMO) {
-                GameObject::FindGameObjectWithTag(new String("MainCamera"))->GetComponent<Camera>()->orthographic = false;
-                UnityEngine::Object::Destroy(player->GetComponent<KinematicCharacterMotor>());
-                UnityEngine::Object::Destroy(player->GetComponent<CapsuleCollider>());
-                player->gameObject->AddComponent<RPGMotor>();
-                player->gameObject->AddComponent<RPGViewFrustum>();
-                player->gameObject->AddComponent<RPGCamera>();
-                player->gameObject->AddComponent<RPGController>();
-                player->gameObject->AddComponent<VoxelPlayerController>();
-                CharacterController *expr_A7 = player->GetComponent<CharacterController>();
-                expr_A7->radius = (float)0.3;
-                expr_A7->center = new Vector3((float)0, (float)0.8, (float)0);
-                expr_A7->height = (float)1.6;
-            }
-        }
-        if (addGraphic) {
-            if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Sprites) {
-                player->gameObject->AddComponent<LocalPlayerAnimationController>();
-            } else {
-                if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Test) {
-                    player->gameObject->AddComponent<SpriteAnimationController>();
-                } else {
-                    if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Voxel) {
-                        player->gameObject->AddComponent<VoxelLocalPlayerAnimationController>();
-                        player->gameObject->AddComponent<VoxelPlayerController>();
-                    }
-                }
-            }
-        }
-    }
-    if ((isClientPlayer && !isLocalPlayerPlayer) && addGraphic) {
-        if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Sprites) {
-            player->gameObject->AddComponent<NetworkedPlayerAnimationController>();
-        } else {
-            if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Test) {
-                player->gameObject->AddComponent<SpriteAnimationController>();
-            } else {
-                if (BrokenSeals::GraphicType == BrokenSealsPlayerGraphicType::Voxel) {
-                    player->gameObject->AddComponent<VoxelNetworkedPlayerAnimationController>();
-                }
-            }
-        }
-    }
-    if (!isLocalPlayerPlayer) {
-        UnityEngine::Object::Instantiate<GameObject>(PrefabLoader::Instance->GetData(3)->Asset, Vector3::zero, Quaternion::identity)->transform->SetParent(player->transform);
-    }
-    if (isServerPlayer) {
-        EntityType entityType = (EntityType)(player->getPlayerData()->Type);
-        if (entityType == EntityType::Player) {
-            player->getFactionComponent()->STeam = 3;
-        }
-        if (entityType == EntityType::Ai) {
-            player->transform->name = player->getPlayerData()->Name;
-        }
-        if (isServerPlayer && (entityType == EntityType::Mob)) {
-            player->gameObject->AddComponent<CharacterController>();
-            player->getFactionComponent()->STeam = 4;
-            player->gameObject->AddComponent<AIComponent>();
-            player->transform->name = player->getPlayerData()->Name;
-        }
-    }
-    components->Refresh(Entity::gameObject);
-}
-*/
 
 String Entity::random_name() {
 	/*/
@@ -3369,97 +2147,6 @@ String Entity::random_name() {
 
 	return "";
 }
-
-//COnCastStartAction;
-//CONCastEndedAction;
-//CONCastFinishedAction;
-//CONCastFailedAction;
-//DELEGATE(void, PlayerSpellData *)
-//CSpellDataRemovedAction;
-//DELEGATE(void, PlayerSpellData *)
-//CSpellDataAddedAction;
-//void addCOnSpellDataRemoved(PlayerSpellDataComponent::CSpellDataRemovedAction *value);
-//void removeCOnSpellDataRemoved(PlayerSpellDataComponent::CSpellDataRemovedAction *value);
-//void addCOnSpellDataAdded(PlayerSpellDataComponent::CSpellDataAddedAction *value);
-//void removeCOnSpellDataAdded(PlayerSpellDataComponent::CSpellDataAddedAction *value);
-//void addOnCTalenChangedAction(TalentComponent::OnTalenChangedAction *value);
-//void removeOnCTalenChangedAction(TalentComponent::OnTalenChangedAction *value);ű
-//void addOnTargetChange(TargetComponent::targetChanged *value);
-//void removeOnTargetChange(TargetComponent::targetChanged *value);
-//void addSOnTargetChange(TargetComponent::sTargetChanged *value);
-//void removeSOnTargetChange(TargetComponent::sTargetChanged *value);
-//delegate void OnStateChangedAction(PlayerStates newState);
-//event OnStateChangedAction OnStateChanged;
-//delegate void OnLevelUpAction(Entity player);
-//event OnLevelUpAction COnLevelUp;
-//event OnLevelUpAction SOnLevelUp;
-//delegate void OnLevelChangedAction(Entity player, int newLevel);
-//event OnLevelChangedAction COnLevelChanged;
-//event OnLevelChangedAction SOnLevelChanged;
-//delegate void OnXPChangedAction(Entity player, int newXp);
-//event OnXPChangedAction COnXPChanged;
-//delegate void OnWeapomChangedAction(ItemData wd);
-//event OnWeapomChangedAction OnWeaponChanged;
-//delegate void StatDataRequestAction(StatData sdc);
-//StatDataRequestAction statDataRequests;
-//delegate void GameObjectDataRequestAction(GameObject go);
-//GameObjectDataRequestAction gameObjectDataRequests;
-
-//void addCOnCastStart(SpellCastData::COnCastStartAction *value);
-//void removeCOnCastStart(SpellCastData::COnCastStartAction *value);
-//void addCOnCastFinished(SpellCastData::CONCastFinishedAction *value);
-//void removeCOnCastFinished(SpellCastData::CONCastFinishedAction *value);
-//void addCOnCastEnded(SpellCastData::CONCastEndedAction *value);
-//void removeCOnCastEnded(SpellCastData::CONCastEndedAction *value);
-//void addCOnCastFailed(SpellCastData::CONCastFailedAction *value);
-//void removeCOnCastFailed(SpellCastData::CONCastFailedAction *value);
-
-//DELEGATE(void, ItemInstance *)
-//InventoryAction;
-//DELEGATE(void)
-//ItemRemovedAction;
-//DELEGATE(void)
-//ItemMovedAction;
-/*
-	void addSOnItemAdded(Inventory::InventoryAction *value);
-	void removeSOnItemAdded(Inventory::InventoryAction *value);
-	void addCOnItemAdded(Inventory::InventoryAction *value);
-	void removeCOnItemAdded(Inventory::InventoryAction *value);
-	void addSOnItemCountChanged(Inventory::InventoryAction *value);
-	void removeSOnItemCountChanged(Inventory::InventoryAction *value);
-	void addCOnItemCountChanged(Inventory::InventoryAction *value);
-	void removeCOnItemCountChanged(Inventory::InventoryAction *value);
-	void addSOnItemRemoved(Inventory::ItemRemovedAction *value);
-	void removeSOnItemRemoved(Inventory::ItemRemovedAction *value);
-	void addCOnItemRemoved(Inventory::ItemRemovedAction *value);
-	void removeCOnItemRemoved(Inventory::ItemRemovedAction *value);
-	void addSOnItemMoved(Inventory::ItemMovedAction *value);
-	void removeSOnItemMoved(Inventory::ItemMovedAction *value);
-	void addCOnItemMoved(Inventory::ItemMovedAction *value);
-	void removeCOnItemMoved(Inventory::ItemMovedAction *value);
-	void addSOnCraftMaterialAdded(Inventory::InventoryAction *value);
-	void removeSOnCraftMaterialAdded(Inventory::InventoryAction *value);
-	void addCOnCraftMaterialAdded(Inventory::InventoryAction *value);
-	void removeCOnCraftMaterialAdded(Inventory::InventoryAction *value);
-	void addSOnCraftMaterialRemoved(Inventory::ItemRemovedAction *value);
-	void removeSOnCraftMaterialRemoved(Inventory::ItemRemovedAction *value);
-	void addCOnCraftMaterialRemoved(Inventory::ItemRemovedAction *value);
-	void removeCOnCraftMaterialRemoved(Inventory::ItemRemovedAction *value);
-	void addCOnCraftMaterialsLoaded(Inventory::ItemRemovedAction *value);
-	void removeCOnCraftMaterialsLoaded(Inventory::ItemRemovedAction *value);
-	void addCOnItemsLoaded(Inventory::ItemRemovedAction *value);
-	void removeCOnItemsLoaded(Inventory::ItemRemovedAction *value);
-	*/
-/*
-		DELEGATE(void) SOnDeathAction;
-		DELEGATE(void) OnDeathAction;
-		DELEGATE(void) SOnResurrectAction;
-		DELEGATE(void) OnResurrectAction;
-		DELEGATE(void, int, Stat*) OnStatChangeAction;
-		DELEGATE(void, int, Stat*) SOnStatChangeAction;
-		DELEGATE(void, int, bool, Entity*, Entity*) OnDamageTakenAction;
-		DELEGATE(void, int, bool, Entity*, Entity*) OnHealTakenAction;
-		*/
 
 void Entity::_notification(int p_what) {
 	switch (p_what) {
@@ -3479,12 +2166,13 @@ void Entity::_notification(int p_what) {
 			update(get_process_delta_time());
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
-			
+
 		} break;
 	}
 }
 
 void Entity::_bind_methods() {
+	//Signals
 	ADD_SIGNAL(MethodInfo("starget_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("ctarget_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
@@ -3496,14 +2184,7 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("scharacter_class_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("ccharacter_class_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	ADD_SIGNAL(MethodInfo("saura_added", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	ADD_SIGNAL(MethodInfo("caura_added", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-
-	ADD_SIGNAL(MethodInfo("saura_removed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	ADD_SIGNAL(MethodInfo("caura_removed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-
-
-	////    SpellCastSignals    ////
+	//SpellCastSignals
 	ADD_SIGNAL(MethodInfo("scast_started", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("scast_failed", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("scast_delayed", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -3516,10 +2197,79 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("ccast_finished", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("ccast_interrupted", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
+	//Aura signals
+	ADD_SIGNAL(MethodInfo("saura_added", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	ADD_SIGNAL(MethodInfo("saura_removed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	ADD_SIGNAL(MethodInfo("saura_removed_expired", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	ADD_SIGNAL(MethodInfo("saura_removed_dispelled", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+
+	ADD_SIGNAL(MethodInfo("caura_added", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	ADD_SIGNAL(MethodInfo("caura_removed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	ADD_SIGNAL(MethodInfo("caura_removed_dispelled", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	ADD_SIGNAL(MethodInfo("caura_removed_expired", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+
+	//EventHandlers
+	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &Entity::son_before_aura_applied);
+	ClassDB::bind_method(D_METHOD("son_after_aura_applied", "data"), &Entity::son_after_aura_applied);
+
+	ClassDB::bind_method(D_METHOD("son_hit", "data"), &Entity::son_hit);
+	ClassDB::bind_method(D_METHOD("son_before_damage", "data"), &Entity::son_before_damage);
+	ClassDB::bind_method(D_METHOD("son_damage_receive", "data"), &Entity::son_damage_receive);
+	ClassDB::bind_method(D_METHOD("son_dealt_damage", "data"), &Entity::son_dealt_damage);
+	ClassDB::bind_method(D_METHOD("son_damage_dealt", "data"), &Entity::son_damage_dealt);
+
+	ClassDB::bind_method(D_METHOD("son_before_cast", "info"), &Entity::son_before_cast);
+	ClassDB::bind_method(D_METHOD("son_before_cast_target", "info"), &Entity::son_before_cast_target);
+	ClassDB::bind_method(D_METHOD("son_cast_finished_target", "info"), &Entity::son_cast_finished_target);
+	ClassDB::bind_method(D_METHOD("son_cast_finished", "info"), &Entity::son_cast_finished);
+	ClassDB::bind_method(D_METHOD("son_cast_started", "info"), &Entity::son_cast_started);
+	ClassDB::bind_method(D_METHOD("son_cast_failed", "info"), &Entity::son_cast_failed);
+
+	//Clientside EventHandlers
+	ClassDB::bind_method(D_METHOD("con_cast_failed", "info"), &Entity::con_cast_failed);
+	ClassDB::bind_method(D_METHOD("con_cast_started", "info"), &Entity::con_cast_started);
+	ClassDB::bind_method(D_METHOD("con_cast_state_changed", "info"), &Entity::con_cast_state_changed);
+	ClassDB::bind_method(D_METHOD("con_cast_finished", "info"), &Entity::con_cast_finished);
+	ClassDB::bind_method(D_METHOD("con_spell_cast_success", "info"), &Entity::con_spell_cast_success);
+
+	//Modifiers/Requesters
+	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Entity::sapply_passives_damage_receive);
+	ClassDB::bind_method(D_METHOD("sapply_passives_damage_deal", "data"), &Entity::sapply_passives_damage_deal);
+
+	//Spell operations
+	ClassDB::bind_method(D_METHOD("scast_spell", "spell_id"), &Entity::scast_spell);
+	ClassDB::bind_method(D_METHOD("crequest_spell_cast", "spell_id"), &Entity::crequest_spell_cast);
+
+	//Damage Operations
+	ClassDB::bind_method(D_METHOD("stake_damage", "data"), &Entity::stake_damage);
+	ClassDB::bind_method(D_METHOD("sdeal_damage_to", "data"), &Entity::sdeal_damage_to);
+
+	//Aura Manipulation
+	ClassDB::bind_method(D_METHOD("sadd_aura", "aura"), &Entity::sadd_aura);
+	ClassDB::bind_method(D_METHOD("sremove_aura", "aura"), &Entity::sremove_aura);
+	ClassDB::bind_method(D_METHOD("sremove_aura_expired", "aura"), &Entity::sremove_aura_expired);
+	ClassDB::bind_method(D_METHOD("sremove_aura_dispelled", "aura"), &Entity::sremove_aura_dispelled);
+
+	ClassDB::bind_method(D_METHOD("cadd_aura", "aura"), &Entity::cadd_aura);
+	ClassDB::bind_method(D_METHOD("cremove_aura", "aura"), &Entity::cremove_aura);
+	ClassDB::bind_method(D_METHOD("cremove_aura_expired", "aura"), &Entity::cremove_aura_expired);
+	ClassDB::bind_method(D_METHOD("cremove_aura_dispelled", "aura"), &Entity::cremove_aura_dispelled);
+
+	ClassDB::bind_method(D_METHOD("sremove_auras_with_group", "aura_group"), &Entity::sremove_auras_with_group);
+
+	ClassDB::bind_method(D_METHOD("sget_aura_count"), &Entity::sget_aura_count);
+	ClassDB::bind_method(D_METHOD("sget_aura", "index"), &Entity::sget_aura);
+
+	ClassDB::bind_method(D_METHOD("cget_aura_count"), &Entity::cget_aura_count);
+	ClassDB::bind_method(D_METHOD("cget_aura", "index"), &Entity::cget_aura);
+
+	//Hooks
+	ClassDB::bind_method(D_METHOD("moved"), &Entity::moved);
+
+	//Properties
 	ClassDB::bind_method(D_METHOD("get_character_skeleton_path"), &Entity::get_character_skeleton_path);
 	ClassDB::bind_method(D_METHOD("set_character_skeleton_path", "value"), &Entity::set_character_skeleton_path);
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "character_skeleton_path"), "set_character_skeleton_path", "get_character_skeleton_path");
-
 
 	ClassDB::bind_method(D_METHOD("gets_entity_type"), &Entity::gets_entity_type);
 	ClassDB::bind_method(D_METHOD("sets_entity_type", "value"), &Entity::sets_entity_type);
@@ -3536,7 +2286,6 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_player_name"), &Entity::getc_player_name);
 	ClassDB::bind_method(D_METHOD("setc_player_name", "value"), &Entity::setc_player_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "c_player_name"), "setc_player_name", "getc_player_name");
-	
 
 	ClassDB::bind_method(D_METHOD("gets_xp"), &Entity::gets_xp);
 	ClassDB::bind_method(D_METHOD("sets_xp", "value"), &Entity::sets_xp);
@@ -3586,13 +2335,4 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("getc_target"), &Entity::getc_target);
 	ClassDB::bind_method(D_METHOD("setc_target", "target"), &Entity::setc_target);
-
-	////    Spell System    ////
-	ClassDB::bind_method(D_METHOD("scast_spell", "spell_id"), &Entity::scast_spell);
-	ClassDB::bind_method(D_METHOD("crequest_spell_cast", "spell_id"), &Entity::crequest_spell_cast);
-	ClassDB::bind_method(D_METHOD("add_aura", "aura"), &Entity::add_aura);
-
-	ClassDB::bind_method(D_METHOD("stake_damage", "data"), &Entity::stake_damage);
-	ClassDB::bind_method(D_METHOD("son_damage_dealt", "data"), &Entity::son_damage_dealt);
-	ClassDB::bind_method(D_METHOD("sdeal_damage_to", "data"), &Entity::sdeal_damage_to);
 }
