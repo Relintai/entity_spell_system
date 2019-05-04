@@ -237,147 +237,205 @@ void Aura::set_aura_stat_attribute_percent_mod(int index, float value) {
 }
 
 void Aura::sapply_simple(Entity *caster, Entity *target, float spell_scale) {
+	ERR_FAIL_COND(caster == NULL || target == NULL);
+
 	Ref<AuraApplyInfo> info(memnew(AuraApplyInfo(caster, target, spell_scale, this)));
 
 	sapply(info);
 }
 
 void Aura::sapply(Ref<AuraApplyInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	//always exists
 	call("_sapply", info);
 }
 
 void Aura::sremove(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	//always exists
 	call("_sremove", aura);
 }
 
 void Aura::sremove_expired(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	//always exists
 	call("_sremove_expired", aura);
 }
 
 void Aura::sremove_dispell(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	//always exists
 	call("_sremove_dispell", aura);
 }
 
 void Aura::supdate(Ref<AuraData> aura, float delta) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	//always exists
 	call("_supdate", aura, delta);
 }
 
 void Aura::son_before_cast(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_son_before_cast"))
 		call("_son_before_cast", info);
 }
 
 void Aura::son_before_cast_target(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_son_before_cast_target"))
 		call("_son_before_cast_target", info);
 }
 
 void Aura::son_cast_finished(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_son_cast_finished"))
 		call("_son_cast_finished", info);
 }
 
 void Aura::son_cast_started(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_son_cast_started"))
 		call("_son_cast_started", info);
 }
 
 void Aura::son_cast_failed(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_son_cast_failed"))
 		call("_son_cast_failed", info);
 }
 
 void Aura::son_cast_finished_target(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_son_cast_finished_target"))
 		call("_son_cast_finished_target", info);
 }
 
 void Aura::son_before_damage(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	if (has_method("_son_before_damage"))
 		call("_son_before_damage", data);
 }
 
 void Aura::son_damage_receive(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	if (has_method("_son_damage_receive"))
 		call("_son_damage_receive", data);
 }
 
 void Aura::son_hit(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	if (has_method("_son_hit"))
 		call("_son_hit", data);
 }
 
 void Aura::son_damage_dealt(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	if (has_method("_son_damage_dealt"))
 		call("_son_damage_dealt", data);
 }
 
 void Aura::son_remove_expired(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	if (has_method("_son_remove_expired"))
 		call("_son_remove_expired", aura);
 }
 
 void Aura::son_remove(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	if (has_method("_son_remove"))
 		call("_son_remove", aura);
 }
 
 void Aura::son_remove_dispell(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	if (has_method("_son_remove_dispell"))
 		call("_son_remove_dispell", aura);
 }
 
 void Aura::son_before_aura_applied(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	if (has_method("_son_before_aura_applied"))
 		call("_son_before_aura_applied", data);
 }
 
 void Aura::son_after_aura_applied(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	if (has_method("_son_after_aura_applied"))
 		call("_son_after_aura_applied", data);
 }
 
 void Aura::con_added(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	if (has_method("_con_added"))
 		call("_con_added", data);
 }
 
 void Aura::con_removed(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	if (has_method("_con_removed"))
 		call("_con_removed", data);
 }
 
 void Aura::con_refresh(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	if (has_method("_con_refresh"))
 		call("_con_refresh", data);
 }
 
 void Aura::sapply_passives_damage_receive(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	//always exists
 	call("_sapply_passives_damage_receive", data);
 }
 
 void Aura::sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	//always exists
 	call("_sapply_passives_damage_deal", data);
 }
 
 void Aura::setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
+	ERR_FAIL_COND(!data.is_valid() || !info.is_valid());
+
 	//always exists
 	call("setup_aura_data", data, info);
 }
 
 void Aura::calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
+	ERR_FAIL_COND(!aura_data.is_valid() || !info.is_valid());
+
 	//always exists
 	call("_calculate_initial_damage", aura_data, info);
 }
 
 void Aura::handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!aura_data.is_valid() || !data.is_valid());
+
 	//always exists
 	call("_handle_aura_damage", aura_data, data);
 }

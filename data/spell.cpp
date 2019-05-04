@@ -72,120 +72,155 @@ float Spell::get_absorb_scale_for_level(int level) {
 ////    Spell System    ////
 
 void Spell::sstart_casting_simple(Entity *caster, float spell_scale) {
-		Ref<SpellCastInfo> info = Ref<SpellCastInfo>(memnew(SpellCastInfo()));
+	ERR_FAIL_COND(caster == NULL);
 
-		info->set_caster(caster);
-		info->set_target(caster->gets_target());
-		info->set_has_cast_time(get_has_cast_time());
-		info->set_cast_time(get_cast_time());
-		info->set_spell_scale(spell_scale);
-		info->set_spell(Ref<Spell>(this));
+	Ref<SpellCastInfo> info = Ref<SpellCastInfo>(memnew(SpellCastInfo()));
 
-		sstart_casting(info);
+	info->set_caster(caster);
+	info->set_target(caster->gets_target());
+	info->set_has_cast_time(get_has_cast_time());
+	info->set_cast_time(get_cast_time());
+	info->set_spell_scale(spell_scale);
+	info->set_spell(Ref<Spell>(this));
 
+	sstart_casting(info);
 }
 
 void Spell::sinterrupt_cast_simple(Entity *caster) {
-		Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
+	ERR_FAIL_COND(caster == NULL);
 
-		info->set_caster(caster);
-		info->set_spell(Ref<Spell>(this));
+	Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
 
-		sinterrupt_cast(info);
+	info->set_caster(caster);
+	info->set_spell(Ref<Spell>(this));
+
+	sinterrupt_cast(info);
 }
 
 void Spell::sstart_casting_triggered_simple(Entity *caster) {
-		Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
+	ERR_FAIL_COND(caster == NULL);
 
-		info->set_caster(caster);
-		info->set_spell(Ref<Spell>(this));
+	Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
 
-		sstart_casting_triggered(info);
+	info->set_caster(caster);
+	info->set_spell(Ref<Spell>(this));
+
+	sstart_casting_triggered(info);
 }
 
 //Script methods
 
 void Spell::sstart_casting(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_sstart_casting")) {
 		call("_sstart_casting", info);
 	}
 }
 
 void Spell::sstart_casting_triggered(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_sstart_casting_triggered")) {
 		call("_sstart_casting_triggered", info);
 	}
 }
 
 void Spell::sinterrupt_cast(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_sinterrupt_cast")) {
 		call("_sinterrupt_cast", info);
 	}
 }
 
 void Spell::sfinish_cast(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_sfinish_cast")) {
 		call("_sfinish_cast", info);
 	}
 }
 
 void Spell::son_cast_player_moved(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_son_cast_player_moved")) {
 		call("_son_cast_player_moved", info);
 	}
 }
 
 void Spell::son_cast_damage_received(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_son_cast_damage_received")) {
 		call("_son_cast_damage_received", info);
 	}
 }
 
 void Spell::son_spell_hit(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_son_spell_hit")) {
 		call("_son_spell_hit", info);
 	}
 }
 
 void Spell::con_spell_cast_started(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_con_spell_cast_started")) {
 		call("_con_spell_cast_started", info);
 	}
 }
 
 void Spell::con_spell_cast_success(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_con_spell_cast_success")) {
 		call("_con_spell_cast_success", info);
 	}
 }
 
 void Spell::con_spell_cast_failed(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_con_spell_cast_failed")) {
 		call("_con_spell_cast_failed", info);
 	}
 }
 
 void Spell::con_spell_cast_ended(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_con_spell_cast_ended")) {
 		call("_con_spell_cast_ended", info);
 	}
 }
 
 void Spell::con_spell_cast_interrupted(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	if (has_method("_con_spell_cast_interrupted")) {
 		call("_con_spell_cast_interrupted", info);
 	}
 }
 
 void Spell::calculate_initial_damage(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid() || data->get_receiver() == NULL);
+
 	call("_calculate_initial_damage", data);
 }
 
 void Spell::handle_spell_damage(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid() || data->get_receiver() == NULL);
+
 	call("_handle_spell_damage", data);
 }
 
 void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid() || info->get_spell() == NULL);
+
 	Ref<Spell> spell = info->get_spell();
 
 	if (spell->get_needs_target() || spell->get_has_damage()) {
@@ -391,7 +426,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sstart_casting_triggered", "info"), &Spell::sstart_casting_triggered);
 	ClassDB::bind_method(D_METHOD("sinterrupt_cast", "info"), &Spell::sinterrupt_cast);
 	ClassDB::bind_method(D_METHOD("sfinish_cast", "info"), &Spell::sfinish_cast);
-	
+
 	BIND_VMETHOD(MethodInfo("_sstart_casting", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_sstart_casting_triggered", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_sinterrupt_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -430,7 +465,6 @@ void Spell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_calculate_initial_damage", "info"), &Spell::_calculate_initial_damage);
 	ClassDB::bind_method(D_METHOD("_handle_spell_damage", "info"), &Spell::_handle_spell_damage);
-	
 
 	//Properties
 	ClassDB::bind_method(D_METHOD("get_spell_id"), &Spell::get_spell_id);
@@ -708,9 +742,7 @@ void Spell::_bind_methods() {
 	BIND_ENUM_CONSTANT(SPELL_PROJECTILE_TYPE_STATIONARY);
 }
 
-
 //// SpellScript Old
-
 
 /*
 void Spell::TriggerGlobalCooldown(Entity* player)
@@ -1249,8 +1281,6 @@ void Spell::AnimStop(Entity* player)
 	bool arg_0A_0 = BSSettings::Getinstance()->AnimStopEnabled;
 }*/
 
-
-
 //Generic
 
 /*
@@ -1444,4 +1474,3 @@ void GenericSpell::COnSpellCastEnded(WorldEntity* player)
 }
 
 */
-

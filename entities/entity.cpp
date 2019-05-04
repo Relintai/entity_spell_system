@@ -426,6 +426,8 @@ Ref<Stat> Entity::get_stat_enum(Stat::StatId stat_id) {
 }
 
 void Entity::set_stat_enum(Stat::StatId stat_id, Ref<Stat> entry) {
+	ERR_FAIL_COND(!entry.is_valid());
+
 	//ERR_FAIL_COND(stat_id == Stat::STAT_ID_NONE);
 
 	if (stat_id == Stat::STAT_ID_NONE) {
@@ -438,6 +440,8 @@ void Entity::set_stat_enum(Stat::StatId stat_id, Ref<Stat> entry) {
 }
 
 void Entity::stake_damage(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	//serverside
 
 	if (gets_is_dead()) {
@@ -472,6 +476,8 @@ void Entity::stake_damage(Ref<SpellDamageInfo> data) {
 }
 
 void Entity::son_damage_dealt(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	//serverside
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
@@ -481,6 +487,8 @@ void Entity::son_damage_dealt(Ref<SpellDamageInfo> data) {
 }
 
 void Entity::sdeal_damage_to(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	//serverside
 
 	if (gets_is_dead()) {
@@ -548,11 +556,15 @@ void Entity::creceive_resurrect() {
 }
 
 void Entity::creceive_damage_taken(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	//the current c health should probably be set here.
 	emit_signal("con_damage_taken", this, data);
 }
 
 void Entity::creceiveon_damage_dealt(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	//the current c health should probably be set here.
 	emit_signal("con_damage_dealt", this, data);
 }
@@ -589,6 +601,8 @@ void Entity::creceive_mana_changed(int amount) {
 }
 
 void Entity::son_before_aura_applied(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -597,6 +611,8 @@ void Entity::son_before_aura_applied(Ref<AuraData> data) {
 }
 
 void Entity::son_after_aura_applied(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -663,6 +679,8 @@ void Entity::update_auras(float delta) {
 }
 
 void Entity::son_before_cast(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -671,6 +689,8 @@ void Entity::son_before_cast(Ref<SpellCastInfo> info) {
 }
 
 void Entity::son_before_cast_target(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -679,6 +699,8 @@ void Entity::son_before_cast_target(Ref<SpellCastInfo> info) {
 }
 
 void Entity::son_hit(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -687,6 +709,8 @@ void Entity::son_hit(Ref<SpellDamageInfo> data) {
 }
 
 void Entity::son_before_damage(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -695,6 +719,8 @@ void Entity::son_before_damage(Ref<SpellDamageInfo> data) {
 }
 
 void Entity::son_damage_receive(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -703,6 +729,8 @@ void Entity::son_damage_receive(Ref<SpellDamageInfo> data) {
 }
 
 void Entity::son_dealt_damage(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -711,6 +739,8 @@ void Entity::son_dealt_damage(Ref<SpellDamageInfo> data) {
 }
 
 void Entity::sapply_passives_damage_receive(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -719,6 +749,8 @@ void Entity::sapply_passives_damage_receive(Ref<SpellDamageInfo> data) {
 }
 
 void Entity::sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -727,6 +759,8 @@ void Entity::sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
 }
 
 void Entity::son_cast_finished(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -735,6 +769,8 @@ void Entity::son_cast_finished(Ref<SpellCastInfo> info) {
 }
 
 void Entity::son_cast_started(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -743,6 +779,8 @@ void Entity::son_cast_started(Ref<SpellCastInfo> info) {
 }
 
 void Entity::son_cast_failed(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -751,6 +789,8 @@ void Entity::son_cast_failed(Ref<SpellCastInfo> info) {
 }
 
 void Entity::son_cast_finished_target(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -759,6 +799,8 @@ void Entity::son_cast_finished_target(Ref<SpellCastInfo> info) {
 }
 
 void Entity::sadd_aura(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	son_before_aura_applied(aura);
 
 	aura->set_owner(this);
@@ -773,6 +815,8 @@ void Entity::sadd_aura(Ref<AuraData> aura) {
 }
 
 void Entity::sremove_aura(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); i++) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -792,6 +836,8 @@ void Entity::sremove_aura(Ref<AuraData> aura) {
 
 
 void Entity::sremove_aura_expired(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); i++) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -810,6 +856,8 @@ void Entity::sremove_aura_expired(Ref<AuraData> aura) {
 }
 
 void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	for (int i = 0; i < _s_auras->size(); i++) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
@@ -828,11 +876,15 @@ void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
 }
 
 void Entity::cadd_aura(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
 	_c_auras->push_back(data);
 	emit_signal("caura_added", data);
 }
 
 void Entity::cremove_aura(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	for (int i = 0; i < _c_auras->size(); i++) {
 		if (_c_auras->get(i) == aura) {
 			_c_auras->remove(i);
@@ -844,6 +896,8 @@ void Entity::cremove_aura(Ref<AuraData> aura) {
 }
 
 void Entity::cremove_aura_dispelled(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	for (int i = 0; i < _c_auras->size(); i++) {
 		if (_c_auras->get(i) == aura) {
 			_c_auras->remove(i);
@@ -855,6 +909,8 @@ void Entity::cremove_aura_dispelled(Ref<AuraData> aura) {
 }
 
 void Entity::cremove_aura_expired(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
 	for (int i = 0; i < _c_auras->size(); i++) {
 		if (_c_auras->get(i) == aura) {
 			_c_auras->remove(i);
