@@ -50,6 +50,8 @@
 
 #include "skeleton/character_skeleton.h"
 
+#include "utility/entity_create_info.h"
+
 void register_entity_spell_system_types() {
 
 	//data
@@ -95,6 +97,7 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<AuraTriggerData>();
 
 	//entities
+	ClassDB::register_class<EntityCreateInfo>();
 	ClassDB::register_class<Entity>();
 	ClassDB::register_class<Player>();
 	ClassDB::register_class<Mob>();
