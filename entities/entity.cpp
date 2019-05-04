@@ -333,7 +333,9 @@ Entity::~Entity() {
 	memdelete(_c_auras);
 }
 
-void Entity::initialize(EntityCreateInfo *info) {
+void Entity::initialize(Ref<EntityCreateInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
 	_s_player_name = info->get_player_name();
 	_c_player_name = info->get_player_name();
 
@@ -348,7 +350,7 @@ void Entity::initialize(EntityCreateInfo *info) {
 
 	sets_character_class(info->get_character_class());
 	//setc_character_class(info->get_character_class());
-
+	/*
 	if (gets_character_class() != NULL) {
 		Ref<StatData> sd = gets_character_class()->get_stat_data();
 
@@ -364,7 +366,7 @@ void Entity::initialize(EntityCreateInfo *info) {
 				stat->set_dependency(other, entry->get_dependdency_curve());
 			}
 		}
-	}
+	}*/
 }
 
 void Entity::sinitialize_stats() {
@@ -2358,6 +2360,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_character_class"), &Entity::getc_character_class);
 	ClassDB::bind_method(D_METHOD("setc_character_class", "value"), &Entity::setc_character_class);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "c_character_class", PROPERTY_HINT_RESOURCE_TYPE, "CharacterClass"), "setc_character_class", "getc_character_class");
+
+	ClassDB::bind_method(D_METHOD("initialize", "entity_create_info"), &Entity::initialize);
 
 	ClassDB::bind_method(D_METHOD("get_health"), &Entity::get_health);
 	ClassDB::bind_method(D_METHOD("get_mana"), &Entity::get_mana);

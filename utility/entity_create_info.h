@@ -5,8 +5,8 @@
 #include "../entity_enums.h"
 #include "../data/character.h"
 
-class EntityCreateInfo : public Object {
-	GDCLASS(EntityCreateInfo, Object);
+class EntityCreateInfo : public Reference {
+	GDCLASS(EntityCreateInfo, Reference);
 
 public:
 	int get_guid() { return _guid; }

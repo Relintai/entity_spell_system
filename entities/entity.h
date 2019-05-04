@@ -71,7 +71,7 @@ public:
 	Entity();
 	~Entity();
 
-	void initialize(EntityCreateInfo *info);
+	void initialize(Ref<EntityCreateInfo> info);
 
 	void Update(); //old, remove
 
