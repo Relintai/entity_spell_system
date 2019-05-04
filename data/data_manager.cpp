@@ -27,87 +27,104 @@ void DataManager::_notification(int p_what) {
     }
 }
 
-Ref<CharacterClass> DataManager::get_character_class(int id) {
-    if (!_character_class_map->has(id)) {
-        print_error("Character class doesn't exist! " + String::num(id));
-        return Ref<CharacterClass>(NULL);
-    }
+Ref<CharacterClass> DataManager::get_character_class(int class_id) {
+	ERR_FAIL_COND_V(!_character_class_map->has(class_id), Ref<CharacterClass>(NULL));
 
-    return _character_class_map->get(id);
+    return _character_class_map->get(class_id);
+}
+
+Ref<CharacterClass> DataManager::get_character_class_index(int index) {
+	ERR_FAIL_INDEX_V(index, _character_classes->size(), Ref<CharacterClass>(NULL));
+
+	return _character_classes->get(index);
+}
+
+int DataManager::get_character_class_count() {
+	return _character_classes->size();
 }
 
 void DataManager::add_character_class(Ref<CharacterClass> cls) {
+	ERR_FAIL_COND(!cls.is_valid());
+
     _character_classes->push_back(cls);
-    (*_character_class_map)[cls->get_id()] = cls;
+	_character_class_map->set(cls->get_id(), cls);
 }
 
-Ref<Spell> DataManager::get_spell(int id) {
-    if (!_spell_map->has(id)) {
-        print_error("Spell doesn't exist! " + String::num(id));
-        return Ref<Spell>(NULL);
-    }
+Ref<Spell> DataManager::get_spell(int spell_id) {
+	ERR_FAIL_COND_V(!_spell_map->has(spell_id), Ref<Spell>(NULL));
 
-    return _spell_map->get(id);
+    return _spell_map->get(spell_id);
+}
+
+Ref<Spell> DataManager::get_spell_index(int index) {
+	ERR_FAIL_INDEX_V(index, _spells->size(), Ref<Spell>(NULL));
+
+	return _spells->get(index);
+}
+
+int DataManager::get_spell_count() {
+	return _spells->size();
 }
 
 void DataManager::add_spell(Ref<Spell> spell) {
+	ERR_FAIL_COND(!spell.is_valid());
+
     _spells->push_back(spell);
     _spell_map->set(spell->get_spell_id(), spell);
 }
 
-Ref<Aura> DataManager::get_aura(int id) {
-    if (!_aura_map->has(id)) {
-        print_error("Aura doesn't exist! " + String::num(id));
-        return Ref<Aura>(NULL);
-    }
-
-    return _aura_map->get(id);
-}
-
 void DataManager::add_aura(Ref<Aura> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
     _auras->push_back(aura);
-    (*_aura_map)[aura->get_id()] = aura;
+	_aura_map->set(aura->get_id(), aura);
 }
 
-Ref<CraftDataAttribute> DataManager::get_craft_data(int id) {
-	if (!_craft_data_map->has(id)) {
-		print_error("Craft Data doesn't exist! " + String::num(id));
-		return Ref<CraftDataAttribute>(NULL);
-	}
+Ref<Aura> DataManager::get_aura(int aura_id) {
+	ERR_FAIL_COND_V(!_aura_map->has(aura_id), Ref<Aura>(NULL));
 
-	return _craft_data_map->get(id);
+	return _aura_map->get(aura_id);
 }
 
-void DataManager::add_craft_data(Ref<CraftDataAttribute> aura) {
-	_craft_datas->push_back(aura);
-	(*_craft_data_map)[aura->get_id()] = aura;
+Ref<Aura> DataManager::get_aura_index(int index) {
+	ERR_FAIL_INDEX_V(index, _auras->size(), Ref<Aura>(NULL));
+
+	return _auras->get(index);
 }
 
-/*
-Ref<SpellScript> DataManager::get_spell_script(int id) {
-	if (!_spell_script_map->has(id)) {
-		print_error("Spell Script doesn't exist! " + String::num(id));
-		return Ref<SpellScript>(NULL);
-	}
-
-	return _spell_script_map->get(id);
+int DataManager::get_aura_count() {
+	return _auras->size();
 }
 
-void DataManager::add_spell_script(int id, Ref<SpellScript> spell_script) {
-	_spell_scripts->push_back(spell_script);
-	_spell_script_map->set(id, spell_script);
-}*/
+void DataManager::add_craft_data(Ref<CraftDataAttribute> cda) {
+	ERR_FAIL_COND(!cda.is_valid());
+
+	_craft_datas->push_back(cda);
+	_craft_data_map->set(cda->get_id(), cda);
+}
+
+Ref<CraftDataAttribute> DataManager::get_craft_data(int craft_id) {
+	ERR_FAIL_COND_V(!_craft_data_map->has(craft_id), Ref<CraftDataAttribute>(NULL));
+
+	return _craft_data_map->get(craft_id);
+}
+
+Ref<CraftDataAttribute> DataManager::get_craft_data_index(int index) {
+	ERR_FAIL_INDEX_V(index, _craft_datas->size(), Ref<CraftDataAttribute>(NULL));
+
+	return _craft_datas->get(index);
+}
+
+int DataManager::get_craft_data_count() {
+	return _craft_datas->size();
+}
+
 
 void DataManager::load_all() {
-    //load_spell_scripts();
     load_spells();
     load_auras();
     load_characters();
 }
-
-//void DataManager::load_spell_scripts() {
-//add_spell_script(0, Ref<SpellScript>(memnew(GenericSpellScript())));
-//}
 
 void DataManager::load_spells() {
     _Directory dir;
@@ -298,7 +315,9 @@ void DataManager::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::STRING, "character_classes_folder"), "set_character_classes_folder", "get_character_classes_folder");
 
     //ClassDB::bind_method(D_METHOD("get_character_classes"), &DataManager::get_character_classes);
-    ClassDB::bind_method(D_METHOD("get_character_class", "id"), &DataManager::get_character_class);
+    ClassDB::bind_method(D_METHOD("get_character_class", "class_id"), &DataManager::get_character_class);
+	ClassDB::bind_method(D_METHOD("get_character_class_index", "index"), &DataManager::get_character_class_index);
+	ClassDB::bind_method(D_METHOD("get_character_class_count"), &DataManager::get_character_class_count);
 
     //Spell
     ClassDB::bind_method(D_METHOD("get_spells_folder"), &DataManager::get_spells_folder);
@@ -306,7 +325,9 @@ void DataManager::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::STRING, "spells_folder"), "set_spells_folder", "get_spells_folder");
 
     //ClassDB::bind_method(D_METHOD("get_spells"), &DataManager::get_spells);
-    ClassDB::bind_method(D_METHOD("get_spell", "id"), &DataManager::get_spell);
+    ClassDB::bind_method(D_METHOD("get_spell", "spell_id"), &DataManager::get_spell);
+	ClassDB::bind_method(D_METHOD("get_spell_index", "index"), &DataManager::get_spell_index);
+	ClassDB::bind_method(D_METHOD("get_spell_count"), &DataManager::get_spell_count);
 
     //Aura
     ClassDB::bind_method(D_METHOD("get_auras_folder"), &DataManager::get_auras_folder);
@@ -314,6 +335,8 @@ void DataManager::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::STRING, "auras_folder"), "set_auras_folder", "get_auras_folder");
 
 	ClassDB::bind_method(D_METHOD("get_aura", "id"), &DataManager::get_aura);
+	ClassDB::bind_method(D_METHOD("get_aura_index", "index"), &DataManager::get_aura_index);
+	ClassDB::bind_method(D_METHOD("get_aura_count"), &DataManager::get_aura_count);
 
 	//Craft Data
 	ClassDB::bind_method(D_METHOD("get_craft_data_folder"), &DataManager::get_craft_data_folder);
@@ -321,6 +344,8 @@ void DataManager::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "craft_data_folder"), "set_craft_data_folder", "get_craft_data_folder");
 
 	ClassDB::bind_method(D_METHOD("get_craft_data", "id"), &DataManager::get_craft_data);
+	ClassDB::bind_method(D_METHOD("get_craft_data_index", "craft_id"), &DataManager::get_craft_data_index);
+	ClassDB::bind_method(D_METHOD("get_craft_data_count"), &DataManager::get_craft_data_count);
 
     //tests
     ClassDB::bind_method(D_METHOD("list_spells"), &DataManager::list_spells);
