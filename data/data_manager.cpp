@@ -119,15 +119,42 @@ int DataManager::get_craft_data_count() {
 	return _craft_datas->size();
 }
 
+void DataManager::add_item_template(Ref<ItemTemplate> cda) {
+	ERR_FAIL_COND(!cda.is_valid());
+
+	_craft_datas->push_back(cda);
+	_craft_data_map->set(cda->get_id(), cda);
+}
+
+Ref<ItemTemplate> DataManager::get_item_template(int item_id) {
+	ERR_FAIL_COND_V(!_craft_data_map->has(item_id), Ref<ItemTemplate>(NULL));
+
+	return _item_template_map->get(item_id);
+}
+
+Ref<ItemTemplate> DataManager::get_item_template_index(int index) {
+	ERR_FAIL_INDEX_V(index, _craft_datas->size(), Ref<ItemTemplate>(NULL));
+
+	return _item_templates->get(index);
+}
+
+int DataManager::get_item_template_count() {
+	return _item_templates->size();
+}
+
 
 void DataManager::load_all() {
     load_spells();
     load_auras();
     load_characters();
+	load_craft_datas();
+	load_item_templates();
 }
 
 void DataManager::load_spells() {
     _Directory dir;
+
+	ERR_FAIL_COND(_spells_folder.ends_with("/"));
 
     if (dir.open(_spells_folder) == OK) {
 
@@ -141,18 +168,23 @@ void DataManager::load_spells() {
 
                 _ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-                Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path);
+                Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "Spell");
 
                 resl->wait();
 
                 Ref<Resource> s = resl->get_resource();
+
+				ERR_CONTINUE(!s.is_valid());
+
                 Resource *r = (*s);
 
                 Spell *sp = cast_to<Spell>(r);
 
                 Ref<Spell> spell = Ref<Spell>(sp);
 
-                add_spell(spell);
+				ERR_CONTINUE(!spell.is_valid());
+
+				add_spell(spell);
             }
 
             filename = dir.get_next();
@@ -164,6 +196,8 @@ void DataManager::load_spells() {
 
 void DataManager::load_auras() {
     _Directory dir;
+
+	ERR_FAIL_COND(_auras_folder.ends_with("/"));
 
     if (dir.open(_auras_folder) == OK) {
 
@@ -177,16 +211,21 @@ void DataManager::load_auras() {
 
                 _ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-                Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path);
-
+                Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "Aura");
+				
                 resl->wait();
 
                 Ref<Resource> s = resl->get_resource();
+
+				ERR_CONTINUE(!s.is_valid());
+
                 Resource *r = (*s);
 
                 Aura *a = cast_to<Aura>(r);
 
                 Ref<Aura> aura = Ref<Aura>(a);
+
+				ERR_CONTINUE(!aura.is_valid());
 
                 add_aura(aura);
             }
@@ -201,6 +240,8 @@ void DataManager::load_auras() {
 void DataManager::load_characters() {
     _Directory dir;
 
+	ERR_FAIL_COND(_character_classes_folder.ends_with("/"));
+
     if (dir.open(_character_classes_folder) == OK) {
 
         dir.list_dir_begin();
@@ -213,16 +254,21 @@ void DataManager::load_characters() {
 
                 _ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-                Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path);
+                Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "CharacterClass");
 
                 resl->wait();
 
                 Ref<Resource> s = resl->get_resource();
+
+				ERR_CONTINUE(!s.is_valid());
+
                 Resource *r = (*s);
 
                 CharacterClass *cc = cast_to<CharacterClass>(r);
 
                 Ref<CharacterClass> cls = Ref<CharacterClass>(cc);
+
+				ERR_CONTINUE(!cls.is_valid());
 
                 add_character_class(cls);
             }
@@ -237,6 +283,8 @@ void DataManager::load_characters() {
 void DataManager::load_craft_datas() {
 	_Directory dir;
 
+	ERR_FAIL_COND(_craft_data_folder.ends_with("/"));
+
 	if (dir.open(_craft_data_folder) == OK) {
 
 		dir.list_dir_begin();
@@ -249,18 +297,66 @@ void DataManager::load_craft_datas() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path);
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "CraftDataAttribute");
 
 				resl->wait();
 
 				Ref<Resource> s = resl->get_resource();
+
+				ERR_CONTINUE(!s.is_valid());
+
 				Resource *r = (*s);
 
 				CraftDataAttribute *cc = cast_to<CraftDataAttribute>(r);
 
-				Ref<CraftDataAttribute> cls = Ref<CraftDataAttribute>(cc);
+				Ref<CraftDataAttribute> cda = Ref<CraftDataAttribute>(cc);
 
-				add_character_class(cls);
+				ERR_CONTINUE(!cda.is_valid());
+
+				add_craft_data(cda);
+			}
+
+			filename = dir.get_next();
+		}
+	} else {
+		print_error("An error occurred when trying to access the path.");
+	}
+}
+
+void DataManager::load_item_templates() {
+	_Directory dir;
+
+	ERR_FAIL_COND(_item_template_folder.ends_with("/"));
+
+	if (dir.open(_item_template_folder) == OK) {
+
+		dir.list_dir_begin();
+
+		String filename = dir.get_next();
+
+		while (filename != "") {
+			if (!dir.current_is_dir()) {
+				String path = _item_template_folder + "/" + filename;
+
+				_ResourceLoader *rl = _ResourceLoader::get_singleton();
+
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "ItemTemplate");
+
+				resl->wait();
+
+				Ref<Resource> s = resl->get_resource();
+				
+				ERR_CONTINUE(!s.is_valid());
+
+				Resource *r = (*s);
+
+				ItemTemplate *cc = cast_to<ItemTemplate>(r);
+
+				Ref<ItemTemplate> it = Ref<ItemTemplate>(cc);
+
+				ERR_CONTINUE(!it.is_valid());
+
+				add_item_template(it);
 			}
 
 			filename = dir.get_next();
@@ -294,6 +390,12 @@ void DataManager::list_craft_data() {
 	}
 }
 
+void DataManager::list_item_templates() {
+	for (int i = 0; i < _item_templates->size(); ++i) {
+		print_error(itos(i) + ": " + _item_templates->get(i)->get_name());
+	}
+}
+
 void DataManager::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_automatic_load"), &DataManager::get_automatic_load);
     ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &DataManager::set_automatic_load);
@@ -304,17 +406,12 @@ void DataManager::_bind_methods() {
     ClassDB::bind_method(D_METHOD("load_characters"), &DataManager::load_characters);
 	ClassDB::bind_method(D_METHOD("load_craft_datas"), &DataManager::load_craft_datas);
 
-    ClassDB::bind_method(D_METHOD("add_character_class", "cls"), &DataManager::add_character_class);
-    ClassDB::bind_method(D_METHOD("add_spell", "spell"), &DataManager::add_spell);
-    ClassDB::bind_method(D_METHOD("add_aura", "spell"), &DataManager::add_aura);
-	ClassDB::bind_method(D_METHOD("add_craft_data", "craft_data"), &DataManager::add_craft_data);
-
     //CharacterClass
     ClassDB::bind_method(D_METHOD("get_character_classes_folder"), &DataManager::get_character_classes_folder);
     ClassDB::bind_method(D_METHOD("set_character_classes_folder", "folder"), &DataManager::set_character_classes_folder);
     ADD_PROPERTY(PropertyInfo(Variant::STRING, "character_classes_folder"), "set_character_classes_folder", "get_character_classes_folder");
 
-    //ClassDB::bind_method(D_METHOD("get_character_classes"), &DataManager::get_character_classes);
+    ClassDB::bind_method(D_METHOD("add_character_class", "cls"), &DataManager::add_character_class);
     ClassDB::bind_method(D_METHOD("get_character_class", "class_id"), &DataManager::get_character_class);
 	ClassDB::bind_method(D_METHOD("get_character_class_index", "index"), &DataManager::get_character_class_index);
 	ClassDB::bind_method(D_METHOD("get_character_class_count"), &DataManager::get_character_class_count);
@@ -324,7 +421,7 @@ void DataManager::_bind_methods() {
     ClassDB::bind_method(D_METHOD("set_spells_folder", "folder"), &DataManager::set_spells_folder);
     ADD_PROPERTY(PropertyInfo(Variant::STRING, "spells_folder"), "set_spells_folder", "get_spells_folder");
 
-    //ClassDB::bind_method(D_METHOD("get_spells"), &DataManager::get_spells);
+   ClassDB::bind_method(D_METHOD("add_spell", "spell"), &DataManager::add_spell);
     ClassDB::bind_method(D_METHOD("get_spell", "spell_id"), &DataManager::get_spell);
 	ClassDB::bind_method(D_METHOD("get_spell_index", "index"), &DataManager::get_spell_index);
 	ClassDB::bind_method(D_METHOD("get_spell_count"), &DataManager::get_spell_count);
@@ -334,6 +431,7 @@ void DataManager::_bind_methods() {
     ClassDB::bind_method(D_METHOD("set_auras_folder", "folder"), &DataManager::set_auras_folder);
     ADD_PROPERTY(PropertyInfo(Variant::STRING, "auras_folder"), "set_auras_folder", "get_auras_folder");
 
+	ClassDB::bind_method(D_METHOD("add_aura", "spell"), &DataManager::add_aura);
 	ClassDB::bind_method(D_METHOD("get_aura", "id"), &DataManager::get_aura);
 	ClassDB::bind_method(D_METHOD("get_aura_index", "index"), &DataManager::get_aura_index);
 	ClassDB::bind_method(D_METHOD("get_aura_count"), &DataManager::get_aura_count);
@@ -343,15 +441,27 @@ void DataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_craft_data_folder", "folder"), &DataManager::set_craft_data_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "craft_data_folder"), "set_craft_data_folder", "get_craft_data_folder");
 
-	ClassDB::bind_method(D_METHOD("get_craft_data", "id"), &DataManager::get_craft_data);
-	ClassDB::bind_method(D_METHOD("get_craft_data_index", "craft_id"), &DataManager::get_craft_data_index);
+	ClassDB::bind_method(D_METHOD("add_craft_data", "craft_data"), &DataManager::add_craft_data);
+	ClassDB::bind_method(D_METHOD("get_craft_data", "craft_data_id"), &DataManager::get_craft_data);
+	ClassDB::bind_method(D_METHOD("get_craft_data_index", "index"), &DataManager::get_craft_data_index);
 	ClassDB::bind_method(D_METHOD("get_craft_data_count"), &DataManager::get_craft_data_count);
+
+	//Item Templates
+	ClassDB::bind_method(D_METHOD("get_item_template_folder"), &DataManager::get_item_template_folder);
+	ClassDB::bind_method(D_METHOD("set_item_template_folder", "folder"), &DataManager::set_item_template_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "item_template_folder"), "set_item_template_folder", "get_item_template_folder");
+
+	ClassDB::bind_method(D_METHOD("add_item_template", "item_template"), &DataManager::add_item_template);
+	ClassDB::bind_method(D_METHOD("get_item_template", "item_template_id"), &DataManager::get_item_template);
+	ClassDB::bind_method(D_METHOD("get_item_template_index", "index"), &DataManager::get_item_template_index);
+	ClassDB::bind_method(D_METHOD("get_item_template_count"), &DataManager::get_item_template_count);
 
     //tests
     ClassDB::bind_method(D_METHOD("list_spells"), &DataManager::list_spells);
     ClassDB::bind_method(D_METHOD("list_characters"), &DataManager::list_characters);
     ClassDB::bind_method(D_METHOD("list_auras"), &DataManager::list_auras);
 	ClassDB::bind_method(D_METHOD("list_craft_data"), &DataManager::list_craft_data);
+	ClassDB::bind_method(D_METHOD("list_item_templates"), &DataManager::list_item_templates);
 }
 
 DataManager::DataManager() {
@@ -368,6 +478,9 @@ DataManager::DataManager() {
 
     _craft_datas = memnew(Vector<Ref<CraftDataAttribute> >());
 	_craft_data_map = memnew(CraftDataHashMap());
+
+	_item_templates = memnew(Vector<Ref<ItemTemplate> >());
+	_item_template_map = memnew(ItemTemplateHashMap());
 
     _automatic_load = true;
 }
@@ -397,4 +510,7 @@ DataManager::~DataManager() {
 
     memdelete(_craft_datas);
 	memdelete(_craft_data_map);
+
+	memdelete(_item_templates);
+	memdelete(_item_template_map);
 }

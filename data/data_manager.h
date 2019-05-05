@@ -17,11 +17,13 @@ class Aura;
 class Spell;
 class CharacterClass;
 class CraftDataAttribute;
+class ItemTemplate;
 
 typedef HashMap<int, Ref<CharacterClass> > CharacterClassHashMap;
 typedef HashMap<int, Ref<Spell> > SpellHashMap;
 typedef HashMap<int, Ref<Aura> > AuraHashMap;
 typedef HashMap<int, Ref<CraftDataAttribute> > CraftDataHashMap;
+typedef HashMap<int, Ref<ItemTemplate> > ItemTemplateHashMap;
 //typedef HashMap<int, Ref<SpellScript> > SpellScriptHashMap;
 
 class DataManager : public Node {
@@ -60,20 +62,28 @@ public:
 	Ref<CraftDataAttribute> get_craft_data(int craft_id);
 	Ref<CraftDataAttribute> get_craft_data_index(int index);
 	int get_craft_data_count();
-	//bool is_craft_data_exists();
 	void add_craft_data(Ref<CraftDataAttribute> aura);
 
+	String get_item_template_folder() { return _item_template_folder; }
+	void set_item_template_folder(String folder) { _item_template_folder = folder; }
+	Vector<Ref<ItemTemplate> > *get_item_templates() { return _item_templates; }
+	void add_item_template(Ref<ItemTemplate> aura);
+	Ref<ItemTemplate> get_item_template(int item_id);
+	Ref<ItemTemplate> get_item_template_index(int index);
+	int get_item_template_count();
+
 	void load_all();
-	//void load_spell_scripts();
 	void load_spells();
 	void load_auras();
 	void load_characters();
 	void load_craft_datas();
+	void load_item_templates();
 
 	void list_characters();
 	void list_spells();
 	void list_auras();
 	void list_craft_data();
+	void list_item_templates();
 
 	bool get_automatic_load() { return _automatic_load; }
 	void set_automatic_load(bool load) { _automatic_load = load; }
@@ -101,6 +111,10 @@ private:
 	String _craft_data_folder;
 	Vector<Ref<CraftDataAttribute> > *_craft_datas;
 	CraftDataHashMap *_craft_data_map;
+
+	String _item_template_folder;
+	Vector<Ref<ItemTemplate> > *_item_templates;
+	ItemTemplateHashMap *_item_template_map;
 
 	/*
 	Vector<Ref<SpellScript> > *_spell_scripts;
