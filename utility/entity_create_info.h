@@ -1,6 +1,7 @@
 #ifndef ENTITY_CREATE_INFO_H
 #define ENTITY_CREATE_INFO_H
 
+#include "core/reference.h"
 #include "core/ustring.h"
 #include "../entity_enums.h"
 #include "../data/character.h"
@@ -44,7 +45,7 @@ protected:
 		ClassDB::bind_method(D_METHOD("get_xp"), &EntityCreateInfo::get_xp);
 		ClassDB::bind_method(D_METHOD("set_xp", "value"), &EntityCreateInfo::set_xp);
 		ADD_PROPERTY(PropertyInfo(Variant::STRING, "xp"), "set_xp", "get_xp");
-
+		
 		ClassDB::bind_method(D_METHOD("get_character_class"), &EntityCreateInfo::get_character_class);
 		ClassDB::bind_method(D_METHOD("set_character_class", "value"), &EntityCreateInfo::set_character_class);
 		ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "character_class", PROPERTY_HINT_RESOURCE_TYPE, "CharacterClass"), "set_character_class", "get_character_class");
