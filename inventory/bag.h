@@ -17,7 +17,7 @@ public:
     int get_slot_count();
     void set_slot_count(int count);
     bool try_to_add_item(Ref<ItemInstance> item, int count = 1);
-    bool add_item_to_slot(Ref<ItemInstance> item, int slot_index);
+	bool add_item_to_slot(Ref<ItemInstance> item, int slot_index, int count = 1);
 
 	Bag();
     ~Bag();

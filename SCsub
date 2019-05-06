@@ -41,6 +41,7 @@ module_env.add_source_files(env.modules_sources,"entities/stats/stat_data.cpp")
 
 module_env.add_source_files(env.modules_sources,"entities/player_talent.cpp")
 module_env.add_source_files(env.modules_sources,"inventory/bag_slot.cpp")
+module_env.add_source_files(env.modules_sources,"inventory/bag.cpp")
 
 module_env.add_source_files(env.modules_sources,"spells/aura_infos.cpp")
 module_env.add_source_files(env.modules_sources,"spells/spell_cast_info.cpp")

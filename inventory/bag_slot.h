@@ -10,10 +10,13 @@ class BagSlot : public Reference {
 public:
 	Ref<ItemInstance> get_item();
 	void set_item(Ref<ItemInstance> item);
+	void set_item_count(Ref<ItemInstance> item, int count = 1);
 	int get_count();
 	void set_count(int value);
 	int get_slot_index();
 	void set_slot_index(int value);
+	bool has_item();
+	void clear();
 
 	BagSlot();
 	BagSlot(Ref<ItemInstance> item);
@@ -25,7 +28,7 @@ protected:
 private:
 	Ref<ItemInstance> _item;
 	int _count;
-	int _slot_ndex;
+	int _slot_index;
 };
 
 #endif
