@@ -1,5 +1,5 @@
-#ifndef ITEM_DATA_INSTANCE_H
-#define ITEM_DATA_INSTANCE_H
+#ifndef ITEM_INSTANCE_H
+#define ITEM_INSTANCE_H
 
 #include "core/reference.h"
 #include "scene/resources/texture.h"
@@ -8,8 +8,8 @@
 #include "../entities/stats/stat.h"
 #include "../item_enums.h"
 
-class ItemDataInstance : public Reference {
-	GDCLASS(ItemDataInstance, Reference);
+class ItemInstance : public Reference {
+	GDCLASS(ItemInstance, Reference);
 
 public:
 	int get_id();
@@ -65,8 +65,8 @@ public:
 	float get_percent_mod(int index);
 	void set_percent_mod(int index, float value);
 
-	ItemDataInstance();
-	~ItemDataInstance();
+	ItemInstance();
+	~ItemInstance();
 
 protected:
 	static void _bind_methods();

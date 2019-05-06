@@ -24,7 +24,7 @@ module_env.add_source_files(env.modules_sources,"data/data_manager.cpp")
 module_env.add_source_files(env.modules_sources,"data/xp_data.cpp")
 module_env.add_source_files(env.modules_sources,"data/item_stat_modifier.cpp")
 module_env.add_source_files(env.modules_sources,"data/item_template_stat_modifier.cpp")
-module_env.add_source_files(env.modules_sources,"data/item_data_instance.cpp")
+module_env.add_source_files(env.modules_sources,"data/item_instance.cpp")
 module_env.add_source_files(env.modules_sources,"data/item_template.cpp")
 module_env.add_source_files(env.modules_sources,"data/spell_cooldown_manipulation_data.cpp")
 
@@ -40,7 +40,7 @@ module_env.add_source_files(env.modules_sources,"entities/stats/stat.cpp")
 module_env.add_source_files(env.modules_sources,"entities/stats/stat_data.cpp")
 
 module_env.add_source_files(env.modules_sources,"entities/player_talent.cpp")
-module_env.add_source_files(env.modules_sources,"entities/item_instance.cpp")
+module_env.add_source_files(env.modules_sources,"inventory/bag_slot.cpp")
 
 module_env.add_source_files(env.modules_sources,"spells/aura_infos.cpp")
 module_env.add_source_files(env.modules_sources,"spells/spell_cast_info.cpp")
@@ -65,5 +65,6 @@ module_env.add_source_files(env.modules_sources,"skeleton/character_skeleton.cpp
 
 module_env.add_source_files(env.modules_sources,"utility/entity_create_info.cpp")
 
-
+module_env.add_source_files(env.modules_sources,"utility/cooldown.cpp")
+module_env.add_source_files(env.modules_sources,"utility/category_cooldown.cpp")
 

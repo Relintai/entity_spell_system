@@ -16,14 +16,14 @@
 #include "data/spell_cooldown_manipulation_data.h"
 
 #include "data/item_template.h"
-#include "data/item_data_instance.h"
+#include "data/item_instance.h"
 
 #include "data/spell.h"
 #include "data/icon.h"
 #include "entities/stats/stat.h"
 #include "entities/stats/stat_data.h"
 #include "entities/player_talent.h"
-#include "entities/item_instance.h"
+#include "inventory/bag_slot.h"
 
 #include "data/craft_data_attribute_helper.h"
 #include "data/craft_data_attribute.h"
@@ -52,6 +52,8 @@
 #include "skeleton/character_skeleton.h"
 
 #include "utility/entity_create_info.h"
+#include "utility/cooldown.h"
+#include "utility/category_cooldown.h"
 
 void register_entity_spell_system_types() {
 
@@ -68,7 +70,7 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<ItemTemplateStatModifier>();
 	ClassDB::register_class<ItemEnums>();
 	ClassDB::register_class<ItemTemplate>();
-	ClassDB::register_class<ItemDataInstance>();
+	ClassDB::register_class<ItemInstance>();
 	ClassDB::register_class<SpellCooldownManipulationData>();
 	ClassDB::register_class<Talent>();
 	ClassDB::register_class<TalentRowData>();
@@ -88,8 +90,9 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<StatData>();
 
 	ClassDB::register_class<PlayerTalent>();
-	ClassDB::register_class<ItemInstance>();
 	ClassDB::register_class<CharacterSpec>();
+    
+    ClassDB::register_class<BagSlot>();
 
 
 	ClassDB::register_class<SpellDamageInfo>();
@@ -119,6 +122,9 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<ESDragAndDrop>();
 
 	ClassDB::register_class<CharacterSkeleton>();
+    
+    ClassDB::register_class<Cooldown>();
+    ClassDB::register_class<CategoryCooldown>();
 }
 
 void unregister_entity_spell_system_types() {

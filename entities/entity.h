@@ -9,7 +9,8 @@
 #include "core/object.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-#include "item_instance.h"
+#include "../inventory/bag_slot.h"
+#include "../data/item_instance.h"
 #include "player_talent.h"
 #include "scene/2d/physics_body_2d.h"
 
