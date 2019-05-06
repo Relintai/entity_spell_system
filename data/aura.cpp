@@ -321,6 +321,14 @@ void Aura::son_cast_finished_target(Ref<SpellCastInfo> info) {
 		call("_son_cast_finished_target", info);
 }
 
+void Aura::son_hit(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_hit"))
+		call("_son_hit", data);
+}
+
+
 void Aura::son_before_damage(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
@@ -335,11 +343,11 @@ void Aura::son_damage_receive(Ref<SpellDamageInfo> data) {
 		call("_son_damage_receive", data);
 }
 
-void Aura::son_hit(Ref<SpellDamageInfo> data) {
+void Aura::son_dealt_damage(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_son_hit"))
-		call("_son_hit", data);
+	if (has_method("_son_dealt_damage"))
+		call("_son_dealt_damage", data);
 }
 
 void Aura::son_damage_dealt(Ref<SpellDamageInfo> data) {
@@ -347,6 +355,35 @@ void Aura::son_damage_dealt(Ref<SpellDamageInfo> data) {
 
 	if (has_method("_son_damage_dealt"))
 		call("_son_damage_dealt", data);
+}
+
+
+void Aura::son_before_heal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_before_heal"))
+		call("_son_before_heal", data);
+}
+
+void Aura::son_heal_receive(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_heal_receive"))
+		call("_son_heal_receive", data);
+}
+
+void Aura::son_dealt_heal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_dealt_heal"))
+		call("_son_dealt_heal", data);
+}
+
+void Aura::son_heal_dealt(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_heal_dealt"))
+		call("_son_heal_dealt", data);
 }
 
 void Aura::son_remove_expired(Ref<AuraData> aura) {
@@ -405,6 +442,22 @@ void Aura::con_refresh(Ref<AuraData> data) {
 		call("_con_refresh", data);
 }
 
+void Aura::setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
+	ERR_FAIL_COND(!data.is_valid() || !info.is_valid());
+
+	//always exists
+	call("setup_aura_data", data, info);
+}
+
+void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
+	data->set_aura(Ref<Aura>(this));
+	data->set_caster(info->get_caster());
+
+	if (is_damage_enabled()) {
+		calculate_initial_damage(data, info);
+	}
+}
+
 void Aura::sapply_passives_damage_receive(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
@@ -419,13 +472,6 @@ void Aura::sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
 	call("_sapply_passives_damage_deal", data);
 }
 
-void Aura::setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
-	ERR_FAIL_COND(!data.is_valid() || !info.is_valid());
-
-	//always exists
-	call("setup_aura_data", data, info);
-}
-
 void Aura::calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
 	ERR_FAIL_COND(!aura_data.is_valid() || !info.is_valid());
 
@@ -438,6 +484,73 @@ void Aura::handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data
 
 	//always exists
 	call("_handle_aura_damage", aura_data, data);
+}
+
+
+void Aura::_sapply_passives_damage_receive(Ref<SpellDamageInfo> data) {
+
+}
+
+void Aura::_sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
+
+}
+
+void Aura::_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
+	aura_data->set_damage(info->get_aura()->get_damage_min());
+}
+
+void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data) {
+	data->set_damage(aura_data->get_damage());
+
+	data->get_dealer()->sdeal_damage_to(data);
+}
+
+void Aura::sapply_passives_heal_receive(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	//always exists
+	call("_sapply_passives_heal_receive", data);
+}
+
+void Aura::sapply_passives_heal_deal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	//always exists
+	call("_sapply_passives_heal_deal", data);
+}
+
+void Aura::_sapply_passives_heal_receive(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	//always exists
+	call("_sapply_passives_heal_receive", data);
+}
+
+void Aura::_sapply_passives_heal_deal(Ref<SpellHealInfo> data) {
+}
+
+void Aura::calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
+	ERR_FAIL_COND(!aura_data.is_valid() || !info.is_valid());
+
+	//always exists
+	call("_calculate_initial_heal", aura_data, info);
+}
+
+void Aura::handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!aura_data.is_valid() || !data.is_valid());
+
+	//always exists
+	call("_handle_aura_heal", aura_data, data);
+}
+
+void Aura::_calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
+	aura_data->set_damage(info->get_aura()->get_damage_min());
+}
+
+void Aura::_handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> data) {
+	data->set_heal(aura_data->get_heal());
+
+	data->get_dealer()->sdeal_heal_to(data);
 }
 
 void Aura::_sapply(Ref<AuraApplyInfo> info) {
@@ -486,24 +599,6 @@ void Aura::_supdate(Ref<AuraData> aura, float delta) {
 	}
 }
 
-void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
-	data->set_aura(Ref<Aura>(this));
-	data->set_caster(info->get_caster());
-
-	if (is_damage_enabled()) {
-		calculate_initial_damage(data, info);
-	}
-}
-
-void Aura::_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
-	aura_data->set_damage(info->get_aura()->get_damage_min());
-}
-
-void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data) {
-	data->set_damage(aura_data->get_damage());
-
-	data->get_dealer()->sdeal_damage_to(data);
-}
 
 void Aura::_validate_property(PropertyInfo &property) const {
 
@@ -549,10 +644,17 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_cast_finished", "info"), &Aura::son_cast_finished);
 	ClassDB::bind_method(D_METHOD("son_cast_finished_target", "info"), &Aura::son_cast_finished_target);
 
+	ClassDB::bind_method(D_METHOD("son_hit", "data"), &Aura::son_hit);
+
 	ClassDB::bind_method(D_METHOD("son_before_damage", "data"), &Aura::son_before_damage);
 	ClassDB::bind_method(D_METHOD("son_damage_receive", "data"), &Aura::son_damage_receive);
-	ClassDB::bind_method(D_METHOD("son_hit", "data"), &Aura::son_hit);
+	ClassDB::bind_method(D_METHOD("son_dealt_damage", "data"), &Aura::son_dealt_damage);
 	ClassDB::bind_method(D_METHOD("son_damage_dealt", "data"), &Aura::son_damage_dealt);
+
+	ClassDB::bind_method(D_METHOD("son_before_heal", "data"), &Aura::son_before_heal);
+	ClassDB::bind_method(D_METHOD("son_heal_receive", "data"), &Aura::son_heal_receive);
+	ClassDB::bind_method(D_METHOD("son_dealt_heal", "data"), &Aura::son_dealt_heal);
+	ClassDB::bind_method(D_METHOD("son_heal_dealt", "data"), &Aura::son_heal_dealt);
 
 	ClassDB::bind_method(D_METHOD("son_remove", "aura"), &Aura::son_remove);
 	ClassDB::bind_method(D_METHOD("son_remove_expired", "aura"), &Aura::son_remove_expired);
@@ -568,14 +670,21 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_cast_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_finished_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
+	BIND_VMETHOD(MethodInfo("_son_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
 	BIND_VMETHOD(MethodInfo("_son_before_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_damage_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	BIND_VMETHOD(MethodInfo("_son_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_dealt_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_damage_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	BIND_VMETHOD(MethodInfo("_son_before_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_son_heal_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_son_dealt_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_son_heal_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 
 	BIND_VMETHOD(MethodInfo("_son_remove", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_son_remove_expired", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("son_remove_dispell", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_son_remove_dispell", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 	BIND_VMETHOD(MethodInfo("_son_before_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_son_after_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
@@ -590,23 +699,43 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_refresh", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 	//Calculations / Queries
+	ClassDB::bind_method(D_METHOD("setup_aura_data", "data", "info"), &Aura::setup_aura_data);
+
+	BIND_VMETHOD(MethodInfo("_setup_aura_data", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
+
+	ClassDB::bind_method(D_METHOD("_setup_aura_data", "data", "info"), &Aura::_setup_aura_data);
+
+	//damage
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Aura::sapply_passives_damage_receive);
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_deal", "data"), &Aura::sapply_passives_damage_deal);
-
-	ClassDB::bind_method(D_METHOD("setup_aura_data", "data", "info"), &Aura::setup_aura_data);
 	ClassDB::bind_method(D_METHOD("calculate_initial_damage", "aura_data", "info"), &Aura::calculate_initial_damage);
 	ClassDB::bind_method(D_METHOD("handle_aura_damage", "aura_data", "data"), &Aura::handle_aura_damage);
 
 	BIND_VMETHOD(MethodInfo("_sapply_passives_damage_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_sapply_passives_damage_deal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-
-	BIND_VMETHOD(MethodInfo("_setup_aura_data", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
 	BIND_VMETHOD(MethodInfo("_calculate_initial_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
 	BIND_VMETHOD(MethodInfo("_handle_aura_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
-	ClassDB::bind_method(D_METHOD("_setup_aura_data", "data", "info"), &Aura::_setup_aura_data);
+	ClassDB::bind_method(D_METHOD("_sapply_passives_damage_receive", "data"), &Aura::_sapply_passives_damage_receive);
+	ClassDB::bind_method(D_METHOD("_sapply_passives_damage_deal", "data"), &Aura::_sapply_passives_damage_deal);
 	ClassDB::bind_method(D_METHOD("_calculate_initial_damage", "aura_data", "info"), &Aura::_calculate_initial_damage);
 	ClassDB::bind_method(D_METHOD("_handle_aura_damage", "aura_data", "data"), &Aura::_handle_aura_damage);
+
+	//heal
+	ClassDB::bind_method(D_METHOD("sapply_passives_heal_receive", "data"), &Aura::sapply_passives_heal_receive);
+	ClassDB::bind_method(D_METHOD("sapply_passives_heal_deal", "data"), &Aura::sapply_passives_heal_deal);
+	ClassDB::bind_method(D_METHOD("calculate_initial_heal", "aura_data", "info"), &Aura::calculate_initial_heal);
+	ClassDB::bind_method(D_METHOD("handle_aura_heal", "aura_data", "data"), &Aura::handle_aura_heal);
+
+	BIND_VMETHOD(MethodInfo("_sapply_passives_heal_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_sapply_passives_heal_deal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_calculate_initial_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
+	BIND_VMETHOD(MethodInfo("_handle_aura_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+
+	ClassDB::bind_method(D_METHOD("_sapply_passives_heal_receive", "data"), &Aura::_sapply_passives_heal_receive);
+	ClassDB::bind_method(D_METHOD("_sapply_passives_heal_deal", "data"), &Aura::_sapply_passives_heal_deal);
+	ClassDB::bind_method(D_METHOD("_calculate_initial_heal", "aura_data", "info"), &Aura::_calculate_initial_heal);
+	ClassDB::bind_method(D_METHOD("_handle_aura_heal", "aura_data", "data"), &Aura::_handle_aura_heal);
 
 	//Properties
 	ClassDB::bind_method(D_METHOD("get_id"), &Aura::get_id);

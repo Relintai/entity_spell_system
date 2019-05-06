@@ -17,6 +17,7 @@
 
 #include "../entities/auras/aura_data.h"
 #include "../pipelines/spell_damage_info.h"
+#include "../pipelines/spell_heal_info.h"
 #include "../spells/spell_cast_info.h"
 
 class AuraApplyInfo;
@@ -278,10 +279,17 @@ public:
 	void son_cast_finished(Ref<SpellCastInfo> info);
 	void son_cast_finished_target(Ref<SpellCastInfo> info);
 
+	void son_hit(Ref<SpellDamageInfo> data);
+
 	void son_before_damage(Ref<SpellDamageInfo> data);
 	void son_damage_receive(Ref<SpellDamageInfo> data);
-	void son_hit(Ref<SpellDamageInfo> data);
+	void son_dealt_damage(Ref<SpellDamageInfo> data);
 	void son_damage_dealt(Ref<SpellDamageInfo> data);
+
+	void son_before_heal(Ref<SpellHealInfo> data);
+	void son_heal_receive(Ref<SpellHealInfo> data);
+	void son_dealt_heal(Ref<SpellHealInfo> data);
+	void son_heal_dealt(Ref<SpellHealInfo> data);
 
 	void son_remove(Ref<AuraData> aura);
 	void son_remove_expired(Ref<AuraData> aura);
@@ -296,15 +304,30 @@ public:
 	void con_refresh(Ref<AuraData> data);
 
 	//Calculations / Queries
+	void setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
+
+	virtual void _setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
+
 	void sapply_passives_damage_receive(Ref<SpellDamageInfo> data);
 	void sapply_passives_damage_deal(Ref<SpellDamageInfo> data);
-	void setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
 	void calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
 	void handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data);
 
+	virtual void _sapply_passives_damage_receive(Ref<SpellDamageInfo> data);
+	virtual void _sapply_passives_damage_deal(Ref<SpellDamageInfo> data);
 	virtual void _calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
 	virtual void _handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data);
-	virtual void _setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
+
+	void sapply_passives_heal_receive(Ref<SpellHealInfo> data);
+	void sapply_passives_heal_deal(Ref<SpellHealInfo> data);
+	void calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
+	void handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> data);
+
+	virtual void _sapply_passives_heal_receive(Ref<SpellHealInfo> data);
+	virtual void _sapply_passives_heal_deal(Ref<SpellHealInfo> data);
+	virtual void _calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
+	virtual void _handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> data);
+
 
 	Aura();
 	~Aura();

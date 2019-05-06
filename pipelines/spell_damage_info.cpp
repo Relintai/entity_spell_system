@@ -20,6 +20,14 @@ void SpellDamageInfo::set_crit(bool value) {
 	_crit = value;
 }
 
+int SpellDamageInfo::get_amount_absorbed() {
+	return _amount_absorbed;
+}
+
+void SpellDamageInfo::set_amount_absorbed(int value) {
+	_amount_absorbed = value;
+}
+
 SpellEnums::SpellType SpellDamageInfo::get_spell_type() {
 	return _spell_type;
 }
@@ -143,6 +151,10 @@ void SpellDamageInfo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_crit"), &SpellDamageInfo::get_crit);
 	ClassDB::bind_method(D_METHOD("set_crit", "value"), &SpellDamageInfo::set_crit);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "crit"), "set_crit", "get_crit");
+	
+	ClassDB::bind_method(D_METHOD("get_amount_absorbed"), &SpellDamageInfo::get_amount_absorbed);
+	ClassDB::bind_method(D_METHOD("set_amount_absorbed", "value"), &SpellDamageInfo::set_amount_absorbed);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "amount_absorbed"), "set_amount_absorbed", "get_amount_absorbed");
 
 	ClassDB::bind_method(D_METHOD("get_spell_type"), &SpellDamageInfo::get_spell_type);
 	ClassDB::bind_method(D_METHOD("set_spell_type", "value"), &SpellDamageInfo::set_spell_type);

@@ -1,6 +1,6 @@
 #include "stat.h"
 
-const String Stat::STAT_BINDING_STRING = "Health, Speed, Mana, GCD, Haste, Agility, Strength, Stamina, Intellect, Luck, Haste Rating, Resilience, Armor, Attack Power, Spell Power, Melee Crit, Melee Crit bonus, Spell Crit, Spell Crit Bonus, Block, Parry, Damage Reduction, Melee Damage Reduction, Spell Damage Reduction, Damage Taken, Melee Damage, Spell Damage, Holy Resist, Shadow Resist, Nature Resist, Fire Resist, Frost Resist, Lightning Resist, Chaos Resist, Silence Resist, Fear Resist, None";
+const String Stat::STAT_BINDING_STRING = "Health, Speed, Mana, GCD, Haste, Agility, Strength, Stamina, Intellect, Luck, Haste Rating, Resilience, Armor, Attack Power, Spell Power, Melee Crit, Melee Crit bonus, Spell Crit, Spell Crit Bonus, Block, Parry, Damage Reduction, Melee Damage Reduction, Spell Damage Reduction, Damage Taken, Heal Taken, Melee Damage, Spell Damage, Holy Resist, Shadow Resist, Nature Resist, Fire Resist, Frost Resist, Lightning Resist, Chaos Resist, Silence Resist, Fear Resist, None";
 
 const String Stat::MODIFIER_APPLY_TYPE_BINDING_STRING = "Standard, Only min modifier, Only Max modifier";
 

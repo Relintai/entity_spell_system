@@ -30,6 +30,7 @@ class CharacterClass;
 class AuraData;
 class Spell;
 class SpellDamageInfo;
+class SpellHealInfo;
 class SpellCastInfo;
 class EntityCreateInfo;
 
@@ -202,6 +203,7 @@ public:
 	_FORCE_INLINE_ Ref<Stat> get_melee_damage_reduction() { return _melee_damage_reduction; }
 	_FORCE_INLINE_ Ref<Stat> get_spell_damage_reduction() { return _spell_damage_reduction; }
 	_FORCE_INLINE_ Ref<Stat> get_damage_taken() { return _damage_taken; }
+	_FORCE_INLINE_ Ref<Stat> get_heal_taken() { return _heal_taken; }
 	_FORCE_INLINE_ Ref<Stat> get_melee_damage() { return _melee_damage; }
 	_FORCE_INLINE_ Ref<Stat> get_spell_damage() { return _spell_damage; }
 
@@ -225,6 +227,11 @@ public:
 	void son_dealt_damage(Ref<SpellDamageInfo> data);
 	void son_damage_dealt(Ref<SpellDamageInfo> data);
 
+	void son_before_heal(Ref<SpellHealInfo> data);
+	void son_heal_receive(Ref<SpellHealInfo> data);
+	void son_dealt_heal(Ref<SpellHealInfo> data);
+	void son_heal_dealt(Ref<SpellHealInfo> data);
+
 	void son_before_cast(Ref<SpellCastInfo> info);
 	void son_before_cast_target(Ref<SpellCastInfo> info);
 	void son_cast_finished_target(Ref<SpellCastInfo> info);
@@ -243,6 +250,9 @@ public:
 	void sapply_passives_damage_receive(Ref<SpellDamageInfo> data);
 	void sapply_passives_damage_deal(Ref<SpellDamageInfo> data);
 
+	void sapply_passives_heal_receive(Ref<SpellHealInfo> data);
+	void sapply_passives_heal_deal(Ref<SpellHealInfo> data);
+
 	//Spell operations
 	void scast_spell(int spell_id);
 	void crequest_spell_cast(int spell_id);
@@ -250,6 +260,10 @@ public:
 	//Damage Operations
 	void stake_damage(Ref<SpellDamageInfo> data);
 	void sdeal_damage_to(Ref<SpellDamageInfo> data);
+
+	//Heal Operations
+	void stake_heal(Ref<SpellHealInfo> data);
+	void sdeal_heal_to(Ref<SpellHealInfo> data);
 
 	//Aura Manipulation
 	void sadd_aura(Ref<AuraData> aura);
@@ -276,17 +290,19 @@ public:
 	//Update
 	void update_auras(float delta);
 
+	//Clientside hooks
+	void creceive_damage_taken(Ref<SpellDamageInfo> data);
+	void creceiveon_damage_dealt(Ref<SpellDamageInfo> data);
+	void creceive_heal_taken(Ref<SpellHealInfo> data);
+	void creceiveon_heal_dealt(Ref<SpellHealInfo> data);
+
 	//Old, hook loading update when needed
 	void setup_on_player_moves(Entity *bopmccc, Vector<int> *sspells); //load -> remove, just store spellIds
 
 	//Old stuff, remove or update
-	void take_heal(int heal, bool crit, Entity *dealer);
 	void die();
 	void resurrect();
 	void creceive_resurrect();
-	void creceive_damage_taken(Ref<SpellDamageInfo> data);
-	void creceiveon_damage_dealt(Ref<SpellDamageInfo> data);
-	void creceive_heal_taken(int heal, bool crit, Entity *dealer);
 	void creceive_died();
 	void creceive_mana_changed(int amount);
 	void trigger_global_cooldown();
@@ -468,6 +484,7 @@ private:
 	Ref<Stat> _melee_damage_reduction;
 	Ref<Stat> _spell_damage_reduction;
 	Ref<Stat> _damage_taken;
+	Ref<Stat> _heal_taken;
 	Ref<Stat> _melee_damage;
 	Ref<Stat> _spell_damage;
 

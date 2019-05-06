@@ -1,5 +1,5 @@
-#ifndef DAMAGE_PIPELINE_DATA_H
-#define DAMAGE_PIPELINE_DATA_H
+#ifndef SPELL_DAMAGE_INFO_H
+#define SPELL_DAMAGE_INFO_H
 
 #include "../spell_enums.h"
 #include "core/reference.h"
@@ -19,17 +19,6 @@ public:
 		DAMAGE_SOURCE_AURA,
 	};
 
-private:
-	int _damage;
-	int _original_damage;
-	bool _crit;
-	SpellEnums::SpellType _spell_type;
-	Entity *_dealer;
-	Entity *_receiver;
-	DamageSource _damage_source_type;
-	Ref<Reference> _damage_source;
-	int _damage_source_id;
-
 protected:
 	static void _bind_methods();
 
@@ -39,6 +28,9 @@ public:
 
 	bool get_crit();
 	void set_crit(bool value);
+
+	int get_amount_absorbed();
+	void set_amount_absorbed(int value);
 
 	SpellEnums::SpellType get_spell_type();
 	void set_spell_type(SpellEnums::SpellType value);
@@ -68,6 +60,18 @@ public:
 
 	SpellDamageInfo();
 	~SpellDamageInfo();
+
+private:
+	int _damage;
+	int _original_damage;
+	int _amount_absorbed;
+	bool _crit;
+	SpellEnums::SpellType _spell_type;
+	Entity *_dealer;
+	Entity *_receiver;
+	DamageSource _damage_source_type;
+	Ref<Reference> _damage_source;
+	int _damage_source_id;
 };
 
 VARIANT_ENUM_CAST(SpellDamageInfo::DamageSource);

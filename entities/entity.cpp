@@ -4,6 +4,7 @@
 #include "../data/spell.h"
 #include "../entities/auras/aura_data.h"
 #include "../pipelines/spell_damage_info.h"
+#include "../pipelines/spell_heal_info.h"
 
 NodePath Entity::get_character_skeleton_path() {
 	return _character_skeleton_path;
@@ -318,6 +319,7 @@ Entity::Entity() {
 	_melee_damage_reduction = Ref<Stat>(get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION));
 	_spell_damage_reduction = Ref<Stat>(get_stat_enum(Stat::STAT_ID_SPELL_DAMAGE_REDUCTION));
 	_damage_taken = Ref<Stat>(get_stat_enum(Stat::STAT_ID_DAMAGE_TAKEN));
+	_heal_taken = Ref<Stat>(get_stat_enum(Stat::STAT_ID_HEAL_TAKEN));
 	_melee_damage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE));
 	_spell_damage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_SPELL_DAMAGE));
 
@@ -386,6 +388,7 @@ void Entity::sinitialize_stats() {
 	gets_character_class()->get_stat_data()->get_stat_for_stat(get_melee_damage_reduction());
 	gets_character_class()->get_stat_data()->get_stat_for_stat(get_spell_damage_reduction());
 	gets_character_class()->get_stat_data()->get_stat_for_stat(get_damage_taken());
+	gets_character_class()->get_stat_data()->get_stat_for_stat(get_heal_taken());
 	gets_character_class()->get_stat_data()->get_stat_for_stat(get_melee_damage());
 	gets_character_class()->get_stat_data()->get_stat_for_stat(get_spell_damage());
 }
@@ -470,21 +473,10 @@ void Entity::stake_damage(Ref<SpellDamageInfo> data) {
 	creceive_damage_taken(data);
 
 	//signal
-	emit_signal("son_damage_taken", this, data);
+	emit_signal("son_damage_received", this, data);
 
 	if (get_health()->gets_current() <= 0) {
 		die();
-	}
-}
-
-void Entity::son_damage_dealt(Ref<SpellDamageInfo> data) {
-	ERR_FAIL_COND(!data.is_valid());
-
-	//serverside
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
-
-		ad->get_aura()->son_damage_dealt(data);
 	}
 }
 
@@ -502,19 +494,50 @@ void Entity::sdeal_damage_to(Ref<SpellDamageInfo> data) {
 	son_damage_dealt(data);
 }
 
-void Entity::take_heal(int heal, bool crit, Entity *dealer) {
-	/*
-	if (sIsDead) {
+void Entity::stake_heal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	//serverside
+
+	if (gets_is_dead()) {
 		return;
 	}
-	Stat *expr_0F = SHealth;
-	expr_0F->Current += (float)(heal);
-	if (SHealth->Current > SHealth->Max) {
-		SHealth->Current = SHealth->Max;
+
+	//send it through the passive damage reductions pipeline
+	sapply_passives_heal_receive(data);
+	//send it through the onbeforehit handler
+	son_before_heal(data);
+
+	son_heal_receive(data);
+
+	int h = get_health()->gets_current() + data->get_heal();
+
+	if (h > get_health()->gets_max()) {
+		h = get_health()->gets_max();
 	}
-	if (owner->isServer) {
-		SendHealTakenMessage(heal, crit, dealer);
-	}*/
+
+	get_health()->sets_current(h);
+
+	//send an event to client
+	creceive_heal_taken(data);
+
+	//signal
+	emit_signal("son_heal_received", this, data);
+}
+
+
+void Entity::sdeal_heal_to(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	//serverside
+
+	if (gets_is_dead()) {
+		return;
+	}
+
+	sapply_passives_damage_deal(data);
+	data->get_receiver()->stake_damage(data);
+	son_damage_dealt(data);
 }
 
 void Entity::die() {
@@ -561,7 +584,7 @@ void Entity::creceive_damage_taken(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
 	//the current c health should probably be set here.
-	emit_signal("con_damage_taken", this, data);
+	emit_signal("con_damage_received", this, data);
 }
 
 void Entity::creceiveon_damage_dealt(Ref<SpellDamageInfo> data) {
@@ -571,14 +594,18 @@ void Entity::creceiveon_damage_dealt(Ref<SpellDamageInfo> data) {
 	emit_signal("con_damage_dealt", this, data);
 }
 
-void Entity::creceive_heal_taken(int heal, bool crit, Entity *dealer) {
-	/*
-	if (CHealth->Current > CHealth->Max) {
-		CHealth->Current = CHealth->Max;
-	}
-	if (COnHealTaken != null) {
-		DELEGATE_INVOKE(COnHealTaken, heal, crit, owner, dealer);
-	}*/
+void Entity::creceive_heal_taken(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	//the current c health should probably be set here.
+	emit_signal("con_heal_received", this, data);
+}
+
+void Entity::creceiveon_heal_dealt(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	//the current c health should probably be set here.
+	emit_signal("con_heal_dealt", this, data);
 }
 
 void Entity::creceive_died() {
@@ -736,7 +763,59 @@ void Entity::son_dealt_damage(Ref<SpellDamageInfo> data) {
 	for (int i = 0; i < _s_auras->size(); ++i) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
+		ad->get_aura()->son_dealt_damage(data);
+	}
+}
+
+void Entity::son_damage_dealt(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	//serverside
+	for (int i = 0; i < _s_auras->size(); ++i) {
+		Ref<AuraData> ad = _s_auras->get(i);
+
 		ad->get_aura()->son_damage_dealt(data);
+	}
+}
+
+void Entity::son_before_heal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	for (int i = 0; i < _s_auras->size(); ++i) {
+		Ref<AuraData> ad = _s_auras->get(i);
+
+		ad->get_aura()->son_before_heal(data);
+	}
+}
+
+void Entity::son_heal_receive(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	for (int i = 0; i < _s_auras->size(); ++i) {
+		Ref<AuraData> ad = _s_auras->get(i);
+
+		ad->get_aura()->son_heal_receive(data);
+	}
+}
+
+void Entity::son_dealt_heal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	for (int i = 0; i < _s_auras->size(); ++i) {
+		Ref<AuraData> ad = _s_auras->get(i);
+
+		ad->get_aura()->son_dealt_heal(data);
+	}
+}
+
+void Entity::son_heal_dealt(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	//serverside
+	for (int i = 0; i < _s_auras->size(); ++i) {
+		Ref<AuraData> ad = _s_auras->get(i);
+
+		ad->get_aura()->son_heal_dealt(data);
 	}
 }
 
@@ -757,6 +836,26 @@ void Entity::sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
 		Ref<AuraData> ad = _s_auras->get(i);
 
 		ad->get_aura()->sapply_passives_damage_deal(data);
+	}
+}
+
+void Entity::sapply_passives_heal_receive(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	for (int i = 0; i < _s_auras->size(); ++i) {
+		Ref<AuraData> ad = _s_auras->get(i);
+
+		ad->get_aura()->sapply_passives_heal_receive(data);
+	}
+}
+
+void Entity::sapply_passives_heal_deal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	for (int i = 0; i < _s_auras->size(); ++i) {
+		Ref<AuraData> ad = _s_auras->get(i);
+
+		ad->get_aura()->sapply_passives_heal_deal(data);
 	}
 }
 
@@ -2234,10 +2333,15 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("starget_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("ctarget_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	ADD_SIGNAL(MethodInfo("son_damage_taken", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	ADD_SIGNAL(MethodInfo("con_damage_taken", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	ADD_SIGNAL(MethodInfo("son_damage_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	ADD_SIGNAL(MethodInfo("con_damage_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
 	ADD_SIGNAL(MethodInfo("con_damage_dealt", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	ADD_SIGNAL(MethodInfo("son_heal_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	ADD_SIGNAL(MethodInfo("con_heal_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+
+	ADD_SIGNAL(MethodInfo("con_heal_dealt", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 
 	ADD_SIGNAL(MethodInfo("scharacter_class_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("ccharacter_class_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
@@ -2275,6 +2379,11 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_damage_receive", "data"), &Entity::son_damage_receive);
 	ClassDB::bind_method(D_METHOD("son_dealt_damage", "data"), &Entity::son_dealt_damage);
 	ClassDB::bind_method(D_METHOD("son_damage_dealt", "data"), &Entity::son_damage_dealt);
+
+	ClassDB::bind_method(D_METHOD("son_before_heal", "data"), &Entity::son_before_damage);
+	ClassDB::bind_method(D_METHOD("son_heal_receive", "data"), &Entity::son_damage_receive);
+	ClassDB::bind_method(D_METHOD("son_dealt_heal", "data"), &Entity::son_dealt_damage);
+	ClassDB::bind_method(D_METHOD("son_heal_dealt", "data"), &Entity::son_damage_dealt);
 
 	ClassDB::bind_method(D_METHOD("son_before_cast", "info"), &Entity::son_before_cast);
 	ClassDB::bind_method(D_METHOD("son_before_cast_target", "info"), &Entity::son_before_cast_target);

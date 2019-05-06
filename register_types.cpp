@@ -35,6 +35,7 @@
 #include "data/spell_visual_effect.h"
 
 #include "pipelines/spell_damage_info.h"
+#include "pipelines/spell_heal_info.h"
 
 #include "entities/auras/aura_data.h"
 #include "entities/entity.h"
@@ -92,6 +93,7 @@ void register_entity_spell_system_types() {
 
 
 	ClassDB::register_class<SpellDamageInfo>();
+	ClassDB::register_class<SpellHealInfo>();
 	ClassDB::register_class<AuraData>();
 
 	ClassDB::register_class<AuraTriggerData>();
