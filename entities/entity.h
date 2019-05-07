@@ -1,6 +1,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#ifdef ENTITIES_2D
+#include "scene/2d/physics_body_2d.h"
+#else
+#include "scene/3d/physics_body.h"
+#endif
+
+
 #include "../data/character.h"
 #include "../data/craft_data_attribute.h"
 #include "../data/spell.h"
@@ -12,7 +19,7 @@
 #include "../inventory/bag_slot.h"
 #include "../data/item_instance.h"
 #include "player_talent.h"
-#include "scene/2d/physics_body_2d.h"
+
 
 #include "../data/spell.h"
 #include "stats/stat.h"

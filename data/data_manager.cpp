@@ -176,11 +176,7 @@ void DataManager::load_spells() {
 
 				ERR_CONTINUE(!s.is_valid());
 
-                Resource *r = (*s);
-
-                Spell *sp = cast_to<Spell>(r);
-
-                Ref<Spell> spell = Ref<Spell>(sp);
+                Ref<Spell> spell = s;
 
 				ERR_CONTINUE(!spell.is_valid());
 
@@ -219,11 +215,7 @@ void DataManager::load_auras() {
 
 				ERR_CONTINUE(!s.is_valid());
 
-                Resource *r = (*s);
-
-                Aura *a = cast_to<Aura>(r);
-
-                Ref<Aura> aura = Ref<Aura>(a);
+                Ref<Aura> aura = s;
 
 				ERR_CONTINUE(!aura.is_valid());
 
@@ -262,11 +254,7 @@ void DataManager::load_characters() {
 
 				ERR_CONTINUE(!s.is_valid());
 
-                Resource *r = (*s);
-
-                CharacterClass *cc = cast_to<CharacterClass>(r);
-
-                Ref<CharacterClass> cls = Ref<CharacterClass>(cc);
+                Ref<CharacterClass> cls = s;
 
 				ERR_CONTINUE(!cls.is_valid());
 
@@ -305,11 +293,7 @@ void DataManager::load_craft_datas() {
 
 				ERR_CONTINUE(!s.is_valid());
 
-				Resource *r = (*s);
-
-				CraftDataAttribute *cc = cast_to<CraftDataAttribute>(r);
-
-				Ref<CraftDataAttribute> cda = Ref<CraftDataAttribute>(cc);
+				Ref<CraftDataAttribute> cda = s;
 
 				ERR_CONTINUE(!cda.is_valid());
 
@@ -348,11 +332,7 @@ void DataManager::load_item_templates() {
 				
 				ERR_CONTINUE(!s.is_valid());
 
-				Resource *r = (*s);
-
-				ItemTemplate *cc = cast_to<ItemTemplate>(r);
-
-				Ref<ItemTemplate> it = Ref<ItemTemplate>(cc);
+				Ref<ItemTemplate> it = s;
 
 				ERR_CONTINUE(!it.is_valid());
 
