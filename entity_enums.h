@@ -11,6 +11,7 @@ public:
 	static const String BINDING_STRING_PLAYER_RESOURCE_TYPES;
 	static const String BINDING_STRING_ENTITY_TYPES;
 	static const String BINDING_STRING_ENTITY_STATE_TYPES;
+    static const String BINDING_STRING_CHARCATER_SKELETON_BONE_ID;
 
 	enum PlayerResourceTypes {
 		PLAYER_RESOURCE_TYPES_NONE,
@@ -40,6 +41,13 @@ public:
 		ENTITY_STATE_TYPE_CURSED = 1 << 8,
 		ENTITY_STATE_TYPE_PACIFIED = 1 << 9,
 	};
+    
+    enum CharacterSkeletonBoneId {
+		BONE_ID_HIP = 0,
+		BONE_ID_LEFT_HAND = 1,
+		BONE_ID_RIGHT_HAND = 2,
+		MAX_BONE_ID = 3,
+	};
 
 	EntityEnums() {}
 
@@ -67,11 +75,17 @@ protected:
 		BIND_ENUM_CONSTANT(ENTITY_STATE_TYPE_COLD);
 		BIND_ENUM_CONSTANT(ENTITY_STATE_TYPE_CURSED);
 		BIND_ENUM_CONSTANT(ENTITY_STATE_TYPE_PACIFIED);
+        
+        BIND_ENUM_CONSTANT(BONE_ID_HIP);
+        BIND_ENUM_CONSTANT(BONE_ID_LEFT_HAND);
+        BIND_ENUM_CONSTANT(BONE_ID_RIGHT_HAND);
+        BIND_ENUM_CONSTANT(MAX_BONE_ID);
 	}
 };
 
 VARIANT_ENUM_CAST(EntityEnums::EntityType);
 VARIANT_ENUM_CAST(EntityEnums::PlayerResourceTypes);
 VARIANT_ENUM_CAST(EntityEnums::EntityStateTypes);
+VARIANT_ENUM_CAST(EntityEnums::CharacterSkeletonBoneId);
 
 #endif

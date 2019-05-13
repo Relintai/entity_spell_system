@@ -562,7 +562,16 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_damage_scale_for_level"), &Spell::get_damage_scale_for_level);
 	ClassDB::bind_method(D_METHOD("get_heal_scale_for_level"), &Spell::get_heal_scale_for_level);
 	ClassDB::bind_method(D_METHOD("get_absorb_scale_for_level"), &Spell::get_absorb_scale_for_level);
+    
+    ClassDB::bind_method(D_METHOD("get_needs_target"), &Spell::get_needs_target);
+	ClassDB::bind_method(D_METHOD("set_needs_target", "value"), &Spell::set_needs_target);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "needs_target"), "set_needs_target", "get_needs_target");
 
+	ClassDB::bind_method(D_METHOD("get_can_move_while_casting"), &Spell::get_can_move_while_casting);
+	ClassDB::bind_method(D_METHOD("set_can_move_while_casting", "value"), &Spell::set_can_move_while_casting);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "can_move_while_casting"), "set_can_move_while_casting", "get_can_move_while_casting");
+
+    ADD_GROUP("Range", "range");
 	ClassDB::bind_method(D_METHOD("get_has_range"), &Spell::get_has_range);
 	ClassDB::bind_method(D_METHOD("set_has_range", "value"), &Spell::set_has_range);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_range"), "set_has_range", "get_has_range");
@@ -571,6 +580,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_range", "value"), &Spell::set_range);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "range"), "set_range", "get_range");
 
+    ADD_GROUP("Cast Time", "cast_time");
 	ClassDB::bind_method(D_METHOD("get_has_cast_time"), &Spell::get_has_cast_time);
 	ClassDB::bind_method(D_METHOD("set_has_cast_time", "value"), &Spell::set_has_cast_time);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_cast_time"), "set_has_cast_time", "get_has_cast_time");
@@ -579,6 +589,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_cast_time", "value"), &Spell::set_cast_time);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cast_time"), "set_cast_time", "get_cast_time");
 
+    ADD_GROUP("Damage", "damage");
 	ClassDB::bind_method(D_METHOD("get_has_damage"), &Spell::get_has_damage);
 	ClassDB::bind_method(D_METHOD("set_has_damage", "value"), &Spell::set_has_damage);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_damage"), "set_has_damage", "get_has_damage");
@@ -599,6 +610,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_damage_scaling_curve", "curve"), &Spell::set_damage_scaling_curve);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "damage_scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_damage_scaling_curve", "get_damage_scaling_curve");
 
+    ADD_GROUP("Heal", "heal");
 	ClassDB::bind_method(D_METHOD("get_has_heal"), &Spell::get_has_heal);
 	ClassDB::bind_method(D_METHOD("set_has_heal", "value"), &Spell::set_has_heal);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_heal"), "set_has_heal", "get_has_heal");
@@ -615,14 +627,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_heal_scaling_curve", "curve"), &Spell::set_heal_scaling_curve);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "heal_scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_heal_scaling_curve", "get_heal_scaling_curve");
 
-	ClassDB::bind_method(D_METHOD("get_needs_target"), &Spell::get_needs_target);
-	ClassDB::bind_method(D_METHOD("set_needs_target", "value"), &Spell::set_needs_target);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "needs_target"), "set_needs_target", "get_needs_target");
-
-	ClassDB::bind_method(D_METHOD("get_can_move_while_casting"), &Spell::get_can_move_while_casting);
-	ClassDB::bind_method(D_METHOD("set_can_move_while_casting", "value"), &Spell::set_can_move_while_casting);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "can_move_while_casting"), "set_can_move_while_casting", "get_can_move_while_casting");
-
+    ADD_GROUP("Interrupt", "interrupt");
 	ClassDB::bind_method(D_METHOD("get_is_interrupt"), &Spell::get_is_interrupt);
 	ClassDB::bind_method(D_METHOD("set_is_interrupt", "value"), &Spell::set_is_interrupt);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "get_is_interrupt"), "set_is_interrupt", "get_is_interrupt");
@@ -631,6 +636,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_interrupt_time", "value"), &Spell::set_interrupt_time);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "interrupt_time"), "set_interrupt_time", "get_interrupt_time");
 
+    ADD_GROUP("AOE", "aoe");
 	ClassDB::bind_method(D_METHOD("get_is_aoe"), &Spell::get_is_aoe);
 	ClassDB::bind_method(D_METHOD("set_is_aoe", "value"), &Spell::set_is_aoe);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_aoe"), "set_is_aoe", "get_is_aoe");
@@ -651,6 +657,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_aoe_half_extents", "value"), &Spell::set_aoe_half_extents);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "aoe_halfExtents"), "set_aoe_half_extents", "get_aoe_half_extents");
 
+    ADD_GROUP("Effects", "effect");
 	ClassDB::bind_method(D_METHOD("get_has_effect"), &Spell::get_has_effect);
 	ClassDB::bind_method(D_METHOD("set_has_effect", "value"), &Spell::set_has_effect);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_effect"), "set_has_effect", "get_has_effect");
@@ -675,6 +682,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_spell_cast_effect_id", "value"), &Spell::set_spell_cast_effect_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_cast_effect_id"), "set_spell_cast_effect_id", "get_spell_cast_effect_id");
 
+    ADD_GROUP("Projectile", "projectile");
 	ClassDB::bind_method(D_METHOD("get_projectile_id"), &Spell::get_projectile_id);
 	ClassDB::bind_method(D_METHOD("set_projectile_id", "value"), &Spell::set_projectile_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "projectile_id"), "set_projectile_id", "get_projectile_id");

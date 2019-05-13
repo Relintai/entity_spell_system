@@ -12,6 +12,8 @@
 #include "scene/animation/animation_player.h"
 #include "scene/animation/animation_tree.h"
 
+#include "../entity_enums.h"
+
 #ifdef ENTITIES_2D
 
 class CharacterSkeleton : public Node2D {
@@ -25,25 +27,10 @@ class CharacterSkeleton : public Spatial {
 #endif
 
 public:
-	static const String BINDING_STRING_CHARCATER_SKELETON_BONE_ID;
+	NodePath get_bone_path(int index);
+	void set_bone_path(int index, NodePath path);
 
-	enum CharacterSkeletonBoneId {
-		BONE_ID_HIP = 0,
-		BONE_ID_LEFT_HAND = 1,
-		BONE_ID_RIGHT_HAND = 2,
-		MAX_BONE_ID = 3,
-	};
-
-	NodePath get_hip_path();
-	void set_hip_path(NodePath path);
-
-	NodePath get_left_hand_path();
-	void set_left_hand_path(NodePath path);
-
-	NodePath get_right_hand_path();
-	void set_right_hand_path(NodePath path);
-
-	Node *get_bone_node(CharacterSkeletonBoneId node_id);
+	Node *get_bone_node(EntityEnums::CharacterSkeletonBoneId node_id);
 
 	NodePath get_animation_player_path();
 	void set_animation_player_path(NodePath path);
@@ -64,19 +51,16 @@ protected:
 	virtual void _notification(int p_notification);
 
 private:
-	NodePath _hip_path;
-	NodePath _left_hand_path;
-	NodePath _right_hand_path;
-
 	NodePath _animation_player_path;
 	NodePath _animation_tree_path;
 
+    NodePath _bone_paths[EntityEnums::MAX_BONE_ID];
+    
 	AnimationPlayer *_animation_player;
 	AnimationTree *_animation_tree;
 
-	Node *_nodes[MAX_BONE_ID];
+	Node *_bone_nodes[EntityEnums::MAX_BONE_ID];
 };
 
-VARIANT_ENUM_CAST(CharacterSkeleton::CharacterSkeletonBoneId);
 
 #endif

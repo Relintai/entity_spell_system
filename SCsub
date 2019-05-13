@@ -46,8 +46,7 @@ module_env.add_source_files(env.modules_sources,"inventory/bag.cpp")
 module_env.add_source_files(env.modules_sources,"spells/aura_infos.cpp")
 module_env.add_source_files(env.modules_sources,"spells/spell_cast_info.cpp")
 
-module_env.add_source_files(env.modules_sources,"data/aura_visual_effect.cpp")
-module_env.add_source_files(env.modules_sources,"data/spell_visual_effect.cpp")
+module_env.add_source_files(env.modules_sources,"data/visual_bone_attachment.cpp")
 
 module_env.add_source_files(env.modules_sources,"pipelines/spell_damage_info.cpp")
 module_env.add_source_files(env.modules_sources,"pipelines/spell_heal_info.cpp")

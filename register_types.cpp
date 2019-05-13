@@ -32,8 +32,7 @@
 #include "spells/spell_cast_info.h"
 #include "spells/aura_infos.h"
 
-#include "data/aura_visual_effect.h"
-#include "data/spell_visual_effect.h"
+#include "data/visual_bone_attachment.h"
 
 #include "pipelines/spell_damage_info.h"
 #include "pipelines/spell_heal_info.h"
@@ -77,8 +76,7 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<TalentRowData>();
 	ClassDB::register_class<TalentRankData>();
 
-	ClassDB::register_class<AuraVisualEffect>();
-	ClassDB::register_class<SpellVisualEffect>();
+	ClassDB::register_class<VisualBoneAttachment>();
 
 	ClassDB::register_class<DataManager>();
 
