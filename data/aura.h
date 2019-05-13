@@ -43,6 +43,13 @@ public:
 		_aura_name = name;
 	}
 
+	String get_aura_description() {
+		return _aura_description;
+	}
+	void set_aura_description(String description) {
+		_aura_description = description;
+	}
+
 	Ref<Texture> get_icon() {
 		return _icon;
 	}
@@ -399,6 +406,7 @@ private:
 
 	int id;
 	String _aura_name;
+	String _aura_description;
 	float time;
 	int aura_group;
 	Ref<Texture> _icon;

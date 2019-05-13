@@ -742,10 +742,6 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &Aura::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
 
-	ClassDB::bind_method(D_METHOD("get_aura_name"), &Aura::get_aura_name);
-	ClassDB::bind_method(D_METHOD("set_aura_name", "value"), &Aura::set_aura_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "aura_name"), "set_aura_name", "get_aura_name");
-
 	ClassDB::bind_method(D_METHOD("get_icon"), &Aura::get_icon);
 	ClassDB::bind_method(D_METHOD("set_icon", "value"), &Aura::set_icon);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "icon", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_icon", "get_icon");
@@ -761,6 +757,15 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_ability_scale_data_id"), &Aura::get_ability_scale_data_id);
 	ClassDB::bind_method(D_METHOD("set_ability_scale_data_id", "value"), &Aura::set_ability_scale_data_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "ability_scale_data_id"), "set_ability_scale_data_id", "get_ability_scale_data_id");
+
+	ADD_GROUP("Texts", "text");
+	ClassDB::bind_method(D_METHOD("get_aura_name"), &Aura::get_aura_name);
+	ClassDB::bind_method(D_METHOD("set_aura_name", "value"), &Aura::set_aura_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_aura_name"), "set_aura_name", "get_aura_name");
+
+	ClassDB::bind_method(D_METHOD("get_aura_description"), &Aura::get_aura_description);
+	ClassDB::bind_method(D_METHOD("set_aura_description", "value"), &Aura::set_aura_description);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_aura_description", PROPERTY_HINT_MULTILINE_TEXT), "set_aura_description", "get_aura_description");
 
 	ADD_GROUP("Damage", "damage");
 	//Damage
