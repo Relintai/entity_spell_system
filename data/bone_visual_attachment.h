@@ -7,13 +7,13 @@
 
 #include "../entity_enums.h"
 
-class VisualBoneAttachment : public Resource {
-	GDCLASS(VisualBoneAttachment, Resource);
+class BoneVisualAttachment : public Resource {
+	GDCLASS(BoneVisualAttachment, Resource);
 
 public:
     static const String BINDING_STRING_BONE_ATTACHMENT_TYPES;
     
-    enum VisualBoneAttachmentType {
+    enum BoneVisualAttachmentType {
         BONE_ATTACHMENT_TYPE_NONE = 0,
         BONE_ATTACHMENT_TYPE_BODYPART = 1,
         BONE_ATTACHMENT_TYPE_EFFECT = 2,
@@ -24,8 +24,8 @@ public:
     int get_id();
 	void set_id(int id);
     
-    VisualBoneAttachmentType get_attachment_type();
-    void set_attachment_type(VisualBoneAttachmentType attachment_type);
+    BoneVisualAttachmentType get_attachment_type();
+    void set_attachment_type(BoneVisualAttachmentType attachment_type);
 	
     EntityEnums::CharacterSkeletonBoneId get_target_bone();
     void set_target_bone(EntityEnums::CharacterSkeletonBoneId bone);
@@ -33,18 +33,18 @@ public:
     Ref<PackedScene> get_effect();
     void set_effect(Ref<PackedScene> effect);
     
-    VisualBoneAttachment();
+    BoneVisualAttachment();
 
 protected:
 	static void _bind_methods();
 
 private:
 	int _id;
-    VisualBoneAttachmentType _attachment_type;
+    BoneVisualAttachmentType _attachment_type;
     EntityEnums::CharacterSkeletonBoneId _target_bone;
     Ref<PackedScene> _effect;
 };
 
-VARIANT_ENUM_CAST(VisualBoneAttachment::VisualBoneAttachmentType);
+VARIANT_ENUM_CAST(BoneVisualAttachment::BoneVisualAttachmentType);
 
 #endif

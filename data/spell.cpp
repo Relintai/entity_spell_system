@@ -487,22 +487,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_target_type", "value"), &Spell::set_target_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "target_type", PROPERTY_HINT_ENUM, "Self, Target, Around, Front, Around Target"), "set_target_type", "get_target_type");
 
-	ClassDB::bind_method(D_METHOD("get_caster_aura_apply"), &Spell::get_caster_aura_apply);
-	ClassDB::bind_method(D_METHOD("set_caster_aura_apply", "value"), &Spell::set_caster_aura_apply);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster_aura_apply", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_caster_aura_apply", "get_caster_aura_apply");
-
-	ClassDB::bind_method(D_METHOD("get_caster_aura_apply2"), &Spell::get_caster_aura_apply2);
-	ClassDB::bind_method(D_METHOD("set_caster_aura_apply2", "value"), &Spell::set_caster_aura_apply2);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster_aura_apply2", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_caster_aura_apply2", "get_caster_aura_apply2");
-
-	ClassDB::bind_method(D_METHOD("get_target_aura_apply"), &Spell::get_target_aura_apply);
-	ClassDB::bind_method(D_METHOD("set_target_aura_apply", "value"), &Spell::set_target_aura_apply);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target_aura_apply", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_target_aura_apply", "get_target_aura_apply");
-
-	ClassDB::bind_method(D_METHOD("get_target_aura_apply2"), &Spell::get_target_aura_apply2);
-	ClassDB::bind_method(D_METHOD("set_target_aura_apply2", "value"), &Spell::set_target_aura_apply2);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target_aura_apply2", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_target_aura_apply2", "get_target_aura_apply2");
-
 	ClassDB::bind_method(D_METHOD("get_level"), &Spell::get_level);
 	ClassDB::bind_method(D_METHOD("set_level", "value"), &Spell::set_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "level"), "set_level", "get_level");
@@ -571,149 +555,157 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_can_move_while_casting", "value"), &Spell::set_can_move_while_casting);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "can_move_while_casting"), "set_can_move_while_casting", "get_can_move_while_casting");
 
-    ADD_GROUP("Range", "range");
+	ClassDB::bind_method(D_METHOD("get_caster_aura_apply"), &Spell::get_caster_aura_apply);
+	ClassDB::bind_method(D_METHOD("set_caster_aura_apply", "value"), &Spell::set_caster_aura_apply);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "auras/caster_aura_apply", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_caster_aura_apply", "get_caster_aura_apply");
+
+	ClassDB::bind_method(D_METHOD("get_caster_aura_apply2"), &Spell::get_caster_aura_apply2);
+	ClassDB::bind_method(D_METHOD("set_caster_aura_apply2", "value"), &Spell::set_caster_aura_apply2);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "auras/caster_aura_apply2", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_caster_aura_apply2", "get_caster_aura_apply2");
+
+	ClassDB::bind_method(D_METHOD("get_target_aura_apply"), &Spell::get_target_aura_apply);
+	ClassDB::bind_method(D_METHOD("set_target_aura_apply", "value"), &Spell::set_target_aura_apply);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "auras/target_aura_apply", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_target_aura_apply", "get_target_aura_apply");
+
+	ClassDB::bind_method(D_METHOD("get_target_aura_apply2"), &Spell::get_target_aura_apply2);
+	ClassDB::bind_method(D_METHOD("set_target_aura_apply2", "value"), &Spell::set_target_aura_apply2);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "auras/target_aura_apply2", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_target_aura_apply2", "get_target_aura_apply2");
+    
 	ClassDB::bind_method(D_METHOD("get_has_range"), &Spell::get_has_range);
 	ClassDB::bind_method(D_METHOD("set_has_range", "value"), &Spell::set_has_range);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_range"), "set_has_range", "get_has_range");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "range/has_range"), "set_has_range", "get_has_range");
 
 	ClassDB::bind_method(D_METHOD("get_range"), &Spell::get_range);
 	ClassDB::bind_method(D_METHOD("set_range", "value"), &Spell::set_range);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "range"), "set_range", "get_range");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "range/range"), "set_range", "get_range");
 
-    ADD_GROUP("Cast Time", "cast_time");
 	ClassDB::bind_method(D_METHOD("get_has_cast_time"), &Spell::get_has_cast_time);
 	ClassDB::bind_method(D_METHOD("set_has_cast_time", "value"), &Spell::set_has_cast_time);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_cast_time"), "set_has_cast_time", "get_has_cast_time");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cast_time/has_cast_time"), "set_has_cast_time", "get_has_cast_time");
 
 	ClassDB::bind_method(D_METHOD("get_cast_time"), &Spell::get_cast_time);
 	ClassDB::bind_method(D_METHOD("set_cast_time", "value"), &Spell::set_cast_time);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cast_time"), "set_cast_time", "get_cast_time");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cast_time/cast_time"), "set_cast_time", "get_cast_time");
 
-    ADD_GROUP("Damage", "damage");
 	ClassDB::bind_method(D_METHOD("get_has_damage"), &Spell::get_has_damage);
 	ClassDB::bind_method(D_METHOD("set_has_damage", "value"), &Spell::set_has_damage);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_damage"), "set_has_damage", "get_has_damage");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "damage/has_damage"), "set_has_damage", "get_has_damage");
 
 	ClassDB::bind_method(D_METHOD("get_damage_type"), &Spell::get_damage_type);
 	ClassDB::bind_method(D_METHOD("set_damage_type", "value"), &Spell::set_damage_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_type", PROPERTY_HINT_FLAGS, SpellEnums::BINDING_STRING_DAMAGE_TYPES), "set_damage_type", "get_damage_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage/type", PROPERTY_HINT_FLAGS, SpellEnums::BINDING_STRING_DAMAGE_TYPES), "set_damage_type", "get_damage_type");
 
 	ClassDB::bind_method(D_METHOD("get_damage_min"), &Spell::get_damage_min);
 	ClassDB::bind_method(D_METHOD("set_damage_min", "value"), &Spell::set_damage_min);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_min"), "set_damage_min", "get_damage_min");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage/min"), "set_damage_min", "get_damage_min");
 
 	ClassDB::bind_method(D_METHOD("get_damage_max"), &Spell::get_damage_max);
 	ClassDB::bind_method(D_METHOD("set_damage_max", "value"), &Spell::set_damage_max);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_max"), "set_damage_max", "get_damage_max");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage/max"), "set_damage_max", "get_damage_max");
 
 	ClassDB::bind_method(D_METHOD("get_damage_scaling_curve"), &Spell::get_damage_scaling_curve);
 	ClassDB::bind_method(D_METHOD("set_damage_scaling_curve", "curve"), &Spell::set_damage_scaling_curve);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "damage_scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_damage_scaling_curve", "get_damage_scaling_curve");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "damage/scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_damage_scaling_curve", "get_damage_scaling_curve");
 
-    ADD_GROUP("Heal", "heal");
 	ClassDB::bind_method(D_METHOD("get_has_heal"), &Spell::get_has_heal);
 	ClassDB::bind_method(D_METHOD("set_has_heal", "value"), &Spell::set_has_heal);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_heal"), "set_has_heal", "get_has_heal");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "heal/has_heal"), "set_has_heal", "get_has_heal");
 
 	ClassDB::bind_method(D_METHOD("get_heal_min"), &Spell::get_heal_min);
 	ClassDB::bind_method(D_METHOD("set_heal_min", "value"), &Spell::set_heal_min);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_min"), "set_heal_min", "get_heal_min");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal/min"), "set_heal_min", "get_heal_min");
 
 	ClassDB::bind_method(D_METHOD("get_heal_max"), &Spell::get_heal_max);
 	ClassDB::bind_method(D_METHOD("set_heal_max", "value"), &Spell::set_heal_max);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_max"), "set_heal_max", "get_heal_max");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal/max"), "set_heal_max", "get_heal_max");
 
 	ClassDB::bind_method(D_METHOD("get_heal_scaling_curve"), &Spell::get_heal_scaling_curve);
 	ClassDB::bind_method(D_METHOD("set_heal_scaling_curve", "curve"), &Spell::set_heal_scaling_curve);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "heal_scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_heal_scaling_curve", "get_heal_scaling_curve");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "heal/scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_heal_scaling_curve", "get_heal_scaling_curve");
 
-    ADD_GROUP("Interrupt", "interrupt");
 	ClassDB::bind_method(D_METHOD("get_is_interrupt"), &Spell::get_is_interrupt);
 	ClassDB::bind_method(D_METHOD("set_is_interrupt", "value"), &Spell::set_is_interrupt);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "get_is_interrupt"), "set_is_interrupt", "get_is_interrupt");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "interrupt/get_is_interrupt"), "set_is_interrupt", "get_is_interrupt");
 
 	ClassDB::bind_method(D_METHOD("get_interrupt_time"), &Spell::get_interrupt_time);
 	ClassDB::bind_method(D_METHOD("set_interrupt_time", "value"), &Spell::set_interrupt_time);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "interrupt_time"), "set_interrupt_time", "get_interrupt_time");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "interrupt/time"), "set_interrupt_time", "get_interrupt_time");
 
-    ADD_GROUP("AOE", "aoe");
 	ClassDB::bind_method(D_METHOD("get_is_aoe"), &Spell::get_is_aoe);
 	ClassDB::bind_method(D_METHOD("set_is_aoe", "value"), &Spell::set_is_aoe);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_aoe"), "set_is_aoe", "get_is_aoe");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "aoe/is_aoe"), "set_is_aoe", "get_is_aoe");
 
 	ClassDB::bind_method(D_METHOD("get_aoe_target_type"), &Spell::get_aoe_target_type);
 	ClassDB::bind_method(D_METHOD("set_aoe_target_type", "value"), &Spell::set_aoe_target_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "aoe_targetType", PROPERTY_HINT_ENUM, "Caster, Target, Ground Target Selection, Random"), "set_aoe_target_type", "get_aoe_target_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "aoe/targetType", PROPERTY_HINT_ENUM, "Caster, Target, Ground Target Selection, Random"), "set_aoe_target_type", "get_aoe_target_type");
 
 	ClassDB::bind_method(D_METHOD("get_aoe_movement_type"), &Spell::get_aoe_movement_type);
 	ClassDB::bind_method(D_METHOD("set_aoe_movement_type", "value"), &Spell::set_aoe_movement_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "aoe_movement_type", PROPERTY_HINT_ENUM, "Static, Moving To Target, Random Direction, Randomly, Caster Facing, Moving"), "set_aoe_movement_type", "get_aoe_movement_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "aoe/movement_type", PROPERTY_HINT_ENUM, "Static, Moving To Target, Random Direction, Randomly, Caster Facing, Moving"), "set_aoe_movement_type", "get_aoe_movement_type");
 
 	ClassDB::bind_method(D_METHOD("get_aoe_collider_type"), &Spell::get_aoe_collider_type);
 	ClassDB::bind_method(D_METHOD("set_aoe_collider_type", "value"), &Spell::set_aoe_collider_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "aoe_colliderType", PROPERTY_HINT_ENUM, "Sphere, Box, Box Non Uniform"), "set_aoe_collider_type", "get_aoe_collider_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "aoe/colliderType", PROPERTY_HINT_ENUM, "Sphere, Box, Box Non Uniform"), "set_aoe_collider_type", "get_aoe_collider_type");
 
 	ClassDB::bind_method(D_METHOD("get_aoe_half_extents"), &Spell::get_aoe_half_extents);
 	ClassDB::bind_method(D_METHOD("set_aoe_half_extents", "value"), &Spell::set_aoe_half_extents);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "aoe_halfExtents"), "set_aoe_half_extents", "get_aoe_half_extents");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "aoe/half_extents"), "set_aoe_half_extents", "get_aoe_half_extents");
 
-    ADD_GROUP("Effects", "effect");
 	ClassDB::bind_method(D_METHOD("get_has_effect"), &Spell::get_has_effect);
 	ClassDB::bind_method(D_METHOD("set_has_effect", "value"), &Spell::set_has_effect);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_effect"), "set_has_effect", "get_has_effect");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "effect/has_effect"), "set_has_effect", "get_has_effect");
 
 	ClassDB::bind_method(D_METHOD("get_effect_id"), &Spell::get_effect_id);
 	ClassDB::bind_method(D_METHOD("set_effect_id", "value"), &Spell::set_effect_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect_id"), "set_effect_id", "get_effect_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect/id"), "set_effect_id", "get_effect_id");
 
 	ClassDB::bind_method(D_METHOD("get_has_spell_cast_finish_effect"), &Spell::get_has_spell_cast_finish_effect);
 	ClassDB::bind_method(D_METHOD("set_has_spell_cast_finish_effect", "value"), &Spell::set_has_spell_cast_finish_effect);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "spell_cast_finish_effect"), "set_has_spell_cast_finish_effect", "get_has_spell_cast_finish_effect");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "effect/spell_cast_finish_effect"), "set_has_spell_cast_finish_effect", "get_has_spell_cast_finish_effect");
 
 	ClassDB::bind_method(D_METHOD("get_spell_cast_finish_effect_id"), &Spell::get_spell_cast_finish_effect_id);
 	ClassDB::bind_method(D_METHOD("set_spell_cast_finish_effect_id", "value"), &Spell::set_spell_cast_finish_effect_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_cast_finish_effect_id"), "set_spell_cast_finish_effect_id", "get_spell_cast_finish_effect_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect/spell_cast_finish_effect_id"), "set_spell_cast_finish_effect_id", "get_spell_cast_finish_effect_id");
 
 	ClassDB::bind_method(D_METHOD("get_has_spell_cast_effect"), &Spell::get_has_spell_cast_effect);
 	ClassDB::bind_method(D_METHOD("set_has_spell_cast_effect", "value"), &Spell::set_has_spell_cast_effect);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "m_spell_cast_effect"), "set_has_spell_cast_effect", "get_has_spell_cast_effect");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect/m_spell_cast_effect"), "set_has_spell_cast_effect", "get_has_spell_cast_effect");
 
 	ClassDB::bind_method(D_METHOD("get_spell_cast_effect_id"), &Spell::get_spell_cast_effect_id);
 	ClassDB::bind_method(D_METHOD("set_spell_cast_effect_id", "value"), &Spell::set_spell_cast_effect_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_cast_effect_id"), "set_spell_cast_effect_id", "get_spell_cast_effect_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect/spell_cast_effect_id"), "set_spell_cast_effect_id", "get_spell_cast_effect_id");
 
-    ADD_GROUP("Projectile", "projectile");
 	ClassDB::bind_method(D_METHOD("get_projectile_id"), &Spell::get_projectile_id);
 	ClassDB::bind_method(D_METHOD("set_projectile_id", "value"), &Spell::set_projectile_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "projectile_id"), "set_projectile_id", "get_projectile_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "projectile/id"), "set_projectile_id", "get_projectile_id");
 
 	ClassDB::bind_method(D_METHOD("get_has_projectile"), &Spell::get_has_projectile);
 	ClassDB::bind_method(D_METHOD("set_has_projectile", "value"), &Spell::set_has_projectile);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_projectile"), "set_has_projectile", "get_has_projectile");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "projectile/has_projectile"), "set_has_projectile", "get_has_projectile");
 
 	ClassDB::bind_method(D_METHOD("get_projectile_speed"), &Spell::get_projectile_speed);
 	ClassDB::bind_method(D_METHOD("set_projectile_speed", "value"), &Spell::set_projectile_speed);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "projectile_speed"), "set_projectile_speed", "get_projectile_speed");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "projectile/speed"), "set_projectile_speed", "get_projectile_speed");
 
 	ClassDB::bind_method(D_METHOD("get_projectile_time"), &Spell::get_projectile_time);
 	ClassDB::bind_method(D_METHOD("set_projectile_time", "value"), &Spell::set_projectile_time);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "projectile_time"), "set_projectile_time", "get_projectile_time");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "projectile/time"), "set_projectile_time", "get_projectile_time");
 
 	ClassDB::bind_method(D_METHOD("get_projectile_range"), &Spell::get_projectile_range);
 	ClassDB::bind_method(D_METHOD("set_projectile_range", "value"), &Spell::set_projectile_range);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "projectile_range"), "set_projectile_range", "get_projectile_range");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "projectile/range"), "set_projectile_range", "get_projectile_range");
 
 	ClassDB::bind_method(D_METHOD("get_has_projectile_collision"), &Spell::get_has_projectile_collision);
 	ClassDB::bind_method(D_METHOD("set_has_projectile_collision", "value"), &Spell::set_has_projectile_collision);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_projectile_collision"), "set_has_projectile_collision", "get_has_projectile_collision");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "projectile/has_projectile_collision"), "set_has_projectile_collision", "get_has_projectile_collision");
 
 	ClassDB::bind_method(D_METHOD("get_projectile_type"), &Spell::get_projectile_type);
 	ClassDB::bind_method(D_METHOD("set_projectile_type", "value"), &Spell::set_projectile_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "projectile_type", PROPERTY_HINT_ENUM, "Follow, Straight, Stationary"), "set_projectile_type", "get_projectile_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "projectile/type", PROPERTY_HINT_ENUM, "Follow, Straight, Stationary"), "set_projectile_type", "get_projectile_type");
 
 	ClassDB::bind_method(D_METHOD("get_has_projectile_destroy_on_impact"), &Spell::get_has_projectile_destroy_on_impact);
 	ClassDB::bind_method(D_METHOD("set_has_projectile_destroy_on_impact", "value"), &Spell::set_has_projectile_destroy_on_impact);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_projectile_destroy_on_impact"), "set_has_projectile_destroy_on_impact", "get_has_projectile_destroy_on_impact");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "projectile/has_projectile_destroy_on_impact"), "set_has_projectile_destroy_on_impact", "get_has_projectile_destroy_on_impact");
 
 	ADD_GROUP("Spell Cooldown Mainpulation", "spell_cooldown_mainpulation");
 	ClassDB::bind_method(D_METHOD("get_spell_cooldown_mainpulation_data_count"), &Spell::get_spell_cooldown_mainpulation_data_count);
