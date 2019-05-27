@@ -12,6 +12,8 @@ public:
 
 	int get_remaining();
 	void set_remaining(int value);
+    
+    bool update(float delta);
 
 protected:
 	static void _bind_methods();

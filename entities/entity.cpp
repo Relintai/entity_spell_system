@@ -2357,6 +2357,24 @@ void Entity::registers() {
 }
 
 void Entity::update(float delta) {
+    for (int i = 0; i < _s_cooldowns->size(); ++i) {
+        Ref<Cooldown> cd = _s_cooldowns->get(i);
+        
+        if (cd->update(delta)) {
+            removes_cooldown(cd->get_spell_id());
+            --i;
+        }
+    }
+    
+    for (int i = 0; i < _s_category_cooldowns->size(); ++i) {
+        Ref<CategoryCooldown> cd = _s_category_cooldowns->get(i);
+        
+        if (cd->update(delta)) {
+            removes_category_cooldown(cd->get_category_id());
+            --i;
+        }
+    }
+    
 	update_auras(delta);
 
 	if (_s_spell_cast_info.is_valid() && _s_spell_cast_info->get_is_casting()) {

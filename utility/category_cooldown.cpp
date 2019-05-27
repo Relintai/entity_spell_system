@@ -21,6 +21,18 @@ void CategoryCooldown::set_remaining(int value)
     _remaining = value; 
 }
 
+bool CategoryCooldown::update(float delta) {
+    _remaining -= delta;
+    
+    if (_remaining <= 0) {
+        _remaining = 0;
+        
+        return true;
+    }
+    
+    return false;
+}
+
 	
 void CategoryCooldown::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_category_id"), &CategoryCooldown::get_category_id);
@@ -30,4 +42,6 @@ void CategoryCooldown::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_remaining"), &CategoryCooldown::get_remaining);
     ClassDB::bind_method(D_METHOD("set_remaining", "value"), &CategoryCooldown::set_remaining);
     ADD_PROPERTY(PropertyInfo(Variant::INT, "remaining"), "set_remaining", "get_remaining");
+    
+    ClassDB::bind_method(D_METHOD("update", "delta"), &CategoryCooldown::update);
 }
