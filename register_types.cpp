@@ -53,9 +53,11 @@
 
 #include "utility/entity_create_info.h"
 #include "utility/cooldown.h"
+#include "utility/cooldown.h"
 #include "utility/category_cooldown.h"
 
 void register_entity_spell_system_types() {
+	ClassDB::register_class<SpellEnums>();
 
 	//data
 	ClassDB::register_class<Icon>();

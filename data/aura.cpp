@@ -1,8 +1,67 @@
 #include "aura.h"
 
-#if ENTITY_MEM_TOOLS
-int Aura::allocs = 0;
-#endif
+int Aura::get_id() {
+	return id;
+}
+void Aura::set_id(int value) {
+	id = value;
+}
+
+Ref<Texture> Aura::get_icon() {
+	return _icon;
+}
+void Aura::set_icon(Ref<Texture> value) {
+	_icon = Ref<Texture>(value);
+}
+
+float Aura::get_time() {
+	return time;
+}
+void Aura::set_time(float value) {
+	time = value;
+}
+
+int Aura::get_aura_group() {
+	return aura_group;
+}
+void Aura::set_aura_group(int value) {
+	aura_group = value;
+}
+
+bool Aura::get_is_debuff() {
+	return _is_debuff;
+}
+void Aura::set_is_debuff(bool value) {
+	_is_debuff = value;
+}
+
+SpellEnums::AuraType Aura::get_aura_type() {
+	return _aura_type;
+}
+void Aura::set_aura_type(SpellEnums::AuraType value) {
+	_aura_type = value;
+}
+
+String Aura::get_aura_name() {
+	return _aura_name;
+}
+void Aura::set_aura_name(String name) {
+	_aura_name = name;
+}
+
+String Aura::get_aura_description() {
+	return _aura_description;
+}
+void Aura::set_aura_description(String description) {
+	_aura_description = description;
+}
+
+int Aura::get_ability_scale_data_id() {
+	return ability_scale_data_id;
+}
+void Aura::set_ability_scale_data_id(int value) {
+	ability_scale_data_id = value;
+}
 
 /*
 AnimationCurve *Aura::getDamageLevelScaling() {
@@ -66,12 +125,122 @@ void Aura::OnAuraAbilityScalingDataLoaded(AbilityScalingDataLoaderHelper *h) {
 }
 */
 
+//Damage
+bool Aura::is_damage_enabled() {
+	return _damage_enabled;
+}
+void Aura::set_damage_enabled(bool value) {
+	_damage_enabled = value;
+}
+
+int Aura::get_damage_type() {
+	return _damage_type;
+}
+
+void Aura::set_damage_type(int value) {
+	_damage_type = value;
+}
+
+int Aura::get_damage_min() {
+	return _damage_min;
+}
+void Aura::set_damage_min(int value) {
+	_damage_min = value;
+}
+
+int Aura::get_damage_max() {
+	return _damage_max;
+}
+void Aura::set_damage_max(int value) {
+	_damage_max = value;
+}
+
+float Aura::get_damage_tick() {
+	return _damage_tick;
+}
+void Aura::set_damage_tick(float value) {
+	_damage_tick = value;
+}
+
+bool Aura::get_damage_can_crit() {
+	return _damage_can_crit;
+}
+void Aura::set_damage_can_crit(bool value) {
+	_damage_can_crit = value;
+}
+
 void Aura::set_damage(int min, int max, float tick, bool can_crit) {
 	set_damage_enabled(true);
 	set_damage_min(min);
 	set_damage_max(max);
 	set_damage_tick(tick);
 	set_damage_can_crit(can_crit);
+}
+
+//Absorb
+bool Aura::is_absorb_enabled() {
+	return _absorb_enabled;
+}
+void Aura::set_absorb_enabled(bool value) {
+	_absorb_enabled = value;
+}
+
+int Aura::get_absorb_damage_type() {
+	return _absorb_damage_type;
+}
+
+void Aura::set_absorb_damage_type(int value) {
+	_absorb_damage_type = value;
+}
+
+int Aura::get_absorb_min() {
+	return _absorb_min;
+}
+void Aura::set_absorb_min(int value) {
+	_absorb_min = value;
+}
+
+int Aura::get_absorb_max() {
+	return _absorb_max;
+}
+void Aura::set_absorb_max(int value) {
+	_absorb_max = value;
+}
+
+//Heal
+bool Aura::is_heal_enabled() {
+	return _heal_enabled;
+}
+void Aura::set_heal_enabled(bool value) {
+	_heal_enabled = value;
+}
+
+int Aura::get_heal_min() {
+	return _heal_min;
+}
+void Aura::set_heal_min(int value) {
+	_heal_min = value;
+}
+
+int Aura::get_heal_max() {
+	return _heal_max;
+}
+void Aura::set_heal_max(int value) {
+	_heal_max = value;
+}
+
+float Aura::get_heal_tick() {
+	return _heal_tick;
+}
+void Aura::set_heal_tick(float value) {
+	_heal_tick = value;
+}
+
+bool Aura::get_heal_can_crit() {
+	return _heal_can_crit;
+}
+void Aura::set_heal_can_crit(bool value) {
+	_heal_can_crit = value;
 }
 
 void Aura::set_heal(int min, int max, float tick, bool can_crit) {
@@ -86,6 +255,8 @@ Aura::Aura() {
 	ability_scale_data_id = 1;
 	id = 0;
 	time = 0;
+	_aura_type = SpellEnums::AURA_TYPE_NONE;
+	_is_debuff = false;
 	aura_group = 0;
 
 	_damage_enabled = false;
@@ -119,18 +290,9 @@ Aura::Aura() {
 	for (int i = 0; i < MAX_TRIGGER_DATA; ++i) {
 		_trigger_datas[i] = Ref<AuraTriggerData>(memnew(AuraTriggerData()));
 	}
-
-#if ENTITY_MEM_TOOLS
-	Aura::allocs++;
-	print_error("Aura alloc " + String::num(Aura::allocs));
-#endif
 }
 
 Aura::~Aura() {
-#if ENTITY_MEM_TOOLS
-	Aura::allocs--;
-	print_error("Aura dealloc " + String::num(Aura::allocs));
-#endif
 }
 
 //////     Triggers      ///////
@@ -749,6 +911,14 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_time"), &Aura::get_time);
 	ClassDB::bind_method(D_METHOD("set_time", "value"), &Aura::set_time);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "time"), "set_time", "get_time");
+
+	ClassDB::bind_method(D_METHOD("get_is_debuff"), &Aura::get_is_debuff);
+	ClassDB::bind_method(D_METHOD("set_is_debuff", "value"), &Aura::set_is_debuff);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_debuff"), "set_is_debuff", "get_is_debuff");
+
+	ClassDB::bind_method(D_METHOD("get_aura_type"), &Aura::get_aura_type);
+	ClassDB::bind_method(D_METHOD("set_aura_type", "value"), &Aura::set_aura_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "aura_type", PROPERTY_HINT_ENUM, SpellEnums::BINDING_STRING_AURA_TYPES), "set_aura_type", "get_aura_type");
 
 	ClassDB::bind_method(D_METHOD("get_aura_group"), &Aura::get_aura_group);
 	ClassDB::bind_method(D_METHOD("set_aura_group", "value"), &Aura::set_aura_group);

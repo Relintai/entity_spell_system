@@ -29,54 +29,32 @@ class Aura : public Resource {
 	GDCLASS(Aura, Resource);
 
 public:
-	int get_id() {
-		return id;
-	}
-	void set_id(int value) {
-		id = value;
-	}
+	int get_id();
+	void set_id(int value);
 
-	String get_aura_name() {
-		return _aura_name;
-	}
-	void set_aura_name(String name) {
-		_aura_name = name;
-	}
+	Ref<Texture> get_icon();
+	void set_icon(Ref<Texture> value);
 
-	String get_aura_description() {
-		return _aura_description;
-	}
-	void set_aura_description(String description) {
-		_aura_description = description;
-	}
+	float get_time();
+	void set_time(float value);
 
-	Ref<Texture> get_icon() {
-		return _icon;
-	}
-	void set_icon(Ref<Texture> value) {
-		_icon = Ref<Texture>(value);
-	}
+	int get_aura_group();
+	void set_aura_group(int value);
 
-	float get_time() {
-		return time;
-	}
-	void set_time(float value) {
-		time = value;
-	}
+	bool get_is_debuff();
+	void set_is_debuff(bool value);
 
-	int get_aura_group() {
-		return aura_group;
-	}
-	void set_aura_group(int value) {
-		aura_group = value;
-	}
+	SpellEnums::AuraType get_aura_type();
+	void set_aura_type(SpellEnums::AuraType value);
 
-	int get_ability_scale_data_id() {
-		return ability_scale_data_id;
-	}
-	void set_ability_scale_data_id(int value) {
-		ability_scale_data_id = value;
-	}
+	String get_aura_name();
+	void set_aura_name(String name);
+
+	String get_aura_description();
+	void set_aura_description(String description);
+
+	int get_ability_scale_data_id();
+	void set_ability_scale_data_id(int value);
 
 	float get_damage_scale_for_level(int level);
 	float get_heal_scale_for_level(int level);
@@ -93,116 +71,56 @@ public:
 	//  static void ToJSON(Aura* ada, JsonWriter* w);
 
 	//Damage
-	bool is_damage_enabled() {
-		return _damage_enabled;
-	}
-	void set_damage_enabled(bool value) {
-		_damage_enabled = value;
-	}
+	bool is_damage_enabled();
+	void set_damage_enabled(bool value);
 
-	int get_damage_type() {
-		return _damage_type;
-	}
+	int get_damage_type();
 
-	void set_damage_type(int value) {
-		_damage_type = value;
-	}
+	void set_damage_type(int value);
 
-	int get_damage_min() {
-		return _damage_min;
-	}
-	void set_damage_min(int value) {
-		_damage_min = value;
-	}
+	int get_damage_min();
+	void set_damage_min(int value);
 
-	int get_damage_max() {
-		return _damage_max;
-	}
-	void set_damage_max(int value) {
-		_damage_max = value;
-	}
+	int get_damage_max();
+	void set_damage_max(int value);
 
-	float get_damage_tick() {
-		return _damage_tick;
-	}
-	void set_damage_tick(float value) {
-		_damage_tick = value;
-	}
+	float get_damage_tick();
+	void set_damage_tick(float value);
 
-	bool get_damage_can_crit() {
-		return _damage_can_crit;
-	}
-	void set_damage_can_crit(bool value) {
-		_damage_can_crit = value;
-	}
+	bool get_damage_can_crit();
+	void set_damage_can_crit(bool value);
 
 	void set_damage(int min, int max, float tick, bool can_crit);
 
 	//Absorb
-	bool is_absorb_enabled() {
-		return _absorb_enabled;
-	}
-	void set_absorb_enabled(bool value) {
-		_absorb_enabled = value;
-	}
+	bool is_absorb_enabled();
+	void set_absorb_enabled(bool value);
 
-	int get_absorb_damage_type() {
-		return _absorb_damage_type;
-	}
+	int get_absorb_damage_type();
 
-	void set_absorb_damage_type(int value) {
-		_absorb_damage_type = value;
-	}
+	void set_absorb_damage_type(int value);
 
-	int get_absorb_min() {
-		return _absorb_min;
-	}
-	void set_absorb_min(int value) {
-		_absorb_min = value;
-	}
+	int get_absorb_min();
+	void set_absorb_min(int value);
 
-	int get_absorb_max() {
-		return _absorb_max;
-	}
-	void set_absorb_max(int value) {
-		_absorb_max = value;
-	}
+	int get_absorb_max();
+	void set_absorb_max(int value);
 
 	//Heal
-	bool is_heal_enabled() {
-		return _heal_enabled;
-	}
-	void set_heal_enabled(bool value) {
-		_heal_enabled = value;
-	}
+	bool is_heal_enabled();
+	void set_heal_enabled(bool value);
 
-	int get_heal_min() {
-		return _heal_min;
-	}
-	void set_heal_min(int value) {
-		_heal_min = value;
-	}
+	int get_heal_min();
+	void set_heal_min(int value);
 
-	int get_heal_max() {
-		return _heal_max;
-	}
-	void set_heal_max(int value) {
-		_heal_max = value;
-	}
+	int get_heal_max();
+	void set_heal_max(int value);
 
-	float get_heal_tick() {
-		return _heal_tick;
-	}
-	void set_heal_tick(float value) {
-		_heal_tick = value;
-	}
+	float get_heal_tick();
+	void set_heal_tick(float value);
 
-	bool get_heal_can_crit() {
-		return _heal_can_crit;
-	}
-	void set_heal_can_crit(bool value) {
-		_heal_can_crit = value;
-	}
+	bool get_heal_can_crit();
+	void set_heal_can_crit(bool value);
 
 	void set_heal(int min, int max, float tick, bool can_crit);
 
@@ -405,13 +323,16 @@ private:
 	};
 
 	int id;
-	String _aura_name;
-	String _aura_description;
 	float time;
 	int aura_group;
 	Ref<Texture> _icon;
-	int ability_scale_data_id;
+	SpellEnums::AuraType _aura_type;
+	bool _is_debuff;
 
+	String _aura_name;
+	String _aura_description;
+	int ability_scale_data_id;
+	
 	bool _damage_enabled;
 	int _damage_type;
 	int _damage_min;
@@ -447,10 +368,6 @@ private:
 
 	static const int DIMINISHING_RETURN_ROOT_AURA_ID = 1;
 	static const int DIMINISHING_RETURN_TIME = 15;
-
-#if ENTITY_MEM_TOOLS
-	static int allocs;
-#endif
 };
 
 #endif
