@@ -34,6 +34,11 @@
 
 #include "../utility/entity_create_info.h"
 
+#include "../utility/cooldown.h"
+#include "../utility/category_cooldown.h"
+
+#include "../inventory/bag.h"
+
 class CharacterClass;
 class AuraData;
 class Spell;
@@ -64,6 +69,9 @@ enum PlayerSendFlags {
 	SEND_FLAG_SPELL_DATA,
 	SEND_FLAG_AURAS,
 };
+
+typedef HashMap<int, Ref<Cooldown> > CooldownHashMap;
+typedef HashMap<int, Ref<CategoryCooldown> > CategoryCooldownHashMap;
 
 #ifdef ENTITIES_2D
 class Entity : public KinematicBody2D {
@@ -96,12 +104,6 @@ public:
 
 	int gets_guid();
 	void sets_guid(int value);
-
-	PlayerStates getc_state();
-	void setc_state(PlayerStates state);
-
-	PlayerStates gets_state();
-	void sets_state(PlayerStates state);
 
 	int gets_class_id();
 	void sets_class_id(int value);
@@ -221,9 +223,25 @@ public:
 	Ref<Stat> get_stat_enum(Stat::StatId stat_id);
 	void set_stat_enum(Stat::StatId stat_id, Ref<Stat> entry);
 
-	////    SpellSystem    ////
+	//GCD
+	bool getc_has_global_cooldown();
+	bool gets_has_global_cooldown();
+	bool getc_global_cooldown();
+	bool gets_global_cooldown();
+	void sstart_global_cooldown(float value);
+	void cstart_global_cooldown(float value);
 
-	//add heal pipeline
+	////    States    ////
+	int getc_state();
+	void setc_state(int state);
+
+	int gets_state();
+	void sets_state(int state);
+
+	void sadd_state_ref(int state_index);
+	void sremove_state_ref(int state_index);
+
+	////    SpellSystem    ////
 
 	//EventHandlers
 	void son_before_aura_applied(Ref<AuraData> data);
@@ -313,23 +331,19 @@ public:
 	void creceive_resurrect();
 	void creceive_died();
 	void creceive_mana_changed(int amount);
-	void trigger_global_cooldown();
-	void creceive_trigger_global_cooldown();
-
 	bool gets_is_dead();
 	bool getc_is_dead();
-	bool getc_has_global_cooldown();
-	bool gets_has_global_cooldown();
 
 	void son_death();
+
+
+	////    Casting System    ////
 
 	Ref<SpellCastInfo> gets_spell_cast_info();
 	void sets_spell_cast_info(Ref<SpellCastInfo> info);
 
 	Ref<SpellCastInfo> getc_spell_cast_info();
 	void setc_spell_cast_info(Ref<SpellCastInfo> info);
-
-	////    Casting System    ////
 
 	void sstart_casting(Ref<SpellCastInfo> info);
 	void sfail_cast();
@@ -342,6 +356,53 @@ public:
 	void cdelay_cast();
 	void cfinish_cast();
 	void cinterrupt_cast();
+
+	////    Cooldowns    ////
+	Vector<Ref<Cooldown> > *gets_cooldowns();
+	Vector<Ref<Cooldown> > *getc_cooldowns();
+
+	HashMap<int, Ref<Cooldown> > *gets_cooldown_map();
+	HashMap<int, Ref<Cooldown> > *getc_cooldown_map();
+
+	bool hass_cooldown(int spell_id);
+	void adds_cooldown(int spell_id, float value);
+	void removes_cooldown(int spell_id);
+	Ref<Cooldown> gets_cooldown(int spell_id);
+	Ref<Cooldown> gets_cooldown_index(int index);
+	int gets_cooldown_count();
+
+	bool hasc_cooldown(int spell_id);
+	void addc_cooldown(int spell_id, float value);
+	void removec_cooldown(int spell_id);
+	Ref<Cooldown> getc_cooldown(int spell_id);
+	Ref<Cooldown> getc_cooldown_index(int index);
+	int getc_cooldown_count();
+
+	//Category Cooldowns
+	Vector<Ref<CategoryCooldown> > *gets_category_cooldowns();
+	Vector<Ref<CategoryCooldown> > *getc_category_cooldowns();
+
+	HashMap<int, Ref<CategoryCooldown> > * gets_category_cooldown_map();
+	HashMap<int, Ref<CategoryCooldown> > * getc_category_cooldown_map();
+
+	bool hass_category_cooldown(int spell_id);
+	void adds_category_cooldown(int spell_id, float value);
+	void removes_category_cooldown(int spell_id);
+	Ref<CategoryCooldown> gets_category_cooldown(int category_id);
+	Ref<CategoryCooldown> gets_category_cooldown_index(int index);
+	int gets_category_cooldown_count();
+
+	bool hasc_category_cooldown(int spell_id);
+	void addc_category_cooldown(int spell_id, float value);
+	void removec_category_cooldown(int spell_id);
+	Ref<CategoryCooldown> getc_category_cooldown(int category_id);
+	Ref<CategoryCooldown> getc_category_cooldown_index(int index);
+	int getc_category_cooldown_count();
+
+
+	//Vector<Ref<Bag> > *_s_bags;
+	//Vector<Ref<Bag> > *_c_bags;
+
 
 	////    TargetComponent    ////
 
@@ -362,28 +423,12 @@ public:
 	PlayerTalent *sget_talent(int id, bool create = false);
 	PlayerTalent *cget_talent(int id, bool create = false);
 
-	////    PlayerSpellDataComponent    ////
-
-	Vector<int> *gets_spell_data();
-	Vector<int> *getc_spell_data();
-	//HashMap<int, PlayerLocalSpellData> *getLocalSpellData(); //this should be the same object
-	//void AddSSpellData(PlayerSpellData *psd);
-	//void AddCSpellData(PlayerSpellData *psd);
-	//void RemoveSSpellData(PlayerSpellData *psd);
-	void ssend_add_cplayer_spell_cooldown_data(int spellId, float cooldown, float remainingCooldown);
-	void ssend_remove_cplayer_spell_cooldown_data(int spellId);
-	void creceive_add_cplayer_spell_cooldown_data(int spellId, float cooldown, float remainingCooldown);
-	void creceive_remove_cplayer_spell_cooldown_data(int spellId);
-	//void RemoveCSpellData(int spellId, Type *type);
-
 	////    Inventory    ////
 
 	int INVENTORY_DEFAULT_SIZE;
 
-	Vector<ItemInstance *> *get_sinventory();
-	Vector<ItemInstance *> *get_cinventory();
-	//Vector<ItemInstance *> *getSCraftMaterialInventory();
-	//Vector<ItemInstance *> *getCCraftMaterialInventory();
+	Vector<Ref<Bag> > *get_s_bags();
+	Vector<Ref<Bag> > *get_c_bags();
 
 	//void Update();
 	void sadd_craft_material(int itemId, int count);
@@ -472,9 +517,6 @@ private:
 	String _s_player_name;
 	String _c_player_name;
 
-	PlayerStates _s_state = PlayerStates::STATE_NORMAL;
-	PlayerStates _c_state = PlayerStates::STATE_NORMAL;
-
 	////     Stats    ////
 
 	Ref<Stat> _health;
@@ -505,11 +547,19 @@ private:
 
 	bool s;
 	bool c;
-	bool cHasGlobalCooldown;
-	bool sHasGlobalCooldown;
 	float sRezTimer;
 	float cRezTimer;
 	//bool init;
+
+	////    GCD    ////
+	float _s_gcd;
+	float _c_gcd;
+
+	////    States    ////
+	int _s_states[EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX];
+
+	int _s_state;
+	int _c_state;
 
 	////    SpellCastData    ////
 
@@ -539,6 +589,19 @@ private:
 	EntityEnums::EntityType _s_entity_type;
 	EntityEnums::EntityType _c_entity_type;
 
+	////    Cooldowns    ////
+	Vector<Ref<Cooldown> > *_s_cooldowns;
+	Vector<Ref<Cooldown> > *_c_cooldowns;
+
+	HashMap<int, Ref<Cooldown> > *_s_cooldown_map;
+	HashMap<int, Ref<Cooldown> > *_c_cooldown_map;
+
+	Vector<Ref<CategoryCooldown> > *_s_category_cooldowns;
+	Vector<Ref<CategoryCooldown> > *_c_category_cooldowns;
+
+	CategoryCooldownHashMap *_s_category_cooldown_map;
+	CategoryCooldownHashMap *_c_category_cooldown_map;
+
 	////    targetComponent    ////
 
 	int _s_target_guid;
@@ -550,16 +613,10 @@ private:
 	Vector<PlayerTalent *> *_s_talents;
 	Vector<PlayerTalent *> *_c_talents;
 
-	////    PlayerSpellDataComponent    ////
-
-	Vector<int> *_s_spell_data;
-	Vector<int> *_c_spell_data;
-	HashMap<int, int> *_local_spell_data;
-
 	////    Inventory    ////
 
-	Vector<ItemInstance *> *_s_inventory;
-	Vector<ItemInstance *> *_c_inventory;
+	Vector<Ref<Bag> > *_s_bags;
+	Vector<Ref<Bag> > *_c_bags;
 };
 
 #endif

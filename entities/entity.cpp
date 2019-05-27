@@ -40,20 +40,6 @@ void Entity::sets_guid(int value) {
 	_s_guid = value;
 }
 
-PlayerStates Entity::getc_state() {
-	return _c_state;
-}
-void Entity::setc_state(PlayerStates state) {
-	_c_state = state;
-}
-
-PlayerStates Entity::gets_state() {
-	return _s_state;
-}
-void Entity::sets_state(PlayerStates state) {
-	_s_state = state;
-}
-
 int Entity::gets_class_id() {
 	return _s_class_id;
 }
@@ -239,8 +225,16 @@ Entity::Entity() {
 	sIsDead = false;
 	cIsDead = false;
 
-	cHasGlobalCooldown = false;
-	sHasGlobalCooldown = false;
+	_s_gcd = 0;
+	_c_gcd = 0;
+
+	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
+		_s_states[i] = 0;
+	}
+
+	_s_state = 0;
+	_c_state = 0;
+
 	sRezTimer = 0;
 	cRezTimer = 0;
 
@@ -325,14 +319,53 @@ Entity::Entity() {
 
 	_s_auras = memnew(Vector<Ref<AuraData> >());
 	_c_auras = memnew(Vector<Ref<AuraData> >());
+
+	_s_cooldowns = memnew(Vector<Ref<Cooldown> >());
+	_c_cooldowns = memnew(Vector<Ref<Cooldown> >());
+
+	_s_cooldown_map = memnew(CooldownHashMap());
+	_c_cooldown_map = memnew(CooldownHashMap());
+
+	_s_category_cooldowns = memnew(Vector<Ref<CategoryCooldown> >());
+	_c_category_cooldowns = memnew(Vector<Ref<CategoryCooldown> >());
+
+	_s_category_cooldown_map = memnew(CategoryCooldownHashMap());
+	_c_category_cooldown_map = memnew(CategoryCooldownHashMap());
+
+	_s_bags = memnew(Vector<Ref<Bag> >());
+	_c_bags = memnew(Vector<Ref<Bag> >());
 }
 
 Entity::~Entity() {
 	_s_auras->clear();
 	_c_auras->clear();
-
 	memdelete(_s_auras);
 	memdelete(_c_auras);
+
+	_s_cooldowns->clear();
+	_c_cooldowns->clear();
+	memdelete(_s_cooldowns);
+	memdelete(_c_cooldowns);
+
+	_s_cooldown_map->clear();
+	_c_cooldown_map->clear();
+	memdelete(_s_cooldown_map);
+	memdelete(_c_cooldown_map);
+
+	_s_category_cooldowns->clear();
+	_c_category_cooldowns->clear();
+	memdelete(_s_category_cooldowns);
+	memdelete(_c_category_cooldowns);
+
+	_s_category_cooldown_map->clear();
+	_c_category_cooldown_map->clear();
+	memdelete(_s_category_cooldown_map);
+	memdelete(_c_category_cooldown_map);
+
+	_s_bags->clear();
+	_c_bags->clear();
+	memdelete(_s_bags);
+	memdelete(_c_bags);
 }
 
 void Entity::initialize(Ref<EntityCreateInfo> info) {
@@ -404,11 +437,65 @@ bool Entity::getc_is_dead() {
 }
 
 bool Entity::getc_has_global_cooldown() {
-	return cHasGlobalCooldown;
+	return _c_gcd >= 0.000000001;
 }
 
 bool Entity::gets_has_global_cooldown() {
-	return sHasGlobalCooldown;
+	return _s_gcd >= 0.000000001;
+}
+
+bool Entity::getc_global_cooldown() {
+	return _c_gcd;
+}
+
+bool Entity::gets_global_cooldown() {
+	return _s_gcd;
+}
+
+void Entity::sstart_global_cooldown(float value) {
+	_s_gcd = value;
+
+	cstart_global_cooldown(value);
+}
+
+void Entity::cstart_global_cooldown(float value) {
+	_c_gcd = value;
+}
+
+////    States    ////
+
+int Entity::gets_state() {
+	return _s_state;
+}
+void Entity::sets_state(int state) {
+	_s_state = state;
+
+	emit_signal("sstate_changed", state);
+}
+
+int Entity::getc_state() {
+	return _c_state;
+}
+void Entity::setc_state(int state) {
+	_c_state = state;
+
+	emit_signal("cstate_changed", state);
+}
+
+void Entity::sadd_state_ref(int state_index) {
+	ERR_FAIL_INDEX(state_index, EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX);
+
+	if (_s_states[state_index]++ == 0) {
+		sets_state(gets_state() | EntityEnums::get_state_flag_for_index(state_index));
+	}
+}
+
+void Entity::sremove_state_ref(int state_index) {
+	ERR_FAIL_INDEX(state_index, EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX);
+
+	if (--_s_states[state_index] == 0) {
+		sets_state(gets_state() ^ EntityEnums::get_state_flag_for_index(state_index));
+	}
 }
 
 Ref<Stat> Entity::get_stat_int(int index) {
@@ -524,7 +611,6 @@ void Entity::stake_heal(Ref<SpellHealInfo> data) {
 	//signal
 	emit_signal("son_heal_received", this, data);
 }
-
 
 void Entity::sdeal_heal_to(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
@@ -651,37 +737,6 @@ void Entity::son_after_aura_applied(Ref<AuraData> data) {
 
 		ad->get_aura()->son_after_aura_applied(data);
 	}
-}
-
-void Entity::trigger_global_cooldown() {
-	/*
-	if (!owner->isServer) {
-		return;
-	}
-	sHasGlobalCooldown = true;
-	if (BSSettings::Getinstance()->AnimStopEnabled) {
-		SGCD->ModCurrent = SGCD->ModMax - BSSettings::Getinstance()->GetBSTestAnimStopDataForClass(owner->PlayerData->ClassId)->GCDReduce;
-	} else {
-		SGCD->ModCurrent = SGCD->ModMax;
-	}
-	SGCD->Dirty = false;
-	if (SOnStatChanged != null) {
-		DELEGATE_INVOKE(SOnStatChanged, 3, SGCD);
-	}
-	SendTriggerGCDMessage();*/
-}
-
-void Entity::creceive_trigger_global_cooldown() {
-	/*
-	if (!owner->isClient) {
-		return;
-	}
-	CGCD->ModCurrent = CGCD->ModMax;
-	CGCD->Dirty = false;
-	cHasGlobalCooldown = true;
-	if (OnStatChanged != null) {
-		DELEGATE_INVOKE(OnStatChanged, 3, CGCD);
-	}*/
 }
 
 ////    Spell System    ////
@@ -907,7 +962,7 @@ void Entity::sadd_aura(Ref<AuraData> aura) {
 	aura->set_owner(this);
 
 	_s_auras->push_back(aura);
-	
+
 	son_after_aura_applied(aura);
 
 	emit_signal("saura_added", aura);
@@ -934,7 +989,6 @@ void Entity::sremove_aura(Ref<AuraData> aura) {
 
 	cremove_aura(aura);
 }
-
 
 void Entity::sremove_aura_expired(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
@@ -1043,7 +1097,6 @@ Ref<Aura> Entity::cget_aura(int index) {
 }
 
 void Entity::moved() {
-	
 }
 
 void Entity::con_cast_failed(Ref<SpellCastInfo> info) {
@@ -1156,56 +1209,242 @@ void Entity::cinterrupt_cast() {
 	_c_spell_cast_info = Ref<SpellCastInfo>(NULL);
 }
 
-//void Entity::sstart_casting(int PspellId, float PcastTime, float scale) {
-/*
-       Spell *spell = Spells::Instance->GetData(PspellId);
-       StartCasting(spell, PspellId, PcastTime, scale);
-       */
-//}
+////    Cooldowns    ////
+Vector<Ref<Cooldown> > *Entity::gets_cooldowns() {
+	return _s_cooldowns;
+}
+Vector<Ref<Cooldown> > *Entity::getc_cooldowns() {
+	return _c_cooldowns;
+}
 
-//void Entity::sstart_casting(Spell *spell, int PspellId, float PcastTime, float spellScale) {
-/*
-       animReduction = (float)0;
-       if (BSSettings::Getinstance()->AnimStopEnabled) {
-       animReduction = BSSettings::Getinstance()->GetBSTestAnimStopDataForClass(owner->PlayerData->ClassId)->Value;
-       PcastTime -= animReduction;
-       }
-       setSSpellId(PspellId);
-       setSCastTime(PcastTime);
-       setSSpellScale(spellScale);
-       setSCasting(true);
-       setSCurrentCastTime((float)0);
-       setCSpellId(PspellId);
-       setCSpellName(spell->SpellName);
-       setCCastTime(PcastTime);
-       setCCasting(true);
-       setCCurrentCastTime((float)0);
-       if (CxNet::IsServer) {
-       SSendStartCasting(getSSpellId(), PcastTime);
-       }*/
-//}
+HashMap<int, Ref<Cooldown> > *Entity::gets_cooldown_map() {
+	return _s_cooldown_map;
+}
+HashMap<int, Ref<Cooldown> > *Entity::getc_cooldown_map() {
+	return _c_cooldown_map;
+}
 
-//void Entity::sstart_casting(int PspellId, String PspellName, float PcastTime, float spellScale) {
-/*
-       animReduction = (float)0;
-       if (BSSettings::Getinstance()->AnimStopEnabled) {
-       animReduction = BSSettings::Getinstance()->GetBSTestAnimStopDataForClass(owner->PlayerData->ClassId)->Value;
-       PcastTime -= animReduction;
-       }
-       setSSpellId(PspellId);
-       setSCastTime(PcastTime);
-       setSSpellScale(spellScale);
-       setSCasting(true);
-       setSCurrentCastTime((float)0);
-       setCSpellId(PspellId);
-       setCSpellName(PspellName);
-       setCCastTime(PcastTime);
-       setCCasting(true);
-       setCCurrentCastTime((float)0);
-       if (CxNet::IsServer) {
-       SSendStartCasting(getSSpellId(), PcastTime);
-       }*/
-//}
+bool Entity::hass_cooldown(int spell_id) {
+	return _s_cooldown_map->has(spell_id);
+}
+void Entity::adds_cooldown(int spell_id, float value) {
+	if (_s_cooldown_map->has(spell_id)) {
+		Ref<Cooldown> cd = _s_cooldown_map->get(spell_id);
+
+		cd->set_remaining(value);
+
+		emit_signal("scooldown_added", cd);
+		addc_cooldown(spell_id, value);
+		return;
+	}
+
+	Ref<Cooldown> cd;
+	cd.instance();
+
+	_s_cooldown_map->set(spell_id, cd);
+	_s_cooldowns->push_back(cd);
+
+	emit_signal("scooldown_added", cd);
+	addc_cooldown(spell_id, value);
+}
+void Entity::removes_cooldown(int spell_id) {
+	if (_s_cooldown_map->has(spell_id)) {
+		_s_cooldown_map->erase(spell_id);
+	}
+
+	for (int i = 0; i < _s_cooldowns->size(); ++i) {
+		if (_s_cooldowns->get(i)->get_spell_id() == spell_id) {
+			_s_cooldowns->remove(i);
+			return;
+		}
+	}
+
+	emit_signal("scooldown_removed", spell_id);
+}
+Ref<Cooldown> Entity::gets_cooldown(int spell_id) {
+	if (!_s_cooldown_map->has(spell_id)) {
+		return Ref<Cooldown>();
+	}
+
+	return _s_cooldown_map->get(spell_id);
+}
+Ref<Cooldown> Entity::gets_cooldown_index(int index) {
+	ERR_FAIL_INDEX_V(index, _s_cooldowns->size(), Ref<Cooldown>());
+
+	return _s_cooldowns->get(index);
+}
+int Entity::gets_cooldown_count() {
+	return _s_cooldowns->size();
+}
+
+bool Entity::hasc_cooldown(int spell_id) {
+	return _c_cooldown_map->has(spell_id);
+}
+void Entity::addc_cooldown(int spell_id, float value) {
+	if (_c_cooldown_map->has(spell_id)) {
+		Ref<Cooldown> cd = _c_cooldown_map->get(spell_id);
+
+		cd->set_remaining(value);
+
+		emit_signal("ccooldown_added", cd);
+		return;
+	}
+
+	Ref<Cooldown> cd;
+	cd.instance();
+
+	_c_cooldown_map->set(spell_id, cd);
+	_c_cooldowns->push_back(cd);
+
+	emit_signal("ccooldown_added", cd);
+}
+void Entity::removec_cooldown(int spell_id) {
+	if (_c_cooldown_map->has(spell_id)) {
+		_c_cooldown_map->erase(spell_id);
+	}
+
+	for (int i = 0; i < _c_cooldowns->size(); ++i) {
+		if (_c_cooldowns->get(i)->get_spell_id() == spell_id) {
+			_c_cooldowns->remove(i);
+			return;
+		}
+	}
+
+	emit_signal("ccooldown_removed", spell_id);
+}
+Ref<Cooldown> Entity::getc_cooldown(int spell_id) {
+	if (!_c_cooldown_map->has(spell_id)) {
+		return Ref<Cooldown>();
+	}
+
+	return _c_cooldown_map->get(spell_id);
+}
+Ref<Cooldown> Entity::getc_cooldown_index(int index) {
+	ERR_FAIL_INDEX_V(index, _c_cooldowns->size(), Ref<Cooldown>());
+
+	return _c_cooldowns->get(index);
+}
+int Entity::getc_cooldown_count() {
+	return _c_cooldowns->size();
+}
+
+//Category Cooldowns
+Vector<Ref<CategoryCooldown> > *Entity::gets_category_cooldowns() {
+	return _s_category_cooldowns;
+}
+Vector<Ref<CategoryCooldown> > *Entity::getc_category_cooldowns() {
+	return _c_category_cooldowns;
+}
+
+HashMap<int, Ref<CategoryCooldown> > *Entity::gets_category_cooldown_map() {
+	return _s_category_cooldown_map;
+}
+HashMap<int, Ref<CategoryCooldown> > *Entity::getc_category_cooldown_map() {
+	return _c_category_cooldown_map;
+}
+
+bool Entity::hass_category_cooldown(int spell_id) {
+	return _s_category_cooldown_map->has(spell_id);
+}
+void Entity::adds_category_cooldown(int spell_id, float value) {
+	if (_s_category_cooldown_map->has(spell_id)) {
+		Ref<CategoryCooldown> cc = _s_category_cooldown_map->get(spell_id);
+
+		cc->set_remaining(value);
+
+		emit_signal("scategory_cooldown_added", cc);
+		return;
+	}
+
+	Ref<CategoryCooldown> cc;
+	cc.instance();
+
+	_s_category_cooldown_map->set(spell_id, cc);
+	_s_category_cooldowns->push_back(cc);
+
+	emit_signal("scategory_cooldown_added", cc);
+}
+void Entity::removes_category_cooldown(int category_id) {
+	if (_s_category_cooldown_map->has(category_id)) {
+		_s_category_cooldown_map->erase(category_id);
+	}
+
+	for (int i = 0; i < _s_category_cooldowns->size(); ++i) {
+		if (_s_category_cooldowns->get(i)->get_category_id() == category_id) {
+			_s_category_cooldowns->remove(i);
+			return;
+		}
+	}
+
+	emit_signal("scategory_cooldown_removed", category_id);
+}
+Ref<CategoryCooldown> Entity::gets_category_cooldown(int category_id) {
+	if (!_s_category_cooldown_map->has(category_id)) {
+		return Ref<CategoryCooldown>();
+	}
+
+	return _s_category_cooldown_map->get(category_id);
+}
+Ref<CategoryCooldown> Entity::gets_category_cooldown_index(int index) {
+	ERR_FAIL_INDEX_V(index, _s_category_cooldowns->size(), Ref<Cooldown>());
+
+	return _s_category_cooldowns->get(index);
+}
+int Entity::gets_category_cooldown_count() {
+	return _s_category_cooldowns->size();
+}
+
+bool Entity::hasc_category_cooldown(int spell_id) {
+	return _c_category_cooldown_map->has(spell_id);
+}
+void Entity::addc_category_cooldown(int spell_id, float value) {
+	if (_c_category_cooldown_map->has(spell_id)) {
+		Ref<CategoryCooldown> cc = _c_category_cooldown_map->get(spell_id);
+
+		cc->set_remaining(value);
+
+		emit_signal("ccategory_cooldown_added", cc);
+		return;
+	}
+
+	Ref<CategoryCooldown> cc;
+	cc.instance();
+
+	_c_category_cooldown_map->set(spell_id, cc);
+	_c_category_cooldowns->push_back(cc);
+
+	emit_signal("ccategory_cooldown_added", cc);
+}
+void Entity::removec_category_cooldown(int category_id) {
+	if (_c_category_cooldown_map->has(category_id)) {
+		_c_category_cooldown_map->erase(category_id);
+	}
+
+	for (int i = 0; i < _c_category_cooldowns->size(); ++i) {
+		if (_c_category_cooldowns->get(i)->get_category_id() == category_id) {
+			_c_category_cooldowns->remove(i);
+			return;
+		}
+	}
+
+	emit_signal("ccategory_cooldown_removed", category_id);
+}
+Ref<CategoryCooldown> Entity::getc_category_cooldown(int category_id) {
+	if (!_c_category_cooldown_map->has(category_id)) {
+		return Ref<CategoryCooldown>();
+	}
+
+	return _c_category_cooldown_map->get(category_id);
+}
+Ref<CategoryCooldown> Entity::getc_category_cooldown_index(int index) {
+	ERR_FAIL_INDEX_V(index, _c_category_cooldowns->size(), Ref<Cooldown>());
+
+	return _c_category_cooldowns->get(index);
+}
+int Entity::getc_category_cooldown_count() {
+	return _c_category_cooldowns->size();
+}
+
 
 Ref<SpellCastInfo> Entity::gets_spell_cast_info() {
 	return Ref<SpellCastInfo>(_s_spell_cast_info);
@@ -1416,110 +1655,14 @@ PlayerTalent *Entity::cget_talent(int id, bool create) {
 	return NULL;
 }
 
-////    PlayerSpellDataComponent    ////
-
-/*
-   Vector<PlayerSpellData> *Entity::getSSpellData() {
-   return sSpellData;
-   }
-
-   Vector<PlayerSpellData> *Entity::getCSpellData() {
-   return cSpellData;
-   }
-   Dictionary_T<int, PlayerLocalSpellData> *Entity::getLocalSpellData() {
-   return localSpellData;
-   }
-
-   bool Entity::getSend() {
-   return send;
-   }
-
-   void Entity::setSend(bool value) {
-   send = value;
-   }*/
-
-//void Entity::AddSSpellData(PlayerSpellData *psd) {
-/*
-   sSpellData->Add(psd);
-   if (owner->isServer && is_inst_of<PlayerSpellCooldownData *>(psd)) {
-   PlayerSpellCooldownData *playerSpellCooldownData = as_cast<PlayerSpellCooldownData *>(psd);
-   SSendAddCPlayerSpellCooldownData(playerSpellCooldownData->SpellId, playerSpellCooldownData->getCooldown(), playerSpellCooldownData->getRemainingCooldown());
-   }*/
-//}
-
-//void Entity::AddCSpellData(PlayerSpellData *psd) {
-/*
-   cSpellData->Add(psd);
-   if (COnSpellDataAdded != null) {
-   DELEGATE_INVOKE(COnSpellDataAdded, psd);
-   }*/
-//}
-
-//void Entity::RemoveSSpellData(PlayerSpellData *psd) {
-/*
-   for (int i = 0; i < sSpellData->Count; i += 1) {
-   if (*(sSpellData->GetData(i)) == *psd) {
-   sSpellData->RemoveAt(i);
-   break;
-   }
-   }
-   if (owner->isServer && is_inst_of<PlayerSpellCooldownData *>(psd)) {
-   SSendRemoveCPlayerSpellCooldownData(psd->getSpellId());
-   }*/
-//}
-
-//void Entity::SSendAddCPlayerSpellCooldownData(int spellId, float cooldown, float remainingCooldown) {
-/*
-   if (CxNet::IsServer && (owner->Connection != null)) {
-   AddCPlayerSpellCooldownDataMsg addCPlayerSpellCooldownDataMsg = AddCPlayerSpellCooldownDataMsg();
-   addCPlayerSpellCooldownDataMsg.SpellId = spellId;
-   addCPlayerSpellCooldownDataMsg.Cooldown = cooldown;
-   addCPlayerSpellCooldownDataMsg.RemainingCooldown = remainingCooldown;
-   addCPlayerSpellCooldownDataMsg.Serialize(CxNet::NetBuffer);
-   owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-   }*/
-//}
-
-void Entity::ssend_remove_cplayer_spell_cooldown_data(int spellId) {
-	/*
-       if (CxNet::IsServer && (owner->Connection != null)) {
-       RemoveCPlayerSpellCooldownDataMsg removeCPlayerSpellCooldownDataMsg = RemoveCPlayerSpellCooldownDataMsg();
-       removeCPlayerSpellCooldownDataMsg.SpellId = spellId;
-       removeCPlayerSpellCooldownDataMsg.Serialize(CxNet::NetBuffer);
-       owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-       }*/
-}
-void Entity::creceive_add_cplayer_spell_cooldown_data(int spellId, float cooldown, float remainingCooldown) {
-	//AddCSpellData(new PlayerSpellCooldownData(spellId, cooldown, remainingCooldown));
-}
-
-void Entity::creceive_remove_cplayer_spell_cooldown_data(int spellId) {
-	//RemoveCSpellData(spellId, /*ERROR: Cannot translate: System.NotImplementedException: typeOfExpression: --> TODO: --> http://www.boost.org/doc/libs/1_55_0/doc/html/typeof/tuto.html. Node: ICSharpCode.NRefactory.CSharp.TypeOfExpression*/);
-}
-
-//void Entity::RemoveCSpellData(int spellId, Type *type) {
-/*
-   PlayerSpellData *playerSpellData = null;
-   for (int i = 0; i < cSpellData->Count; i += 1) {
-   if ((cSpellData->GetData(i)->SpellId == spellId) && (cSpellData->GetData(i)->GetType() == *type)) {
-   playerSpellData = cSpellData->GetData(i);
-   cSpellData->RemoveAt(i);
-   break;
-   }
-   }
-   if ((COnSpellDataRemoved != null) && (playerSpellData != null)) {
-   DELEGATE_INVOKE(COnSpellDataRemoved, playerSpellData);
-   }*/
-//}
-
 ////    Inventory    ////
 
-Vector<ItemInstance *> *Entity::get_sinventory() {
-	return _s_inventory;
+Vector<Ref<Bag> > *Entity::get_s_bags() {
+	return _s_bags;
 }
 
-Vector<ItemInstance *> *Entity::get_cinventory() {
-	return _c_inventory;
+Vector<Ref<Bag> > *Entity::get_c_bags() {
+	return _c_bags;
 }
 
 void Entity::sadd_craft_material(int itemId, int count) {
@@ -2495,6 +2638,65 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stat_enum", "index"), &Entity::get_stat_enum);
 	ClassDB::bind_method(D_METHOD("set_stat_enum", "stat_id", "entry"), &Entity::set_stat_enum);
 
+	//GCD
+	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::REAL, "value")));
+	ADD_SIGNAL(MethodInfo("cgcd_started", PropertyInfo(Variant::REAL, "value")));
+
+	ClassDB::bind_method(D_METHOD("getc_has_global_cooldown"), &Entity::getc_has_global_cooldown);
+	ClassDB::bind_method(D_METHOD("gets_has_global_cooldown"), &Entity::gets_has_global_cooldown);
+	ClassDB::bind_method(D_METHOD("getc_global_cooldown"), &Entity::getc_global_cooldown);
+	ClassDB::bind_method(D_METHOD("gets_global_cooldown"), &Entity::gets_global_cooldown);
+	ClassDB::bind_method(D_METHOD("sstart_global_cooldown", "index"), &Entity::sstart_global_cooldown);
+	ClassDB::bind_method(D_METHOD("cstart_global_cooldown", "index"), &Entity::cstart_global_cooldown);
+
+	//States
+	ADD_SIGNAL(MethodInfo("sstate_changed", PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("cstate_changed", PropertyInfo(Variant::INT, "value")));
+
+	ClassDB::bind_method(D_METHOD("getc_state"), &Entity::getc_state);
+	ClassDB::bind_method(D_METHOD("setc_state", "state"), &Entity::setc_state);
+	ClassDB::bind_method(D_METHOD("gets_state"), &Entity::gets_state);
+	ClassDB::bind_method(D_METHOD("sets_state", "state"), &Entity::sets_state);
+	ClassDB::bind_method(D_METHOD("sadd_state_ref", "state_index"), &Entity::sadd_state_ref);
+	ClassDB::bind_method(D_METHOD("sremove_state_ref", "state_index"), &Entity::sremove_state_ref);
+
+	//Cooldowns
+	ADD_SIGNAL(MethodInfo("scooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	ADD_SIGNAL(MethodInfo("ccooldown_removed", PropertyInfo(Variant::INT, "spell_id")));
+
+	ClassDB::bind_method(D_METHOD("hass_cooldown", "spell_id"), &Entity::hass_cooldown);
+	ClassDB::bind_method(D_METHOD("adds_cooldown", "spell_id", "value"), &Entity::adds_cooldown);
+	ClassDB::bind_method(D_METHOD("removes_cooldown", "spell_id"), &Entity::removes_cooldown);
+	ClassDB::bind_method(D_METHOD("gets_cooldown", "spell_id"), &Entity::gets_cooldown);
+	ClassDB::bind_method(D_METHOD("gets_cooldown_index", "index"), &Entity::gets_cooldown_index);
+	ClassDB::bind_method(D_METHOD("gets_cooldown_count"), &Entity::gets_cooldown_count);
+
+	ClassDB::bind_method(D_METHOD("hasc_cooldown", "spell_id"), &Entity::hasc_cooldown);
+	ClassDB::bind_method(D_METHOD("addc_cooldown", "spell_id", "value"), &Entity::addc_cooldown);
+	ClassDB::bind_method(D_METHOD("removec_cooldown", "spell_id"), &Entity::removec_cooldown);
+	ClassDB::bind_method(D_METHOD("getc_cooldown", "spell_id"), &Entity::getc_cooldown);
+	ClassDB::bind_method(D_METHOD("getc_cooldown_index", "index"), &Entity::getc_cooldown_index);
+	ClassDB::bind_method(D_METHOD("getc_cooldown_count"), &Entity::getc_cooldown_count);
+
+	//Category Cooldowns
+	ADD_SIGNAL(MethodInfo("scategory_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+	ADD_SIGNAL(MethodInfo("ccategory_cooldown_removed", PropertyInfo(Variant::INT, "category_id")));
+
+	ClassDB::bind_method(D_METHOD("hass_category_cooldown", "category_id"), &Entity::hass_category_cooldown);
+	ClassDB::bind_method(D_METHOD("adds_category_cooldown", "category_id", "value"), &Entity::adds_category_cooldown);
+	ClassDB::bind_method(D_METHOD("removes_category_cooldown", "category_id"), &Entity::removes_category_cooldown);
+	ClassDB::bind_method(D_METHOD("gets_category_cooldown", "category_id"), &Entity::gets_category_cooldown);
+	ClassDB::bind_method(D_METHOD("gets_category_cooldown_index", "index"), &Entity::gets_category_cooldown_index);
+	ClassDB::bind_method(D_METHOD("gets_category_cooldown_count"), &Entity::gets_category_cooldown_count);
+
+	ClassDB::bind_method(D_METHOD("hasc_category_cooldown", "category_id"), &Entity::hasc_category_cooldown);
+	ClassDB::bind_method(D_METHOD("addc_category_cooldown", "category_id", "value"), &Entity::addc_category_cooldown);
+	ClassDB::bind_method(D_METHOD("removec_category_cooldown", "category_id"), &Entity::removec_category_cooldown);
+	ClassDB::bind_method(D_METHOD("getc_category_cooldown", "category_id"), &Entity::getc_category_cooldown);
+	ClassDB::bind_method(D_METHOD("getc_category_cooldown_index", "index"), &Entity::getc_category_cooldown_index);
+	ClassDB::bind_method(D_METHOD("getc_category_cooldown_count"), &Entity::getc_category_cooldown_count);
+
+	//skeleton
 	ClassDB::bind_method(D_METHOD("get_character_skeleton"), &Entity::get_character_skeleton);
 
 	////    Targeting System    ////
