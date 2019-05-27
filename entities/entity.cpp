@@ -274,7 +274,6 @@ Entity::Entity() {
        sCraftMaterialInventory = new Vector<ItemInstance>();
        cInventory = new Vector<ItemInstance>();
        sInventory = new Vector<ItemInstance>();
-       INVENTORY_DEFAULT_SIZE = 21;
        owner = owner;
        for (int i = 0; i < 21; i += 1) {
        cInventory->Add(null);
@@ -331,9 +330,6 @@ Entity::Entity() {
 
 	_s_category_cooldown_map = memnew(CategoryCooldownHashMap());
 	_c_category_cooldown_map = memnew(CategoryCooldownHashMap());
-
-	_s_bags = memnew(Vector<Ref<Bag> >());
-	_c_bags = memnew(Vector<Ref<Bag> >());
 }
 
 Entity::~Entity() {
@@ -361,11 +357,6 @@ Entity::~Entity() {
 	_c_category_cooldown_map->clear();
 	memdelete(_s_category_cooldown_map);
 	memdelete(_c_category_cooldown_map);
-
-	_s_bags->clear();
-	_c_bags->clear();
-	memdelete(_s_bags);
-	memdelete(_c_bags);
 }
 
 void Entity::initialize(Ref<EntityCreateInfo> info) {
@@ -1657,12 +1648,16 @@ PlayerTalent *Entity::cget_talent(int id, bool create) {
 
 ////    Inventory    ////
 
-Vector<Ref<Bag> > *Entity::get_s_bags() {
-	return _s_bags;
+Ref<Bag> Entity::gets_bag(int index) {
+    ERR_FAIL_INDEX_V(index, MAX_BAG_SLOTS, Ref<Bag>());
+    
+	return _s_bags[index];
 }
 
-Vector<Ref<Bag> > *Entity::get_c_bags() {
-	return _c_bags;
+Ref<Bag> Entity::getc_bag(int index) {
+    ERR_FAIL_INDEX_V(index, MAX_BAG_SLOTS, Ref<Bag>());
+     
+	return _c_bags[index];
 }
 
 void Entity::sadd_craft_material(int itemId, int count) {
@@ -2646,8 +2641,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gets_has_global_cooldown"), &Entity::gets_has_global_cooldown);
 	ClassDB::bind_method(D_METHOD("getc_global_cooldown"), &Entity::getc_global_cooldown);
 	ClassDB::bind_method(D_METHOD("gets_global_cooldown"), &Entity::gets_global_cooldown);
-	ClassDB::bind_method(D_METHOD("sstart_global_cooldown", "index"), &Entity::sstart_global_cooldown);
-	ClassDB::bind_method(D_METHOD("cstart_global_cooldown", "index"), &Entity::cstart_global_cooldown);
+	ClassDB::bind_method(D_METHOD("sstart_global_cooldown", "value"), &Entity::sstart_global_cooldown);
+	ClassDB::bind_method(D_METHOD("cstart_global_cooldown", "value"), &Entity::cstart_global_cooldown);
 
 	//States
 	ADD_SIGNAL(MethodInfo("sstate_changed", PropertyInfo(Variant::INT, "value")));
@@ -2706,4 +2701,15 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("getc_target"), &Entity::getc_target);
 	ClassDB::bind_method(D_METHOD("setc_target", "target"), &Entity::setc_target);
+    
+    ////    Inventory System    ////
+    
+    ADD_SIGNAL(MethodInfo("sitem_added", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+    ADD_SIGNAL(MethodInfo("citem_added", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+    
+    ClassDB::bind_method(D_METHOD("gets_bag", "index"), &Entity::gets_bag);
+    ClassDB::bind_method(D_METHOD("getc_bag", "index"), &Entity::getc_bag);
+    
+    BIND_ENUM_CONSTANT(BACKPACK_SIZE);
+    BIND_ENUM_CONSTANT(MAX_BAG_SLOTS);
 }

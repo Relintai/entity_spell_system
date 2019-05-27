@@ -85,6 +85,11 @@ class Entity : public KinematicBody {
 #endif
 
 public:
+    enum InventorySizes {
+        BACKPACK_SIZE = 20,
+        MAX_BAG_SLOTS = 5,
+    };
+    
 	Entity();
 	~Entity();
 
@@ -399,11 +404,6 @@ public:
 	Ref<CategoryCooldown> getc_category_cooldown_index(int index);
 	int getc_category_cooldown_count();
 
-
-	//Vector<Ref<Bag> > *_s_bags;
-	//Vector<Ref<Bag> > *_c_bags;
-
-
 	////    TargetComponent    ////
 
 	Entity *gets_target();
@@ -425,11 +425,10 @@ public:
 
 	////    Inventory    ////
 
-	int INVENTORY_DEFAULT_SIZE;
-
-	Vector<Ref<Bag> > *get_s_bags();
-	Vector<Ref<Bag> > *get_c_bags();
-
+	
+	Ref<Bag> gets_bag(int index);
+	Ref<Bag> getc_bag(int index);
+    
 	//void Update();
 	void sadd_craft_material(int itemId, int count);
 	void sremove_craft_material(int itemId, int count);
@@ -615,8 +614,10 @@ private:
 
 	////    Inventory    ////
 
-	Vector<Ref<Bag> > *_s_bags;
-	Vector<Ref<Bag> > *_c_bags;
+	Ref<Bag> _s_bags[MAX_BAG_SLOTS];
+	Ref<Bag> _c_bags[MAX_BAG_SLOTS];
 };
+
+VARIANT_ENUM_CAST(Entity::InventorySizes);
 
 #endif
