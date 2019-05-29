@@ -2,6 +2,41 @@
 
 #include "aura.h"
 
+int Spell::get_spell_id() {
+	return _spell_id;
+}
+void Spell::set_spell_id(int value) {
+	_spell_id = value;
+}
+
+int Spell::get_spell_type() {
+	return _spell_type;
+}
+void Spell::set_spell_type(int value) {
+	_spell_type = value;
+}
+
+bool Spell::get_hide_from_actionbar() {
+	return _hide_from_actionbar;
+}
+void Spell::set_hide_from_actionbar(bool value) {
+	_hide_from_actionbar = value;
+}
+
+float Spell::get_cooldown() {
+	return _cooldown;
+}
+void Spell::set_cooldown(float value) {
+	_cooldown = value;
+}
+
+SpellTargetType Spell::get_target_type() {
+	return _target_type;
+}
+void Spell::set_target_type(SpellTargetType value) {
+	_target_type = value;
+}
+
 Ref<Aura> Spell::get_caster_aura_apply() {
 	return Ref<Aura>(_caster_aura_apply);
 }
@@ -54,6 +89,104 @@ void Spell::set_target_aura_apply2(Ref<Aura> value) {
 	_target_aura_apply2_ref = memnew(Ref<Aura>(value));
 }
 
+int Spell::get_level() {
+	return _level;
+}
+void Spell::set_level(int value) {
+	_level = value;
+}
+
+int Spell::get_item_cost() {
+	return _item_cost;
+}
+void Spell::set_item_cost(int value) {
+	_item_cost = value;
+}
+
+int Spell::get_craft_material_cost() {
+	return _craft_material_cost;
+}
+void Spell::set_craft_material_cost(int value) {
+	_craft_material_cost = value;
+}
+
+int Spell::get_required_item() {
+	return _required_item;
+}
+void Spell::set_required_item(int value) {
+	_required_item = value;
+}
+
+EntityEnums::PlayerResourceTypes Spell::get_cost_type() {
+	return _cost_type;
+}
+void Spell::set_cost_type(EntityEnums::PlayerResourceTypes value) {
+	_cost_type = value;
+}
+
+int Spell::get_cost_resource() {
+	return _cost_resource;
+}
+void Spell::set_cost_resource(int value) {
+	_cost_resource = value;
+}
+
+EntityEnums::PlayerResourceTypes Spell::get_give_resource_type() {
+	return _give_resource_type;
+}
+void Spell::set_give_resource_type(EntityEnums::PlayerResourceTypes value) {
+	_give_resource_type = value;
+}
+
+int Spell::get_give_resource() {
+	return _give_resource;
+}
+void Spell::set_give_resource(int value) {
+	_give_resource = value;
+}
+
+bool Spell::has_global_cooldown() {
+	return _has_global_cooldown;
+}
+void Spell::set_has_global_cooldown(bool value) {
+	_has_global_cooldown = value;
+}
+
+bool Spell::get_is_local_spell() {
+	return _is_local_spell;
+}
+void Spell::set_is_local_spell(bool value) {
+	_is_local_spell = value;
+}
+
+Ref<Texture> Spell::get_icon() {
+	return _icon;
+}
+void Spell::set_icon(Ref<Texture> value) {
+	_icon = Ref<Texture>(value);
+}
+
+String Spell::get_name_key() {
+	return _name_key;
+}
+void Spell::set_name_key(String value) {
+	_name_key = value;
+}
+
+String Spell::get_spell_name() {
+	return _spell_name;
+}
+void Spell::set_spell_name(String value) {
+	_spell_name = value;
+}
+
+String Spell::get_spell_description() {
+	return _spell_description;
+}
+void Spell::set_spell_description(String value) {
+	_spell_description = value;
+}
+
 float Spell::get_damage_scale_for_level(int level) {
 	//return getDamageLevelScaling()->Evaluate((float)(level));
 	return 1;
@@ -67,6 +200,249 @@ float Spell::get_heal_scale_for_level(int level) {
 float Spell::get_absorb_scale_for_level(int level) {
 	//return getAbsorbLevelScaling()->Evaluate((float)(level));
 	return 1;
+}
+
+bool Spell::get_has_range() {
+	return _has_range;
+}
+void Spell::set_has_range(bool value) {
+	_has_range = value;
+}
+
+float Spell::get_range() {
+	return _range;
+}
+void Spell::set_range(float value) {
+	_range = value;
+}
+
+bool Spell::get_has_cast_time() {
+	return _has_cast_time;
+}
+void Spell::set_has_cast_time(bool value) {
+	_has_cast_time = value;
+}
+
+float Spell::get_cast_time() {
+	return _cast_time;
+}
+void Spell::set_cast_time(float value) {
+	_cast_time = value;
+}
+
+bool Spell::get_has_damage() {
+	return _has_damage;
+}
+void Spell::set_has_damage(bool value) {
+	_has_damage = value;
+}
+
+int Spell::get_damage_type() {
+	return _damage_type;
+}
+void Spell::set_damage_type(int value) {
+	_damage_type = value;
+}
+
+int Spell::get_damage_min() {
+	return _damage_min;
+}
+void Spell::set_damage_min(int value) {
+	_damage_min = value;
+}
+
+int Spell::get_damage_max() {
+	return _damage_max;
+}
+void Spell::set_damage_max(int value) {
+	_damage_max = value;
+}
+
+Ref<Curve> Spell::get_damage_scaling_curve() {
+	return _damage_scaling_curve;
+}
+void Spell::set_damage_scaling_curve(Ref<Curve> curve) {
+	_damage_scaling_curve = curve;
+}
+
+bool Spell::get_has_heal() {
+	return _has_heal;
+}
+void Spell::set_has_heal(bool value) {
+	_has_heal = value;
+}
+
+int Spell::get_heal_min() {
+	return _heal_min;
+}
+void Spell::set_heal_min(int value) {
+	_heal_min = value;
+}
+
+int Spell::get_heal_max() {
+	return _heal_max;
+}
+void Spell::set_heal_max(int value) {
+	_heal_max = value;
+}
+
+Ref<Curve> Spell::get_heal_scaling_curve() {
+	return _heal_scaling_curve;
+}
+void Spell::set_heal_scaling_curve(Ref<Curve> curve) {
+	_heal_scaling_curve = curve;
+}
+
+bool Spell::get_needs_target() {
+	return _needs_target;
+}
+void Spell::set_needs_target(bool value) {
+	_needs_target = value;
+}
+
+bool Spell::get_can_move_while_casting() {
+	return _can_move_while_casting;
+}
+void Spell::set_can_move_while_casting(bool value) {
+	_can_move_while_casting = value;
+}
+
+bool Spell::get_is_interrupt() {
+	return _is_interrupt;
+}
+void Spell::set_is_interrupt(bool value) {
+	_is_interrupt = value;
+}
+
+float Spell::get_interrupt_time() {
+	return _interrupt_time;
+}
+void Spell::set_interrupt_time(float value) {
+	_interrupt_time = value;
+}
+
+bool Spell::get_is_aoe() {
+	return _is_aoe;
+}
+void Spell::set_is_aoe(bool value) {
+	_is_aoe = value;
+}
+
+SpellAOETargetType Spell::get_aoe_target_type() {
+	return _aoe_targetType;
+}
+void Spell::set_aoe_target_type(SpellAOETargetType value) {
+	_aoe_targetType = value;
+}
+
+SpellAOEMovementType Spell::get_aoe_movement_type() {
+	return _aoe_movementType;
+}
+void Spell::set_aoe_movement_type(SpellAOEMovementType value) {
+	_aoe_movementType = value;
+}
+
+SpellAOEColliderType Spell::get_aoe_collider_type() {
+	return _aoe_colliderType;
+}
+void Spell::set_aoe_collider_type(SpellAOEColliderType value) {
+	_aoe_colliderType = value;
+}
+
+Vector3 Spell::get_aoe_half_extents() {
+	return _aoe_half_extents;
+}
+void Spell::set_aoe_half_extents(Vector3 value) {
+	_aoe_half_extents = value;
+}
+
+bool Spell::has_effect_visual() {
+	return _effect_visual.is_valid();
+}
+Ref<PackedScene> Spell::get_effect_visual() {
+	return _effect_visual;
+}
+void Spell::set_effect_visual(Ref<PackedScene> value) {
+	_effect_visual = value;
+}
+
+bool Spell::has_spell_cast_finish_effect() {
+	return _spell_cast_finish_effect.is_valid();
+}
+Ref<PackedScene> Spell::get_spell_cast_finish_effect() {
+	return _spell_cast_finish_effect;
+}
+void Spell::set_spell_cast_finish_effect(Ref<PackedScene> value) {
+	_spell_cast_finish_effect = value;
+}
+
+bool Spell::has_spell_cast_effect() {
+	return _spell_cast_effect.is_valid();
+}
+Ref<PackedScene> Spell::get_spell_cast_effect() {
+	return _spell_cast_effect;
+}
+void Spell::set_spell_cast_effect(Ref<PackedScene> value) {
+	_spell_cast_effect = value;
+}
+
+Ref<PackedScene> Spell::get_projectile() {
+	return _projectile;
+}
+void Spell::set_projectile(Ref<PackedScene> value) {
+	_projectile = value;
+}
+
+bool Spell::has_projectile() {
+	return _projectile.is_valid();
+}
+float Spell::get_projectile_speed() {
+	return _projectile_speed;
+}
+void Spell::set_projectile_speed(float value) {
+	_projectile_speed = value;
+}
+
+float Spell::get_projectile_time() {
+	return _projectile_time;
+}
+void Spell::set_projectile_time(float value) {
+	_projectile_time = value;
+}
+
+float Spell::get_projectile_range() {
+	return _projectile_range;
+}
+void Spell::set_projectile_range(float value) {
+	_projectile_range = value;
+}
+
+bool Spell::get_has_projectile_collision() {
+	return _projectile_collision;
+}
+void Spell::set_has_projectile_collision(bool value) {
+	_projectile_collision = value;
+}
+
+SpellProjectileType Spell::get_projectile_type() {
+	return _projectile_type;
+}
+void Spell::set_projectile_type(SpellProjectileType value) {
+	_projectile_type = value;
+}
+
+bool Spell::get_has_projectile_destroy_on_impact() {
+	return _projectile_destroy_on_impact;
+}
+void Spell::set_has_projectile_destroy_on_impact(bool value) {
+	_projectile_destroy_on_impact = value;
+}
+
+int Spell::get_spell_cooldown_mainpulation_data_count() {
+	return _spell_cooldown_mainpulation_data_count;
+}
+void Spell::set_spell_cooldown_mainpulation_data_count(int value) {
+	_spell_cooldown_mainpulation_data_count = value;
 }
 
 ////    Spell System    ////
@@ -370,17 +746,6 @@ Spell::Spell() {
 	_has_cast_time = false;
 	_cast_time = 0;
 
-	_has_effect = false;
-	_effect_id = 0;
-
-	_has_spell_cast_finish_effect = false;
-	_spell_cast_finish_effect_id = 0;
-
-	_has_spell_cast_effect = false;
-	_spell_cast_effect_id = 0;
-
-	_has_projectile = false;
-	_projectile_id = 0;
 	_projectile_speed = 0;
 	_projectile_time = 0;
 	_projectile_range = 0;
@@ -663,38 +1028,26 @@ void Spell::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "aoe_half_extents"), "set_aoe_half_extents", "get_aoe_half_extents");
 
 	ADD_GROUP("Effect", "effect");
-	ClassDB::bind_method(D_METHOD("get_has_effect"), &Spell::get_has_effect);
-	ClassDB::bind_method(D_METHOD("set_has_effect", "value"), &Spell::set_has_effect);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "effect"), "set_has_effect", "get_has_effect");
+	ClassDB::bind_method(D_METHOD("has_effect_visual"), &Spell::has_effect_visual);
+	ClassDB::bind_method(D_METHOD("get_effect_visual"), &Spell::get_effect_visual);
+	ClassDB::bind_method(D_METHOD("set_effect_visual", "value"), &Spell::set_effect_visual);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_visual", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_effect_visual", "get_effect_visual");
 
-	ClassDB::bind_method(D_METHOD("get_effect_id"), &Spell::get_effect_id);
-	ClassDB::bind_method(D_METHOD("set_effect_id", "value"), &Spell::set_effect_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect_id"), "set_effect_id", "get_effect_id");
+	ClassDB::bind_method(D_METHOD("has_spell_cast_finish_effect"), &Spell::has_spell_cast_finish_effect);
+	ClassDB::bind_method(D_METHOD("get_spell_cast_finish_effect"), &Spell::get_spell_cast_finish_effect);
+	ClassDB::bind_method(D_METHOD("set_spell_cast_finish_effect", "value"), &Spell::set_spell_cast_finish_effect);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_spell_cast_finish_effect", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_spell_cast_finish_effect", "get_spell_cast_finish_effect");
 
-	ClassDB::bind_method(D_METHOD("get_has_spell_cast_finish_effect"), &Spell::get_has_spell_cast_finish_effect);
-	ClassDB::bind_method(D_METHOD("set_has_spell_cast_finish_effect", "value"), &Spell::set_has_spell_cast_finish_effect);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "effect_spell_cast_finish_effect"), "set_has_spell_cast_finish_effect", "get_has_spell_cast_finish_effect");
-
-	ClassDB::bind_method(D_METHOD("get_spell_cast_finish_effect_id"), &Spell::get_spell_cast_finish_effect_id);
-	ClassDB::bind_method(D_METHOD("set_spell_cast_finish_effect_id", "value"), &Spell::set_spell_cast_finish_effect_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect_spell_cast_finish_effect_id"), "set_spell_cast_finish_effect_id", "get_spell_cast_finish_effect_id");
-
-	ClassDB::bind_method(D_METHOD("get_has_spell_cast_effect"), &Spell::get_has_spell_cast_effect);
-	ClassDB::bind_method(D_METHOD("set_has_spell_cast_effect", "value"), &Spell::set_has_spell_cast_effect);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect_m_spell_cast_effect"), "set_has_spell_cast_effect", "get_has_spell_cast_effect");
-
-	ClassDB::bind_method(D_METHOD("get_spell_cast_effect_id"), &Spell::get_spell_cast_effect_id);
-	ClassDB::bind_method(D_METHOD("set_spell_cast_effect_id", "value"), &Spell::set_spell_cast_effect_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect_spell_cast_effect_id"), "set_spell_cast_effect_id", "get_spell_cast_effect_id");
+	ClassDB::bind_method(D_METHOD("has_spell_cast_effect"), &Spell::has_spell_cast_effect);
+	ClassDB::bind_method(D_METHOD("get_spell_cast_effect"), &Spell::get_spell_cast_effect);
+	ClassDB::bind_method(D_METHOD("set_spell_cast_effect", "value"), &Spell::set_spell_cast_effect);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_spell_cast_effect_id", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_spell_cast_effect", "get_spell_cast_effect");
 
 	ADD_GROUP("Projectile", "projectile");
-	ClassDB::bind_method(D_METHOD("get_has_projectile"), &Spell::get_has_projectile);
-	ClassDB::bind_method(D_METHOD("set_has_projectile", "value"), &Spell::set_has_projectile);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "projectile"), "set_has_projectile", "get_has_projectile");
-
-	ClassDB::bind_method(D_METHOD("get_projectile_id"), &Spell::get_projectile_id);
-	ClassDB::bind_method(D_METHOD("set_projectile_id", "value"), &Spell::set_projectile_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "projectile_id"), "set_projectile_id", "get_projectile_id");
+	ClassDB::bind_method(D_METHOD("has_projectile"), &Spell::has_projectile);
+	ClassDB::bind_method(D_METHOD("get_projectile"), &Spell::get_projectile);
+	ClassDB::bind_method(D_METHOD("set_projectile", "value"), &Spell::set_projectile);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "projectile", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_projectile", "get_projectile");
 
 	ClassDB::bind_method(D_METHOD("get_projectile_speed"), &Spell::get_projectile_speed);
 	ClassDB::bind_method(D_METHOD("set_projectile_speed", "value"), &Spell::set_projectile_speed);

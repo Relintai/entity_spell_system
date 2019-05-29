@@ -4,6 +4,7 @@
 #include "core/resource.h"
 #include "scene/resources/curve.h"
 #include "scene/resources/texture.h"
+#include "scene/resources/packed_scene.h"
 
 #include "../entity_enums.h"
 #include "../spell_enums.h"
@@ -78,20 +79,20 @@ class Spell : public Resource {
 	GDCLASS(Spell, Resource);
 
 public:
-	int get_spell_id() { return _spell_id; }
-	void set_spell_id(int value) { _spell_id = value; }
+	int get_spell_id();
+	void set_spell_id(int value);
 
-	int get_spell_type() { return _spell_type; }
-	void set_spell_type(int value) { _spell_type = value; }
+	int get_spell_type();
+	void set_spell_type(int value);
 
-	bool get_hide_from_actionbar() { return _hide_from_actionbar; }
-	void set_hide_from_actionbar(bool value) { _hide_from_actionbar = value; }
+	bool get_hide_from_actionbar();
+	void set_hide_from_actionbar(bool value);
 
-	float get_cooldown() { return _cooldown; }
-	void set_cooldown(float value) { _cooldown = value; }
+	float get_cooldown();
+	void set_cooldown(float value);
 
-	SpellTargetType get_target_type() { return _target_type; }
-	void set_target_type(SpellTargetType value) { _target_type = value; }
+	SpellTargetType get_target_type();
+	void set_target_type(SpellTargetType value);
 
 	Ref<Aura> get_caster_aura_apply();
 	void set_caster_aura_apply(Ref<Aura> value);
@@ -105,162 +106,154 @@ public:
 	Ref<Aura> get_target_aura_apply2();
 	void set_target_aura_apply2(Ref<Aura> value);
 
-	int get_level() { return _level; }
-	void set_level(int value) { _level = value; }
+	int get_level();
+	void set_level(int value);
 
-	int get_item_cost() { return _item_cost; }
-	void set_item_cost(int value) { _item_cost = value; }
+	int get_item_cost();
+	void set_item_cost(int value);
 
-	int get_craft_material_cost() { return _craft_material_cost; }
-	void set_craft_material_cost(int value) { _craft_material_cost = value; }
+	int get_craft_material_cost();
+	void set_craft_material_cost(int value);
 
-	int get_required_item() { return _required_item; }
-	void set_required_item(int value) { _required_item = value; }
+	int get_required_item();
+	void set_required_item(int value);
 
-	EntityEnums::PlayerResourceTypes get_cost_type() { return _cost_type; }
-	void set_cost_type(EntityEnums::PlayerResourceTypes value) { _cost_type = value; }
+	EntityEnums::PlayerResourceTypes get_cost_type();
+	void set_cost_type(EntityEnums::PlayerResourceTypes value);
 
-	int get_cost_resource() { return _cost_resource; }
-	void set_cost_resource(int value) { _cost_resource = value; }
+	int get_cost_resource();
+	void set_cost_resource(int value);
 
-	EntityEnums::PlayerResourceTypes get_give_resource_type() { return _give_resource_type; }
-	void set_give_resource_type(EntityEnums::PlayerResourceTypes value) { _give_resource_type = value; }
+	EntityEnums::PlayerResourceTypes get_give_resource_type();
+	void set_give_resource_type(EntityEnums::PlayerResourceTypes value);
 
-	int get_give_resource() { return _give_resource; }
-	void set_give_resource(int value) { _give_resource = value; }
+	int get_give_resource();
+	void set_give_resource(int value);
 
-	bool has_global_cooldown() { return _has_global_cooldown; }
-	void set_has_global_cooldown(bool value) { _has_global_cooldown = value; }
+	bool has_global_cooldown();
+	void set_has_global_cooldown(bool value);
 
-	bool get_is_local_spell() { return _is_local_spell; }
-	void set_is_local_spell(bool value) { _is_local_spell = value; }
+	bool get_is_local_spell();
+	void set_is_local_spell(bool value);
 
-	Ref<Texture> get_icon() { return _icon; }
-	void set_icon(Ref<Texture> value) { _icon = Ref<Texture>(value); }
+	Ref<Texture> get_icon();
+	void set_icon(Ref<Texture> value);
 
-	String get_name_key() { return _name_key; }
-	void set_name_key(String value) { _name_key = value; }
+	String get_name_key();
+	void set_name_key(String value);
 
-	String get_spell_name() { return _spell_name; }
-	void set_spell_name(String value) { _spell_name = value; }
+	String get_spell_name();
+	void set_spell_name(String value);
 
-	String get_spell_description() { return _spell_description; }
-	void set_spell_description(String value) { _spell_description = value; }
+	String get_spell_description();
+	void set_spell_description(String value);
 
 	float get_damage_scale_for_level(int level);
 	float get_heal_scale_for_level(int level);
 	float get_absorb_scale_for_level(int level);
 
-	bool get_has_range() { return _has_range; }
-	void set_has_range(bool value) { _has_range = value; }
+	bool get_has_range();
+	void set_has_range(bool value);
 
-	float get_range() { return _range; }
-	void set_range(float value) { _range = value; }
+	float get_range();
+	void set_range(float value);
 
-	bool get_has_cast_time() { return _has_cast_time; }
-	void set_has_cast_time(bool value) { _has_cast_time = value; }
+	bool get_has_cast_time();
+	void set_has_cast_time(bool value);
 
-	float get_cast_time() { return _cast_time; }
-	void set_cast_time(float value) { _cast_time = value; }
+	float get_cast_time();
+	void set_cast_time(float value);
 
-	bool get_has_damage() { return _has_damage; }
-	void set_has_damage(bool value) { _has_damage = value; }
+	bool get_has_damage();
+	void set_has_damage(bool value);
 
-	int get_damage_type() { return _damage_type; }
-	void set_damage_type(int value) { _damage_type = value; }
+	int get_damage_type();
+	void set_damage_type(int value);
 
-	int get_damage_min() { return _damage_min; }
-	void set_damage_min(int value) { _damage_min = value; }
+	int get_damage_min();
+	void set_damage_min(int value);
 
-	int get_damage_max() { return _damage_max; }
-	void set_damage_max(int value) { _damage_max = value; }
+	int get_damage_max();
+	void set_damage_max(int value);
 
-	Ref<Curve> get_damage_scaling_curve() { return _damage_scaling_curve; }
-	void set_damage_scaling_curve(Ref<Curve> curve) { _damage_scaling_curve = curve; }
+	Ref<Curve> get_damage_scaling_curve();
+	void set_damage_scaling_curve(Ref<Curve> curve);
 
-	bool get_has_heal() { return _has_heal; }
-	void set_has_heal(bool value) { _has_heal = value; }
+	bool get_has_heal();
+	void set_has_heal(bool value);
 
-	int get_heal_min() { return _heal_min; }
-	void set_heal_min(int value) { _heal_min = value; }
+	int get_heal_min();
+	void set_heal_min(int value);
 
-	int get_heal_max() { return _heal_max; }
-	void set_heal_max(int value) { _heal_max = value; }
+	int get_heal_max();
+	void set_heal_max(int value);
 
-	Ref<Curve> get_heal_scaling_curve() { return _heal_scaling_curve; }
-	void set_heal_scaling_curve(Ref<Curve> curve) { _heal_scaling_curve = curve; }
+	Ref<Curve> get_heal_scaling_curve();
+	void set_heal_scaling_curve(Ref<Curve> curve);
 
-	bool get_needs_target() { return _needs_target; }
-	void set_needs_target(bool value) { _needs_target = value; }
+	bool get_needs_target();
+	void set_needs_target(bool value);
 
-	bool get_can_move_while_casting() { return _can_move_while_casting; }
-	void set_can_move_while_casting(bool value) { _can_move_while_casting = value; }
+	bool get_can_move_while_casting();
+	void set_can_move_while_casting(bool value);
 
-	bool get_is_interrupt() { return _is_interrupt; }
-	void set_is_interrupt(bool value) { _is_interrupt = value; }
+	bool get_is_interrupt();
+	void set_is_interrupt(bool value);
 
-	float get_interrupt_time() { return _interrupt_time; }
-	void set_interrupt_time(float value) { _interrupt_time = value; }
+	float get_interrupt_time();
+	void set_interrupt_time(float value);
 
-	bool get_is_aoe() { return _is_aoe; }
-	void set_is_aoe(bool value) { _is_aoe = value; }
+	bool get_is_aoe();
+	void set_is_aoe(bool value);
 
-	SpellAOETargetType get_aoe_target_type() { return _aoe_targetType; }
-	void set_aoe_target_type(SpellAOETargetType value) { _aoe_targetType = value; }
+	SpellAOETargetType get_aoe_target_type();
+	void set_aoe_target_type(SpellAOETargetType value);
 
-	SpellAOEMovementType get_aoe_movement_type() { return _aoe_movementType; }
-	void set_aoe_movement_type(SpellAOEMovementType value) { _aoe_movementType = value; }
+	SpellAOEMovementType get_aoe_movement_type();
+	void set_aoe_movement_type(SpellAOEMovementType value);
 
-	SpellAOEColliderType get_aoe_collider_type() { return _aoe_colliderType; }
-	void set_aoe_collider_type(SpellAOEColliderType value) { _aoe_colliderType = value; }
+	SpellAOEColliderType get_aoe_collider_type();
+	void set_aoe_collider_type(SpellAOEColliderType value);
 
-	Vector3 get_aoe_half_extents() { return _aoe_half_extents; }
-	void set_aoe_half_extents(Vector3 value) { _aoe_half_extents = value; }
+	Vector3 get_aoe_half_extents();
+	void set_aoe_half_extents(Vector3 value);
 
-	bool get_has_effect() { return _has_effect; }
-	void set_has_effect(bool value) { _has_effect = value; }
+	bool has_effect_visual();
+	Ref<PackedScene> get_effect_visual();
+	void set_effect_visual(Ref<PackedScene> value);
 
-	int get_effect_id() { return _effect_id; }
-	void set_effect_id(int value) { _effect_id = value; }
+	bool has_spell_cast_finish_effect();
+	Ref<PackedScene> get_spell_cast_finish_effect();
+	void set_spell_cast_finish_effect(Ref<PackedScene> value);
 
-	bool get_has_spell_cast_finish_effect() { return _has_spell_cast_finish_effect; }
-	void set_has_spell_cast_finish_effect(bool value) { _has_spell_cast_finish_effect = value; }
+	bool has_spell_cast_effect();
+	Ref<PackedScene> get_spell_cast_effect();
+	void set_spell_cast_effect(Ref<PackedScene> value);
 
-	int get_spell_cast_finish_effect_id() { return _spell_cast_finish_effect_id; }
-	void set_spell_cast_finish_effect_id(int value) { _spell_cast_finish_effect_id = value; }
+	Ref<PackedScene> get_projectile();
+	void set_projectile(Ref<PackedScene> value);
 
-	bool get_has_spell_cast_effect() { return _has_spell_cast_effect; }
-	void set_has_spell_cast_effect(bool value) { _has_spell_cast_effect = value; }
+	bool has_projectile();
+	float get_projectile_speed();
+	void set_projectile_speed(float value);
 
-	int get_spell_cast_effect_id() { return _spell_cast_effect_id; }
-	void set_spell_cast_effect_id(int value) { _spell_cast_effect_id = value; }
+	float get_projectile_time();
+	void set_projectile_time(float value);
 
-	int get_projectile_id() { return _projectile_id; }
-	void set_projectile_id(int value) { _projectile_id = value; }
+	float get_projectile_range();
+	void set_projectile_range(float value);
 
-	bool get_has_projectile() { return _has_projectile; }
-	void set_has_projectile(bool value) { _has_projectile = value; }
+	bool get_has_projectile_collision();
+	void set_has_projectile_collision(bool value);
 
-	float get_projectile_speed() { return _projectile_speed; }
-	void set_projectile_speed(float value) { _projectile_speed = value; }
+	SpellProjectileType get_projectile_type();
+	void set_projectile_type(SpellProjectileType value);
 
-	float get_projectile_time() { return _projectile_time; }
-	void set_projectile_time(float value) { _projectile_time = value; }
+	bool get_has_projectile_destroy_on_impact();
+	void set_has_projectile_destroy_on_impact(bool value);
 
-	float get_projectile_range() { return _projectile_range; }
-	void set_projectile_range(float value) { _projectile_range = value; }
-
-	bool get_has_projectile_collision() { return _projectile_collision; }
-	void set_has_projectile_collision(bool value) { _projectile_collision = value; }
-
-	SpellProjectileType get_projectile_type() { return _projectile_type; }
-	void set_projectile_type(SpellProjectileType value) { _projectile_type = value; }
-
-	bool get_has_projectile_destroy_on_impact() { return _projectile_destroy_on_impact; }
-	void set_has_projectile_destroy_on_impact(bool value) { _projectile_destroy_on_impact = value; }
-
-	int get_spell_cooldown_mainpulation_data_count() { return _spell_cooldown_mainpulation_data_count; }
-	void set_spell_cooldown_mainpulation_data_count(int value) { _spell_cooldown_mainpulation_data_count = value; }
+	int get_spell_cooldown_mainpulation_data_count();
+	void set_spell_cooldown_mainpulation_data_count(int value);
 
 	//AuraApplyData *getAuraApplyData() { return auraApplyData; }
 	//void setAuraApplyData(AuraApplyData *value) { auraApplyData = value; }
@@ -434,17 +427,11 @@ private:
 	SpellAOEColliderType _aoe_colliderType;
 	Vector3 _aoe_half_extents;
 
-	bool _has_effect;
-	int _effect_id;
+	Ref<PackedScene> _effect_visual;
+	Ref<PackedScene> _spell_cast_finish_effect;
+	Ref<PackedScene> _spell_cast_effect;
 
-	bool _has_spell_cast_finish_effect;
-	int _spell_cast_finish_effect_id;
-
-	bool _has_spell_cast_effect;
-	int _spell_cast_effect_id;
-
-	bool _has_projectile;
-	int _projectile_id;
+	Ref<PackedScene> _projectile;
 	float _projectile_speed;
 	float _projectile_time;
 	float _projectile_range;

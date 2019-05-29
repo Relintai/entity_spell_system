@@ -70,6 +70,11 @@ public:
 	// static void FromJSON(Aura* ada, JsonReader* r);
 	//  static void ToJSON(Aura* ada, JsonWriter* w);
 
+	//VisualEffect
+	bool has_effect_visual();
+	Ref<PackedScene> get_effect_visual();
+	void set_effect_visual(Ref<PackedScene> value);
+
 	//Damage
 	bool is_damage_enabled();
 	void set_damage_enabled(bool value);
@@ -332,6 +337,8 @@ private:
 	String _aura_name;
 	String _aura_description;
 	int ability_scale_data_id;
+
+	Ref<PackedScene> _effect_visual;
 	
 	bool _damage_enabled;
 	int _damage_type;

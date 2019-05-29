@@ -125,6 +125,18 @@ void Aura::OnAuraAbilityScalingDataLoaded(AbilityScalingDataLoaderHelper *h) {
 }
 */
 
+//Visual Effect
+
+bool Aura::has_effect_visual() {
+	return _effect_visual.is_valid();
+}
+Ref<PackedScene> Aura::get_effect_visual() {
+	return _effect_visual;
+}
+void Aura::set_effect_visual(Ref<PackedScene> value) {
+	_effect_visual = value;
+}
+
 //Damage
 bool Aura::is_damage_enabled() {
 	return _damage_enabled;
@@ -873,6 +885,13 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_setup_aura_data", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
 
 	ClassDB::bind_method(D_METHOD("_setup_aura_data", "data", "info"), &Aura::_setup_aura_data);
+
+	//Visual Effect
+	ADD_GROUP("Visual Effect", "effect");
+	ClassDB::bind_method(D_METHOD("has_effect_visual"), &Aura::has_effect_visual);
+	ClassDB::bind_method(D_METHOD("get_effect_visual"), &Aura::get_effect_visual);
+	ClassDB::bind_method(D_METHOD("set_effect_visual", "value"), &Aura::set_effect_visual);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_visual", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_effect_visual", "get_effect_visual");
 
 	//damage
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Aura::sapply_passives_damage_receive);
