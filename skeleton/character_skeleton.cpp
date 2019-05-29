@@ -2,20 +2,20 @@
 
 
 NodePath CharacterSkeleton::get_bone_path(int index) {
-    ERR_FAIL_INDEX_V(index, EntityEnums::MAX_BONE_ID, NodePath());
+    ERR_FAIL_INDEX_V(index, EntityEnums::SKELETON_POINTS_MAX, NodePath());
     
 	return _bone_paths[index];
 }
 
 void CharacterSkeleton::set_bone_path(int index, NodePath path) {
-    ERR_FAIL_INDEX(index, EntityEnums::MAX_BONE_ID);
+    ERR_FAIL_INDEX(index, EntityEnums::SKELETON_POINTS_MAX);
     
 	_bone_paths[index] = path;
 
 	_bone_nodes[index] = get_node_or_null(path);
 }
 
-Node *CharacterSkeleton::get_bone_node(EntityEnums::CharacterSkeletonBoneId node_id) {
+Node *CharacterSkeleton::get_bone_node(EntityEnums::CharacterSkeletonPoints node_id) {
 	return _bone_nodes[node_id];
 }
 
@@ -60,7 +60,7 @@ AnimationTree *CharacterSkeleton::get_animation_tree() {
 }
 
 void CharacterSkeleton::update_nodes() {
-    for (int i = 0; i < EntityEnums::MAX_BONE_ID; ++i) {
+	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
         _bone_nodes[i] = get_node_or_null(_bone_paths[i]);
     }
 
@@ -69,7 +69,7 @@ void CharacterSkeleton::update_nodes() {
 }
 
 CharacterSkeleton::CharacterSkeleton() {
-	for (int i = 0; i < EntityEnums::MAX_BONE_ID; ++i) {
+	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
 		_bone_nodes[i] = NULL;
 	}
 
@@ -94,9 +94,15 @@ void CharacterSkeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_bone_path", "index", "path"), &CharacterSkeleton::set_bone_path);
 
     ADD_GROUP("Bone Paths", "bone_path_");
-    ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_hip"), "set_bone_path", "get_bone_path", EntityEnums::BONE_ID_HIP);
-    ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_left_hand"), "set_bone_path", "get_bone_path", EntityEnums::BONE_ID_LEFT_HAND);
-    ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_right_hand"), "set_bone_path", "get_bone_path", EntityEnums::BONE_ID_RIGHT_HAND);
+	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_hip"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_HIP);
+	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_left_hand"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_LEFT_HAND);
+	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_right_hand"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_RIGHT_HAND);
+	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_weapon"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_WEAPON);
+	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_base"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_BASE);
+	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_body"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_BODY);
+	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_head"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_HEAD);
+	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_right_eye"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_RIGHT_EYE);
+	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_left_eye"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_LEFT_EYE);
 
 	ClassDB::bind_method(D_METHOD("get_bone_node", "bone_idx"), &CharacterSkeleton::get_bone_node);
 

@@ -18,11 +18,11 @@ void BoneVisualAttachment::set_attachment_type(BoneVisualAttachment::BoneVisualA
     _attachment_type = attachment_type;
 }
 	
-EntityEnums::CharacterSkeletonBoneId BoneVisualAttachment::get_target_bone() {
+EntityEnums::CharacterSkeletonPoints BoneVisualAttachment::get_target_bone() {
     return _target_bone;
 }
 
-void BoneVisualAttachment::set_target_bone(EntityEnums::CharacterSkeletonBoneId target_bone) {
+void BoneVisualAttachment::set_target_bone(EntityEnums::CharacterSkeletonPoints target_bone) {
     _target_bone = target_bone;
 }
     
@@ -36,7 +36,7 @@ void BoneVisualAttachment::set_effect(Ref<PackedScene> effect) {
 
 BoneVisualAttachment::BoneVisualAttachment() {
     _id = 0;
-    _target_bone = EntityEnums::BONE_ID_HIP;
+    _target_bone = EntityEnums::SKELETON_POINT_BASE;
 }
 
 void BoneVisualAttachment::_bind_methods() {
@@ -50,7 +50,7 @@ void BoneVisualAttachment::_bind_methods() {
     
     ClassDB::bind_method(D_METHOD("get_target_bone"), &BoneVisualAttachment::get_target_bone);
 	ClassDB::bind_method(D_METHOD("set_target_bone", "target_bone"), &BoneVisualAttachment::set_target_bone);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "target_bone", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_BONE_ID), "set_target_bone", "get_target_bone");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "target_bone", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS), "set_target_bone", "get_target_bone");
     
     ClassDB::bind_method(D_METHOD("get_effect"), &BoneVisualAttachment::get_effect);
 	ClassDB::bind_method(D_METHOD("set_effect", "path"), &BoneVisualAttachment::set_effect);

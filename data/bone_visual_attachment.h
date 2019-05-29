@@ -27,8 +27,8 @@ public:
     BoneVisualAttachmentType get_attachment_type();
     void set_attachment_type(BoneVisualAttachmentType attachment_type);
 	
-    EntityEnums::CharacterSkeletonBoneId get_target_bone();
-    void set_target_bone(EntityEnums::CharacterSkeletonBoneId bone);
+    EntityEnums::CharacterSkeletonPoints get_target_bone();
+	void set_target_bone(EntityEnums::CharacterSkeletonPoints bone);
     
     Ref<PackedScene> get_effect();
     void set_effect(Ref<PackedScene> effect);
@@ -41,7 +41,7 @@ protected:
 private:
 	int _id;
     BoneVisualAttachmentType _attachment_type;
-    EntityEnums::CharacterSkeletonBoneId _target_bone;
+	EntityEnums::CharacterSkeletonPoints _target_bone;
     Ref<PackedScene> _effect;
 };
 

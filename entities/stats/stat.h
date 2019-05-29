@@ -178,7 +178,7 @@ private:
 
 	StatModifierApplyType _modifier_apply_type;
 
-	Vector<Ref<StatModifier> > *_modifiers;
+	Vector<Ref<StatModifier> > _modifiers;
 
 	bool _dirty;
 	bool _disabled;

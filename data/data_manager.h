@@ -19,54 +19,47 @@ class CharacterClass;
 class CraftDataAttribute;
 class ItemTemplate;
 
-typedef HashMap<int, Ref<CharacterClass> > CharacterClassHashMap;
-typedef HashMap<int, Ref<Spell> > SpellHashMap;
-typedef HashMap<int, Ref<Aura> > AuraHashMap;
-typedef HashMap<int, Ref<CraftDataAttribute> > CraftDataHashMap;
-typedef HashMap<int, Ref<ItemTemplate> > ItemTemplateHashMap;
-//typedef HashMap<int, Ref<SpellScript> > SpellScriptHashMap;
-
 class DataManager : public Node {
 	GDCLASS(DataManager, Node);
 
 public:
 	static DataManager *get_instance();
 
-	String get_character_classes_folder() { return _character_classes_folder; }
-	void set_character_classes_folder(String folder) { _character_classes_folder = folder; }
-	Vector<Ref<CharacterClass> > *get_character_classes() { return _character_classes; }
+	String get_character_classes_folder();
+	void set_character_classes_folder(String folder);
+	Vector<Ref<CharacterClass> > *get_character_classes();
 	Ref<CharacterClass> get_character_class(int class_id);
 	Ref<CharacterClass> get_character_class_index(int index);
 	int get_character_class_count();
 	void add_character_class(Ref<CharacterClass> cls);
 
-	String get_spells_folder() { return _spells_folder; }
-	void set_spells_folder(String folder) { _spells_folder = folder; }
-	Vector<Ref<Spell> > *get_spells() { return _spells; }
+	String get_spells_folder();
+	void set_spells_folder(String folder);
+	Vector<Ref<Spell> > *get_spells();
 	Ref<Spell> get_spell(int spell_id);
 	Ref<Spell> get_spell_index(int index);
 	int get_spell_count();
 	void add_spell(Ref<Spell> spell);
 
-	String get_auras_folder() { return _auras_folder; }
-	void set_auras_folder(String folder) { _auras_folder = folder; }
-	Vector<Ref<Aura> > *get_auras() { return _auras; }
+	String get_auras_folder();
+	void set_auras_folder(String folder);
+	Vector<Ref<Aura> > *get_auras();
 	Ref<Aura> get_aura(int aura_id);
 	Ref<Aura> get_aura_index(int index);
 	int get_aura_count();
 	void add_aura(Ref<Aura> aura);
 
-	String get_craft_data_folder() { return _craft_data_folder; }
-	void set_craft_data_folder(String folder) { _craft_data_folder = folder; }
-	Vector<Ref<CraftDataAttribute> > *get_craft_datas() { return _craft_datas; }
+	String get_craft_data_folder();
+	void set_craft_data_folder(String folder);
+	Vector<Ref<CraftDataAttribute> > *get_craft_datas();
 	Ref<CraftDataAttribute> get_craft_data(int craft_id);
 	Ref<CraftDataAttribute> get_craft_data_index(int index);
 	int get_craft_data_count();
 	void add_craft_data(Ref<CraftDataAttribute> aura);
 
-	String get_item_template_folder() { return _item_template_folder; }
-	void set_item_template_folder(String folder) { _item_template_folder = folder; }
-	Vector<Ref<ItemTemplate> > *get_item_templates() { return _item_templates; }
+	String get_item_template_folder();
+	void set_item_template_folder(String folder);
+	Vector<Ref<ItemTemplate> > *get_item_templates();
 	void add_item_template(Ref<ItemTemplate> aura);
 	Ref<ItemTemplate> get_item_template(int item_id);
 	Ref<ItemTemplate> get_item_template_index(int index);
@@ -97,28 +90,24 @@ protected:
 
 private:
 	String _character_classes_folder;
-	Vector<Ref<CharacterClass> > *_character_classes;
-	CharacterClassHashMap *_character_class_map;
+	Vector<Ref<CharacterClass> > _character_classes;
+	HashMap<int, Ref<CharacterClass> > _character_class_map;
 
 	String _spells_folder;
-	Vector<Ref<Spell> > *_spells;
-	SpellHashMap *_spell_map;
+	Vector<Ref<Spell> > _spells;
+	HashMap<int, Ref<Spell> > _spell_map;
 
 	String _auras_folder;
-	Vector<Ref<Aura> > *_auras;
-	AuraHashMap *_aura_map;
+	Vector<Ref<Aura> > _auras;
+	HashMap<int, Ref<Aura> > _aura_map;
 
 	String _craft_data_folder;
-	Vector<Ref<CraftDataAttribute> > *_craft_datas;
-	CraftDataHashMap *_craft_data_map;
+	Vector<Ref<CraftDataAttribute> > _craft_datas;
+	HashMap<int, Ref<CraftDataAttribute> > _craft_data_map;
 
 	String _item_template_folder;
-	Vector<Ref<ItemTemplate> > *_item_templates;
-	ItemTemplateHashMap *_item_template_map;
-
-	/*
-	Vector<Ref<SpellScript> > *_spell_scripts;
-	SpellScriptHashMap *_spell_script_map;*/
+	Vector<Ref<ItemTemplate> > _item_templates;
+	HashMap<int, Ref<ItemTemplate> > _item_template_map;
 
 	static DataManager *instance;
 

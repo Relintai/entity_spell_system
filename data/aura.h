@@ -72,6 +72,10 @@ public:
 
 	//VisualEffect
 	bool has_effect_visual();
+
+	EntityEnums::CharacterSkeletonPoints get_effect_visual_point();
+	void set_effect_visual_point(EntityEnums::CharacterSkeletonPoints point);
+
 	Ref<PackedScene> get_effect_visual();
 	void set_effect_visual(Ref<PackedScene> value);
 
@@ -338,6 +342,7 @@ private:
 	String _aura_description;
 	int ability_scale_data_id;
 
+	EntityEnums::CharacterSkeletonPoints _effect_visual_point;
 	Ref<PackedScene> _effect_visual;
 	
 	bool _damage_enabled;

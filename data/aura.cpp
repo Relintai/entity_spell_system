@@ -130,6 +130,14 @@ void Aura::OnAuraAbilityScalingDataLoaded(AbilityScalingDataLoaderHelper *h) {
 bool Aura::has_effect_visual() {
 	return _effect_visual.is_valid();
 }
+
+EntityEnums::CharacterSkeletonPoints Aura::get_effect_visual_point() {
+	return _effect_visual_point;
+}
+void Aura::set_effect_visual_point(EntityEnums::CharacterSkeletonPoints point) {
+	_effect_visual_point = point;
+}
+
 Ref<PackedScene> Aura::get_effect_visual() {
 	return _effect_visual;
 }
@@ -889,6 +897,11 @@ void Aura::_bind_methods() {
 	//Visual Effect
 	ADD_GROUP("Visual Effect", "effect");
 	ClassDB::bind_method(D_METHOD("has_effect_visual"), &Aura::has_effect_visual);
+
+	ClassDB::bind_method(D_METHOD("get_effect_visual_point"), &Aura::get_effect_visual_point);
+	ClassDB::bind_method(D_METHOD("set_effect_visual_point", "value"), &Aura::set_effect_visual_point);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect_visual_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS), "set_effect_visual_point", "get_effect_visual_point");
+
 	ClassDB::bind_method(D_METHOD("get_effect_visual"), &Aura::get_effect_visual);
 	ClassDB::bind_method(D_METHOD("set_effect_visual", "value"), &Aura::set_effect_visual);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_visual", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_effect_visual", "get_effect_visual");

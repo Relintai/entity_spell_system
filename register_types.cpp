@@ -19,7 +19,6 @@
 #include "data/item_instance.h"
 
 #include "data/spell.h"
-#include "data/icon.h"
 #include "entities/stats/stat.h"
 #include "entities/stats/stat_data.h"
 #include "entities/player_talent.h"
@@ -41,7 +40,6 @@
 #include "entities/entity.h"
 #include "entities/player.h"
 #include "entities/mob.h"
-#include "spells/spell_manager.h"
 #include "data/aura_trigger_data.h"
 #include "data/aura_stat_attribute.h"
 
@@ -60,7 +58,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<SpellEnums>();
 
 	//data
-	ClassDB::register_class<Icon>();
 	ClassDB::register_class<CraftDataAttributeHelper>();
 	ClassDB::register_class<CraftDataAttribute>();
 
@@ -107,9 +104,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<Entity>();
 	ClassDB::register_class<Player>();
 	ClassDB::register_class<Mob>();
-
-	//deprecated
-	ClassDB::register_class<SpellManager>();
 
 	//spellinfos
 	ClassDB::register_class<SpellCastInfo>();

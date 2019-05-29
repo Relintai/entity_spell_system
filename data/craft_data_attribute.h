@@ -79,10 +79,6 @@ private:
 	Ref<CraftDataAttributeHelper> _required_materials[MAX_REQUIRED_MATERIALS];
 
 	Ref<CraftDataAttributeHelper> _item;
-
-#if ENTITY_MEM_TOOLS
-	static int allocs;
-#endif
 };
 
 VARIANT_ENUM_CAST(CraftDataAttribute::CraftSubCategories);

@@ -1,9 +1,5 @@
 #include "character_spec.h"
 
-#if ENTITY_MEM_TOOLS
-int CharacterSpec::allocs = 0;
-#endif
-
 int CharacterSpec::get_spec_id() {
 	return _spec_id;
 }
@@ -69,18 +65,9 @@ CharacterSpec::CharacterSpec() {
 	}
 
 	_spec_id = 0;
-
-#if ENTITY_MEM_TOOLS
-	CharacterSpec::allocs++;
-	print_error("CharacterSpec alloc " + String::num(CharacterSpec::allocs));
-#endif
 }
 
 CharacterSpec::~CharacterSpec() {
-#if ENTITY_MEM_TOOLS
-	CharacterSpec::allocs--;
-	print_error("CharacterSpec dealloc " + String::num(CharacterSpec::allocs));
-#endif
 }
 
 void CharacterSpec::_bind_methods() {

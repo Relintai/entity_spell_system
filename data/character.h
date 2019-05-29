@@ -122,10 +122,6 @@ private:
 	//Vector<int> _mob_dislike_ids;
 
 	//MobSpellData *_mob_spell_data;
-
-#if ENTITY_MEM_TOOLS
-	static int allocs;
-#endif
 };
 
 #endif

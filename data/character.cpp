@@ -3,10 +3,6 @@
 #include "../data/spell.h"
 #include "../entities/entity.h"
 
-#if ENTITY_MEM_TOOLS
-int CharacterClass::allocs = 0;
-#endif
-
 int CharacterClass::get_id() {
 	return _id;
 }
@@ -250,11 +246,6 @@ CharacterClass::CharacterClass() {
 	_num_specs = 0;
 	_num_spells = 0;
 	_current_spell_page = 0;
-
-#if ENTITY_MEM_TOOLS
-	CharacterClass::allocs++;
-	print_error("CharacterClass alloc " + String::num(CharacterClass::allocs));
-#endif
 }
 
 CharacterClass::~CharacterClass() {
@@ -263,9 +254,4 @@ CharacterClass::~CharacterClass() {
 	//for (int i = 0; i < MAX_SPELLS; ++i) {
 		//_spells[i] = Ref<Spell>(NULL);
 	//}
-
-#if ENTITY_MEM_TOOLS
-	CharacterClass::allocs--;
-	print_error("CharacterClass dealloc " + String::num(CharacterClass::allocs));
-#endif
 }

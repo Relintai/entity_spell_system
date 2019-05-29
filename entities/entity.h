@@ -422,13 +422,9 @@ public:
 
 	////    Inventory    ////
 
-	
 	Ref<Bag> gets_bag(int index);
 	Ref<Bag> getc_bag(int index);
     
-	//void Update();
-	void sadd_craft_material(int itemId, int count);
-	void sremove_craft_material(int itemId, int count);
 	bool stry_to_add_item(int itemId, int count);
 	bool stry_to_remove_item(int itemId, int count);
 	void ssend_add_item(int slotId, int itemId, int count);
@@ -438,26 +434,16 @@ public:
 	void ssend_sent_items(String items);
 	void csend_swap_items(int slot1, int slot2);
 	void csend_craft_item_request(int craftId);
-	void ssend_add_craft_material(int itemId, int count);
-	void ssend_remove_craft_material(int itemId, int count);
-	void ssend_sent_craft_materials(String materials);
 	void creceive_add_item(int slotId, int itemId, int count);
 	void creceive_change_item_count(int slotId, int count);
 	void creceive_remove_item(int slotId);
 	void creceive_move_item(int slot1, int slot2);
-	void creceive_add_craft_material(int itemId, int count);
-	void creceive_remove_craft_material(int itemId, int count);
-	void creceive_sent_craft_materials(String materials);
 	void creceive_sent_items(String items);
 	void sreceive_swap_items(int slot1, int slot2);
-	bool shas_craft_material(int itemId, int count);
 	bool shas_item(int itemId, int count);
-	bool chas_craft_material(int itemId, int count);
 	bool chas_item(int itemId, int count);
 	int cget_item_count(int itemId);
 	int sget_item_count(int itemId);
-	int cget_craft_material_count(int itemId);
-	int sget_craft_material_count(int itemId);
 	bool ccan_craft(CraftDataAttribute *cda);
 	bool ctry_to_craft(CraftDataAttribute *cda);
 	bool scan_craft(CraftDataAttribute *cda);
@@ -545,7 +531,6 @@ private:
 	bool c;
 	float sRezTimer;
 	float cRezTimer;
-	//bool init;
 
 	////    GCD    ////
 	float _s_gcd;

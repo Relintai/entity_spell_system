@@ -1467,69 +1467,19 @@ void Entity::setc_target(Node *p_target) {
 ////    TalentCOmponent    ////
 
 void Entity::csend_request_rank_increase(int talentID) {
-	/*
-       if (CxNet::IsServer) {
-       CSendRequestRankIncreaseMsg cSendRequestRankIncreaseMsg = CSendRequestRankIncreaseMsg();
-       cSendRequestRankIncreaseMsg.Guid = owner->PlayerData->GUID;
-       cSendRequestRankIncreaseMsg.TalentId = talentID;
-       cSendRequestRankIncreaseMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToAllClients(0);
-       }*/
+
 }
 
 void Entity::csend_request_rank_decrease(int talentID) {
-	/*
-       if (CxNet::IsServer) {
-       CSendRequestRankDecreaseMsg cSendRequestRankDecreaseMsg = CSendRequestRankDecreaseMsg();
-       cSendRequestRankDecreaseMsg.Guid = owner->PlayerData->GUID;
-       cSendRequestRankDecreaseMsg.TalentId = talentID;
-       cSendRequestRankDecreaseMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToAllClients(0);
-       }*/
 }
 
 void Entity::ssend_rank(int talentID, int rank) {
-	/*
-       if (CxNet::IsServer) {
-       SSendRankValueMsg sSendRankValueMsg = SSendRankValueMsg();
-       sSendRankValueMsg.Guid = owner->PlayerData->GUID;
-       sSendRankValueMsg.TalentId = talentID;
-       sSendRankValueMsg.Rank = rank;
-       sSendRankValueMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToAllClients(0);
-       }*/
 }
 
 void Entity::sreceive_rank_increase(int talentID) {
-	/*
-       PlayerTalent *playerTalent = SGetTalent(talentID, true);
-       if (owner->PlayerData->Character == null) {
-       return;
-       }
-       Talent *talent = Talents::Instance->GetData(talentID);
-       if (talent == null) {
-       return;
-       }
-       if (talent->MaxRank >= playerTalent->getRank()) {
-       PlayerTalent *expr_47 = playerTalent;
-       int rank = expr_47->getRank();
-       expr_47->setRank(rank + 1);
-       SSendRank(talentID, playerTalent->getRank());
-       }*/
 }
 
 void Entity::sreceive_rank_decrease(int talentID) {
-	/*
-       PlayerTalent *playerTalent = SGetTalent(talentID, false);
-       if (playerTalent == null) {
-       return;
-       }
-       if (playerTalent->getRank() > 0) {
-       PlayerTalent *expr_17 = playerTalent;
-       int rank = expr_17->getRank();
-       expr_17->setRank(rank - 1);
-       SSendRank(talentID, playerTalent->getRank());
-       }*/
 }
 
 void Entity::creceive_rank(int talentID, int rank) {
@@ -1600,444 +1550,60 @@ Ref<Bag> Entity::getc_bag(int index) {
 	return _c_bags[index];
 }
 
-void Entity::sadd_craft_material(int itemId, int count) {
-	/*
-       for (int i = 0; i < sCraftMaterialInventory->Count; i += 1) {
-       ItemInstance *itemInstance = sCraftMaterialInventory->GetData(i);
-       if (itemInstance->getItemID() == itemId) {
-       ItemInstance *expr_1B = itemInstance;
-       expr_1B->setCount(count);
-       SSendAddCraftMaterial(itemId, count);
-       if (SOnCraftMaterialAdded != null) {
-       DELEGATE_INVOKE(SOnCraftMaterialAdded, itemInstance);
-       }
-       return;
-       }
-       }
-       ItemInstance *itemInstance2 = new ItemInstance(itemId, count);
-       sCraftMaterialInventory->Add(itemInstance2);
-       SSendAddCraftMaterial(itemId, count);
-       if (SOnCraftMaterialAdded != null) {
-       DELEGATE_INVOKE(SOnCraftMaterialAdded, itemInstance2);
-       }*/
-}
-
-void Entity::sremove_craft_material(int itemId, int count) {
-	/*
-       for (int i = 0; i < sCraftMaterialInventory->Count; i += 1) {
-       ItemInstance *itemInstance = sCraftMaterialInventory->GetData(i);
-       if (itemInstance->getItemID() == itemId) {
-       ItemInstance *expr_21 = itemInstance;
-       expr_21->setCount(count);
-       if (itemInstance->getCount() <= 0) {
-       if (itemInstance->getCount() < 0) {
-       Array<Object> *expr_46 = new Array<Object>(4);
-       expr_46->SetData(0, new String("inventory->SRemoveCraftMaterial: Material count was less than 0. Itemid="));
-       expr_46->SetData(1, BOX<int>(itemId));
-       expr_46->SetData(2, new String(" player="));
-       expr_46->SetData(3, owner->gameObject->name);
-       Debug::Log(String::Concat(expr_46));
-       }
-       sCraftMaterialInventory->RemoveAt(i);
-       }
-       SSendRemoveCraftMaterial(itemId, count);
-       if (SOnCraftMaterialRemoved != null) {
-       DELEGATE_INVOKE(SOnCraftMaterialRemoved);
-       }
-       return;
-       }
-       }
-       Array<Object> *expr_BF = new Array<Object>(4);
-       expr_BF->SetData(0, new String("inventory->SRemoveCraftMaterial: Material didn't exist in player's inventory. Itemid="));
-       expr_BF->SetData(1, BOX<int>(itemId));
-       expr_BF->SetData(2, new String(" player="));
-       expr_BF->SetData(3, owner->gameObject->name);
-       Debug::Log(String::Concat(expr_BF));*/
-}
-
 bool Entity::stry_to_add_item(int itemId, int count) {
-	/*
-       int num = -1;
-       for (int i = 0; i < getSInventory()->Count; i += 1) {
-       ItemInstance *itemInstance = getSInventory()->GetData(i);
-       if (itemInstance == null) {
-       if (num == -1) {
-       num = i;
-       }
-       } else {
-       if (itemInstance->getItemID() == itemId) {
-       ItemInstance *expr_28 = itemInstance;
-       expr_28->setCount(count);
-       SSendAddItem(i, itemId, count);
-       if (SOnItemAdded != null) {
-       DELEGATE_INVOKE(SOnItemAdded, itemInstance);
-       }
-       return true;
-       }
-       }
-       }
-       if (num == -1) {
-       return false;
-       }
-       ItemInstance *itemInstance2 = new ItemInstance(itemId, count);
-       getSInventory()->SetData(num, itemInstance2);
-       SSendAddItem(num, itemId, count);
-       if (SOnItemAdded != null) {
-       DELEGATE_INVOKE(SOnItemAdded, itemInstance2);
-       }
-       return true;*/
-
 	return false;
 }
 
 bool Entity::stry_to_remove_item(int itemId, int count) {
-	/*
-       int i = 0;
-       while (i < getSInventory()->Count) {
-       ItemInstance *itemInstance = getSInventory()->GetData(i);
-       if ((itemInstance != null) && (itemInstance->getItemID() == itemId)) {
-       if (itemInstance->getCount() < count) {
-       return false;
-       }
-       if (itemInstance->getCount() == count) {
-       getSInventory()->SetData(i, null);
-       if (SOnItemRemoved != null) {
-       DELEGATE_INVOKE(SOnItemRemoved);
-       }
-       SSendRemoveItem(i);
-       return true;
-       }
-       ItemInstance *expr_5E = itemInstance;
-       expr_5E->setCount(count);
-       SSendChangeItemCount(i, itemInstance->getCount());
-       if (SOnItemCountChanged != null) {
-       DELEGATE_INVOKE(SOnItemCountChanged, itemInstance);
-       }
-       return true;
-       } else {
-       i += 1;
-       }
-       }
-       return false;*/
-
 	return false;
 }
 
 void Entity::ssend_add_item(int slotId, int itemId, int count) {
-	/*
-       if (CxNet::IsServer && (owner->Connection != null)) {
-       SSendAddItemMsg sSendAddItemMsg = SSendAddItemMsg();
-       sSendAddItemMsg.SlotId = slotId;
-       sSendAddItemMsg.ItemId = itemId;
-       sSendAddItemMsg.Count = count;
-       sSendAddItemMsg.Serialize(CxNet::NetBuffer);
-       owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-       }*/
 }
 
 void Entity::ssend_change_item_count(int slotId, int count) {
-	/*
-       if (CxNet::IsServer && (owner->Connection != null)) {
-       SSendChangeItemCountMsg sSendChangeItemCountMsg = SSendChangeItemCountMsg();
-       sSendChangeItemCountMsg.SlotId = slotId;
-       sSendChangeItemCountMsg.Count = count;
-       sSendChangeItemCountMsg.Serialize(CxNet::NetBuffer);
-       owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-       }*/
 }
 
 void Entity::ssend_remove_item(int slotId) {
-	/*
-       if (CxNet::IsServer && (owner->Connection != null)) {
-       SSendRemoveItemMsg sSendRemoveItemMsg = SSendRemoveItemMsg();
-       sSendRemoveItemMsg.SlotId = slotId;
-       sSendRemoveItemMsg.Serialize(CxNet::NetBuffer);
-       owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-       }*/
 }
 
 void Entity::ssend_move_item(int slot1, int slot2) {
-	/*
-       if (CxNet::IsServer && (owner->Connection != null)) {
-       SSendMoveItemMsg sSendMoveItemMsg = SSendMoveItemMsg();
-       sSendMoveItemMsg.Slot1 = slot1;
-       sSendMoveItemMsg.Slot2 = slot2;
-       sSendMoveItemMsg.Serialize(CxNet::NetBuffer);
-       owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-       }*/
 }
 
 void Entity::ssend_sent_items(String items) {
-	/*
-       if (CxNet::IsServer && (owner->Connection != null)) {
-       SSendSentItemsMsg sSendSentItemsMsg = SSendSentItemsMsg();
-       sSendSentItemsMsg.Items = items;
-       sSendSentItemsMsg.Serialize(CxNet::NetBuffer);
-       owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-       }*/
 }
 
 void Entity::csend_swap_items(int slot1, int slot2) {
-	/*
-       if (CxNet::IsServer && (owner->Connection != null)) {
-       CSendSwapItemsMsg cSendSwapItemsMsg = CSendSwapItemsMsg();
-       cSendSwapItemsMsg.Slot1 = slot1;
-       cSendSwapItemsMsg.Slot2 = slot2;
-       cSendSwapItemsMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToServer(0);
-       }*/
 }
 
 void Entity::csend_craft_item_request(int craftId) {
-	/*
-       if (CxNet::IsServer && (owner->Connection != null)) {
-       CSendCraftItemRequestMsg cSendCraftItemRequestMsg = CSendCraftItemRequestMsg();
-       cSendCraftItemRequestMsg.CraftId = craftId;
-       cSendCraftItemRequestMsg.Serialize(CxNet::NetBuffer);
-       CxNet::SendBufferToServer(0);
-       }*/
-}
-
-void Entity::ssend_add_craft_material(int itemId, int count) {
-	/*
-       if (CxNet::IsServer && (owner->Connection != null)) {
-       SSendAddCraftMaterialMsg sSendAddCraftMaterialMsg = SSendAddCraftMaterialMsg();
-       sSendAddCraftMaterialMsg.ItemId = itemId;
-       sSendAddCraftMaterialMsg.Count = count;
-       sSendAddCraftMaterialMsg.Serialize(CxNet::NetBuffer);
-       owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-       }*/
-}
-
-void Entity::ssend_remove_craft_material(int itemId, int count) {
-	/*
-       if (CxNet::IsServer && (owner->Connection != null)) {
-       SSendRemoveCraftMaterialMsg sSendRemoveCraftMaterialMsg = SSendRemoveCraftMaterialMsg();
-       sSendRemoveCraftMaterialMsg.ItemId = itemId;
-       sSendRemoveCraftMaterialMsg.Count = count;
-       sSendRemoveCraftMaterialMsg.Serialize(CxNet::NetBuffer);
-       owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-       }*/
-}
-
-void Entity::ssend_sent_craft_materials(String materials) {
-	/*
-       if (CxNet::IsServer && (owner->Connection != null)) {
-       SSendSentCraftMaterialsMsg sSendSentCraftMaterialsMsg = SSendSentCraftMaterialsMsg();
-       sSendSentCraftMaterialsMsg.Materials = materials;
-       sSendSentCraftMaterialsMsg.Serialize(CxNet::NetBuffer);
-       owner->Connection->SendBuffer(0, CxNet::NetBuffer);
-       }*/
 }
 
 void Entity::creceive_add_item(int slotId, int itemId, int count) {
-	/*
-       if (getCInventory()->GetData(slotId) == null) {
-       getCInventory()->SetData(slotId, new ItemInstance(itemId, count));
-       } else {
-       if (getCInventory()->GetData(slotId)->ItemID != itemId) {
-       Array<Object> *expr_40 = new Array<Object>(6);
-       expr_40->SetData(0, new String("Item did not match in slot "));
-       expr_40->SetData(1, BOX<int>(slotId));
-       expr_40->SetData(2, new String(" "));
-       expr_40->SetData(3, BOX<int>(itemId));
-       expr_40->SetData(4, new String(" orig id: "));
-       expr_40->SetData(5, BOX<int>(getCInventory()->GetData(slotId)->ItemID));
-       Debug::Log(String::Concat(expr_40));
-       getCInventory()->GetData(slotId)->ItemID = itemId;
-       }
-       ItemInstance *expr_AB = getCInventory()->GetData(slotId);
-       expr_AB->setCount(count);
-       }
-       if (COnItemAdded != null) {
-       DELEGATE_INVOKE(COnItemAdded, getCInventory()->GetData(slotId));
-       }*/
 }
 
 void Entity::creceive_change_item_count(int slotId, int count) {
-	/*
-       if (getCInventory()->GetData(slotId) == null) {
-       return;
-       }
-       getCInventory()->GetData(slotId)->ItemID = count;
-       if (COnItemCountChanged != null) {
-       DELEGATE_INVOKE(COnItemCountChanged, getCInventory()->GetData(slotId));
-       }*/
 }
 
 void Entity::creceive_remove_item(int slotId) {
-	/*
-       getCInventory()->SetData(slotId, null);
-       if (COnItemRemoved != null) {
-       DELEGATE_INVOKE(COnItemRemoved);
-       }*/
 }
 
 void Entity::creceive_move_item(int slot1, int slot2) {
-	/*
-       if ((slot1 >= getCInventory()->Count) || (slot2 >= getCInventory()->Count)) {
-       return;
-       }
-       if ((getCInventory()->GetData(slot1) == null) && (getCInventory()->GetData(slot2) == null)) {
-       return;
-       }
-       ItemInstance *value = getCInventory()->GetData(slot1);
-       getCInventory()->SetData(slot1, getCInventory()->GetData(slot2));
-       getCInventory()->SetData(slot2, value);
-       if (COnItemMoved != null) {
-       DELEGATE_INVOKE(COnItemMoved);
-       }*/
-}
-
-void Entity::creceive_add_craft_material(int itemId, int count) {
-	/*
-       for (int i = 0; i < cCraftMaterialInventory->Count; i += 1) {
-       ItemInstance *itemInstance = cCraftMaterialInventory->GetData(i);
-       if (itemInstance->getItemID() == itemId) {
-       ItemInstance *expr_1B = itemInstance;
-       expr_1B->setCount(count);
-       if (COnCraftMaterialAdded != null) {
-       DELEGATE_INVOKE(COnCraftMaterialAdded, itemInstance);
-       }
-       return;
-       }
-       }
-       ItemInstance *itemInstance2 = new ItemInstance(itemId, count);
-       cCraftMaterialInventory->Add(itemInstance2);
-       if (COnCraftMaterialAdded != null) {
-       DELEGATE_INVOKE(COnCraftMaterialAdded, itemInstance2);
-       }*/
-}
-
-void Entity::creceive_remove_craft_material(int itemId, int count) {
-	/*
-       for (int i = 0; i < getCCraftMaterialInventory()->Count; i += 1) {
-       ItemInstance *itemInstance = getCCraftMaterialInventory()->GetData(i);
-       if (itemInstance->getItemID() == itemId) {
-       ItemInstance *expr_1B = itemInstance;
-       expr_1B->setCount(count);
-       if (itemInstance->getCount() <= 0) {
-       getCCraftMaterialInventory()->RemoveAt(i);
-       }
-       if (COnCraftMaterialRemoved != null) {
-       DELEGATE_INVOKE(COnCraftMaterialRemoved);
-       }
-       return;
-       }
-       }*/
-}
-
-void Entity::creceive_sent_craft_materials(String materials) {
-	/*
-       Array<char> *expr_07 = new Array<char>(1);
-       expr_07->SetData(0, ';');
-       Array<String> *array = materials->Split(expr_07);
-       for (int i = 0; i < (array->Length - 1); i += 1) {
-       String arg_24_0 = array->GetData(i);
-       Array<char> *expr_1F = new Array<char>(1);
-       expr_1F->SetData(0, '=');
-       Array<String> *array2 = arg_24_0->Split(expr_1F);
-       ItemInstance *item = new ItemInstance(BSConvert::ToInt(array2->GetData(0)), BSConvert::ToInt(array2->GetData(1)));
-       getCCraftMaterialInventory()->Add(item);
-       }
-       if (COnCraftMaterialsLoaded != null) {
-       DELEGATE_INVOKE(COnCraftMaterialsLoaded);
-       }*/
 }
 
 void Entity::creceive_sent_items(String items) {
-	/*
-       Array<char> *expr_07 = new Array<char>(1);
-       expr_07->SetData(0, ';');
-       Array<String> *array = items->Split(expr_07);
-       for (int i = 0; i < (array->Length - 1); i += 1) {
-       String arg_24_0 = array->GetData(i);
-       Array<char> *expr_1F = new Array<char>(1);
-       expr_1F->SetData(0, '=');
-       Array<String> *array2 = arg_24_0->Split(expr_1F);
-       ItemInstance *value = new ItemInstance(BSConvert::ToInt(array2->GetData(1)), BSConvert::ToInt(array2->GetData(2)));
-       getCInventory()->SetData(BSConvert::ToInt(array2->GetData(0)), value);
-       }
-       if (COnItemsLoaded != null) {
-       DELEGATE_INVOKE(COnItemsLoaded);
-       }*/
 }
 
 void Entity::sreceive_swap_items(int slot1, int slot2) {
-	/*
-       if ((slot1 >= getSInventory()->Count) || (slot2 >= getSInventory()->Count)) {
-       return;
-       }
-       if ((getSInventory()->GetData(slot1) == null) && (getSInventory()->GetData(slot2) == null)) {
-       return;
-       }
-       ItemInstance *value = getSInventory()->GetData(slot1);
-       getSInventory()->SetData(slot1, getSInventory()->GetData(slot2));
-       getSInventory()->SetData(slot2, value);
-       SSendMoveItem(slot1, slot2);
-       if (SOnItemMoved != null) {
-       DELEGATE_INVOKE(SOnItemMoved);
-       }*/
 }
 
 void Entity::send_all_items() {
-	/*
-       StringBuilder *StringBuilder = new StringBuilder();
-       for (int i = 0; i < getSCraftMaterialInventory()->Count; i += 1) {
-       StringBuilder->Append(getSCraftMaterialInventory()->GetData(i)->ItemID);
-       StringBuilder->Append('=');
-       StringBuilder->Append(getSCraftMaterialInventory()->GetData(i)->Count);
-       StringBuilder->Append(';');
-       if (StringBuilder->Length >= 700) {
-       SSendSentCraftMaterials(StringBuilder->ToString());
-       StringBuilder->Remove(0, StringBuilder->Length);
-       }
-       }
-       SSendSentCraftMaterials(StringBuilder->ToString());
-       if (StringBuilder->Length > 0) {
-       StringBuilder->Remove(0, StringBuilder->Length);
-       }
-       for (int j = 0; j < getSInventory()->Count; j += 1) {
-       if (getSInventory()->GetData(j) != null) {
-       StringBuilder->Append(j);
-       StringBuilder->Append('=');
-       StringBuilder->Append(getSInventory()->GetData(j)->ItemID);
-       StringBuilder->Append('=');
-       StringBuilder->Append(getSInventory()->GetData(j)->Count);
-       StringBuilder->Append(';');
-       }
-       }
-       SSendSentItems(StringBuilder->ToString());*/
-}
-
-bool Entity::shas_craft_material(int itemId, int count) {
-	/*
-       for (int i = 0; i < getSCraftMaterialInventory()->Count; i += 1) {
-       if ((getSCraftMaterialInventory()->GetData(i)->ItemID == itemId) && (getSCraftMaterialInventory()->GetData(i)->Count >= count)) {
-       return true;
-       }
-       }
-       return false;*/
-
-	return false;
 }
 
 bool Entity::shas_item(int itemId, int count) {
 	/*
        for (int i = 0; i < getSInventory()->Count; i += 1) {
        if (((getSInventory()->GetData(i) != null) && (getSInventory()->GetData(i)->ItemID == itemId)) && (getSInventory()->GetData(i)->Count >= count)) {
-       return true;
-       }
-       }
-       return false;*/
-
-	return false;
-}
-
-bool Entity::chas_craft_material(int itemId, int count) {
-	/*
-       for (int i = 0; i < getCCraftMaterialInventory()->Count; i += 1) {
-       if ((getCCraftMaterialInventory()->GetData(i)->ItemID == itemId) && (getCCraftMaterialInventory()->GetData(i)->Count >= count)) {
        return true;
        }
        }
@@ -2059,136 +1625,32 @@ bool Entity::chas_item(int itemId, int count) {
 }
 
 int Entity::cget_item_count(int itemId) {
-	/*
-       for (int i = 0; i < getCInventory()->Count; i += 1) {
-       if ((getCInventory()->GetData(i) != null) && (getCInventory()->GetData(i)->ItemID == itemId)) {
-       return getCInventory()->GetData(i)->Count;
-       }
-       }
-       return 0;*/
-
 	return 0;
 }
 
 int Entity::sget_item_count(int itemId) {
-	/*
-       for (int i = 0; i < getSInventory()->Count; i += 1) {
-       if ((getSInventory()->GetData(i) != null) && (getSInventory()->GetData(i)->ItemID == itemId)) {
-       return getSInventory()->GetData(i)->Count;
-       }
-       }
-       return 0;*/
-
-	return 0;
-}
-
-int Entity::cget_craft_material_count(int itemId) {
-	/*
-       for (int i = 0; i < getCCraftMaterialInventory()->Count; i += 1) {
-       if (getCCraftMaterialInventory()->GetData(i)->ItemID == itemId) {
-       return getCCraftMaterialInventory()->GetData(i)->Count;
-       }
-       }
-       return 0;*/
-
-	return 0;
-}
-
-int Entity::sget_craft_material_count(int itemId) {
-	/*
-       for (int i = 0; i < getSCraftMaterialInventory()->Count; i += 1) {
-       if (getSCraftMaterialInventory()->GetData(i)->ItemID == itemId) {
-       return getSCraftMaterialInventory()->GetData(i)->Count;
-       }
-       }
-       return 0;*/
-
 	return 0;
 }
 
 bool Entity::ccan_craft(CraftDataAttribute *cda) {
-	/*
-       for (int i = 0; i < cda->RequiredItems->Count; i += 1) {
-       if (!CHasItem(cda->RequiredItems->GetData(i), 1)) {
-       return false;
-       }
-       }
-       for (int j = 0; j < cda->RequiredMaterials->Count; j += 1) {
-       CraftDataAttributeHelper *craftDataAttributeHelper = cda->RequiredMaterials->GetData(j);
-       if (!CHasCraftMaterial(craftDataAttributeHelper->ItemId, craftDataAttributeHelper->Count)) {
-       return false;
-       }
-       }
-       return true;*/
-
 	return false;
 }
 
 bool Entity::ctry_to_craft(CraftDataAttribute *cda) {
-	/*
-       if (!CCanCraft(cda)) {
-       return false;
-       }
-       CSendCraftItemRequest(cda->Id);
-       return true;*/
-
 	return false;
 }
 
 bool Entity::scan_craft(CraftDataAttribute *cda) {
-	/*
-       for (int i = 0; i < cda->RequiredItems->Count; i += 1) {
-       if (!SHasItem(cda->RequiredItems->GetData(i), 1)) {
-       return false;
-       }
-       }
-       for (int j = 0; j < cda->RequiredMaterials->Count; j += 1) {
-       CraftDataAttributeHelper *craftDataAttributeHelper = cda->RequiredMaterials->GetData(j);
-       if (!SHasCraftMaterial(craftDataAttributeHelper->ItemId, craftDataAttributeHelper->Count)) {
-       return false;
-       }
-       }
-       return true;*/
-
 	return false;
 }
 
 void Entity::scraft(CraftDataAttribute *cda) {
-	/*
-       if (!STryToAddItem(cda->Item->ItemId, cda->Item->Count)) {
-       return;
-       }
-       for (int i = 0; i < cda->RequiredMaterials->Count; i += 1) {
-       CraftDataAttributeHelper *craftDataAttributeHelper = cda->RequiredMaterials->GetData(i);
-       SRemoveCraftMaterial(craftDataAttributeHelper->ItemId, craftDataAttributeHelper->Count);
-       }*/
 }
 
 void Entity::sreceive_craft_item_msg(int craftId) {
-	/*
-       CraftDataLoader *instance = CraftDataLoader::Instance;
-       if (instance == null) {
-       return;
-       }
-       CraftDataAttribute *craftDataWithId = instance->getCraftDataWithId(craftId);
-       if (craftDataWithId == null) {
-       return;
-       }
-       if (!SCanCraft(craftDataWithId)) {
-       return;
-       }
-       SCraft(craftDataWithId);*/
 }
 
 void Entity::cswap_items_in_slots(int slot1, int slot2) {
-	/*
-       if ((slot1 >= getCInventory()->Count) || (slot2 >= getCInventory()->Count)) {
-       return;
-       }
-       if ((getCInventory()->GetData(slot1) == null) && (getCInventory()->GetData(slot2) == null)) {
-       return;
-       }
-       CSendSwapItems(slot1, slot2); */
 }
 
 void Entity::loaded() {
@@ -2249,54 +1711,27 @@ void Entity::rpc_level_up() {
        }*/
 }
 
-void Entity::registers() {
-	/*
-       if (aiPlayer) {
-       Entity.CRegisterAIPlayer(GUID, owner);
-
-       if (owner.isServer) {
-       Entity.SRegisterAIPlayer(GUID, owner);
-       }
-
-    //  owner.OnPlayerSpawned(owner, owner.isClient, owner.isServer, owner.isLocalPlayer);
-
-    return;
-    }
-
-    if (isLocalPlayer) {
-    Entity.RegisterLocalPlayer(GUID, owner);
-
-    //Let's call the playerFactory, so it can modify this instance
-    // owner.OnPlayerSpawned(owner, owner.isClient, owner.isServer, owner.isLocalPlayer);
-
-    return;
-    }
-
-    if (owner.isClient) {
-    Entity.CRegisterNetworkedPlayer(GUID, owner);
-
-    if (owner.isServer) {
-    Entity.SRegisterNetworkedPlayer(GUID, owner);
-    }
-
-    //Let's call the playerFactory, so it can modify this instance
-    //   owner.OnPlayerSpawned(owner, owner.isClient, owner.isServer, owner.isLocalPlayer);
-    }
-    */
-
-	/*
-       pl.CRegisterAIPlayer(transform.gameObject);
-
-       if (isServer)
-       {
-       pl.SRegisterAIPlayer(transform.gameObject);
-       }
-
-    //Let's call the playerFactory, so it can modify this instance
-    pf.OnPlayerSpawned(gameObject, isClient, isServer, isLocalPlayer);*/
-}
-
 void Entity::update(float delta) {
+	if (_s_gcd > 0.0000001) {
+		_s_gcd -= delta;
+
+		if (_s_gcd <= 0) {
+			_s_gcd = 0;
+
+			emit_signal("sgcd_finished");
+		}
+	}
+
+	if (_c_gcd > 0.0000001) {
+		_c_gcd -= delta;
+
+		if (_c_gcd <= 0) {
+			_c_gcd = 0;
+
+			emit_signal("cgcd_finished");
+		}
+	}
+
     for (int i = 0; i < _s_cooldowns.size(); ++i) {
         Ref<Cooldown> cd = _s_cooldowns.get(i);
         
@@ -2322,58 +1757,6 @@ void Entity::update(float delta) {
 			sfinish_cast();
 		}
 	}
-}
-
-void Entity::Update() {
-	/*
-       getInventory()->Update();
-       getPlayerFacingComponent()->Update();
-       getStateComponent()->Update();
-       getPlayerSpellDataComponent()->Update();
-       getOpmcc()->Update();
-       getEntity()->Update();
-       getFactionComponent()->Update();*/
-
-	/*
-       if (owner->isServer && sendstate) {
-       sendstate = false;
-       SendAllItems();
-       } */
-
-	/*
-       if (send && owner->isServer) {
-       send = false;
-       for (int i = 0; i < getSSpellData()->Count; i += 1) {
-       PlayerSpellData *playerSpellData = getSSpellData()->GetData(i);
-       if (is_inst_of<PlayerSpellCooldownData *>(playerSpellData)) {
-       PlayerSpellCooldownData *playerSpellCooldownData = as_cast<PlayerSpellCooldownData *>(playerSpellData);
-       SSendAddCPlayerSpellCooldownData(playerSpellCooldownData->SpellId, playerSpellCooldownData->getCooldown(), playerSpellCooldownData->getRemainingCooldown());
-       }
-       }
-       }
-       for (int j = 0; j < sSpellData->Count; j += 1) {
-       sSpellData->GetData(j)->Update(this);
-       }
-       for (int k = 0; k < cSpellData->Count; k += 1) {
-       cSpellData->GetData(k)->Update(this);
-       }*/
-
-	/*
-       if (owner->PlayerData->State != PlayerStates::STATE_NORMAL) {
-       return;
-       }
-       if (getSCasting()) {
-       setSCurrentCastTime(Time::deltaTime);
-       if (getSCurrentCastTime() >= getSCastTime()) {
-       SCastFinished();
-       }
-       }
-       if (getCCasting()) {
-       setCCurrentCastTime(Time::deltaTime);
-       if (getCCurrentCastTime() >= getCCastTime()) {
-       CCastFinished();
-       }
-       }*/
 }
 
 String Entity::request_spell_name(int spellId) {
@@ -2593,7 +1976,9 @@ void Entity::_bind_methods() {
 
 	//GCD
 	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::REAL, "value")));
+	ADD_SIGNAL(MethodInfo("sgcd_finished", PropertyInfo(Variant::REAL, "value")));
 	ADD_SIGNAL(MethodInfo("cgcd_started", PropertyInfo(Variant::REAL, "value")));
+	ADD_SIGNAL(MethodInfo("cgcd_finished", PropertyInfo(Variant::REAL, "value")));
 
 	ClassDB::bind_method(D_METHOD("getc_has_global_cooldown"), &Entity::getc_has_global_cooldown);
 	ClassDB::bind_method(D_METHOD("gets_has_global_cooldown"), &Entity::gets_has_global_cooldown);

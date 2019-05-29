@@ -96,6 +96,20 @@ void Spell::set_level(int value) {
 	_level = value;
 }
 
+int Spell::get_rank() {
+	return _rank;
+}
+void Spell::set_rank(int value) {
+	_rank = value;
+}
+
+Ref<Spell> Spell::get_next_rank() {
+	return _next_rank;
+}
+void Spell::set_next_rank(Ref<Spell> value) {
+	_next_rank = value;
+}
+
 int Spell::get_item_cost() {
 	return _item_cost;
 }
@@ -359,6 +373,14 @@ void Spell::set_aoe_half_extents(Vector3 value) {
 bool Spell::has_effect_visual() {
 	return _effect_visual.is_valid();
 }
+
+EntityEnums::CharacterSkeletonPoints Spell::get_effect_visual_point() {
+	return _effect_visual_point;
+}
+void Spell::set_effect_visual_point(EntityEnums::CharacterSkeletonPoints point) {
+	_effect_visual_point = point;
+}
+
 Ref<PackedScene> Spell::get_effect_visual() {
 	return _effect_visual;
 }
@@ -369,6 +391,14 @@ void Spell::set_effect_visual(Ref<PackedScene> value) {
 bool Spell::has_spell_cast_finish_effect() {
 	return _spell_cast_finish_effect.is_valid();
 }
+
+EntityEnums::CharacterSkeletonPoints Spell::get_spell_cast_finish_effect_point() {
+	return _spell_cast_finish_effect_point;
+}
+void Spell::set_spell_cast_finish_effect_point(EntityEnums::CharacterSkeletonPoints point) {
+	_spell_cast_finish_effect_point = point;
+}
+
 Ref<PackedScene> Spell::get_spell_cast_finish_effect() {
 	return _spell_cast_finish_effect;
 }
@@ -852,6 +882,14 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_level", "value"), &Spell::set_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "level"), "set_level", "get_level");
 
+	ClassDB::bind_method(D_METHOD("get_rank"), &Spell::get_rank);
+	ClassDB::bind_method(D_METHOD("set_rank", "value"), &Spell::set_rank);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "rank"), "set_rank", "get_rank");
+
+	ClassDB::bind_method(D_METHOD("get_next_rank"), &Spell::get_next_rank);
+	ClassDB::bind_method(D_METHOD("set_next_rank", "value"), &Spell::set_next_rank);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "next_rank", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_next_rank", "get_next_rank");
+
 	ClassDB::bind_method(D_METHOD("get_is_local_spell"), &Spell::get_is_local_spell);
 	ClassDB::bind_method(D_METHOD("set_is_local_spell", "value"), &Spell::set_is_local_spell);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_local_spell"), "set_is_local_spell", "get_is_local_spell");
@@ -1029,11 +1067,23 @@ void Spell::_bind_methods() {
 
 	ADD_GROUP("Effect", "effect");
 	ClassDB::bind_method(D_METHOD("has_effect_visual"), &Spell::has_effect_visual);
+
+	ClassDB::bind_method(D_METHOD("get_effect_visual_point"), &Spell::get_effect_visual_point);
+	ClassDB::bind_method(D_METHOD("set_effect_visual_point", "value"), &Spell::set_effect_visual_point);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect_visual_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS), "set_effect_visual_point", "get_effect_visual_point");
+
+
 	ClassDB::bind_method(D_METHOD("get_effect_visual"), &Spell::get_effect_visual);
 	ClassDB::bind_method(D_METHOD("set_effect_visual", "value"), &Spell::set_effect_visual);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_visual", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_effect_visual", "get_effect_visual");
 
 	ClassDB::bind_method(D_METHOD("has_spell_cast_finish_effect"), &Spell::has_spell_cast_finish_effect);
+
+	ClassDB::bind_method(D_METHOD("get_spell_cast_finish_effect_point"), &Spell::get_spell_cast_finish_effect_point);
+	ClassDB::bind_method(D_METHOD("set_spell_cast_finish_effect_point", "value"), &Spell::set_spell_cast_finish_effect_point);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_cast_finish_effect_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS), "set_spell_cast_finish_effect_point", "get_spell_cast_finish_effect_point");
+
+
 	ClassDB::bind_method(D_METHOD("get_spell_cast_finish_effect"), &Spell::get_spell_cast_finish_effect);
 	ClassDB::bind_method(D_METHOD("set_spell_cast_finish_effect", "value"), &Spell::set_spell_cast_finish_effect);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_spell_cast_finish_effect", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_spell_cast_finish_effect", "get_spell_cast_finish_effect");

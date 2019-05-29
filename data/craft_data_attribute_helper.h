@@ -23,10 +23,6 @@ protected:
 private:
 	Ref<ItemTemplate> _item;
 	int _count;
-
-#if ENTITY_MEM_TOOLS
-	static int allocs;
-#endif
 };
 
 #endif

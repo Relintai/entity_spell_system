@@ -1,38 +1,38 @@
 #include "bag.h"
 
 Ref<BagSlot> Bag::get_slot(int index) {
-	ERR_FAIL_INDEX_V(index, _slots->size(), Ref<BagSlot>(NULL));
+	ERR_FAIL_INDEX_V(index, _slots.size(), Ref<BagSlot>(NULL));
 
-	return (_slots->get(index));
+	return (_slots.get(index));
 }
 
 Ref<BagSlot> Bag::get_and_remove_slot(int index) {
-	ERR_FAIL_INDEX_V(index, _slots->size(), Ref<BagSlot>(NULL));
+	ERR_FAIL_INDEX_V(index, _slots.size(), Ref<BagSlot>(NULL));
 
-	Ref<BagSlot> slot = _slots->get(index);
+	Ref<BagSlot> slot = _slots.get(index);
 
-	_slots->set(index, Ref<BagSlot>(memnew(BagSlot())));
+	_slots.set(index, Ref<BagSlot>(memnew(BagSlot())));
     
     return slot;
 }
 
 int Bag::get_slot_count() {
-	return _slots->size();
+	return _slots.size();
 }
 
 void Bag::set_slot_count(int count) {
-	ERR_FAIL_COND(_slots->size() != 0);
+	ERR_FAIL_COND(_slots.size() > count);
 
 	for (int i = 0; i < count; ++i) {
-		_slots->push_back(memnew(BagSlot()));
+		_slots.push_back(Ref<BagSlot>(memnew(BagSlot())));
 	}
 }
 
 bool Bag::try_to_add_item(Ref<ItemInstance> item, int count) {
 	ERR_FAIL_COND_V(!item.is_valid(), false);
 
-	for (int i = 0; i < _slots->size(); ++i) {
-		Ref<BagSlot> slot = _slots->get(i);
+	for (int i = 0; i < _slots.size(); ++i) {
+		Ref<BagSlot> slot = _slots.get(i);
 
 		if (!slot->has_item()) {
 			slot->set_item(item);
@@ -48,9 +48,9 @@ bool Bag::try_to_add_item(Ref<ItemInstance> item, int count) {
 bool Bag::add_item_to_slot(Ref<ItemInstance> item, int slot_index, int count) {
 	ERR_FAIL_COND_V(!item.is_valid(), false);
 
-	ERR_FAIL_INDEX_V(slot_index, _slots->size(), false);
+	ERR_FAIL_INDEX_V(slot_index, _slots.size(), false);
 
-	Ref<BagSlot> slot = _slots->get(slot_index);
+	Ref<BagSlot> slot = _slots.get(slot_index);
 
 	ERR_FAIL_COND_V(!slot.is_valid(), false);
 
@@ -64,13 +64,10 @@ bool Bag::add_item_to_slot(Ref<ItemInstance> item, int slot_index, int count) {
 }
 
 Bag::Bag() {
-	_slots = memnew(Vector<Ref<BagSlot> >());
 }
 
 Bag::~Bag() {
-	_slots->clear();
-
-	memdelete(_slots);
+	_slots.clear();
 }
 
 void Bag::_bind_methods() {

@@ -15,7 +15,6 @@ Stat::Stat() {
 	_c_max = (float)(0);
 	_c_current = (float)(0);
 
-	_modifiers = memnew(Vector<Ref<StatModifier> >());
 	_disabled = false;
 	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
 }
@@ -31,7 +30,6 @@ Stat::Stat(Stat::StatId id) {
 	_c_max = (float)(0);
 	_c_current = (float)(0);
 
-	_modifiers = memnew(Vector<Ref<StatModifier> >());
 	_disabled = false;
 	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
 }
@@ -47,7 +45,6 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type) {
 	_c_max = (float)(0);
 	_c_current = (float)(0);
 
-	_modifiers = memnew(Vector<Ref<StatModifier> >());
 	_disabled = false;
 	_modifier_apply_type = modifier_apply_type;
 	_id = id;
@@ -64,7 +61,6 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float bas
 	_s_current = (float)(0);
 	_c_max = (float)(0);
 	_c_current = (float)(0);
-	_modifiers = memnew(Vector<Ref<StatModifier> >());
 	_disabled = false;
 	_modifier_apply_type = modifier_apply_type;
 
@@ -88,7 +84,6 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float bas
 	_c_max = (float)(0);
 	_c_current = (float)(0);
 
-	_modifiers = memnew(Vector<Ref<StatModifier> >());
 	_disabled = false;
 	_modifier_apply_type = modifier_apply_type;
 	_id = id;
@@ -100,21 +95,19 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float bas
 }
 
 Stat::~Stat() {
-	_modifiers->clear();
-
-	memdelete(_modifiers);
+	_modifiers.clear();
 }
 
 _FORCE_INLINE_ Vector<Ref<StatModifier> > *Stat::get_modifiers() {
-	return _modifiers;
+	return &_modifiers;
 }
 
 int Stat::get_modifier_count() {
-	return _modifiers->size();
+	return _modifiers.size();
 }
 
 Ref<StatModifier> Stat::get_modifier(int index) {
-	return _modifiers->get(index);
+	return _modifiers.get(index);
 }
 
 void Stat::set_dependency(Ref<Stat> other, Ref<Curve> curve) {
@@ -168,14 +161,14 @@ void Stat::add_modifier(int id, float _max_mod, float percent_mod, bool apply) {
 		apply_modifier(statModifier);
 	}
 
-	_modifiers->push_back(statModifier);
+	_modifiers.push_back(statModifier);
 }
 
 void Stat::remove_modifier(int id, bool apply) {
-	for (int i = 0; i < _modifiers->size(); i += 1) {
-		if (_modifiers->get(i)->get_id() == id) {
-			Ref<StatModifier> modifier = _modifiers->get(i);
-			_modifiers->remove(i);
+	for (int i = 0; i < _modifiers.size(); i += 1) {
+		if (_modifiers.get(i)->get_id() == id) {
+			Ref<StatModifier> modifier = _modifiers.get(i);
+			_modifiers.remove(i);
 
 			if (apply) {
 				de_apply_modifier(modifier);
@@ -199,16 +192,16 @@ void Stat::apply_modifier(Ref<StatModifier> modifier) {
 			if (get_modifiers()->size() > 0) {
 				float percent_mod = get_modifiers()->get(0)->get_percent_mod();
 				for (int i = 1; i < get_modifiers()->size(); i += 1) {
-					if ((_modifiers->get(i)->get_percent_mod() < (float)0) && (_modifiers->get(i)->get_percent_mod() < percent_mod)) {
+					if ((_modifiers.get(i)->get_percent_mod() < (float)0) && (_modifiers.get(i)->get_percent_mod() < percent_mod)) {
 						num = i;
-						percent_mod = _modifiers->get(i)->get_percent_mod();
+						percent_mod = _modifiers.get(i)->get_percent_mod();
 					}
 				}
 			}
 
 			if (num != -1) {
-				if (modifier->get_percent_mod() < _modifiers->get(num)->get_percent_mod()) {
-					_percent -= _modifiers->get(num)->get_percent_mod();
+				if (modifier->get_percent_mod() < _modifiers.get(num)->get_percent_mod()) {
+					_percent -= _modifiers.get(num)->get_percent_mod();
 				}
 
 				_percent += modifier->get_percent_mod();
@@ -236,20 +229,20 @@ void Stat::de_apply_modifier(Ref<StatModifier> modifier) {
 				float percent_mod = get_modifiers()->get(0)->get_percent_mod();
 
 				for (int i = 1; i < get_modifiers()->size(); i += 1) {
-					if ((_modifiers->get(i)->get_percent_mod() < (float)0) && (_modifiers->get(i)->get_percent_mod() < percent_mod)) {
+					if ((_modifiers.get(i)->get_percent_mod() < (float)0) && (_modifiers.get(i)->get_percent_mod() < percent_mod)) {
 						num = i;
-						percent_mod = _modifiers->get(i)->get_percent_mod();
+						percent_mod = _modifiers.get(i)->get_percent_mod();
 					}
 				}
 			}
 
-			if (num != -1 && (*_modifiers)[num] == modifier) {
+			if (num != -1 && _modifiers[num] == modifier) {
 				_percent -= modifier->get_percent_mod();
 			}
 		}
 	}
 
-	if (_modifiers->size() == 0) {
+	if (_modifiers.size() == 0) {
 		recalculate();
 	}
 
@@ -260,8 +253,8 @@ void Stat::re_apply_modifiers() {
 	reset_values();
 
 	if (_modifier_apply_type == MODIFIER_APPLY_TYPE_STANDARD) {
-		for (int i = 0; i < _modifiers->size(); i += 1) {
-			Ref<StatModifier> mod = _modifiers->get(i);
+		for (int i = 0; i < _modifiers.size(); i += 1) {
+			Ref<StatModifier> mod = _modifiers.get(i);
 
 			_bonus += mod->get_bonus_mod();
 			_percent += mod->get_percent_mod();
@@ -270,7 +263,7 @@ void Stat::re_apply_modifiers() {
 		re_apply_modifier_not_negative_stacking_percents();
 	}
 
-	if (_modifiers->size() == 0) {
+	if (_modifiers.size() == 0) {
 		recalculate();
 	}
 
@@ -281,8 +274,8 @@ void Stat::re_apply_modifier_not_negative_stacking_percents() {
 	reset_values();
 
 	for (int i = 1; i < get_modifiers()->size(); i += 1) {
-		if (_modifiers->get(i)->get_percent_mod() > (float)0) {
-			Ref<StatModifier> mod = _modifiers->get(i);
+		if (_modifiers.get(i)->get_percent_mod() > (float)0) {
+			Ref<StatModifier> mod = _modifiers.get(i);
 
 			_bonus += mod->get_bonus_mod();
 			_percent += mod->get_percent_mod();
@@ -295,15 +288,15 @@ void Stat::re_apply_modifier_not_negative_stacking_percents() {
 
 		for (int j = 1; j < get_modifiers()->size(); ++j) {
 
-			if ((_modifiers->get(j)->get_percent_mod() < (float)0) && (_modifiers->get(j)->get_percent_mod() < percent_mod)) {
+			if ((_modifiers.get(j)->get_percent_mod() < (float)0) && (_modifiers.get(j)->get_percent_mod() < percent_mod)) {
 				num = j;
-				percent_mod = _modifiers->get(j)->get_percent_mod();
+				percent_mod = _modifiers.get(j)->get_percent_mod();
 			}
 		}
 	}
 
 	if (num != -1) {
-		Ref<StatModifier> mod = _modifiers->get(num);
+		Ref<StatModifier> mod = _modifiers.get(num);
 
 		_bonus += mod->get_bonus_mod();
 		_percent += mod->get_percent_mod();

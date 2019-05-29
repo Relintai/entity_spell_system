@@ -30,7 +30,7 @@ public:
 	NodePath get_bone_path(int index);
 	void set_bone_path(int index, NodePath path);
 
-	Node *get_bone_node(EntityEnums::CharacterSkeletonBoneId node_id);
+	Node *get_bone_node(EntityEnums::CharacterSkeletonPoints node_id);
 
 	NodePath get_animation_player_path();
 	void set_animation_player_path(NodePath path);
@@ -54,12 +54,12 @@ private:
 	NodePath _animation_player_path;
 	NodePath _animation_tree_path;
 
-    NodePath _bone_paths[EntityEnums::MAX_BONE_ID];
+    NodePath _bone_paths[EntityEnums::SKELETON_POINTS_MAX];
     
 	AnimationPlayer *_animation_player;
 	AnimationTree *_animation_tree;
 
-	Node *_bone_nodes[EntityEnums::MAX_BONE_ID];
+	Node *_bone_nodes[EntityEnums::SKELETON_POINTS_MAX];
 };
 
 

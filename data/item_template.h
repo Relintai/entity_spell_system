@@ -8,6 +8,8 @@
 #include "../entities/stats/stat.h"
 #include "../item_enums.h"
 
+#include "item_instance.h"
+
 class Aura;
 class Spell;
 
@@ -83,6 +85,7 @@ public:
 
 	int get_animator_weapon_type();
 
+	Ref<ItemInstance> create_item_instance();
 
 	ItemTemplate();
 	~ItemTemplate();

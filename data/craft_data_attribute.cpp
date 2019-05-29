@@ -1,9 +1,5 @@
 #include "craft_data_attribute.h"
 
-#if ENTITY_MEM_TOOLS
-int CraftDataAttribute::allocs = 0;
-#endif
-
 const String CraftDataAttribute::BINDING_STRING_CRAFT_CATEGORIES = "None, Alchemy";
 const String CraftDataAttribute::BINDING_STRING_CRAFT_SUB_CATEGORIES = "None, Potions";
 
@@ -88,22 +84,12 @@ CraftDataAttribute::CraftDataAttribute() {
 	//for (int i = 0; i < MAX_REQUIRED_MATERIALS; ++i) {
 	//	_required_materials[i] = Ref<CraftDataAttributeHelper>(memnew(CraftDataAttributeHelper()));
 	//}
-
-#if ENTITY_MEM_TOOLS
-	CraftDataAttribute::allocs++;
-	print_error("CraftDataAttribute alloc " + String::num(CraftDataAttribute::allocs));
-#endif
 }
 
 CraftDataAttribute::~CraftDataAttribute() {
 	//TODO check if the array destrutors actually unref the objects.
 
 	//_item = Ref<CraftDataAttributeHelper>(NULL);
-
-#if ENTITY_MEM_TOOLS
-	CraftDataAttribute::allocs--;
-	print_error("CraftDataAttributede alloc " + String::num(CraftDataAttribute::allocs));
-#endif
 }
 
 void CraftDataAttribute::_validate_property(PropertyInfo &property) const {

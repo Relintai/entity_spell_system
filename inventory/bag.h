@@ -26,7 +26,7 @@ protected:
 	static void _bind_methods();
     
 private:
-	Vector<Ref<BagSlot> > *_slots;
+	Vector<Ref<BagSlot> > _slots;
 };
 
 #endif

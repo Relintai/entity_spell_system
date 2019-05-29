@@ -3,8 +3,8 @@
 
 #include "core/resource.h"
 #include "scene/resources/curve.h"
-#include "scene/resources/texture.h"
 #include "scene/resources/packed_scene.h"
+#include "scene/resources/texture.h"
 
 #include "../entity_enums.h"
 #include "../spell_enums.h"
@@ -108,6 +108,12 @@ public:
 
 	int get_level();
 	void set_level(int value);
+
+	int get_rank();
+	void set_rank(int value);
+
+	Ref<Spell> get_next_rank();
+	void set_next_rank(Ref<Spell> value);
 
 	int get_item_cost();
 	void set_item_cost(int value);
@@ -219,10 +225,18 @@ public:
 	void set_aoe_half_extents(Vector3 value);
 
 	bool has_effect_visual();
+
+	EntityEnums::CharacterSkeletonPoints get_effect_visual_point();
+	void set_effect_visual_point(EntityEnums::CharacterSkeletonPoints point);
+
 	Ref<PackedScene> get_effect_visual();
 	void set_effect_visual(Ref<PackedScene> value);
 
 	bool has_spell_cast_finish_effect();
+
+	EntityEnums::CharacterSkeletonPoints get_spell_cast_finish_effect_point();
+	void set_spell_cast_finish_effect_point(EntityEnums::CharacterSkeletonPoints point);
+
 	Ref<PackedScene> get_spell_cast_finish_effect();
 	void set_spell_cast_finish_effect(Ref<PackedScene> value);
 
@@ -255,19 +269,6 @@ public:
 	int get_spell_cooldown_mainpulation_data_count();
 	void set_spell_cooldown_mainpulation_data_count(int value);
 
-	//AuraApplyData *getAuraApplyData() { return auraApplyData; }
-	//void setAuraApplyData(AuraApplyData *value) { auraApplyData = value; }
-
-	/*
-	void Set(int _spell_id, SpellType _spell_type, int p_damage_min, int _damage_max, bool _hideFrom_actionbar, float _cast_time,
-		float cooldown, int casterAuraApply, int casterAuraApply2, int targetAuraApply, int targetAuraApply2,
-		int level, int itemCost, int crafMaterialCost, int requiredItem, String *costTypeString, int costResource,
-		String *giveResourceTypeString, int giveResource, bool hasGlobalCooldown, bool isLocalSpell, String *iconBundle,
-		String *iconFile, Vector2i *iconAtlasPosition, String *nameKey, String *spellName, String *spellDescription);
-
-	void Set(bool needsTarget, bool canMoveWhileCasting);
-		*/
-
 	////    Spell Script    ////
 
 	float PLAYER_HIT_RADIUS;
@@ -286,7 +287,7 @@ public:
 	virtual void _sstart_casting(Ref<SpellCastInfo> info);
 
 	//eventhandlers
-	void son_cast_player_moved(Ref<SpellCastInfo> info); 
+	void son_cast_player_moved(Ref<SpellCastInfo> info);
 	void son_cast_damage_received(Ref<SpellCastInfo> info);
 	void son_spell_hit(Ref<SpellCastInfo> info);
 
@@ -365,13 +366,11 @@ protected:
 
 private:
 	int _spell_id;
-
 	int _spell_type;
 
 	bool _hide_from_actionbar;
 	float _cooldown;
 	SpellTargetType _target_type;
-	//AuraApplyData *_aura_apply_data;
 
 	Ref<Aura> *_caster_aura_apply_ref;
 	Ref<Aura> *_caster_aura_apply2_ref;
@@ -384,6 +383,8 @@ private:
 	Aura *_target_aura_apply2;
 
 	int _level;
+	int _rank;
+	Ref<Spell> _next_rank;
 	int _item_cost;
 	int _craft_material_cost;
 	int _required_item;
@@ -427,8 +428,12 @@ private:
 	SpellAOEColliderType _aoe_colliderType;
 	Vector3 _aoe_half_extents;
 
+	EntityEnums::CharacterSkeletonPoints _effect_visual_point;
 	Ref<PackedScene> _effect_visual;
+
+	EntityEnums::CharacterSkeletonPoints _spell_cast_finish_effect_point;
 	Ref<PackedScene> _spell_cast_finish_effect;
+
 	Ref<PackedScene> _spell_cast_effect;
 
 	Ref<PackedScene> _projectile;

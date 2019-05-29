@@ -49,10 +49,6 @@ private:
 	int _spec_id;
 	String _spec_name;
 	Ref<TalentRowData> _rows[MAX_TALENT_ROWS];
-
-#if ENTITY_MEM_TOOLS
-	static int allocs;
-#endif
 };
 
 #endif
