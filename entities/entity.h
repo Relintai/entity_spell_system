@@ -70,9 +70,6 @@ enum PlayerSendFlags {
 	SEND_FLAG_AURAS,
 };
 
-typedef HashMap<int, Ref<Cooldown> > CooldownHashMap;
-typedef HashMap<int, Ref<CategoryCooldown> > CategoryCooldownHashMap;
-
 #ifdef ENTITIES_2D
 class Entity : public KinematicBody2D {
 	GDCLASS(Entity, KinematicBody2D);
@@ -582,24 +579,24 @@ private:
 
 	//// AuraComponent    ////
 
-	Vector<Ref<AuraData> > *_s_auras;
-	Vector<Ref<AuraData> > *_c_auras;
+	Vector<Ref<AuraData> > _s_auras;
+	Vector<Ref<AuraData> > _c_auras;
 
 	EntityEnums::EntityType _s_entity_type;
 	EntityEnums::EntityType _c_entity_type;
 
 	////    Cooldowns    ////
-	Vector<Ref<Cooldown> > *_s_cooldowns;
-	Vector<Ref<Cooldown> > *_c_cooldowns;
+	Vector<Ref<Cooldown> > _s_cooldowns;
+	Vector<Ref<Cooldown> > _c_cooldowns;
 
-	HashMap<int, Ref<Cooldown> > *_s_cooldown_map;
-	HashMap<int, Ref<Cooldown> > *_c_cooldown_map;
+	HashMap<int, Ref<Cooldown> > _s_cooldown_map;
+	HashMap<int, Ref<Cooldown> > _c_cooldown_map;
 
-	Vector<Ref<CategoryCooldown> > *_s_category_cooldowns;
-	Vector<Ref<CategoryCooldown> > *_c_category_cooldowns;
+	Vector<Ref<CategoryCooldown> > _s_category_cooldowns;
+	Vector<Ref<CategoryCooldown> > _c_category_cooldowns;
 
-	CategoryCooldownHashMap *_s_category_cooldown_map;
-	CategoryCooldownHashMap *_c_category_cooldown_map;
+	HashMap<int, Ref<CategoryCooldown> > _s_category_cooldown_map;
+	HashMap<int, Ref<CategoryCooldown> > _c_category_cooldown_map;
 
 	////    targetComponent    ////
 
@@ -609,8 +606,8 @@ private:
 
 	////    TalentComponent    ////
 
-	Vector<PlayerTalent *> *_s_talents;
-	Vector<PlayerTalent *> *_c_talents;
+	Vector<Ref<PlayerTalent> > _s_talents;
+	Vector<Ref<PlayerTalent> > _c_talents;
 
 	////    Inventory    ////
 

@@ -259,27 +259,6 @@ Entity::Entity() {
 	_s_target = NULL;
 	_c_target = NULL;
 
-	/*
-       auras = new Vector<AuraData>();
-       serverAuras = new Vector<AuraData>();
-
-       c_spell_name = "";
-
-       cTalents = new Vector<PlayerTalent>();
-       sTalents = new Vector<PlayerTalent>();
-       owner = owner;*/
-
-	/*
-       cCraftMaterialInventory = new Vector<ItemInstance>();
-       sCraftMaterialInventory = new Vector<ItemInstance>();
-       cInventory = new Vector<ItemInstance>();
-       sInventory = new Vector<ItemInstance>();
-       owner = owner;
-       for (int i = 0; i < 21; i += 1) {
-       cInventory->Add(null);
-       sInventory->Add(null);
-       }*/
-
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
 		_stats[i] = Ref<Stat>(memnew(Stat(static_cast<Stat::StatId>(i))));
 	}
@@ -315,48 +294,9 @@ Entity::Entity() {
 	_heal_taken = Ref<Stat>(get_stat_enum(Stat::STAT_ID_HEAL_TAKEN));
 	_melee_damage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE));
 	_spell_damage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_SPELL_DAMAGE));
-
-	_s_auras = memnew(Vector<Ref<AuraData> >());
-	_c_auras = memnew(Vector<Ref<AuraData> >());
-
-	_s_cooldowns = memnew(Vector<Ref<Cooldown> >());
-	_c_cooldowns = memnew(Vector<Ref<Cooldown> >());
-
-	_s_cooldown_map = memnew(CooldownHashMap());
-	_c_cooldown_map = memnew(CooldownHashMap());
-
-	_s_category_cooldowns = memnew(Vector<Ref<CategoryCooldown> >());
-	_c_category_cooldowns = memnew(Vector<Ref<CategoryCooldown> >());
-
-	_s_category_cooldown_map = memnew(CategoryCooldownHashMap());
-	_c_category_cooldown_map = memnew(CategoryCooldownHashMap());
 }
 
 Entity::~Entity() {
-	_s_auras->clear();
-	_c_auras->clear();
-	memdelete(_s_auras);
-	memdelete(_c_auras);
-
-	_s_cooldowns->clear();
-	_c_cooldowns->clear();
-	memdelete(_s_cooldowns);
-	memdelete(_c_cooldowns);
-
-	_s_cooldown_map->clear();
-	_c_cooldown_map->clear();
-	memdelete(_s_cooldown_map);
-	memdelete(_c_cooldown_map);
-
-	_s_category_cooldowns->clear();
-	_c_category_cooldowns->clear();
-	memdelete(_s_category_cooldowns);
-	memdelete(_c_category_cooldowns);
-
-	_s_category_cooldown_map->clear();
-	_c_category_cooldown_map->clear();
-	memdelete(_s_category_cooldown_map);
-	memdelete(_c_category_cooldown_map);
 }
 
 void Entity::initialize(Ref<EntityCreateInfo> info) {
@@ -709,8 +649,8 @@ void Entity::creceive_mana_changed(int amount) {
 void Entity::son_before_aura_applied(Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_before_aura_applied(data);
 	}
@@ -719,8 +659,8 @@ void Entity::son_before_aura_applied(Ref<AuraData> data) {
 void Entity::son_after_aura_applied(Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		if (ad == data) {
 			continue;
@@ -746,8 +686,8 @@ void Entity::crequest_spell_cast(int spell_id) {
 }
 
 void Entity::update_auras(float delta) {
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->supdate(ad, delta);
 	}
@@ -756,8 +696,8 @@ void Entity::update_auras(float delta) {
 void Entity::son_before_cast(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_before_cast(info);
 	}
@@ -766,8 +706,8 @@ void Entity::son_before_cast(Ref<SpellCastInfo> info) {
 void Entity::son_before_cast_target(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_before_cast_target(info);
 	}
@@ -776,8 +716,8 @@ void Entity::son_before_cast_target(Ref<SpellCastInfo> info) {
 void Entity::son_hit(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_hit(data);
 	}
@@ -786,8 +726,8 @@ void Entity::son_hit(Ref<SpellDamageInfo> data) {
 void Entity::son_before_damage(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_before_damage(data);
 	}
@@ -796,8 +736,8 @@ void Entity::son_before_damage(Ref<SpellDamageInfo> data) {
 void Entity::son_damage_receive(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_damage_receive(data);
 	}
@@ -806,8 +746,8 @@ void Entity::son_damage_receive(Ref<SpellDamageInfo> data) {
 void Entity::son_dealt_damage(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_dealt_damage(data);
 	}
@@ -817,8 +757,8 @@ void Entity::son_damage_dealt(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
 	//serverside
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_damage_dealt(data);
 	}
@@ -827,8 +767,8 @@ void Entity::son_damage_dealt(Ref<SpellDamageInfo> data) {
 void Entity::son_before_heal(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_before_heal(data);
 	}
@@ -837,8 +777,8 @@ void Entity::son_before_heal(Ref<SpellHealInfo> data) {
 void Entity::son_heal_receive(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_heal_receive(data);
 	}
@@ -847,8 +787,8 @@ void Entity::son_heal_receive(Ref<SpellHealInfo> data) {
 void Entity::son_dealt_heal(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_dealt_heal(data);
 	}
@@ -858,8 +798,8 @@ void Entity::son_heal_dealt(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
 	//serverside
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_heal_dealt(data);
 	}
@@ -868,8 +808,8 @@ void Entity::son_heal_dealt(Ref<SpellHealInfo> data) {
 void Entity::sapply_passives_damage_receive(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->sapply_passives_damage_receive(data);
 	}
@@ -878,8 +818,8 @@ void Entity::sapply_passives_damage_receive(Ref<SpellDamageInfo> data) {
 void Entity::sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->sapply_passives_damage_deal(data);
 	}
@@ -888,8 +828,8 @@ void Entity::sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
 void Entity::sapply_passives_heal_receive(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->sapply_passives_heal_receive(data);
 	}
@@ -898,8 +838,8 @@ void Entity::sapply_passives_heal_receive(Ref<SpellHealInfo> data) {
 void Entity::sapply_passives_heal_deal(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->sapply_passives_heal_deal(data);
 	}
@@ -908,8 +848,8 @@ void Entity::sapply_passives_heal_deal(Ref<SpellHealInfo> data) {
 void Entity::son_cast_finished(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_cast_finished(info);
 	}
@@ -918,8 +858,8 @@ void Entity::son_cast_finished(Ref<SpellCastInfo> info) {
 void Entity::son_cast_started(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_cast_started(info);
 	}
@@ -928,8 +868,8 @@ void Entity::son_cast_started(Ref<SpellCastInfo> info) {
 void Entity::son_cast_failed(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_cast_failed(info);
 	}
@@ -938,8 +878,8 @@ void Entity::son_cast_failed(Ref<SpellCastInfo> info) {
 void Entity::son_cast_finished_target(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_cast_finished_target(info);
 	}
@@ -952,7 +892,7 @@ void Entity::sadd_aura(Ref<AuraData> aura) {
 
 	aura->set_owner(this);
 
-	_s_auras->push_back(aura);
+	_s_auras.push_back(aura);
 
 	son_after_aura_applied(aura);
 
@@ -964,13 +904,13 @@ void Entity::sadd_aura(Ref<AuraData> aura) {
 void Entity::sremove_aura(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); i++) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); i++) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		if (ad == aura) {
 			ad->get_aura()->son_remove(ad);
 
-			_s_auras->remove(i);
+			_s_auras.remove(i);
 
 			break;
 		}
@@ -984,13 +924,13 @@ void Entity::sremove_aura(Ref<AuraData> aura) {
 void Entity::sremove_aura_expired(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); i++) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); i++) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		if (ad == aura) {
 			ad->get_aura()->son_remove(ad);
 
-			_s_auras->remove(i);
+			_s_auras.remove(i);
 
 			break;
 		}
@@ -1004,13 +944,13 @@ void Entity::sremove_aura_expired(Ref<AuraData> aura) {
 void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
-	for (int i = 0; i < _s_auras->size(); i++) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); i++) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		if (ad == aura) {
 			ad->get_aura()->son_remove(ad);
 
-			_s_auras->remove(i);
+			_s_auras.remove(i);
 
 			break;
 		}
@@ -1024,16 +964,16 @@ void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
 void Entity::cadd_aura(Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	_c_auras->push_back(data);
+	_c_auras.push_back(data);
 	emit_signal("caura_added", data);
 }
 
 void Entity::cremove_aura(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
-	for (int i = 0; i < _c_auras->size(); i++) {
-		if (_c_auras->get(i) == aura) {
-			_c_auras->remove(i);
+	for (int i = 0; i < _c_auras.size(); i++) {
+		if (_c_auras.get(i) == aura) {
+			_c_auras.remove(i);
 			break;
 		}
 	}
@@ -1044,9 +984,9 @@ void Entity::cremove_aura(Ref<AuraData> aura) {
 void Entity::cremove_aura_dispelled(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
-	for (int i = 0; i < _c_auras->size(); i++) {
-		if (_c_auras->get(i) == aura) {
-			_c_auras->remove(i);
+	for (int i = 0; i < _c_auras.size(); i++) {
+		if (_c_auras.get(i) == aura) {
+			_c_auras.remove(i);
 			break;
 		}
 	}
@@ -1057,9 +997,9 @@ void Entity::cremove_aura_dispelled(Ref<AuraData> aura) {
 void Entity::cremove_aura_expired(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
-	for (int i = 0; i < _c_auras->size(); i++) {
-		if (_c_auras->get(i) == aura) {
-			_c_auras->remove(i);
+	for (int i = 0; i < _c_auras.size(); i++) {
+		if (_c_auras.get(i) == aura) {
+			_c_auras.remove(i);
 			break;
 		}
 	}
@@ -1068,23 +1008,23 @@ void Entity::cremove_aura_expired(Ref<AuraData> aura) {
 }
 
 int Entity::sget_aura_count() {
-	return _s_auras->size();
+	return _s_auras.size();
 }
 
 Ref<Aura> Entity::sget_aura(int index) {
-	ERR_FAIL_INDEX_V(index, _s_auras->size(), Ref<Aura>(NULL));
+	ERR_FAIL_INDEX_V(index, _s_auras.size(), Ref<Aura>(NULL));
 
-	return Ref<Aura>(_s_auras->get(index));
+	return Ref<Aura>(_s_auras.get(index));
 }
 
 int Entity::cget_aura_count() {
-	return _s_auras->size();
+	return _s_auras.size();
 }
 
 Ref<Aura> Entity::cget_aura(int index) {
-	ERR_FAIL_INDEX_V(index, _c_auras->size(), Ref<Aura>(NULL));
+	ERR_FAIL_INDEX_V(index, _c_auras.size(), Ref<Aura>(NULL));
 
-	return Ref<Aura>(_c_auras->get(index));
+	return Ref<Aura>(_c_auras.get(index));
 }
 
 void Entity::moved() {
@@ -1113,8 +1053,8 @@ void Entity::setup_on_player_moves(Entity *bopmccc, Vector<int> *sspells) {
 void Entity::sstart_casting(Ref<SpellCastInfo> info) {
 	_s_spell_cast_info = Ref<SpellCastInfo>(info);
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_before_cast(info);
 	}
@@ -1127,8 +1067,8 @@ void Entity::sstart_casting(Ref<SpellCastInfo> info) {
 }
 
 void Entity::sfail_cast() {
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_before_cast(_s_spell_cast_info);
 	}
@@ -1137,8 +1077,8 @@ void Entity::sfail_cast() {
 }
 
 void Entity::sdelay_cast() {
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_before_cast(_s_spell_cast_info);
 	}
@@ -1148,8 +1088,8 @@ void Entity::sdelay_cast() {
 
 void Entity::sfinish_cast() {
 
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_cast_finished(_s_spell_cast_info);
 	}
@@ -1164,8 +1104,8 @@ void Entity::sfinish_cast() {
 }
 
 void Entity::sinterrupt_cast() {
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_before_cast(_s_spell_cast_info);
 	}
@@ -1202,25 +1142,25 @@ void Entity::cinterrupt_cast() {
 
 ////    Cooldowns    ////
 Vector<Ref<Cooldown> > *Entity::gets_cooldowns() {
-	return _s_cooldowns;
+	return &_s_cooldowns;
 }
 Vector<Ref<Cooldown> > *Entity::getc_cooldowns() {
-	return _c_cooldowns;
+	return &_c_cooldowns;
 }
 
 HashMap<int, Ref<Cooldown> > *Entity::gets_cooldown_map() {
-	return _s_cooldown_map;
+	return &_s_cooldown_map;
 }
 HashMap<int, Ref<Cooldown> > *Entity::getc_cooldown_map() {
-	return _c_cooldown_map;
+	return &_c_cooldown_map;
 }
 
 bool Entity::hass_cooldown(int spell_id) {
-	return _s_cooldown_map->has(spell_id);
+	return _s_cooldown_map.has(spell_id);
 }
 void Entity::adds_cooldown(int spell_id, float value) {
-	if (_s_cooldown_map->has(spell_id)) {
-		Ref<Cooldown> cd = _s_cooldown_map->get(spell_id);
+	if (_s_cooldown_map.has(spell_id)) {
+		Ref<Cooldown> cd = _s_cooldown_map.get(spell_id);
 
 		cd->set_remaining(value);
 
@@ -1232,20 +1172,20 @@ void Entity::adds_cooldown(int spell_id, float value) {
 	Ref<Cooldown> cd;
 	cd.instance();
 
-	_s_cooldown_map->set(spell_id, cd);
-	_s_cooldowns->push_back(cd);
+	_s_cooldown_map.set(spell_id, cd);
+	_s_cooldowns.push_back(cd);
 
 	emit_signal("scooldown_added", cd);
 	addc_cooldown(spell_id, value);
 }
 void Entity::removes_cooldown(int spell_id) {
-	if (_s_cooldown_map->has(spell_id)) {
-		_s_cooldown_map->erase(spell_id);
+	if (_s_cooldown_map.has(spell_id)) {
+		_s_cooldown_map.erase(spell_id);
 	}
 
-	for (int i = 0; i < _s_cooldowns->size(); ++i) {
-		if (_s_cooldowns->get(i)->get_spell_id() == spell_id) {
-			_s_cooldowns->remove(i);
+	for (int i = 0; i < _s_cooldowns.size(); ++i) {
+		if (_s_cooldowns.get(i)->get_spell_id() == spell_id) {
+			_s_cooldowns.remove(i);
 			return;
 		}
 	}
@@ -1253,27 +1193,27 @@ void Entity::removes_cooldown(int spell_id) {
 	emit_signal("scooldown_removed", spell_id);
 }
 Ref<Cooldown> Entity::gets_cooldown(int spell_id) {
-	if (!_s_cooldown_map->has(spell_id)) {
+	if (!_s_cooldown_map.has(spell_id)) {
 		return Ref<Cooldown>();
 	}
 
-	return _s_cooldown_map->get(spell_id);
+	return _s_cooldown_map.get(spell_id);
 }
 Ref<Cooldown> Entity::gets_cooldown_index(int index) {
-	ERR_FAIL_INDEX_V(index, _s_cooldowns->size(), Ref<Cooldown>());
+	ERR_FAIL_INDEX_V(index, _s_cooldowns.size(), Ref<Cooldown>());
 
-	return _s_cooldowns->get(index);
+	return _s_cooldowns.get(index);
 }
 int Entity::gets_cooldown_count() {
-	return _s_cooldowns->size();
+	return _s_cooldowns.size();
 }
 
 bool Entity::hasc_cooldown(int spell_id) {
-	return _c_cooldown_map->has(spell_id);
+	return _c_cooldown_map.has(spell_id);
 }
 void Entity::addc_cooldown(int spell_id, float value) {
-	if (_c_cooldown_map->has(spell_id)) {
-		Ref<Cooldown> cd = _c_cooldown_map->get(spell_id);
+	if (_c_cooldown_map.has(spell_id)) {
+		Ref<Cooldown> cd = _c_cooldown_map.get(spell_id);
 
 		cd->set_remaining(value);
 
@@ -1284,19 +1224,19 @@ void Entity::addc_cooldown(int spell_id, float value) {
 	Ref<Cooldown> cd;
 	cd.instance();
 
-	_c_cooldown_map->set(spell_id, cd);
-	_c_cooldowns->push_back(cd);
+	_c_cooldown_map.set(spell_id, cd);
+	_c_cooldowns.push_back(cd);
 
 	emit_signal("ccooldown_added", cd);
 }
 void Entity::removec_cooldown(int spell_id) {
-	if (_c_cooldown_map->has(spell_id)) {
-		_c_cooldown_map->erase(spell_id);
+	if (_c_cooldown_map.has(spell_id)) {
+		_c_cooldown_map.erase(spell_id);
 	}
 
-	for (int i = 0; i < _c_cooldowns->size(); ++i) {
-		if (_c_cooldowns->get(i)->get_spell_id() == spell_id) {
-			_c_cooldowns->remove(i);
+	for (int i = 0; i < _c_cooldowns.size(); ++i) {
+		if (_c_cooldowns.get(i)->get_spell_id() == spell_id) {
+			_c_cooldowns.remove(i);
 			return;
 		}
 	}
@@ -1304,42 +1244,42 @@ void Entity::removec_cooldown(int spell_id) {
 	emit_signal("ccooldown_removed", spell_id);
 }
 Ref<Cooldown> Entity::getc_cooldown(int spell_id) {
-	if (!_c_cooldown_map->has(spell_id)) {
+	if (!_c_cooldown_map.has(spell_id)) {
 		return Ref<Cooldown>();
 	}
 
-	return _c_cooldown_map->get(spell_id);
+	return _c_cooldown_map.get(spell_id);
 }
 Ref<Cooldown> Entity::getc_cooldown_index(int index) {
-	ERR_FAIL_INDEX_V(index, _c_cooldowns->size(), Ref<Cooldown>());
+	ERR_FAIL_INDEX_V(index, _c_cooldowns.size(), Ref<Cooldown>());
 
-	return _c_cooldowns->get(index);
+	return _c_cooldowns.get(index);
 }
 int Entity::getc_cooldown_count() {
-	return _c_cooldowns->size();
+	return _c_cooldowns.size();
 }
 
 //Category Cooldowns
 Vector<Ref<CategoryCooldown> > *Entity::gets_category_cooldowns() {
-	return _s_category_cooldowns;
+	return &_s_category_cooldowns;
 }
 Vector<Ref<CategoryCooldown> > *Entity::getc_category_cooldowns() {
-	return _c_category_cooldowns;
+	return &_c_category_cooldowns;
 }
 
 HashMap<int, Ref<CategoryCooldown> > *Entity::gets_category_cooldown_map() {
-	return _s_category_cooldown_map;
+	return &_s_category_cooldown_map;
 }
 HashMap<int, Ref<CategoryCooldown> > *Entity::getc_category_cooldown_map() {
-	return _c_category_cooldown_map;
+	return &_c_category_cooldown_map;
 }
 
 bool Entity::hass_category_cooldown(int spell_id) {
-	return _s_category_cooldown_map->has(spell_id);
+	return _s_category_cooldown_map.has(spell_id);
 }
 void Entity::adds_category_cooldown(int spell_id, float value) {
-	if (_s_category_cooldown_map->has(spell_id)) {
-		Ref<CategoryCooldown> cc = _s_category_cooldown_map->get(spell_id);
+	if (_s_category_cooldown_map.has(spell_id)) {
+		Ref<CategoryCooldown> cc = _s_category_cooldown_map.get(spell_id);
 
 		cc->set_remaining(value);
 
@@ -1350,19 +1290,19 @@ void Entity::adds_category_cooldown(int spell_id, float value) {
 	Ref<CategoryCooldown> cc;
 	cc.instance();
 
-	_s_category_cooldown_map->set(spell_id, cc);
-	_s_category_cooldowns->push_back(cc);
+	_s_category_cooldown_map.set(spell_id, cc);
+	_s_category_cooldowns.push_back(cc);
 
 	emit_signal("scategory_cooldown_added", cc);
 }
 void Entity::removes_category_cooldown(int category_id) {
-	if (_s_category_cooldown_map->has(category_id)) {
-		_s_category_cooldown_map->erase(category_id);
+	if (_s_category_cooldown_map.has(category_id)) {
+		_s_category_cooldown_map.erase(category_id);
 	}
 
-	for (int i = 0; i < _s_category_cooldowns->size(); ++i) {
-		if (_s_category_cooldowns->get(i)->get_category_id() == category_id) {
-			_s_category_cooldowns->remove(i);
+	for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
+		if (_s_category_cooldowns.get(i)->get_category_id() == category_id) {
+			_s_category_cooldowns.remove(i);
 			return;
 		}
 	}
@@ -1370,27 +1310,27 @@ void Entity::removes_category_cooldown(int category_id) {
 	emit_signal("scategory_cooldown_removed", category_id);
 }
 Ref<CategoryCooldown> Entity::gets_category_cooldown(int category_id) {
-	if (!_s_category_cooldown_map->has(category_id)) {
+	if (!_s_category_cooldown_map.has(category_id)) {
 		return Ref<CategoryCooldown>();
 	}
 
-	return _s_category_cooldown_map->get(category_id);
+	return _s_category_cooldown_map.get(category_id);
 }
 Ref<CategoryCooldown> Entity::gets_category_cooldown_index(int index) {
-	ERR_FAIL_INDEX_V(index, _s_category_cooldowns->size(), Ref<Cooldown>());
+	ERR_FAIL_INDEX_V(index, _s_category_cooldowns.size(), Ref<Cooldown>());
 
-	return _s_category_cooldowns->get(index);
+	return _s_category_cooldowns.get(index);
 }
 int Entity::gets_category_cooldown_count() {
-	return _s_category_cooldowns->size();
+	return _s_category_cooldowns.size();
 }
 
 bool Entity::hasc_category_cooldown(int spell_id) {
-	return _c_category_cooldown_map->has(spell_id);
+	return _c_category_cooldown_map.has(spell_id);
 }
 void Entity::addc_category_cooldown(int spell_id, float value) {
-	if (_c_category_cooldown_map->has(spell_id)) {
-		Ref<CategoryCooldown> cc = _c_category_cooldown_map->get(spell_id);
+	if (_c_category_cooldown_map.has(spell_id)) {
+		Ref<CategoryCooldown> cc = _c_category_cooldown_map.get(spell_id);
 
 		cc->set_remaining(value);
 
@@ -1401,19 +1341,19 @@ void Entity::addc_category_cooldown(int spell_id, float value) {
 	Ref<CategoryCooldown> cc;
 	cc.instance();
 
-	_c_category_cooldown_map->set(spell_id, cc);
-	_c_category_cooldowns->push_back(cc);
+	_c_category_cooldown_map.set(spell_id, cc);
+	_c_category_cooldowns.push_back(cc);
 
 	emit_signal("ccategory_cooldown_added", cc);
 }
 void Entity::removec_category_cooldown(int category_id) {
-	if (_c_category_cooldown_map->has(category_id)) {
-		_c_category_cooldown_map->erase(category_id);
+	if (_c_category_cooldown_map.has(category_id)) {
+		_c_category_cooldown_map.erase(category_id);
 	}
 
-	for (int i = 0; i < _c_category_cooldowns->size(); ++i) {
-		if (_c_category_cooldowns->get(i)->get_category_id() == category_id) {
-			_c_category_cooldowns->remove(i);
+	for (int i = 0; i < _c_category_cooldowns.size(); ++i) {
+		if (_c_category_cooldowns.get(i)->get_category_id() == category_id) {
+			_c_category_cooldowns.remove(i);
 			return;
 		}
 	}
@@ -1421,19 +1361,19 @@ void Entity::removec_category_cooldown(int category_id) {
 	emit_signal("ccategory_cooldown_removed", category_id);
 }
 Ref<CategoryCooldown> Entity::getc_category_cooldown(int category_id) {
-	if (!_c_category_cooldown_map->has(category_id)) {
+	if (!_c_category_cooldown_map.has(category_id)) {
 		return Ref<CategoryCooldown>();
 	}
 
-	return _c_category_cooldown_map->get(category_id);
+	return _c_category_cooldown_map.get(category_id);
 }
 Ref<CategoryCooldown> Entity::getc_category_cooldown_index(int index) {
-	ERR_FAIL_INDEX_V(index, _c_category_cooldowns->size(), Ref<Cooldown>());
+	ERR_FAIL_INDEX_V(index, _c_category_cooldowns.size(), Ref<Cooldown>());
 
-	return _c_category_cooldowns->get(index);
+	return _c_category_cooldowns.get(index);
 }
 int Entity::getc_category_cooldown_count() {
-	return _c_category_cooldowns->size();
+	return _c_category_cooldowns.size();
 }
 
 
@@ -1457,14 +1397,14 @@ void Entity::son_death() {
 }
 
 void Entity::sremove_auras_with_group(int aura_group) {
-	for (int i = 0; i < _s_auras->size(); ++i) {
-		Ref<AuraData> ad = _s_auras->get(i);
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
 
 		if (ad->get_aura()->get_aura_group() == aura_group) {
 
 			cremove_aura(ad);
 
-			_s_auras->remove(i);
+			_s_auras.remove(i);
 
 			emit_signal("saura_removed", ad);
 
@@ -2357,8 +2297,8 @@ void Entity::registers() {
 }
 
 void Entity::update(float delta) {
-    for (int i = 0; i < _s_cooldowns->size(); ++i) {
-        Ref<Cooldown> cd = _s_cooldowns->get(i);
+    for (int i = 0; i < _s_cooldowns.size(); ++i) {
+        Ref<Cooldown> cd = _s_cooldowns.get(i);
         
         if (cd->update(delta)) {
             removes_cooldown(cd->get_spell_id());
@@ -2366,8 +2306,8 @@ void Entity::update(float delta) {
         }
     }
     
-    for (int i = 0; i < _s_category_cooldowns->size(); ++i) {
-        Ref<CategoryCooldown> cd = _s_category_cooldowns->get(i);
+    for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
+        Ref<CategoryCooldown> cd = _s_category_cooldowns.get(i);
         
         if (cd->update(delta)) {
             removes_category_cooldown(cd->get_category_id());

@@ -490,7 +490,6 @@ void Aura::son_hit(Ref<SpellDamageInfo> data) {
 		call("_son_hit", data);
 }
 
-
 void Aura::son_before_damage(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
@@ -518,7 +517,6 @@ void Aura::son_damage_dealt(Ref<SpellDamageInfo> data) {
 	if (has_method("_son_damage_dealt"))
 		call("_son_damage_dealt", data);
 }
-
 
 void Aura::son_before_heal(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
@@ -608,12 +606,15 @@ void Aura::setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
 	ERR_FAIL_COND(!data.is_valid() || !info.is_valid());
 
 	//always exists
-	call("setup_aura_data", data, info);
+	call("_setup_aura_data", data, info);
 }
 
 void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
+	ERR_FAIL_COND(info->get_caster() == NULL);
+
 	data->set_aura(Ref<Aura>(this));
 	data->set_caster(info->get_caster());
+	data->set_remaining_time(get_time());
 
 	if (is_damage_enabled()) {
 		calculate_initial_damage(data, info);
@@ -648,13 +649,10 @@ void Aura::handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data
 	call("_handle_aura_damage", aura_data, data);
 }
 
-
 void Aura::_sapply_passives_damage_receive(Ref<SpellDamageInfo> data) {
-
 }
 
 void Aura::_sapply_passives_damage_deal(Ref<SpellDamageInfo> data) {
-
 }
 
 void Aura::_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
@@ -662,6 +660,8 @@ void Aura::_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo>
 }
 
 void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(data->get_dealer() == NULL);
+
 	data->set_damage(aura_data->get_damage());
 
 	data->get_dealer()->sdeal_damage_to(data);
@@ -716,6 +716,8 @@ void Aura::_handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> data) {
 }
 
 void Aura::_sapply(Ref<AuraApplyInfo> info) {
+	ERR_FAIL_COND(info->get_target() == NULL || info->get_caster() == NULL || !info->get_aura().is_valid());
+
 	Ref<Aura> aura = info->get_aura();
 
 	Ref<AuraData> ad(memnew(AuraData()));
@@ -725,14 +727,20 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 }
 
 void Aura::_sremove(Ref<AuraData> aura) {
+	ERR_FAIL_COND(aura->get_owner() == NULL);
+
 	aura->get_owner()->sremove_aura(aura);
 }
 
 void Aura::_sremove_expired(Ref<AuraData> aura) {
+	ERR_FAIL_COND(aura->get_owner() == NULL);
+
 	aura->get_owner()->sremove_aura_expired(aura);
 }
 
 void Aura::_sremove_dispell(Ref<AuraData> aura) {
+	ERR_FAIL_COND(aura->get_owner() == NULL);
+
 	aura->get_owner()->sremove_aura_dispelled(aura);
 }
 
@@ -760,7 +768,6 @@ void Aura::_supdate(Ref<AuraData> aura, float delta) {
 		sremove_expired(aura);
 	}
 }
-
 
 void Aura::_validate_property(PropertyInfo &property) const {
 
@@ -914,7 +921,7 @@ void Aura::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_is_debuff"), &Aura::get_is_debuff);
 	ClassDB::bind_method(D_METHOD("set_is_debuff", "value"), &Aura::set_is_debuff);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_debuff"), "set_is_debuff", "get_is_debuff");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "debuff"), "set_is_debuff", "get_is_debuff");
 
 	ClassDB::bind_method(D_METHOD("get_aura_type"), &Aura::get_aura_type);
 	ClassDB::bind_method(D_METHOD("set_aura_type", "value"), &Aura::set_aura_type);
@@ -1084,10 +1091,6 @@ void Aura::_bind_methods() {
 
 	BIND_CONSTANT(MAX_AURA_STATS);
 	BIND_CONSTANT(MAX_TRIGGER_DATA);
-
-	//ClassDB::bind_method(D_METHOD("get_damage_scale_for_level"), &Aura::get_damage_scale_for_level);
-	//ClassDB::bind_method(D_METHOD("get_heal_scale_for_level"), &Aura::get_heal_scale_for_level);
-	//ClassDB::bind_method(D_METHOD("get_absorb_scale_for_level"), &Aura::get_absorb_scale_for_level);
 }
 
 /*

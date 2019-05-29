@@ -1,10 +1,10 @@
 #ifndef PLAYER_TALENT_H
 #define PLAYER_TALENT_H
 
-#include "core/object.h"
+#include "core/reference.h"
 
-class PlayerTalent : public Object {
-	GDCLASS(PlayerTalent, Object);
+class PlayerTalent : public Reference {
+	GDCLASS(PlayerTalent, Reference);
 
 public:
 	int get_talent_id();
