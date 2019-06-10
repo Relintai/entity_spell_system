@@ -195,13 +195,6 @@ void Entity::setc_spell_target(Node *p_target) {
 	emit_signal("ctarget_changed", _c_target);
 }
 
-int Entity::gets_target_guid() {
-	return _s_target_guid;
-}
-int Entity::gets_spell_cast_game_object_guid() {
-	return _s_spell_cast_game_object_guid;
-}
-
 Entity::Entity() {
 	_s_guid = 0;
 	_c_guid = 0;
