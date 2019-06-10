@@ -195,6 +195,13 @@ void Entity::setc_spell_target(Node *p_target) {
 	emit_signal("ctarget_changed", _c_target);
 }
 
+int Entity::gets_target_guid() {
+	return _s_target_guid;
+}
+int Entity::gets_spell_cast_game_object_guid() {
+	return _s_spell_cast_game_object_guid;
+}
+
 Entity::Entity() {
 	_s_guid = 0;
 	_c_guid = 0;
@@ -1710,6 +1717,92 @@ void Entity::rpc_level_up() {
        COnLevelUp(owner);
        }*/
 }
+
+////    SpellCastData    ////
+
+bool Entity::gets_casting() {
+	return _s_casting;
+}
+void Entity::sets_casting(bool value) {
+	_s_casting = value;
+}
+
+int Entity::gets_spell_id() {
+	return _s_spell_id;
+}
+void Entity::sets_spell_id(int value) {
+	_s_spell_id = value;
+}
+
+float Entity::gets_current_cast_time() {
+	return _s_current_cast_time;
+}
+void Entity::sets_current_cast_time(float value) {
+	_s_current_cast_time = value;
+}
+
+float Entity::gets_cast_time() {
+	return _s_cast_time;
+}
+void Entity::sets_cast_time(float value) {
+	_s_cast_time = value;
+}
+
+float Entity::gets_spell_scale() {
+	return _s_spell_scale;
+}
+void Entity::sets_spell_scale(float value) {
+	_s_spell_scale = value;
+}
+
+bool Entity::getc_casting() {
+	return _c_casting;
+}
+void Entity::setc_casting(bool value) {
+	_c_casting = value;
+}
+
+int Entity::getc_spell_id() {
+	return _c_spell_id;
+}
+void Entity::setc_spell_id(int value) {
+	_c_spell_id = value;
+}
+
+float Entity::getc_current_cast_time() {
+	return _c_current_cast_time;
+}
+void Entity::setc_current_cast_time(float value) {
+	_c_current_cast_time = value;
+}
+
+float Entity::getc_cast_time() {
+	return _c_cast_time;
+}
+void Entity::setc_cast_time(float value) {
+	_c_cast_time = value;
+}
+
+String Entity::getc_spell_name() {
+	return _c_spell_name;
+}
+void Entity::setc_spell_name(String value) {
+	_c_spell_name = value;
+}
+
+Entity Entity::*gets_spell_target();
+void sets_spell_target(Node *p_target);
+
+Entity Entity::*getc_spell_target();
+void setc_spell_target(Node *p_target);
+
+int Entity::gets_target_guid() {
+	return _s_target_guid;
+}
+int Entity::gets_spell_cast_game_object_guid() {
+	return _s_spell_cast_game_object_guid;
+}
+
 
 void Entity::update(float delta) {
 	if (_s_gcd > 0.0000001) {

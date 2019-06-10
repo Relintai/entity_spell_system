@@ -160,35 +160,35 @@ public:
 
 	////    SpellCastData    ////
 
-	bool gets_casting() { return _s_casting; }
-	void sets_casting(bool value) { _s_casting = value; }
+	bool gets_casting();
+	void sets_casting(bool value);
 
-	int gets_spell_id() { return _s_spell_id; }
-	void sets_spell_id(int value) { _s_spell_id = value; }
+	int gets_spell_id();
+	void sets_spell_id(int value);
 
-	float gets_current_cast_time() { return _s_current_cast_time; }
-	void sets_current_cast_time(float value) { _s_current_cast_time = value; }
+	float gets_current_cast_time();
+	void sets_current_cast_time(float value);
 
-	float gets_cast_time() { return _s_cast_time; }
-	void sets_cast_time(float value) { _s_cast_time = value; }
+	float gets_cast_time();
+	void sets_cast_time(float value);
 
-	float gets_spell_scale() { return _s_spell_scale; }
-	void sets_spell_scale(float value) { _s_spell_scale = value; }
+	float gets_spell_scale();
+	void sets_spell_scale(float value);
 
-	bool getc_casting() { return _c_casting; }
-	void setc_casting(bool value) { _c_casting = value; }
+	bool getc_casting();
+	void setc_casting(bool value);
 
-	int getc_spell_id() { return _c_spell_id; }
-	void setc_spell_id(int value) { _c_spell_id = value; }
+	int getc_spell_id();
+	void setc_spell_id(int value);
 
-	float getc_current_cast_time() { return _c_current_cast_time; }
-	void setc_current_cast_time(float value) { _c_current_cast_time = value; }
+	float getc_current_cast_time();
+	void setc_current_cast_time(float value);
 
-	float getc_cast_time() { return _c_cast_time; }
-	void setc_cast_time(float value) { _c_cast_time = value; }
+	float getc_cast_time();
+	void setc_cast_time(float value);
 
-	String getc_spell_name() { return _c_spell_name; }
-	void setc_spell_name(String value) { _c_spell_name = value; }
+	String getc_spell_name();
+	void setc_spell_name(String value);
 
 	Entity *gets_spell_target();
 	void sets_spell_target(Node *p_target);
@@ -196,8 +196,8 @@ public:
 	Entity *getc_spell_target();
 	void setc_spell_target(Node *p_target);
 
-	int gets_target_guid() { return _s_target_guid; }
-	int gets_spell_cast_game_object_guid() { return _s_spell_cast_game_object_guid; }
+	int gets_target_guid();
+	int gets_spell_cast_game_object_guid();
 
 	////     Stats    ////
 
