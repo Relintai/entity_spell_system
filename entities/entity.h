@@ -1,6 +1,8 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include "core/io/networked_multiplayer_peer.h"
+
 #ifdef ENTITIES_2D
 #include "scene/2d/physics_body_2d.h"
 #else
@@ -70,6 +72,31 @@ enum PlayerSendFlags {
 	SEND_FLAG_AURAS,
 };
 
+#define SET_RPC_OFF(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_DISABLED);
+#define SET_RPC_REMOTE(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_REMOTE);
+#define SET_RPC_MASTER(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_MASTER);
+#define SET_RPC_PUPPET(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_PUPPET);
+#define SET_RPC_REMOTESYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_REMOTESYNC);
+#define SET_RPC_MASTERSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_MASTERSYNC);
+#define SET_RPC_PUPPETSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_PUPPETSYNC);
+
+// f.e.   SEND_RPC(rpc("method", arg), method(arg))
+#define SEND_RPC(rpc_func, normal_func) \
+    if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED) { \
+        rpc_func;\
+    } else {\
+        normal_func;\
+    }
+
+// f.e. SEND_RSET(rset("property", "value"), property, value)
+#define SEND_RSET(rset_func, variable, value) \
+    if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED) { \
+        rset_func;\
+    } else {\
+        variable = value;\
+    }
+
+    
 #ifdef ENTITIES_2D
 class Entity : public KinematicBody2D {
 	GDCLASS(Entity, KinematicBody2D);
