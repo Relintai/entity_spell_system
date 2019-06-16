@@ -38,6 +38,8 @@ int Entity::gets_guid() {
 }
 void Entity::sets_guid(int value) {
 	_s_guid = value;
+
+	SEND_RPC(rpc("setc_guid", value), setc_guid(value));
 }
 
 int Entity::gets_class_id() {
@@ -45,6 +47,8 @@ int Entity::gets_class_id() {
 }
 void Entity::sets_class_id(int value) {
 	_s_class_id = value;
+
+	SEND_RPC(rpc("setc_class_id", value), setc_class_id(value));
 }
 
 int Entity::getc_class_id() {
@@ -59,6 +63,8 @@ EntityEnums::EntityType Entity::gets_entity_type() {
 }
 void Entity::sets_entity_type(EntityEnums::EntityType value) {
 	_s_entity_type = value;
+
+	SEND_RPC(rpc("setc_entity_type", value), setc_entity_type(value));
 }
 
 EntityEnums::EntityType Entity::getc_entity_type() {
@@ -73,6 +79,8 @@ String Entity::gets_player_name() {
 }
 void Entity::sets_player_name(String value) {
 	_s_player_name = value;
+
+	SEND_RPC(rpc("setc_player_name", value), setc_player_name(value));
 }
 
 String Entity::getc_player_name() {
@@ -87,6 +95,8 @@ int Entity::gets_gender() {
 }
 void Entity::sets_gender(int value) {
 	_s_gender = value;
+
+	SEND_RPC(rpc("setc_gender", value), setc_gender(value));
 }
 
 int Entity::getc_gender() {
@@ -101,6 +111,8 @@ int Entity::gets_level() {
 }
 void Entity::sets_level(int value) {
 	_s_level = value;
+
+	SEND_RPC(rpc("setc_level", value), setc_level(value));
 }
 
 int Entity::getc_level() {
@@ -115,6 +127,8 @@ int Entity::gets_xp() {
 }
 void Entity::sets_xp(int value) {
 	_s_xp = value;
+
+	SEND_RPC(rpc("setc_xp", value), setc_xp(value));
 }
 
 int Entity::getc_xp() {
@@ -150,7 +164,7 @@ void Entity::sets_character_class(Ref<CharacterClass> value) {
 
 	emit_signal("scharacter_class_changed", value);
 
-	setc_character_class(value);
+	SEND_RPC(rpc("setc_character_class", value), setc_character_class(value));
 }
 
 Entity *Entity::gets_spell_target() {
@@ -294,6 +308,91 @@ Entity::Entity() {
 	_heal_taken = Ref<Stat>(get_stat_enum(Stat::STAT_ID_HEAL_TAKEN));
 	_melee_damage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE));
 	_spell_damage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_SPELL_DAMAGE));
+
+	SET_RPC_MASTER("crequest_spell_cast");
+	SET_RPC_MASTER("csend_request_rank_increase");
+	SET_RPC_MASTER("csend_request_rank_decrease");
+
+	SET_RPC_PUPPET("setc_guid");
+	SET_RPC_PUPPET("setc_class_id");
+	SET_RPC_PUPPET("setc_entity_type");
+	SET_RPC_PUPPET("setc_player_name");
+	SET_RPC_PUPPET("setc_gender");
+	SET_RPC_PUPPET("setc_level");
+	SET_RPC_PUPPET("setc_xp");
+	SET_RPC_PUPPET("setc_character_class");
+
+	////    SpellCastData    ////
+
+	//SET_RPC_PUPPET("setc_casting");
+	//SET_RPC_PUPPET("setc_spell_id");
+	//SET_RPC_PUPPET("setc_current_cast_time");
+	//SET_RPC_PUPPET("setc_cast_time");
+	//SET_RPC_PUPPET("setc_spell_target");
+
+	////     Stats    ////
+
+	//send stats
+
+	//GCD
+
+	SET_RPC_PUPPET("cstart_global_cooldown");
+
+	////    States    ////
+
+	SET_RPC_PUPPET("setc_state");
+
+	////    SpellSystem    ////
+
+	//Clientside EventHandlers
+
+	SET_RPC_PUPPET("con_cast_failed");
+	SET_RPC_PUPPET("con_cast_started");
+	SET_RPC_PUPPET("con_cast_state_changed");
+	SET_RPC_PUPPET("con_cast_finished");
+	SET_RPC_PUPPET("con_spell_cast_success");
+
+	//Spell operations
+
+	SET_RPC_PUPPET("crequest_spell_cast");
+
+	//Aura Manipulation
+
+	SET_RPC_PUPPET("cadd_aura");
+	SET_RPC_PUPPET("cremove_aura");
+	SET_RPC_PUPPET("cremove_aura_expired");
+	SET_RPC_PUPPET("cremove_aura_dispelled");
+
+	//Clientside hooks
+
+	SET_RPC_PUPPET("creceive_damage_taken");
+	SET_RPC_PUPPET("creceiveon_damage_dealt");
+	SET_RPC_PUPPET("creceive_heal_taken");
+	SET_RPC_PUPPET("creceiveon_heal_dealt");
+
+	////    Casting System    ////
+
+	SET_RPC_PUPPET("cstart_casting");
+	SET_RPC_PUPPET("cfail_cast");
+	SET_RPC_PUPPET("cdelay_cast");
+	SET_RPC_PUPPET("cfinish_cast");
+	SET_RPC_PUPPET("cinterrupt_cast");
+
+	////    Cooldowns    ////
+
+	SET_RPC_PUPPET("addc_cooldown");
+	SET_RPC_PUPPET("removec_cooldown");
+
+	//Category Cooldowns
+
+	SET_RPC_PUPPET("addc_category_cooldown");
+	SET_RPC_PUPPET("removec_category_cooldown");
+
+	////    TargetComponent    ////
+
+	//SET_RPC_PUPPET("sets_target");
+	SET_RPC_PUPPET("setc_target");
+
 }
 
 Entity::~Entity() {
@@ -386,7 +485,7 @@ bool Entity::gets_global_cooldown() {
 void Entity::sstart_global_cooldown(float value) {
 	_s_gcd = value;
 
-	cstart_global_cooldown(value);
+	SEND_RPC(rpc("cstart_global_cooldown", value), cstart_global_cooldown(value));
 }
 
 void Entity::cstart_global_cooldown(float value) {
@@ -402,6 +501,8 @@ void Entity::sets_state(int state) {
 	_s_state = state;
 
 	emit_signal("sstate_changed", state);
+
+	SEND_RPC(rpc("setc_state", state), setc_state(state));
 }
 
 int Entity::getc_state() {
@@ -488,7 +589,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> data) {
 	get_health()->sets_current(h);
 
 	//send an event to client
-	creceive_damage_taken(data);
+	SEND_RPC(rpc("creceive_damage_taken", data), creceive_damage_taken(data));
 
 	//signal
 	emit_signal("son_damage_received", this, data);
@@ -537,7 +638,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> data) {
 	get_health()->sets_current(h);
 
 	//send an event to client
-	creceive_heal_taken(data);
+	SEND_RPC(rpc("creceive_heal_taken", data), creceive_heal_taken(data));
 
 	//signal
 	emit_signal("son_heal_received", this, data);
@@ -625,6 +726,7 @@ void Entity::creceiveon_heal_dealt(Ref<SpellHealInfo> data) {
 	emit_signal("con_heal_dealt", this, data);
 }
 
+
 void Entity::creceive_died() {
 	/*
 	cIsDead = true;
@@ -682,7 +784,7 @@ void Entity::scast_spell(int spell_id) {
 }
 
 void Entity::crequest_spell_cast(int spell_id) {
-	scast_spell(spell_id);
+	SEND_RPC(rpc("scast_spell", spell_id), scast_spell(spell_id));
 }
 
 void Entity::update_auras(float delta) {
@@ -898,7 +1000,7 @@ void Entity::sadd_aura(Ref<AuraData> aura) {
 
 	emit_signal("saura_added", aura);
 
-	cadd_aura(aura);
+	SEND_RPC(rpc("cadd_aura", aura), cadd_aura(aura));
 }
 
 void Entity::sremove_aura(Ref<AuraData> aura) {
@@ -918,7 +1020,7 @@ void Entity::sremove_aura(Ref<AuraData> aura) {
 
 	emit_signal("saura_removed", aura);
 
-	cremove_aura(aura);
+	SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
 }
 
 void Entity::sremove_aura_expired(Ref<AuraData> aura) {
@@ -938,7 +1040,7 @@ void Entity::sremove_aura_expired(Ref<AuraData> aura) {
 
 	emit_signal("saura_removed_expired", aura);
 
-	cremove_aura(aura);
+	SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
 }
 
 void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
@@ -958,7 +1060,7 @@ void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
 
 	emit_signal("saura_removed_dispelled", aura);
 
-	cremove_aura(aura);
+	SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
 }
 
 void Entity::cadd_aura(Ref<AuraData> data) {
@@ -1063,7 +1165,7 @@ void Entity::sstart_casting(Ref<SpellCastInfo> info) {
 
 	emit_signal("scast_started", info);
 
-	cstart_casting(info);
+	SEND_RPC(rpc("cstart_casting", info), cstart_casting(info));
 }
 
 void Entity::sfail_cast() {
@@ -1074,6 +1176,8 @@ void Entity::sfail_cast() {
 	}
 
 	emit_signal("scast_failed", _s_spell_cast_info);
+
+	SEND_RPC(rpc("cfail_cast"), cfail_cast());
 }
 
 void Entity::sdelay_cast() {
@@ -1084,6 +1188,8 @@ void Entity::sdelay_cast() {
 	}
 
 	emit_signal("scast_delayed", _s_spell_cast_info);
+
+	SEND_RPC(rpc("cdelay_cast"), cdelay_cast());
 }
 
 void Entity::sfinish_cast() {
@@ -1100,7 +1206,7 @@ void Entity::sfinish_cast() {
 
 	_s_spell_cast_info = Ref<SpellCastInfo>(NULL);
 
-	cfinish_cast();
+	SEND_RPC(rpc("cfinish_cast"), cfinish_cast());
 }
 
 void Entity::sinterrupt_cast() {
@@ -1111,6 +1217,8 @@ void Entity::sinterrupt_cast() {
 	}
 
 	emit_signal("scast_interrupted", _s_spell_cast_info);
+
+	SEND_RPC(rpc("cinterrupt_cast"), cinterrupt_cast());
 }
 
 void Entity::cstart_casting(Ref<SpellCastInfo> info) {
@@ -1176,7 +1284,8 @@ void Entity::adds_cooldown(int spell_id, float value) {
 	_s_cooldowns.push_back(cd);
 
 	emit_signal("scooldown_added", cd);
-	addc_cooldown(spell_id, value);
+
+	SEND_RPC(rpc("addc_cooldown", spell_id, value), addc_cooldown(spell_id, value));
 }
 void Entity::removes_cooldown(int spell_id) {
 	if (_s_cooldown_map.has(spell_id)) {
@@ -1191,6 +1300,8 @@ void Entity::removes_cooldown(int spell_id) {
 	}
 
 	emit_signal("scooldown_removed", spell_id);
+
+	SEND_RPC(rpc("removes_cooldown", spell_id), removes_cooldown(spell_id));
 }
 Ref<Cooldown> Entity::gets_cooldown(int spell_id) {
 	if (!_s_cooldown_map.has(spell_id)) {
@@ -1277,9 +1388,9 @@ HashMap<int, Ref<CategoryCooldown> > *Entity::getc_category_cooldown_map() {
 bool Entity::hass_category_cooldown(int spell_id) {
 	return _s_category_cooldown_map.has(spell_id);
 }
-void Entity::adds_category_cooldown(int spell_id, float value) {
-	if (_s_category_cooldown_map.has(spell_id)) {
-		Ref<CategoryCooldown> cc = _s_category_cooldown_map.get(spell_id);
+void Entity::adds_category_cooldown(int category_id, float value) {
+	if (_s_category_cooldown_map.has(category_id)) {
+		Ref<CategoryCooldown> cc = _s_category_cooldown_map.get(category_id);
 
 		cc->set_remaining(value);
 
@@ -1290,10 +1401,12 @@ void Entity::adds_category_cooldown(int spell_id, float value) {
 	Ref<CategoryCooldown> cc;
 	cc.instance();
 
-	_s_category_cooldown_map.set(spell_id, cc);
+	_s_category_cooldown_map.set(category_id, cc);
 	_s_category_cooldowns.push_back(cc);
 
 	emit_signal("scategory_cooldown_added", cc);
+
+	SEND_RPC(rpc("adds_category_cooldown", category_id, value), adds_category_cooldown(category_id, value));
 }
 void Entity::removes_category_cooldown(int category_id) {
 	if (_s_category_cooldown_map.has(category_id)) {
@@ -1308,6 +1421,8 @@ void Entity::removes_category_cooldown(int category_id) {
 	}
 
 	emit_signal("scategory_cooldown_removed", category_id);
+
+	SEND_RPC(rpc("removes_category_cooldown", category_id), removes_category_cooldown(category_id));
 }
 Ref<CategoryCooldown> Entity::gets_category_cooldown(int category_id) {
 	if (!_s_category_cooldown_map.has(category_id)) {
@@ -1325,12 +1440,12 @@ int Entity::gets_category_cooldown_count() {
 	return _s_category_cooldowns.size();
 }
 
-bool Entity::hasc_category_cooldown(int spell_id) {
-	return _c_category_cooldown_map.has(spell_id);
+bool Entity::hasc_category_cooldown(int category_id) {
+	return _c_category_cooldown_map.has(category_id);
 }
-void Entity::addc_category_cooldown(int spell_id, float value) {
-	if (_c_category_cooldown_map.has(spell_id)) {
-		Ref<CategoryCooldown> cc = _c_category_cooldown_map.get(spell_id);
+void Entity::addc_category_cooldown(int category_id, float value) {
+	if (_c_category_cooldown_map.has(category_id)) {
+		Ref<CategoryCooldown> cc = _c_category_cooldown_map.get(category_id);
 
 		cc->set_remaining(value);
 
@@ -1341,7 +1456,7 @@ void Entity::addc_category_cooldown(int spell_id, float value) {
 	Ref<CategoryCooldown> cc;
 	cc.instance();
 
-	_c_category_cooldown_map.set(spell_id, cc);
+	_c_category_cooldown_map.set(category_id, cc);
 	_c_category_cooldowns.push_back(cc);
 
 	emit_signal("ccategory_cooldown_added", cc);
@@ -1375,7 +1490,6 @@ Ref<CategoryCooldown> Entity::getc_category_cooldown_index(int index) {
 int Entity::getc_category_cooldown_count() {
 	return _c_category_cooldowns.size();
 }
-
 
 Ref<SpellCastInfo> Entity::gets_spell_cast_info() {
 	return Ref<SpellCastInfo>(_s_spell_cast_info);
@@ -1437,7 +1551,7 @@ void Entity::sets_target(Node *p_target) {
 
 	emit_signal("starget_changed", _s_target);
 
-	setc_target(p_target);
+	SEND_RPC(rpc("setc_target", p_target), setc_target(p_target));
 }
 
 Entity *Entity::getc_target() {
@@ -1467,7 +1581,7 @@ void Entity::setc_target(Node *p_target) {
 ////    TalentCOmponent    ////
 
 void Entity::csend_request_rank_increase(int talentID) {
-
+	//SEND_RPC();
 }
 
 void Entity::csend_request_rank_decrease(int talentID) {
@@ -1539,14 +1653,14 @@ PlayerTalent *Entity::cget_talent(int id, bool create) {
 ////    Inventory    ////
 
 Ref<Bag> Entity::gets_bag(int index) {
-    ERR_FAIL_INDEX_V(index, MAX_BAG_SLOTS, Ref<Bag>());
-    
+	ERR_FAIL_INDEX_V(index, MAX_BAG_SLOTS, Ref<Bag>());
+
 	return _s_bags[index];
 }
 
 Ref<Bag> Entity::getc_bag(int index) {
-    ERR_FAIL_INDEX_V(index, MAX_BAG_SLOTS, Ref<Bag>());
-     
+	ERR_FAIL_INDEX_V(index, MAX_BAG_SLOTS, Ref<Bag>());
+
 	return _c_bags[index];
 }
 
@@ -1796,7 +1910,6 @@ int Entity::gets_spell_cast_game_object_guid() {
 	return _s_spell_cast_game_object_guid;
 }
 
-
 void Entity::update(float delta) {
 	if (_s_gcd > 0.0000001) {
 		_s_gcd -= delta;
@@ -1818,24 +1931,24 @@ void Entity::update(float delta) {
 		}
 	}
 
-    for (int i = 0; i < _s_cooldowns.size(); ++i) {
-        Ref<Cooldown> cd = _s_cooldowns.get(i);
-        
-        if (cd->update(delta)) {
-            removes_cooldown(cd->get_spell_id());
-            --i;
-        }
-    }
-    
-    for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
-        Ref<CategoryCooldown> cd = _s_category_cooldowns.get(i);
-        
-        if (cd->update(delta)) {
-            removes_category_cooldown(cd->get_category_id());
-            --i;
-        }
-    }
-    
+	for (int i = 0; i < _s_cooldowns.size(); ++i) {
+		Ref<Cooldown> cd = _s_cooldowns.get(i);
+
+		if (cd->update(delta)) {
+			removes_cooldown(cd->get_spell_id());
+			--i;
+		}
+	}
+
+	for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
+		Ref<CategoryCooldown> cd = _s_category_cooldowns.get(i);
+
+		if (cd->update(delta)) {
+			removes_category_cooldown(cd->get_category_id());
+			--i;
+		}
+	}
+
 	update_auras(delta);
 
 	if (_s_spell_cast_info.is_valid() && _s_spell_cast_info->get_is_casting()) {
@@ -1998,6 +2111,12 @@ void Entity::_bind_methods() {
 	//Hooks
 	ClassDB::bind_method(D_METHOD("moved"), &Entity::moved);
 
+	//Clientside EventHandlers
+	ClassDB::bind_method(D_METHOD("creceive_damage_taken", "data"), &Entity::creceive_damage_taken);
+	ClassDB::bind_method(D_METHOD("creceiveon_damage_dealt", "data"), &Entity::creceiveon_damage_dealt);
+	ClassDB::bind_method(D_METHOD("creceive_heal_taken", "data"), &Entity::creceive_heal_taken);
+	ClassDB::bind_method(D_METHOD("creceiveon_heal_dealt", "data"), &Entity::creceiveon_heal_dealt);
+
 	//Properties
 	ClassDB::bind_method(D_METHOD("get_character_skeleton_path"), &Entity::get_character_skeleton_path);
 	ClassDB::bind_method(D_METHOD("set_character_skeleton_path", "value"), &Entity::set_character_skeleton_path);
@@ -2130,15 +2249,15 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("getc_target"), &Entity::getc_target);
 	ClassDB::bind_method(D_METHOD("setc_target", "target"), &Entity::setc_target);
-    
-    ////    Inventory System    ////
-    
-    ADD_SIGNAL(MethodInfo("sitem_added", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
-    ADD_SIGNAL(MethodInfo("citem_added", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
-    
-    ClassDB::bind_method(D_METHOD("gets_bag", "index"), &Entity::gets_bag);
-    ClassDB::bind_method(D_METHOD("getc_bag", "index"), &Entity::getc_bag);
-    
-    BIND_ENUM_CONSTANT(BACKPACK_SIZE);
-    BIND_ENUM_CONSTANT(MAX_BAG_SLOTS);
+
+	////    Inventory System    ////
+
+	ADD_SIGNAL(MethodInfo("sitem_added", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	ADD_SIGNAL(MethodInfo("citem_added", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+
+	ClassDB::bind_method(D_METHOD("gets_bag", "index"), &Entity::gets_bag);
+	ClassDB::bind_method(D_METHOD("getc_bag", "index"), &Entity::getc_bag);
+
+	BIND_ENUM_CONSTANT(BACKPACK_SIZE);
+	BIND_ENUM_CONSTANT(MAX_BAG_SLOTS);
 }
