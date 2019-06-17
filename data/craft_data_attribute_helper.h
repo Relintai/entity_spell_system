@@ -5,7 +5,7 @@
 #include "item_template.h"
 
 class CraftDataAttributeHelper : public Resource {
-	GDCLASS(CraftDataAttributeHelper, Reference);
+	GDCLASS(CraftDataAttributeHelper, Resource);
 
 public:
 	Ref<ItemTemplate> get_item();
