@@ -89,10 +89,14 @@ enum PlayerSendFlags {
 
 // f.e.   SEND_RPC_TO_SERVER(rpc_id(1, "method", arg), method(arg))
 #define SEND_RPC_TO_SERVER(rpc_func, normal_func)                                                                                                                                    \
-	if (is_inside_tree() && get_tree()->has_network_peer() && !get_tree()->is_network_server() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED) { \
-		rpc_func;                                                                                                                                                          \
-	}\
-	normal_func;
+	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED) { \
+		if (get_tree()->is_network_server())\
+			normal_func;\
+		else \
+			rpc_func;\
+	} else {\
+		normal_func;\
+	}
 
 // f.e. SEND_RSET(rset("property", "value"), property, value)
 #define SEND_RSET(rset_func, variable, value) \
@@ -139,11 +143,11 @@ public:
 	int gets_guid();
 	void sets_guid(int value);
 
-	int gets_class_id();
-	void sets_class_id(int value);
+	int gets_character_class_id();
+	void sets_character_class_id(int value);
 
-	int getc_class_id();
-	void setc_class_id(int value);
+	int getc_character_class_id();
+	void setc_character_class_id(int value);
 
 	EntityEnums::EntityType gets_entity_type();
 	void sets_entity_type(EntityEnums::EntityType value);
@@ -434,6 +438,10 @@ public:
 	int getc_category_cooldown_count();
 
 	////    TargetComponent    ////
+
+	void crequest_tagret_change(NodePath path);
+	void net_sets_target(NodePath path);
+	void net_setc_target(NodePath path);
 
 	Entity *gets_target();
 	void sets_target(Node *p_target);

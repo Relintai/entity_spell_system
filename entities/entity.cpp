@@ -42,20 +42,24 @@ void Entity::sets_guid(int value) {
 	SEND_RPC(rpc("setc_guid", value), setc_guid(value));
 }
 
-int Entity::gets_class_id() {
+int Entity::gets_character_class_id() {
 	return _s_class_id;
 }
-void Entity::sets_class_id(int value) {
+void Entity::sets_character_class_id(int value) {
 	_s_class_id = value;
 
-	SEND_RPC(rpc("setc_class_id", value), setc_class_id(value));
+	SEND_RPC(rpc("setc_character_class_id", value), setc_character_class_id(value));
 }
 
-int Entity::getc_class_id() {
+int Entity::getc_character_class_id() {
 	return _c_class_id;
 }
-void Entity::setc_class_id(int value) {
+void Entity::setc_character_class_id(int value) {
 	_c_class_id = value;
+
+	if (DataManager::get_instance() != NULL) {
+		setc_character_class(DataManager::get_instance()->get_character_class(value));
+	}
 }
 
 EntityEnums::EntityType Entity::gets_entity_type() {
@@ -157,6 +161,7 @@ void Entity::sets_character_class(Ref<CharacterClass> value) {
 
 	if (value.is_valid()) {
 		sinitialize_stats();
+		sets_character_class_id(value->get_id());
 	}
 
 	if (!Engine::get_singleton()->is_editor_hint())
@@ -164,7 +169,7 @@ void Entity::sets_character_class(Ref<CharacterClass> value) {
 
 	emit_signal("scharacter_class_changed", value);
 
-	SEND_RPC(rpc("setc_character_class", value), setc_character_class(value));
+	//SEND_RPC(rpc("setc_character_class", value), setc_character_class(value));
 }
 
 Entity *Entity::gets_spell_target() {
@@ -314,13 +319,12 @@ Entity::Entity() {
 	SET_RPC_REMOTE("csend_request_rank_decrease");
 
 	SET_RPC_REMOTE("setc_guid");
-	SET_RPC_REMOTE("setc_class_id");
+	SET_RPC_REMOTE("setc_character_class_id");
 	SET_RPC_REMOTE("setc_entity_type");
 	SET_RPC_REMOTE("setc_player_name");
 	SET_RPC_REMOTE("setc_gender");
 	SET_RPC_REMOTE("setc_level");
 	SET_RPC_REMOTE("setc_xp");
-	SET_RPC_REMOTE("setc_character_class");
 
 	////    SpellCastData    ////
 
@@ -390,9 +394,9 @@ Entity::Entity() {
 
 	////    TargetComponent    ////
 
-	//SET_RPC_PUPPET("sets_target");
-	SET_RPC_REMOTE("setc_target");
-
+	SET_RPC_REMOTE("crequest_tagret_change");
+	SET_RPC_REMOTE("net_sets_target");
+	SET_RPC_REMOTE("net_setc_target");
 }
 
 Entity::~Entity() {
@@ -1529,6 +1533,34 @@ void Entity::sremove_auras_with_group(int aura_group) {
 	}
 }
 
+void Entity::crequest_tagret_change(NodePath path) {
+	SEND_RPC_TO_SERVER(rpc_id(1, "net_sets_target", path), setc_target(get_node_or_null(path)));
+}
+
+void Entity::net_sets_target(NodePath path) {
+	if (!get_tree()->is_network_server())
+		return;
+
+	Node *p_target = get_node_or_null(path);
+
+	sets_target(p_target);
+
+	if (p_target == NULL) {
+		SEND_RPC(rpc("net_setc_target", NodePath()),);
+	} else {
+		if (gets_target() == NULL) {
+			SEND_RPC(rpc("net_setc_target", NodePath()), );
+		} else {
+			SEND_RPC(rpc("net_setc_target", gets_target()->get_path()), );
+		}
+	}
+}
+void Entity::net_setc_target(NodePath path) {
+	Node *p_target = get_node_or_null(path);
+
+	setc_target(p_target);
+}
+
 Entity *Entity::gets_target() {
 	return _s_target;
 }
@@ -1550,14 +1582,11 @@ void Entity::sets_target(Node *p_target) {
 	_s_target = e;
 
 	emit_signal("starget_changed", _s_target);
-
-	SEND_RPC(rpc("setc_target", p_target), setc_target(p_target));
 }
 
 Entity *Entity::getc_target() {
 	return _c_target;
 }
-
 void Entity::setc_target(Node *p_target) {
 	if (p_target == NULL) {
 		_c_target = NULL;
@@ -1578,7 +1607,7 @@ void Entity::setc_target(Node *p_target) {
 	emit_signal("ctarget_changed", _c_target);
 }
 
-////    TalentCOmponent    ////
+////    TalentComponent    ////
 
 void Entity::csend_request_rank_increase(int talentID) {
 	//SEND_RPC();
@@ -2122,6 +2151,14 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_character_skeleton_path", "value"), &Entity::set_character_skeleton_path);
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "character_skeleton_path"), "set_character_skeleton_path", "get_character_skeleton_path");
 
+	ClassDB::bind_method(D_METHOD("gets_character_class_id"), &Entity::gets_character_class_id);
+	ClassDB::bind_method(D_METHOD("sets_character_class_id", "value"), &Entity::sets_character_class_id);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "characterclass_id"), "sets_character_class_id", "gets_character_class_id");
+
+	ClassDB::bind_method(D_METHOD("getc_character_class_id"), &Entity::getc_character_class_id);
+	ClassDB::bind_method(D_METHOD("setc_character_class_id", "value"), &Entity::setc_character_class_id);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "character_class_id"), "setc_character_class_id", "getc_character_class_id");
+
 	ClassDB::bind_method(D_METHOD("gets_entity_type"), &Entity::gets_entity_type);
 	ClassDB::bind_method(D_METHOD("sets_entity_type", "value"), &Entity::sets_entity_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "s_entity_type", PROPERTY_HINT_ENUM, "None, Player, AI, Mob"), "sets_entity_type", "gets_entity_type");
@@ -2251,6 +2288,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_character_skeleton"), &Entity::get_character_skeleton);
 
 	////    Targeting System    ////
+
+	ClassDB::bind_method(D_METHOD("crequest_tagret_change", "path"), &Entity::crequest_tagret_change);
+	ClassDB::bind_method(D_METHOD("net_sets_target", "path"), &Entity::net_sets_target);
+	ClassDB::bind_method(D_METHOD("net_setc_target", "path"), &Entity::net_setc_target);
 
 	ClassDB::bind_method(D_METHOD("gets_target"), &Entity::gets_target);
 	ClassDB::bind_method(D_METHOD("sets_target", "target"), &Entity::sets_target);
