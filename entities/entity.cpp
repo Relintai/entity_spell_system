@@ -309,18 +309,18 @@ Entity::Entity() {
 	_melee_damage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE));
 	_spell_damage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_SPELL_DAMAGE));
 
-	SET_RPC_MASTER("crequest_spell_cast");
-	SET_RPC_MASTER("csend_request_rank_increase");
-	SET_RPC_MASTER("csend_request_rank_decrease");
+	SET_RPC_REMOTE("crequest_spell_cast");
+	SET_RPC_REMOTE("csend_request_rank_increase");
+	SET_RPC_REMOTE("csend_request_rank_decrease");
 
-	SET_RPC_PUPPET("setc_guid");
-	SET_RPC_PUPPET("setc_class_id");
-	SET_RPC_PUPPET("setc_entity_type");
-	SET_RPC_PUPPET("setc_player_name");
-	SET_RPC_PUPPET("setc_gender");
-	SET_RPC_PUPPET("setc_level");
-	SET_RPC_PUPPET("setc_xp");
-	SET_RPC_PUPPET("setc_character_class");
+	SET_RPC_REMOTE("setc_guid");
+	SET_RPC_REMOTE("setc_class_id");
+	SET_RPC_REMOTE("setc_entity_type");
+	SET_RPC_REMOTE("setc_player_name");
+	SET_RPC_REMOTE("setc_gender");
+	SET_RPC_REMOTE("setc_level");
+	SET_RPC_REMOTE("setc_xp");
+	SET_RPC_REMOTE("setc_character_class");
 
 	////    SpellCastData    ////
 
@@ -336,62 +336,62 @@ Entity::Entity() {
 
 	//GCD
 
-	SET_RPC_PUPPET("cstart_global_cooldown");
+	SET_RPC_REMOTE("cstart_global_cooldown");
 
 	////    States    ////
 
-	SET_RPC_PUPPET("setc_state");
+	SET_RPC_REMOTE("setc_state");
 
 	////    SpellSystem    ////
 
 	//Clientside EventHandlers
 
-	SET_RPC_PUPPET("con_cast_failed");
-	SET_RPC_PUPPET("con_cast_started");
-	SET_RPC_PUPPET("con_cast_state_changed");
-	SET_RPC_PUPPET("con_cast_finished");
-	SET_RPC_PUPPET("con_spell_cast_success");
+	SET_RPC_REMOTE("con_cast_failed");
+	SET_RPC_REMOTE("con_cast_started");
+	SET_RPC_REMOTE("con_cast_state_changed");
+	SET_RPC_REMOTE("con_cast_finished");
+	SET_RPC_REMOTE("con_spell_cast_success");
 
 	//Spell operations
 
-	SET_RPC_PUPPET("crequest_spell_cast");
+	SET_RPC_REMOTE("crequest_spell_cast");
 
 	//Aura Manipulation
 
-	SET_RPC_PUPPET("cadd_aura");
-	SET_RPC_PUPPET("cremove_aura");
-	SET_RPC_PUPPET("cremove_aura_expired");
-	SET_RPC_PUPPET("cremove_aura_dispelled");
+	SET_RPC_REMOTE("cadd_aura");
+	SET_RPC_REMOTE("cremove_aura");
+	SET_RPC_REMOTE("cremove_aura_expired");
+	SET_RPC_REMOTE("cremove_aura_dispelled");
 
 	//Clientside hooks
 
-	SET_RPC_PUPPET("creceive_damage_taken");
-	SET_RPC_PUPPET("creceiveon_damage_dealt");
-	SET_RPC_PUPPET("creceive_heal_taken");
-	SET_RPC_PUPPET("creceiveon_heal_dealt");
+	SET_RPC_REMOTE("creceive_damage_taken");
+	SET_RPC_REMOTE("creceiveon_damage_dealt");
+	SET_RPC_REMOTE("creceive_heal_taken");
+	SET_RPC_REMOTE("creceiveon_heal_dealt");
 
 	////    Casting System    ////
 
-	SET_RPC_PUPPET("cstart_casting");
-	SET_RPC_PUPPET("cfail_cast");
-	SET_RPC_PUPPET("cdelay_cast");
-	SET_RPC_PUPPET("cfinish_cast");
-	SET_RPC_PUPPET("cinterrupt_cast");
+	SET_RPC_REMOTE("cstart_casting");
+	SET_RPC_REMOTE("cfail_cast");
+	SET_RPC_REMOTE("cdelay_cast");
+	SET_RPC_REMOTE("cfinish_cast");
+	SET_RPC_REMOTE("cinterrupt_cast");
 
 	////    Cooldowns    ////
 
-	SET_RPC_PUPPET("addc_cooldown");
-	SET_RPC_PUPPET("removec_cooldown");
+	SET_RPC_REMOTE("addc_cooldown");
+	SET_RPC_REMOTE("removec_cooldown");
 
 	//Category Cooldowns
 
-	SET_RPC_PUPPET("addc_category_cooldown");
-	SET_RPC_PUPPET("removec_category_cooldown");
+	SET_RPC_REMOTE("addc_category_cooldown");
+	SET_RPC_REMOTE("removec_category_cooldown");
 
 	////    TargetComponent    ////
 
 	//SET_RPC_PUPPET("sets_target");
-	SET_RPC_PUPPET("setc_target");
+	SET_RPC_REMOTE("setc_target");
 
 }
 
@@ -784,7 +784,7 @@ void Entity::scast_spell(int spell_id) {
 }
 
 void Entity::crequest_spell_cast(int spell_id) {
-	SEND_RPC(rpc("scast_spell", spell_id), scast_spell(spell_id));
+	SEND_RPC_TO_SERVER(rpc_id(1, "scast_spell", spell_id), scast_spell(spell_id));
 }
 
 void Entity::update_auras(float delta) {
@@ -2137,6 +2137,14 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_player_name"), &Entity::getc_player_name);
 	ClassDB::bind_method(D_METHOD("setc_player_name", "value"), &Entity::setc_player_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "c_player_name"), "setc_player_name", "getc_player_name");
+
+	ClassDB::bind_method(D_METHOD("gets_level"), &Entity::gets_level);
+	ClassDB::bind_method(D_METHOD("sets_level", "value"), &Entity::sets_level);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "s_level"), "sets_level", "gets_level");
+
+	ClassDB::bind_method(D_METHOD("getc_level"), &Entity::getc_level);
+	ClassDB::bind_method(D_METHOD("setc_level", "value"), &Entity::setc_level);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "c_level"), "setc_level", "getc_level");
 
 	ClassDB::bind_method(D_METHOD("gets_xp"), &Entity::gets_xp);
 	ClassDB::bind_method(D_METHOD("sets_xp", "value"), &Entity::sets_xp);
