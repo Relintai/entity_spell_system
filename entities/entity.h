@@ -229,9 +229,6 @@ public:
 	Entity *gets_spell_target();
 	void sets_spell_target(Node *p_target);
 
-	Entity *getc_spell_target();
-	void setc_spell_target(Node *p_target);
-
 	int gets_target_guid();
 	int gets_spell_cast_game_object_guid();
 
@@ -439,7 +436,7 @@ public:
 
 	////    TargetComponent    ////
 
-	void crequest_tagret_change(NodePath path);
+	void crequest_target_change(NodePath path);
 	void net_sets_target(NodePath path);
 	void net_setc_target(NodePath path);
 

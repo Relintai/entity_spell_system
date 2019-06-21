@@ -118,7 +118,7 @@ void CharacterClass::start_casting(int spell_id, Entity *caster, float spellScal
 		Ref<Spell> s = _spells[i];
 
 		if (s == NULL) {
-			print_error("class doesn1t have spell! spell_id: " + itos(spell_id));
+			print_error("class doesn't have spell! spell_id: " + itos(spell_id));
 			return;
 		}
 

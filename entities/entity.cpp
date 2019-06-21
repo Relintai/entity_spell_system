@@ -188,30 +188,6 @@ void Entity::sets_spell_target(Node *p_target) {
 	}
 
 	_s_target = e;
-
-	emit_signal("starget_changed", _s_target);
-
-	setc_target(p_target);
-}
-
-Entity *Entity::getc_spell_target() {
-	return _c_target;
-}
-
-void Entity::setc_spell_target(Node *p_target) {
-	if (!p_target) {
-		return;
-	}
-
-	Entity *e = cast_to<Entity>(p_target);
-
-	if (!e) {
-		return;
-	}
-
-	_c_target = e;
-
-	emit_signal("ctarget_changed", _c_target);
 }
 
 Entity::Entity() {
@@ -729,7 +705,6 @@ void Entity::creceiveon_heal_dealt(Ref<SpellHealInfo> data) {
 	//the current c health should probably be set here.
 	emit_signal("con_heal_dealt", this, data);
 }
-
 
 void Entity::creceive_died() {
 	/*
@@ -1533,8 +1508,8 @@ void Entity::sremove_auras_with_group(int aura_group) {
 	}
 }
 
-void Entity::crequest_tagret_change(NodePath path) {
-	SEND_RPC_TO_SERVER(rpc_id(1, "net_sets_target", path), setc_target(get_node_or_null(path)));
+void Entity::crequest_target_change(NodePath path) {
+	SEND_RPC_TO_SERVER(rpc_id(1, "net_sets_target", path), sets_target(get_node_or_null(path)));
 }
 
 void Entity::net_sets_target(NodePath path) {
@@ -1546,7 +1521,7 @@ void Entity::net_sets_target(NodePath path) {
 	sets_target(p_target);
 
 	if (p_target == NULL) {
-		SEND_RPC(rpc("net_setc_target", NodePath()),);
+		SEND_RPC(rpc("net_setc_target", NodePath()), );
 	} else {
 		if (gets_target() == NULL) {
 			SEND_RPC(rpc("net_setc_target", NodePath()), );
@@ -1582,6 +1557,10 @@ void Entity::sets_target(Node *p_target) {
 	_s_target = e;
 
 	emit_signal("starget_changed", _s_target);
+
+	if (is_inside_tree() && !get_tree()->has_network_peer()) {
+		setc_target(p_target);
+	}
 }
 
 Entity *Entity::getc_target() {
@@ -1925,12 +1904,6 @@ String Entity::getc_spell_name() {
 void Entity::setc_spell_name(String value) {
 	_c_spell_name = value;
 }
-
-Entity Entity::*gets_spell_target();
-void sets_spell_target(Node *p_target);
-
-Entity Entity::*getc_spell_target();
-void setc_spell_target(Node *p_target);
 
 int Entity::gets_target_guid() {
 	return _s_target_guid;
@@ -2289,15 +2262,21 @@ void Entity::_bind_methods() {
 
 	////    Targeting System    ////
 
-	ClassDB::bind_method(D_METHOD("crequest_tagret_change", "path"), &Entity::crequest_tagret_change);
+	ClassDB::bind_method(D_METHOD("gets_spell_target"), &Entity::gets_spell_target);
+	ClassDB::bind_method(D_METHOD("sets_spell_target", "target"), &Entity::sets_spell_target);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sspell_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "sets_spell_target", "gets_spell_target");
+
+	ClassDB::bind_method(D_METHOD("crequest_target_change", "path"), &Entity::crequest_target_change);
 	ClassDB::bind_method(D_METHOD("net_sets_target", "path"), &Entity::net_sets_target);
 	ClassDB::bind_method(D_METHOD("net_setc_target", "path"), &Entity::net_setc_target);
 
 	ClassDB::bind_method(D_METHOD("gets_target"), &Entity::gets_target);
 	ClassDB::bind_method(D_METHOD("sets_target", "target"), &Entity::sets_target);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "starget", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "sets_target", "gets_target");
 
 	ClassDB::bind_method(D_METHOD("getc_target"), &Entity::getc_target);
 	ClassDB::bind_method(D_METHOD("setc_target", "target"), &Entity::setc_target);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ctarget", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "setc_target", "getc_target");
 
 	////    Inventory System    ////
 
