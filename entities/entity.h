@@ -22,6 +22,7 @@
 #include "../data/item_instance.h"
 #include "player_talent.h"
 
+#include "entity_resource.h"
 
 #include "../data/spell.h"
 #include "stats/stat.h"
@@ -236,6 +237,8 @@ public:
 
 	_FORCE_INLINE_ Ref<Stat> get_health() { return _health; }
 	_FORCE_INLINE_ Ref<Stat> get_mana() { return _mana; }
+	_FORCE_INLINE_ Ref<Stat> get_energy() { return _energy; }
+	_FORCE_INLINE_ Ref<Stat> get_rage() { return _rage; }
 	_FORCE_INLINE_ Ref<Stat> get_speed() { return _speed; }
 	_FORCE_INLINE_ Ref<Stat> get_gcd() { return _gcd; }
 	_FORCE_INLINE_ Ref<Stat> get_melee_crit() { return _melee_crit; }
@@ -257,6 +260,18 @@ public:
 
 	Ref<Stat> get_stat_enum(Stat::StatId stat_id);
 	void set_stat_enum(Stat::StatId stat_id, Ref<Stat> entry);
+
+	////    Resources    ////
+
+	Ref<EntityResource> gets_resource(int index);
+	void adds_resource(Ref<EntityResource> resource);
+	int gets_resource_count();
+	void removes_resource(int index);
+
+	Ref<EntityResource> getc_resource(int index);
+	void addc_resource(Ref<EntityResource> resource);
+	int getc_resource_count();
+	void removec_resource(int index);
 
 	//GCD
 	bool getc_has_global_cooldown();
@@ -329,21 +344,25 @@ public:
 	//Aura Manipulation
 	void sadd_aura(Ref<AuraData> aura);
 	void sremove_aura(Ref<AuraData> aura);
+	void sremove_aura_exact(Ref<AuraData> aura);
 	void sremove_aura_expired(Ref<AuraData> aura);
 	void sremove_aura_dispelled(Ref<AuraData> aura);
+	void saura_refreshed(Ref<AuraData> aura);
 
 	void cadd_aura(Ref<AuraData> aura);
 	void cremove_aura(Ref<AuraData> aura);
+	void cremove_aura_exact(Ref<AuraData> aura);
 	void cremove_aura_expired(Ref<AuraData> aura);
 	void cremove_aura_dispelled(Ref<AuraData> aura);
+	void caura_refreshed(Ref<AuraData> aura);
 
 	void sremove_auras_with_group(int aura_group);
 
 	int sget_aura_count();
-	Ref<Aura> sget_aura(int index);
+	Ref<AuraData> sget_aura(int index);
 
 	int cget_aura_count();
-	Ref<Aura> cget_aura(int index);
+	Ref<AuraData> cget_aura(int index);
 
 	//Hooks
 	void moved();
@@ -540,6 +559,8 @@ private:
 
 	Ref<Stat> _health;
 	Ref<Stat> _mana;
+	Ref<Stat> _rage;
+	Ref<Stat> _energy;
 	Ref<Stat> _speed;
 	Ref<Stat> _gcd;
 
@@ -558,6 +579,11 @@ private:
 	Ref<Stat> _spell_damage;
 
 	Ref<Stat> _stats[Stat::STAT_ID_TOTAL_STATS];
+
+	////    Resources    ////
+
+	Vector<Ref<EntityResource> > _s_resources;
+	Vector<Ref<EntityResource> > _c_resources;
 
 	//old
 	bool sIsDead;

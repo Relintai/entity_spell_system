@@ -14,6 +14,9 @@ public:
 	int get_aura_id();
 	void set_aura_id(int value);
 
+	bool get_is_timed();
+	void set_is_timed(bool value);
+
 	float get_remaining_time();
 	void set_remaining_time(float value);
 	bool update_remaining_time(float delta);
@@ -77,6 +80,7 @@ private:
 	int _aura_group;
 	Ref<Aura> _aura;
 
+	bool _is_timed;
 	int _damage;
 	int _heal;
 	float _slow;

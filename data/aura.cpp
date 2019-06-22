@@ -49,6 +49,13 @@ void Aura::set_aura_name(String name) {
 	_aura_name = name;
 }
 
+bool Aura::get_hide() {
+	return _hide;
+}
+void Aura::set_hide(bool value) {
+	_hide = value;
+}
+
 String Aura::get_aura_description() {
 	return _aura_description;
 }
@@ -278,6 +285,7 @@ Aura::Aura() {
 	_aura_type = SpellEnums::AURA_TYPE_NONE;
 	_is_debuff = false;
 	aura_group = 0;
+	_hide = false;
 
 	_damage_enabled = false;
 	_damage_type = 0;
@@ -633,8 +641,16 @@ void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
 	ERR_FAIL_COND(info->get_caster() == NULL);
 
 	data->set_aura(Ref<Aura>(this));
+	data->set_aura_id(get_id());
 	data->set_caster(info->get_caster());
-	data->set_remaining_time(get_time());
+
+	if (get_time() > 0.2) {
+		data->set_is_timed(true);
+		data->set_remaining_time(get_time());
+
+	} else {
+		data->set_is_timed(false);
+	}
 
 	if (is_damage_enabled()) {
 		calculate_initial_damage(data, info);
@@ -743,6 +759,7 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 	Ref<AuraData> ad(memnew(AuraData()));
 	setup_aura_data(ad, info);
 
+	info->get_target()->sremove_aura(ad);
 	info->get_target()->sadd_aura(ad);
 }
 
@@ -766,7 +783,10 @@ void Aura::_sremove_dispell(Ref<AuraData> aura) {
 
 void Aura::_supdate(Ref<AuraData> aura, float delta) {
 
-	bool remove = aura->update_remaining_time(delta);
+	bool remove = false;
+
+	if (aura->get_is_timed())
+		remove = aura->update_remaining_time(delta);
 
 	//ontick
 	if (aura->get_unhandled_ticks() != 0) {
@@ -962,6 +982,10 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_aura_group"), &Aura::get_aura_group);
 	ClassDB::bind_method(D_METHOD("set_aura_group", "value"), &Aura::set_aura_group);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "aura_group"), "set_aura_group", "get_aura_group");
+
+	ClassDB::bind_method(D_METHOD("get_hide"), &Aura::get_hide);
+	ClassDB::bind_method(D_METHOD("set_hide", "value"), &Aura::set_hide);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "hide"), "set_hide", "get_hide");
 
 	ClassDB::bind_method(D_METHOD("get_ability_scale_data_id"), &Aura::get_ability_scale_data_id);
 	ClassDB::bind_method(D_METHOD("set_ability_scale_data_id", "value"), &Aura::set_ability_scale_data_id);

@@ -49,6 +49,7 @@ module_env.add_source_files(env.modules_sources,"entities/auras/aura_data.cpp")
 module_env.add_source_files(env.modules_sources,"entities/entity.cpp")
 module_env.add_source_files(env.modules_sources,"entities/player.cpp")
 module_env.add_source_files(env.modules_sources,"entities/mob.cpp")
+module_env.add_source_files(env.modules_sources,"entities/entity_resource.cpp")
 
 module_env.add_source_files(env.modules_sources,"ui/unit_frame.cpp")
 

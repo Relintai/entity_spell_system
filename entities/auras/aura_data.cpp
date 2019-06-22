@@ -37,6 +37,13 @@ void AuraData::set_aura_id(int value) {
 	_aura_id = value;
 }
 
+bool AuraData::get_is_timed() {
+	return _is_timed;
+}
+void AuraData::set_is_timed(bool value) {
+	_is_timed = value;
+}
+
 float AuraData::get_remaining_time() {
 	return _remaining_time;
 }
@@ -223,6 +230,10 @@ void AuraData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_aura_id"), &AuraData::get_aura_id);
 	ClassDB::bind_method(D_METHOD("set_aura_id", "value"), &AuraData::set_aura_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "aura_id"), "set_aura_id", "get_aura_id");
+
+	ClassDB::bind_method(D_METHOD("get_is_timed"), &AuraData::get_is_timed);
+	ClassDB::bind_method(D_METHOD("set_is_timed", "value"), &AuraData::set_is_timed);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_timed"), "set_is_timed", "get_is_timed");
 
 	ClassDB::bind_method(D_METHOD("get_remaining_time"), &AuraData::get_remaining_time);
 	ClassDB::bind_method(D_METHOD("set_remaining_time", "value"), &AuraData::set_remaining_time);

@@ -9,6 +9,7 @@
 #include "../entity_enums.h"
 #include "character_spec.h"
 
+class Aura;
 class Spell;
 class Entity;
 class CharacterSpec;
@@ -55,6 +56,9 @@ public:
 	Ref<CharacterSpec> get_spec(int index) const;
 	void set_spec(int index, Ref<CharacterSpec> spec);
 
+	Ref<Aura> get_aura(int index);
+	void set_aura(int index, Ref<Aura> aura);
+
 	/*
 	Vector<int> get_talent_ids();
 	void set_talent_ids(Vector<int> ids);
@@ -96,13 +100,15 @@ protected:
 	static void _bind_methods();
 	void _validate_property(PropertyInfo &property) const;
 
-private:
+public:
 	enum {
 		MAX_SPELLS = 100,
 		MAX_SPECS = 5,
+		MAX_AURAS = 5,
 		ITEMS_PER_PAGE = 10,
 	};
 
+private:
 	int _id;
 	String _character_class_name;
 	Ref<Texture> _icon;
@@ -117,6 +123,8 @@ private:
 
 	int _num_specs;
 	Ref<CharacterSpec> _specs[MAX_SPECS];
+
+	Ref<Aura> _auras[MAX_AURAS];
 
 	//Vector<int> _mob_party_ids;
 	//Vector<int> _mob_dislike_ids;

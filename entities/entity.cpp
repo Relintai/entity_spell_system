@@ -260,6 +260,8 @@ Entity::Entity() {
 
 	get_stat_enum(Stat::STAT_ID_HEALTH)->set_base(10000);
 	get_stat_enum(Stat::STAT_ID_MANA)->set_base(100);
+	get_stat_enum(Stat::STAT_ID_RAGE)->set_base(100);
+	get_stat_enum(Stat::STAT_ID_ENERGY)->set_base(100);
 	get_stat_enum(Stat::STAT_ID_SPEED)->set_base(4.2);
 	get_stat_enum(Stat::STAT_ID_GLOBAL_COOLDOWN)->set_base(1.5);
 	get_stat_enum(Stat::STAT_ID_MELEE_CRIT)->set_base(5);
@@ -272,6 +274,8 @@ Entity::Entity() {
 
 	_health = Ref<Stat>(get_stat_enum(Stat::STAT_ID_HEALTH));
 	_mana = Ref<Stat>(get_stat_enum(Stat::STAT_ID_MANA));
+	_rage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_RAGE));
+	_energy = Ref<Stat>(get_stat_enum(Stat::STAT_ID_ENERGY));
 	_speed = Ref<Stat>(get_stat_enum(Stat::STAT_ID_SPEED));
 	_gcd = Ref<Stat>(get_stat_enum(Stat::STAT_ID_GLOBAL_COOLDOWN));
 
@@ -418,22 +422,37 @@ void Entity::sinitialize_stats() {
 	//gets_character_class()->get_stat_data()->get_stats_for_stat(_health);
 	//Ref<StatDataEntry> e = gets_character_class()->get_stat_data()->get_stat_data_enum(Stat::STAT_ID_HEALTH);
 
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_health());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_mana());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_speed());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_gcd());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_melee_crit());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_melee_crit_bonus());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_spell_crit());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_spell_crit_bonus());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_block());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_parry());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_melee_damage_reduction());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_spell_damage_reduction());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_damage_taken());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_heal_taken());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_melee_damage());
-	gets_character_class()->get_stat_data()->get_stat_for_stat(get_spell_damage());
+	Ref<CharacterClass> cc = gets_character_class();
+
+	ERR_FAIL_COND(!cc.is_valid());
+
+	cc->get_stat_data()->get_stat_for_stat(get_health());
+	cc->get_stat_data()->get_stat_for_stat(get_mana());
+	cc->get_stat_data()->get_stat_for_stat(get_rage());
+	cc->get_stat_data()->get_stat_for_stat(get_energy());
+	cc->get_stat_data()->get_stat_for_stat(get_speed());
+	cc->get_stat_data()->get_stat_for_stat(get_gcd());
+	cc->get_stat_data()->get_stat_for_stat(get_melee_crit());
+	cc->get_stat_data()->get_stat_for_stat(get_melee_crit_bonus());
+	cc->get_stat_data()->get_stat_for_stat(get_spell_crit());
+	cc->get_stat_data()->get_stat_for_stat(get_spell_crit_bonus());
+	cc->get_stat_data()->get_stat_for_stat(get_block());
+	cc->get_stat_data()->get_stat_for_stat(get_parry());
+	cc->get_stat_data()->get_stat_for_stat(get_melee_damage_reduction());
+	cc->get_stat_data()->get_stat_for_stat(get_spell_damage_reduction());
+	cc->get_stat_data()->get_stat_for_stat(get_damage_taken());
+	cc->get_stat_data()->get_stat_for_stat(get_heal_taken());
+	cc->get_stat_data()->get_stat_for_stat(get_melee_damage());
+	cc->get_stat_data()->get_stat_for_stat(get_spell_damage());
+
+
+	for (int i = 0; i < CharacterClass::MAX_AURAS; ++i) {
+		Ref<Aura> a = cc->get_aura(i);
+
+		if (a.is_valid()) {
+			a->sapply_simple(this, this, 1.0);
+		}
+	}
 }
 
 //////     Stat System      //////
@@ -541,6 +560,46 @@ void Entity::set_stat_enum(Stat::StatId stat_id, Ref<Stat> entry) {
 	}
 
 	_stats[stat_id] = Ref<Stat>(entry);
+}
+
+////    Resources    ////
+
+Ref<EntityResource> Entity::gets_resource(int index) {
+	ERR_FAIL_INDEX_V(index, _s_resources.size(), Ref<EntityResource>());
+
+	return _s_resources.get(index);
+}
+void Entity::adds_resource(Ref<EntityResource> resource) {
+	ERR_FAIL_COND(!resource.is_valid());
+
+	_s_resources.push_back(resource);
+}
+int Entity::gets_resource_count() {
+	return _s_resources.size();
+}
+void Entity::removes_resource(int index) {
+	ERR_FAIL_INDEX(index, _s_resources.size());
+
+	_s_resources.remove(index);
+}
+
+Ref<EntityResource> Entity::getc_resource(int index) {
+	ERR_FAIL_INDEX_V(index, _c_resources.size(), Ref<EntityResource>());
+
+	return _c_resources.get(index);
+}
+void Entity::addc_resource(Ref<EntityResource> resource) {
+	ERR_FAIL_COND(!resource.is_valid());
+
+	_c_resources.push_back(resource);
+}
+int Entity::getc_resource_count() {
+	return _c_resources.size();
+}
+void Entity::removec_resource(int index) {
+	ERR_FAIL_INDEX(index, _c_resources.size());
+
+	_c_resources.remove(index);
 }
 
 void Entity::stake_damage(Ref<SpellDamageInfo> data) {
@@ -979,10 +1038,37 @@ void Entity::sadd_aura(Ref<AuraData> aura) {
 
 	emit_signal("saura_added", aura);
 
-	SEND_RPC(rpc("cadd_aura", aura), cadd_aura(aura));
+	if (!aura->get_aura()->get_hide())
+		SEND_RPC(rpc("cadd_aura", aura), cadd_aura(aura));
 }
 
 void Entity::sremove_aura(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
+	int aid = aura->get_aura_id();
+	Entity *caster = aura->get_caster();
+
+	Ref<AuraData> a;
+	bool removed = false;
+	for (int i = 0; i < _s_auras.size(); i++) {
+		a = _s_auras.get(i);
+
+		if (a->get_aura_id() == aid && a->get_caster() == caster) {
+			_s_auras.remove(i);
+			removed = true;
+			break;
+		}
+	}
+
+	if (removed) {
+		emit_signal("saura_removed", a);
+
+		if (!aura->get_aura()->get_hide())
+			SEND_RPC(rpc("cremove_aura", a), cremove_aura(a));
+	}
+}
+
+void Entity::sremove_aura_exact(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	for (int i = 0; i < _s_auras.size(); i++) {
@@ -999,7 +1085,8 @@ void Entity::sremove_aura(Ref<AuraData> aura) {
 
 	emit_signal("saura_removed", aura);
 
-	SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
+	if (!aura->get_aura()->get_hide())
+		SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
 }
 
 void Entity::sremove_aura_expired(Ref<AuraData> aura) {
@@ -1019,7 +1106,8 @@ void Entity::sremove_aura_expired(Ref<AuraData> aura) {
 
 	emit_signal("saura_removed_expired", aura);
 
-	SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
+	if (!aura->get_aura()->get_hide())
+		SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
 }
 
 void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
@@ -1039,7 +1127,20 @@ void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
 
 	emit_signal("saura_removed_dispelled", aura);
 
-	SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
+	if (!aura->get_aura()->get_hide())
+		SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
+}
+
+void Entity::saura_refreshed(Ref<AuraData> aura) {
+	ERR_EXPLAIN("NYI");
+	ERR_FAIL();
+
+	ERR_FAIL_COND(!aura.is_valid());
+
+	emit_signal("caura_refreshed", aura);
+
+	if (!aura->get_aura()->get_hide())
+		SEND_RPC(rpc("caura_refreshed", aura), caura_refreshed(aura));
 }
 
 void Entity::cadd_aura(Ref<AuraData> data) {
@@ -1050,6 +1151,28 @@ void Entity::cadd_aura(Ref<AuraData> data) {
 }
 
 void Entity::cremove_aura(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
+	int aid = aura->get_aura_id();
+	Entity *caster = aura->get_caster();
+
+	Ref<AuraData> a;
+	bool removed = false;
+	for (int i = 0; i < _c_auras.size(); i++) {
+		a = _c_auras.get(i);
+
+		if (a->get_aura_id() == aid && a->get_caster() == caster) {
+			_c_auras.remove(i);
+			removed = true;
+			break;
+		}
+	}
+
+	if (removed)
+		emit_signal("caura_removed", a);
+}
+
+void Entity::cremove_aura_exact(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	for (int i = 0; i < _c_auras.size(); i++) {
@@ -1075,6 +1198,16 @@ void Entity::cremove_aura_dispelled(Ref<AuraData> aura) {
 	emit_signal("caura_removed_dispelled", aura);
 }
 
+void Entity::caura_refreshed(Ref<AuraData> aura) {
+	ERR_EXPLAIN("NYI");
+	ERR_FAIL();
+
+
+	ERR_FAIL_COND(!aura.is_valid());
+	
+	emit_signal("caura_refreshed", aura);
+}
+
 void Entity::cremove_aura_expired(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
@@ -1092,20 +1225,20 @@ int Entity::sget_aura_count() {
 	return _s_auras.size();
 }
 
-Ref<Aura> Entity::sget_aura(int index) {
-	ERR_FAIL_INDEX_V(index, _s_auras.size(), Ref<Aura>(NULL));
+Ref<AuraData> Entity::sget_aura(int index) {
+	ERR_FAIL_INDEX_V(index, _s_auras.size(), Ref<AuraData>(NULL));
 
-	return Ref<Aura>(_s_auras.get(index));
+	return Ref<AuraData>(_s_auras.get(index));
 }
 
 int Entity::cget_aura_count() {
 	return _s_auras.size();
 }
 
-Ref<Aura> Entity::cget_aura(int index) {
-	ERR_FAIL_INDEX_V(index, _c_auras.size(), Ref<Aura>(NULL));
+Ref<AuraData> Entity::cget_aura(int index) {
+	ERR_FAIL_INDEX_V(index, _c_auras.size(), Ref<AuraData>(NULL));
 
-	return Ref<Aura>(_c_auras.get(index));
+	return Ref<AuraData>(_c_auras.get(index));
 }
 
 void Entity::moved() {
@@ -2044,11 +2177,13 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("saura_removed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	ADD_SIGNAL(MethodInfo("saura_removed_expired", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	ADD_SIGNAL(MethodInfo("saura_removed_dispelled", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	//ADD_SIGNAL(MethodInfo("saura_refreshed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 	ADD_SIGNAL(MethodInfo("caura_added", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	ADD_SIGNAL(MethodInfo("caura_removed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	ADD_SIGNAL(MethodInfo("caura_removed_dispelled", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	ADD_SIGNAL(MethodInfo("caura_removed_expired", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	//ADD_SIGNAL(MethodInfo("caura_refreshed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 	//EventHandlers
 	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &Entity::son_before_aura_applied);
@@ -2094,13 +2229,17 @@ void Entity::_bind_methods() {
 	//Aura Manipulation
 	ClassDB::bind_method(D_METHOD("sadd_aura", "aura"), &Entity::sadd_aura);
 	ClassDB::bind_method(D_METHOD("sremove_aura", "aura"), &Entity::sremove_aura);
+	ClassDB::bind_method(D_METHOD("sremove_aura_exact", "aura"), &Entity::sremove_aura_exact);
 	ClassDB::bind_method(D_METHOD("sremove_aura_expired", "aura"), &Entity::sremove_aura_expired);
 	ClassDB::bind_method(D_METHOD("sremove_aura_dispelled", "aura"), &Entity::sremove_aura_dispelled);
+	//ClassDB::bind_method(D_METHOD("saura_refreshed", "aura"), &Entity::saura_refreshed);
 
 	ClassDB::bind_method(D_METHOD("cadd_aura", "aura"), &Entity::cadd_aura);
 	ClassDB::bind_method(D_METHOD("cremove_aura", "aura"), &Entity::cremove_aura);
+	ClassDB::bind_method(D_METHOD("cremove_aura_exact", "aura"), &Entity::cremove_aura_exact);
 	ClassDB::bind_method(D_METHOD("cremove_aura_expired", "aura"), &Entity::cremove_aura_expired);
 	ClassDB::bind_method(D_METHOD("cremove_aura_dispelled", "aura"), &Entity::cremove_aura_dispelled);
+	//ClassDB::bind_method(D_METHOD("caura_refreshed", "aura"), &Entity::caura_refreshed);
 
 	ClassDB::bind_method(D_METHOD("sremove_auras_with_group", "aura_group"), &Entity::sremove_auras_with_group);
 
@@ -2176,6 +2315,8 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_health"), &Entity::get_health);
 	ClassDB::bind_method(D_METHOD("get_mana"), &Entity::get_mana);
+	ClassDB::bind_method(D_METHOD("get_rage"), &Entity::get_rage);
+	ClassDB::bind_method(D_METHOD("get_energy"), &Entity::get_energy);
 	ClassDB::bind_method(D_METHOD("get_speed"), &Entity::get_speed);
 	ClassDB::bind_method(D_METHOD("get_gcd"), &Entity::get_gcd);
 	ClassDB::bind_method(D_METHOD("get_melee_crit"), &Entity::get_melee_crit);
@@ -2196,6 +2337,18 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_stat_enum", "index"), &Entity::get_stat_enum);
 	ClassDB::bind_method(D_METHOD("set_stat_enum", "stat_id", "entry"), &Entity::set_stat_enum);
+
+	//Resources
+
+	ClassDB::bind_method(D_METHOD("gets_resource", "index"), &Entity::gets_resource);
+	ClassDB::bind_method(D_METHOD("adds_resource", "palyer_resource"), &Entity::adds_resource);
+	ClassDB::bind_method(D_METHOD("gets_resource_count"), &Entity::gets_resource_count);
+	ClassDB::bind_method(D_METHOD("removes_resource", "index"), &Entity::removes_resource);
+
+	ClassDB::bind_method(D_METHOD("getc_resource", "index"), &Entity::getc_resource);
+	ClassDB::bind_method(D_METHOD("addc_resource", "palyer_resource"), &Entity::addc_resource);
+	ClassDB::bind_method(D_METHOD("getc_resource_count"), &Entity::getc_resource_count);
+	ClassDB::bind_method(D_METHOD("removec_resource", "index"), &Entity::removec_resource);
 
 	//GCD
 	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::REAL, "value")));

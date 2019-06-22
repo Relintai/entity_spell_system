@@ -36,10 +36,12 @@
 #include "pipelines/spell_damage_info.h"
 #include "pipelines/spell_heal_info.h"
 
+#include "entities/entity_resource.h"
 #include "entities/auras/aura_data.h"
 #include "entities/entity.h"
 #include "entities/player.h"
 #include "entities/mob.h"
+
 #include "data/aura_trigger_data.h"
 #include "data/aura_stat_attribute.h"
 
@@ -96,6 +98,8 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<SpellDamageInfo>();
 	ClassDB::register_class<SpellHealInfo>();
 	ClassDB::register_class<AuraData>();
+
+	ClassDB::register_class<EntityResource>();
 
 	ClassDB::register_class<AuraTriggerData>();
 

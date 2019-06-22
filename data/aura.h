@@ -50,6 +50,9 @@ public:
 	String get_aura_name();
 	void set_aura_name(String name);
 
+	bool get_hide();
+	void set_hide(bool value);
+
 	String get_aura_description();
 	void set_aura_description(String description);
 
@@ -337,6 +340,7 @@ private:
 	Ref<Texture> _icon;
 	SpellEnums::AuraType _aura_type;
 	bool _is_debuff;
+	bool _hide;
 
 	String _aura_name;
 	String _aura_description;

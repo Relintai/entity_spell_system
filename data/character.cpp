@@ -1,6 +1,7 @@
 #include "character.h"
 
 #include "../data/spell.h"
+#include "../data/aura.h"
 #include "../entities/entity.h"
 
 int CharacterClass::get_id() {
@@ -68,6 +69,8 @@ Ref<Spell> CharacterClass::get_spell(int id) {
 }
 
 void CharacterClass::set_spell(int index, Ref<Spell> spell) {
+	ERR_FAIL_INDEX(index, MAX_AURAS);
+
 	_spells[index] = Ref<Spell>(spell);
 }
 
@@ -80,11 +83,26 @@ void CharacterClass::set_num_specs(int value) {
 }
 
 Ref<CharacterSpec> CharacterClass::get_spec(int index) const {
+	ERR_FAIL_INDEX_V(index, MAX_SPECS, Ref<CharacterSpec>());
+
 	return _specs[index];
 }
 
 void CharacterClass::set_spec(int index, Ref<CharacterSpec> spec) {
+	ERR_FAIL_INDEX(index, MAX_SPECS);
+
 	_specs[index] = Ref<CharacterSpec>(spec);
+}
+
+Ref<Aura> CharacterClass::get_aura(int index) {
+	ERR_FAIL_INDEX_V(index, MAX_AURAS, Ref<Aura>());
+
+	return _auras[index];
+}
+void CharacterClass::set_aura(int index, Ref<Aura> aura) {
+	ERR_FAIL_INDEX(index, MAX_AURAS);
+
+	_auras[index] = aura;
 }
 
 /*
@@ -219,6 +237,16 @@ void CharacterClass::_bind_methods() {
 		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "Spec_" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "CharacterSpec", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_spec", "get_spec", i);
 	}
 
+	////    AURAS    ////
+	
+	ClassDB::bind_method(D_METHOD("get_aura", "index"), &CharacterClass::get_aura);
+	ClassDB::bind_method(D_METHOD("set_aura", "index", "aura"), &CharacterClass::set_aura);
+
+	ADD_GROUP("Auras", "Aura");
+	for (int i = 0; i < MAX_AURAS; ++i) {
+		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "Aura_" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "Aura", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura", "get_aura", i);
+	}
+
 	////    Spell    ////
 	ClassDB::bind_method(D_METHOD("get_num_spells"), &CharacterClass::get_num_spells);
 	ClassDB::bind_method(D_METHOD("set_num_spells", "value"), &CharacterClass::set_num_spells);
@@ -237,6 +265,7 @@ void CharacterClass::_bind_methods() {
 
 	BIND_CONSTANT(MAX_SPELLS);
 	BIND_CONSTANT(MAX_SPECS);
+	BIND_CONSTANT(MAX_AURAS);
 }
 
 CharacterClass::CharacterClass() {
