@@ -2374,6 +2374,28 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sadd_state_ref", "state_index"), &Entity::sadd_state_ref);
 	ClassDB::bind_method(D_METHOD("sremove_state_ref", "state_index"), &Entity::sremove_state_ref);
 
+	//Casting System
+
+	ClassDB::bind_method(D_METHOD("gets_spell_cast_info"), &Entity::gets_spell_cast_info);
+	ClassDB::bind_method(D_METHOD("sets_spell_cast_info", "value"), &Entity::sets_spell_cast_info);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sspell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo"), "sets_spell_cast_info", "gets_spell_cast_info");
+
+	ClassDB::bind_method(D_METHOD("getc_spell_cast_info"), &Entity::getc_spell_cast_info);
+	ClassDB::bind_method(D_METHOD("setc_spell_cast_info", "value"), &Entity::setc_spell_cast_info);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cspell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo"), "setc_spell_cast_info", "getc_spell_cast_info");
+
+	ClassDB::bind_method(D_METHOD("sstart_casting", "info"), &Entity::sstart_casting);
+	ClassDB::bind_method(D_METHOD("sfail_cast"), &Entity::sfail_cast);
+	ClassDB::bind_method(D_METHOD("sdelay_cast"), &Entity::sdelay_cast);
+	ClassDB::bind_method(D_METHOD("sfinish_cast"), &Entity::sfinish_cast);
+	ClassDB::bind_method(D_METHOD("sinterrupt_cast"), &Entity::sinterrupt_cast);
+
+	ClassDB::bind_method(D_METHOD("cstart_casting", "info"), &Entity::cstart_casting);
+	ClassDB::bind_method(D_METHOD("cfail_cast"), &Entity::cfail_cast);
+	ClassDB::bind_method(D_METHOD("cdelay_cast"), &Entity::cdelay_cast);
+	ClassDB::bind_method(D_METHOD("cfinish_cast"), &Entity::cfinish_cast);
+	ClassDB::bind_method(D_METHOD("cinterrupt_cast"), &Entity::cinterrupt_cast);
+
 	//Cooldowns
 	ADD_SIGNAL(MethodInfo("scooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 	ADD_SIGNAL(MethodInfo("ccooldown_removed", PropertyInfo(Variant::INT, "spell_id")));
