@@ -22,9 +22,9 @@ class SpellCastInfo;
 class Spell;
 
 enum TargetRelationType {
-	TARGET_SELF,
-	TARGET_ENEMY,
-	TARGET_TARGET
+	TARGET_SELF = 1 << 0,
+	TARGET_ENEMY = 1 << 1,
+	TARGET_FRIENDLY = 1 << 2
 };
 
 VARIANT_ENUM_CAST(TargetRelationType);
@@ -93,6 +93,9 @@ public:
 
 	SpellTargetType get_target_type();
 	void set_target_type(SpellTargetType value);
+
+	TargetRelationType get_target_relation_type();
+	void set_target_relation_type(TargetRelationType value);
 
 	Ref<Aura> get_caster_aura_apply();
 	void set_caster_aura_apply(Ref<Aura> value);
@@ -371,6 +374,7 @@ private:
 	bool _hide_from_actionbar;
 	float _cooldown;
 	SpellTargetType _target_type;
+	TargetRelationType _target_relation_type;
 
 	Ref<Aura> *_caster_aura_apply_ref;
 	Ref<Aura> *_caster_aura_apply2_ref;

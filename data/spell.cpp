@@ -37,6 +37,13 @@ void Spell::set_target_type(SpellTargetType value) {
 	_target_type = value;
 }
 
+TargetRelationType Spell::get_target_relation_type() {
+	return _target_relation_type;
+}
+void Spell::set_target_relation_type(TargetRelationType value) {
+	_target_relation_type = value;
+}
+
 Ref<Aura> Spell::get_caster_aura_apply() {
 	return Ref<Aura>(_caster_aura_apply);
 }
@@ -724,6 +731,7 @@ Spell::Spell() {
 	PLAYER_HIT_RADIUS = (float)0.5;
 
 	_level = 1;
+	_rank = 0;
 
 	_spell_id = 1;
 	_spell_type = SpellEnums::SPELL_TYPE_NONE;
@@ -877,6 +885,10 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_target_type"), &Spell::get_target_type);
 	ClassDB::bind_method(D_METHOD("set_target_type", "value"), &Spell::set_target_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "target_type", PROPERTY_HINT_ENUM, "Self, Target, Around, Front, Around Target"), "set_target_type", "get_target_type");
+
+	ClassDB::bind_method(D_METHOD("get_target_relation_type"), &Spell::get_target_relation_type);
+	ClassDB::bind_method(D_METHOD("set_target_relation_type", "value"), &Spell::set_target_relation_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "target_relation_type", PROPERTY_HINT_FLAGS, "Self, Enemy, Friendly"), "set_target_relation_type", "get_target_relation_type");
 
 	ClassDB::bind_method(D_METHOD("get_level"), &Spell::get_level);
 	ClassDB::bind_method(D_METHOD("set_level", "value"), &Spell::set_level);
@@ -1083,7 +1095,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_spell_cast_finish_effect_point", "value"), &Spell::set_spell_cast_finish_effect_point);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_cast_finish_effect_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS), "set_spell_cast_finish_effect_point", "get_spell_cast_finish_effect_point");
 
-
 	ClassDB::bind_method(D_METHOD("get_spell_cast_finish_effect"), &Spell::get_spell_cast_finish_effect);
 	ClassDB::bind_method(D_METHOD("set_spell_cast_finish_effect", "value"), &Spell::set_spell_cast_finish_effect);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_spell_cast_finish_effect", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_spell_cast_finish_effect", "get_spell_cast_finish_effect");
@@ -1130,7 +1141,7 @@ void Spell::_bind_methods() {
 
 	BIND_ENUM_CONSTANT(TARGET_SELF);
 	BIND_ENUM_CONSTANT(TARGET_ENEMY);
-	BIND_ENUM_CONSTANT(TARGET_TARGET);
+	BIND_ENUM_CONSTANT(TARGET_FRIENDLY);
 
 	BIND_ENUM_CONSTANT(SPELL_TARGET_TYPE_SELF);
 	BIND_ENUM_CONSTANT(SPELL_TARGET_TYPE_TARGET);
