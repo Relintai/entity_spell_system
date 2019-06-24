@@ -44,6 +44,9 @@ public:
 	bool get_is_debuff();
 	void set_is_debuff(bool value);
 
+	float get_tick();
+	void set_tick(float value);
+
 	SpellEnums::AuraType get_aura_type();
 	void set_aura_type(SpellEnums::AuraType value);
 
@@ -96,13 +99,10 @@ public:
 	int get_damage_max();
 	void set_damage_max(int value);
 
-	float get_damage_tick();
-	void set_damage_tick(float value);
-
 	bool get_damage_can_crit();
 	void set_damage_can_crit(bool value);
 
-	void set_damage(int min, int max, float tick, bool can_crit);
+	void set_damage(int min, int max, bool can_crit);
 
 	//Absorb
 	bool is_absorb_enabled();
@@ -128,13 +128,10 @@ public:
 	int get_heal_max();
 	void set_heal_max(int value);
 
-	float get_heal_tick();
-	void set_heal_tick(float value);
-
 	bool get_heal_can_crit();
 	void set_heal_can_crit(bool value);
 
-	void set_heal(int min, int max, float tick, bool can_crit);
+	void set_heal(int min, int max, bool can_crit);
 
 	Ref<Curve> get_damage_scaling_curve() { return _damage_scaling_curve; }
 	void set_damage_scaling_curve(Ref<Curve> curve) { _damage_scaling_curve = curve; }
@@ -336,6 +333,7 @@ private:
 
 	int id;
 	float time;
+	float _tick;
 	int aura_group;
 	Ref<Texture> _icon;
 	SpellEnums::AuraType _aura_type;
@@ -353,7 +351,6 @@ private:
 	int _damage_type;
 	int _damage_min;
 	int _damage_max;
-	float _damage_tick;
 	bool _damage_can_crit;
 	Ref<Curve> _damage_scaling_curve;
 
@@ -366,7 +363,6 @@ private:
 	bool _heal_enabled;
 	int _heal_min;
 	int _heal_max;
-	float _heal_tick;
 	bool _heal_can_crit;
 	Ref<Curve> _heal_scaling_curve;
 

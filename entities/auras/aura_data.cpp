@@ -1,7 +1,7 @@
 #include "aura_data.h"
 
-#include "../entity.h"
 #include "../../data/aura.h"
+#include "../entity.h"
 
 AuraData::AuraData() {
 	_aura_id = 0;
@@ -52,12 +52,23 @@ void AuraData::set_remaining_time(float value) {
 	_remaining_time = value;
 }
 
-bool AuraData::update_remaining_time(float delta) {
-	_remaining_time -= delta;
+bool AuraData::update(float delta) {
+	if (_tick > 0.01) {
+		_time_since_last_tick += delta;
 
-	if (_remaining_time <= 0) {
-		_remaining_time = 0;
-		return true;
+		while (_time_since_last_tick >= _tick) {
+			_time_since_last_tick -= _tick;
+			++_unhandled_ticks;
+		}
+	}
+
+	if (_is_timed) {
+		_remaining_time -= delta;
+
+		if (_remaining_time <= 0) {
+			_remaining_time = 0;
+			return true;
+		}
 	}
 
 	return false;
@@ -128,7 +139,6 @@ void AuraData::set_aura(Ref<Aura> aura) {
 	_aura = aura;
 }
 
-
 int AuraData::get_damage() {
 	return _damage;
 }
@@ -161,7 +171,6 @@ void AuraData::set_unhandled_ticks(int value) {
 	_unhandled_ticks = value;
 }
 
-
 int AuraData::get_damage_taken() {
 	return _damage_already_taken;
 }
@@ -177,7 +186,6 @@ void AuraData::refresh(float remaining_time) {
 
 	//_diminishing_level_count += 1;
 }
-
 
 /*
 void AuraData::refresh(float remaining_time) {
@@ -199,8 +207,6 @@ void AuraData::refresh(float remaining_time) {
 	_time_since_last_tick = (float)0;
 }*/
 
-
-
 int AuraData::get_heal() {
 	return _heal;
 }
@@ -208,7 +214,6 @@ int AuraData::get_heal() {
 void AuraData::set_heal(int value) {
 	_heal = value;
 }
-
 
 int AuraData::get_remaining_absorb() {
 	return _remaining_absorb;
@@ -293,4 +298,3 @@ void AuraData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_slow", "value"), &AuraData::set_slow);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "slow"), "set_slow", "get_slow");
 }
-

@@ -21,6 +21,13 @@ void Aura::set_time(float value) {
 	time = value;
 }
 
+float Aura::get_tick() {
+	return _tick;
+}
+void Aura::set_tick(float value) {
+	_tick = value;
+}
+
 int Aura::get_aura_group() {
 	return aura_group;
 }
@@ -182,13 +189,6 @@ void Aura::set_damage_max(int value) {
 	_damage_max = value;
 }
 
-float Aura::get_damage_tick() {
-	return _damage_tick;
-}
-void Aura::set_damage_tick(float value) {
-	_damage_tick = value;
-}
-
 bool Aura::get_damage_can_crit() {
 	return _damage_can_crit;
 }
@@ -196,11 +196,10 @@ void Aura::set_damage_can_crit(bool value) {
 	_damage_can_crit = value;
 }
 
-void Aura::set_damage(int min, int max, float tick, bool can_crit) {
+void Aura::set_damage(int min, int max, bool can_crit) {
 	set_damage_enabled(true);
 	set_damage_min(min);
 	set_damage_max(max);
-	set_damage_tick(tick);
 	set_damage_can_crit(can_crit);
 }
 
@@ -256,13 +255,6 @@ void Aura::set_heal_max(int value) {
 	_heal_max = value;
 }
 
-float Aura::get_heal_tick() {
-	return _heal_tick;
-}
-void Aura::set_heal_tick(float value) {
-	_heal_tick = value;
-}
-
 bool Aura::get_heal_can_crit() {
 	return _heal_can_crit;
 }
@@ -270,11 +262,10 @@ void Aura::set_heal_can_crit(bool value) {
 	_heal_can_crit = value;
 }
 
-void Aura::set_heal(int min, int max, float tick, bool can_crit) {
+void Aura::set_heal(int min, int max, bool can_crit) {
 	set_heal_enabled(true);
 	set_heal_min(min);
 	set_heal_max(max);
-	set_heal_tick(tick);
 	set_heal_can_crit(can_crit);
 }
 
@@ -282,6 +273,7 @@ Aura::Aura() {
 	ability_scale_data_id = 1;
 	id = 0;
 	time = 0;
+	_tick = 0;
 	_aura_type = SpellEnums::AURA_TYPE_NONE;
 	_is_debuff = false;
 	aura_group = 0;
@@ -291,7 +283,6 @@ Aura::Aura() {
 	_damage_type = 0;
 	_damage_min = 0;
 	_damage_max = 0;
-	_damage_tick = 0;
 	_damage_can_crit = false;
 
 	_absorb_enabled = false;
@@ -302,7 +293,7 @@ Aura::Aura() {
 	_heal_enabled = false;
 	_heal_min = 0;
 	_heal_max = 0;
-	_heal_tick = 0;
+
 	_heal_can_crit = false;
 
 	_add_states = 0;
@@ -643,6 +634,7 @@ void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
 	data->set_aura(Ref<Aura>(this));
 	data->set_aura_id(get_id());
 	data->set_caster(info->get_caster());
+	data->set_tick(info->get_aura()->get_tick());
 
 	if (get_time() > 0.2) {
 		data->set_is_timed(true);
@@ -785,11 +777,10 @@ void Aura::_supdate(Ref<AuraData> aura, float delta) {
 
 	bool remove = false;
 
-	if (aura->get_is_timed())
-		remove = aura->update_remaining_time(delta);
+	remove = aura->update(delta);
 
 	//ontick
-	if (aura->get_unhandled_ticks() != 0) {
+	while (aura->get_unhandled_ticks() > 0) {
 
 		if (aura->get_damage() != 0) {
 			Ref<SpellDamageInfo> dpd = Ref<SpellDamageInfo>(memnew(SpellDamageInfo()));
@@ -801,7 +792,7 @@ void Aura::_supdate(Ref<AuraData> aura, float delta) {
 			handle_aura_damage(aura, dpd);
 		}
 
-		aura->set_unhandled_ticks(0);
+		aura->set_unhandled_ticks(aura->get_unhandled_ticks() - 1);
 	}
 
 	if (remove) {
@@ -971,6 +962,10 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_time", "value"), &Aura::set_time);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "time"), "set_time", "get_time");
 
+	ClassDB::bind_method(D_METHOD("get_tick"), &Aura::get_tick);
+	ClassDB::bind_method(D_METHOD("set_tick", "value"), &Aura::set_tick);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "tick"), "set_tick", "get_tick");
+
 	ClassDB::bind_method(D_METHOD("get_is_debuff"), &Aura::get_is_debuff);
 	ClassDB::bind_method(D_METHOD("set_is_debuff", "value"), &Aura::set_is_debuff);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "debuff"), "set_is_debuff", "get_is_debuff");
@@ -1018,15 +1013,11 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_damage_max", "value"), &Aura::set_damage_max);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_max"), "set_damage_max", "get_damage_max");
 
-	ClassDB::bind_method(D_METHOD("get_damage_tick"), &Aura::get_damage_tick);
-	ClassDB::bind_method(D_METHOD("set_damage_tick", "value"), &Aura::set_damage_tick);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_tick"), "set_damage_tick", "get_damage_tick");
-
 	ClassDB::bind_method(D_METHOD("get_damage_can_crit"), &Aura::get_damage_can_crit);
 	ClassDB::bind_method(D_METHOD("set_damage_can_crit", "value"), &Aura::set_damage_can_crit);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_can_crit"), "set_damage_can_crit", "get_damage_can_crit");
 
-	ClassDB::bind_method(D_METHOD("set_damage", "min", "max", "tick", "can_crit"), &Aura::set_damage);
+	ClassDB::bind_method(D_METHOD("set_damage", "min", "max", "can_crit"), &Aura::set_damage);
 
 	ClassDB::bind_method(D_METHOD("get_damage_scaling_curve"), &Aura::get_damage_scaling_curve);
 	ClassDB::bind_method(D_METHOD("set_damage_scaling_curve", "curve"), &Aura::set_damage_scaling_curve);
@@ -1068,15 +1059,11 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_heal_max", "value"), &Aura::set_heal_max);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_max"), "set_heal_max", "get_heal_max");
 
-	ClassDB::bind_method(D_METHOD("get_heal_tick"), &Aura::get_heal_tick);
-	ClassDB::bind_method(D_METHOD("set_heal_tick", "value"), &Aura::set_heal_tick);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_tick"), "set_heal_tick", "get_heal_tick");
-
 	ClassDB::bind_method(D_METHOD("get_heal_can_crit"), &Aura::get_heal_can_crit);
 	ClassDB::bind_method(D_METHOD("set_heal_can_crit", "value"), &Aura::set_heal_can_crit);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_can_crit"), "set_heal_can_crit", "get_heal_can_crit");
 
-	ClassDB::bind_method(D_METHOD("set_heal", "min", "max", "tick", "can_crit"), &Aura::set_heal);
+	ClassDB::bind_method(D_METHOD("set_heal", "min", "max", "can_crit"), &Aura::set_heal);
 
 	ClassDB::bind_method(D_METHOD("get_heal_scaling_curve"), &Aura::get_heal_scaling_curve);
 	ClassDB::bind_method(D_METHOD("set_heal_scaling_curve", "curve"), &Aura::set_heal_scaling_curve);

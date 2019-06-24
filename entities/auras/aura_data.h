@@ -19,7 +19,7 @@ public:
 
 	float get_remaining_time();
 	void set_remaining_time(float value);
-	bool update_remaining_time(float delta);
+	bool update(float delta);
 
 	Entity *get_owner();
 	void set_owner(Node *value);
