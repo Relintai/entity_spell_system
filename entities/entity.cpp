@@ -673,7 +673,6 @@ void Entity::stake_heal(Ref<SpellHealInfo> data) {
 	if (h > get_health()->gets_max()) {
 		h = get_health()->gets_max();
 	}
-
 	get_health()->sets_current(h);
 
 	//send an event to client
@@ -685,6 +684,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> data) {
 
 void Entity::sdeal_heal_to(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
+	ERR_FAIL_COND(data->get_receiver() == NULL);
 
 	//serverside
 
@@ -692,9 +692,9 @@ void Entity::sdeal_heal_to(Ref<SpellHealInfo> data) {
 		return;
 	}
 
-	sapply_passives_damage_deal(data);
-	data->get_receiver()->stake_damage(data);
-	son_damage_dealt(data);
+	sapply_passives_heal_deal(data);
+	data->get_receiver()->stake_heal(data);
+	son_heal_dealt(data);
 }
 
 void Entity::die() {
@@ -2225,6 +2225,10 @@ void Entity::_bind_methods() {
 	//Damage Operations
 	ClassDB::bind_method(D_METHOD("stake_damage", "data"), &Entity::stake_damage);
 	ClassDB::bind_method(D_METHOD("sdeal_damage_to", "data"), &Entity::sdeal_damage_to);
+
+	//Heal Operations
+	ClassDB::bind_method(D_METHOD("stake_heal", "data"), &Entity::stake_heal);
+	ClassDB::bind_method(D_METHOD("sdeal_heal_to", "data"), &Entity::sdeal_heal_to);
 
 	//Aura Manipulation
 	ClassDB::bind_method(D_METHOD("sadd_aura", "aura"), &Entity::sadd_aura);

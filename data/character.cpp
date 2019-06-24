@@ -65,11 +65,13 @@ void CharacterClass::set_current_spell_page(int value) {
 }
 
 Ref<Spell> CharacterClass::get_spell(int id) {
+	ERR_FAIL_INDEX_V(id, MAX_SPELLS, Ref<Spell>());
+
 	return _spells[id];
 }
 
 void CharacterClass::set_spell(int index, Ref<Spell> spell) {
-	ERR_FAIL_INDEX(index, MAX_AURAS);
+	ERR_FAIL_INDEX(index, MAX_SPELLS);
 
 	_spells[index] = Ref<Spell>(spell);
 }
