@@ -976,7 +976,7 @@ void Aura::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_tick"), &Aura::get_tick);
 	ClassDB::bind_method(D_METHOD("set_tick", "value"), &Aura::set_tick);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "tick"), "set_tick", "get_tick");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "tick"), "set_tick", "get_tick");
 
 	ClassDB::bind_method(D_METHOD("get_is_debuff"), &Aura::get_is_debuff);
 	ClassDB::bind_method(D_METHOD("set_is_debuff", "value"), &Aura::set_is_debuff);
@@ -1027,7 +1027,7 @@ void Aura::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_damage_can_crit"), &Aura::get_damage_can_crit);
 	ClassDB::bind_method(D_METHOD("set_damage_can_crit", "value"), &Aura::set_damage_can_crit);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_can_crit"), "set_damage_can_crit", "get_damage_can_crit");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "damage_can_crit"), "set_damage_can_crit", "get_damage_can_crit");
 
 	ClassDB::bind_method(D_METHOD("set_damage", "min", "max", "can_crit"), &Aura::set_damage);
 
@@ -1073,7 +1073,7 @@ void Aura::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_heal_can_crit"), &Aura::get_heal_can_crit);
 	ClassDB::bind_method(D_METHOD("set_heal_can_crit", "value"), &Aura::set_heal_can_crit);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_can_crit"), "set_heal_can_crit", "get_heal_can_crit");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "heal_can_crit"), "set_heal_can_crit", "get_heal_can_crit");
 
 	ClassDB::bind_method(D_METHOD("set_heal", "min", "max", "can_crit"), &Aura::set_heal);
 

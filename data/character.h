@@ -105,7 +105,7 @@ public:
 		MAX_SPELLS = 100,
 		MAX_SPECS = 5,
 		MAX_AURAS = 5,
-		ITEMS_PER_PAGE = 10,
+		ITEMS_PER_PAGE = 100,
 	};
 
 private:
