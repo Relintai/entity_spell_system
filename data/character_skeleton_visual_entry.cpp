@@ -36,8 +36,8 @@ void CharacterSkeletonVisualEntry::set_effect(Ref<PackedScene> effect) {
 Ref<ArrayMesh> CharacterSkeletonVisualEntry::get_mesh() {
 	return _mesh;
 }
-void CharacterSkeletonVisualEntry::set_mesh(Ref<ArrayMesh> effect) {
-	_mesh = effect;
+void CharacterSkeletonVisualEntry::set_mesh(Ref<ArrayMesh> mesh) {
+	_mesh = mesh;
 }
 
 CharacterSkeletonVisualEntry::CharacterSkeletonVisualEntry() {
@@ -64,7 +64,7 @@ void CharacterSkeletonVisualEntry::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_effect", "get_effect");
 
 	ClassDB::bind_method(D_METHOD("get_mesh"), &CharacterSkeletonVisualEntry::get_mesh);
-	ClassDB::bind_method(D_METHOD("set_mesh", "path"), &CharacterSkeletonVisualEntry::set_effect);
+	ClassDB::bind_method(D_METHOD("set_mesh", "mesh"), &CharacterSkeletonVisualEntry::set_mesh);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "mesh", PROPERTY_HINT_RESOURCE_TYPE, "ArrayMesh"), "set_mesh", "get_mesh");
     
     BIND_ENUM_CONSTANT(BONE_ATTACHMENT_TYPE_NONE);
