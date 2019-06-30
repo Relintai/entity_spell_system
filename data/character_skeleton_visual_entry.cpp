@@ -1,6 +1,6 @@
 #include "character_skeleton_visual_entry.h"
 
-const String CharacterSkeletonVisualEntry::BINDING_STRING_BONE_ATTACHMENT_TYPES = "None, Bodypart, Effect, Equipment, Override";
+const String CharacterSkeletonVisualEntry::BINDING_STRING_BONE_ATTACHMENT_TYPES = "None, Mesh, Effect, Equipment, Override";
 
 int CharacterSkeletonVisualEntry::get_id() {
     return _id;
