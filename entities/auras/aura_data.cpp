@@ -4,6 +4,7 @@
 #include "../entity.h"
 
 AuraData::AuraData() {
+	_owner = NULL;
 	_aura_id = 0;
 	_remaining_time = 0;
 	_caster = NULL;
@@ -11,6 +12,7 @@ AuraData::AuraData() {
 	_spell_scale = 0;
 	_aura_group = 0;
 
+	_is_timed = false;
 	_damage = 0;
 	_heal = 0;
 	_slow = 0;
