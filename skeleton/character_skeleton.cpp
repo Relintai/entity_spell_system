@@ -15,7 +15,7 @@ void CharacterSkeleton::set_bone_path(int index, NodePath path) {
 }
 
 Ref<CharacterSkeletonVisualEntry> CharacterSkeleton::get_visual(int index) {
-	ERR_FAIL_INDEX_V(index, EntityEnums::SKELETON_POINTS_MAX, NodePath());
+	ERR_FAIL_INDEX_V(index, EntityEnums::SKELETON_POINTS_MAX, Ref<CharacterSkeletonVisualEntry>());
 
 	return _visuals[index];
 }
