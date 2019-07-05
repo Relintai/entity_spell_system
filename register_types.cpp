@@ -56,6 +56,15 @@
 #include "utility/cooldown.h"
 #include "utility/category_cooldown.h"
 
+#include "meshes/mesh_data_resource.h"
+
+#ifdef TOOLS_ENABLED
+#include "editor/editor_plugin.h"
+
+#include "meshes/editor_plugin_collada_mdr.h"
+#endif
+
+
 void register_entity_spell_system_types() {
 	ClassDB::register_class<SpellEnums>();
 
@@ -124,6 +133,14 @@ void register_entity_spell_system_types() {
     
     ClassDB::register_class<Cooldown>();
     ClassDB::register_class<CategoryCooldown>();
+
+
+	//meshes
+	ClassDB::register_class<MeshDataResource>();
+
+	#ifdef TOOLS_ENABLED
+	EditorPlugins::add_by_type<EditorPluginColladaMdr>();
+	#endif
 }
 
 void unregister_entity_spell_system_types() {

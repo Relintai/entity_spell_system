@@ -8,6 +8,8 @@
 
 #include "../entity_enums.h"
 
+#include "../meshes/mesh_data_resource.h"
+
 class CharacterSkeletonVisualEntry : public Resource {
 	GDCLASS(CharacterSkeletonVisualEntry, Resource);
 
@@ -34,8 +36,8 @@ public:
     Ref<PackedScene> get_effect();
     void set_effect(Ref<PackedScene> effect);
 
-	Ref<ArrayMesh> get_mesh();
-	void set_mesh(Ref<ArrayMesh> effect);
+	Ref<MeshDataResource> get_mesh();
+	void set_mesh(Ref<MeshDataResource> effect);
 
     CharacterSkeletonVisualEntry();
 
@@ -47,7 +49,7 @@ private:
     CharacterSkeletonVisualEntryType _attachment_type;
 	EntityEnums::CharacterSkeletonPoints _target_bone;
     Ref<PackedScene> _effect;
-    Ref<ArrayMesh> _mesh;
+	Ref<MeshDataResource> _mesh;
 };
 
 VARIANT_ENUM_CAST(CharacterSkeletonVisualEntry::CharacterSkeletonVisualEntryType);
