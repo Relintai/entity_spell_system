@@ -5,7 +5,7 @@
 
 #include "data/aura.h"
 #include "data/data_manager.h"
-#include "data/character.h"
+#include "data/character_class.h"
 #include "data/talent.h"
 #include "data/talent_row_data.h"
 #include "data/talent_rank_data.h"

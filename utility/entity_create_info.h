@@ -4,7 +4,7 @@
 #include "core/reference.h"
 #include "core/ustring.h"
 #include "../entity_enums.h"
-#include "../data/character.h"
+#include "../data/character_class.h"
 
 class EntityCreateInfo : public Reference {
 	GDCLASS(EntityCreateInfo, Reference);

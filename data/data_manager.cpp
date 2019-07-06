@@ -1,7 +1,7 @@
 #include "data_manager.h"
 
 #include "aura.h"
-#include "character.h"
+#include "character_class.h"
 #include "craft_data_attribute.h"
 #include "spell.h"
 

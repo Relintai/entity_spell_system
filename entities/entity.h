@@ -10,7 +10,7 @@
 #endif
 
 
-#include "../data/character.h"
+#include "../data/character_class.h"
 #include "../data/craft_data_attribute.h"
 #include "../data/spell.h"
 #include "../data/xp_data.h"

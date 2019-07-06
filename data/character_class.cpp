@@ -1,4 +1,4 @@
-#include "character.h"
+#include "character_class.h"
 
 #include "../data/spell.h"
 #include "../data/aura.h"

@@ -12,7 +12,7 @@ module_env.add_source_files(env.modules_sources,"spell_enums.cpp")
 module_env.add_source_files(env.modules_sources,"item_enums.cpp")
 
 module_env.add_source_files(env.modules_sources,"data/aura.cpp")
-module_env.add_source_files(env.modules_sources,"data/character.cpp")
+module_env.add_source_files(env.modules_sources,"data/character_class.cpp")
 module_env.add_source_files(env.modules_sources,"data/talent.cpp")
 module_env.add_source_files(env.modules_sources,"data/talent_rank_data.cpp")
 module_env.add_source_files(env.modules_sources,"data/talent_row_data.cpp")

@@ -1,5 +1,5 @@
-#ifndef CHARACTER_H
-#define CHARACTER_H
+#ifndef CHARACTER_CLASS_H
+#define CHARACTER_CLASS_H
 
 #include "core/resource.h"
 #include "core/vector.h"
