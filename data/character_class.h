@@ -13,6 +13,7 @@ class Aura;
 class Spell;
 class Entity;
 class CharacterSpec;
+class Entity;
 
 enum CharacterWeaponDataTypes {
 	CHARACTER_WEAPON_DATA_TYPES_NONE,
@@ -81,17 +82,16 @@ public:
 	////    Spell System    ////
 
 	void start_casting(int spell_id, Entity *caster, float spellScale);
-	void casting_finished(Entity *caster, float spellScale);
-	void casting_failed(Entity *caster);
-	void spell_hit(Entity *caster, Entity *target, Node *worldSpell, Spell *spell, float spellScale);
-	void on_player_move(Entity *caster);
-	void c_on_spell_cast_started(Entity *player);
-	void c_on_spell_cast_success(Entity *player);
-	void c_on_spell_cast_failed(Entity *player);
-	void c_on_spell_cast_ended(Entity *player);
-	void on_cast_state_changed(Entity *caster);
-	String get_name();
-	String get_description(int level);
+
+	void sai_follow(Entity *entity);
+	void sai_rest(Entity *entity);
+	void sai_regenerate(Entity *entity);
+	void sai_attack(Entity *entity);
+
+	void sai_follow_bind(Node *entity);
+	void sai_rest_bind(Node *entity);
+	void sai_regenerate_bind(Node *entity);
+	void sai_attack_bind(Node *entity);
 
 	CharacterClass();
 	~CharacterClass();

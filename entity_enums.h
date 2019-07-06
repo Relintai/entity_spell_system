@@ -12,6 +12,7 @@ public:
 	static const String BINDING_STRING_ENTITY_TYPES;
 	static const String BINDING_STRING_ENTITY_STATE_TYPES;
     static const String BINDING_STRING_CHARCATER_SKELETON_POINTS;
+    static const String BINDING_STRING_AI_STATES;
 
 	enum PlayerResourceTypes {
 		PLAYER_RESOURCE_TYPES_NONE,
@@ -123,6 +124,13 @@ public:
 		SKELETON_POINTS_MAX = 29,
 	};
 
+	enum AIStates {
+		AI_STATE_OFF,
+		AI_STATE_REST,
+		AI_STATE_REGENERATE,
+		AI_STATE_ATTACK,
+	};
+
 	EntityEnums() {}
 
 protected:
@@ -198,6 +206,12 @@ protected:
 		BIND_ENUM_CONSTANT(SKELETON_POINT_RIGHT_FOOT);
 
 		BIND_ENUM_CONSTANT(SKELETON_POINTS_MAX);
+
+
+		BIND_ENUM_CONSTANT(AI_STATE_OFF);
+		BIND_ENUM_CONSTANT(AI_STATE_REST);
+		BIND_ENUM_CONSTANT(AI_STATE_REGENERATE);
+		BIND_ENUM_CONSTANT(AI_STATE_ATTACK);
 	}
 };
 
@@ -206,5 +220,6 @@ VARIANT_ENUM_CAST(EntityEnums::PlayerResourceTypes);
 VARIANT_ENUM_CAST(EntityEnums::EntityStateTypeFlags);
 VARIANT_ENUM_CAST(EntityEnums::EntityStateTypeIndexes);
 VARIANT_ENUM_CAST(EntityEnums::CharacterSkeletonPoints);
+VARIANT_ENUM_CAST(EntityEnums::AIStates);
 
 #endif

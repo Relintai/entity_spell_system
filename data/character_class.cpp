@@ -149,41 +149,70 @@ void CharacterClass::start_casting(int spell_id, Entity *caster, float spellScal
 	}
 }
 
-void CharacterClass::casting_finished(Entity *caster, float spellScale) {
+void CharacterClass::sai_follow(Entity *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	if (has_method("_sai_follow")) {
+		call("_sai_follow", entity);
+	}
+}
+void CharacterClass::sai_rest(Entity *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	if (has_method("_sai_rest")) {
+		call("_sai_rest", entity);
+	}
+}
+void CharacterClass::sai_regenerate(Entity *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	if (has_method("_sai_regenerate")) {
+		call("_sai_regenerate", entity);
+	}
+}
+void CharacterClass::sai_attack(Entity *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	if (has_method("_sai_attack")) {
+		call("_sai_attack", entity);
+	}
 }
 
-void CharacterClass::casting_failed(Entity *caster) {
+void CharacterClass::sai_follow_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	sai_follow(e);
 }
+void CharacterClass::sai_rest_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
 
-void CharacterClass::spell_hit(Entity *caster, Entity *target, Node *worldSpell, Spell *spell, float spellScale) {
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	sai_rest(e);
 }
+void CharacterClass::sai_regenerate_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
 
-void CharacterClass::on_player_move(Entity *caster) {
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	sai_regenerate(e);
 }
+void CharacterClass::sai_attack_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
 
-void CharacterClass::c_on_spell_cast_started(Entity *caster) {
-}
+	Entity *e = Object::cast_to<Entity>(entity);
 
-void CharacterClass::c_on_spell_cast_success(Entity *caster) {
-}
+	ERR_FAIL_COND(e == NULL);
 
-void CharacterClass::c_on_spell_cast_failed(Entity *caster) {
-}
-
-void CharacterClass::c_on_spell_cast_ended(Entity *caster) {
-}
-
-void CharacterClass::on_cast_state_changed(Entity *caster) {
-}
-
-String CharacterClass::get_name() {
-
-	return "stubname";
-}
-
-String CharacterClass::get_description(int level) {
-
-	return "stubdesc";
+	sai_attack(e);
 }
 
 void CharacterClass::_validate_property(PropertyInfo &property) const {
@@ -207,6 +236,16 @@ void CharacterClass::_validate_property(PropertyInfo &property) const {
 }
 
 void CharacterClass::_bind_methods() {
+	BIND_VMETHOD(MethodInfo("_sai_follow", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_sai_rest", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_sai_regenerate", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_sai_attack", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
+	ClassDB::bind_method(D_METHOD("sai_follow", "entity"), &CharacterClass::sai_follow_bind);
+	ClassDB::bind_method(D_METHOD("sai_rest", "entity"), &CharacterClass::sai_rest_bind);
+	ClassDB::bind_method(D_METHOD("sai_regenerate", "entity"), &CharacterClass::sai_regenerate_bind);
+	ClassDB::bind_method(D_METHOD("sai_attack", "entity"), &CharacterClass::sai_attack_bind);
+
 	ClassDB::bind_method(D_METHOD("get_id"), &CharacterClass::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &CharacterClass::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
