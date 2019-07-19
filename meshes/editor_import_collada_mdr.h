@@ -8,6 +8,9 @@
 #include "scene/resources/mesh.h"
 #include "scene/3d/mesh_instance.h"
 #include "core/io/resource_saver.h"
+#include "core/array.h"
+#include "core/math/basis.h"
+#include "core/math/transform.h"
 
 #include "mesh_data_resource.h"
 #include "editor/import/editor_import_collada.h"
