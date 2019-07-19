@@ -33,7 +33,9 @@ String EditorImportColladaMdr::get_preset_name(int p_idx) const {
 }
 
 void EditorImportColladaMdr::get_import_options(List<ImportOption> *r_options, int p_preset) const {
-
+	r_options->push_back(ImportOption(PropertyInfo(Variant::VECTOR3, "offset"), Vector3(0, 0, 0)));
+	r_options->push_back(ImportOption(PropertyInfo(Variant::VECTOR3, "rotation"), Vector3(0, 0, -(3.141592 / 2.0))));
+	r_options->push_back(ImportOption(PropertyInfo(Variant::VECTOR3, "scale"), Vector3(0.011, 0.011, 0.011)));
 }
 
 bool EditorImportColladaMdr::get_option_visibility(const String &p_option, const Map<StringName, Variant> &p_options) const {
@@ -65,7 +67,7 @@ Error EditorImportColladaMdr::import(const String &p_source_file, const String &
 				Ref<MeshDataResource> mdr;
 				mdr.instance();
 
-				mdr->set_array(mesh->surface_get_arrays(0));
+				mdr->set_array(apply_transforms(mesh->surface_get_arrays(0), p_options));
 
 				n->queue_delete();
 
@@ -78,6 +80,52 @@ Error EditorImportColladaMdr::import(const String &p_source_file, const String &
 	return Error::ERR_PARSE_ERROR;
 }
 
+
+Array EditorImportColladaMdr::apply_transforms(Array &array, const Map<StringName, Variant> &p_options) {
+	Transform transform = Transform(Basis(p_options["rotation"]).scaled(p_options["scale"]), p_options["offset"]);
+
+	Array verts = array.get(Mesh::ARRAY_VERTEX);
+
+	for (int i = 0; i < verts.size(); ++i) {
+		Vector3 vert = verts[i];
+
+		vert = transform.xform(vert);
+
+		verts.set(i, (vert));
+	}
+
+	Array normals = array.get(Mesh::ARRAY_NORMAL);
+
+	for (int i = 0; i < normals.size(); ++i) {
+		Vector3 normal = normals[i];
+
+		normal = transform.basis.xform(normal);
+
+		normals.set(i, normal);
+	}
+
+	Array tangents = array.get(Mesh::ARRAY_TANGENT);
+
+	if (tangents.size() == verts.size() * 4) {
+
+		for (int i = 0; i < verts.size(); ++i) {
+
+			Plane p(tangents[i * 4 + 0], tangents[i * 4 + 1], tangents[i * 4 + 2], tangents[i * 4 + 3]);
+
+			Vector3 tangent = p.normal;
+
+			tangent = transform.basis.xform(tangent);
+
+			tangents.set(i, tangent);
+		}
+	}
+
+	array.set(Mesh::ARRAY_VERTEX, verts);
+	array.set(Mesh::ARRAY_NORMAL, normals);
+	array.set(Mesh::ARRAY_TANGENT, tangents);
+
+	return array;
+}
 
 EditorImportColladaMdr::EditorImportColladaMdr() {
 	_importer.instance();
