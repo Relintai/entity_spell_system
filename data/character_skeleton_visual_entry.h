@@ -9,13 +9,19 @@
 #include "../entity_enums.h"
 
 #include "../meshes/mesh_data_resource.h"
+#include "../skeleton/entity_texture_layer.h"
 
 class CharacterSkeletonVisualEntry : public Resource {
 	GDCLASS(CharacterSkeletonVisualEntry, Resource);
 
 public:
     static const String BINDING_STRING_BONE_ATTACHMENT_TYPES;
-    
+
+	enum {
+		MAX_TEXTURE_LAYERS = 5
+	};
+
+	//not needed, delete
     enum CharacterSkeletonVisualEntryType {
         BONE_ATTACHMENT_TYPE_NONE = 0,
         BONE_ATTACHMENT_TYPE_MESH = 1,
@@ -50,6 +56,8 @@ private:
 	EntityEnums::CharacterSkeletonPoints _target_bone;
     Ref<PackedScene> _effect;
 	Ref<MeshDataResource> _mesh;
+	//apply these from to to bottom, with color index 0, if index not present. store color index in item instance. Use the same index for all of them at once.
+	Ref<EntityTextureLayer> _texture_layers[MAX_TEXTURE_LAYERS];
 };
 
 VARIANT_ENUM_CAST(CharacterSkeletonVisualEntry::CharacterSkeletonVisualEntryType);
