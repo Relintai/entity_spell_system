@@ -10,7 +10,7 @@
 
 #include "../entities/entity.h"
 #include "../entities/stats/stat.h"
-#include "../spells/aura_infos.h"
+#include "../infos/aura_infos.h"
 
 #include "aura_stat_attribute.h"
 #include "aura_trigger_data.h"
@@ -18,7 +18,7 @@
 #include "../entities/auras/aura_data.h"
 #include "../pipelines/spell_damage_info.h"
 #include "../pipelines/spell_heal_info.h"
-#include "../spells/spell_cast_info.h"
+#include "../infos/spell_cast_info.h"
 
 class AuraApplyInfo;
 class AuraScript;

@@ -31,7 +31,7 @@
 
 #include "../entity_enums.h"
 
-#include "../spells/spell_cast_info.h"
+#include "../infos/spell_cast_info.h"
 
 #include "../skeleton/character_skeleton.h"
 

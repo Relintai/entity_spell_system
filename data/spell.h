@@ -9,12 +9,12 @@
 #include "../entity_enums.h"
 #include "../spell_enums.h"
 
-#include "../spells/spell_cast_info.h"
+#include "../infos/spell_cast_info.h"
 
 #include "../entities/entity.h"
 
 #include "../pipelines/spell_damage_info.h"
-#include "../spells/aura_infos.h"
+#include "../infos/aura_infos.h"
 
 class Entity;
 class Aura;

@@ -28,8 +28,8 @@
 #include "data/craft_data_attribute_helper.h"
 #include "data/craft_data_attribute.h"
 
-#include "spells/spell_cast_info.h"
-#include "spells/aura_infos.h"
+#include "infos/spell_cast_info.h"
+#include "infos/aura_infos.h"
 
 #include "data/character_skeleton_visual_entry.h"
 
@@ -57,6 +57,8 @@
 #include "utility/category_cooldown.h"
 
 #include "meshes/mesh_data_resource.h"
+
+#include "skeleton/entity_equipset.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_plugin.h"
@@ -134,6 +136,7 @@ void register_entity_spell_system_types() {
     ClassDB::register_class<Cooldown>();
     ClassDB::register_class<CategoryCooldown>();
 
+    ClassDB::register_class<EntityEquipSet>();
 
 	//meshes
 	ClassDB::register_class<MeshDataResource>();

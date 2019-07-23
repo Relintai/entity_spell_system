@@ -38,8 +38,8 @@ module_env.add_source_files(env.modules_sources,"entities/player_talent.cpp")
 module_env.add_source_files(env.modules_sources,"inventory/bag_slot.cpp")
 module_env.add_source_files(env.modules_sources,"inventory/bag.cpp")
 
-module_env.add_source_files(env.modules_sources,"spells/aura_infos.cpp")
-module_env.add_source_files(env.modules_sources,"spells/spell_cast_info.cpp")
+module_env.add_source_files(env.modules_sources,"infos/aura_infos.cpp")
+module_env.add_source_files(env.modules_sources,"infos/spell_cast_info.cpp")
 
 module_env.add_source_files(env.modules_sources,"data/character_skeleton_visual_entry.cpp")
 
@@ -65,3 +65,6 @@ module_env.add_source_files(env.modules_sources,"utility/category_cooldown.cpp")
 env.add_source_files(env.modules_sources,"meshes/mesh_data_resource.cpp")
 env.add_source_files(env.modules_sources,"meshes/editor_import_collada_mdr.cpp")
 env.add_source_files(env.modules_sources,"meshes/editor_plugin_collada_mdr.cpp")
+
+
+env.add_source_files(env.modules_sources,"skeleton/entity_equipset.cpp")
