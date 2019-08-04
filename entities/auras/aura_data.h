@@ -22,10 +22,12 @@ public:
 	bool update(float delta);
 
 	Entity *get_owner();
-	void set_owner(Node *value);
+	void set_owner(Entity *value);
+	void set_owner_bind(Node *value);
 
 	Entity *get_caster();
-	void set_caster(Node *value);
+	void set_caster(Entity *value);
+	void set_caster_bind(Node *value);
 
 	int get_caster_guid();
 	void set_caster_guid(int value);

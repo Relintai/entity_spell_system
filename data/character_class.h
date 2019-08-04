@@ -14,6 +14,9 @@
 #include "../pipelines/spell_heal_info.h"
 #include "../infos/spell_cast_info.h"
 
+#include "../utility/cooldown.h"
+#include "../utility/category_cooldown.h"
+
 class Aura;
 class Spell;
 class Entity;
@@ -112,13 +115,35 @@ public:
     void son_death(Entity *entity);
     void son_death_bind(Node *entity);
     
+	void son_cooldown_added(Ref<Cooldown> cooldown);
+	void son_cooldown_removed(Ref<Cooldown> cooldown);
+	
+	void son_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
+	void son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+	
     //Clientside Event Handlers
+	void con_cast_failed(Ref<SpellCastInfo> info);
+	void con_cast_started(Ref<SpellCastInfo> info);
+	void con_cast_state_changed(Ref<SpellCastInfo> info);
+	void con_cast_finished(Ref<SpellCastInfo> info);
+	void con_spell_cast_success(Ref<SpellCastInfo> info);
+	
+	void con_death(Entity *entity);
+    void con_death_bind(Node *entity);
+	
+	void con_cooldown_added(Ref<Cooldown> cooldown);
+	void con_cooldown_removed(Ref<Cooldown> cooldown);
+	void con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
+	void con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+	
 	void con_aura_added(Ref<AuraData> data);
 	void con_aura_removed(Ref<AuraData> data);
 	void con_aura_refresh(Ref<AuraData> data);
-    
-    void con_death(Entity *entity);
-    void con_death_bind(Node *entity);
+	
+	void con_damage_dealt(Ref<SpellDamageInfo> info);
+	void con_dealt_damage(Ref<SpellDamageInfo> info);
+	void con_heal_dealt(Ref<SpellHealInfo> info);
+	void con_dealt_heal(Ref<SpellHealInfo> info);
     
     //    AI    //
 	void sai_follow(Entity *entity);

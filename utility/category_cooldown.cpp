@@ -1,27 +1,27 @@
 #include "category_cooldown.h"
 
-int CategoryCooldown::get_category_id() 
+int CategoryCooldown::get_category_id() const
 { 
     return _category_id; 
 }
 
-void CategoryCooldown::set_category_id(int value) 
+void CategoryCooldown::set_category_id(const int value) 
 { 
     _category_id = value; 
 }
 
-int CategoryCooldown::get_remaining() 
+float CategoryCooldown::get_remaining() const
 { 
     return _remaining; 
     
 }
 
-void CategoryCooldown::set_remaining(int value) 
+void CategoryCooldown::set_remaining(const float value) 
 { 
     _remaining = value; 
 }
 
-bool CategoryCooldown::update(float delta) {
+bool CategoryCooldown::update(const float delta) {
     _remaining -= delta;
     
     if (_remaining <= 0) {
@@ -41,7 +41,7 @@ void CategoryCooldown::_bind_methods() {
         
     ClassDB::bind_method(D_METHOD("get_remaining"), &CategoryCooldown::get_remaining);
     ClassDB::bind_method(D_METHOD("set_remaining", "value"), &CategoryCooldown::set_remaining);
-    ADD_PROPERTY(PropertyInfo(Variant::INT, "remaining"), "set_remaining", "get_remaining");
+    ADD_PROPERTY(PropertyInfo(Variant::REAL, "remaining"), "set_remaining", "get_remaining");
     
     ClassDB::bind_method(D_METHOD("update", "delta"), &CategoryCooldown::update);
 }

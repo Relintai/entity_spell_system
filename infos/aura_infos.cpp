@@ -6,7 +6,11 @@ Entity *AuraApplyInfo::get_caster() const {
     return _caster;
 }
 
-void AuraApplyInfo::set_caster(Node *caster) {
+void AuraApplyInfo::set_caster(Entity *value) {
+	_caster = value;
+}
+
+void AuraApplyInfo::set_caster_bind(Node *caster) {
     if (!caster) {
         return;
     }
@@ -21,10 +25,14 @@ void AuraApplyInfo::set_caster(Node *caster) {
 }
 
 Entity *AuraApplyInfo::get_target() const {
-    return _caster;
+    return _target;
 }
 
-void AuraApplyInfo::set_target(Node *caster) {
+void AuraApplyInfo::set_target(Entity *value) {
+	_target = value;
+}
+
+void AuraApplyInfo::set_target_bind(Node *caster) {
     if (!caster) {
         return;
     }
@@ -35,7 +43,7 @@ void AuraApplyInfo::set_target(Node *caster) {
         return;
     }
 
-    _caster = e;
+    _target = e;
 }
 
 
@@ -78,11 +86,11 @@ AuraApplyInfo::AuraApplyInfo(Entity *caster, Entity *target, float spell_scale) 
 
 void AuraApplyInfo::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_caster"), &AuraApplyInfo::get_caster);
-    ClassDB::bind_method(D_METHOD("set_caster", "caster"), &AuraApplyInfo::set_caster);
+    ClassDB::bind_method(D_METHOD("set_caster", "caster"), &AuraApplyInfo::set_caster_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_caster", "get_caster");
 
 	ClassDB::bind_method(D_METHOD("get_target"), &AuraApplyInfo::get_target);
-	ClassDB::bind_method(D_METHOD("set_target", "target"), &AuraApplyInfo::set_target);
+	ClassDB::bind_method(D_METHOD("set_target", "target"), &AuraApplyInfo::set_target_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_target", "get_target");
 
     ClassDB::bind_method(D_METHOD("get_spell_scale"), &AuraApplyInfo::get_spell_scale);

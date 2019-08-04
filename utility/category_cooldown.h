@@ -7,20 +7,20 @@ class CategoryCooldown : public Reference {
 	GDCLASS(CategoryCooldown, Reference);
 
 public:
-	int get_category_id();
-	void set_category_id(int value);
+	int get_category_id() const;
+	void set_category_id(const int value);
 
-	int get_remaining();
-	void set_remaining(int value);
+	float get_remaining() const;
+	void set_remaining(const float value);
     
-    bool update(float delta);
+    bool update(const float delta);
 
 protected:
 	static void _bind_methods();
 
 private:
 	int _category_id;
-	int _remaining;
+	float _remaining;
 };
 
 #endif

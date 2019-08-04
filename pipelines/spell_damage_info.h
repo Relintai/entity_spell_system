@@ -36,10 +36,12 @@ public:
 	void set_spell_type(SpellEnums::SpellType value);
 
 	Entity *get_dealer();
-	void set_dealer(Node *value);
+	void set_dealer(Entity *value);
+	void set_dealer_bind(Node *value);
 
 	Entity *get_receiver();
-	void set_receiver(Node *value);
+	void set_receiver(Entity *value);
+	void set_receiver_bind(Node *value);
 
 	Ref<Reference> get_damage_source();
 	void set_damage_source(Ref<Reference> value);

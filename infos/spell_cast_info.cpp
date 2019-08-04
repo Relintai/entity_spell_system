@@ -8,7 +8,11 @@ Entity *SpellCastInfo::get_caster() const {
 	return _caster;
 }
 
-void SpellCastInfo::set_caster(Node *caster) {
+void SpellCastInfo::set_caster(Entity *value) {
+	_caster = value;
+}
+
+void SpellCastInfo::set_caster_bind(Node *caster) {
 	if (!caster) {
 		return;
 	}
@@ -26,7 +30,11 @@ Entity *SpellCastInfo::get_target() const {
 	return _target;
 }
 
-void SpellCastInfo::set_target(Node *target) {
+void SpellCastInfo::set_target(Entity *value) {
+	_target = value;
+}
+
+void SpellCastInfo::set_target_bind(Node *target) {
 	if (!target) {
 		return;
 	}
@@ -130,11 +138,11 @@ SpellCastInfo::~SpellCastInfo() {
 
 void SpellCastInfo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_caster"), &SpellCastInfo::get_caster);
-	ClassDB::bind_method(D_METHOD("set_caster", "caster"), &SpellCastInfo::set_caster);
+	ClassDB::bind_method(D_METHOD("set_caster", "caster"), &SpellCastInfo::set_caster_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_caster", "get_caster");
 
 	ClassDB::bind_method(D_METHOD("get_target"), &SpellCastInfo::get_target);
-	ClassDB::bind_method(D_METHOD("set_target", "caster"), &SpellCastInfo::set_target);
+	ClassDB::bind_method(D_METHOD("set_target", "caster"), &SpellCastInfo::set_target_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_target", "get_target");
 
 	ClassDB::bind_method(D_METHOD("get_has_cast_time"), &SpellCastInfo::get_has_cast_time);

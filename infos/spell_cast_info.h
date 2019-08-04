@@ -12,10 +12,12 @@ class SpellCastInfo : public Reference {
 
 public:
 	Entity *get_caster() const;
-	void set_caster(Node *caster);
+	void set_caster(Entity *caster);
+	void set_caster_bind(Node *caster);
 
 	Entity *get_target() const;
-	void set_target(Node *caster);
+	void set_target(Entity *caster);
+	void set_target_bind(Node *caster);
 
 	bool get_has_cast_time() const;
 	void set_has_cast_time(bool value);

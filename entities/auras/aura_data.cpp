@@ -80,7 +80,11 @@ Entity *AuraData::get_owner() {
 	return _owner;
 }
 
-void AuraData::set_owner(Node *value) {
+void AuraData::set_owner(Entity *value) {
+	_owner = value;
+}
+
+void AuraData::set_owner_bind(Node *value) {
 	if (!value) {
 		return;
 	}
@@ -98,7 +102,11 @@ Entity *AuraData::get_caster() {
 	return _caster;
 }
 
-void AuraData::set_caster(Node *value) {
+void AuraData::set_caster(Entity *value) {
+	_caster = value;
+}
+
+void AuraData::set_caster_bind(Node *value) {
 	if (!value) {
 		return;
 	}
@@ -247,11 +255,11 @@ void AuraData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "remaining_time"), "set_remaining_time", "get_remaining_time");
 
 	ClassDB::bind_method(D_METHOD("get_owner"), &AuraData::get_owner);
-	ClassDB::bind_method(D_METHOD("set_owner", "value"), &AuraData::set_owner);
+	ClassDB::bind_method(D_METHOD("set_owner", "value"), &AuraData::set_owner_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_owner", "get_owner");
 
 	ClassDB::bind_method(D_METHOD("get_caster"), &AuraData::get_caster);
-	ClassDB::bind_method(D_METHOD("set_caster", "value"), &AuraData::set_caster);
+	ClassDB::bind_method(D_METHOD("set_caster", "value"), &AuraData::set_caster_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_caster", "get_caster");
 
 	ClassDB::bind_method(D_METHOD("get_caster_guid"), &AuraData::get_caster_guid);

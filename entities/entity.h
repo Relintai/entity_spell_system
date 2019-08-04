@@ -300,16 +300,16 @@ public:
 	void son_before_aura_applied(Ref<AuraData> data);
 	void son_after_aura_applied(Ref<AuraData> data);
 	
-	void son_hit(Ref<SpellDamageInfo> data);
-	void son_before_damage(Ref<SpellDamageInfo> data);
-	void son_damage_receive(Ref<SpellDamageInfo> data);
-	void son_dealt_damage(Ref<SpellDamageInfo> data);
-	void son_damage_dealt(Ref<SpellDamageInfo> data);
+	void son_hit(Ref<SpellDamageInfo> info);
+	void son_before_damage(Ref<SpellDamageInfo> info);
+	void son_damage_receive(Ref<SpellDamageInfo> info);
+	void son_dealt_damage(Ref<SpellDamageInfo> info);
+	void son_damage_dealt(Ref<SpellDamageInfo> info);
 
-	void son_before_heal(Ref<SpellHealInfo> data);
-	void son_heal_receive(Ref<SpellHealInfo> data);
-	void son_dealt_heal(Ref<SpellHealInfo> data);
-	void son_heal_dealt(Ref<SpellHealInfo> data);
+	void son_before_heal(Ref<SpellHealInfo> info);
+	void son_heal_receive(Ref<SpellHealInfo> info);
+	void son_dealt_heal(Ref<SpellHealInfo> info);
+	void son_heal_dealt(Ref<SpellHealInfo> info);
 
 	void son_before_cast(Ref<SpellCastInfo> info);
 	void son_before_cast_target(Ref<SpellCastInfo> info);
@@ -320,37 +320,53 @@ public:
     
     void son_death();
 
+	void son_cooldown_added(Ref<Cooldown> cooldown);
+	void son_cooldown_removed(Ref<Cooldown> cooldown);
+
+	void son_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
+	void son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+	
 	//Clientside EventHandlers
 	void con_cast_failed(Ref<SpellCastInfo> info);
 	void con_cast_started(Ref<SpellCastInfo> info);
 	void con_cast_state_changed(Ref<SpellCastInfo> info);
 	void con_cast_finished(Ref<SpellCastInfo> info);
 	void con_spell_cast_success(Ref<SpellCastInfo> info);
+	
     void con_death();
+	
+	void con_cooldown_added(Ref<Cooldown> cooldown);
+	void con_cooldown_removed(Ref<Cooldown> cooldown);
+	void con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
+	void con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
     
-    //Clientside Event Handlers
 	void con_aura_added(Ref<AuraData> data);
 	void con_aura_removed(Ref<AuraData> data);
 	void con_aura_refresh(Ref<AuraData> data);
+	
+	void con_damage_dealt(Ref<SpellDamageInfo> info);
+	void con_dealt_damage(Ref<SpellDamageInfo> info);
+	void con_heal_dealt(Ref<SpellHealInfo> info);
+	void con_dealt_heal(Ref<SpellHealInfo> info);
 
 	//Modifiers/Requesters
-	void sapply_passives_damage_receive(Ref<SpellDamageInfo> data);
-	void sapply_passives_damage_deal(Ref<SpellDamageInfo> data);
+	void sapply_passives_damage_receive(Ref<SpellDamageInfo> info);
+	void sapply_passives_damage_deal(Ref<SpellDamageInfo> info);
 
-	void sapply_passives_heal_receive(Ref<SpellHealInfo> data);
-	void sapply_passives_heal_deal(Ref<SpellHealInfo> data);
+	void sapply_passives_heal_receive(Ref<SpellHealInfo> info);
+	void sapply_passives_heal_deal(Ref<SpellHealInfo> info);
 
 	//Spell operations
 	void scast_spell(int spell_id);
 	void crequest_spell_cast(int spell_id);
 
 	//Damage Operations
-	void stake_damage(Ref<SpellDamageInfo> data);
-	void sdeal_damage_to(Ref<SpellDamageInfo> data);
+	void stake_damage(Ref<SpellDamageInfo> info);
+	void sdeal_damage_to(Ref<SpellDamageInfo> info);
 
 	//Heal Operations
-	void stake_heal(Ref<SpellHealInfo> data);
-	void sdeal_heal_to(Ref<SpellHealInfo> data);
+	void stake_heal(Ref<SpellHealInfo> info);
+	void sdeal_heal_to(Ref<SpellHealInfo> info);
 
 	//Aura Manipulation
 	void sadd_aura(Ref<AuraData> aura);
@@ -380,24 +396,13 @@ public:
 	
 	//Update
 	void update_auras(float delta);
-
-	//Clientside hooks
-	void creceive_damage_taken(Ref<SpellDamageInfo> data);
-	void creceiveon_damage_dealt(Ref<SpellDamageInfo> data);
-	void creceive_heal_taken(Ref<SpellHealInfo> data);
-	void creceiveon_heal_dealt(Ref<SpellHealInfo> data);
     
-	//Old, hook loading update when needed
-	void setup_on_player_moves(Entity *bopmccc, Vector<int> *sspells); //load -> remove, just store spellIds
-
 	//Old stuff, remove or update
 	void resurrect();
 	void creceive_resurrect();
-	void creceive_died();
 	void creceive_mana_changed(int amount);
 	bool gets_is_dead();
 	bool getc_is_dead();
-
 
 	////    Casting System    ////
 
@@ -441,12 +446,9 @@ public:
 	int getc_cooldown_count();
 
 	//Category Cooldowns
-	Vector<Ref<CategoryCooldown> > *gets_category_cooldowns();
-	Vector<Ref<CategoryCooldown> > *getc_category_cooldowns();
-
-	HashMap<int, Ref<CategoryCooldown> > * gets_category_cooldown_map();
-	HashMap<int, Ref<CategoryCooldown> > * getc_category_cooldown_map();
-
+	Vector<Ref<CategoryCooldown> > gets_category_cooldowns();
+	Vector<Ref<CategoryCooldown> > getc_category_cooldowns();
+    
 	bool hass_category_cooldown(int category_id);
 	void adds_category_cooldown(int category_id, float value);
 	void removes_category_cooldown(int category_id);
@@ -518,9 +520,6 @@ public:
 	void send_all_items();
 
 	String random_name();
-
-	String request_spell_name(int spellId);
-	String request_spell_description(int spellId, int level);
 
 protected:
 	static void _bind_methods();
@@ -650,9 +649,9 @@ private:
 
 	Vector<Ref<CategoryCooldown> > _s_category_cooldowns;
 	Vector<Ref<CategoryCooldown> > _c_category_cooldowns;
-
-	HashMap<int, Ref<CategoryCooldown> > _s_category_cooldown_map;
-	HashMap<int, Ref<CategoryCooldown> > _c_category_cooldown_map;
+    
+    int _s_active_category_cooldowns;
+    int _c_active_category_cooldowns;
 
 	////    targetComponent    ////
 
@@ -674,4 +673,3 @@ private:
 VARIANT_ENUM_CAST(Entity::InventorySizes);
 
 #endif
-

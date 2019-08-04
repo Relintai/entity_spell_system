@@ -40,7 +40,11 @@ Entity *SpellDamageInfo::get_dealer() {
 	return _dealer;
 }
 
-void SpellDamageInfo::set_dealer(Node *value) {
+void SpellDamageInfo::set_dealer(Entity *value) {
+	_dealer = value;
+}
+
+void SpellDamageInfo::set_dealer_bind(Node *value) {
 	if (!value) {
 		return;
 	}
@@ -58,7 +62,11 @@ Entity *SpellDamageInfo::get_receiver() {
 	return _receiver;
 }
 
-void SpellDamageInfo::set_receiver(Node *value) {
+void SpellDamageInfo::set_receiver(Entity *value) {
+	_receiver = value;
+}
+
+void SpellDamageInfo::set_receiver_bind(Node *value) {
 	if (!value) {
 		return;
 	}
@@ -161,11 +169,11 @@ void SpellDamageInfo::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_type", PROPERTY_HINT_ENUM, "None, Melee, Magic"), "set_spell_type", "get_spell_type");
 
 	ClassDB::bind_method(D_METHOD("get_dealer"), &SpellDamageInfo::get_dealer);
-	ClassDB::bind_method(D_METHOD("set_dealer", "value"), &SpellDamageInfo::set_dealer);
+	ClassDB::bind_method(D_METHOD("set_dealer", "value"), &SpellDamageInfo::set_dealer_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "dealer", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_dealer", "get_dealer");
 
 	ClassDB::bind_method(D_METHOD("get_receiver"), &SpellDamageInfo::get_receiver);
-	ClassDB::bind_method(D_METHOD("set_receiver", "value"), &SpellDamageInfo::set_receiver);
+	ClassDB::bind_method(D_METHOD("set_receiver", "value"), &SpellDamageInfo::set_receiver_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "receiver", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_receiver", "get_receiver");
 
 	ClassDB::bind_method(D_METHOD("get_damage_source"), &SpellDamageInfo::get_damage_source);

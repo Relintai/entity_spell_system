@@ -12,11 +12,12 @@ class AuraApplyInfo : public Reference {
 
 public:
 	Entity *get_caster() const;
-	void set_caster(Node *caster);
+	void set_caster(Entity *caster);
+	void set_caster_bind(Node *caster);
 
 	Entity *get_target() const;
-	void set_target(Node *caster);
-
+	void set_target(Entity *caster);
+	void set_target_bind(Node *caster);
 
 	float get_spell_scale() const;
 	void set_spell_scale(float value);
