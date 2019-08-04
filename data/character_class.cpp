@@ -149,6 +149,177 @@ void CharacterClass::start_casting(int spell_id, Entity *caster, float spellScal
 	}
 }
 
+
+void CharacterClass::son_before_cast(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_son_before_cast"))
+		call("_son_before_cast", info);
+}
+
+void CharacterClass::son_before_cast_target(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_son_before_cast_target"))
+		call("_son_before_cast_target", info);
+}
+
+void CharacterClass::son_cast_finished(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_son_cast_finished"))
+		call("_son_cast_finished", info);
+}
+
+void CharacterClass::son_cast_started(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_son_cast_started"))
+		call("_son_cast_started", info);
+}
+
+void CharacterClass::son_cast_failed(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_son_cast_failed"))
+		call("_son_cast_failed", info);
+}
+
+void CharacterClass::son_cast_finished_target(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_son_cast_finished_target"))
+		call("_son_cast_finished_target", info);
+}
+
+void CharacterClass::son_hit(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_hit"))
+		call("_son_hit", data);
+}
+
+void CharacterClass::son_before_damage(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_before_damage"))
+		call("_son_before_damage", data);
+}
+
+void CharacterClass::son_damage_receive(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_damage_receive"))
+		call("_son_damage_receive", data);
+}
+
+void CharacterClass::son_dealt_damage(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_dealt_damage"))
+		call("_son_dealt_damage", data);
+}
+
+void CharacterClass::son_damage_dealt(Ref<SpellDamageInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_damage_dealt"))
+		call("_son_damage_dealt", data);
+}
+
+void CharacterClass::son_before_heal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_before_heal"))
+		call("_son_before_heal", data);
+}
+
+void CharacterClass::son_heal_receive(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_heal_receive"))
+		call("_son_heal_receive", data);
+}
+
+void CharacterClass::son_dealt_heal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_dealt_heal"))
+		call("_son_dealt_heal", data);
+}
+
+void CharacterClass::son_heal_dealt(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_heal_dealt"))
+		call("_son_heal_dealt", data);
+}
+
+void CharacterClass::son_before_aura_applied(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_before_aura_applied"))
+		call("_son_before_aura_applied", data);
+}
+
+void CharacterClass::son_after_aura_applied(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_after_aura_applied"))
+		call("_son_after_aura_applied", data);
+}
+
+void CharacterClass::son_death(Entity *entity) {
+    if (has_method("_son_death"))
+		call("_son_death", entity);
+}
+
+void CharacterClass::son_death_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	son_death(e);
+}
+
+void CharacterClass::con_aura_added(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_con_aura_added"))
+		call("_con_aura_added", data);
+}
+
+void CharacterClass::con_aura_removed(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_con_aura_removed"))
+		call("_con_aura_removed", data);
+}
+
+void CharacterClass::con_aura_refresh(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_con_aura_refresh"))
+		call("_con_aura_refresh", data);
+}
+
+void CharacterClass::con_death(Entity *entity) {
+    if (has_method("_con_death"))
+		call("_con_death", entity);
+}
+
+void CharacterClass::con_death_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	con_death(e);
+}
+
 void CharacterClass::sai_follow(Entity *entity) {
 	ERR_FAIL_COND(entity == NULL);
 
@@ -236,11 +407,72 @@ void CharacterClass::_validate_property(PropertyInfo &property) const {
 }
 
 void CharacterClass::_bind_methods() {
+    BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_finished_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+
+	BIND_VMETHOD(MethodInfo("_son_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	BIND_VMETHOD(MethodInfo("_son_before_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_damage_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_dealt_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_damage_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	BIND_VMETHOD(MethodInfo("_son_before_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_son_heal_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_son_dealt_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_son_heal_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+
+	BIND_VMETHOD(MethodInfo("_son_before_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_son_after_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+    
+    BIND_VMETHOD(MethodInfo("_son_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+    
+    BIND_VMETHOD(MethodInfo("_con_aura_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_con_aura_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_con_aura_refresh", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+    
+    BIND_VMETHOD(MethodInfo("_con_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+    
 	BIND_VMETHOD(MethodInfo("_sai_follow", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_sai_rest", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_sai_regenerate", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_sai_attack", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
+    //EventHandlers
+	ClassDB::bind_method(D_METHOD("son_before_cast", "info"), &CharacterClass::son_before_cast);
+	ClassDB::bind_method(D_METHOD("son_before_cast_target", "info"), &CharacterClass::son_before_cast_target);
+	ClassDB::bind_method(D_METHOD("son_cast_started", "info"), &CharacterClass::son_cast_started);
+	ClassDB::bind_method(D_METHOD("son_cast_failed", "info"), &CharacterClass::son_cast_failed);
+	ClassDB::bind_method(D_METHOD("son_cast_finished", "info"), &CharacterClass::son_cast_finished);
+	ClassDB::bind_method(D_METHOD("son_cast_finished_target", "info"), &CharacterClass::son_cast_finished_target);
+
+	ClassDB::bind_method(D_METHOD("son_hit", "data"), &CharacterClass::son_hit);
+
+	ClassDB::bind_method(D_METHOD("son_before_damage", "data"), &CharacterClass::son_before_damage);
+	ClassDB::bind_method(D_METHOD("son_damage_receive", "data"), &CharacterClass::son_damage_receive);
+	ClassDB::bind_method(D_METHOD("son_dealt_damage", "data"), &CharacterClass::son_dealt_damage);
+	ClassDB::bind_method(D_METHOD("son_damage_dealt", "data"), &CharacterClass::son_damage_dealt);
+
+	ClassDB::bind_method(D_METHOD("son_before_heal", "data"), &CharacterClass::son_before_heal);
+	ClassDB::bind_method(D_METHOD("son_heal_receive", "data"), &CharacterClass::son_heal_receive);
+	ClassDB::bind_method(D_METHOD("son_dealt_heal", "data"), &CharacterClass::son_dealt_heal);
+	ClassDB::bind_method(D_METHOD("son_heal_dealt", "data"), &CharacterClass::son_heal_dealt);
+
+	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &CharacterClass::son_before_aura_applied);
+	ClassDB::bind_method(D_METHOD("son_after_aura_applied", "data"), &CharacterClass::son_after_aura_applied);
+    
+    ClassDB::bind_method(D_METHOD("son_death", "data"), &CharacterClass::son_death_bind);
+    
+    //Clientside Event Handlers
+	ClassDB::bind_method(D_METHOD("con_aura_added", "data"), &CharacterClass::con_aura_added);
+	ClassDB::bind_method(D_METHOD("con_aura_removed", "data"), &CharacterClass::con_aura_removed);
+	ClassDB::bind_method(D_METHOD("con_aura_refresh", "data"), &CharacterClass::con_aura_refresh);
+    ClassDB::bind_method(D_METHOD("con_death", "data"), &CharacterClass::con_death_bind);
+    
 	ClassDB::bind_method(D_METHOD("sai_follow", "entity"), &CharacterClass::sai_follow_bind);
 	ClassDB::bind_method(D_METHOD("sai_rest", "entity"), &CharacterClass::sai_rest_bind);
 	ClassDB::bind_method(D_METHOD("sai_regenerate", "entity"), &CharacterClass::sai_regenerate_bind);

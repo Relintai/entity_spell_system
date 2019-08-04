@@ -562,6 +562,25 @@ void Entity::set_stat_enum(Stat::StatId stat_id, Ref<Stat> entry) {
 	_stats[stat_id] = Ref<Stat>(entry);
 }
 
+
+void Entity::sdie() {
+	//serverside
+
+    son_death();
+
+	//send an event to client
+	SEND_RPC(rpc("cdie"), cdie());
+
+	//signal
+	emit_signal("sdied", this);
+}
+
+void Entity::cdie() {
+	con_death();
+    
+    emit_signal("cdied", this);
+}
+
 ////    Resources    ////
 
 Ref<EntityResource> Entity::gets_resource(int index) {
@@ -634,7 +653,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> data) {
 	emit_signal("son_damage_received", this, data);
 
 	if (get_health()->gets_current() <= 0) {
-		die();
+		sdie();
 	}
 }
 
@@ -695,19 +714,6 @@ void Entity::sdeal_heal_to(Ref<SpellHealInfo> data) {
 	sapply_passives_heal_deal(data);
 	data->get_receiver()->stake_heal(data);
 	son_heal_dealt(data);
-}
-
-void Entity::die() {
-	/*
-	if (!CxNet::IsServer) {
-		return;
-	}
-	sRezTimer = (float)5;
-	sIsDead = true;
-	if (SOnDeath != null) {
-		DELEGATE_INVOKE(SOnDeath);
-	}
-	SendDieMessage();*/
 }
 
 void Entity::resurrect() {
@@ -789,6 +795,13 @@ void Entity::creceive_mana_changed(int amount) {
 void Entity::son_before_aura_applied(Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_after_aura_applied(data);
+    }
+    
+    if (has_method("_son_before_aura_applied"))
+		call("_son_before_aura_applied", data);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -799,6 +812,13 @@ void Entity::son_before_aura_applied(Ref<AuraData> data) {
 void Entity::son_after_aura_applied(Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_after_aura_applied(data);
+    }
+    
+    if (has_method("_son_after_aura_applied"))
+		call("_son_after_aura_applied", data);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -835,6 +855,13 @@ void Entity::update_auras(float delta) {
 
 void Entity::son_before_cast(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
+    
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_before_cast(info);
+    }
+    
+    if (has_method("_son_before_cast"))
+		call("_son_before_cast", info);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
@@ -846,6 +873,13 @@ void Entity::son_before_cast(Ref<SpellCastInfo> info) {
 void Entity::son_before_cast_target(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_after_aura_applied(info);
+    }
+    
+    if (has_method("_son_before_cast_target"))
+		call("_son_before_cast_target", info);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -855,7 +889,14 @@ void Entity::son_before_cast_target(Ref<SpellCastInfo> info) {
 
 void Entity::son_hit(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
-
+    
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_hit(data);
+    }
+    
+    if (has_method("_son_hit"))
+		call("_son_hit", data);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -866,6 +907,13 @@ void Entity::son_hit(Ref<SpellDamageInfo> data) {
 void Entity::son_before_damage(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_before_damage(data);
+    }
+    
+    if (has_method("_son_before_damage"))
+		call("_son_before_damage", data);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -876,6 +924,13 @@ void Entity::son_before_damage(Ref<SpellDamageInfo> data) {
 void Entity::son_damage_receive(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_damage_receive(data);
+    }
+    
+    if (has_method("_son_damage_receive"))
+		call("_son_damage_receive", data);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -886,6 +941,13 @@ void Entity::son_damage_receive(Ref<SpellDamageInfo> data) {
 void Entity::son_dealt_damage(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_dealt_damage(data);
+    }
+    
+    if (has_method("_son_dealt_damage"))
+		call("_son_dealt_damage", data);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -896,6 +958,13 @@ void Entity::son_dealt_damage(Ref<SpellDamageInfo> data) {
 void Entity::son_damage_dealt(Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_damage_dealt(data);
+    }
+    
+    if (has_method("_son_damage_dealt"))
+		call("_son_damage_dealt", data);
+    
 	//serverside
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
@@ -907,6 +976,13 @@ void Entity::son_damage_dealt(Ref<SpellDamageInfo> data) {
 void Entity::son_before_heal(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_before_heal(data);
+    }
+    
+    if (has_method("_son_before_heal"))
+		call("_son_before_heal", data);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -917,6 +993,13 @@ void Entity::son_before_heal(Ref<SpellHealInfo> data) {
 void Entity::son_heal_receive(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_heal_receive(data);
+    }
+    
+    if (has_method("_son_heal_receive"))
+		call("_son_heal_receive", data);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -927,6 +1010,13 @@ void Entity::son_heal_receive(Ref<SpellHealInfo> data) {
 void Entity::son_dealt_heal(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_dealt_heal(data);
+    }
+    
+    if (has_method("_son_dealt_heal"))
+		call("_son_dealt_heal", data);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -937,6 +1027,13 @@ void Entity::son_dealt_heal(Ref<SpellHealInfo> data) {
 void Entity::son_heal_dealt(Ref<SpellHealInfo> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_heal_dealt(data);
+    }
+    
+    if (has_method("_son_heal_dealt"))
+		call("_son_heal_dealt", data);
+    
 	//serverside
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
@@ -987,7 +1084,14 @@ void Entity::sapply_passives_heal_deal(Ref<SpellHealInfo> data) {
 
 void Entity::son_cast_finished(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-
+    
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_cast_finished(info);
+    }
+    
+    if (has_method("_son_cast_finished"))
+		call("_son_cast_finished", info);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -998,6 +1102,13 @@ void Entity::son_cast_finished(Ref<SpellCastInfo> info) {
 void Entity::son_cast_started(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_cast_started(info);
+    }
+    
+    if (has_method("_son_cast_started"))
+		call("_son_cast_started", info);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -1008,6 +1119,13 @@ void Entity::son_cast_started(Ref<SpellCastInfo> info) {
 void Entity::son_cast_failed(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_cast_failed(info);
+    }
+    
+    if (has_method("_son_cast_failed"))
+		call("_son_cast_failed", info);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -1018,12 +1136,35 @@ void Entity::son_cast_failed(Ref<SpellCastInfo> info) {
 void Entity::son_cast_finished_target(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_cast_finished_target(info);
+    }
+    
+    if (has_method("_son_cast_finished_target"))
+		call("_son_cast_finished_target", info);
+    
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_cast_finished_target(info);
 	}
 }
+
+void Entity::son_death() {
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_death(this);
+    }
+    
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->son_death(ad);
+	}
+	
+	if (has_method("_son_death"))
+		call("_son_death");
+}
+
 
 void Entity::sadd_aura(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
@@ -1168,8 +1309,16 @@ void Entity::cremove_aura(Ref<AuraData> aura) {
 		}
 	}
 
-	if (removed)
-		emit_signal("caura_removed", a);
+	if (removed) {
+        if (_s_character_class.is_valid()) {
+            _s_character_class->con_aura_removed(aura);
+        }
+        
+        if (has_method("_con_aura_removed"))
+            call("_con_aura_removed", aura);
+    
+        emit_signal("caura_removed", a);
+    }
 }
 
 void Entity::cremove_aura_exact(Ref<AuraData> aura) {
@@ -1181,6 +1330,14 @@ void Entity::cremove_aura_exact(Ref<AuraData> aura) {
 			break;
 		}
 	}
+	
+	if (_s_character_class.is_valid()) {
+        _s_character_class->con_aura_removed(aura);
+    }
+    
+    if (has_method("_con_aura_removed"))
+		call("_con_aura_removed", aura);
+    
 
 	emit_signal("caura_removed", aura);
 }
@@ -1195,6 +1352,14 @@ void Entity::cremove_aura_dispelled(Ref<AuraData> aura) {
 		}
 	}
 
+	if (_s_character_class.is_valid()) {
+        _s_character_class->con_aura_removed(aura);
+    }
+    
+    if (has_method("_con_aura_removed"))
+		call("_con_aura_removed", aura);
+    
+	
 	emit_signal("caura_removed_dispelled", aura);
 }
 
@@ -1217,6 +1382,13 @@ void Entity::cremove_aura_expired(Ref<AuraData> aura) {
 			break;
 		}
 	}
+	
+	if (_s_character_class.is_valid()) {
+        _s_character_class->con_aura_removed(aura);
+    }
+    
+    if (has_method("_con_aura_removed"))
+		call("_con_aura_removed", aura);
 
 	emit_signal("caura_removed_expired", aura);
 }
@@ -1242,6 +1414,8 @@ Ref<AuraData> Entity::cget_aura(int index) {
 }
 
 void Entity::moved() {
+    if (has_method("_moved"))
+		call("_moved");
 }
 
 void Entity::con_cast_failed(Ref<SpellCastInfo> info) {
@@ -1257,6 +1431,42 @@ void Entity::con_cast_finished(Ref<SpellCastInfo> info) {
 }
 
 void Entity::con_spell_cast_success(Ref<SpellCastInfo> info) {
+}
+
+void Entity::con_death() {
+    if (_s_character_class.is_valid()) {
+        _s_character_class->con_death(this);
+    }
+    
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->con_death(ad);
+	}
+	
+	if (has_method("_con_death"))
+		call("_con_death");
+}
+
+void Entity::con_aura_added(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_con_aura_added"))
+		call("_con_aura_added", data);
+}
+
+void Entity::con_aura_removed(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_con_aura_removed"))
+		call("_con_aura_removed", data);
+}
+
+void Entity::con_aura_refresh(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_con_aura_refresh"))
+		call("_con_aura_refresh", data);
 }
 
 void Entity::setup_on_player_moves(Entity *bopmccc, Vector<int> *sspells) {
@@ -1617,9 +1827,6 @@ Ref<SpellCastInfo> Entity::getc_spell_cast_info() {
 
 void Entity::setc_spell_cast_info(Ref<SpellCastInfo> info) {
 	_c_spell_cast_info = Ref<SpellCastInfo>(info);
-}
-
-void Entity::son_death() {
 }
 
 void Entity::sremove_auras_with_group(int aura_group) {
@@ -2142,6 +2349,38 @@ void Entity::_notification(int p_what) {
 }
 
 void Entity::_bind_methods() {
+    BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_cast_finished_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+
+	BIND_VMETHOD(MethodInfo("_son_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	BIND_VMETHOD(MethodInfo("_son_before_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_damage_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_dealt_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_damage_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	BIND_VMETHOD(MethodInfo("_son_before_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_son_heal_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_son_dealt_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_son_heal_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+
+	BIND_VMETHOD(MethodInfo("_son_before_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_son_after_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+    
+    BIND_VMETHOD(MethodInfo("_son_death"));
+    
+    BIND_VMETHOD(MethodInfo("_con_aura_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_con_aura_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_con_aura_refresh", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+    
+    BIND_VMETHOD(MethodInfo("_con_death"));
+    
+    BIND_VMETHOD(MethodInfo("_moved"));
+    
 	//Signals
 	ADD_SIGNAL(MethodInfo("starget_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("ctarget_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
@@ -2159,6 +2398,9 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("scharacter_class_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("ccharacter_class_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
+    ADD_SIGNAL(MethodInfo("sdied", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+    ADD_SIGNAL(MethodInfo("cdied", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+    
 	//SpellCastSignals
 	ADD_SIGNAL(MethodInfo("scast_started", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("scast_failed", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -2184,6 +2426,9 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("caura_removed_dispelled", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	ADD_SIGNAL(MethodInfo("caura_removed_expired", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	//ADD_SIGNAL(MethodInfo("caura_refreshed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+    
+    ClassDB::bind_method(D_METHOD("sdie"), &Entity::sdie);
+    ClassDB::bind_method(D_METHOD("cdie"), &Entity::cdie);
 
 	//EventHandlers
 	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &Entity::son_before_aura_applied);
@@ -2206,14 +2451,17 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_cast_finished", "info"), &Entity::son_cast_finished);
 	ClassDB::bind_method(D_METHOD("son_cast_started", "info"), &Entity::son_cast_started);
 	ClassDB::bind_method(D_METHOD("son_cast_failed", "info"), &Entity::son_cast_failed);
-
+    
+    ClassDB::bind_method(D_METHOD("son_death"), &Entity::son_death);
+    
 	//Clientside EventHandlers
 	ClassDB::bind_method(D_METHOD("con_cast_failed", "info"), &Entity::con_cast_failed);
 	ClassDB::bind_method(D_METHOD("con_cast_started", "info"), &Entity::con_cast_started);
 	ClassDB::bind_method(D_METHOD("con_cast_state_changed", "info"), &Entity::con_cast_state_changed);
 	ClassDB::bind_method(D_METHOD("con_cast_finished", "info"), &Entity::con_cast_finished);
 	ClassDB::bind_method(D_METHOD("con_spell_cast_success", "info"), &Entity::con_spell_cast_success);
-
+    ClassDB::bind_method(D_METHOD("con_death"), &Entity::con_death);
+    
 	//Modifiers/Requesters
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Entity::sapply_passives_damage_receive);
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_deal", "data"), &Entity::sapply_passives_damage_deal);

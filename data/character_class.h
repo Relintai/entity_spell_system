@@ -9,6 +9,11 @@
 #include "../entity_enums.h"
 #include "character_spec.h"
 
+#include "../entities/auras/aura_data.h"
+#include "../pipelines/spell_damage_info.h"
+#include "../pipelines/spell_heal_info.h"
+#include "../infos/spell_cast_info.h"
+
 class Aura;
 class Spell;
 class Entity;
@@ -83,6 +88,39 @@ public:
 
 	void start_casting(int spell_id, Entity *caster, float spellScale);
 
+    void son_before_cast(Ref<SpellCastInfo> info);
+	void son_before_cast_target(Ref<SpellCastInfo> info);
+	void son_cast_finished_target(Ref<SpellCastInfo> info);
+	void son_cast_finished(Ref<SpellCastInfo> info);
+	void son_cast_started(Ref<SpellCastInfo> info);
+	void son_cast_failed(Ref<SpellCastInfo> info);
+    
+	void son_hit(Ref<SpellDamageInfo> data);
+	void son_before_damage(Ref<SpellDamageInfo> data);
+	void son_damage_receive(Ref<SpellDamageInfo> data);
+	void son_dealt_damage(Ref<SpellDamageInfo> data);
+	void son_damage_dealt(Ref<SpellDamageInfo> data);
+
+	void son_before_heal(Ref<SpellHealInfo> data);
+	void son_heal_receive(Ref<SpellHealInfo> data);
+	void son_dealt_heal(Ref<SpellHealInfo> data);
+	void son_heal_dealt(Ref<SpellHealInfo> data);
+
+    void son_before_aura_applied(Ref<AuraData> data);
+	void son_after_aura_applied(Ref<AuraData> data);
+    
+    void son_death(Entity *entity);
+    void son_death_bind(Node *entity);
+    
+    //Clientside Event Handlers
+	void con_aura_added(Ref<AuraData> data);
+	void con_aura_removed(Ref<AuraData> data);
+	void con_aura_refresh(Ref<AuraData> data);
+    
+    void con_death(Entity *entity);
+    void con_death_bind(Node *entity);
+    
+    //    AI    //
 	void sai_follow(Entity *entity);
 	void sai_rest(Entity *entity);
 	void sai_regenerate(Entity *entity);

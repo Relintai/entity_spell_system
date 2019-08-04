@@ -260,6 +260,9 @@ public:
 
 	Ref<Stat> get_stat_enum(Stat::StatId stat_id);
 	void set_stat_enum(Stat::StatId stat_id, Ref<Stat> entry);
+    
+    void sdie();
+    void cdie();
 
 	////    Resources    ////
 
@@ -314,6 +317,8 @@ public:
 	void son_cast_finished(Ref<SpellCastInfo> info);
 	void son_cast_started(Ref<SpellCastInfo> info);
 	void son_cast_failed(Ref<SpellCastInfo> info);
+    
+    void son_death();
 
 	//Clientside EventHandlers
 	void con_cast_failed(Ref<SpellCastInfo> info);
@@ -321,6 +326,12 @@ public:
 	void con_cast_state_changed(Ref<SpellCastInfo> info);
 	void con_cast_finished(Ref<SpellCastInfo> info);
 	void con_spell_cast_success(Ref<SpellCastInfo> info);
+    void con_death();
+    
+    //Clientside Event Handlers
+	void con_aura_added(Ref<AuraData> data);
+	void con_aura_removed(Ref<AuraData> data);
+	void con_aura_refresh(Ref<AuraData> data);
 
 	//Modifiers/Requesters
 	void sapply_passives_damage_receive(Ref<SpellDamageInfo> data);
@@ -375,20 +386,17 @@ public:
 	void creceiveon_damage_dealt(Ref<SpellDamageInfo> data);
 	void creceive_heal_taken(Ref<SpellHealInfo> data);
 	void creceiveon_heal_dealt(Ref<SpellHealInfo> data);
-
+    
 	//Old, hook loading update when needed
 	void setup_on_player_moves(Entity *bopmccc, Vector<int> *sspells); //load -> remove, just store spellIds
 
 	//Old stuff, remove or update
-	void die();
 	void resurrect();
 	void creceive_resurrect();
 	void creceive_died();
 	void creceive_mana_changed(int amount);
 	bool gets_is_dead();
 	bool getc_is_dead();
-
-	void son_death();
 
 
 	////    Casting System    ////
@@ -666,3 +674,4 @@ private:
 VARIANT_ENUM_CAST(Entity::InventorySizes);
 
 #endif
+

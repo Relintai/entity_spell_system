@@ -600,25 +600,35 @@ void Aura::son_after_aura_applied(Ref<AuraData> data) {
 		call("_son_after_aura_applied", data);
 }
 
-void Aura::con_added(Ref<AuraData> data) {
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_con_added"))
-		call("_con_added", data);
+void Aura::son_death(Ref<AuraData> data) {
+    if (has_method("_son_death"))
+		call("_son_death", data);
 }
 
-void Aura::con_removed(Ref<AuraData> data) {
+void Aura::con_aura_added(Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_con_removed"))
-		call("_con_removed", data);
+	if (has_method("_con_aura_added"))
+		call("_con_aura_added", data);
 }
 
-void Aura::con_refresh(Ref<AuraData> data) {
+void Aura::con_aura_removed(Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_con_refresh"))
-		call("_con_refresh", data);
+	if (has_method("_con_aura_removed"))
+		call("_con_aura_removed", data);
+}
+
+void Aura::con_aura_refresh(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_con_aura_refresh"))
+		call("_con_aura_refresh", data);
+}
+
+void Aura::con_death(Ref<AuraData> data) {
+    if (has_method("_con_death"))
+		call("_con_death", data);
 }
 
 void Aura::setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
@@ -874,6 +884,8 @@ void Aura::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &Aura::son_before_aura_applied);
 	ClassDB::bind_method(D_METHOD("son_after_aura_applied", "data"), &Aura::son_after_aura_applied);
+    
+    ClassDB::bind_method(D_METHOD("son_death", "data"), &Aura::son_death);
 
 	BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -900,15 +912,19 @@ void Aura::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_son_before_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_son_after_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+    
+    BIND_VMETHOD(MethodInfo("_son_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 	//Clientside Event Handlers
-	ClassDB::bind_method(D_METHOD("con_added", "info"), &Aura::con_added);
-	ClassDB::bind_method(D_METHOD("con_removed", "info"), &Aura::con_removed);
-	ClassDB::bind_method(D_METHOD("con_refresh", "info"), &Aura::con_refresh);
+	ClassDB::bind_method(D_METHOD("con_aura_added", "data"), &Aura::con_aura_added);
+	ClassDB::bind_method(D_METHOD("con_aura_removed", "data"), &Aura::con_aura_removed);
+	ClassDB::bind_method(D_METHOD("con_aura_refresh", "data"), &Aura::con_aura_refresh);
+    ClassDB::bind_method(D_METHOD("con_death", "data"), &Aura::con_death);
 
-	BIND_VMETHOD(MethodInfo("_con_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_con_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_con_refresh", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_con_aura_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_con_aura_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_con_aura_refresh", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+    BIND_VMETHOD(MethodInfo("_con_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 	//Calculations / Queries
 	ClassDB::bind_method(D_METHOD("setup_aura_data", "data", "info"), &Aura::setup_aura_data);

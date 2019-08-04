@@ -231,12 +231,15 @@ public:
 
 	void son_before_aura_applied(Ref<AuraData> data);
 	void son_after_aura_applied(Ref<AuraData> data);
+    
+    void son_death(Ref<AuraData> data);
 
 	//Clientside Event Handlers
-	void con_added(Ref<AuraData> data);
-	void con_removed(Ref<AuraData> data);
-	void con_refresh(Ref<AuraData> data);
-
+	void con_aura_added(Ref<AuraData> data);
+	void con_aura_removed(Ref<AuraData> data);
+	void con_aura_refresh(Ref<AuraData> data);
+    void con_death(Ref<AuraData> data);
+    
 	//Calculations / Queries
 	void setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
 
