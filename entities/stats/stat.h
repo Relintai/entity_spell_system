@@ -6,46 +6,7 @@
 #include "core/vector.h"
 #include "scene/resources/curve.h"
 
-class StatModifier : public Reference {
-	GDCLASS(StatModifier, Reference);
-
-public:
-	StatModifier() {
-	}
-
-	StatModifier(int i, float maxM, float percentM) {
-		_id = i;
-		_max_mod = maxM;
-		_percent_mod = percentM;
-	}
-
-	int get_id() { return _id; }
-	void set_id(int value) { _id = value; }
-	float get_bonus_mod() { return _max_mod; }
-	void set_bonus_mod(float value) { _max_mod = value; }
-	float get_percent_mod() { return _percent_mod; }
-	void set_percent_mod(float value) { _percent_mod = value; }
-
-protected:
-	static void _bind_methods() {
-		ClassDB::bind_method(D_METHOD("get_id"), &StatModifier::get_id);
-		ClassDB::bind_method(D_METHOD("set_id", "value"), &StatModifier::set_id);
-		ADD_PROPERTY(PropertyInfo(Variant::REAL, "id"), "set_id", "get_id");
-
-		ClassDB::bind_method(D_METHOD("get_bonus_mod"), &StatModifier::get_bonus_mod);
-		ClassDB::bind_method(D_METHOD("set_bonus_mod", "value"), &StatModifier::set_bonus_mod);
-		ADD_PROPERTY(PropertyInfo(Variant::REAL, "bonus_mod"), "set_bonus_mod", "get_bonus_mod");
-
-		ClassDB::bind_method(D_METHOD("get_percent_mod"), &StatModifier::get_percent_mod);
-		ClassDB::bind_method(D_METHOD("set_percent_mod", "value"), &StatModifier::set_percent_mod);
-		ADD_PROPERTY(PropertyInfo(Variant::REAL, "percent_mod"), "set_percent_mod", "get_percent_mod");
-	}
-
-private:
-	int _id;
-	float _max_mod;
-	float _percent_mod;
-};
+#include "stat_modifier.h"
 
 class Stat : public Reference {
 	GDCLASS(Stat, Reference);
@@ -128,8 +89,6 @@ public:
 
 	bool get_dirty();
 	void set_dirty(bool value);
-	bool get_disabled();
-	void set_disabled(bool value);
 
 	float get_base();
 	void set_base(float value);
@@ -152,7 +111,7 @@ public:
 	void recalculate();
 	bool iss_current_zero();
 	bool isc_current_zero();
-	void set(float current, float max, float modCurrent, float modMax, float modPercent);
+	void set(float current, float max, float base, float bonus, float percent);
 	void set_from_stat(Ref<Stat> other);
 
 	void set_to_max();
@@ -163,7 +122,7 @@ public:
 	void re_apply_modifier_not_negative_stacking_percents();
 
 	Vector<Ref<StatModifier> > *get_modifiers();
-	void add_modifier(int id, float maxMod, float percentMod, bool apply = true);
+	void add_modifier(int id, float base_mod, float bonus_mod, float percent_mod, bool apply = true);
 	void remove_modifier(int id, bool apply = true);
 	void re_apply_modifiers();
 	int get_modifier_count();
@@ -185,7 +144,6 @@ private:
 	Vector<Ref<StatModifier> > _modifiers;
 
 	bool _dirty;
-	bool _disabled;
 
 	float _base;
 	float _bonus;

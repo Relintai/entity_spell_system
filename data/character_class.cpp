@@ -302,6 +302,33 @@ void CharacterClass::son_category_cooldown_removed(Ref<CategoryCooldown> categor
 		call("_son_category_cooldown_removed", category_cooldown);
 }
 
+void CharacterClass::son_gcd_started(Entity *entity, float gcd) {
+	if (has_method("_son_gcd_started"))
+		call("_son_gcd_started", entity, gcd);
+}
+void CharacterClass::son_gcd_finished(Entity *entity) {
+	if (has_method("_son_gcd_finished"))
+		call("_son_gcd_finished", entity);
+}
+void CharacterClass::son_gcd_started_bind(Node *entity, float gcd) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	son_gcd_started(e, gcd);
+}
+void CharacterClass::son_gcd_finished_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	son_gcd_finished(e);
+}
+
 //Clientside Event Handlers
 void CharacterClass::con_cast_failed(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
@@ -425,6 +452,33 @@ void CharacterClass::con_dealt_heal(Ref<SpellHealInfo> info) {
 		call("_con_dealt_heal", info);
 }
 
+void CharacterClass::con_gcd_started(Entity *entity, float gcd) {
+	if (has_method("_con_gcd_started"))
+		call("_con_gcd_started", entity, gcd);
+}
+void CharacterClass::con_gcd_finished(Entity *entity) {
+	if (has_method("_con_gcd_finished"))
+		call("_con_gcd_finished", entity);
+}
+void CharacterClass::con_gcd_started_bind(Node *entity, float gcd) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	con_gcd_started(e, gcd);
+}
+void CharacterClass::con_gcd_finished_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	con_gcd_finished(e);
+}
+
 
 void CharacterClass::sai_follow(Entity *entity) {
 	ERR_FAIL_COND(entity == NULL);
@@ -544,6 +598,9 @@ void CharacterClass::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_category_cooldown_added", "category_cooldown"), &CharacterClass::son_category_cooldown_added);
 	ClassDB::bind_method(D_METHOD("son_category_cooldown_removed", "category_cooldown"), &CharacterClass::son_category_cooldown_removed);
 	
+	ClassDB::bind_method(D_METHOD("son_gcd_started", "entity", "gcd"), &CharacterClass::son_gcd_started_bind);
+	ClassDB::bind_method(D_METHOD("son_gcd_finished", "entity"), &CharacterClass::son_gcd_finished_bind);
+	
 	BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -579,6 +636,8 @@ void CharacterClass::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_category_cooldown_added", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 	BIND_VMETHOD(MethodInfo("_son_category_cooldown_removed", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 
+	BIND_VMETHOD(MethodInfo("_son_gcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_son_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
     
     //Clientside Event Handlers
 	ClassDB::bind_method(D_METHOD("con_cast_failed", "info"), &CharacterClass::con_cast_failed);
@@ -597,6 +656,9 @@ void CharacterClass::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_aura_added", "data"), &CharacterClass::con_aura_added);
 	ClassDB::bind_method(D_METHOD("con_aura_removed", "data"), &CharacterClass::con_aura_removed);
 	ClassDB::bind_method(D_METHOD("con_aura_refresh", "data"), &CharacterClass::con_aura_refresh);
+	
+	ClassDB::bind_method(D_METHOD("con_gcd_started", "entity", "gcd"), &CharacterClass::con_gcd_started_bind);
+	ClassDB::bind_method(D_METHOD("con_gcd_finished", "entity"), &CharacterClass::con_gcd_finished_bind);
 
 	BIND_VMETHOD(MethodInfo("_con_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -615,6 +677,9 @@ void CharacterClass::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_aura_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_con_aura_refresh", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
     
+	BIND_VMETHOD(MethodInfo("_con_gcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_con_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	
 	ClassDB::bind_method(D_METHOD("sai_follow", "entity"), &CharacterClass::sai_follow_bind);
 	ClassDB::bind_method(D_METHOD("sai_rest", "entity"), &CharacterClass::sai_rest_bind);
 	ClassDB::bind_method(D_METHOD("sai_regenerate", "entity"), &CharacterClass::sai_regenerate_bind);

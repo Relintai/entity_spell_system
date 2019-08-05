@@ -410,6 +410,20 @@ void Aura::sapply(Ref<AuraApplyInfo> info) {
 	call("_sapply", info);
 }
 
+void Aura::sdeapply(Ref<AuraData> info) {
+	ERR_FAIL_COND(!info.is_valid());
+	
+	//always exists
+	call("_sdeapply", info);
+}
+
+void Aura::sadd(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
+
+	//always exists
+	call("_sadd", aura);
+}
+
 void Aura::sremove(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
@@ -616,6 +630,19 @@ void Aura::son_category_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldow
 		call("_son_category_cooldown_removed", data, category_cooldown);
 }
 
+void Aura::son_gcd_started(Ref<AuraData> data, float gcd) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_gcd_started"))
+		call("_son_gcd_started", data, gcd);
+}
+void Aura::son_gcd_finished(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_son_gcd_finished"))
+		call("_son_gcd_finished", data);
+}
+
 void Aura::con_cast_failed(Ref<AuraData> data, Ref<SpellCastInfo> info) {
 	if (has_method("_con_cast_failed"))
 		call("_con_cast_failed", data, info);
@@ -710,6 +737,19 @@ void Aura::con_dealt_heal(Ref<AuraData> data, Ref<SpellHealInfo> info){
 
 	if (has_method("_con_dealt_heal"))
 		call("_con_dealt_heal", data, info);
+}
+
+void Aura::con_gcd_started(Ref<AuraData> data, float gcd) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_con_gcd_started"))
+		call("_con_gcd_started", data, gcd);
+}
+void Aura::con_gcd_finished(Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_con_gcd_finished"))
+		call("_con_gcd_finished", data);
 }
 
 void Aura::setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
@@ -844,25 +884,44 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 	Ref<AuraData> ad(memnew(AuraData()));
 	setup_aura_data(ad, info);
 
-	info->get_target()->sremove_aura(ad);
-	info->get_target()->sadd_aura(ad);
+	
+}
+
+void Aura::_sdeapply(Ref<AuraData> info) {
+	ERR_FAIL_COND(info->get_owner() == NULL || info->get_caster() == NULL || !info->get_aura().is_valid());
+
+}
+
+void Aura::_sadd(Ref<AuraData> aura) {
+	ERR_FAIL_COND(aura->get_owner() == NULL);
+
+	//sapply(aura);
+	
+	aura->get_owner()->sremove_aura(aura);
+	aura->get_owner()->sadd_aura(aura);
 }
 
 void Aura::_sremove(Ref<AuraData> aura) {
 	ERR_FAIL_COND(aura->get_owner() == NULL);
 
+	sdeapply(aura);
+	
 	aura->get_owner()->sremove_aura(aura);
 }
 
 void Aura::_sremove_expired(Ref<AuraData> aura) {
 	ERR_FAIL_COND(aura->get_owner() == NULL);
 
+	sdeapply(aura);
+	
 	aura->get_owner()->sremove_aura_expired(aura);
 }
 
 void Aura::_sremove_dispell(Ref<AuraData> aura) {
 	ERR_FAIL_COND(aura->get_owner() == NULL);
 
+	sdeapply(aura);
+	
 	aura->get_owner()->sremove_aura_dispelled(aura);
 }
 
@@ -922,18 +981,24 @@ void Aura::_validate_property(PropertyInfo &property) const {
 void Aura::_bind_methods() {
 	//Commands
 	ClassDB::bind_method(D_METHOD("sapply", "info"), &Aura::sapply);
+	ClassDB::bind_method(D_METHOD("sdeapply", "aura"), &Aura::sdeapply);
+	ClassDB::bind_method(D_METHOD("sadd", "aura"), &Aura::sadd);
 	ClassDB::bind_method(D_METHOD("sremove", "aura"), &Aura::sremove);
 	ClassDB::bind_method(D_METHOD("sremove_expired", "aura"), &Aura::sremove_expired);
 	ClassDB::bind_method(D_METHOD("sremove_dispell", "aura"), &Aura::sremove_dispell);
 	ClassDB::bind_method(D_METHOD("supdate", "aura", "delta"), &Aura::supdate);
 
 	BIND_VMETHOD(MethodInfo("_sapply", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
+	BIND_VMETHOD(MethodInfo("_sdeapply", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_sadd", PropertyInfo(Variant::OBJECT, "aura", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_sremove", PropertyInfo(Variant::OBJECT, "aura", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_sremove_expired", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_sremove_dispell", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_supdate", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::REAL, "delta")));
 
 	ClassDB::bind_method(D_METHOD("_sapply", "info"), &Aura::_sapply);
+	ClassDB::bind_method(D_METHOD("_sdeapply", "aura"), &Aura::_sdeapply);
+	ClassDB::bind_method(D_METHOD("_sadd", "aura"), &Aura::_sadd);
 	ClassDB::bind_method(D_METHOD("_sremove", "aura"), &Aura::_sremove);
 	ClassDB::bind_method(D_METHOD("_sremove_expired", "aura"), &Aura::_sremove_expired);
 	ClassDB::bind_method(D_METHOD("_sremove_dispell", "aura"), &Aura::_sremove_dispell);
@@ -974,6 +1039,9 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_category_cooldown_added", "data", "category_cooldown"), &Aura::son_category_cooldown_added);
 	ClassDB::bind_method(D_METHOD("son_category_cooldown_removed", "data", "category_cooldown"), &Aura::son_category_cooldown_removed);
 	
+	ClassDB::bind_method(D_METHOD("son_gcd_started", "data", "gcd"), &Aura::son_gcd_started);
+	ClassDB::bind_method(D_METHOD("son_gcd_finished", "data"), &Aura::son_gcd_finished);
+	
 	BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -1007,6 +1075,9 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_category_cooldown_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 	BIND_VMETHOD(MethodInfo("_son_category_cooldown_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 
+	BIND_VMETHOD(MethodInfo("_son_gcd_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_son_gcd_finished", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+
 	//Clientside Event Handlers
 	ClassDB::bind_method(D_METHOD("con_cast_failed", "data", "info"), &Aura::con_cast_failed);
 	ClassDB::bind_method(D_METHOD("con_cast_started", "data", "info"), &Aura::con_cast_started);
@@ -1029,7 +1100,10 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_dealt_damage", "data", "info"), &Aura::con_dealt_damage);
 	ClassDB::bind_method(D_METHOD("con_heal_dealt", "data", "info"), &Aura::con_heal_dealt);
 	ClassDB::bind_method(D_METHOD("con_dealt_heal", "data", "info"), &Aura::con_dealt_heal);
-    
+	
+	ClassDB::bind_method(D_METHOD("con_gcd_started", "data", "info"), &Aura::con_gcd_started);
+	ClassDB::bind_method(D_METHOD("con_gcd_finished", "data"), &Aura::con_gcd_finished);
+	
 	BIND_VMETHOD(MethodInfo("_con_cast_failed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_state_changed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -1051,6 +1125,9 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_dealt_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_con_heal_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_con_dealt_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	
+	BIND_VMETHOD(MethodInfo("_con_gcd_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_con_gcd_finished", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	
 	//Calculations / Queries
 	ClassDB::bind_method(D_METHOD("setup_aura_data", "data", "info"), &Aura::setup_aura_data);
@@ -1223,18 +1300,18 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_heal_scaling_curve", "curve"), &Aura::set_heal_scaling_curve);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "heal_scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_heal_scaling_curve", "get_heal_scaling_curve");
 
-	//ADD_GROUP("States", "states"); not needed
+	ADD_GROUP("States", "states");
 	ClassDB::bind_method(D_METHOD("get_add_states"), &Aura::get_add_states);
 	ClassDB::bind_method(D_METHOD("set_add_states", "value"), &Aura::set_add_states);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "states/add_states", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES), "set_add_states", "get_add_states");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "states_add", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES), "set_add_states", "get_add_states");
 
 	ClassDB::bind_method(D_METHOD("get_remove_effects_with_states"), &Aura::get_remove_effects_with_states);
 	ClassDB::bind_method(D_METHOD("set_remove_effects_with_states", "value"), &Aura::set_remove_effects_with_states);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "states/remove_effects_with_states", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES), "set_remove_effects_with_states", "get_remove_effects_with_states");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "states_remove_effects", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES), "set_remove_effects_with_states", "get_remove_effects_with_states");
 
 	ClassDB::bind_method(D_METHOD("get_supress_states"), &Aura::get_supress_states);
 	ClassDB::bind_method(D_METHOD("set_supress_states", "value"), &Aura::set_supress_states);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "states/supress_states", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES), "set_supress_states", "get_supress_states");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "states_supress", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES), "set_supress_states", "get_supress_states");
 
 	////    Triggers    ////
 	ADD_GROUP("Triggers", "trigger");
@@ -1253,9 +1330,9 @@ void Aura::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "trigger_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_TRIGGER_DATA), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_trigger_count", "get_trigger_count");
 
 	for (int i = 0; i < MAX_TRIGGER_DATA; i++) {
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "Trigger_" + itos(i) + "/trigger_event", PROPERTY_HINT_ENUM, SpellEnums::BINDING_STRING_TRIGGER_EVENTS, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_trigger_event", "get_trigger_event", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "Trigger_" + itos(i) + "/trigger_aura", PROPERTY_HINT_RESOURCE_TYPE, "Aura", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_trigger_aura", "get_trigger_aura", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "Trigger_" + itos(i) + "/trigger_spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_trigger_spell", "get_trigger_spell", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "Trigger_" + itos(i) + "/event", PROPERTY_HINT_ENUM, SpellEnums::BINDING_STRING_TRIGGER_EVENTS, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_trigger_event", "get_trigger_event", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "Trigger_" + itos(i) + "/aura", PROPERTY_HINT_RESOURCE_TYPE, "Aura", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_trigger_aura", "get_trigger_aura", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "Trigger_" + itos(i) + "/spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_trigger_spell", "get_trigger_spell", i);
 	}
 
 	ADD_GROUP("Attributes", "attribute");

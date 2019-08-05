@@ -15,7 +15,6 @@ Stat::Stat() {
 	_c_max = (float)(0);
 	_c_current = (float)(0);
 
-	_disabled = false;
 	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
 }
 
@@ -30,7 +29,6 @@ Stat::Stat(Stat::StatId id) {
 	_c_max = (float)(0);
 	_c_current = (float)(0);
 
-	_disabled = false;
 	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
 }
 
@@ -45,7 +43,6 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type) {
 	_c_max = (float)(0);
 	_c_current = (float)(0);
 
-	_disabled = false;
 	_modifier_apply_type = modifier_apply_type;
 	_id = id;
 }
@@ -61,7 +58,6 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float bas
 	_s_current = (float)(0);
 	_c_max = (float)(0);
 	_c_current = (float)(0);
-	_disabled = false;
 	_modifier_apply_type = modifier_apply_type;
 
 	_id = id;
@@ -70,7 +66,6 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float bas
 	_bonus = bonus;
 	_percent = percent;
 
-	_disabled = false;
 }
 
 Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float base) {
@@ -84,14 +79,11 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float bas
 	_c_max = (float)(0);
 	_c_current = (float)(0);
 
-	_disabled = false;
 	_modifier_apply_type = modifier_apply_type;
 	_id = id;
 	_base = base;
 	_percent = 100;
 	_bonus = 0;
-
-	_disabled = false;
 }
 
 Stat::~Stat() {
@@ -144,18 +136,8 @@ void Stat::set_dirty(bool value) {
 	_dirty = value;
 }
 
-bool Stat::get_disabled() {
-	return _disabled;
-}
-
-void Stat::set_disabled(bool value) {
-	_disabled = value;
-
-	emit_signal("s_changed", this);
-}
-
-void Stat::add_modifier(int id, float _max_mod, float percent_mod, bool apply) {
-	Ref<StatModifier> statModifier = Ref<StatModifier>(memnew(StatModifier(id, _max_mod, percent_mod)));
+void Stat::add_modifier(int id, float base_mod, float bonus_mod, float percent_mod, bool apply) {
+	Ref<StatModifier> statModifier = Ref<StatModifier>(memnew(StatModifier(id, base_mod, bonus_mod, percent_mod)));
 
 	if (apply) {
 		apply_modifier(statModifier);
@@ -181,10 +163,12 @@ void Stat::remove_modifier(int id, bool apply) {
 
 void Stat::apply_modifier(Ref<StatModifier> modifier) {
 	if (_modifier_apply_type == MODIFIER_APPLY_TYPE_STANDARD) {
+		_base += modifier->get_base_mod();
 		_bonus += modifier->get_bonus_mod();
 		_percent += modifier->get_percent_mod();
 	} else {
 		if (modifier->get_percent_mod() >= (float)0) {
+			_base += modifier->get_base_mod();
 			_bonus += modifier->get_bonus_mod();
 			_percent += modifier->get_percent_mod();
 		} else {
@@ -211,16 +195,22 @@ void Stat::apply_modifier(Ref<StatModifier> modifier) {
 			}
 		}
 	}
+	
+	recalculate();
+	emit_signal("s_changed", this);
+	send();
 	//	emit_signal("s_changed", this);
 }
 
 void Stat::de_apply_modifier(Ref<StatModifier> modifier) {
 	if (_modifier_apply_type == MODIFIER_APPLY_TYPE_STANDARD) {
+		_base -= modifier->get_base_mod();
 		_bonus -= modifier->get_bonus_mod();
 		_percent -= modifier->get_percent_mod();
 	} else {
 		if (modifier->get_percent_mod() >= (float)0) {
-			//_bonus -= modifier->get_bonus_mod();
+			_base -= modifier->get_base_mod();
+			_bonus -= modifier->get_bonus_mod();
 			_percent -= modifier->get_percent_mod();
 		} else {
 			int num = -1;
@@ -242,10 +232,10 @@ void Stat::de_apply_modifier(Ref<StatModifier> modifier) {
 		}
 	}
 
-	if (_modifiers.size() == 0) {
-		recalculate();
-	}
-
+	recalculate();
+	emit_signal("s_changed", this);
+	send();
+	
 	//	emit_signal("s_changed", this);
 }
 
@@ -256,16 +246,17 @@ void Stat::re_apply_modifiers() {
 		for (int i = 0; i < _modifiers.size(); i += 1) {
 			Ref<StatModifier> mod = _modifiers.get(i);
 
+			_base += mod->get_base_mod();
 			_bonus += mod->get_bonus_mod();
 			_percent += mod->get_percent_mod();
 		}
 	} else {
 		re_apply_modifier_not_negative_stacking_percents();
 	}
-
-	if (_modifiers.size() == 0) {
-		recalculate();
-	}
+	
+	recalculate();
+	emit_signal("s_changed", this);
+	send();
 
 	//	emit_signal("s_changed", this);
 }
@@ -277,6 +268,7 @@ void Stat::re_apply_modifier_not_negative_stacking_percents() {
 		if (_modifiers.get(i)->get_percent_mod() > (float)0) {
 			Ref<StatModifier> mod = _modifiers.get(i);
 
+			_base += mod->get_base_mod();
 			_bonus += mod->get_bonus_mod();
 			_percent += mod->get_percent_mod();
 		}
@@ -298,10 +290,15 @@ void Stat::re_apply_modifier_not_negative_stacking_percents() {
 	if (num != -1) {
 		Ref<StatModifier> mod = _modifiers.get(num);
 
+		_base += mod->get_base_mod();
 		_bonus += mod->get_bonus_mod();
 		_percent += mod->get_percent_mod();
 	}
 
+	recalculate();
+	emit_signal("s_changed", this);
+	send();
+	
 	//	emit_signal("s_changed", this);
 }
 
@@ -386,10 +383,6 @@ void Stat::set_percent(float value) {
 }
 
 void Stat::reset_values() {
-	if (_disabled) {
-		return;
-	}
-
 	_percent = 100;
 	_bonus = 0;
 	_percent = 0;
@@ -401,15 +394,15 @@ void Stat::reset_values() {
 }
 
 void Stat::recalculate() {
-	if (_disabled) {
-		return;
-	}
-
-	_s_max = (_percent / (float)100) * (_base + _bonus);
+	float diff = _s_current / _s_max;
+	
+	_s_max = (_base + _bonus) * (_percent / 100.0);
 
 	if (_s_current > _s_max) {
 		_s_current = _s_max;
 	}
+	
+	_s_current = _s_max * diff;
 
 	_dirty = true;
 }
@@ -441,7 +434,6 @@ void Stat::set_values(float base, float bonus, float percent) {
 	_base = base;
 	_bonus = bonus;
 	_percent = percent;
-	_disabled = false;
 
 	recalculate();
 
@@ -472,7 +464,6 @@ void Stat::set(float current, float max, float base, float bonus, float percent)
 	_bonus = bonus;
 	_percent = percent;
 	_dirty = true;
-	_disabled = false;
 
 	emit_signal("s_changed", this);
 	send();
@@ -492,10 +483,6 @@ void Stat::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_dirty"), &Stat::get_dirty);
 	ClassDB::bind_method(D_METHOD("set_dirty", "value"), &Stat::set_dirty);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_dirty"), "set_dirty", "get_dirty");
-
-	ClassDB::bind_method(D_METHOD("get_disabled"), &Stat::get_disabled);
-	ClassDB::bind_method(D_METHOD("set_disabled", "value"), &Stat::set_disabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dirty"), "set_disabled", "get_disabled");
 
 	ClassDB::bind_method(D_METHOD("gets_current"), &Stat::gets_current);
 	ClassDB::bind_method(D_METHOD("sets_current", "value"), &Stat::sets_current);
@@ -543,7 +530,7 @@ void Stat::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("re_apply_modifier_not_negative_stacking_percents"), &Stat::re_apply_modifier_not_negative_stacking_percents);
 
 
-	ClassDB::bind_method(D_METHOD("add_modifier", "id", "maxMod", "percentMod", "apply"), &Stat::add_modifier);
+	ClassDB::bind_method(D_METHOD("add_modifier", "id", "base_mod", "bonus_mod", "percent_mod", "apply"), &Stat::add_modifier);
 	ClassDB::bind_method(D_METHOD("remove_modifier", "id", "apply"), &Stat::remove_modifier);
 	ClassDB::bind_method(D_METHOD("re_apply_modifiers"), &Stat::re_apply_modifiers);
 

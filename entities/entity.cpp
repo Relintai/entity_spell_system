@@ -172,24 +172,6 @@ void Entity::sets_character_class(Ref<CharacterClass> value) {
 	//SEND_RPC(rpc("setc_character_class", value), setc_character_class(value));
 }
 
-Entity *Entity::gets_spell_target() {
-	return _s_target;
-}
-
-void Entity::sets_spell_target(Node *p_target) {
-	if (!p_target) {
-		return;
-	}
-
-	Entity *e = cast_to<Entity>(p_target);
-
-	if (!e) {
-		return;
-	}
-
-	_s_target = e;
-}
-
 Entity::Entity() {
 	_s_guid = 0;
 	_c_guid = 0;
@@ -232,21 +214,6 @@ Entity::Entity() {
 
 	sRezTimer = 0;
 	cRezTimer = 0;
-
-	_s_casting = false;
-	_s_spell_id = 0;
-	_s_current_cast_time = 0;
-	_s_cast_time = 0;
-	_s_spell_scale = 0;
-	_c_casting = false;
-	_c_spell_id = 0;
-	_c_current_cast_time = 0;
-	_c_cast_time = 0;
-	_c_spell_name = "";
-	_s_spell_target = NULL;
-	_c_spell_target = NULL;
-	_s_spell_target_guid = 0;
-	_s_spell_cast_game_object_guid = 0;
 
 	_s_active_category_cooldowns = 0;
 	_c_active_category_cooldowns = 0;
@@ -308,14 +275,6 @@ Entity::Entity() {
 	SET_RPC_REMOTE("setc_gender");
 	SET_RPC_REMOTE("setc_level");
 	SET_RPC_REMOTE("setc_xp");
-
-	////    SpellCastData    ////
-
-	//SET_RPC_PUPPET("setc_casting");
-	//SET_RPC_PUPPET("setc_spell_id");
-	//SET_RPC_PUPPET("setc_current_cast_time");
-	//SET_RPC_PUPPET("setc_cast_time");
-	//SET_RPC_PUPPET("setc_spell_target");
 
 	////     Stats    ////
 
@@ -486,12 +445,20 @@ bool Entity::gets_global_cooldown() {
 
 void Entity::sstart_global_cooldown(float value) {
 	_s_gcd = value;
-
+	
+	void son_gcd_started();
+	
+	emit_signal("sgcd_started", _s_gcd);
+				
 	SEND_RPC(rpc("cstart_global_cooldown", value), cstart_global_cooldown(value));
 }
 
 void Entity::cstart_global_cooldown(float value) {
 	_c_gcd = value;
+
+	void con_gcd_started();
+	
+	emit_signal("cgcd_started", _c_gcd);
 }
 
 ////    States    ////
@@ -1206,6 +1173,62 @@ void Entity::son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldo
 	}
 }
 
+void Entity::son_gcd_started() {
+    if (_s_character_class.is_valid()) {
+        _s_character_class->son_gcd_started(this, _s_gcd);
+    }
+    
+    if (has_method("_son_gcd_started"))
+		call("_son_gcd_started", _s_gcd);
+    
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->son_gcd_started(ad, _s_gcd);
+	}
+}
+void Entity::son_gcd_finished() {
+	if (_s_character_class.is_valid()) {
+        _s_character_class->son_gcd_finished(this);
+    }
+    
+    if (has_method("_son_gcd_finished"))
+		call("_son_gcd_finished");
+    
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->son_gcd_finished(ad);
+	}
+}
+void Entity::con_gcd_started() {
+	if (_s_character_class.is_valid()) {
+        _s_character_class->con_gcd_started(this, _c_gcd);
+    }
+    
+    if (has_method("_con_gcd_started"))
+		call("_con_gcd_started", _c_gcd);
+    
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->con_gcd_started(ad, _c_gcd);
+	}
+}
+void Entity::con_gcd_finished() {
+	if (_s_character_class.is_valid()) {
+        _s_character_class->con_gcd_finished(this);
+    }
+    
+    if (has_method("_con_gcd_finished"))
+		call("_con_gcd_finished");
+    
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->con_gcd_finished(ad);
+	}
+}
 
 void Entity::sadd_aura(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
@@ -1442,6 +1465,31 @@ Ref<AuraData> Entity::sget_aura(int index) {
 	ERR_FAIL_INDEX_V(index, _s_auras.size(), Ref<AuraData>(NULL));
 
 	return Ref<AuraData>(_s_auras.get(index));
+}
+
+Ref<AuraData> Entity::sget_aura_by(Entity *caster, int aura_id) {
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+		
+		if (ad->get_aura_id() == aura_id && ad->get_caster() == caster) {
+			return ad;
+		}
+	}
+	
+	return Ref<AuraData>(NULL);
+}
+Ref<AuraData> Entity::sget_aura_by_bind(Node *caster, int aura_id) {
+	if (!caster) {
+		return Ref<AuraData>(NULL);
+	}
+
+	Entity *e = cast_to<Entity>(caster);
+
+	if (!e) {
+		return Ref<AuraData>(NULL);
+	}
+
+	return sget_aura_by(e, aura_id);
 }
 
 int Entity::cget_aura_count() {
@@ -2179,6 +2227,16 @@ int Entity::getc_category_cooldown_count() {
 	return _c_category_cooldowns.size();
 }
 
+
+////    Casting System    ////
+
+bool Entity::sis_casting() {
+	return _s_spell_cast_info.is_valid();
+}
+bool Entity::cis_casting() {
+	return _c_spell_cast_info.is_valid();
+}
+
 Ref<SpellCastInfo> Entity::gets_spell_cast_info() {
 	return Ref<SpellCastInfo>(_s_spell_cast_info);
 }
@@ -2539,91 +2597,15 @@ void Entity::rpc_level_up() {
        }*/
 }
 
-////    SpellCastData    ////
-
-bool Entity::gets_casting() {
-	return _s_casting;
-}
-void Entity::sets_casting(bool value) {
-	_s_casting = value;
-}
-
-int Entity::gets_spell_id() {
-	return _s_spell_id;
-}
-void Entity::sets_spell_id(int value) {
-	_s_spell_id = value;
-}
-
-float Entity::gets_current_cast_time() {
-	return _s_current_cast_time;
-}
-void Entity::sets_current_cast_time(float value) {
-	_s_current_cast_time = value;
-}
-
-float Entity::gets_cast_time() {
-	return _s_cast_time;
-}
-void Entity::sets_cast_time(float value) {
-	_s_cast_time = value;
-}
-
-float Entity::gets_spell_scale() {
-	return _s_spell_scale;
-}
-void Entity::sets_spell_scale(float value) {
-	_s_spell_scale = value;
-}
-
-bool Entity::getc_casting() {
-	return _c_casting;
-}
-void Entity::setc_casting(bool value) {
-	_c_casting = value;
-}
-
-int Entity::getc_spell_id() {
-	return _c_spell_id;
-}
-void Entity::setc_spell_id(int value) {
-	_c_spell_id = value;
-}
-
-float Entity::getc_current_cast_time() {
-	return _c_current_cast_time;
-}
-void Entity::setc_current_cast_time(float value) {
-	_c_current_cast_time = value;
-}
-
-float Entity::getc_cast_time() {
-	return _c_cast_time;
-}
-void Entity::setc_cast_time(float value) {
-	_c_cast_time = value;
-}
-
-String Entity::getc_spell_name() {
-	return _c_spell_name;
-}
-void Entity::setc_spell_name(String value) {
-	_c_spell_name = value;
-}
-
-int Entity::gets_target_guid() {
-	return _s_target_guid;
-}
-int Entity::gets_spell_cast_game_object_guid() {
-	return _s_spell_cast_game_object_guid;
-}
-
 void Entity::update(float delta) {
 	if (_s_gcd > 0.0000001) {
 		_s_gcd -= delta;
 
 		if (_s_gcd <= 0) {
 			_s_gcd = 0;
+
+				
+			void son_gcd_finished();
 
 			emit_signal("sgcd_finished");
 		}
@@ -2634,6 +2616,8 @@ void Entity::update(float delta) {
 
 		if (_c_gcd <= 0) {
 			_c_gcd = 0;
+			
+			void con_gcd_finished();
 
 			emit_signal("cgcd_finished");
 		}
@@ -2733,16 +2717,21 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("starget_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("ctarget_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	ADD_SIGNAL(MethodInfo("son_damage_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	ADD_SIGNAL(MethodInfo("con_damage_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	ADD_SIGNAL(MethodInfo("son_damage_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	ADD_SIGNAL(MethodInfo("con_damage_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
-	ADD_SIGNAL(MethodInfo("con_damage_dealt", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	ADD_SIGNAL(MethodInfo("con_dealt_damage", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	ADD_SIGNAL(MethodInfo("con_damage_dealt", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	ADD_SIGNAL(MethodInfo("con_dealt_damage", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
-	ADD_SIGNAL(MethodInfo("son_heal_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
-	ADD_SIGNAL(MethodInfo("con_heal_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	ADD_SIGNAL(MethodInfo("son_heal_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	ADD_SIGNAL(MethodInfo("con_heal_received", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 
-	ADD_SIGNAL(MethodInfo("con_dealt_heal", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "damage_pipeline_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	ADD_SIGNAL(MethodInfo("con_dealt_heal", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	
+	ADD_SIGNAL(MethodInfo("con_heal_dealt", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	
+	
+	
 
 	ADD_SIGNAL(MethodInfo("scharacter_class_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("ccharacter_class_changed", PropertyInfo(Variant::OBJECT, "Entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
@@ -2804,6 +2793,9 @@ void Entity::_bind_methods() {
     
     BIND_VMETHOD(MethodInfo("_son_death"));
 	
+	BIND_VMETHOD(MethodInfo("_son_gcd_started", PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_son_gcd_finished"));
+	
 	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &Entity::son_before_aura_applied);
 	ClassDB::bind_method(D_METHOD("son_after_aura_applied", "data"), &Entity::son_after_aura_applied);
 
@@ -2826,7 +2818,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_cast_failed", "info"), &Entity::son_cast_failed);
     
     ClassDB::bind_method(D_METHOD("son_death"), &Entity::son_death);
-    
+	
+	ClassDB::bind_method(D_METHOD("son_gcd_started"), &Entity::son_gcd_started);
+	ClassDB::bind_method(D_METHOD("son_gcd_finished"), &Entity::son_gcd_finished);
+	
 	//Clientside EventHandlers
 	BIND_VMETHOD(MethodInfo("_con_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -2850,6 +2845,9 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_heal_dealt", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_con_dealt_heal", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	
+	BIND_VMETHOD(MethodInfo("_con_gcd_started", PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_con_gcd_finished"));
+	
 	ClassDB::bind_method(D_METHOD("con_cast_failed", "info"), &Entity::con_cast_failed);
 	ClassDB::bind_method(D_METHOD("con_cast_started", "info"), &Entity::con_cast_started);
 	ClassDB::bind_method(D_METHOD("con_cast_state_changed", "info"), &Entity::con_cast_state_changed);
@@ -2871,6 +2869,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_dealt_damage", "info"), &Entity::con_dealt_damage);
 	ClassDB::bind_method(D_METHOD("con_heal_dealt", "info"), &Entity::con_heal_dealt);
 	ClassDB::bind_method(D_METHOD("con_dealt_heal", "info"), &Entity::con_dealt_heal);
+	
+	ClassDB::bind_method(D_METHOD("con_gcd_started"), &Entity::con_gcd_started);
+	ClassDB::bind_method(D_METHOD("con_gcd_finished"), &Entity::con_gcd_finished);
     
 	//Modifiers/Requesters
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Entity::sapply_passives_damage_receive);
@@ -2907,7 +2908,8 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sget_aura_count"), &Entity::sget_aura_count);
 	ClassDB::bind_method(D_METHOD("sget_aura", "index"), &Entity::sget_aura);
-
+	ClassDB::bind_method(D_METHOD("sget_aura_by", "caster", "aura_id"), &Entity::sget_aura_by_bind);
+	
 	ClassDB::bind_method(D_METHOD("cget_aura_count"), &Entity::cget_aura_count);
 	ClassDB::bind_method(D_METHOD("cget_aura", "index"), &Entity::cget_aura);
 
@@ -2997,7 +2999,6 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_stat_enum", "stat_id", "entry"), &Entity::set_stat_enum);
 
 	//Resources
-
 	ClassDB::bind_method(D_METHOD("gets_resource", "index"), &Entity::gets_resource);
 	ClassDB::bind_method(D_METHOD("adds_resource", "palyer_resource"), &Entity::adds_resource);
 	ClassDB::bind_method(D_METHOD("gets_resource_count"), &Entity::gets_resource_count);
@@ -3010,9 +3011,9 @@ void Entity::_bind_methods() {
 
 	//GCD
 	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::REAL, "value")));
-	ADD_SIGNAL(MethodInfo("sgcd_finished", PropertyInfo(Variant::REAL, "value")));
+	ADD_SIGNAL(MethodInfo("sgcd_finished"));
 	ADD_SIGNAL(MethodInfo("cgcd_started", PropertyInfo(Variant::REAL, "value")));
-	ADD_SIGNAL(MethodInfo("cgcd_finished", PropertyInfo(Variant::REAL, "value")));
+	ADD_SIGNAL(MethodInfo("cgcd_finished"));
 
 	ClassDB::bind_method(D_METHOD("getc_has_global_cooldown"), &Entity::getc_has_global_cooldown);
 	ClassDB::bind_method(D_METHOD("gets_has_global_cooldown"), &Entity::gets_has_global_cooldown);
@@ -3033,6 +3034,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sremove_state_ref", "state_index"), &Entity::sremove_state_ref);
 
 	//Casting System
+
+	ClassDB::bind_method(D_METHOD("sis_casting"), &Entity::sis_casting);
+	ClassDB::bind_method(D_METHOD("cis_casting"), &Entity::cis_casting);
 
 	ClassDB::bind_method(D_METHOD("gets_spell_cast_info"), &Entity::gets_spell_cast_info);
 	ClassDB::bind_method(D_METHOD("sets_spell_cast_info", "value"), &Entity::sets_spell_cast_info);
@@ -3098,10 +3102,6 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_character_skeleton"), &Entity::get_character_skeleton);
 
 	////    Targeting System    ////
-
-	ClassDB::bind_method(D_METHOD("gets_spell_target"), &Entity::gets_spell_target);
-	ClassDB::bind_method(D_METHOD("sets_spell_target", "target"), &Entity::sets_spell_target);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sspell_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "sets_spell_target", "gets_spell_target");
 
 	ClassDB::bind_method(D_METHOD("crequest_target_change", "path"), &Entity::crequest_target_change);
 	ClassDB::bind_method(D_METHOD("net_sets_target", "path"), &Entity::net_sets_target);

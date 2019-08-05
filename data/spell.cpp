@@ -749,7 +749,7 @@ Spell::Spell() {
 	_cost_resource = 0;
 	//PlayerResourceTypes _give_resource_type;
 	_give_resource = 0;
-	_has_global_cooldown = false;
+	_has_global_cooldown = true;
 	_is_local_spell = false;
 
 	//String _name_key;

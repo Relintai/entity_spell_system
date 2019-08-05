@@ -195,44 +195,6 @@ public:
 	void rpc_level_up();
 	void registers();
 
-	////    SpellCastData    ////
-
-	bool gets_casting();
-	void sets_casting(bool value);
-
-	int gets_spell_id();
-	void sets_spell_id(int value);
-
-	float gets_current_cast_time();
-	void sets_current_cast_time(float value);
-
-	float gets_cast_time();
-	void sets_cast_time(float value);
-
-	float gets_spell_scale();
-	void sets_spell_scale(float value);
-
-	bool getc_casting();
-	void setc_casting(bool value);
-
-	int getc_spell_id();
-	void setc_spell_id(int value);
-
-	float getc_current_cast_time();
-	void setc_current_cast_time(float value);
-
-	float getc_cast_time();
-	void setc_cast_time(float value);
-
-	String getc_spell_name();
-	void setc_spell_name(String value);
-
-	Entity *gets_spell_target();
-	void sets_spell_target(Node *p_target);
-
-	int gets_target_guid();
-	int gets_spell_cast_game_object_guid();
-
 	////     Stats    ////
 
 	_FORCE_INLINE_ Ref<Stat> get_health() { return _health; }
@@ -326,6 +288,11 @@ public:
 	void son_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
 	void son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
 	
+	void son_gcd_started();
+	void son_gcd_finished();
+	void con_gcd_started();
+	void con_gcd_finished();
+	
 	//Clientside EventHandlers
 	void con_cast_failed(Ref<SpellCastInfo> info);
 	void con_cast_started(Ref<SpellCastInfo> info);
@@ -385,9 +352,12 @@ public:
 
 	void sremove_auras_with_group(int aura_group);
 
+	//NOTE: No reason for shas_aura_by, just query it, and check for null.
 	int sget_aura_count();
 	Ref<AuraData> sget_aura(int index);
-
+	Ref<AuraData> sget_aura_by(Entity *caster, int aura_id);
+	Ref<AuraData> sget_aura_by_bind(Node *caster, int aura_id);
+	
 	int cget_aura_count();
 	Ref<AuraData> cget_aura(int index);
 
@@ -405,6 +375,9 @@ public:
 	bool getc_is_dead();
 
 	////    Casting System    ////
+	
+	bool sis_casting();
+	bool cis_casting();
 
 	Ref<SpellCastInfo> gets_spell_cast_info();
 	void sets_spell_cast_info(Ref<SpellCastInfo> info);
@@ -613,21 +586,6 @@ private:
 	int _c_state;
 
 	////    SpellCastData    ////
-
-	bool _s_casting;
-	int _s_spell_id;
-	float _s_current_cast_time;
-	float _s_cast_time;
-	float _s_spell_scale;
-	bool _c_casting;
-	int _c_spell_id;
-	float _c_current_cast_time;
-	float _c_cast_time;
-	String _c_spell_name;
-	Entity *_s_spell_target;
-	Entity *_c_spell_target;
-	int _s_spell_target_guid;
-	int _s_spell_cast_game_object_guid;
 
 	Ref<SpellCastInfo> _s_spell_cast_info;
 	Ref<SpellCastInfo> _c_spell_cast_info;

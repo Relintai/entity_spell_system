@@ -4,6 +4,7 @@
 #include "item_enums.h"
 
 #include "data/aura.h"
+#include "data/aura_stat_attribute.h"
 #include "data/data_manager.h"
 #include "data/character_class.h"
 #include "data/talent.h"
@@ -20,6 +21,7 @@
 
 #include "data/spell.h"
 #include "entities/stats/stat.h"
+#include "entities/stats/stat_modifier.h"
 #include "entities/stats/stat_data.h"
 #include "entities/player_talent.h"
 #include "inventory/bag_slot.h"
@@ -77,6 +79,8 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<CharacterClass>();
 	ClassDB::register_class<Spell>();
 	ClassDB::register_class<Aura>();
+	ClassDB::register_class<AuraStatAttribute>();
+	
 	ClassDB::register_class<XPData>();
 	ClassDB::register_class<ItemStatModifier>();
 	ClassDB::register_class<ItemTemplateStatModifier>();

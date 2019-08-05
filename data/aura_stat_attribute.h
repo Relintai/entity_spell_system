@@ -28,7 +28,7 @@ public:
 	}
 
 protected:
-	static void _bind_method() {
+	static void _bind_methods() {
 		ClassDB::bind_method(D_METHOD("get_stat"), &AuraStatAttribute::get_stat);
 		ClassDB::bind_method(D_METHOD("set_stat", "value"), &AuraStatAttribute::set_stat);
 		ADD_PROPERTY(PropertyInfo(Variant::INT, "stat", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING), "set_stat", "get_stat");

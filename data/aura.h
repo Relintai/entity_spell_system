@@ -197,12 +197,16 @@ public:
 
 	//Commands
 	void sapply(Ref<AuraApplyInfo> info);
+	void sdeapply(Ref<AuraData> info);
+	void sadd(Ref<AuraData> aura);
 	void sremove(Ref<AuraData> aura);
 	void sremove_expired(Ref<AuraData> aura);
 	void sremove_dispell(Ref<AuraData> aura);
 	void supdate(Ref<AuraData> aura, float delta);
 
 	virtual void _sapply(Ref<AuraApplyInfo> info);
+	virtual void _sdeapply(Ref<AuraData> info);
+	virtual void _sadd(Ref<AuraData> aura);
 	virtual void _sremove(Ref<AuraData> aura);
 	virtual void _sremove_expired(Ref<AuraData> aura);
 	virtual void _supdate(Ref<AuraData> aura, float delta);
@@ -243,6 +247,9 @@ public:
 	void son_category_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
 	void son_category_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
 
+	void son_gcd_started(Ref<AuraData> data, float gcd);
+	void son_gcd_finished(Ref<AuraData> data);
+	
 	//Clientside Event Handlers
 	void con_cast_failed(Ref<AuraData> data, Ref<SpellCastInfo> info);
 	void con_cast_started(Ref<AuraData> data, Ref<SpellCastInfo> info);
@@ -265,6 +272,9 @@ public:
 	void con_dealt_damage(Ref<AuraData> data, Ref<SpellDamageInfo> info);
 	void con_heal_dealt(Ref<AuraData> data, Ref<SpellHealInfo> info);
 	void con_dealt_heal(Ref<AuraData> data, Ref<SpellHealInfo> info);
+	
+	void con_gcd_started(Ref<AuraData> data, float gcd);
+	void con_gcd_finished(Ref<AuraData> data);
     
 	//Calculations / Queries
 	void setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
