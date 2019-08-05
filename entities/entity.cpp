@@ -2639,6 +2639,28 @@ void Entity::update(float delta) {
 		}
 	}
 
+	for (int i = 0; i < _c_cooldowns.size(); ++i) {
+		Ref<Cooldown> cd = _c_cooldowns.get(i);
+
+        cd->update(delta);
+        
+// 		if (cd->update(delta)) {
+// 			removec_cooldown(cd->get_spell_id());
+// 			--i;
+// 		}
+	}
+
+	for (int i = 0; i < _c_category_cooldowns.size(); ++i) {
+		Ref<CategoryCooldown> cd = _c_category_cooldowns.get(i);
+
+        cd->update(delta);
+        
+// 		if (cd->update(delta)) {
+// 			removec_category_cooldown(cd->get_category_id());
+// 			--i;
+// 		}
+	}
+	
 	for (int i = 0; i < _s_cooldowns.size(); ++i) {
 		Ref<Cooldown> cd = _s_cooldowns.get(i);
 
@@ -3055,8 +3077,8 @@ void Entity::_bind_methods() {
 	//Category Cooldowns
 	ADD_SIGNAL(MethodInfo("scategory_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
     ADD_SIGNAL(MethodInfo("scategory_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
-	ADD_SIGNAL(MethodInfo("ccategory_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-    ADD_SIGNAL(MethodInfo("ccategory_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	ADD_SIGNAL(MethodInfo("ccategory_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+    ADD_SIGNAL(MethodInfo("ccategory_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 
 	ClassDB::bind_method(D_METHOD("hass_category_cooldown", "category_id"), &Entity::hass_category_cooldown);
 	ClassDB::bind_method(D_METHOD("adds_category_cooldown", "category_id", "value"), &Entity::adds_category_cooldown);
