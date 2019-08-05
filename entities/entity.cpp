@@ -1877,7 +1877,9 @@ void Entity::adds_cooldown(int spell_id, float value) {
 		Ref<Cooldown> cd = _s_cooldown_map.get(spell_id);
 
 		cd->set_remaining(value);
-
+        
+        son_cooldown_added(cd);
+        
 		emit_signal("scooldown_added", cd);
         
 		SEND_RPC(rpc("addc_cooldown", spell_id, value), addc_cooldown(spell_id, value));
@@ -1919,7 +1921,7 @@ void Entity::removes_cooldown(int spell_id) {
 	
 	son_cooldown_removed(cd);
 
-	emit_signal("scooldown_removed", spell_id);
+	emit_signal("scooldown_removed", cd);
 
 	SEND_RPC(rpc("removec_cooldown", spell_id), removec_cooldown(spell_id));
 }
@@ -1947,8 +1949,11 @@ void Entity::addc_cooldown(int spell_id, float value) {
 		Ref<Cooldown> cd = _c_cooldown_map.get(spell_id);
 
 		cd->set_remaining(value);
-
+        
+        con_cooldown_added(cd);
+        
 		emit_signal("ccooldown_added", cd);
+        
 		return;
 	}
 
@@ -1980,9 +1985,12 @@ void Entity::removec_cooldown(int spell_id) {
 		}
 	}
 	
+	if (!cd.is_valid())
+        cd.instance();
+	
 	con_cooldown_removed(cd);
 
-	emit_signal("ccooldown_removed", spell_id);
+	emit_signal("ccooldown_removed", cd);
 }
 Ref<Cooldown> Entity::getc_cooldown(int spell_id) {
 	if (!_c_cooldown_map.has(spell_id)) {
@@ -2019,7 +2027,12 @@ void Entity::adds_category_cooldown(int category_id, float value) {
 			if (cc->get_category_id() == category_id) {
 				cc->set_remaining(value);
 
+                son_category_cooldown_added(cc);
+                
 				emit_signal("scategory_cooldown_added", cc);
+                
+                SEND_RPC(rpc("addc_category_cooldown", category_id, value), addc_category_cooldown(category_id, value));
+                
 				return;
 			}
 		}
@@ -2035,21 +2048,31 @@ void Entity::adds_category_cooldown(int category_id, float value) {
 
 	_s_active_category_cooldowns |= category_id;
 	
-	emit_signal("scategory_cooldown_added", cc);
+    son_category_cooldown_added(cc);
 
+    emit_signal("scategory_cooldown_added", cc);
+    
 	SEND_RPC(rpc("addc_category_cooldown", category_id, value), addc_category_cooldown(category_id, value));
 }
 void Entity::removes_category_cooldown(int category_id) {
+    Ref<CategoryCooldown> cc;
+    
 	for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
 		if (_s_category_cooldowns.get(i)->get_category_id() == category_id) {
+            cc = _s_category_cooldowns.get(i);
 			_s_category_cooldowns.remove(i);
 			break;
 		}
 	}
 	
+	if (!cc.is_valid())
+        return;
+	
 	_s_active_category_cooldowns ^= category_id;
 
-	emit_signal("scategory_cooldown_removed", category_id);
+    son_category_cooldown_removed(cc);
+    
+	emit_signal("scategory_cooldown_removed", cc);
 
 	SEND_RPC(rpc("removec_category_cooldown", category_id), removec_category_cooldown(category_id));
 }
@@ -2087,7 +2110,9 @@ void Entity::addc_category_cooldown(int category_id, float value) {
 
 			if (cc->get_category_id() == category_id) {
 				cc->set_remaining(value);
-
+                
+                con_category_cooldown_added(cc);
+                
 				emit_signal("ccategory_cooldown_added", cc);
 				return;
 			}
@@ -2103,20 +2128,32 @@ void Entity::addc_category_cooldown(int category_id, float value) {
 	_c_category_cooldowns.push_back(cc);
 
 	_c_active_category_cooldowns |= category_id;
+    
+    con_category_cooldown_added(cc);
 	
 	emit_signal("ccategory_cooldown_added", cc);
 }
 void Entity::removec_category_cooldown(int category_id) {
+    Ref<CategoryCooldown> cc;
+    
 	for (int i = 0; i < _c_category_cooldowns.size(); ++i) {
 		if (_c_category_cooldowns.get(i)->get_category_id() == category_id) {
-			_c_category_cooldowns.remove(i);
-			return;
+            cc = _c_category_cooldowns.get(i);
+            
+            _c_category_cooldowns.remove(i);
+            
+			break;
 		}
 	}
 	
+	if (!cc.is_valid())
+        return;
+	
 	_c_active_category_cooldowns ^= category_id;
+    
+    con_category_cooldown_removed(cc);
 
-	emit_signal("ccategory_cooldown_removed", category_id);
+	emit_signal("ccategory_cooldown_removed", cc);
 }
 Ref<CategoryCooldown> Entity::getc_category_cooldown(int category_id) {
 	ERR_FAIL_COND_V(!(category_id & _c_active_category_cooldowns), Ref<CategoryCooldown>());
@@ -2998,8 +3035,8 @@ void Entity::_bind_methods() {
 	//Cooldowns
 	ADD_SIGNAL(MethodInfo("scooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 	ADD_SIGNAL(MethodInfo("scooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	ADD_SIGNAL(MethodInfo("ccooldown_added", PropertyInfo(Variant::INT, "spell_id")));
-	ADD_SIGNAL(MethodInfo("ccooldown_removed", PropertyInfo(Variant::INT, "spell_id")));
+	ADD_SIGNAL(MethodInfo("ccooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	ADD_SIGNAL(MethodInfo("ccooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 
 	ClassDB::bind_method(D_METHOD("hass_cooldown", "spell_id"), &Entity::hass_cooldown);
 	ClassDB::bind_method(D_METHOD("adds_cooldown", "spell_id", "value"), &Entity::adds_cooldown);
@@ -3018,8 +3055,8 @@ void Entity::_bind_methods() {
 	//Category Cooldowns
 	ADD_SIGNAL(MethodInfo("scategory_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
     ADD_SIGNAL(MethodInfo("scategory_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
-	ADD_SIGNAL(MethodInfo("ccategory_cooldown_added", PropertyInfo(Variant::INT, "category_id")));
-    ADD_SIGNAL(MethodInfo("ccategory_cooldown_removed", PropertyInfo(Variant::INT, "category_id")));
+	ADD_SIGNAL(MethodInfo("ccategory_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+    ADD_SIGNAL(MethodInfo("ccategory_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 
 	ClassDB::bind_method(D_METHOD("hass_category_cooldown", "category_id"), &Entity::hass_category_cooldown);
 	ClassDB::bind_method(D_METHOD("adds_category_cooldown", "category_id", "value"), &Entity::adds_category_cooldown);
