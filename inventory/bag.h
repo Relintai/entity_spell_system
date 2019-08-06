@@ -2,23 +2,41 @@
 #define BAG_H
 
 #include "core/reference.h"
-
 #include "core/vector.h"
 
-#include "../data/item_instance.h"
-#include "bag_slot.h"
+class itemTemplate;
+class ItemInstance;
 
 class Bag : public Reference {
 	GDCLASS(Bag, Reference);
 
 public:
-	Ref<BagSlot> get_slot(int index);
-    Ref<BagSlot> get_and_remove_slot(int index);
-    int get_slot_count();
-    void set_slot_count(int count);
-    bool try_to_add_item(Ref<ItemInstance> item, int count = 1);
-	bool add_item_to_slot(Ref<ItemInstance> item, int slot_index, int count = 1);
+	bool add_item(Ref<ItemInstance> item);
+	bool add_item_to_position(const int x, const int y, Ref<ItemInstance> item);
+	
+	bool can_add_item_at(const int x, const int y, const Ref<ItemInstance> item) const;
+	int item_count_under_area(const int x, const int y, const int size_x, const int size_y) const;
+	
+	Ref<ItemInstance> get_item(const int index) const;
+    Ref<ItemInstance> get_and_remove_item(const int index);
+	void remove_item(const int index);
+	
+	void basic_add_item(const Ref<ItemInstance> item);
+	void basic_remove_item(const int index);
+	
+	int get_item_count() const;
 
+	int get_space_map_entry(const int index) const;
+	void set_space_map_entry(const int index, const int value);
+	
+	int get_size_x() const;
+	int get_size_y() const;
+	
+    void set_size(const int x, const int y);
+	
+	//to_dict();
+	//from_dict();
+	
 	Bag();
     ~Bag();
 
@@ -26,7 +44,11 @@ protected:
 	static void _bind_methods();
     
 private:
-	Vector<Ref<BagSlot> > _slots;
+	int _size_x;
+	int _size_y;
+	
+	Vector<Ref<ItemInstance> > _items;
+	Vector<int> _space_map;
 };
 
 #endif

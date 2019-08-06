@@ -1,117 +1,140 @@
 #include "item_template.h"
 
+#include "item_instance.h"
 #include "aura.h"
 #include "spell.h"
+#include "../inventory/bag.h"
 
-int ItemTemplate::get_id() {
+int ItemTemplate::get_id() const {
 	return _id;
 }
 
-void ItemTemplate::set_id(int value) {
+void ItemTemplate::set_id(const int value) {
 	_id = value;
 }
 
-String ItemTemplate::get_name_key() {
+String ItemTemplate::get_name_key() const {
 	return _name_key;
 }
 
-void ItemTemplate::set_name_key(String value) {
+void ItemTemplate::set_name_key(const String value) {
 	_name_key = value;
 }
 
-ItemEnums::ItemType ItemTemplate::get_item_type() {
+ItemEnums::ItemType ItemTemplate::get_item_type() const {
 	return _item_type;
 }
 
-void ItemTemplate::set_item_type(ItemEnums::ItemType value) {
+void ItemTemplate::set_item_type(const ItemEnums::ItemType value) {
 	_item_type = value;
 }
 
-ItemEnums::ItemSubtype ItemTemplate::get_item_sub_type() {
+ItemEnums::ItemSubtype ItemTemplate::get_item_sub_type() const {
 	return _item_sub_type;
 }
 
-void ItemTemplate::set_item_sub_type(ItemEnums::ItemSubtype value) {
+void ItemTemplate::set_item_sub_type(const ItemEnums::ItemSubtype value) {
 	_item_sub_type = value;
 }
 
-ItemEnums::ItemSubSubtype ItemTemplate::get_item_sub_sub_type() {
+ItemEnums::ItemSubSubtype ItemTemplate::get_item_sub_sub_type() const {
 	return _item_sub_sub_type;
 }
 
-void ItemTemplate::set_item_sub_sub_type(ItemEnums::ItemSubSubtype value) {
+void ItemTemplate::set_item_sub_sub_type(const ItemEnums::ItemSubSubtype value) {
 	_item_sub_sub_type = value;
 }
 
-int ItemTemplate::get_rarity() {
+ItemEnums::ItemRarity ItemTemplate::get_rarity() const {
 	return _rarity;
 }
 
-void ItemTemplate::set_rarity(int value) {
+void ItemTemplate::set_rarity(const ItemEnums::ItemRarity value) {
 	_rarity = value;
 }
 
-Ref<Texture> ItemTemplate::get_icon() {
+int ItemTemplate::get_inventory_size_x() const {
+	return _inventory_size_x;
+}
+void ItemTemplate::set_inventory_size_x(const int value) {
+	_inventory_size_x = value;
+}
+	
+int ItemTemplate::get_inventory_size_y() const {
+	return _inventory_size_y;
+}
+void ItemTemplate::set_inventory_size_y(const int value) {
+	_inventory_size_y = value;
+}
+
+Ref<Texture> ItemTemplate::get_icon() const {
 	return _icon;
 }
 
-void ItemTemplate::set_icon(Ref<Texture> value) {
+void ItemTemplate::set_icon(const Ref<Texture> value) {
 	_icon = value;
 }
 
-float ItemTemplate::get_scale_x() {
+float ItemTemplate::get_scale_x() const {
 	return _scale_x;
 }
 
-void ItemTemplate::set_scale_x(float value) {
+void ItemTemplate::set_scale_x(const float value) {
 	_scale_x = value;
 }
 
-float ItemTemplate::get_scale_y() {
+float ItemTemplate::get_scale_y() const {
 	return _scale_y;
 }
 
-void ItemTemplate::set_scale_y(float value) {
+void ItemTemplate::set_scale_y(const float value) {
 	_scale_y = value;
 }
 
-float ItemTemplate::get_scale_z() {
+float ItemTemplate::get_scale_z() const {
 	return _scale_z;
 }
 
-void ItemTemplate::set_scale_z(float value) {
+void ItemTemplate::set_scale_z(const float value) {
 	_scale_z = value;
 }
 
-Ref<Spell> ItemTemplate::get_spell() {
+int ItemTemplate::get_bag_size() const {
+	return _bag_size;
+}
+void ItemTemplate::set_bag_size(const int size) {
+	_bag_size = size;
+}
+
+Ref<Spell> ItemTemplate::get_spell() const {
 	if (_spell)
 		return (*_spell);
 
 	return Ref<Spell>(NULL);
 }
 
-void ItemTemplate::set_spell(Ref<Spell> spell) {
+void ItemTemplate::set_spell(const Ref<Spell> spell) {
 	if (_spell)
 		memdelete(_spell);
 
 	_spell = memnew(Ref<Spell>(spell));
 }
 
-Ref<Aura> ItemTemplate::get_aura(int index) {
+Ref<Aura> ItemTemplate::get_aura(const int index) const {
 	if (_auras[index])
 		return (*_auras[index]);
 
 	return Ref<Aura>(NULL);
 }
 
-void ItemTemplate::set_aura(int index, Ref<Aura> aura) {
+void ItemTemplate::set_aura(const int index, const Ref<Aura> aura) {
 	if (_auras[index])
 		memdelete(_auras[index]);
 
 	_auras[index] = memnew(Ref<Aura>(aura));
 }
 
-int ItemTemplate::get_item_stat_modifier_count() {
+int ItemTemplate::get_item_stat_modifier_count() const {
 	return _modifier_count;
 }
 
@@ -235,7 +258,11 @@ ItemTemplate::ItemTemplate() {
 	_scale_y = 0;
 	_scale_z = 0;
 	_modifier_count = 0;
-
+	
+	_inventory_size_x = 0;
+	_inventory_size_y = 0;
+	_bag_size = 0;
+	
 	_spell = NULL;
 
 	for (int i = 0; i < MAX_AURAS; ++i) {
@@ -297,6 +324,14 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_rarity", "count"), &ItemTemplate::set_rarity);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rarity", PROPERTY_HINT_FLAGS, ItemEnums::BINDING_STRING_RARITY), "set_rarity", "get_rarity");
 
+	ClassDB::bind_method(D_METHOD("get_inventory_size_x"), &ItemTemplate::get_inventory_size_x);
+	ClassDB::bind_method(D_METHOD("set_inventory_size_x", "value"), &ItemTemplate::set_inventory_size_x);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "inventory_size_x"), "set_inventory_size_x", "get_inventory_size_x");
+	
+	ClassDB::bind_method(D_METHOD("get_inventory_size_y"), &ItemTemplate::get_inventory_size_y);
+	ClassDB::bind_method(D_METHOD("set_inventory_size_y", "value"), &ItemTemplate::set_inventory_size_y);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "inventory_size_y"), "set_inventory_size_y", "get_inventory_size_y");
+	
 	ClassDB::bind_method(D_METHOD("get_icon"), &ItemTemplate::get_icon);
 	ClassDB::bind_method(D_METHOD("set_icon", "value"), &ItemTemplate::set_icon);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "icon", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_icon", "get_icon");
@@ -313,6 +348,10 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_scale_z", "count"), &ItemTemplate::set_scale_z);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "scale_z"), "set_scale_z", "get_scale_z");
 
+	ClassDB::bind_method(D_METHOD("get_bag_size"), &ItemTemplate::get_bag_size);
+	ClassDB::bind_method(D_METHOD("set_bag_size", "size"), &ItemTemplate::set_bag_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "bag_size"), "set_bag_size", "get_bag_size");
+	
 	ClassDB::bind_method(D_METHOD("get_spell"), &ItemTemplate::get_spell);
 	ClassDB::bind_method(D_METHOD("set_spell", "spell"), &ItemTemplate::set_spell);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_spell", "get_spell");

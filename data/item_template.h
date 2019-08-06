@@ -8,59 +8,64 @@
 #include "../entities/stats/stat.h"
 #include "../item_enums.h"
 
-#include "item_instance.h"
-
+class ItemInstance;
 class Aura;
 class Spell;
+class Bag;
 
 class ItemTemplate : public Resource {
 	GDCLASS(ItemTemplate, Resource);
 
 public:
 
-	int get_id();
-	void set_id(int value);
+	int get_id() const;
+	void set_id(const int value);
 
-	String get_name_key();
-	void set_name_key(String value);
+	String get_name_key() const;
+	void set_name_key(const String value);
+
+	ItemEnums::ItemType get_item_type() const;
+	void set_item_type(const ItemEnums::ItemType value);
+
+	ItemEnums::ItemSubtype get_item_sub_type() const;
+	void set_item_sub_type(const ItemEnums::ItemSubtype value);
+
+	ItemEnums::ItemSubSubtype get_item_sub_sub_type() const;
+	void set_item_sub_sub_type(const ItemEnums::ItemSubSubtype value);
+
+	ItemEnums::ItemRarity get_rarity() const;
+	void set_rarity(const ItemEnums::ItemRarity value);
+
+	int get_inventory_size_x() const;
+	void set_inventory_size_x(const int value);
+	
+	int get_inventory_size_y() const;
+	void set_inventory_size_y(const int value);
+
+	Ref<Texture> get_icon() const;
+	void set_icon(const Ref<Texture> value);
+
+	float get_scale_x() const;
+	void set_scale_x(const float value);
+
+	float get_scale_y() const;
+	void set_scale_y(const float value);
+
+	float get_scale_z() const;
+	void set_scale_z(const float value);
+
+	int get_bag_size() const;
+	void set_bag_size(const int size);
+	
+	Ref<Spell> get_spell() const;
+	void set_spell(const Ref<Spell> spell);
+
+	Ref<Aura> get_aura(int index) const;
+	void set_aura(const int index, const Ref<Aura> aura);
 
 
-	ItemEnums::ItemType get_item_type();
-	void set_item_type(ItemEnums::ItemType value);
-
-	ItemEnums::ItemSubtype get_item_sub_type();
-	void set_item_sub_type(ItemEnums::ItemSubtype value);
-
-	ItemEnums::ItemSubSubtype get_item_sub_sub_type();
-	void set_item_sub_sub_type(ItemEnums::ItemSubSubtype value);
-
-	int get_rarity();
-	void set_rarity(int value);
-
-
-	Ref<Texture> get_icon();
-	void set_icon(Ref<Texture> value);
-
-
-	float get_scale_x();
-	void set_scale_x(float value);
-
-	float get_scale_y();
-	void set_scale_y(float value);
-
-	float get_scale_z();
-	void set_scale_z(float value);
-
-
-	Ref<Spell> get_spell();
-	void set_spell(Ref<Spell> spell);
-
-	Ref<Aura> get_aura(int index);
-	void set_aura(int index, Ref<Aura> aura);
-
-
-	int get_item_stat_modifier_count();
-	void set_item_stat_modifier_count(int value);
+	int get_item_stat_modifier_count() const;
+	void set_item_stat_modifier_count(const int value);
 
 	Stat::StatId get_item_stat_id(int index);
 	void set_item_stat_id(int index, Stat::StatId value);
@@ -102,16 +107,21 @@ private:
 
 	int _id;
 	String _name_key;
-	int _rarity;
+	ItemEnums::ItemRarity _rarity;
 	ItemEnums::ItemType _item_type;
 	ItemEnums::ItemSubtype _item_sub_type;
 	ItemEnums::ItemSubSubtype _item_sub_sub_type;
 
+	int _inventory_size_x;
+	int _inventory_size_y;
+	
 	Ref<Texture> _icon;
 
 	float _scale_x;
 	float _scale_y;
 	float _scale_z;
+	
+	int _bag_size;
 
 	Ref<Spell> *_spell;
 	Ref<Aura> *_auras[MAX_AURAS];

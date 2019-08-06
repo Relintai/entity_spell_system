@@ -2424,17 +2424,37 @@ PlayerTalent *Entity::cget_talent(int id, bool create) {
 
 ////    Inventory    ////
 
-Ref<Bag> Entity::gets_bag(int index) {
-	ERR_FAIL_INDEX_V(index, MAX_BAG_SLOTS, Ref<Bag>());
-
-	return _s_bags[index];
+Ref<Bag> Entity::gets_bag() const {
+	return _s_bag;
 }
 
-Ref<Bag> Entity::getc_bag(int index) {
-	ERR_FAIL_INDEX_V(index, MAX_BAG_SLOTS, Ref<Bag>());
-
-	return _c_bags[index];
+Ref<Bag> Entity::getc_bag() const {
+	return _c_bag;
 }
+
+void Entity::sets_bag(const Ref<Bag> bag) {
+	_s_bag = bag;
+}
+void Entity::setc_bag(const Ref<Bag> bag) {
+	_c_bag = bag;
+}
+
+Ref<Bag> Entity::gets_target_bag() const {
+	return _s_target_bag;
+}
+
+void Entity::sets_target_bag(const Ref<Bag> bag) {
+	_s_target_bag = bag;
+}
+
+Ref<Bag> Entity::getc_target_bag() const {
+	return _c_target_bag;
+}
+
+void Entity::setc_target_bag(const Ref<Bag> bag) {
+	_c_target_bag = bag;
+}
+
 
 bool Entity::stry_to_add_item(int itemId, int count) {
 	return false;
@@ -3120,9 +3140,20 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("sitem_added", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 	ADD_SIGNAL(MethodInfo("citem_added", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 
-	ClassDB::bind_method(D_METHOD("gets_bag", "index"), &Entity::gets_bag);
-	ClassDB::bind_method(D_METHOD("getc_bag", "index"), &Entity::getc_bag);
-
+	ClassDB::bind_method(D_METHOD("gets_bag"), &Entity::gets_bag);
+	ClassDB::bind_method(D_METHOD("getc_bag"), &Entity::getc_bag);
+	
+	ClassDB::bind_method(D_METHOD("sets_bag", "bag"), &Entity::sets_bag);
+	ClassDB::bind_method(D_METHOD("setc_bag", "bag"), &Entity::setc_bag);
+	
+	ClassDB::bind_method(D_METHOD("gets_target_bag"), &Entity::gets_target_bag);
+	ClassDB::bind_method(D_METHOD("sets_target_bag", "bag"), &Entity::sets_target_bag);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "starget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "sets_target_bag", "gets_target_bag");
+	
+	ClassDB::bind_method(D_METHOD("getc_target_bag"), &Entity::getc_target_bag);
+	ClassDB::bind_method(D_METHOD("setc_target_bag", "bag"), &Entity::setc_target_bag);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ctarget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "setc_target_bag", "getc_target_bag");
+	
 	BIND_ENUM_CONSTANT(BACKPACK_SIZE);
 	BIND_ENUM_CONSTANT(MAX_BAG_SLOTS);
 }

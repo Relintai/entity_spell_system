@@ -18,7 +18,6 @@
 #include "core/object.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-#include "../inventory/bag_slot.h"
 #include "../data/item_instance.h"
 #include "player_talent.h"
 
@@ -461,9 +460,20 @@ public:
 
 	////    Inventory    ////
 
-	Ref<Bag> gets_bag(int index);
-	Ref<Bag> getc_bag(int index);
+	Ref<Bag> gets_bag() const;
+	Ref<Bag> getc_bag() const;
+	
+	void sets_bag(const Ref<Bag> bag);
+	void setc_bag(const Ref<Bag> bag);
     
+	Ref<Bag> gets_target_bag() const;
+	void sets_target_bag(const Ref<Bag> bag);
+	
+	Ref<Bag> getc_target_bag() const;
+	void setc_target_bag(const Ref<Bag> bag);
+	
+	bool add_item_to_bag(Ref<ItemInstance> item);
+	
 	bool stry_to_add_item(int itemId, int count);
 	bool stry_to_remove_item(int itemId, int count);
 	void ssend_add_item(int slotId, int itemId, int count);
@@ -624,8 +634,11 @@ private:
 
 	////    Inventory    ////
 
-	Ref<Bag> _s_bags[MAX_BAG_SLOTS];
-	Ref<Bag> _c_bags[MAX_BAG_SLOTS];
+	Ref<Bag> _s_bag;
+	Ref<Bag> _c_bag;
+	
+	Ref<Bag> _s_target_bag;
+	Ref<Bag> _c_target_bag;
 };
 
 VARIANT_ENUM_CAST(Entity::InventorySizes);

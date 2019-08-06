@@ -24,7 +24,6 @@
 #include "entities/stats/stat_modifier.h"
 #include "entities/stats/stat_data.h"
 #include "entities/player_talent.h"
-#include "inventory/bag_slot.h"
 #include "inventory/bag.h"
 
 #include "data/craft_data_attribute_helper.h"
@@ -107,7 +106,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<PlayerTalent>();
 	ClassDB::register_class<CharacterSpec>();
     
-    ClassDB::register_class<BagSlot>();
 	ClassDB::register_class<Bag>();
 
 	ClassDB::register_class<SpellDamageInfo>();
