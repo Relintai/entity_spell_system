@@ -4,6 +4,8 @@
 #include "core/reference.h"
 #include "core/vector.h"
 
+#include "../item_enums.h"
+
 class itemTemplate;
 class ItemInstance;
 
@@ -11,6 +13,9 @@ class Bag : public Reference {
 	GDCLASS(Bag, Reference);
 
 public:
+	int get_allowed_item_types() const;
+	void set_allowed_item_types(const int value);
+	
 	bool add_item(Ref<ItemInstance> item);
 	bool add_item_to_position(const int x, const int y, Ref<ItemInstance> item);
 	
@@ -44,6 +49,8 @@ protected:
 	static void _bind_methods();
     
 private:
+	int _allowed_item_types;
+	
 	int _size_x;
 	int _size_y;
 	

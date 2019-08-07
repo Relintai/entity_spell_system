@@ -3,6 +3,14 @@
 #include "../data/item_template.h"
 #include "../data/item_instance.h"
 
+int Bag::get_allowed_item_types() const {
+	return _allowed_item_types;
+}
+
+void Bag::set_allowed_item_types(const int value) {
+	_allowed_item_types = value;
+}
+
 bool Bag::add_item(Ref<ItemInstance> item) {
 	ERR_FAIL_COND_V(!item.is_valid(), true);
 
@@ -239,6 +247,8 @@ void Bag::set_size(const int x, const int y) {
 }
 
 Bag::Bag() {
+	_allowed_item_types = 0x1FFF;
+	
 	_size_x = 0;
 	_size_y = 0;
 }
@@ -249,6 +259,10 @@ Bag::~Bag() {
 }
 
 void Bag::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_allowed_item_types"), &Bag::get_allowed_item_types);
+	ClassDB::bind_method(D_METHOD("set_allowed_item_types", "count"), &Bag::set_allowed_item_types);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "allowed_item_types", PROPERTY_HINT_FLAGS, ItemEnums::BINDING_STRING_ITEM_TYPE_FLAGS), "set_allowed_item_types", "get_allowed_item_types");
+	
 	ClassDB::bind_method(D_METHOD("add_item", "item"), &Bag::add_item);
 	ClassDB::bind_method(D_METHOD("add_item_to_position", "x", "y", "item"), &Bag::add_item_to_position);
 	

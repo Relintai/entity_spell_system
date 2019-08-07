@@ -10,6 +10,7 @@ public:
 	static const String BINDING_STRING_RARITY;
 	static const String BINDING_STRING_RARITY_FLAG;
 	static const String BINDING_STRING_ITEM_TYPE;
+	static const String BINDING_STRING_ITEM_TYPE_FLAGS;
 	static const String BINDING_STRING_ITEM_SUB_TYPE;
 	static const String BINDING_STRING_ITEM_SUB_SUB_TYPE;
 	
