@@ -1,6 +1,7 @@
 #include "item_instance.h"
 
 #include "item_template.h"
+#include "../inventory/bag.h"
 
 int ItemInstance::get_id() {
 	return _id;
@@ -22,6 +23,23 @@ int ItemInstance::get_inventory_position_y() const {
 }
 void ItemInstance::set_inventory_position_y(const int value) {
 	_inventory_position_y = value;
+}
+
+Ref<Bag> ItemInstance::get_bag() const {
+	if (_bag == NULL) {
+		return Ref<Bag>(NULL);
+	}
+	
+	return *_bag;
+}
+
+void ItemInstance::set_bag(const Ref<Bag> bag) {
+	if (_bag == NULL) {
+		_bag = memnew(Ref<Bag>(NULL));
+	} else {
+		_bag->unref();
+		(*_bag) = bag;
+	}
 }
 
 Ref<ItemTemplate> ItemInstance::get_item_template() const {
@@ -90,8 +108,7 @@ void ItemInstance::set_count(int value) {
 ItemInstance::ItemInstance() {
 	_id = 0;
 	
-	_s_bag = NULL;
-	_c_bag = NULL;
+	_bag = NULL;
 	
 	_count = 0;
 	
@@ -103,6 +120,11 @@ ItemInstance::ItemInstance() {
 }
 
 ItemInstance::~ItemInstance() {
+	if (_bag != NULL) {
+		_bag->unref();
+
+		memdelete(_bag);
+	}
 }
 
 void ItemInstance::_validate_property(PropertyInfo &property) const {
@@ -129,6 +151,9 @@ void ItemInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_inventory_position_y"), &ItemInstance::get_inventory_position_y);
 	ClassDB::bind_method(D_METHOD("set_inventory_position_y", "value"), &ItemInstance::set_inventory_position_y);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "inventory_position_y"), "set_inventory_position_y", "get_inventory_position_y");
+	
+	ClassDB::bind_method(D_METHOD("get_bag"), &ItemInstance::get_bag);
+	ClassDB::bind_method(D_METHOD("set_bag", "bag"), &ItemInstance::set_bag);
 	
 	ClassDB::bind_method(D_METHOD("get_item_template"), &ItemInstance::get_item_template);
 	ClassDB::bind_method(D_METHOD("set_item_template", "value"), &ItemInstance::set_item_template);

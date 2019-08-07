@@ -322,7 +322,7 @@ void ItemTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_rarity"), &ItemTemplate::get_rarity);
 	ClassDB::bind_method(D_METHOD("set_rarity", "count"), &ItemTemplate::set_rarity);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "rarity", PROPERTY_HINT_FLAGS, ItemEnums::BINDING_STRING_RARITY), "set_rarity", "get_rarity");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "rarity", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_RARITY), "set_rarity", "get_rarity");
 
 	ClassDB::bind_method(D_METHOD("get_inventory_size_x"), &ItemTemplate::get_inventory_size_x);
 	ClassDB::bind_method(D_METHOD("set_inventory_size_x", "value"), &ItemTemplate::set_inventory_size_x);

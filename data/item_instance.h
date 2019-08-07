@@ -24,6 +24,9 @@ public:
 	int get_inventory_position_y() const;
 	void set_inventory_position_y(const int value);
 	
+	Ref<Bag> get_bag() const;
+	void set_bag(const Ref<Bag> bag);
+	
 	Ref<ItemTemplate> get_item_template() const;
 	void set_item_template(const Ref<ItemTemplate> value);
 
@@ -73,8 +76,7 @@ private:
 	
 	int _count;
 	
-	Ref<Bag> *_s_bag;
-	Ref<Bag> *_c_bag;
+	Ref<Bag> *_bag;
 
 	int _modifier_count;
 	Ref<ItemStatModifier> _modifiers[MAX_ITEM_STAT_MOD];
