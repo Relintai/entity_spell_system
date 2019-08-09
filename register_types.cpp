@@ -65,6 +65,9 @@
 #include "loot/loot_data_item.h"
 #include "loot/loot_data_container.h"
 
+#include "data/mob_data.h"
+#include "data/player_character_data.h"
+
 #ifdef TOOLS_ENABLED
 #include "editor/editor_plugin.h"
 
@@ -147,6 +150,9 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<LootDataBase>();
 	ClassDB::register_class<LootDataItem>();
 	ClassDB::register_class<LootDataContainter>();
+    
+    ClassDB::register_class<MobData>();
+    ClassDB::register_class<PlayerCharacterData>();
 
 	//meshes
 	ClassDB::register_class<MeshDataResource>();

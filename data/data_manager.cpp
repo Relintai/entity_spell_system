@@ -4,6 +4,8 @@
 #include "character_class.h"
 #include "craft_data_attribute.h"
 #include "spell.h"
+#include "mob_data.h"
+#include "player_character_data.h"
 
 DataManager *DataManager::instance;
 
@@ -173,18 +175,18 @@ Vector<Ref<ItemTemplate> > *DataManager::get_item_templates() {
 void DataManager::add_item_template(Ref<ItemTemplate> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
-	_craft_datas.push_back(cda);
-	_craft_data_map.set(cda->get_id(), cda);
+	_item_templates.push_back(cda);
+	_item_template_map.set(cda->get_id(), cda);
 }
 
 Ref<ItemTemplate> DataManager::get_item_template(int item_id) {
-	ERR_FAIL_COND_V(!_craft_data_map.has(item_id), Ref<ItemTemplate>(NULL));
+	ERR_FAIL_COND_V(!_item_template_map.has(item_id), Ref<ItemTemplate>(NULL));
 
 	return _item_template_map.get(item_id);
 }
 
 Ref<ItemTemplate> DataManager::get_item_template_index(int index) {
-	ERR_FAIL_INDEX_V(index, _craft_datas.size(), Ref<ItemTemplate>(NULL));
+	ERR_FAIL_INDEX_V(index, _item_templates.size(), Ref<ItemTemplate>(NULL));
 
 	return _item_templates.get(index);
 }
@@ -193,12 +195,83 @@ int DataManager::get_item_template_count() {
 	return _item_templates.size();
 }
 
+
+String DataManager::get_mob_data_folder() {
+	return _mob_data_folder;
+}
+void DataManager::set_mob_data_folder(String folder) {
+	_mob_data_folder = folder;
+}
+Vector<Ref<MobData> > *DataManager::get_mob_datas() {
+	return &_mob_datas;
+}
+
+void DataManager::add_mob_data(Ref<MobData> cda) {
+	ERR_FAIL_COND(!cda.is_valid());
+
+	_mob_datas.push_back(cda);
+	_mob_data_map.set(cda->get_id(), cda);
+}
+
+Ref<MobData> DataManager::get_mob_data(int item_id) {
+	ERR_FAIL_COND_V(!_mob_data_map.has(item_id), Ref<MobData>(NULL));
+
+	return _mob_data_map.get(item_id);
+}
+
+Ref<MobData> DataManager::get_mob_data_index(int index) {
+	ERR_FAIL_INDEX_V(index, _mob_datas.size(), Ref<MobData>(NULL));
+
+	return _mob_datas.get(index);
+}
+
+int DataManager::get_mob_data_count() {
+	return _mob_datas.size();
+}
+
+
+String DataManager::get_player_character_data_folder() {
+	return _player_character_data_folder;
+}
+void DataManager::set_player_character_data_folder(String folder) {
+	_player_character_data_folder = folder;
+}
+Vector<Ref<PlayerCharacterData> > *DataManager::get_player_character_datas() {
+	return &_player_character_datas;
+}
+
+void DataManager::add_player_character_data(Ref<PlayerCharacterData> cda) {
+	ERR_FAIL_COND(!cda.is_valid());
+
+	_player_character_datas.push_back(cda);
+	_player_character_data_map.set(cda->get_id(), cda);
+}
+
+Ref<PlayerCharacterData> DataManager::get_player_character_data(int item_id) {
+	ERR_FAIL_COND_V(!_player_character_data_map.has(item_id), Ref<PlayerCharacterData>(NULL));
+
+	return _player_character_data_map.get(item_id);
+}
+
+Ref<PlayerCharacterData> DataManager::get_player_character_data_index(int index) {
+	ERR_FAIL_INDEX_V(index, _player_character_datas.size(), Ref<PlayerCharacterData>(NULL));
+
+	return _player_character_datas.get(index);
+}
+
+int DataManager::get_player_character_data_count() {
+	return _player_character_datas.size();
+}
+
+
 void DataManager::load_all() {
 	load_spells();
 	load_auras();
 	load_characters();
 	load_craft_datas();
 	load_item_templates();
+    load_mob_datas();
+    load_player_character_datas();
 }
 
 void DataManager::load_spells() {
@@ -396,6 +469,84 @@ void DataManager::load_item_templates() {
 	}
 }
 
+void DataManager::load_mob_datas() {
+	_Directory dir;
+
+	ERR_FAIL_COND(_mob_data_folder.ends_with("/"));
+
+	if (dir.open(_mob_data_folder) == OK) {
+
+		dir.list_dir_begin();
+
+		String filename = dir.get_next();
+
+		while (filename != "") {
+			if (!dir.current_is_dir()) {
+				String path = _mob_data_folder + "/" + filename;
+
+				_ResourceLoader *rl = _ResourceLoader::get_singleton();
+
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "MobData");
+
+				resl->wait();
+
+				Ref<Resource> s = resl->get_resource();
+
+				ERR_CONTINUE(!s.is_valid());
+
+				Ref<MobData> mob_data = s;
+
+				ERR_CONTINUE(!mob_data.is_valid());
+
+				add_mob_data(mob_data);
+			}
+
+			filename = dir.get_next();
+		}
+	} else {
+		print_error("An error occurred when trying to access the path.");
+	}
+}
+
+void DataManager::load_player_character_datas() {
+	_Directory dir;
+
+	ERR_FAIL_COND(_player_character_data_folder.ends_with("/"));
+
+	if (dir.open(_player_character_data_folder) == OK) {
+
+		dir.list_dir_begin();
+
+		String filename = dir.get_next();
+
+		while (filename != "") {
+			if (!dir.current_is_dir()) {
+				String path = _player_character_data_folder + "/" + filename;
+
+				_ResourceLoader *rl = _ResourceLoader::get_singleton();
+
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "PlayerCharacterData");
+
+				resl->wait();
+
+				Ref<Resource> s = resl->get_resource();
+
+				ERR_CONTINUE(!s.is_valid());
+
+				Ref<PlayerCharacterData> pcd = s;
+
+				ERR_CONTINUE(!pcd.is_valid());
+
+				add_player_character_data(pcd);
+			}
+
+			filename = dir.get_next();
+		}
+	} else {
+		print_error("An error occurred when trying to access the path.");
+	}
+}
+
 void DataManager::list_characters() {
 	for (int i = 0; i < _character_classes.size(); ++i) {
 		print_error(itos(i) + ": " + _character_classes.get(i)->get_character_class_name());
@@ -426,15 +577,22 @@ void DataManager::list_item_templates() {
 	}
 }
 
+void DataManager::list_mob_datas() {
+	for (int i = 0; i < _mob_datas.size(); ++i) {
+		print_error(itos(i) + ": " + _mob_datas.get(i)->get_name());
+	}
+}
+
+void DataManager::list_player_character_datas() {
+	for (int i = 0; i < _player_character_datas.size(); ++i) {
+		print_error(itos(i) + ": " + _player_character_datas.get(i)->get_name());
+	}
+}
+
 void DataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_automatic_load"), &DataManager::get_automatic_load);
 	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &DataManager::set_automatic_load);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
-
-	ClassDB::bind_method(D_METHOD("load_all"), &DataManager::load_all);
-	ClassDB::bind_method(D_METHOD("load_spells"), &DataManager::load_spells);
-	ClassDB::bind_method(D_METHOD("load_characters"), &DataManager::load_characters);
-	ClassDB::bind_method(D_METHOD("load_craft_datas"), &DataManager::load_craft_datas);
 
 	//CharacterClass
 	ClassDB::bind_method(D_METHOD("get_character_classes_folder"), &DataManager::get_character_classes_folder);
@@ -485,13 +643,45 @@ void DataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_item_template", "item_template_id"), &DataManager::get_item_template);
 	ClassDB::bind_method(D_METHOD("get_item_template_index", "index"), &DataManager::get_item_template_index);
 	ClassDB::bind_method(D_METHOD("get_item_template_count"), &DataManager::get_item_template_count);
+    
+    //Mob Data
+	ClassDB::bind_method(D_METHOD("get_mob_data_folder"), &DataManager::get_mob_data_folder);
+	ClassDB::bind_method(D_METHOD("set_mob_data_folder", "folder"), &DataManager::set_mob_data_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "mob_data_folder"), "set_mob_data_folder", "get_mob_data_folder");
 
+	ClassDB::bind_method(D_METHOD("add_mob_data", "mob_data"), &DataManager::add_mob_data);
+	ClassDB::bind_method(D_METHOD("get_mob_data", "mob_data_id"), &DataManager::get_mob_data);
+	ClassDB::bind_method(D_METHOD("get_mob_data_index", "index"), &DataManager::get_mob_data_index);
+	ClassDB::bind_method(D_METHOD("get_mob_data_count"), &DataManager::get_mob_data_count);
+
+    //Player Character Data
+	ClassDB::bind_method(D_METHOD("get_player_character_data_folder"), &DataManager::get_player_character_data_folder);
+	ClassDB::bind_method(D_METHOD("set_player_character_data_folder", "folder"), &DataManager::set_player_character_data_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "player_character_data_folder"), "set_player_character_data_folder", "get_player_character_data_folder");
+
+	ClassDB::bind_method(D_METHOD("add_player_character_data", "pcd"), &DataManager::add_player_character_data);
+	ClassDB::bind_method(D_METHOD("get_player_character_data", "pcd_id"), &DataManager::get_player_character_data);
+	ClassDB::bind_method(D_METHOD("get_player_character_data_index", "index"), &DataManager::get_player_character_data_index);
+	ClassDB::bind_method(D_METHOD("get_player_character_data_count"), &DataManager::get_player_character_data_count);
+    
+    //load
+    ClassDB::bind_method(D_METHOD("load_all"), &DataManager::load_all);
+	ClassDB::bind_method(D_METHOD("load_spells"), &DataManager::load_spells);
+    ClassDB::bind_method(D_METHOD("load_auras"), &DataManager::load_auras);
+	ClassDB::bind_method(D_METHOD("load_characters"), &DataManager::load_characters);
+	ClassDB::bind_method(D_METHOD("load_craft_datas"), &DataManager::load_craft_datas);
+    ClassDB::bind_method(D_METHOD("load_item_templates"), &DataManager::load_item_templates);
+    ClassDB::bind_method(D_METHOD("load_mob_datas"), &DataManager::load_mob_datas);
+    ClassDB::bind_method(D_METHOD("load_player_character_datas"), &DataManager::load_player_character_datas);
+    
 	//tests
+    ClassDB::bind_method(D_METHOD("list_characters"), &DataManager::list_characters);
 	ClassDB::bind_method(D_METHOD("list_spells"), &DataManager::list_spells);
-	ClassDB::bind_method(D_METHOD("list_characters"), &DataManager::list_characters);
 	ClassDB::bind_method(D_METHOD("list_auras"), &DataManager::list_auras);
 	ClassDB::bind_method(D_METHOD("list_craft_data"), &DataManager::list_craft_data);
 	ClassDB::bind_method(D_METHOD("list_item_templates"), &DataManager::list_item_templates);
+    ClassDB::bind_method(D_METHOD("list_mob_datas"), &DataManager::list_mob_datas);
+    ClassDB::bind_method(D_METHOD("list_player_character_datas"), &DataManager::list_player_character_datas);
 }
 
 DataManager::DataManager() {
@@ -505,10 +695,22 @@ DataManager::~DataManager() {
 
 	_character_classes.clear();
 	_character_class_map.clear();
+    
 	_spells.clear();
 	_spell_map.clear();
+    
 	_auras.clear();
 	_aura_map.clear();
+    
 	_craft_datas.clear();
 	_craft_data_map.clear();
+    
+	_item_templates.clear();
+	_item_template_map.clear();
+
+	_mob_datas.clear();
+	_mob_data_map.clear();
+    
+	_player_character_datas.clear();
+	_player_character_data_map.clear();
 }

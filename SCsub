@@ -71,3 +71,7 @@ env.add_source_files(env.modules_sources,"skeleton/entity_equipset.cpp")
 env.add_source_files(env.modules_sources,"loot/loot_data_base.cpp")
 env.add_source_files(env.modules_sources,"loot/loot_data_container.cpp")
 env.add_source_files(env.modules_sources,"loot/loot_data_item.cpp")
+
+env.add_source_files(env.modules_sources,"data/mob_data.cpp")
+env.add_source_files(env.modules_sources,"data/player_character_data.cpp")
+
