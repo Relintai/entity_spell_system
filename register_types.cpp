@@ -61,6 +61,10 @@
 
 #include "skeleton/entity_equipset.h"
 
+#include "loot/loot_data_base.h"
+#include "loot/loot_data_item.h"
+#include "loot/loot_data_container.h"
+
 #ifdef TOOLS_ENABLED
 #include "editor/editor_plugin.h"
 
@@ -139,6 +143,10 @@ void register_entity_spell_system_types() {
     ClassDB::register_class<CategoryCooldown>();
 
     ClassDB::register_class<EntityEquipSet>();
+
+	ClassDB::register_class<LootDataBase>();
+	ClassDB::register_class<LootDataItem>();
+	ClassDB::register_class<LootDataContainter>();
 
 	//meshes
 	ClassDB::register_class<MeshDataResource>();

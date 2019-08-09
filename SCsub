@@ -66,5 +66,8 @@ env.add_source_files(env.modules_sources,"meshes/mesh_data_resource.cpp")
 env.add_source_files(env.modules_sources,"meshes/editor_import_collada_mdr.cpp")
 env.add_source_files(env.modules_sources,"meshes/editor_plugin_collada_mdr.cpp")
 
-
 env.add_source_files(env.modules_sources,"skeleton/entity_equipset.cpp")
+
+env.add_source_files(env.modules_sources,"loot/loot_data_base.cpp")
+env.add_source_files(env.modules_sources,"loot/loot_data_container.cpp")
+env.add_source_files(env.modules_sources,"loot/loot_data_item.cpp")
