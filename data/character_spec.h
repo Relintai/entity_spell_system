@@ -19,33 +19,22 @@ public:
 	void set_spec_name(String value);
 
 	Ref<TalentRowData> get_talent_row(int index) const;
+	void set_talent_row(const int index, const Ref<TalentRowData> row);
 
-	Ref<Talent> get_talent0_in_row(int index) const;
-	void set_talent0_in_row(int index, Ref<Talent> talent);
-
-	Ref<Talent> get_talent1_in_row(int index) const;
-	void set_talent1_in_row(int index, Ref<Talent> talent);
-
-	Ref<Talent> get_talent2_in_row(int index) const;
-	void set_talent2_in_row(int index, Ref<Talent> talent);
-
-	Ref<Talent> get_talent3_in_row(int index) const;
-	void set_talent3_in_row(int index, Ref<Talent> talent);
-
-	Ref<Talent> get_talent4_in_row(int index) const;
-	void set_talent4_in_row(int index, Ref<Talent> talent);
+	Ref<Talent> get_talent(const int row_index, const int index) const;
 
 	CharacterSpec();
 	~CharacterSpec();
+
+public:
+	enum {
+		MAX_TALENT_ROWS = 10,
+	};
 
 protected:
 	static void _bind_methods();
 
 private:
-	enum {
-		MAX_TALENT_ROWS = 10,
-	};
-
 	int _spec_id;
 	String _spec_name;
 	Ref<TalentRowData> _rows[MAX_TALENT_ROWS];

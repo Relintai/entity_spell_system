@@ -15,6 +15,7 @@
 
 class Aura;
 class Spell;
+class Talent;
 class CharacterClass;
 class CraftDataAttribute;
 class ItemTemplate;
@@ -51,6 +52,14 @@ public:
 	int get_aura_count();
 	void add_aura(Ref<Aura> aura);
 
+	String get_talents_folder();
+	void set_talents_folder(String folder);
+	Vector<Ref<Talent> > *get_talents();
+	Ref<Talent> get_talent(int talent_id);
+	Ref<Talent> get_talent_index(int index);
+	int get_talent_count();
+	void add_talent(Ref<Talent> talent);
+
 	String get_craft_data_folder();
 	void set_craft_data_folder(String folder);
 	Vector<Ref<CraftDataAttribute> > *get_craft_datas();
@@ -86,6 +95,7 @@ public:
 	void load_all();
 	void load_spells();
 	void load_auras();
+	void load_talents();
 	void load_characters();
 	void load_craft_datas();
 	void load_item_templates();
@@ -95,6 +105,7 @@ public:
 	void list_characters();
 	void list_spells();
 	void list_auras();
+	void list_talents();
 	void list_craft_data();
 	void list_item_templates();
     void list_mob_datas();
@@ -122,6 +133,10 @@ private:
 	String _auras_folder;
 	Vector<Ref<Aura> > _auras;
 	HashMap<int, Ref<Aura> > _aura_map;
+
+	String _talents_folder;
+	Vector<Ref<Talent> > _talents;
+	HashMap<int, Ref<Talent> > _talent_map;
 
 	String _craft_data_folder;
 	Vector<Ref<CraftDataAttribute> > _craft_datas;

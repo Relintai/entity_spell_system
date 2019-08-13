@@ -8,42 +8,25 @@
 
 class Talent;
 
-class TalentRowData : public Reference {
-	GDCLASS(TalentRowData, Reference);
+class TalentRowData : public Resource {
+	GDCLASS(TalentRowData, Resource);
 
 public:
 	Ref<Talent> get_talent(int index) const;
 	void set_talent(int index, Ref<Talent> talent);
 
-	Ref<Talent> get_talent0() const;
-	void set_talent0(Ref<Talent> talent);
+	TalentRowData();
+	~TalentRowData();
 
-	Ref<Talent> get_talent1() const;
-	void set_talent1(Ref<Talent> talent);
-
-	Ref<Talent> get_talent2() const;
-	void set_talent2(Ref<Talent> talent);
-
-	Ref<Talent> get_talent3() const;
-	void set_talent3(Ref<Talent> talent);
-
-	Ref<Talent> get_talent4() const;
-	void set_talent4(Ref<Talent> talent);
-
-	TalentRowData() {
-		for (int i = 0; i < MAX_TALENTS_IN_ROW; ++i) {
-			_talents[i] = Ref<Talent>(NULL);
-		}
-	}
+public:
+	enum {
+		MAX_TALENTS_IN_ROW = 5,
+	};
 
 protected:
 	static void _bind_methods();
 
 private:
-	enum {
-		MAX_TALENTS_IN_ROW = 5,
-	};
-
 	Ref<Talent> _talents[MAX_TALENTS_IN_ROW];
 };
 

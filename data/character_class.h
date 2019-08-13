@@ -7,12 +7,10 @@
 
 #include "../entities/stats/stat_data.h"
 #include "../entity_enums.h"
-#include "character_spec.h"
 
 #include "../entities/auras/aura_data.h"
 #include "../pipelines/spell_damage_info.h"
 #include "../pipelines/spell_heal_info.h"
-#include "../infos/spell_cast_info.h"
 
 #include "../utility/cooldown.h"
 #include "../utility/category_cooldown.h"
@@ -22,6 +20,7 @@ class Spell;
 class Entity;
 class CharacterSpec;
 class Entity;
+class SpellCastInfo;
 
 enum CharacterWeaponDataTypes {
 	CHARACTER_WEAPON_DATA_TYPES_NONE,
@@ -47,8 +46,8 @@ public:
 	Ref<StatData> get_stat_data();
 	void set_stat_data(Ref<StatData> value);
 
-	EntityEnums::PlayerResourceTypes get_player_resource_type();
-	void set_player_resource_type(EntityEnums::PlayerResourceTypes value);
+	int get_player_resource_type();
+	void set_player_resource_type(int value);
 	
 	int get_num_spells();
 	void set_num_spells(int value);
@@ -68,13 +67,10 @@ public:
 	Ref<Aura> get_aura(int index);
 	void set_aura(int index, Ref<Aura> aura);
 
+	void setup_resources(Entity *entity);
+	//void _setup_resources(Entity *entity);
+
 	/*
-	Vector<int> get_talent_ids();
-	void set_talent_ids(Vector<int> ids);
-
-	Vector<int> get_spec_ids();
-	void set_spec_ids(Vector<int> ids);
-
 	Vector<int> get_mob_party_ids();
 	void set_mob_party_ids(Vector<int> ids);
 
@@ -186,7 +182,7 @@ private:
 	String _character_class_name;
 	Ref<Texture> _icon;
 
-	EntityEnums::PlayerResourceTypes _player_resource_type;
+	int _player_resource_type;
 
 	Ref<StatData> _stat_data;
 

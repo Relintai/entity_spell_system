@@ -1,8 +1,8 @@
 #include "stat.h"
 
-const String Stat::STAT_BINDING_STRING = "Health, Speed, Mana, GCD, Haste, Agility, Strength, Stamina, Intellect, Luck, Haste Rating, Resilience, Armor, Attack Power, Spell Power, Melee Crit, Melee Crit bonus, Spell Crit, Spell Crit Bonus, Block, Parry, Damage Reduction, Melee Damage Reduction, Spell Damage Reduction, Damage Taken, Heal Taken, Melee Damage, Spell Damage, Holy Resist, Shadow Resist, Nature Resist, Fire Resist, Frost Resist, Lightning Resist, Chaos Resist, Silence Resist, Fear Resist, None";
+const String Stat::STAT_BINDING_STRING = "Health,Speed,Mana,GCD,Haste,Agility,Strength,Stamina,Intellect,Luck,Haste Rating,Resilience,Armor,Attack Power,Spell Power,Melee Crit,Melee Crit bonus,Spell Crit,Spell Crit Bonus,Block,Parry,Damage Reduction,Melee Damage Reduction,Spell Damage Reduction,Damage Taken,Heal Taken,Melee Damage,Spell Damage,Holy Resist,Shadow Resist,Nature Resist,Fire Resist,Frost Resist,Lightning Resist,Chaos Resist,Silence Resist,Fear Resist,None";
 
-const String Stat::MODIFIER_APPLY_TYPE_BINDING_STRING = "Standard, Only min modifier, Only Max modifier";
+const String Stat::MODIFIER_APPLY_TYPE_BINDING_STRING = "Standard,Only min modifier,Only Max modifier";
 
 Stat::Stat() {
 	_id = Stat::STAT_ID_NONE;
@@ -197,9 +197,9 @@ void Stat::apply_modifier(Ref<StatModifier> modifier) {
 	}
 	
 	recalculate();
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
-	//	emit_signal("s_changed", this);
+	//	emit_signal("s_changed", Ref<Stat>(this));
 }
 
 void Stat::de_apply_modifier(Ref<StatModifier> modifier) {
@@ -233,10 +233,10 @@ void Stat::de_apply_modifier(Ref<StatModifier> modifier) {
 	}
 
 	recalculate();
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 	
-	//	emit_signal("s_changed", this);
+	//	emit_signal("s_changed", Ref<Stat>(this));
 }
 
 void Stat::re_apply_modifiers() {
@@ -255,10 +255,10 @@ void Stat::re_apply_modifiers() {
 	}
 	
 	recalculate();
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 
-	//	emit_signal("s_changed", this);
+	//	emit_signal("s_changed", Ref<Stat>(this));
 }
 
 void Stat::re_apply_modifier_not_negative_stacking_percents() {
@@ -296,10 +296,10 @@ void Stat::re_apply_modifier_not_negative_stacking_percents() {
 	}
 
 	recalculate();
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 	
-	//	emit_signal("s_changed", this);
+	//	emit_signal("s_changed", Ref<Stat>(this));
 }
 
 //Stat
@@ -311,7 +311,7 @@ float Stat::gets_current() {
 void Stat::sets_current(float value) {
 	_s_current = value;
 
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 }
 
@@ -322,7 +322,7 @@ float Stat::gets_max() {
 void Stat::sets_max(float value) {
 	_s_max = value;
 
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 }
 
@@ -333,7 +333,7 @@ float Stat::getc_current() {
 void Stat::setc_current(float value) {
 	_c_current = value;
 
-	emit_signal("c_changed", this);
+	emit_signal("c_changed", Ref<Stat>(this));
 }
 
 float Stat::getc_max() {
@@ -343,7 +343,7 @@ float Stat::getc_max() {
 void Stat::setc_max(float value) {
 	_s_current = value;
 
-	emit_signal("c_changed", this);
+	emit_signal("c_changed", Ref<Stat>(this));
 }
 
 float Stat::get_base() {
@@ -354,7 +354,7 @@ void Stat::set_base(float value) {
 	_base = value;
 	recalculate();
 
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 }
 
@@ -366,7 +366,7 @@ void Stat::set_bonus(float value) {
 	_bonus = value;
 	recalculate();
 
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 }
 
@@ -378,7 +378,7 @@ void Stat::set_percent(float value) {
 	_percent = value;
 	recalculate();
 
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 }
 
@@ -389,7 +389,7 @@ void Stat::reset_values() {
 
 	_dirty = true;
 
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 }
 
@@ -411,7 +411,7 @@ void Stat::send() {
 	_c_current = _s_current;
 	_c_max = _s_max;
 
-	emit_signal("c_changed", this);
+	emit_signal("c_changed", Ref<Stat>(this));
 }
 
 
@@ -426,7 +426,7 @@ bool Stat::isc_current_zero() {
 void Stat::set_to_max() {
 	_s_current = _s_max;
 
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 }
 
@@ -437,7 +437,7 @@ void Stat::set_values(float base, float bonus, float percent) {
 
 	recalculate();
 
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 }
 
@@ -451,7 +451,7 @@ void Stat::set_from_stat(Ref<Stat> other) {
 	_percent = other->_percent;
 	set_dirty(true);
 
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 }
 
@@ -465,7 +465,7 @@ void Stat::set(float current, float max, float base, float bonus, float percent)
 	_percent = percent;
 	_dirty = true;
 
-	emit_signal("s_changed", this);
+	emit_signal("s_changed", Ref<Stat>(this));
 	send();
 }
 
@@ -475,6 +475,7 @@ void Stat::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_id"), &Stat::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "id"), &Stat::set_id);
+	//ADD_PROPERTY(PropertyInfo(Variant::INT, "id", PROPERTY_HINT_ENUM, STAT_BINDING_STRING), "set_id", "get_id");
 
 	ClassDB::bind_method(D_METHOD("get_stat_modifier_type"), &Stat::get_stat_modifier_type);
 	ClassDB::bind_method(D_METHOD("set_stat_modifier_type", "value"), &Stat::set_stat_modifier_type);

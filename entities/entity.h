@@ -19,7 +19,6 @@
 #include "core/ustring.h"
 #include "core/vector.h"
 #include "../data/item_instance.h"
-#include "player_talent.h"
 
 #include "entity_resource.h"
 
@@ -29,8 +28,6 @@
 #include "../data/data_manager.h"
 
 #include "../entity_enums.h"
-
-#include "../infos/spell_cast_info.h"
 
 #include "../skeleton/character_skeleton.h"
 
@@ -225,17 +222,24 @@ public:
     void sdie();
     void cdie();
 
+	void ons_stat_changed(Ref<Stat> stat);
+	void onc_stat_changed(Ref<Stat> stat);
+
 	////    Resources    ////
 
 	Ref<EntityResource> gets_resource(int index);
+	Ref<EntityResource> gets_resource_type(int type);
 	void adds_resource(Ref<EntityResource> resource);
 	int gets_resource_count();
 	void removes_resource(int index);
+	void clears_resource();
 
 	Ref<EntityResource> getc_resource(int index);
+	Ref<EntityResource> getc_resource_type(int type);
 	void addc_resource(Ref<EntityResource> resource);
 	int getc_resource_count();
 	void removec_resource(int index);
+	void clearc_resource();
 
 	//GCD
 	bool getc_has_global_cooldown();
@@ -455,8 +459,8 @@ public:
 	void sreceive_rank_increase(int talentID);
 	void sreceive_rank_decrease(int talentID);
 	void creceive_rank(int talentID, int rank);
-	PlayerTalent *sget_talent(int id, bool create = false);
-	PlayerTalent *cget_talent(int id, bool create = false);
+	//PlayerTalent *sget_talent(int id, bool create = false);
+	//PlayerTalent *cget_talent(int id, bool create = false);
 
 	////    Inventory    ////
 
@@ -629,8 +633,8 @@ private:
 
 	////    TalentComponent    ////
 
-	Vector<Ref<PlayerTalent> > _s_talents;
-	Vector<Ref<PlayerTalent> > _c_talents;
+	//Vector<Ref<PlayerTalent> > _s_talents;
+	//Vector<Ref<PlayerTalent> > _c_talents;
 
 	////    Inventory    ////
 

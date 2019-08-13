@@ -3,6 +3,8 @@
 #include "../data/spell.h"
 #include "../data/aura.h"
 #include "../entities/entity.h"
+#include "character_spec.h"
+#include "../infos/spell_cast_info.h"
 
 int CharacterClass::get_id() {
 	return _id;
@@ -28,11 +30,11 @@ void CharacterClass::set_icon(Ref<Texture> value) {
 	_icon = Ref<Texture>(value);
 }
 
-EntityEnums::PlayerResourceTypes CharacterClass::get_player_resource_type() {
+int CharacterClass::get_player_resource_type() {
 	return _player_resource_type;
 }
 
-void CharacterClass::set_player_resource_type(EntityEnums::PlayerResourceTypes value) {
+void CharacterClass::set_player_resource_type(int value) {
 	_player_resource_type = value;
 }
 
@@ -106,6 +108,13 @@ void CharacterClass::set_aura(int index, Ref<Aura> aura) {
 
 	_auras[index] = aura;
 }
+
+void CharacterClass::setup_resources(Entity *entity) {
+	if (has_method("_setup_resources"))
+		call("_setup_resources", entity);
+}
+//void CharacterClass::_setup_resources(Entity *entity) {
+//}
 
 /*
 Vector<int> CharacterClass::get_mob_party_ids() {
@@ -638,6 +647,8 @@ void CharacterClass::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_son_gcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
 	BIND_VMETHOD(MethodInfo("_son_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
+	BIND_VMETHOD(MethodInfo("_setup_resources", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
     
     //Clientside Event Handlers
 	ClassDB::bind_method(D_METHOD("con_cast_failed", "info"), &CharacterClass::con_cast_failed);

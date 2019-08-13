@@ -1363,6 +1363,8 @@ void Aura::_bind_methods() {
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura_stat_attribute_percent_mod", "get_aura_stat_attribute_percent_mod", i);
 	}
 
+	ClassDB::bind_method(D_METHOD("is_talent"), &Aura::is_talent);
+
 	BIND_CONSTANT(MAX_AURA_STATS);
 	BIND_CONSTANT(MAX_TRIGGER_DATA);
 }

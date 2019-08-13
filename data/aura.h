@@ -301,6 +301,7 @@ public:
 	virtual void _calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
 	virtual void _handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> data);
 
+	_FORCE_INLINE_ bool is_talent() const { return _aura_type == SpellEnums::AURA_TYPE_TALENT; }
 
 	Aura();
 	~Aura();

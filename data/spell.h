@@ -127,14 +127,14 @@ public:
 	int get_required_item();
 	void set_required_item(int value);
 
-	EntityEnums::PlayerResourceTypes get_cost_type();
-	void set_cost_type(EntityEnums::PlayerResourceTypes value);
+	int get_cost_type();
+	void set_cost_type(int value);
 
 	int get_cost_resource();
 	void set_cost_resource(int value);
 
-	EntityEnums::PlayerResourceTypes get_give_resource_type();
-	void set_give_resource_type(EntityEnums::PlayerResourceTypes value);
+	int get_give_resource_type();
+	void set_give_resource_type(int value);
 
 	int get_give_resource();
 	void set_give_resource(int value);
@@ -392,9 +392,9 @@ private:
 	int _item_cost;
 	int _craft_material_cost;
 	int _required_item;
-	EntityEnums::PlayerResourceTypes _cost_type;
+	int _cost_type;
 	int _cost_resource;
-	EntityEnums::PlayerResourceTypes _give_resource_type;
+	int _give_resource_type;
 	int _give_resource;
 	bool _has_global_cooldown;
 	bool _is_local_spell;

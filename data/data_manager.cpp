@@ -4,6 +4,7 @@
 #include "character_class.h"
 #include "craft_data_attribute.h"
 #include "spell.h"
+#include "talent.h"
 #include "mob_data.h"
 #include "player_character_data.h"
 
@@ -129,6 +130,41 @@ int DataManager::get_aura_count() {
 	return _auras.size();
 }
 
+//Talents
+void DataManager::add_talent(Ref<Talent> talent) {
+	ERR_FAIL_COND(!talent.is_valid());
+
+	_talents.push_back(talent);
+	_talent_map.set(talent->get_id(), talent);
+}
+
+String DataManager::get_talents_folder() {
+	return _talents_folder;
+}
+void DataManager::set_talents_folder(String folder) {
+	_talents_folder = folder;
+}
+Vector<Ref<Talent> > *DataManager::get_talents() {
+	return &_talents;
+}
+
+Ref<Talent> DataManager::get_talent(int talent_id) {
+	ERR_FAIL_COND_V(!_talent_map.has(talent_id), Ref<Talent>(NULL));
+
+	return _talent_map.get(talent_id);
+}
+
+Ref<Talent> DataManager::get_talent_index(int index) {
+	ERR_FAIL_INDEX_V(index, _talents.size(), Ref<Talent>(NULL));
+
+	return _talents.get(index);
+}
+
+int DataManager::get_talent_count() {
+	return _talents.size();
+}
+
+//Craft Data
 void DataManager::add_craft_data(Ref<CraftDataAttribute> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
@@ -267,6 +303,7 @@ int DataManager::get_player_character_data_count() {
 void DataManager::load_all() {
 	load_spells();
 	load_auras();
+	load_talents();
 	load_characters();
 	load_craft_datas();
 	load_item_templates();
@@ -343,6 +380,45 @@ void DataManager::load_auras() {
 				ERR_CONTINUE(!aura.is_valid());
 
 				add_aura(aura);
+			}
+
+			filename = dir.get_next();
+		}
+	} else {
+		print_error("An error occurred when trying to access the path.");
+	}
+}
+
+void DataManager::load_talents() {
+	_Directory dir;
+
+	ERR_FAIL_COND(_talents_folder.ends_with("/"));
+
+	if (dir.open(_talents_folder) == OK) {
+
+		dir.list_dir_begin();
+
+		String filename = dir.get_next();
+
+		while (filename != "") {
+			if (!dir.current_is_dir()) {
+				String path = _talents_folder + "/" + filename;
+
+				_ResourceLoader *rl = _ResourceLoader::get_singleton();
+
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "Aura");
+
+				resl->wait();
+
+				Ref<Resource> s = resl->get_resource();
+
+				ERR_CONTINUE(!s.is_valid());
+
+				Ref<Talent> talent = s;
+
+				ERR_CONTINUE(!talent.is_valid());
+
+				add_talent(talent);
 			}
 
 			filename = dir.get_next();
@@ -565,6 +641,12 @@ void DataManager::list_auras() {
 	}
 }
 
+void DataManager::list_talents() {
+	for (int i = 0; i < _talents.size(); ++i) {
+		print_error(itos(i) + ": " + _talents.get(i)->get_aura_name());
+	}
+}
+
 void DataManager::list_craft_data() {
 	for (int i = 0; i < _craft_datas.size(); ++i) {
 		print_error(itos(i) + ": " + _craft_datas.get(i)->get_name());
@@ -624,6 +706,16 @@ void DataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_aura_index", "index"), &DataManager::get_aura_index);
 	ClassDB::bind_method(D_METHOD("get_aura_count"), &DataManager::get_aura_count);
 
+	//Talent
+	ClassDB::bind_method(D_METHOD("get_talents_folder"), &DataManager::get_talents_folder);
+	ClassDB::bind_method(D_METHOD("set_talents_folder", "folder"), &DataManager::set_talents_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "talents_folder"), "set_talents_folder", "get_talents_folder");
+
+	ClassDB::bind_method(D_METHOD("add_talent", "spell"), &DataManager::add_talent);
+	ClassDB::bind_method(D_METHOD("get_talent", "id"), &DataManager::get_talent);
+	ClassDB::bind_method(D_METHOD("get_talent_index", "index"), &DataManager::get_talent_index);
+	ClassDB::bind_method(D_METHOD("get_talent_count"), &DataManager::get_talent_count);
+
 	//Craft Data
 	ClassDB::bind_method(D_METHOD("get_craft_data_folder"), &DataManager::get_craft_data_folder);
 	ClassDB::bind_method(D_METHOD("set_craft_data_folder", "folder"), &DataManager::set_craft_data_folder);
@@ -668,6 +760,7 @@ void DataManager::_bind_methods() {
     ClassDB::bind_method(D_METHOD("load_all"), &DataManager::load_all);
 	ClassDB::bind_method(D_METHOD("load_spells"), &DataManager::load_spells);
     ClassDB::bind_method(D_METHOD("load_auras"), &DataManager::load_auras);
+    ClassDB::bind_method(D_METHOD("load_talents"), &DataManager::load_talents);
 	ClassDB::bind_method(D_METHOD("load_characters"), &DataManager::load_characters);
 	ClassDB::bind_method(D_METHOD("load_craft_datas"), &DataManager::load_craft_datas);
     ClassDB::bind_method(D_METHOD("load_item_templates"), &DataManager::load_item_templates);
@@ -678,6 +771,7 @@ void DataManager::_bind_methods() {
     ClassDB::bind_method(D_METHOD("list_characters"), &DataManager::list_characters);
 	ClassDB::bind_method(D_METHOD("list_spells"), &DataManager::list_spells);
 	ClassDB::bind_method(D_METHOD("list_auras"), &DataManager::list_auras);
+	ClassDB::bind_method(D_METHOD("list_talents"), &DataManager::list_talents);
 	ClassDB::bind_method(D_METHOD("list_craft_data"), &DataManager::list_craft_data);
 	ClassDB::bind_method(D_METHOD("list_item_templates"), &DataManager::list_item_templates);
     ClassDB::bind_method(D_METHOD("list_mob_datas"), &DataManager::list_mob_datas);
@@ -701,6 +795,9 @@ DataManager::~DataManager() {
     
 	_auras.clear();
 	_aura_map.clear();
+
+	_talents.clear();
+	_talent_map.clear();
     
 	_craft_datas.clear();
 	_craft_data_map.clear();

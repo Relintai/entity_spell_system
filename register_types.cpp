@@ -9,7 +9,6 @@
 #include "data/character_class.h"
 #include "data/talent.h"
 #include "data/talent_row_data.h"
-#include "data/talent_rank_data.h"
 #include "data/character_spec.h"
 #include "data/xp_data.h"
 #include "data/item_stat_modifier.h"
@@ -23,7 +22,6 @@
 #include "entities/stats/stat.h"
 #include "entities/stats/stat_modifier.h"
 #include "entities/stats/stat_data.h"
-#include "entities/player_talent.h"
 #include "inventory/bag.h"
 
 #include "data/craft_data_attribute_helper.h"
@@ -96,7 +94,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<SpellCooldownManipulationData>();
 	ClassDB::register_class<Talent>();
 	ClassDB::register_class<TalentRowData>();
-	ClassDB::register_class<TalentRankData>();
 
 	ClassDB::register_class<CharacterSkeletonVisualEntry>();
 
@@ -110,7 +107,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<StatDataEntry>();
 	ClassDB::register_class<StatData>();
 
-	ClassDB::register_class<PlayerTalent>();
 	ClassDB::register_class<CharacterSpec>();
     
 	ClassDB::register_class<Bag>();

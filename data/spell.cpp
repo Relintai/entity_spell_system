@@ -138,10 +138,10 @@ void Spell::set_required_item(int value) {
 	_required_item = value;
 }
 
-EntityEnums::PlayerResourceTypes Spell::get_cost_type() {
+int Spell::get_cost_type() {
 	return _cost_type;
 }
-void Spell::set_cost_type(EntityEnums::PlayerResourceTypes value) {
+void Spell::set_cost_type(int value) {
 	_cost_type = value;
 }
 
@@ -152,10 +152,10 @@ void Spell::set_cost_resource(int value) {
 	_cost_resource = value;
 }
 
-EntityEnums::PlayerResourceTypes Spell::get_give_resource_type() {
+int Spell::get_give_resource_type() {
 	return _give_resource_type;
 }
-void Spell::set_give_resource_type(EntityEnums::PlayerResourceTypes value) {
+void Spell::set_give_resource_type(int value) {
 	_give_resource_type = value;
 }
 
@@ -1041,7 +1041,7 @@ void Spell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_cost_type"), &Spell::get_cost_type);
 	ClassDB::bind_method(D_METHOD("set_cost_type", "value"), &Spell::set_cost_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cost_type", PROPERTY_HINT_ENUM, "None, Rage"), "set_cost_type", "get_cost_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cost_type"), "set_cost_type", "get_cost_type");
 
 	ClassDB::bind_method(D_METHOD("get_cost_resource"), &Spell::get_cost_resource);
 	ClassDB::bind_method(D_METHOD("set_cost_resource", "value"), &Spell::set_cost_resource);
@@ -1050,7 +1050,7 @@ void Spell::_bind_methods() {
 	ADD_GROUP("Gives", "give");
 	ClassDB::bind_method(D_METHOD("get_give_resource_type"), &Spell::get_give_resource_type);
 	ClassDB::bind_method(D_METHOD("set_give_resource_type", "value"), &Spell::set_give_resource_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "give_resource_type", PROPERTY_HINT_ENUM, "None, Rage"), "set_give_resource_type", "get_give_resource_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "give_resource_type"), "set_give_resource_type", "get_give_resource_type");
 
 	ClassDB::bind_method(D_METHOD("get_give_resource"), &Spell::get_give_resource);
 	ClassDB::bind_method(D_METHOD("set_give_resource", "value"), &Spell::set_give_resource);
