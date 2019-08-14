@@ -17,18 +17,17 @@ public:
 	void set_allowed_item_types(const int value);
 	
 	bool add_item(Ref<ItemInstance> item);
-	Ref<ItemInstance> get_item(const int index);
+	Ref<ItemInstance> get_item(const int index) const;
     Ref<ItemInstance> remove_item(const int index);
-    void swap_items(const int item1_index, const int item2_index);
     
     bool can_add_item(Ref<ItemInstance> item);
 	
-	int get_item_count();
+	int get_item_count() const;
 
-	int get_size();
+	int get_size() const;
     void set_size(const int size);
     
-    bool is_full();
+    bool is_full() const;
 	
 	//to_dict();
 	//from_dict();
@@ -41,6 +40,8 @@ protected:
     
 private:
 	int _allowed_item_types;
+    int _item_count;
+	Vector<Ref<ItemInstance> > _items;
 };
 
 #endif
