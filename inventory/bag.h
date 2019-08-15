@@ -16,6 +16,7 @@ public:
 	int get_allowed_item_types() const;
 	void set_allowed_item_types(const int value);
 	
+    /*
 	bool add_item(Ref<ItemInstance> item);
 	Ref<ItemInstance> get_item(const int index);
     Ref<ItemInstance> remove_item(const int index);
@@ -28,7 +29,7 @@ public:
 	int get_size();
     void set_size(const int size);
     
-    bool is_full();
+    bool is_full();*/
 	
 	//to_dict();
 	//from_dict();

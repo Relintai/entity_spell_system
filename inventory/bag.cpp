@@ -11,6 +11,7 @@ void Bag::set_allowed_item_types(const int value) {
 	_allowed_item_types = value;
 }
 
+/*
 bool Bag::add_item(Ref<ItemInstance> item) {
 	ERR_FAIL_COND_V(!has_method("_add_item"), false);
     
@@ -67,7 +68,7 @@ bool Bag::is_full() {
     
     return call("_is_full");
 }
-
+*/
 Bag::Bag() {
 	_allowed_item_types = 0xFFFFFF;
 }
@@ -81,7 +82,7 @@ void Bag::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_allowed_item_types"), &Bag::get_allowed_item_types);
 	ClassDB::bind_method(D_METHOD("set_allowed_item_types", "count"), &Bag::set_allowed_item_types);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "allowed_item_types", PROPERTY_HINT_FLAGS, ItemEnums::BINDING_STRING_ITEM_TYPE_FLAGS), "set_allowed_item_types", "get_allowed_item_types");
-	
+	/*
     BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "could_add"), "_add_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
     BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_get_item", PropertyInfo(Variant::INT, "index")));
     BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_remove_item", PropertyInfo(Variant::INT, "index")));
@@ -108,5 +109,5 @@ void Bag::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_size"), &Bag::get_size);
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &Bag::set_size);
     
-    ClassDB::bind_method(D_METHOD("is_full"), &Bag::is_full);
+    ClassDB::bind_method(D_METHOD("is_full"), &Bag::is_full);*/
 }
