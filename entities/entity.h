@@ -115,14 +115,6 @@ class Entity : public KinematicBody {
 #endif
 
 public:
-    enum InventorySizes {
-        BACKPACK_SIZE = 20,
-        MAX_BAG_SLOTS = 5,
-    };
-    
-	Entity();
-	~Entity();
-
 	void initialize(Ref<EntityCreateInfo> info);
 
 	void Update(); //old, remove
@@ -462,51 +454,12 @@ public:
 	//PlayerTalent *sget_talent(int id, bool create = false);
 	//PlayerTalent *cget_talent(int id, bool create = false);
 
-	////    Inventory    ////
-
-	Ref<Bag> gets_bag() const;
-	Ref<Bag> getc_bag() const;
-	
-	void sets_bag(const Ref<Bag> bag);
-	void setc_bag(const Ref<Bag> bag);
-    
-	Ref<Bag> gets_target_bag() const;
-	void sets_target_bag(const Ref<Bag> bag);
-	
-	Ref<Bag> getc_target_bag() const;
-	void setc_target_bag(const Ref<Bag> bag);
-	
-	bool add_item_to_bag(Ref<ItemInstance> item);
-	
-	bool stry_to_add_item(int itemId, int count);
-	bool stry_to_remove_item(int itemId, int count);
-	void ssend_add_item(int slotId, int itemId, int count);
-	void ssend_change_item_count(int slotId, int count);
-	void ssend_remove_item(int slotId);
-	void ssend_move_item(int slot1, int slot2);
-	void ssend_sent_items(String items);
-	void csend_swap_items(int slot1, int slot2);
-	void csend_craft_item_request(int craftId);
-	void creceive_add_item(int slotId, int itemId, int count);
-	void creceive_change_item_count(int slotId, int count);
-	void creceive_remove_item(int slotId);
-	void creceive_move_item(int slot1, int slot2);
-	void creceive_sent_items(String items);
-	void sreceive_swap_items(int slot1, int slot2);
-	bool shas_item(int itemId, int count);
-	bool chas_item(int itemId, int count);
-	int cget_item_count(int itemId);
-	int sget_item_count(int itemId);
-	bool ccan_craft(CraftDataAttribute *cda);
-	bool ctry_to_craft(CraftDataAttribute *cda);
-	bool scan_craft(CraftDataAttribute *cda);
-	void scraft(CraftDataAttribute *cda);
-	void sreceive_craft_item_msg(int craftId);
-	void cswap_items_in_slots(int slot1, int slot2);
 	void loaded();
-	void send_all_items();
-
+	
 	String random_name();
+	
+	Entity();
+	~Entity();
 
 protected:
 	static void _bind_methods();
@@ -635,16 +588,6 @@ private:
 
 	//Vector<Ref<PlayerTalent> > _s_talents;
 	//Vector<Ref<PlayerTalent> > _c_talents;
-
-	////    Inventory    ////
-
-	Ref<Bag> _s_bag;
-	Ref<Bag> _c_bag;
-	
-	Ref<Bag> _s_target_bag;
-	Ref<Bag> _c_target_bag;
 };
-
-VARIANT_ENUM_CAST(Entity::InventorySizes);
 
 #endif
