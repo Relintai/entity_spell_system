@@ -28,44 +28,12 @@ class CharacterSkeleton : public Spatial {
 #endif
 
 public:
-	NodePath get_bone_path(int index);
-	void set_bone_path(int index, NodePath path);
-
-	Ref<CharacterSkeletonVisualEntry> get_visual(int index);
-	void set_visual(int index, Ref<CharacterSkeletonVisualEntry> entry);
-
-	Node *get_bone_node(EntityEnums::CharacterSkeletonPoints node_id);
-
-	NodePath get_animation_player_path();
-	void set_animation_player_path(NodePath path);
-
-	AnimationPlayer *get_animation_player();
-
-	NodePath get_animation_tree_path();
-	void set_animation_tree_path(NodePath path);
-
-	AnimationTree *get_animation_tree();
-
-	void update_nodes();
-
 	CharacterSkeleton();
 
 protected:
 	static void _bind_methods();
-	virtual void _notification(int p_notification);
 
-private:
-	NodePath _animation_player_path;
-	NodePath _animation_tree_path;
-
-    NodePath _bone_paths[EntityEnums::SKELETON_POINTS_MAX];
-    
-	AnimationPlayer *_animation_player;
-	AnimationTree *_animation_tree;
-
-	Node *_bone_nodes[EntityEnums::SKELETON_POINTS_MAX];
-
-	Ref<CharacterSkeletonVisualEntry> _visuals[EntityEnums::SKELETON_POINTS_MAX];
+//private:
 };
 
 
