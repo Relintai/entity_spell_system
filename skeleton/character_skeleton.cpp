@@ -2,8 +2,8 @@
 
 
 CharacterSkeleton::CharacterSkeleton() {
+
 }
 
 void CharacterSkeleton::_bind_methods() {
-
 }
