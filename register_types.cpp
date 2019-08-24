@@ -18,6 +18,9 @@
 #include "data/item_visual.h"
 #include "data/item_visual_entry.h"
 
+#include "atlases/character_atlas.h"
+#include "atlases/character_atlas_entry.h"
+
 #include "data/item_template.h"
 #include "data/item_instance.h"
 
@@ -105,6 +108,9 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<ItemVisual>();
 	ClassDB::register_class<ItemVisualEntry>();
+
+	ClassDB::register_class<CharacterAtlas>();
+	ClassDB::register_class<CharacterAtlasEntry>();
 
 	//entity data
 	ClassDB::register_class<EntityEnums>();
