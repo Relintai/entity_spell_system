@@ -25,6 +25,9 @@ module_env.add_source_files(env.modules_sources,"data/item_instance.cpp")
 module_env.add_source_files(env.modules_sources,"data/item_template.cpp")
 module_env.add_source_files(env.modules_sources,"data/spell_cooldown_manipulation_data.cpp")
 
+module_env.add_source_files(env.modules_sources,"data/item_visual.cpp")
+module_env.add_source_files(env.modules_sources,"data/item_visual_entry.cpp")
+
 module_env.add_source_files(env.modules_sources,"data/craft_data_attribute_helper.cpp")
 module_env.add_source_files(env.modules_sources,"data/craft_data_attribute.cpp")
 

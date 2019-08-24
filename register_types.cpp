@@ -15,6 +15,9 @@
 #include "data/item_template_stat_modifier.h"
 #include "data/spell_cooldown_manipulation_data.h"
 
+#include "data/item_visual.h"
+#include "data/item_visual_entry.h"
+
 #include "data/item_template.h"
 #include "data/item_instance.h"
 
@@ -99,6 +102,9 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<CharacterSkeletonVisualEntry>();
 
 	ClassDB::register_class<DataManager>();
+
+	ClassDB::register_class<ItemVisual>();
+	ClassDB::register_class<ItemVisualEntry>();
 
 	//entity data
 	ClassDB::register_class<EntityEnums>();

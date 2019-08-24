@@ -4,6 +4,7 @@
 #include "core/resource.h"
 #include "scene/resources/texture.h"
 
+#include "item_visual.h"
 #include "item_template_stat_modifier.h"
 #include "../entities/stats/stat.h"
 #include "../item_enums.h"
@@ -36,6 +37,9 @@ public:
 	ItemEnums::ItemRarity get_rarity() const;
 	void set_rarity(const ItemEnums::ItemRarity value);
 
+	Ref<ItemVisual> get_item_visual() const;
+	void set_item_visual(const Ref<ItemVisual> value);
+
 	int get_inventory_size_x() const;
 	void set_inventory_size_x(const int value);
 	
@@ -62,7 +66,6 @@ public:
 
 	Ref<Aura> get_aura(int index) const;
 	void set_aura(const int index, const Ref<Aura> aura);
-
 
 	int get_item_stat_modifier_count() const;
 	void set_item_stat_modifier_count(const int value);
@@ -111,6 +114,8 @@ private:
 	ItemEnums::ItemType _item_type;
 	ItemEnums::ItemSubtype _item_sub_type;
 	ItemEnums::ItemSubSubtype _item_sub_sub_type;
+
+	Ref<ItemVisual> _item_visual;
 
 	int _inventory_size_x;
 	int _inventory_size_y;

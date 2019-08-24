@@ -53,6 +53,13 @@ void ItemTemplate::set_rarity(const ItemEnums::ItemRarity value) {
 	_rarity = value;
 }
 
+Ref<ItemVisual> ItemTemplate::get_item_visual() const {
+	return _item_visual;
+}
+void ItemTemplate::set_item_visual(const Ref<ItemVisual> value) {
+	_item_visual = value;
+}
+
 int ItemTemplate::get_inventory_size_x() const {
 	return _inventory_size_x;
 }
@@ -323,6 +330,10 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_rarity"), &ItemTemplate::get_rarity);
 	ClassDB::bind_method(D_METHOD("set_rarity", "count"), &ItemTemplate::set_rarity);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rarity", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_RARITY), "set_rarity", "get_rarity");
+
+	ClassDB::bind_method(D_METHOD("get_item_visual"), &ItemTemplate::get_item_visual);
+	ClassDB::bind_method(D_METHOD("set_item_visual", "value"), &ItemTemplate::set_item_visual);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "item_visual", PROPERTY_HINT_RESOURCE_TYPE, "ItemVisual"), "set_item_visual", "get_item_visual");
 
 	ClassDB::bind_method(D_METHOD("get_inventory_size_x"), &ItemTemplate::get_inventory_size_x);
 	ClassDB::bind_method(D_METHOD("set_inventory_size_x", "value"), &ItemTemplate::set_inventory_size_x);
