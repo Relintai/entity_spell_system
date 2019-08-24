@@ -21,6 +21,8 @@
 #include "atlases/character_atlas.h"
 #include "atlases/character_atlas_entry.h"
 
+#include "skeleton/character_bones.h"
+
 #include "data/item_template.h"
 #include "data/item_instance.h"
 
@@ -111,6 +113,8 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<CharacterAtlas>();
 	ClassDB::register_class<CharacterAtlasEntry>();
+
+	ClassDB::register_class<CharacterBones>();
 
 	//entity data
 	ClassDB::register_class<EntityEnums>();

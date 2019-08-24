@@ -31,6 +31,8 @@ module_env.add_source_files(env.modules_sources,"data/item_visual_entry.cpp")
 module_env.add_source_files(env.modules_sources,"atlases/character_atlas.cpp")
 module_env.add_source_files(env.modules_sources,"atlases/character_atlas_entry.cpp")
 
+module_env.add_source_files(env.modules_sources,"skeleton/character_bones.cpp")
+
 module_env.add_source_files(env.modules_sources,"data/craft_data_attribute_helper.cpp")
 module_env.add_source_files(env.modules_sources,"data/craft_data_attribute.cpp")
 
