@@ -1,10 +1,10 @@
 #ifndef ITEM_VISUAL_ENTRY_H
 #define ITEM_VISUAL_ENTRY_H
 
-#include "core/reference.h"
+#include "core/resource.h"
 
-class ItemVisualEntry : public Reference {
-	GDCLASS(ItemVisualEntry, Reference);
+class ItemVisualEntry : public Resource {
+	GDCLASS(ItemVisualEntry, Resource);
 
 public:
 	ItemVisualEntry();
