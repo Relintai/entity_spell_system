@@ -1,10 +1,10 @@
 #ifndef CHARACTER_BONES_H
 #define CHARACTER_BONES_H
 
-#include "core/resource.h"
+#include "scene/2d/node_2d.h"
 
-class CharacterBones : public Resource {
-	GDCLASS(CharacterBones, Resource);
+class CharacterBones : public Node2D {
+	GDCLASS(CharacterBones, Node2D);
 
 public:
 	CharacterBones();
