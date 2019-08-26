@@ -208,6 +208,27 @@ void Spell::set_spell_description(String value) {
 	_spell_description = value;
 }
 
+Ref<SpellEffectVisual> Spell::get_visual_spell_effects() {
+	return _visual_spell_effects;
+}
+void Spell::set_visual_spell_effects(Ref<SpellEffectVisual> value) {
+	_visual_spell_effects = value;
+}
+
+Ref<SpellProjectileData> Spell::get_spell_projectile_data() {
+	return _spell_projectile_data;
+}
+void Spell::set_spell_projectile_data(Ref<SpellProjectileData> value) {
+	_spell_projectile_data = value;
+}
+
+Ref<WorldEffectData> Spell::get_world_effect_data() {
+	return _world_effect_data;
+}
+void Spell::set_world_effect_data(Ref<WorldEffectData> value) {
+	_world_effect_data = value;
+}
+
 float Spell::get_damage_scale_for_level(int level) {
 	//return getDamageLevelScaling()->Evaluate((float)(level));
 	return 1;
@@ -377,51 +398,6 @@ void Spell::set_aoe_half_extents(Vector3 value) {
 	_aoe_half_extents = value;
 }
 
-bool Spell::has_effect_visual() {
-	return _effect_visual.is_valid();
-}
-
-EntityEnums::CharacterSkeletonPoints Spell::get_effect_visual_point() {
-	return _effect_visual_point;
-}
-void Spell::set_effect_visual_point(EntityEnums::CharacterSkeletonPoints point) {
-	_effect_visual_point = point;
-}
-
-Ref<PackedScene> Spell::get_effect_visual() {
-	return _effect_visual;
-}
-void Spell::set_effect_visual(Ref<PackedScene> value) {
-	_effect_visual = value;
-}
-
-bool Spell::has_spell_cast_finish_effect() {
-	return _spell_cast_finish_effect.is_valid();
-}
-
-EntityEnums::CharacterSkeletonPoints Spell::get_spell_cast_finish_effect_point() {
-	return _spell_cast_finish_effect_point;
-}
-void Spell::set_spell_cast_finish_effect_point(EntityEnums::CharacterSkeletonPoints point) {
-	_spell_cast_finish_effect_point = point;
-}
-
-Ref<PackedScene> Spell::get_spell_cast_finish_effect() {
-	return _spell_cast_finish_effect;
-}
-void Spell::set_spell_cast_finish_effect(Ref<PackedScene> value) {
-	_spell_cast_finish_effect = value;
-}
-
-bool Spell::has_spell_cast_effect() {
-	return _spell_cast_effect.is_valid();
-}
-Ref<PackedScene> Spell::get_spell_cast_effect() {
-	return _spell_cast_effect;
-}
-void Spell::set_spell_cast_effect(Ref<PackedScene> value) {
-	_spell_cast_effect = value;
-}
 
 Ref<PackedScene> Spell::get_projectile() {
 	return _projectile;
@@ -914,6 +890,18 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_needs_target", "value"), &Spell::set_needs_target);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "needs_target"), "set_needs_target", "get_needs_target");
 
+	ClassDB::bind_method(D_METHOD("get_visual_spell_effects"), &Spell::get_visual_spell_effects);
+	ClassDB::bind_method(D_METHOD("set_visual_spell_effects", "value"), &Spell::set_visual_spell_effects);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "visual_spell_effects", PROPERTY_HINT_RESOURCE_TYPE, "SpellEffectVisual"), "set_visual_spell_effects", "get_visual_spell_effects");
+
+	ClassDB::bind_method(D_METHOD("get_spell_projectile_data"), &Spell::get_spell_projectile_data);
+	ClassDB::bind_method(D_METHOD("set_spell_projectile_data", "value"), &Spell::set_spell_projectile_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell_projectile_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellProjectileData"), "set_spell_projectile_data", "get_spell_projectile_data");
+
+	ClassDB::bind_method(D_METHOD("get_world_effect_data"), &Spell::get_world_effect_data);
+	ClassDB::bind_method(D_METHOD("set_world_effect_data", "value"), &Spell::set_world_effect_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_effect_data", PROPERTY_HINT_RESOURCE_TYPE, "WorldEffectData"), "set_world_effect_data", "get_world_effect_data");
+
 	ClassDB::bind_method(D_METHOD("get_damage_scale_for_level"), &Spell::get_damage_scale_for_level);
 	ClassDB::bind_method(D_METHOD("get_heal_scale_for_level"), &Spell::get_heal_scale_for_level);
 	ClassDB::bind_method(D_METHOD("get_absorb_scale_for_level"), &Spell::get_absorb_scale_for_level);
@@ -1076,33 +1064,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_aoe_half_extents"), &Spell::get_aoe_half_extents);
 	ClassDB::bind_method(D_METHOD("set_aoe_half_extents", "value"), &Spell::set_aoe_half_extents);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "aoe_half_extents"), "set_aoe_half_extents", "get_aoe_half_extents");
-
-	ADD_GROUP("Effect", "effect");
-	ClassDB::bind_method(D_METHOD("has_effect_visual"), &Spell::has_effect_visual);
-
-	ClassDB::bind_method(D_METHOD("get_effect_visual_point"), &Spell::get_effect_visual_point);
-	ClassDB::bind_method(D_METHOD("set_effect_visual_point", "value"), &Spell::set_effect_visual_point);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect_visual_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS), "set_effect_visual_point", "get_effect_visual_point");
-
-
-	ClassDB::bind_method(D_METHOD("get_effect_visual"), &Spell::get_effect_visual);
-	ClassDB::bind_method(D_METHOD("set_effect_visual", "value"), &Spell::set_effect_visual);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_visual", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_effect_visual", "get_effect_visual");
-
-	ClassDB::bind_method(D_METHOD("has_spell_cast_finish_effect"), &Spell::has_spell_cast_finish_effect);
-
-	ClassDB::bind_method(D_METHOD("get_spell_cast_finish_effect_point"), &Spell::get_spell_cast_finish_effect_point);
-	ClassDB::bind_method(D_METHOD("set_spell_cast_finish_effect_point", "value"), &Spell::set_spell_cast_finish_effect_point);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_cast_finish_effect_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS), "set_spell_cast_finish_effect_point", "get_spell_cast_finish_effect_point");
-
-	ClassDB::bind_method(D_METHOD("get_spell_cast_finish_effect"), &Spell::get_spell_cast_finish_effect);
-	ClassDB::bind_method(D_METHOD("set_spell_cast_finish_effect", "value"), &Spell::set_spell_cast_finish_effect);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_spell_cast_finish_effect", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_spell_cast_finish_effect", "get_spell_cast_finish_effect");
-
-	ClassDB::bind_method(D_METHOD("has_spell_cast_effect"), &Spell::has_spell_cast_effect);
-	ClassDB::bind_method(D_METHOD("get_spell_cast_effect"), &Spell::get_spell_cast_effect);
-	ClassDB::bind_method(D_METHOD("set_spell_cast_effect", "value"), &Spell::set_spell_cast_effect);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_spell_cast_effect_id", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_spell_cast_effect", "get_spell_cast_effect");
 
 	ADD_GROUP("Projectile", "projectile");
 	ClassDB::bind_method(D_METHOD("has_projectile"), &Spell::has_projectile);

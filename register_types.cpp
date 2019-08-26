@@ -76,6 +76,14 @@
 #include "data/mob_data.h"
 #include "data/player_character_data.h"
 
+#include "data/spell_effect_visual.h"
+#include "data/spell_effect_visual_simple.h"
+#include "data/spell_projectile_data.h"
+#include "data/world_effect_data.h"
+
+#include "spells/spell_projectile.h"
+#include "spells/world_spell_effect.h"
+
 #ifdef TOOLS_ENABLED
 #include "editor/editor_plugin.h"
 
@@ -169,6 +177,14 @@ void register_entity_spell_system_types() {
     
     ClassDB::register_class<MobData>();
     ClassDB::register_class<PlayerCharacterData>();
+
+    ClassDB::register_class<SpellEffectVisual>();
+    ClassDB::register_class<SpellEffectVisualSimple>();
+    ClassDB::register_class<SpellProjectileData>();
+    ClassDB::register_class<WorldEffectData>();
+
+    ClassDB::register_class<SpellProjectile>();
+    ClassDB::register_class<WorldSpellEffect>();
 
 	//meshes
 	ClassDB::register_class<MeshDataResource>();

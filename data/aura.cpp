@@ -70,6 +70,27 @@ void Aura::set_aura_description(String description) {
 	_aura_description = description;
 }
 
+Ref<SpellEffectVisual> Aura::get_visual_spell_effects() {
+	return _visual_spell_effects;
+}
+void Aura::set_visual_spell_effects(Ref<SpellEffectVisual> value) {
+	_visual_spell_effects = value;
+}
+
+Ref<SpellProjectileData> Aura::get_spell_projectile_data() {
+	return _spell_projectile_data;
+}
+void Aura::set_spell_projectile_data(Ref<SpellProjectileData> value) {
+	_spell_projectile_data = value;
+}
+
+Ref<WorldEffectData> Aura::get_world_effect_data() {
+	return _world_effect_data;
+}
+void Aura::set_world_effect_data(Ref<WorldEffectData> value) {
+	_world_effect_data = value;
+}
+
 int Aura::get_ability_scale_data_id() {
 	return ability_scale_data_id;
 }
@@ -116,26 +137,6 @@ void Aura::OnAuraAbilityScalingDataLoaded(AbilityScalingDataLoaderHelper *h) {
 	this->SetScalingData(h->getData());
 }
 */
-
-//Visual Effect
-
-bool Aura::has_effect_visual() {
-	return _effect_visual.is_valid();
-}
-
-EntityEnums::CharacterSkeletonPoints Aura::get_effect_visual_point() {
-	return _effect_visual_point;
-}
-void Aura::set_effect_visual_point(EntityEnums::CharacterSkeletonPoints point) {
-	_effect_visual_point = point;
-}
-
-Ref<PackedScene> Aura::get_effect_visual() {
-	return _effect_visual;
-}
-void Aura::set_effect_visual(Ref<PackedScene> value) {
-	_effect_visual = value;
-}
 
 //Damage
 bool Aura::is_damage_enabled() {
@@ -1136,18 +1137,6 @@ void Aura::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_setup_aura_data", "data", "info"), &Aura::_setup_aura_data);
 
-	//Visual Effect
-	ADD_GROUP("Visual Effect", "effect");
-	ClassDB::bind_method(D_METHOD("has_effect_visual"), &Aura::has_effect_visual);
-
-	ClassDB::bind_method(D_METHOD("get_effect_visual_point"), &Aura::get_effect_visual_point);
-	ClassDB::bind_method(D_METHOD("set_effect_visual_point", "value"), &Aura::set_effect_visual_point);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "effect_visual_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS), "set_effect_visual_point", "get_effect_visual_point");
-
-	ClassDB::bind_method(D_METHOD("get_effect_visual"), &Aura::get_effect_visual);
-	ClassDB::bind_method(D_METHOD("set_effect_visual", "value"), &Aura::set_effect_visual);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_visual", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_effect_visual", "get_effect_visual");
-
 	//damage
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Aura::sapply_passives_damage_receive);
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_deal", "data"), &Aura::sapply_passives_damage_deal);
@@ -1225,6 +1214,18 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_aura_description"), &Aura::get_aura_description);
 	ClassDB::bind_method(D_METHOD("set_aura_description", "value"), &Aura::set_aura_description);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_aura_description", PROPERTY_HINT_MULTILINE_TEXT), "set_aura_description", "get_aura_description");
+
+	ClassDB::bind_method(D_METHOD("get_visual_spell_effects"), &Aura::get_visual_spell_effects);
+	ClassDB::bind_method(D_METHOD("set_visual_spell_effects", "value"), &Aura::set_visual_spell_effects);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "visual_spell_effects", PROPERTY_HINT_RESOURCE_TYPE, "SpellEffectVisual"), "set_visual_spell_effects", "get_visual_spell_effects");
+
+	ClassDB::bind_method(D_METHOD("get_spell_projectile_data"), &Aura::get_spell_projectile_data);
+	ClassDB::bind_method(D_METHOD("set_spell_projectile_data", "value"), &Aura::set_spell_projectile_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell_projectile_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellProjectileData"), "set_spell_projectile_data", "get_spell_projectile_data");
+
+	ClassDB::bind_method(D_METHOD("get_world_effect_data"), &Aura::get_world_effect_data);
+	ClassDB::bind_method(D_METHOD("set_world_effect_data", "value"), &Aura::set_world_effect_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_effect_data", PROPERTY_HINT_RESOURCE_TYPE, "WorldEffectData"), "set_world_effect_data", "get_world_effect_data");
 
 	ADD_GROUP("Damage", "damage");
 	//Damage

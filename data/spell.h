@@ -3,7 +3,6 @@
 
 #include "core/resource.h"
 #include "scene/resources/curve.h"
-#include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
 #include "../entity_enums.h"
@@ -15,6 +14,10 @@
 
 #include "../pipelines/spell_damage_info.h"
 #include "../infos/aura_infos.h"
+
+#include "spell_effect_visual.h"
+#include "spell_projectile_data.h"
+#include "world_effect_data.h"
 
 class Entity;
 class Aura;
@@ -157,6 +160,15 @@ public:
 	String get_spell_description();
 	void set_spell_description(String value);
 
+	Ref<SpellEffectVisual> get_visual_spell_effects();
+	void set_visual_spell_effects(Ref<SpellEffectVisual> value);
+
+	Ref<SpellProjectileData> get_spell_projectile_data();
+	void set_spell_projectile_data(Ref<SpellProjectileData> value);
+
+	Ref<WorldEffectData> get_world_effect_data();
+	void set_world_effect_data(Ref<WorldEffectData> value);
+
 	float get_damage_scale_for_level(int level);
 	float get_heal_scale_for_level(int level);
 	float get_absorb_scale_for_level(int level);
@@ -226,26 +238,6 @@ public:
 
 	Vector3 get_aoe_half_extents();
 	void set_aoe_half_extents(Vector3 value);
-
-	bool has_effect_visual();
-
-	EntityEnums::CharacterSkeletonPoints get_effect_visual_point();
-	void set_effect_visual_point(EntityEnums::CharacterSkeletonPoints point);
-
-	Ref<PackedScene> get_effect_visual();
-	void set_effect_visual(Ref<PackedScene> value);
-
-	bool has_spell_cast_finish_effect();
-
-	EntityEnums::CharacterSkeletonPoints get_spell_cast_finish_effect_point();
-	void set_spell_cast_finish_effect_point(EntityEnums::CharacterSkeletonPoints point);
-
-	Ref<PackedScene> get_spell_cast_finish_effect();
-	void set_spell_cast_finish_effect(Ref<PackedScene> value);
-
-	bool has_spell_cast_effect();
-	Ref<PackedScene> get_spell_cast_effect();
-	void set_spell_cast_effect(Ref<PackedScene> value);
 
 	Ref<PackedScene> get_projectile();
 	void set_projectile(Ref<PackedScene> value);
@@ -403,6 +395,10 @@ private:
 	String _spell_name;
 	String _spell_description;
 
+	Ref<SpellEffectVisual> _visual_spell_effects;
+	Ref<SpellProjectileData> _spell_projectile_data;
+	Ref<WorldEffectData> _world_effect_data;
+
 	bool _has_range;
 	float _range;
 
@@ -431,14 +427,6 @@ private:
 	SpellAOEMovementType _aoe_movementType;
 	SpellAOEColliderType _aoe_colliderType;
 	Vector3 _aoe_half_extents;
-
-	EntityEnums::CharacterSkeletonPoints _effect_visual_point;
-	Ref<PackedScene> _effect_visual;
-
-	EntityEnums::CharacterSkeletonPoints _spell_cast_finish_effect_point;
-	Ref<PackedScene> _spell_cast_finish_effect;
-
-	Ref<PackedScene> _spell_cast_effect;
 
 	Ref<PackedScene> _projectile;
 	float _projectile_speed;

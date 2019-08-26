@@ -23,6 +23,10 @@
 #include "../utility/cooldown.h"
 #include "../utility/category_cooldown.h"
 
+#include "spell_effect_visual.h"
+#include "spell_projectile_data.h"
+#include "world_effect_data.h"
+
 class AuraApplyInfo;
 class AuraScript;
 class Entity;
@@ -62,6 +66,15 @@ public:
 	String get_aura_description();
 	void set_aura_description(String description);
 
+	Ref<SpellEffectVisual> get_visual_spell_effects();
+	void set_visual_spell_effects(Ref<SpellEffectVisual> value);
+
+	Ref<SpellProjectileData> get_spell_projectile_data();
+	void set_spell_projectile_data(Ref<SpellProjectileData> value);
+
+	Ref<WorldEffectData> get_world_effect_data();
+	void set_world_effect_data(Ref<WorldEffectData> value);
+
 	int get_ability_scale_data_id();
 	void set_ability_scale_data_id(int value);
 
@@ -78,15 +91,6 @@ public:
 
 	// static void FromJSON(Aura* ada, JsonReader* r);
 	//  static void ToJSON(Aura* ada, JsonWriter* w);
-
-	//VisualEffect
-	bool has_effect_visual();
-
-	EntityEnums::CharacterSkeletonPoints get_effect_visual_point();
-	void set_effect_visual_point(EntityEnums::CharacterSkeletonPoints point);
-
-	Ref<PackedScene> get_effect_visual();
-	void set_effect_visual(Ref<PackedScene> value);
 
 	//Damage
 	bool is_damage_enabled();
@@ -384,8 +388,9 @@ private:
 	String _aura_description;
 	int ability_scale_data_id;
 
-	EntityEnums::CharacterSkeletonPoints _effect_visual_point;
-	Ref<PackedScene> _effect_visual;
+	Ref<SpellEffectVisual> _visual_spell_effects;
+	Ref<SpellProjectileData> _spell_projectile_data;
+	Ref<WorldEffectData> _world_effect_data;
 	
 	bool _damage_enabled;
 	int _damage_type;
