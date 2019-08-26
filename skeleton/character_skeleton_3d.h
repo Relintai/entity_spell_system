@@ -1,11 +1,7 @@
-#ifndef CHARACTER_SKELETON_H
-#define CHARACTER_SKELETON_H
+#ifndef CHARACTER_SKELETON_3D_H
+#define CHARACTER_SKELETON_3D_H
 
-#ifdef ENTITIES_2D
-#include "scene/2d/node_2d.h"
-#else
-#include "scene/3d/spatial.h"
-#endif
+#include "character_skeleton.h"
 
 #include "core/node_path.h"
 #include "core/ustring.h"
@@ -15,17 +11,8 @@
 #include "../data/character_skeleton_visual_entry.h"
 #include "../entity_enums.h"
 
-#ifdef ENTITIES_2D
-
-class CharacterSkeleton : public Node2D {
-	GDCLASS(CharacterSkeleton, Node2D);
-
-#else
-
-class CharacterSkeleton : public Spatial {
-	GDCLASS(CharacterSkeleton, Spatial);
-
-#endif
+class CharacterSkeleton3D : public CharacterSkeleton {
+	GDCLASS(CharacterSkeleton3D, CharacterSkeleton);
 
 public:
 	NodePath get_bone_path(int index);
@@ -48,7 +35,7 @@ public:
 
 	void update_nodes();
 
-	CharacterSkeleton();
+	CharacterSkeleton3D();
 
 protected:
 	static void _bind_methods();

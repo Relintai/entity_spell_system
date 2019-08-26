@@ -65,6 +65,7 @@ module_env.add_source_files(env.modules_sources,"ui/unit_frame.cpp")
 module_env.add_source_files(env.modules_sources,"drag_and_drop/es_drag_and_drop.cpp")
 
 module_env.add_source_files(env.modules_sources,"skeleton/character_skeleton.cpp")
+module_env.add_source_files(env.modules_sources,"skeleton/character_skeleton_3d.cpp")
 
 module_env.add_source_files(env.modules_sources,"utility/entity_create_info.cpp")
 
