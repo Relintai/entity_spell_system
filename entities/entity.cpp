@@ -1558,6 +1558,8 @@ void Entity::moved() {
 void Entity::con_cast_failed(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
+	info->get_spell()->con_spell_cast_failed(info);
+
 	if (_c_character_class.is_valid()) {
 		_c_character_class->con_cast_failed(info);
 	}
@@ -1574,6 +1576,8 @@ void Entity::con_cast_failed(Ref<SpellCastInfo> info) {
 
 void Entity::con_cast_started(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
+
+	info->get_spell()->con_spell_cast_started(info);
 
 	if (_c_character_class.is_valid()) {
 		_c_character_class->con_cast_started(info);
@@ -1592,6 +1596,8 @@ void Entity::con_cast_started(Ref<SpellCastInfo> info) {
 void Entity::con_cast_state_changed(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
+	//info->get_spell()->con_spell_cast_(info);
+
 	if (_c_character_class.is_valid()) {
 		_c_character_class->con_cast_state_changed(info);
 	}
@@ -1609,6 +1615,8 @@ void Entity::con_cast_state_changed(Ref<SpellCastInfo> info) {
 void Entity::con_cast_finished(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
+	info->get_spell()->con_spell_cast_success(info);
+
 	if (_c_character_class.is_valid()) {
 		_c_character_class->con_cast_finished(info);
 	}
@@ -1625,6 +1633,8 @@ void Entity::con_cast_finished(Ref<SpellCastInfo> info) {
 
 void Entity::con_spell_cast_success(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
+
+	info->get_spell()->con_spell_cast_success(info);
 
 	if (_c_character_class.is_valid()) {
 		_c_character_class->con_spell_cast_success(info);
@@ -1925,10 +1935,14 @@ void Entity::sinterrupt_cast() {
 void Entity::cstart_casting(Ref<SpellCastInfo> info) {
 	_c_spell_cast_info = Ref<SpellCastInfo>(info);
 
+	con_cast_started(_c_spell_cast_info);
+
 	emit_signal("ccast_started", _c_spell_cast_info);
 }
 
 void Entity::cfail_cast() {
+	con_cast_failed(_c_spell_cast_info);
+
 	emit_signal("ccast_failed", _c_spell_cast_info);
 
 	_c_spell_cast_info = Ref<SpellCastInfo>(NULL);
@@ -1936,15 +1950,19 @@ void Entity::cfail_cast() {
 
 void Entity::cdelay_cast() {
 
+	//c_on_cast_
+
 	emit_signal("ccast_delayed", _c_spell_cast_info);
 }
 
 void Entity::cfinish_cast() {
+	con_cast_finished(_c_spell_cast_info);
 	emit_signal("ccast_finished", _c_spell_cast_info);
 	_c_spell_cast_info = Ref<SpellCastInfo>(NULL);
 }
 
 void Entity::cinterrupt_cast() {
+	con_cast_failed(_c_spell_cast_info);
 	emit_signal("ccast_interrupted", _c_spell_cast_info);
 	_c_spell_cast_info = Ref<SpellCastInfo>(NULL);
 }
