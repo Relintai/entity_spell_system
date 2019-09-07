@@ -1399,11 +1399,14 @@ void Entity::saura_refreshed(Ref<AuraData> aura) {
 		SEND_RPC(rpc("caura_refreshed", aura), caura_refreshed(aura));
 }
 
-void Entity::cadd_aura(Ref<AuraData> data) {
-	ERR_FAIL_COND(!data.is_valid());
+void Entity::cadd_aura(Ref<AuraData> aura) {
+	ERR_FAIL_COND(!aura.is_valid());
 
-	_c_auras.push_back(data);
-	emit_signal("caura_added", data);
+	_c_auras.push_back(aura);
+
+	aura->get_aura()->con_aura_added(aura);
+
+	emit_signal("caura_added", aura);
 }
 
 void Entity::cremove_aura(Ref<AuraData> aura) {
@@ -1425,6 +1428,8 @@ void Entity::cremove_aura(Ref<AuraData> aura) {
 	}
 
 	if (removed) {
+		aura->get_aura()->con_aura_removed(aura);
+
 		if (_s_character_class.is_valid()) {
 			_s_character_class->con_aura_removed(aura);
 		}
@@ -1438,6 +1443,8 @@ void Entity::cremove_aura(Ref<AuraData> aura) {
 
 void Entity::cremove_aura_exact(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
+
+	aura->get_aura()->con_aura_removed(aura);
 
 	for (int i = 0; i < _c_auras.size(); i++) {
 		if (_c_auras.get(i) == aura) {
@@ -1458,6 +1465,8 @@ void Entity::cremove_aura_exact(Ref<AuraData> aura) {
 
 void Entity::cremove_aura_dispelled(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
+
+	aura->get_aura()->con_aura_removed(aura);
 
 	for (int i = 0; i < _c_auras.size(); i++) {
 		if (_c_auras.get(i) == aura) {
@@ -1487,6 +1496,8 @@ void Entity::caura_refreshed(Ref<AuraData> aura) {
 
 void Entity::cremove_aura_expired(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
+
+	aura->get_aura()->con_aura_removed(aura);
 
 	for (int i = 0; i < _c_auras.size(); i++) {
 		if (_c_auras.get(i) == aura) {
