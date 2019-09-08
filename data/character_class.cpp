@@ -47,66 +47,83 @@ void CharacterClass::set_stat_data(Ref<StatData> value) {
 }
 
 int CharacterClass::get_num_spells() {
-	return _num_spells;
+	return _spells.size();
 }
-
 void CharacterClass::set_num_spells(int value) {
-	_num_spells = value;
+	_spells.resize(value);
 }
 
-int CharacterClass::get_current_spell_page() {
-	return _current_spell_page;
+Ref<Spell> CharacterClass::get_spell(int index) {
+	ERR_FAIL_INDEX_V(index, _spells.size(), Ref<Spell>());
+
+	return _spells[index];
 }
-
-void CharacterClass::set_current_spell_page(int value) {
-	if (value < 0 || value > (int)(_num_spells / ITEMS_PER_PAGE)) {
-		return;
-	}
-
-	_current_spell_page = value;
-}
-
-Ref<Spell> CharacterClass::get_spell(int id) {
-	ERR_FAIL_INDEX_V(id, MAX_SPELLS, Ref<Spell>());
-
-	return _spells[id];
-}
-
 void CharacterClass::set_spell(int index, Ref<Spell> spell) {
-	ERR_FAIL_INDEX(index, MAX_SPELLS);
+	ERR_FAIL_INDEX(index, _spells.size());
 
-	_spells[index] = Ref<Spell>(spell);
+	_spells.set(index, Ref<Spell>(spell));
+}
+
+Vector<Variant> CharacterClass::get_spells() {
+	Vector<Variant> r;
+	for (int i = 0; i < _spells.size(); i++) {
+		r.push_back(_spells[i].get_ref_ptr());
+	}
+	return r;
+}
+void CharacterClass::set_spells(const Vector<Variant> &spells) {
+	_spells.clear();
+	for (int i = 0; i < spells.size(); i++) {
+		Ref<Spell> spell = Ref<Spell>(spells[i]);
+
+		_spells.push_back(spell);
+	}
 }
 
 int CharacterClass::get_num_specs() {
-	return _num_specs;
+	return _specs.size();
 }
 
 void CharacterClass::set_num_specs(int value) {
-	_num_specs = value;
+	_specs.resize(value);
 }
 
 Ref<CharacterSpec> CharacterClass::get_spec(int index) const {
-	ERR_FAIL_INDEX_V(index, MAX_SPECS, Ref<CharacterSpec>());
+	ERR_FAIL_INDEX_V(index, _specs.size(), Ref<CharacterSpec>());
 
 	return _specs[index];
 }
-
 void CharacterClass::set_spec(int index, Ref<CharacterSpec> spec) {
-	ERR_FAIL_INDEX(index, MAX_SPECS);
+	ERR_FAIL_INDEX(index, _specs.size());
 
-	_specs[index] = Ref<CharacterSpec>(spec);
+	_specs.set(index, Ref<CharacterSpec>(spec));
+}
+
+Vector<Variant> CharacterClass::get_specs() {
+	Vector<Variant> r;
+	for (int i = 0; i < _specs.size(); i++) {
+		r.push_back(_specs[i].get_ref_ptr());
+	}
+	return r;
+}
+void CharacterClass::set_specs(const Vector<Variant> &specs) {
+	_specs.clear();
+	for (int i = 0; i < specs.size(); i++) {
+		Ref<Spell> spec = Ref<Spell>(specs[i]);
+
+		_specs.push_back(spec);
+	}
 }
 
 Ref<Aura> CharacterClass::get_aura(int index) {
-	ERR_FAIL_INDEX_V(index, MAX_AURAS, Ref<Aura>());
+	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>());
 
 	return _auras[index];
 }
 void CharacterClass::set_aura(int index, Ref<Aura> aura) {
-	ERR_FAIL_INDEX(index, MAX_AURAS);
+	ERR_FAIL_INDEX(index, _auras.size());
 
-	_auras[index] = aura;
+	_auras.set(index, aura);
 }
 
 void CharacterClass::setup_resources(Entity *entity) {
@@ -553,26 +570,6 @@ void CharacterClass::sai_attack_bind(Node *entity) {
 	ERR_FAIL_COND(e == NULL);
 
 	sai_attack(e);
-}
-
-void CharacterClass::_validate_property(PropertyInfo &property) const {
-
-	String prop = property.name;
-	if (prop.begins_with("Spell_")) {
-		int frame = prop.get_slicec('/', 0).get_slicec('_', 1).to_int();
-		if (frame >= _num_spells || frame < ITEMS_PER_PAGE * _current_spell_page || frame > ITEMS_PER_PAGE * (_current_spell_page + 1)) {
-			property.usage = 0;
-		}
-	} else if (prop.begins_with("Spec_")) {
-		int frame = prop.get_slicec('/', 0).get_slicec('_', 1).to_int();
-		if (frame >= _num_specs) {
-			property.usage = 0;
-		}
-	} else if (prop.begins_with("current_spell_page")) {
-		if (_num_spells <= ITEMS_PER_PAGE) {
-			property.usage = 0;
-		}
-	}
 }
 
 void CharacterClass::_bind_methods() {

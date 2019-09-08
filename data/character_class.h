@@ -52,11 +52,12 @@ public:
 	int get_num_spells();
 	void set_num_spells(int value);
 
-	int get_current_spell_page();
-	void set_current_spell_page(int value);
-
 	Ref<Spell> get_spell(int index);
 	void set_spell(int index, Ref<Spell> spell);
+
+	Vector<Variant> get_spells();
+	void set_spells(const Vector<Variant> &spells);
+
 
 	int get_num_specs();
 	void set_num_specs(int value);
@@ -64,8 +65,18 @@ public:
 	Ref<CharacterSpec> get_spec(int index) const;
 	void set_spec(int index, Ref<CharacterSpec> spec);
 
+	Vector<Variant> get_specs();
+	void set_specs(const Vector<Variant> &specs);
+
+
+	int get_num_auras();
+	void set_num_auras(int value);
+
 	Ref<Aura> get_aura(int index);
 	void set_aura(int index, Ref<Aura> aura);
+
+	Vector<Variant> get_auras();
+	void set_auras(const Vector<Variant> &auras);
 
 	void setup_resources(Entity *entity);
 	//void _setup_resources(Entity *entity);
@@ -167,15 +178,6 @@ public:
 
 protected:
 	static void _bind_methods();
-	void _validate_property(PropertyInfo &property) const;
-
-public:
-	enum {
-		MAX_SPELLS = 100,
-		MAX_SPECS = 5,
-		MAX_AURAS = 5,
-		ITEMS_PER_PAGE = 100,
-	};
 
 private:
 	int _id;
@@ -186,14 +188,9 @@ private:
 
 	Ref<StatData> _stat_data;
 
-	int _num_spells;
-	int _current_spell_page;
-	Ref<Spell> _spells[MAX_SPELLS];
-
-	int _num_specs;
-	Ref<CharacterSpec> _specs[MAX_SPECS];
-
-	Ref<Aura> _auras[MAX_AURAS];
+	Vector<Ref<Spell> > _spells;
+	Vector<Ref<CharacterSpec> > _specs;
+	Vector<Ref<Aura> > _auras;
 
 	//Vector<int> _mob_party_ids;
 	//Vector<int> _mob_dislike_ids;
