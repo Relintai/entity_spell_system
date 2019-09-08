@@ -5,6 +5,7 @@
 #include "../entities/entity.h"
 #include "character_spec.h"
 #include "../infos/spell_cast_info.h"
+#include "../ai/ai_action.h"
 
 int CharacterClass::get_id() {
 	return _id;
@@ -154,6 +155,43 @@ void CharacterClass::set_auras(const Vector<Variant> &auras) {
 	}
 }
 
+////    AI ACTIONS    ////
+
+int CharacterClass::get_num_ai_actions() {
+	return _ai_actions.size();
+}
+void CharacterClass::set_num_ai_actions(int value) {
+	_ai_actions.resize(value);
+}
+
+Ref<AIAction> CharacterClass::get_ai_action(int index) {
+	ERR_FAIL_INDEX_V(index, _ai_actions.size(), Ref<AIAction>());
+
+	return _ai_actions[index];
+}
+void CharacterClass::set_ai_action(int index, Ref<AIAction> ai_action) {
+	ERR_FAIL_INDEX(index, _ai_actions.size());
+
+	_ai_actions.set(index, ai_action);
+}
+
+Vector<Variant> CharacterClass::get_ai_actions() {
+	Vector<Variant> r;
+	for (int i = 0; i < _ai_actions.size(); i++) {
+		r.push_back(_ai_actions[i].get_ref_ptr());
+	}
+	return r;
+}
+void CharacterClass::set_ai_actions(const Vector<Variant> &ai_actions) {
+	_ai_actions.clear();
+	for (int i = 0; i < ai_actions.size(); i++) {
+		Ref<AIAction> ai_action = Ref<AIAction>(ai_actions[i]);
+
+		_ai_actions.push_back(ai_action);
+	}
+}
+
+////    SETUP    ////
 
 void CharacterClass::setup_resources(Entity *entity) {
 	if (has_method("_setup_resources"))
@@ -774,8 +812,17 @@ void CharacterClass::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_auras"), &CharacterClass::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &CharacterClass::set_auras);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
-    
 
+	////    AI ACTIONS    ////
+	ClassDB::bind_method(D_METHOD("get_num_ai_actions"), &CharacterClass::get_num_ai_actions);
+	ClassDB::bind_method(D_METHOD("set_num_ai_actions", "value"), &CharacterClass::set_num_ai_actions);
+    
+	ClassDB::bind_method(D_METHOD("get_ai_action", "index"), &CharacterClass::get_ai_action);
+	ClassDB::bind_method(D_METHOD("set_ai_action", "index", "action"), &CharacterClass::set_ai_action);
+
+    ClassDB::bind_method(D_METHOD("get_ai_actions"), &CharacterClass::get_ai_actions);
+	ClassDB::bind_method(D_METHOD("set_ai_actions", "auras"), &CharacterClass::set_ai_actions);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ai_actions", PROPERTY_HINT_NONE, "17/17:AIAction", PROPERTY_USAGE_DEFAULT, "AIAction"), "set_ai_actions", "get_ai_actions");
 }
 
 CharacterClass::CharacterClass() {

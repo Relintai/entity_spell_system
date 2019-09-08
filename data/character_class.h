@@ -21,6 +21,7 @@ class Entity;
 class CharacterSpec;
 class Entity;
 class SpellCastInfo;
+class AIAction;
 
 enum CharacterWeaponDataTypes {
 	CHARACTER_WEAPON_DATA_TYPES_NONE,
@@ -79,7 +80,17 @@ public:
 	Vector<Variant> get_auras();
 	void set_auras(const Vector<Variant> &auras);
 
-    
+	//AI Actions
+	int get_num_ai_actions();
+	void set_num_ai_actions(int value);
+
+	Ref<AIAction> get_ai_action(int index);
+	void set_ai_action(int index, Ref<AIAction> aura);
+
+	Vector<Variant> get_ai_actions();
+	void set_ai_actions(const Vector<Variant> &auras);
+
+	//Setup
 	void setup_resources(Entity *entity);
 	//void _setup_resources(Entity *entity);
 
@@ -193,6 +204,7 @@ private:
 	Vector<Ref<Spell> > _spells;
 	Vector<Ref<CharacterSpec> > _specs;
 	Vector<Ref<Aura> > _auras;
+	Vector<Ref<AIAction> > _ai_actions;
 
 	//Vector<int> _mob_party_ids;
 	//Vector<int> _mob_dislike_ids;

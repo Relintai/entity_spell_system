@@ -93,3 +93,7 @@ env.add_source_files(env.modules_sources,"loot/loot_data_item.cpp")
 env.add_source_files(env.modules_sources,"data/mob_data.cpp")
 env.add_source_files(env.modules_sources,"data/player_character_data.cpp")
 
+env.add_source_files(env.modules_sources,"ai/ai_action.cpp")
+env.add_source_files(env.modules_sources,"ai/ai_spell_action.cpp")
+env.add_source_files(env.modules_sources,"ai/ai_action_container.cpp")
+
