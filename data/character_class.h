@@ -88,7 +88,7 @@ public:
 	void set_ai_action(int index, Ref<AIAction> aura);
 
 	Vector<Variant> get_ai_actions();
-	void set_ai_actions(const Vector<Variant> &auras);
+	void set_ai_actions(const Vector<Variant> &ai_actions);
 
 	//Setup
 	void setup_resources(Entity *entity);
