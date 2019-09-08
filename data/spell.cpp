@@ -763,7 +763,7 @@ Spell::Spell() {
 	_projectile_speed = 0;
 	_projectile_time = 0;
 	_projectile_range = 0;
-	//SpellProjectileType _projectile_type;
+	_projectile_type = SpellProjectileType::SPELL_PROJECTILE_TYPE_FOLLOW;
 	_projectile_destroy_on_impact = false;
 	_projectile_collision = false;
 
