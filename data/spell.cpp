@@ -706,32 +706,30 @@ String Spell::get_description(int level) {
 Spell::Spell() {
 	PLAYER_HIT_RADIUS = (float)0.5;
 
-	_level = 1;
-	_rank = 0;
-
 	_spell_id = 1;
 	_spell_type = SpellEnums::SPELL_TYPE_NONE;
 
 	_hide_from_actionbar = false;
-	_cast_time = 0;
-	_cooldown = 0;
-	//SpellTargetType _target_type;
 
-	_level = 0;
+	_cooldown = 0;
+	_cast_time = 0;
+	
+	_target_type = SpellTargetType::SPELL_TARGET_TYPE_TARGET;
+	_target_relation_type = TargetRelationType::TARGET_ENEMY;
+
+	_level = 1;
+	_rank = 0;
+
+
 	_item_cost = 0;
 	_craft_material_cost = 0;
 	_required_item = 0;
-	//PlayerResourceTypes _cost_type;
+	_cost_type = 0;
 	_cost_resource = 0;
-	//PlayerResourceTypes _give_resource_type;
+	_give_resource_type = 0;
 	_give_resource = 0;
 	_has_global_cooldown = true;
 	_is_local_spell = false;
-
-	//String _name_key;
-
-	//String _spell_name;
-	//String _spell_description;
 
 	_has_range = false;
 	_range = 0;
@@ -745,20 +743,21 @@ Spell::Spell() {
 	_heal_min = 0;
 	_heal_max = 0;
 
+	_has_cast_time = false;
+	_cast_time = 0;
+
 	_needs_target = false;
 	_can_move_while_casting = false;
 
 	_is_interrupt = false;
 	_interrupt_time = 0;
 
-	_is_aoe = false;
-	//SpellAOETargetType _aoe_targetType;
-	//SpellAOEMovementType _aoe_movementType;
-	//SpellAOEColliderType _aoe_colliderType;
-	//Vector3 _aoe_half_extents;
 
-	_has_cast_time = false;
-	_cast_time = 0;
+	_is_aoe = false;
+	_aoe_targetType = SpellAOETargetType::SPELL_AOE_TARGET_TYPE_CASTER;
+	_aoe_movementType = SpellAOEMovementType::SPELL_AOE_MOVEMENT_TYPE_STATIC;
+	_aoe_colliderType = SpellAOEColliderType::SPELL_AOE_COLLIDER_TYPE_BOX;
+	//Vector3 _aoe_half_extents;
 
 	_projectile_speed = 0;
 	_projectile_time = 0;
