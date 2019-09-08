@@ -46,6 +46,44 @@ void CharacterClass::set_stat_data(Ref<StatData> value) {
 	_stat_data = value;
 }
 
+////    SPECS    ////
+
+int CharacterClass::get_num_specs() {
+	return _specs.size();
+}
+void CharacterClass::set_num_specs(int value) {
+	_specs.resize(value);
+}
+
+Ref<CharacterSpec> CharacterClass::get_spec(int index) const {
+	ERR_FAIL_INDEX_V(index, _specs.size(), Ref<CharacterSpec>());
+
+	return _specs[index];
+}
+void CharacterClass::set_spec(int index, Ref<CharacterSpec> spec) {
+	ERR_FAIL_INDEX(index, _specs.size());
+
+	_specs.set(index, Ref<CharacterSpec>(spec));
+}
+
+Vector<Variant> CharacterClass::get_specs() {
+	Vector<Variant> r;
+	for (int i = 0; i < _specs.size(); i++) {
+		r.push_back(_specs[i].get_ref_ptr());
+	}
+	return r;
+}
+void CharacterClass::set_specs(const Vector<Variant> &specs) {
+	_specs.clear();
+	for (int i = 0; i < specs.size(); i++) {
+		Ref<CharacterSpec> spec = Ref<CharacterSpec>(specs[i]);
+
+		_specs.push_back(spec);
+	}
+}
+
+////    SPELLS    ////
+
 int CharacterClass::get_num_spells() {
 	return _spells.size();
 }
@@ -80,39 +118,13 @@ void CharacterClass::set_spells(const Vector<Variant> &spells) {
 	}
 }
 
-int CharacterClass::get_num_specs() {
-	return _specs.size();
+////    AURAS    ////
+
+int CharacterClass::get_num_auras() {
+	return _auras.size();
 }
-
-void CharacterClass::set_num_specs(int value) {
-	_specs.resize(value);
-}
-
-Ref<CharacterSpec> CharacterClass::get_spec(int index) const {
-	ERR_FAIL_INDEX_V(index, _specs.size(), Ref<CharacterSpec>());
-
-	return _specs[index];
-}
-void CharacterClass::set_spec(int index, Ref<CharacterSpec> spec) {
-	ERR_FAIL_INDEX(index, _specs.size());
-
-	_specs.set(index, Ref<CharacterSpec>(spec));
-}
-
-Vector<Variant> CharacterClass::get_specs() {
-	Vector<Variant> r;
-	for (int i = 0; i < _specs.size(); i++) {
-		r.push_back(_specs[i].get_ref_ptr());
-	}
-	return r;
-}
-void CharacterClass::set_specs(const Vector<Variant> &specs) {
-	_specs.clear();
-	for (int i = 0; i < specs.size(); i++) {
-		Ref<Spell> spec = Ref<Spell>(specs[i]);
-
-		_specs.push_back(spec);
-	}
+void CharacterClass::set_num_auras(int value) {
+	_auras.resize(value);
 }
 
 Ref<Aura> CharacterClass::get_aura(int index) {
@@ -125,6 +137,23 @@ void CharacterClass::set_aura(int index, Ref<Aura> aura) {
 
 	_auras.set(index, aura);
 }
+
+Vector<Variant> CharacterClass::get_auras() {
+	Vector<Variant> r;
+	for (int i = 0; i < _auras.size(); i++) {
+		r.push_back(_auras[i].get_ref_ptr());
+	}
+	return r;
+}
+void CharacterClass::set_auras(const Vector<Variant> &auras) {
+	_auras.clear();
+	for (int i = 0; i < auras.size(); i++) {
+		Ref<Aura> aura = Ref<Aura>(auras[i]);
+
+		_auras.push_back(aura);
+	}
+}
+
 
 void CharacterClass::setup_resources(Entity *entity) {
 	if (has_method("_setup_resources"))
@@ -160,7 +189,7 @@ void CharacterClass::set_inspector_max_spells(int value) {
 }*/
 
 void CharacterClass::start_casting(int spell_id, Entity *caster, float spellScale) {
-	for (int i = 0; i < MAX_SPELLS; i++) {
+	for (int i = 0; i < _spells.size(); i++) {
 		Ref<Spell> s = _spells[i];
 
 		if (s == NULL) {
@@ -716,59 +745,46 @@ void CharacterClass::_bind_methods() {
 	////    Specs    ////
 	ClassDB::bind_method(D_METHOD("get_num_specs"), &CharacterClass::get_num_specs);
 	ClassDB::bind_method(D_METHOD("set_num_specs", "value"), &CharacterClass::set_num_specs);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "num_specs", PROPERTY_HINT_RANGE, "0," + itos(MAX_SPECS), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_num_specs", "get_num_specs");
 
 	ClassDB::bind_method(D_METHOD("get_spec", "index"), &CharacterClass::get_spec);
 	ClassDB::bind_method(D_METHOD("set_spec", "index", "spec"), &CharacterClass::set_spec);
 
-	for (int i = 0; i < MAX_SPECS; i++) {
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "Spec_" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "CharacterSpec", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_spec", "get_spec", i);
-	}
-
-	////    AURAS    ////
-	
-	ClassDB::bind_method(D_METHOD("get_aura", "index"), &CharacterClass::get_aura);
-	ClassDB::bind_method(D_METHOD("set_aura", "index", "aura"), &CharacterClass::set_aura);
-
-	ADD_GROUP("Auras", "Aura");
-	for (int i = 0; i < MAX_AURAS; ++i) {
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "Aura_" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "Aura", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura", "get_aura", i);
-	}
-
-	////    Spell    ////
+    ClassDB::bind_method(D_METHOD("get_specs"), &CharacterClass::get_specs);
+	ClassDB::bind_method(D_METHOD("set_specs", "specs"), &CharacterClass::set_specs);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "specs", PROPERTY_HINT_NONE, "17/17:CharacterSpec", PROPERTY_USAGE_DEFAULT, "CharacterSpec"), "set_specs", "get_specs");
+    
+    ////    Spell    ////
 	ClassDB::bind_method(D_METHOD("get_num_spells"), &CharacterClass::get_num_spells);
 	ClassDB::bind_method(D_METHOD("set_num_spells", "value"), &CharacterClass::set_num_spells);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "num_spells", PROPERTY_HINT_RANGE, "0," + itos(MAX_SPELLS), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_num_spells", "get_num_spells");
-
-	ClassDB::bind_method(D_METHOD("get_current_spell_page"), &CharacterClass::get_current_spell_page);
-	ClassDB::bind_method(D_METHOD("set_current_spell_page", "value"), &CharacterClass::set_current_spell_page);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_spell_page", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_current_spell_page", "get_current_spell_page");
 
 	ClassDB::bind_method(D_METHOD("get_spell", "index"), &CharacterClass::get_spell);
 	ClassDB::bind_method(D_METHOD("set_spell", "index", "spell"), &CharacterClass::set_spell);
 
-	for (int i = 0; i < MAX_SPELLS; ++i) {
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "Spell_" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "Spell", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_spell", "get_spell", i);
-	}
+    ClassDB::bind_method(D_METHOD("get_spells"), &CharacterClass::get_spells);
+	ClassDB::bind_method(D_METHOD("set_spells", "spells"), &CharacterClass::set_spells);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
 
-	BIND_CONSTANT(MAX_SPELLS);
-	BIND_CONSTANT(MAX_SPECS);
-	BIND_CONSTANT(MAX_AURAS);
+	////    AURAS    ////
+	ClassDB::bind_method(D_METHOD("get_num_auras"), &CharacterClass::get_num_auras);
+	ClassDB::bind_method(D_METHOD("set_num_auras", "value"), &CharacterClass::set_num_auras);
+    
+	ClassDB::bind_method(D_METHOD("get_aura", "index"), &CharacterClass::get_aura);
+	ClassDB::bind_method(D_METHOD("set_aura", "index", "aura"), &CharacterClass::set_aura);
+
+    ClassDB::bind_method(D_METHOD("get_auras"), &CharacterClass::get_auras);
+	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &CharacterClass::set_auras);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
+    
+
 }
 
 CharacterClass::CharacterClass() {
 	//_spells = memnew(Vector<Ref<Spell> >());
 	_id = 0;
-
-	_num_specs = 0;
-	_num_spells = 0;
-	_current_spell_page = 0;
 }
 
 CharacterClass::~CharacterClass() {
-	//memdelete(_spells);
-
-	//for (int i = 0; i < MAX_SPELLS; ++i) {
-		//_spells[i] = Ref<Spell>(NULL);
-	//}
+	_spells.clear();
+	_specs.clear();
+	_auras.clear();
 }

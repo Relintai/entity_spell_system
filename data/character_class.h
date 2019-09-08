@@ -49,16 +49,7 @@ public:
 	int get_player_resource_type();
 	void set_player_resource_type(int value);
 	
-	int get_num_spells();
-	void set_num_spells(int value);
-
-	Ref<Spell> get_spell(int index);
-	void set_spell(int index, Ref<Spell> spell);
-
-	Vector<Variant> get_spells();
-	void set_spells(const Vector<Variant> &spells);
-
-
+    //Specs
 	int get_num_specs();
 	void set_num_specs(int value);
 
@@ -68,7 +59,17 @@ public:
 	Vector<Variant> get_specs();
 	void set_specs(const Vector<Variant> &specs);
 
+    //Spells
+	int get_num_spells();
+	void set_num_spells(int value);
 
+	Ref<Spell> get_spell(int index);
+	void set_spell(int index, Ref<Spell> spell);
+
+	Vector<Variant> get_spells();
+	void set_spells(const Vector<Variant> &spells);
+    
+    //Auras
 	int get_num_auras();
 	void set_num_auras(int value);
 
@@ -78,6 +79,7 @@ public:
 	Vector<Variant> get_auras();
 	void set_auras(const Vector<Variant> &auras);
 
+    
 	void setup_resources(Entity *entity);
 	//void _setup_resources(Entity *entity);
 

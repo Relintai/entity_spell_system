@@ -414,7 +414,7 @@ void Entity::sinitialize_stats() {
 	cc->get_stat_data()->get_stat_for_stat(get_melee_damage());
 	cc->get_stat_data()->get_stat_for_stat(get_spell_damage());
 
-	for (int i = 0; i < CharacterClass::MAX_AURAS; ++i) {
+	for (int i = 0; i < cc->get_num_auras(); ++i) {
 		Ref<Aura> a = cc->get_aura(i);
 
 		if (a.is_valid()) {
