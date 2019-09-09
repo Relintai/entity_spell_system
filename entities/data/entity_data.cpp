@@ -1,24 +1,29 @@
 #include "entity_data.h"
 
-#include "../../data/spell.h"
+#include "../../ai/ai_action.h"
 #include "../../data/aura.h"
+#include "../../data/spell.h"
+#include "../../infos/spell_cast_info.h"
 #include "../entity.h"
 #include "character_spec.h"
-#include "../../infos/spell_cast_info.h"
-#include "../../ai/ai_action.h"
 
 int EntityData::get_id() {
 	return _id;
 }
-
 void EntityData::set_id(int value) {
 	_id = value;
+}
+
+Ref<EntityData> EntityData::get_inherits() {
+	return _inherits;
+}
+void EntityData::set_inherits(Ref<EntityData> value) {
+	_inherits = value;
 }
 
 String EntityData::get_entity_data_name() {
 	return _entity_data_name;
 }
-
 void EntityData::set_entity_data_name(String value) {
 	_entity_data_name = value;
 }
@@ -40,6 +45,10 @@ void EntityData::set_player_resource_type(int value) {
 }
 
 Ref<StatData> EntityData::get_stat_data() {
+	if (!_stat_data.is_valid() && _inherits.is_valid()) {
+		return _inherits->get_stat_data();
+	}
+
 	return _stat_data;
 }
 
@@ -50,6 +59,10 @@ void EntityData::set_stat_data(Ref<StatData> value) {
 ////    SPECS    ////
 
 int EntityData::get_num_specs() {
+	if (_specs.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_num_specs();
+	}
+
 	return _specs.size();
 }
 void EntityData::set_num_specs(int value) {
@@ -57,6 +70,10 @@ void EntityData::set_num_specs(int value) {
 }
 
 Ref<CharacterSpec> EntityData::get_spec(int index) const {
+	if (_specs.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_spec(index);
+	}
+
 	ERR_FAIL_INDEX_V(index, _specs.size(), Ref<CharacterSpec>());
 
 	return _specs[index];
@@ -86,6 +103,10 @@ void EntityData::set_specs(const Vector<Variant> &specs) {
 ////    SPELLS    ////
 
 int EntityData::get_num_spells() {
+	if (_spells.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_num_spells();
+	}
+
 	return _spells.size();
 }
 void EntityData::set_num_spells(int value) {
@@ -93,6 +114,10 @@ void EntityData::set_num_spells(int value) {
 }
 
 Ref<Spell> EntityData::get_spell(int index) {
+	if (_spells.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_spell(index);
+	}
+
 	ERR_FAIL_INDEX_V(index, _spells.size(), Ref<Spell>());
 
 	return _spells[index];
@@ -122,6 +147,10 @@ void EntityData::set_spells(const Vector<Variant> &spells) {
 ////    AURAS    ////
 
 int EntityData::get_num_auras() {
+	if (_auras.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_num_auras();
+	}
+
 	return _auras.size();
 }
 void EntityData::set_num_auras(int value) {
@@ -129,6 +158,10 @@ void EntityData::set_num_auras(int value) {
 }
 
 Ref<Aura> EntityData::get_aura(int index) {
+	if (_auras.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_aura(index);
+	}
+
 	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>());
 
 	return _auras[index];
@@ -158,6 +191,10 @@ void EntityData::set_auras(const Vector<Variant> &auras) {
 ////    AI ACTIONS    ////
 
 int EntityData::get_num_ai_actions() {
+	if (_ai_actions.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_num_ai_actions();
+	}
+
 	return _ai_actions.size();
 }
 void EntityData::set_num_ai_actions(int value) {
@@ -165,6 +202,10 @@ void EntityData::set_num_ai_actions(int value) {
 }
 
 Ref<AIAction> EntityData::get_ai_action(int index) {
+	if (_ai_actions.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_ai_action(index);
+	}
+
 	ERR_FAIL_INDEX_V(index, _ai_actions.size(), Ref<AIAction>());
 
 	return _ai_actions[index];
@@ -196,7 +237,10 @@ void EntityData::set_ai_actions(const Vector<Variant> &ai_actions) {
 void EntityData::setup_resources(Entity *entity) {
 	if (has_method("_setup_resources"))
 		call("_setup_resources", entity);
+	else if (_inherits.is_valid())
+		_inherits->setup_resources(entity);
 }
+
 //void EntityData::_setup_resources(Entity *entity) {
 //}
 
@@ -227,6 +271,11 @@ void EntityData::set_inspector_max_spells(int value) {
 }*/
 
 void EntityData::start_casting(int spell_id, Entity *caster, float spellScale) {
+	if (_spells.size() == 0 && _inherits.is_valid()) {
+		_inherits->start_casting(spell_id, caster, spellScale);
+		return;
+	}
+
 	for (int i = 0; i < _spells.size(); i++) {
 		Ref<Spell> s = _spells[i];
 
@@ -242,12 +291,13 @@ void EntityData::start_casting(int spell_id, Entity *caster, float spellScale) {
 	}
 }
 
-
 void EntityData::son_before_cast(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
 	if (has_method("_son_before_cast"))
 		call("_son_before_cast", info);
+	else if (_inherits.is_valid())
+		_inherits->son_before_cast(info);
 }
 
 void EntityData::son_before_cast_target(Ref<SpellCastInfo> info) {
@@ -255,6 +305,8 @@ void EntityData::son_before_cast_target(Ref<SpellCastInfo> info) {
 
 	if (has_method("_son_before_cast_target"))
 		call("_son_before_cast_target", info);
+	else if (_inherits.is_valid())
+		_inherits->son_before_cast_target(info);
 }
 
 void EntityData::son_cast_finished(Ref<SpellCastInfo> info) {
@@ -262,6 +314,8 @@ void EntityData::son_cast_finished(Ref<SpellCastInfo> info) {
 
 	if (has_method("_son_cast_finished"))
 		call("_son_cast_finished", info);
+	else if (_inherits.is_valid())
+		_inherits->son_cast_finished(info);
 }
 
 void EntityData::son_cast_started(Ref<SpellCastInfo> info) {
@@ -269,6 +323,8 @@ void EntityData::son_cast_started(Ref<SpellCastInfo> info) {
 
 	if (has_method("_son_cast_started"))
 		call("_son_cast_started", info);
+	else if (_inherits.is_valid())
+		_inherits->son_cast_started(info);
 }
 
 void EntityData::son_cast_failed(Ref<SpellCastInfo> info) {
@@ -276,6 +332,8 @@ void EntityData::son_cast_failed(Ref<SpellCastInfo> info) {
 
 	if (has_method("_son_cast_failed"))
 		call("_son_cast_failed", info);
+	else if (_inherits.is_valid())
+		_inherits->son_cast_failed(info);
 }
 
 void EntityData::son_cast_finished_target(Ref<SpellCastInfo> info) {
@@ -283,6 +341,8 @@ void EntityData::son_cast_finished_target(Ref<SpellCastInfo> info) {
 
 	if (has_method("_son_cast_finished_target"))
 		call("_son_cast_finished_target", info);
+	else if (_inherits.is_valid())
+		_inherits->son_cast_finished_target(info);
 }
 
 void EntityData::son_hit(Ref<SpellDamageInfo> data) {
@@ -290,6 +350,8 @@ void EntityData::son_hit(Ref<SpellDamageInfo> data) {
 
 	if (has_method("_son_hit"))
 		call("_son_hit", data);
+	else if (_inherits.is_valid())
+		_inherits->son_hit(data);
 }
 
 void EntityData::son_before_damage(Ref<SpellDamageInfo> data) {
@@ -297,6 +359,8 @@ void EntityData::son_before_damage(Ref<SpellDamageInfo> data) {
 
 	if (has_method("_son_before_damage"))
 		call("_son_before_damage", data);
+	else if (_inherits.is_valid())
+		_inherits->son_before_damage(data);
 }
 
 void EntityData::son_damage_receive(Ref<SpellDamageInfo> data) {
@@ -304,6 +368,8 @@ void EntityData::son_damage_receive(Ref<SpellDamageInfo> data) {
 
 	if (has_method("_son_damage_receive"))
 		call("_son_damage_receive", data);
+	else if (_inherits.is_valid())
+		_inherits->son_damage_receive(data);
 }
 
 void EntityData::son_dealt_damage(Ref<SpellDamageInfo> data) {
@@ -311,6 +377,8 @@ void EntityData::son_dealt_damage(Ref<SpellDamageInfo> data) {
 
 	if (has_method("_son_dealt_damage"))
 		call("_son_dealt_damage", data);
+	else if (_inherits.is_valid())
+		_inherits->son_dealt_damage(data);
 }
 
 void EntityData::son_damage_dealt(Ref<SpellDamageInfo> data) {
@@ -318,6 +386,8 @@ void EntityData::son_damage_dealt(Ref<SpellDamageInfo> data) {
 
 	if (has_method("_son_damage_dealt"))
 		call("_son_damage_dealt", data);
+	else if (_inherits.is_valid())
+		_inherits->son_damage_dealt(data);
 }
 
 void EntityData::son_before_heal(Ref<SpellHealInfo> data) {
@@ -325,6 +395,8 @@ void EntityData::son_before_heal(Ref<SpellHealInfo> data) {
 
 	if (has_method("_son_before_heal"))
 		call("_son_before_heal", data);
+	else if (_inherits.is_valid())
+		_inherits->son_before_heal(data);
 }
 
 void EntityData::son_heal_receive(Ref<SpellHealInfo> data) {
@@ -332,6 +404,8 @@ void EntityData::son_heal_receive(Ref<SpellHealInfo> data) {
 
 	if (has_method("_son_heal_receive"))
 		call("_son_heal_receive", data);
+	else if (_inherits.is_valid())
+		_inherits->son_heal_receive(data);
 }
 
 void EntityData::son_dealt_heal(Ref<SpellHealInfo> data) {
@@ -339,6 +413,8 @@ void EntityData::son_dealt_heal(Ref<SpellHealInfo> data) {
 
 	if (has_method("_son_dealt_heal"))
 		call("_son_dealt_heal", data);
+	else if (_inherits.is_valid())
+		_inherits->son_dealt_heal(data);
 }
 
 void EntityData::son_heal_dealt(Ref<SpellHealInfo> data) {
@@ -346,6 +422,8 @@ void EntityData::son_heal_dealt(Ref<SpellHealInfo> data) {
 
 	if (has_method("_son_heal_dealt"))
 		call("_son_heal_dealt", data);
+	else if (_inherits.is_valid())
+		_inherits->son_heal_dealt(data);
 }
 
 void EntityData::son_before_aura_applied(Ref<AuraData> data) {
@@ -353,6 +431,8 @@ void EntityData::son_before_aura_applied(Ref<AuraData> data) {
 
 	if (has_method("_son_before_aura_applied"))
 		call("_son_before_aura_applied", data);
+	else if (_inherits.is_valid())
+		_inherits->son_before_aura_applied(data);
 }
 
 void EntityData::son_after_aura_applied(Ref<AuraData> data) {
@@ -360,11 +440,15 @@ void EntityData::son_after_aura_applied(Ref<AuraData> data) {
 
 	if (has_method("_son_after_aura_applied"))
 		call("_son_after_aura_applied", data);
+	else if (_inherits.is_valid())
+		_inherits->son_after_aura_applied(data);
 }
 
 void EntityData::son_death(Entity *entity) {
-    if (has_method("_son_death"))
+	if (has_method("_son_death"))
 		call("_son_death", entity);
+	else if (_inherits.is_valid())
+		_inherits->son_death(entity);
 }
 
 void EntityData::son_death_bind(Node *entity) {
@@ -380,28 +464,40 @@ void EntityData::son_death_bind(Node *entity) {
 void EntityData::son_cooldown_added(Ref<Cooldown> cooldown) {
 	if (has_method("_son_cooldown_added"))
 		call("_son_cooldown_added", cooldown);
+	else if (_inherits.is_valid())
+		_inherits->son_cooldown_added(cooldown);
 }
 void EntityData::son_cooldown_removed(Ref<Cooldown> cooldown) {
 	if (has_method("_son_cooldown_removed"))
 		call("_son_cooldown_removed", cooldown);
+	else if (_inherits.is_valid())
+		_inherits->son_cooldown_removed(cooldown);
 }
-	
+
 void EntityData::son_category_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
 	if (has_method("_son_category_cooldown_added"))
 		call("_son_category_cooldown_added", category_cooldown);
+	else if (_inherits.is_valid())
+		_inherits->son_category_cooldown_added(category_cooldown);
 }
 void EntityData::son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
 	if (has_method("_son_category_cooldown_removed"))
 		call("_son_category_cooldown_removed", category_cooldown);
+	else if (_inherits.is_valid())
+		_inherits->son_category_cooldown_removed(category_cooldown);
 }
 
 void EntityData::son_gcd_started(Entity *entity, float gcd) {
 	if (has_method("_son_gcd_started"))
 		call("_son_gcd_started", entity, gcd);
+	else if (_inherits.is_valid())
+		_inherits->son_gcd_started(entity, gcd);
 }
 void EntityData::son_gcd_finished(Entity *entity) {
 	if (has_method("_son_gcd_finished"))
 		call("_son_gcd_finished", entity);
+	else if (_inherits.is_valid())
+		_inherits->son_gcd_finished(entity);
 }
 void EntityData::son_gcd_started_bind(Node *entity, float gcd) {
 	ERR_FAIL_COND(entity == NULL);
@@ -425,40 +521,52 @@ void EntityData::son_gcd_finished_bind(Node *entity) {
 //Clientside Event Handlers
 void EntityData::con_cast_failed(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-	
+
 	if (has_method("_con_cast_failed"))
 		call("_con_cast_failed", info);
+	else if (_inherits.is_valid())
+		_inherits->con_cast_failed(info);
 }
 void EntityData::con_cast_started(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-	
+
 	if (has_method("_con_cast_started"))
 		call("_con_cast_started", info);
+	else if (_inherits.is_valid())
+		_inherits->con_cast_started(info);
 }
 void EntityData::con_cast_state_changed(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-	
+
 	if (has_method("_con_cast_state_changed"))
 		call("_con_cast_state_changed", info);
+	else if (_inherits.is_valid())
+		_inherits->con_cast_state_changed(info);
 }
 void EntityData::con_cast_finished(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-	
+
 	if (has_method("_con_cast_finished"))
 		call("_con_cast_finished", info);
+	else if (_inherits.is_valid())
+		_inherits->con_cast_finished(info);
 }
 void EntityData::con_spell_cast_success(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-	
+
 	if (has_method("_con_spell_cast_success"))
 		call("_con_spell_cast_success", info);
+	else if (_inherits.is_valid())
+		_inherits->con_spell_cast_success(info);
 }
 
 void EntityData::con_death(Entity *entity) {
 	ERR_FAIL_COND(entity == NULL);
-	
-    if (has_method("_con_death"))
+
+	if (has_method("_con_death"))
 		call("_con_death", entity);
+	else if (_inherits.is_valid())
+		_inherits->con_death(entity);
 }
 
 void EntityData::con_death_bind(Node *entity) {
@@ -473,27 +581,35 @@ void EntityData::con_death_bind(Node *entity) {
 
 void EntityData::con_cooldown_added(Ref<Cooldown> cooldown) {
 	ERR_FAIL_COND(!cooldown.is_valid());
-	
+
 	if (has_method("_con_cooldown_added"))
 		call("_con_cooldown_added", cooldown);
+	else if (_inherits.is_valid())
+		_inherits->con_cooldown_added(cooldown);
 }
 void EntityData::con_cooldown_removed(Ref<Cooldown> cooldown) {
 	ERR_FAIL_COND(!cooldown.is_valid());
-	
+
 	if (has_method("_con_cooldown_removed"))
 		call("_con_cooldown_removed", cooldown);
+	else if (_inherits.is_valid())
+		_inherits->con_cooldown_removed(cooldown);
 }
 void EntityData::con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
 	ERR_FAIL_COND(!category_cooldown.is_valid());
-	
+
 	if (has_method("_con_category_cooldown_added"))
 		call("_con_category_cooldown_added", category_cooldown);
+	else if (_inherits.is_valid())
+		_inherits->con_category_cooldown_added(category_cooldown);
 }
 void EntityData::con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
 	ERR_FAIL_COND(!category_cooldown.is_valid());
-	
+
 	if (has_method("_con_category_cooldown_removed"))
 		call("_con_category_cooldown_removed", category_cooldown);
+	else if (_inherits.is_valid())
+		_inherits->con_category_cooldown_removed(category_cooldown);
 }
 
 void EntityData::con_aura_added(Ref<AuraData> data) {
@@ -501,6 +617,8 @@ void EntityData::con_aura_added(Ref<AuraData> data) {
 
 	if (has_method("_con_aura_added"))
 		call("_con_aura_added", data);
+	else if (_inherits.is_valid())
+		_inherits->con_aura_added(data);
 }
 
 void EntityData::con_aura_removed(Ref<AuraData> data) {
@@ -508,6 +626,8 @@ void EntityData::con_aura_removed(Ref<AuraData> data) {
 
 	if (has_method("_con_aura_removed"))
 		call("_con_aura_removed", data);
+	else if (_inherits.is_valid())
+		_inherits->con_aura_removed(data);
 }
 
 void EntityData::con_aura_refresh(Ref<AuraData> data) {
@@ -515,6 +635,8 @@ void EntityData::con_aura_refresh(Ref<AuraData> data) {
 
 	if (has_method("_con_aura_refresh"))
 		call("_con_aura_refresh", data);
+	else if (_inherits.is_valid())
+		_inherits->con_aura_refresh(data);
 }
 
 void EntityData::con_damage_dealt(Ref<SpellDamageInfo> info) {
@@ -522,6 +644,8 @@ void EntityData::con_damage_dealt(Ref<SpellDamageInfo> info) {
 
 	if (has_method("_con_damage_dealt"))
 		call("_con_damage_dealt", info);
+	else if (_inherits.is_valid())
+		_inherits->con_damage_dealt(info);
 }
 
 void EntityData::con_dealt_damage(Ref<SpellDamageInfo> info) {
@@ -529,6 +653,8 @@ void EntityData::con_dealt_damage(Ref<SpellDamageInfo> info) {
 
 	if (has_method("_con_dealt_damage"))
 		call("_con_dealt_damage", info);
+	else if (_inherits.is_valid())
+		_inherits->con_dealt_damage(info);
 }
 
 void EntityData::con_heal_dealt(Ref<SpellHealInfo> info) {
@@ -536,6 +662,8 @@ void EntityData::con_heal_dealt(Ref<SpellHealInfo> info) {
 
 	if (has_method("_con_heal_dealt"))
 		call("_con_heal_dealt", info);
+	else if (_inherits.is_valid())
+		_inherits->con_heal_dealt(info);
 }
 
 void EntityData::con_dealt_heal(Ref<SpellHealInfo> info) {
@@ -543,15 +671,21 @@ void EntityData::con_dealt_heal(Ref<SpellHealInfo> info) {
 
 	if (has_method("_con_dealt_heal"))
 		call("_con_dealt_heal", info);
+	else if (_inherits.is_valid())
+		_inherits->con_dealt_heal(info);
 }
 
 void EntityData::con_gcd_started(Entity *entity, float gcd) {
 	if (has_method("_con_gcd_started"))
 		call("_con_gcd_started", entity, gcd);
+	else if (_inherits.is_valid())
+		_inherits->con_gcd_started(entity, gcd);
 }
 void EntityData::con_gcd_finished(Entity *entity) {
 	if (has_method("_con_gcd_finished"))
 		call("_con_gcd_finished", entity);
+	else if (_inherits.is_valid())
+		_inherits->con_gcd_finished(entity);
 }
 void EntityData::con_gcd_started_bind(Node *entity, float gcd) {
 	ERR_FAIL_COND(entity == NULL);
@@ -572,34 +706,37 @@ void EntityData::con_gcd_finished_bind(Node *entity) {
 	con_gcd_finished(e);
 }
 
-
 void EntityData::sai_follow(Entity *entity) {
 	ERR_FAIL_COND(entity == NULL);
 
-	if (has_method("_sai_follow")) {
+	if (has_method("_sai_follow"))
 		call("_sai_follow", entity);
-	}
+	else if (_inherits.is_valid())
+		_inherits->sai_follow(entity);
 }
 void EntityData::sai_rest(Entity *entity) {
 	ERR_FAIL_COND(entity == NULL);
 
-	if (has_method("_sai_rest")) {
+	if (has_method("_sai_rest"))
 		call("_sai_rest", entity);
-	}
+	else if (_inherits.is_valid())
+		_inherits->sai_rest(entity);
 }
 void EntityData::sai_regenerate(Entity *entity) {
 	ERR_FAIL_COND(entity == NULL);
 
-	if (has_method("_sai_regenerate")) {
+	if (has_method("_sai_regenerate"))
 		call("_sai_regenerate", entity);
-	}
+	else if (_inherits.is_valid())
+		_inherits->sai_regenerate(entity);
 }
 void EntityData::sai_attack(Entity *entity) {
 	ERR_FAIL_COND(entity == NULL);
 
-	if (has_method("_sai_attack")) {
+	if (has_method("_sai_attack"))
 		call("_sai_attack", entity);
-	}
+	else if (_inherits.is_valid())
+		_inherits->sai_attack(entity);
 }
 
 void EntityData::sai_follow_bind(Node *entity) {
@@ -640,7 +777,7 @@ void EntityData::sai_attack_bind(Node *entity) {
 }
 
 void EntityData::_bind_methods() {
-    //EventHandlers
+	//EventHandlers
 	ClassDB::bind_method(D_METHOD("son_before_cast", "info"), &EntityData::son_before_cast);
 	ClassDB::bind_method(D_METHOD("son_before_cast_target", "info"), &EntityData::son_before_cast_target);
 	ClassDB::bind_method(D_METHOD("son_cast_started", "info"), &EntityData::son_cast_started);
@@ -662,18 +799,18 @@ void EntityData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &EntityData::son_before_aura_applied);
 	ClassDB::bind_method(D_METHOD("son_after_aura_applied", "data"), &EntityData::son_after_aura_applied);
-    
-    ClassDB::bind_method(D_METHOD("son_death", "data"), &EntityData::son_death_bind);
-	
+
+	ClassDB::bind_method(D_METHOD("son_death", "data"), &EntityData::son_death_bind);
+
 	ClassDB::bind_method(D_METHOD("son_cooldown_added", "cooldown"), &EntityData::son_cooldown_added);
 	ClassDB::bind_method(D_METHOD("son_cooldown_removed", "cooldown"), &EntityData::son_cooldown_removed);
-	
+
 	ClassDB::bind_method(D_METHOD("son_category_cooldown_added", "category_cooldown"), &EntityData::son_category_cooldown_added);
 	ClassDB::bind_method(D_METHOD("son_category_cooldown_removed", "category_cooldown"), &EntityData::son_category_cooldown_removed);
-	
+
 	ClassDB::bind_method(D_METHOD("son_gcd_started", "entity", "gcd"), &EntityData::son_gcd_started_bind);
 	ClassDB::bind_method(D_METHOD("son_gcd_finished", "entity"), &EntityData::son_gcd_finished_bind);
-	
+
 	BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -695,17 +832,17 @@ void EntityData::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_son_before_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_son_after_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-    
-    BIND_VMETHOD(MethodInfo("_son_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-    
+
+	BIND_VMETHOD(MethodInfo("_son_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
 	BIND_VMETHOD(MethodInfo("_sai_follow", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_sai_rest", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_sai_regenerate", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_sai_attack", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	
+
 	BIND_VMETHOD(MethodInfo("_son_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 	BIND_VMETHOD(MethodInfo("_son_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	
+
 	BIND_VMETHOD(MethodInfo("_son_category_cooldown_added", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 	BIND_VMETHOD(MethodInfo("_son_category_cooldown_removed", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 
@@ -713,8 +850,8 @@ void EntityData::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	BIND_VMETHOD(MethodInfo("_setup_resources", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-    
-    //Clientside Event Handlers
+
+	//Clientside Event Handlers
 	ClassDB::bind_method(D_METHOD("con_cast_failed", "info"), &EntityData::con_cast_failed);
 	ClassDB::bind_method(D_METHOD("con_cast_started", "info"), &EntityData::con_cast_started);
 	ClassDB::bind_method(D_METHOD("con_cast_state_changed", "info"), &EntityData::con_cast_state_changed);
@@ -722,16 +859,16 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_spell_cast_success", "info"), &EntityData::con_spell_cast_success);
 
 	ClassDB::bind_method(D_METHOD("con_death", "data"), &EntityData::con_death_bind);
-	
+
 	ClassDB::bind_method(D_METHOD("con_cooldown_added", "cooldown"), &EntityData::con_cooldown_added);
 	ClassDB::bind_method(D_METHOD("con_cooldown_removed", "cooldown"), &EntityData::con_cooldown_removed);
 	ClassDB::bind_method(D_METHOD("con_category_cooldown_added", "cooldown"), &EntityData::con_category_cooldown_added);
 	ClassDB::bind_method(D_METHOD("con_category_cooldown_removed", "cooldown"), &EntityData::con_category_cooldown_removed);
-	
+
 	ClassDB::bind_method(D_METHOD("con_aura_added", "data"), &EntityData::con_aura_added);
 	ClassDB::bind_method(D_METHOD("con_aura_removed", "data"), &EntityData::con_aura_removed);
 	ClassDB::bind_method(D_METHOD("con_aura_refresh", "data"), &EntityData::con_aura_refresh);
-	
+
 	ClassDB::bind_method(D_METHOD("con_gcd_started", "entity", "gcd"), &EntityData::con_gcd_started_bind);
 	ClassDB::bind_method(D_METHOD("con_gcd_finished", "entity"), &EntityData::con_gcd_finished_bind);
 
@@ -740,9 +877,9 @@ void EntityData::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_cast_state_changed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_spell_cast_success", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	
+
 	BIND_VMETHOD(MethodInfo("_con_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	
+
 	BIND_VMETHOD(MethodInfo("_con_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 	BIND_VMETHOD(MethodInfo("_con_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 	BIND_VMETHOD(MethodInfo("_con_category_cooldown_added", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
@@ -751,10 +888,10 @@ void EntityData::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_aura_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_con_aura_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_con_aura_refresh", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-    
+
 	BIND_VMETHOD(MethodInfo("_con_gcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
 	BIND_VMETHOD(MethodInfo("_con_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	
+
 	ClassDB::bind_method(D_METHOD("sai_follow", "entity"), &EntityData::sai_follow_bind);
 	ClassDB::bind_method(D_METHOD("sai_rest", "entity"), &EntityData::sai_rest_bind);
 	ClassDB::bind_method(D_METHOD("sai_regenerate", "entity"), &EntityData::sai_regenerate_bind);
@@ -767,6 +904,10 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_data_name"), &EntityData::get_entity_data_name);
 	ClassDB::bind_method(D_METHOD("set_entity_data_name", "value"), &EntityData::set_entity_data_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_data_name"), "set_entity_data_name", "get_entity_data_name");
+
+	ClassDB::bind_method(D_METHOD("get_inherits"), &EntityData::get_inherits);
+	ClassDB::bind_method(D_METHOD("set_inherits", "value"), &EntityData::set_inherits);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "inherits", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "set_inherits", "get_inherits");
 
 	ClassDB::bind_method(D_METHOD("get_icon"), &EntityData::get_icon);
 	ClassDB::bind_method(D_METHOD("set_icon", "value"), &EntityData::set_icon);
@@ -787,40 +928,40 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_spec", "index"), &EntityData::get_spec);
 	ClassDB::bind_method(D_METHOD("set_spec", "index", "spec"), &EntityData::set_spec);
 
-    ClassDB::bind_method(D_METHOD("get_specs"), &EntityData::get_specs);
+	ClassDB::bind_method(D_METHOD("get_specs"), &EntityData::get_specs);
 	ClassDB::bind_method(D_METHOD("set_specs", "specs"), &EntityData::set_specs);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "specs", PROPERTY_HINT_NONE, "17/17:CharacterSpec", PROPERTY_USAGE_DEFAULT, "CharacterSpec"), "set_specs", "get_specs");
-    
-    ////    Spell    ////
+
+	////    Spell    ////
 	ClassDB::bind_method(D_METHOD("get_num_spells"), &EntityData::get_num_spells);
 	ClassDB::bind_method(D_METHOD("set_num_spells", "value"), &EntityData::set_num_spells);
 
 	ClassDB::bind_method(D_METHOD("get_spell", "index"), &EntityData::get_spell);
 	ClassDB::bind_method(D_METHOD("set_spell", "index", "spell"), &EntityData::set_spell);
 
-    ClassDB::bind_method(D_METHOD("get_spells"), &EntityData::get_spells);
+	ClassDB::bind_method(D_METHOD("get_spells"), &EntityData::get_spells);
 	ClassDB::bind_method(D_METHOD("set_spells", "spells"), &EntityData::set_spells);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
 
 	////    AURAS    ////
 	ClassDB::bind_method(D_METHOD("get_num_auras"), &EntityData::get_num_auras);
 	ClassDB::bind_method(D_METHOD("set_num_auras", "value"), &EntityData::set_num_auras);
-    
+
 	ClassDB::bind_method(D_METHOD("get_aura", "index"), &EntityData::get_aura);
 	ClassDB::bind_method(D_METHOD("set_aura", "index", "aura"), &EntityData::set_aura);
 
-    ClassDB::bind_method(D_METHOD("get_auras"), &EntityData::get_auras);
+	ClassDB::bind_method(D_METHOD("get_auras"), &EntityData::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &EntityData::set_auras);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
 
 	////    AI ACTIONS    ////
 	ClassDB::bind_method(D_METHOD("get_num_ai_actions"), &EntityData::get_num_ai_actions);
 	ClassDB::bind_method(D_METHOD("set_num_ai_actions", "value"), &EntityData::set_num_ai_actions);
-    
+
 	ClassDB::bind_method(D_METHOD("get_ai_action", "index"), &EntityData::get_ai_action);
 	ClassDB::bind_method(D_METHOD("set_ai_action", "index", "action"), &EntityData::set_ai_action);
 
-    ClassDB::bind_method(D_METHOD("get_ai_actions"), &EntityData::get_ai_actions);
+	ClassDB::bind_method(D_METHOD("get_ai_actions"), &EntityData::get_ai_actions);
 	ClassDB::bind_method(D_METHOD("set_ai_actions", "auras"), &EntityData::set_ai_actions);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ai_actions", PROPERTY_HINT_NONE, "17/17:AIAction", PROPERTY_USAGE_DEFAULT, "AIAction"), "set_ai_actions", "get_ai_actions");
 }

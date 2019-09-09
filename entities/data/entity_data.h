@@ -41,6 +41,9 @@ public:
 	String get_entity_data_name();
 	void set_entity_data_name(String value);
 
+	Ref<EntityData> get_inherits();
+	void set_inherits(Ref<EntityData> value);
+
 	Ref<Texture> get_icon();
 	void set_icon(Ref<Texture> value);
 
@@ -194,7 +197,11 @@ protected:
 
 private:
 	int _id;
+
 	String _entity_data_name;
+
+	Ref<EntityData> _inherits;
+
 	Ref<Texture> _icon;
 
 	int _player_resource_type;
