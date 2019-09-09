@@ -28,9 +28,9 @@ class DataManager : public Node {
 public:
 	static DataManager *get_instance();
 
-	String get_entity_dataes_folder();
-	void set_entity_dataes_folder(String folder);
-	Vector<Ref<EntityData> > *get_entity_dataes();
+	String get_entity_datas_folder();
+	void set_entity_datas_folder(String folder);
+	Vector<Ref<EntityData> > *get_entity_datas();
 	Ref<EntityData> get_entity_data(int class_id);
 	Ref<EntityData> get_entity_data_index(int index);
 	int get_entity_data_count();
@@ -122,8 +122,8 @@ protected:
 	void _notification(int p_what);
 
 private:
-	String _entity_dataes_folder;
-	Vector<Ref<EntityData> > _entity_dataes;
+	String _entity_datas_folder;
+	Vector<Ref<EntityData> > _entity_datas;
 	HashMap<int, Ref<EntityData> > _entity_data_map;
 
 	String _spells_folder;

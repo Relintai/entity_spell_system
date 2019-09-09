@@ -826,7 +826,6 @@ void EntityData::_bind_methods() {
 }
 
 EntityData::EntityData() {
-	//_spells = memnew(Vector<Ref<Spell> >());
 	_id = 0;
 	_player_resource_type = 0;
 }

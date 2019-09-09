@@ -29,16 +29,16 @@ void DataManager::_notification(int p_what) {
 	}
 }
 
-String DataManager::get_entity_dataes_folder() {
-	return _entity_dataes_folder;
+String DataManager::get_entity_datas_folder() {
+	return _entity_datas_folder;
 }
 
-void DataManager::set_entity_dataes_folder(String folder) {
-	_entity_dataes_folder = folder;
+void DataManager::set_entity_datas_folder(String folder) {
+	_entity_datas_folder = folder;
 }
 
-Vector<Ref<EntityData> > *DataManager::get_entity_dataes() {
-	return &_entity_dataes;
+Vector<Ref<EntityData> > *DataManager::get_entity_datas() {
+	return &_entity_datas;
 }
 
 Ref<EntityData> DataManager::get_entity_data(int class_id) {
@@ -48,19 +48,19 @@ Ref<EntityData> DataManager::get_entity_data(int class_id) {
 }
 
 Ref<EntityData> DataManager::get_entity_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _entity_dataes.size(), Ref<EntityData>(NULL));
+	ERR_FAIL_INDEX_V(index, _entity_datas.size(), Ref<EntityData>(NULL));
 
-	return _entity_dataes.get(index);
+	return _entity_datas.get(index);
 }
 
 int DataManager::get_entity_data_count() {
-	return _entity_dataes.size();
+	return _entity_datas.size();
 }
 
 void DataManager::add_entity_data(Ref<EntityData> cls) {
 	ERR_FAIL_COND(!cls.is_valid());
 
-	_entity_dataes.push_back(cls);
+	_entity_datas.push_back(cls);
 	_entity_data_map.set(cls->get_id(), cls);
 }
 
@@ -431,9 +431,9 @@ void DataManager::load_talents() {
 void DataManager::load_characters() {
 	_Directory dir;
 
-	ERR_FAIL_COND(_entity_dataes_folder.ends_with("/"));
+	ERR_FAIL_COND(_entity_datas_folder.ends_with("/"));
 
-	if (dir.open(_entity_dataes_folder) == OK) {
+	if (dir.open(_entity_datas_folder) == OK) {
 
 		dir.list_dir_begin();
 
@@ -441,7 +441,7 @@ void DataManager::load_characters() {
 
 		while (filename != "") {
 			if (!dir.current_is_dir()) {
-				String path = _entity_dataes_folder + "/" + filename;
+				String path = _entity_datas_folder + "/" + filename;
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
@@ -624,8 +624,8 @@ void DataManager::load_player_character_datas() {
 }
 
 void DataManager::list_characters() {
-	for (int i = 0; i < _entity_dataes.size(); ++i) {
-		print_error(itos(i) + ": " + _entity_dataes.get(i)->get_entity_data_name());
+	for (int i = 0; i < _entity_datas.size(); ++i) {
+		print_error(itos(i) + ": " + _entity_datas.get(i)->get_entity_data_name());
 	}
 }
 
@@ -677,9 +677,9 @@ void DataManager::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
 
 	//EntityData
-	ClassDB::bind_method(D_METHOD("get_entity_dataes_folder"), &DataManager::get_entity_dataes_folder);
-	ClassDB::bind_method(D_METHOD("set_entity_dataes_folder", "folder"), &DataManager::set_entity_dataes_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_dataes_folder"), "set_entity_dataes_folder", "get_entity_dataes_folder");
+	ClassDB::bind_method(D_METHOD("get_entity_datas_folder"), &DataManager::get_entity_datas_folder);
+	ClassDB::bind_method(D_METHOD("set_entity_datas_folder", "folder"), &DataManager::set_entity_datas_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_datas_folder"), "set_entity_datas_folder", "get_entity_datas_folder");
 
 	ClassDB::bind_method(D_METHOD("add_entity_data", "cls"), &DataManager::add_entity_data);
 	ClassDB::bind_method(D_METHOD("get_entity_data", "class_id"), &DataManager::get_entity_data);
@@ -787,7 +787,7 @@ DataManager::DataManager() {
 DataManager::~DataManager() {
 	instance = NULL;
 
-	_entity_dataes.clear();
+	_entity_datas.clear();
 	_entity_data_map.clear();
     
 	_spells.clear();
