@@ -82,7 +82,12 @@ public:
 
 		return ENTITY_STATE_TYPE_FLAG_NONE;
 	}
-    
+
+	enum EntityImmunityFlags {
+		ENTITY_IMMUNITY_FLAG_NONE = 0,
+		ENTITY_IMMUNITY_FLAG_STUN = 1 << 0,
+	};
+
     enum CharacterSkeletonPoints {
 		SKELETON_POINT_ROOT = 0,
 		SKELETON_POINT_PELVIS = 1,
