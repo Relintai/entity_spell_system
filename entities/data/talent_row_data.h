@@ -4,7 +4,7 @@
 #include "core/reference.h"
 #include "core/ustring.h"
 
-#include "talent.h"
+#include "../../data/talent.h"
 
 class Talent;
 

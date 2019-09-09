@@ -16,7 +16,7 @@
 class Aura;
 class Spell;
 class Talent;
-class CharacterClass;
+class EntityData;
 class CraftDataAttribute;
 class ItemTemplate;
 class MobData;
@@ -28,13 +28,13 @@ class DataManager : public Node {
 public:
 	static DataManager *get_instance();
 
-	String get_character_classes_folder();
-	void set_character_classes_folder(String folder);
-	Vector<Ref<CharacterClass> > *get_character_classes();
-	Ref<CharacterClass> get_character_class(int class_id);
-	Ref<CharacterClass> get_character_class_index(int index);
-	int get_character_class_count();
-	void add_character_class(Ref<CharacterClass> cls);
+	String get_entity_dataes_folder();
+	void set_entity_dataes_folder(String folder);
+	Vector<Ref<EntityData> > *get_entity_dataes();
+	Ref<EntityData> get_entity_data(int class_id);
+	Ref<EntityData> get_entity_data_index(int index);
+	int get_entity_data_count();
+	void add_entity_data(Ref<EntityData> cls);
 
 	String get_spells_folder();
 	void set_spells_folder(String folder);
@@ -122,9 +122,9 @@ protected:
 	void _notification(int p_what);
 
 private:
-	String _character_classes_folder;
-	Vector<Ref<CharacterClass> > _character_classes;
-	HashMap<int, Ref<CharacterClass> > _character_class_map;
+	String _entity_dataes_folder;
+	Vector<Ref<EntityData> > _entity_dataes;
+	HashMap<int, Ref<EntityData> > _entity_data_map;
 
 	String _spells_folder;
 	Vector<Ref<Spell> > _spells;

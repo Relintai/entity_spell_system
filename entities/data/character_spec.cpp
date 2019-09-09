@@ -1,6 +1,6 @@
 #include "character_spec.h"
 
-#include "talent.h"
+#include "../../data/talent.h"
 
 int CharacterSpec::get_spec_id() {
 	return _spec_id;

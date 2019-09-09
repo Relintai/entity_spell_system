@@ -12,11 +12,8 @@ module_env.add_source_files(env.modules_sources,"spell_enums.cpp")
 module_env.add_source_files(env.modules_sources,"item_enums.cpp")
 
 module_env.add_source_files(env.modules_sources,"data/aura.cpp")
-module_env.add_source_files(env.modules_sources,"data/character_class.cpp")
 module_env.add_source_files(env.modules_sources,"data/talent.cpp")
 module_env.add_source_files(env.modules_sources,"data/talent_rank_data.cpp")
-module_env.add_source_files(env.modules_sources,"data/talent_row_data.cpp")
-module_env.add_source_files(env.modules_sources,"data/character_spec.cpp")
 module_env.add_source_files(env.modules_sources,"data/data_manager.cpp")
 module_env.add_source_files(env.modules_sources,"data/xp_data.cpp")
 module_env.add_source_files(env.modules_sources,"data/item_stat_modifier.cpp")
@@ -24,6 +21,13 @@ module_env.add_source_files(env.modules_sources,"data/item_template_stat_modifie
 module_env.add_source_files(env.modules_sources,"data/item_instance.cpp")
 module_env.add_source_files(env.modules_sources,"data/item_template.cpp")
 module_env.add_source_files(env.modules_sources,"data/spell_cooldown_manipulation_data.cpp")
+
+module_env.add_source_files(env.modules_sources,"entities/data/entity_data.cpp")
+module_env.add_source_files(env.modules_sources,"entities/data/mob_data.cpp")
+module_env.add_source_files(env.modules_sources,"entities/data/player_character_data.cpp")
+
+module_env.add_source_files(env.modules_sources,"entities/data/character_spec.cpp")
+module_env.add_source_files(env.modules_sources,"entities/data/talent_row_data.cpp")
 
 module_env.add_source_files(env.modules_sources,"data/item_visual.cpp")
 module_env.add_source_files(env.modules_sources,"data/item_visual_entry.cpp")
@@ -80,20 +84,17 @@ module_env.add_source_files(env.modules_sources,"utility/entity_create_info.cpp"
 module_env.add_source_files(env.modules_sources,"utility/cooldown.cpp")
 module_env.add_source_files(env.modules_sources,"utility/category_cooldown.cpp")
 
-env.add_source_files(env.modules_sources,"meshes/mesh_data_resource.cpp")
-env.add_source_files(env.modules_sources,"meshes/editor_import_collada_mdr.cpp")
-env.add_source_files(env.modules_sources,"meshes/editor_plugin_collada_mdr.cpp")
+module_env.add_source_files(env.modules_sources,"meshes/mesh_data_resource.cpp")
+module_env.add_source_files(env.modules_sources,"meshes/editor_import_collada_mdr.cpp")
+module_env.add_source_files(env.modules_sources,"meshes/editor_plugin_collada_mdr.cpp")
 
-env.add_source_files(env.modules_sources,"skeleton/entity_equipset.cpp")
+module_env.add_source_files(env.modules_sources,"skeleton/entity_equipset.cpp")
 
-env.add_source_files(env.modules_sources,"loot/loot_data_base.cpp")
-env.add_source_files(env.modules_sources,"loot/loot_data_container.cpp")
-env.add_source_files(env.modules_sources,"loot/loot_data_item.cpp")
+module_env.add_source_files(env.modules_sources,"loot/loot_data_base.cpp")
+module_env.add_source_files(env.modules_sources,"loot/loot_data_container.cpp")
+module_env.add_source_files(env.modules_sources,"loot/loot_data_item.cpp")
 
-env.add_source_files(env.modules_sources,"data/mob_data.cpp")
-env.add_source_files(env.modules_sources,"data/player_character_data.cpp")
-
-env.add_source_files(env.modules_sources,"ai/ai_action.cpp")
-env.add_source_files(env.modules_sources,"ai/ai_spell_action.cpp")
-env.add_source_files(env.modules_sources,"ai/ai_action_container.cpp")
+module_env.add_source_files(env.modules_sources,"ai/ai_action.cpp")
+module_env.add_source_files(env.modules_sources,"ai/ai_spell_action.cpp")
+module_env.add_source_files(env.modules_sources,"ai/ai_action_container.cpp")
 

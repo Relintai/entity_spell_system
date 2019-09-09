@@ -4,7 +4,7 @@
 #include "core/reference.h"
 #include "core/ustring.h"
 #include "../entity_enums.h"
-#include "../data/character_class.h"
+#include "../entities/data/entity_data.h"
 
 class EntityCreateInfo : public Reference {
 	GDCLASS(EntityCreateInfo, Reference);
@@ -25,8 +25,8 @@ public:
 	int get_xp() { return _xp; }
 	void set_xp(int value) { _xp = value; }
 
-	Ref<CharacterClass> get_character_class() { return _character_class; }
-	void set_character_class(Ref<CharacterClass> value) { _character_class = value; }
+	Ref<EntityData> get_entity_data() { return _entity_data; }
+	void set_entity_data(Ref<EntityData> value) { _entity_data = value; }
 
 protected:
 	static void _bind_methods() {
@@ -46,9 +46,9 @@ protected:
 		ClassDB::bind_method(D_METHOD("set_xp", "value"), &EntityCreateInfo::set_xp);
 		ADD_PROPERTY(PropertyInfo(Variant::STRING, "xp"), "set_xp", "get_xp");
 		
-		ClassDB::bind_method(D_METHOD("get_character_class"), &EntityCreateInfo::get_character_class);
-		ClassDB::bind_method(D_METHOD("set_character_class", "value"), &EntityCreateInfo::set_character_class);
-		ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "character_class", PROPERTY_HINT_RESOURCE_TYPE, "CharacterClass"), "set_character_class", "get_character_class");
+		ClassDB::bind_method(D_METHOD("get_entity_data"), &EntityCreateInfo::get_entity_data);
+		ClassDB::bind_method(D_METHOD("set_entity_data", "value"), &EntityCreateInfo::set_entity_data);
+		ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "set_entity_data", "get_entity_data");
 	}
 
 private:
@@ -58,7 +58,7 @@ private:
 	int _level;
 	int _xp;
 
-	Ref<CharacterClass> _character_class;
+	Ref<EntityData> _entity_data;
 };
 
 #endif

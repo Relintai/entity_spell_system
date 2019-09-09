@@ -1,19 +1,19 @@
-#ifndef CHARACTER_CLASS_H
-#define CHARACTER_CLASS_H
+#ifndef ENTITY_DATA_H
+#define ENTITY_DATA_H
 
 #include "core/resource.h"
 #include "core/vector.h"
 #include "scene/resources/texture.h"
 
-#include "../entities/stats/stat_data.h"
-#include "../entity_enums.h"
+#include "../../entities/stats/stat_data.h"
+#include "../../entity_enums.h"
 
-#include "../entities/auras/aura_data.h"
-#include "../pipelines/spell_damage_info.h"
-#include "../pipelines/spell_heal_info.h"
+#include "../../entities/auras/aura_data.h"
+#include "../../pipelines/spell_damage_info.h"
+#include "../../pipelines/spell_heal_info.h"
 
-#include "../utility/cooldown.h"
-#include "../utility/category_cooldown.h"
+#include "../../utility/cooldown.h"
+#include "../../utility/category_cooldown.h"
 
 class Aura;
 class Spell;
@@ -31,15 +31,15 @@ enum CharacterWeaponDataTypes {
 
 VARIANT_ENUM_CAST(CharacterWeaponDataTypes)
 
-class CharacterClass : public Resource {
-	GDCLASS(CharacterClass, Resource);
+class EntityData : public Resource {
+	GDCLASS(EntityData, Resource);
 
 public:
 	int get_id();
 	void set_id(int value);
 
-	String get_character_class_name();
-	void set_character_class_name(String value);
+	String get_entity_data_name();
+	void set_entity_data_name(String value);
 
 	Ref<Texture> get_icon();
 	void set_icon(Ref<Texture> value);
@@ -186,15 +186,15 @@ public:
 	void sai_regenerate_bind(Node *entity);
 	void sai_attack_bind(Node *entity);
 
-	CharacterClass();
-	~CharacterClass();
+	EntityData();
+	~EntityData();
 
 protected:
 	static void _bind_methods();
 
 private:
 	int _id;
-	String _character_class_name;
+	String _entity_data_name;
 	Ref<Texture> _icon;
 
 	int _player_resource_type;

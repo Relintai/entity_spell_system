@@ -4,8 +4,8 @@
 #include "core/resource.h"
 #include "core/ustring.h"
 
-#include "../data/character_class.h"
-#include "../loot/loot_data_base.h"
+#include "entity_data.h"
+#include "../../loot/loot_data_base.h"
 
 //Add it to the data manager too.
 
@@ -19,8 +19,8 @@ public:
     Ref<LootDataBase> get_loot_db() const;
     void set_loot_db(const Ref<LootDataBase> lootdb);
     
-    Ref<CharacterClass> get_character_class() const;
-    void set_character_class(const Ref<CharacterClass> character_class);
+    Ref<EntityData> get_entity_data() const;
+    void set_entity_data(const Ref<EntityData> entity_data);
     
     String get_player_name();
     
@@ -36,7 +36,7 @@ protected:
 private:
     int _id;
     Ref<LootDataBase> _lootdb;
-    Ref<CharacterClass> _character_class;
+    Ref<EntityData> _entity_data;
     String _static_player_name;
     //Skeleton -> basic gear
 };

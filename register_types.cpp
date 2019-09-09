@@ -6,14 +6,18 @@
 #include "data/aura.h"
 #include "data/aura_stat_attribute.h"
 #include "data/data_manager.h"
-#include "data/character_class.h"
 #include "data/talent.h"
-#include "data/talent_row_data.h"
-#include "data/character_spec.h"
 #include "data/xp_data.h"
 #include "data/item_stat_modifier.h"
 #include "data/item_template_stat_modifier.h"
 #include "data/spell_cooldown_manipulation_data.h"
+
+#include "entities/data/entity_data.h"
+#include "entities/data/mob_data.h"
+#include "entities/data/player_character_data.h"
+
+#include "entities/data/talent_row_data.h"
+#include "entities/data/character_spec.h"
 
 #include "data/item_visual.h"
 #include "data/item_visual_entry.h"
@@ -73,9 +77,6 @@
 #include "loot/loot_data_item.h"
 #include "loot/loot_data_container.h"
 
-#include "data/mob_data.h"
-#include "data/player_character_data.h"
-
 #include "data/spell_effect_visual.h"
 #include "data/spell_effect_visual_simple.h"
 #include "data/spell_projectile_data.h"
@@ -102,10 +103,13 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<CraftDataAttributeHelper>();
 	ClassDB::register_class<CraftDataAttribute>();
 
-	ClassDB::register_class<CharacterClass>();
 	ClassDB::register_class<Spell>();
 	ClassDB::register_class<Aura>();
 	ClassDB::register_class<AuraStatAttribute>();
+
+	ClassDB::register_class<EntityData>();
+	ClassDB::register_class<MobData>();
+	ClassDB::register_class<PlayerCharacterData>();
 	
 	ClassDB::register_class<XPData>();
 	ClassDB::register_class<ItemStatModifier>();
@@ -178,9 +182,7 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<LootDataBase>();
 	ClassDB::register_class<LootDataItem>();
 	ClassDB::register_class<LootDataContainter>();
-    
-    ClassDB::register_class<MobData>();
-    ClassDB::register_class<PlayerCharacterData>();
+   
 
     ClassDB::register_class<SpellEffectVisual>();
     ClassDB::register_class<SpellEffectVisualSimple>();

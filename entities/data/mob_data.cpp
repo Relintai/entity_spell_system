@@ -14,11 +14,11 @@ void MobData::set_loot_db(const Ref<LootDataBase> lootdb) {
     _lootdb = lootdb;
 }
     
-Ref<CharacterClass> MobData::get_character_class() const {
-    return _character_class;
+Ref<EntityData> MobData::get_entity_data() const {
+    return _entity_data;
 }
-void MobData::set_character_class(const Ref<CharacterClass> character_class) {
-    _character_class = character_class;
+void MobData::set_entity_data(const Ref<EntityData> entity_data) {
+    _entity_data = entity_data;
 }
 
 String MobData::get_player_name() {
@@ -41,7 +41,7 @@ MobData::MobData() {
 }
 MobData::~MobData() {
     _lootdb.unref();
-    _character_class.unref();
+    _entity_data.unref();
 }
 
 void MobData::_bind_methods() {
@@ -55,9 +55,9 @@ void MobData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_loot_db", "value"), &MobData::set_loot_db);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "loot_db", PROPERTY_HINT_RESOURCE_TYPE, "LootDataBase"), "set_loot_db", "get_loot_db");
     
-    ClassDB::bind_method(D_METHOD("get_character_class"), &MobData::get_character_class);
-	ClassDB::bind_method(D_METHOD("set_character_class", "value"), &MobData::set_character_class);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "character_class", PROPERTY_HINT_RESOURCE_TYPE, "CharacterClass"), "set_character_class", "get_character_class");
+    ClassDB::bind_method(D_METHOD("get_entity_data"), &MobData::get_entity_data);
+	ClassDB::bind_method(D_METHOD("set_entity_data", "value"), &MobData::set_entity_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "set_entity_data", "get_entity_data");
     
     ClassDB::bind_method(D_METHOD("get_static_player_name"), &MobData::get_static_player_name);
 	ClassDB::bind_method(D_METHOD("set_static_player_name", "value"), &MobData::set_static_player_name);

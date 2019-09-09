@@ -10,7 +10,7 @@
 #endif
 
 
-#include "../data/character_class.h"
+#include "./data/entity_data.h"
 #include "../data/craft_data_attribute.h"
 #include "../data/spell.h"
 #include "../data/xp_data.h"
@@ -38,7 +38,7 @@
 
 #include "../inventory/bag.h"
 
-class CharacterClass;
+class EntityData;
 class AuraData;
 class Spell;
 class SpellDamageInfo;
@@ -132,11 +132,11 @@ public:
 	int gets_guid();
 	void sets_guid(int value);
 
-	int gets_character_class_id();
-	void sets_character_class_id(int value);
+	int gets_entity_data_id();
+	void sets_entity_data_id(int value);
 
-	int getc_character_class_id();
-	void setc_character_class_id(int value);
+	int getc_entity_data_id();
+	void setc_entity_data_id(int value);
 
 	EntityEnums::EntityType gets_entity_type();
 	void sets_entity_type(EntityEnums::EntityType value);
@@ -168,11 +168,11 @@ public:
 	int getc_xp();
 	void setc_xp(int value);
 
-	Ref<CharacterClass> getc_character_class();
-	void setc_character_class(Ref<CharacterClass> value);
+	Ref<EntityData> getc_entity_data();
+	void setc_entity_data(Ref<EntityData> value);
 
-	Ref<CharacterClass> gets_character_class();
-	void sets_character_class(Ref<CharacterClass> value);
+	Ref<EntityData> gets_entity_data();
+	void sets_entity_data(Ref<EntityData> value);
 
 	void sinitialize_stats();
 
@@ -494,8 +494,8 @@ private:
 	int _s_xp;
 	int _c_xp;
 
-	Ref<CharacterClass> _s_character_class;
-	Ref<CharacterClass> _c_character_class;
+	Ref<EntityData> _s_entity_data;
+	Ref<EntityData> _c_entity_data;
 
 	int _s_send_flag;
 
