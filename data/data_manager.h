@@ -19,8 +19,6 @@ class Talent;
 class EntityData;
 class CraftDataAttribute;
 class ItemTemplate;
-class MobData;
-class PlayerCharacterData;
 
 class DataManager : public Node {
 	GDCLASS(DataManager, Node);
@@ -78,18 +76,18 @@ public:
     
     String get_mob_data_folder();
 	void set_mob_data_folder(String folder);
-	Vector<Ref<MobData> > *get_mob_datas();
-	void add_mob_data(Ref<MobData> aura);
-	Ref<MobData> get_mob_data(int item_id);
-	Ref<MobData> get_mob_data_index(int index);
+	Vector<Ref<EntityData> > *get_mob_datas();
+	void add_mob_data(Ref<EntityData> aura);
+	Ref<EntityData> get_mob_data(int item_id);
+	Ref<EntityData> get_mob_data_index(int index);
 	int get_mob_data_count();
     
     String get_player_character_data_folder();
 	void set_player_character_data_folder(String folder);
-	Vector<Ref<PlayerCharacterData> > *get_player_character_datas();
-	void add_player_character_data(Ref<PlayerCharacterData> aura);
-	Ref<PlayerCharacterData> get_player_character_data(int item_id);
-	Ref<PlayerCharacterData> get_player_character_data_index(int index);
+	Vector<Ref<EntityData> > *get_player_character_datas();
+	void add_player_character_data(Ref<EntityData> aura);
+	Ref<EntityData> get_player_character_data(int item_id);
+	Ref<EntityData> get_player_character_data_index(int index);
 	int get_player_character_data_count();
 
 	void load_all();
@@ -147,12 +145,12 @@ private:
 	HashMap<int, Ref<ItemTemplate> > _item_template_map;
     
     String _mob_data_folder;
-	Vector<Ref<MobData> > _mob_datas;
-	HashMap<int, Ref<MobData> > _mob_data_map;
+	Vector<Ref<EntityData> > _mob_datas;
+	HashMap<int, Ref<EntityData> > _mob_data_map;
     
     String _player_character_data_folder;
-	Vector<Ref<PlayerCharacterData> > _player_character_datas;
-	HashMap<int, Ref<PlayerCharacterData> > _player_character_data_map;
+	Vector<Ref<EntityData> > _player_character_datas;
+	HashMap<int, Ref<EntityData> > _player_character_data_map;
 
 	static DataManager *instance;
 

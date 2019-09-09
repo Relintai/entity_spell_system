@@ -21,17 +21,16 @@ void EntityData::set_inherits(Ref<EntityData> value) {
 	_inherits = value;
 }
 
-String EntityData::get_entity_data_name() {
-	return _entity_data_name;
+String EntityData::get_entity_name() {
+	return _entity_name;
 }
-void EntityData::set_entity_data_name(String value) {
-	_entity_data_name = value;
+void EntityData::set_entity_name(String value) {
+	_entity_name = value;
 }
 
 Ref<Texture> EntityData::get_icon() {
 	return _icon;
 }
-
 void EntityData::set_icon(Ref<Texture> value) {
 	_icon = Ref<Texture>(value);
 }
@@ -39,9 +38,15 @@ void EntityData::set_icon(Ref<Texture> value) {
 int EntityData::get_player_resource_type() {
 	return _player_resource_type;
 }
-
 void EntityData::set_player_resource_type(int value) {
 	_player_resource_type = value;
+}
+
+Ref<LootDataBase> EntityData::get_loot_db() const {
+	return _lootdb;
+}
+void EntityData::set_loot_db(const Ref<LootDataBase> lootdb) {
+	_lootdb = lootdb;
 }
 
 Ref<StatData> EntityData::get_stat_data() {
@@ -776,6 +781,14 @@ void EntityData::sai_attack_bind(Node *entity) {
 	sai_attack(e);
 }
 
+String EntityData::generate_name() {
+	if (has_method("_generate_name")) {
+		return call("_generate_name");
+	}
+
+	return _entity_name;
+}
+
 void EntityData::_bind_methods() {
 	//EventHandlers
 	ClassDB::bind_method(D_METHOD("son_before_cast", "info"), &EntityData::son_before_cast);
@@ -901,9 +914,9 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityData::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
 
-	ClassDB::bind_method(D_METHOD("get_entity_data_name"), &EntityData::get_entity_data_name);
-	ClassDB::bind_method(D_METHOD("set_entity_data_name", "value"), &EntityData::set_entity_data_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_data_name"), "set_entity_data_name", "get_entity_data_name");
+	ClassDB::bind_method(D_METHOD("get_entity_name"), &EntityData::get_entity_name);
+	ClassDB::bind_method(D_METHOD("set_entity_name", "value"), &EntityData::set_entity_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_name"), "set_entity_name", "get_entity_name");
 
 	ClassDB::bind_method(D_METHOD("get_inherits"), &EntityData::get_inherits);
 	ClassDB::bind_method(D_METHOD("set_inherits", "value"), &EntityData::set_inherits);
@@ -964,6 +977,14 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_ai_actions"), &EntityData::get_ai_actions);
 	ClassDB::bind_method(D_METHOD("set_ai_actions", "auras"), &EntityData::set_ai_actions);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ai_actions", PROPERTY_HINT_NONE, "17/17:AIAction", PROPERTY_USAGE_DEFAULT, "AIAction"), "set_ai_actions", "get_ai_actions");
+
+	// Loot DB
+	ClassDB::bind_method(D_METHOD("get_loot_db"), &EntityData::get_loot_db);
+	ClassDB::bind_method(D_METHOD("set_loot_db", "value"), &EntityData::set_loot_db);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "loot_db", PROPERTY_HINT_RESOURCE_TYPE, "LootDataBase"), "set_loot_db", "get_loot_db");
+
+	ClassDB::bind_method(D_METHOD("generate_name"), &EntityData::generate_name);
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "name"), "_generate_name"));
 }
 
 EntityData::EntityData() {

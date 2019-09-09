@@ -13,7 +13,6 @@
 #include "data/spell_cooldown_manipulation_data.h"
 
 #include "entities/data/entity_data.h"
-#include "entities/data/mob_data.h"
 #include "entities/data/player_character_data.h"
 
 #include "entities/data/talent_row_data.h"
@@ -108,7 +107,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<AuraStatAttribute>();
 
 	ClassDB::register_class<EntityData>();
-	ClassDB::register_class<MobData>();
 	ClassDB::register_class<PlayerCharacterData>();
 	
 	ClassDB::register_class<XPData>();

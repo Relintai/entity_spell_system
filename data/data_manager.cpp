@@ -5,8 +5,6 @@
 #include "craft_data_attribute.h"
 #include "spell.h"
 #include "talent.h"
-#include "../entities/data/mob_data.h"
-#include "../entities/data/player_character_data.h"
 
 DataManager *DataManager::instance;
 
@@ -238,25 +236,25 @@ String DataManager::get_mob_data_folder() {
 void DataManager::set_mob_data_folder(String folder) {
 	_mob_data_folder = folder;
 }
-Vector<Ref<MobData> > *DataManager::get_mob_datas() {
+Vector<Ref<EntityData> > *DataManager::get_mob_datas() {
 	return &_mob_datas;
 }
 
-void DataManager::add_mob_data(Ref<MobData> cda) {
+void DataManager::add_mob_data(Ref<EntityData> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_mob_datas.push_back(cda);
 	_mob_data_map.set(cda->get_id(), cda);
 }
 
-Ref<MobData> DataManager::get_mob_data(int item_id) {
-	ERR_FAIL_COND_V(!_mob_data_map.has(item_id), Ref<MobData>(NULL));
+Ref<EntityData> DataManager::get_mob_data(int item_id) {
+	ERR_FAIL_COND_V(!_mob_data_map.has(item_id), Ref<EntityData>(NULL));
 
 	return _mob_data_map.get(item_id);
 }
 
-Ref<MobData> DataManager::get_mob_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _mob_datas.size(), Ref<MobData>(NULL));
+Ref<EntityData> DataManager::get_mob_data_index(int index) {
+	ERR_FAIL_INDEX_V(index, _mob_datas.size(), Ref<EntityData>(NULL));
 
 	return _mob_datas.get(index);
 }
@@ -272,25 +270,25 @@ String DataManager::get_player_character_data_folder() {
 void DataManager::set_player_character_data_folder(String folder) {
 	_player_character_data_folder = folder;
 }
-Vector<Ref<PlayerCharacterData> > *DataManager::get_player_character_datas() {
+Vector<Ref<EntityData> > *DataManager::get_player_character_datas() {
 	return &_player_character_datas;
 }
 
-void DataManager::add_player_character_data(Ref<PlayerCharacterData> cda) {
+void DataManager::add_player_character_data(Ref<EntityData> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_player_character_datas.push_back(cda);
 	_player_character_data_map.set(cda->get_id(), cda);
 }
 
-Ref<PlayerCharacterData> DataManager::get_player_character_data(int item_id) {
-	ERR_FAIL_COND_V(!_player_character_data_map.has(item_id), Ref<PlayerCharacterData>(NULL));
+Ref<EntityData> DataManager::get_player_character_data(int item_id) {
+	ERR_FAIL_COND_V(!_player_character_data_map.has(item_id), Ref<EntityData>(NULL));
 
 	return _player_character_data_map.get(item_id);
 }
 
-Ref<PlayerCharacterData> DataManager::get_player_character_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _player_character_datas.size(), Ref<PlayerCharacterData>(NULL));
+Ref<EntityData> DataManager::get_player_character_data_index(int index) {
+	ERR_FAIL_INDEX_V(index, _player_character_datas.size(), Ref<EntityData>(NULL));
 
 	return _player_character_datas.get(index);
 }
@@ -562,7 +560,7 @@ void DataManager::load_mob_datas() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "MobData");
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityData");
 
 				resl->wait();
 
@@ -570,7 +568,7 @@ void DataManager::load_mob_datas() {
 
 				ERR_CONTINUE(!s.is_valid());
 
-				Ref<MobData> mob_data = s;
+				Ref<EntityData> mob_data = s;
 
 				ERR_CONTINUE(!mob_data.is_valid());
 
@@ -601,7 +599,7 @@ void DataManager::load_player_character_datas() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "PlayerCharacterData");
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityData");
 
 				resl->wait();
 
@@ -609,7 +607,7 @@ void DataManager::load_player_character_datas() {
 
 				ERR_CONTINUE(!s.is_valid());
 
-				Ref<PlayerCharacterData> pcd = s;
+				Ref<EntityData> pcd = s;
 
 				ERR_CONTINUE(!pcd.is_valid());
 
@@ -625,7 +623,7 @@ void DataManager::load_player_character_datas() {
 
 void DataManager::list_characters() {
 	for (int i = 0; i < _entity_datas.size(); ++i) {
-		print_error(itos(i) + ": " + _entity_datas.get(i)->get_entity_data_name());
+		print_error(itos(i) + ": " + _entity_datas.get(i)->get_entity_name());
 	}
 }
 

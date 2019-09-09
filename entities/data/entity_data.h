@@ -3,6 +3,7 @@
 
 #include "core/resource.h"
 #include "core/vector.h"
+#include "core/ustring.h"
 #include "scene/resources/texture.h"
 
 #include "../../entities/stats/stat_data.h"
@@ -14,6 +15,8 @@
 
 #include "../../utility/cooldown.h"
 #include "../../utility/category_cooldown.h"
+
+#include "../../loot/loot_data_base.h"
 
 class Aura;
 class Spell;
@@ -38,8 +41,8 @@ public:
 	int get_id();
 	void set_id(int value);
 
-	String get_entity_data_name();
-	void set_entity_data_name(String value);
+	String get_entity_name();
+	void set_entity_name(String value);
 
 	Ref<EntityData> get_inherits();
 	void set_inherits(Ref<EntityData> value);
@@ -52,7 +55,10 @@ public:
 
 	int get_player_resource_type();
 	void set_player_resource_type(int value);
-	
+
+	Ref<LootDataBase> get_loot_db() const;
+	void set_loot_db(const Ref<LootDataBase> lootdb);
+
     //Specs
 	int get_num_specs();
 	void set_num_specs(int value);
@@ -189,6 +195,8 @@ public:
 	void sai_regenerate_bind(Node *entity);
 	void sai_attack_bind(Node *entity);
 
+	String generate_name();
+
 	EntityData();
 	~EntityData();
 
@@ -198,7 +206,7 @@ protected:
 private:
 	int _id;
 
-	String _entity_data_name;
+	String _entity_name;
 
 	Ref<EntityData> _inherits;
 
@@ -212,6 +220,8 @@ private:
 	Vector<Ref<CharacterSpec> > _specs;
 	Vector<Ref<Aura> > _auras;
 	Vector<Ref<AIAction> > _ai_actions;
+
+	Ref<LootDataBase> _lootdb;
 
 	//Vector<int> _mob_party_ids;
 	//Vector<int> _mob_dislike_ids;
