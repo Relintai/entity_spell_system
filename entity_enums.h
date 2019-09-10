@@ -9,7 +9,10 @@ class EntityEnums : public Object {
 
 public:
 	static const String BINDING_STRING_PLAYER_RESOURCE_TYPES;
+
 	static const String BINDING_STRING_ENTITY_TYPES;
+	static const String BINDING_STRING_ENTITY_CONTOLLER;
+	static const String BINDING_STRING_ENTITY_FLAGS;
 	static const String BINDING_STRING_ENTITY_STATE_TYPES;
     static const String BINDING_STRING_CHARCATER_SKELETON_POINTS;
     static const String BINDING_STRING_AI_STATES;
@@ -22,9 +25,35 @@ public:
 
 	enum EntityType {
 		ENITIY_TYPE_NONE,
-		ENITIY_TYPE_PLAYER,
-		ENITIY_TYPE_AI,
-		ENITIY_TYPE_MOB
+		ENITIY_TYPE_CREATURE,
+		ENITIY_TYPE_TOTEM,
+		ENITIY_TYPE_IDOL,
+		ENITIY_TYPE_HUMANOID,
+		ENITIY_TYPE_MECHANICAL,
+		ENITIY_TYPE_BEAST,
+		ENITIY_TYPE_DRAGONKIN,
+		ENITIY_TYPE_ELEMENTAL,
+		ENITIY_TYPE_GHOST,
+		ENITIY_TYPE_ENERGY,
+		ENITIY_TYPE_ANOMALY,
+		ENITIY_TYPE_DEMON,
+		ENITIY_TYPE_OBJECT,
+	};
+
+	enum EntityController {
+		ENITIY_CONTROLLER_NONE,
+		ENITIY_CONTROLLER_PLAYER,
+		ENITIY_CONTROLLER_AI,
+		ENITIY_CONTROLLER_MOB
+	};
+
+	enum EntityFlags {
+		ENITIY_FLAGS_NONE = 0,
+
+		ENTITY_FLAGS_UNTARGETALBE = 1 << 0,
+		ENTITY_FLAGS_HIDDEN = 1 << 1,
+		ENTITY_FLAGS_INTERACTABLE = 1 << 2,
+		ENTITY_FLAGS_HOSTILE = 1 << 3,
 	};
 
 	enum EntityStateTypeFlags {
@@ -176,6 +205,8 @@ protected:
 };
 
 VARIANT_ENUM_CAST(EntityEnums::EntityType);
+VARIANT_ENUM_CAST(EntityEnums::EntityController);
+VARIANT_ENUM_CAST(EntityEnums::EntityFlags);
 VARIANT_ENUM_CAST(EntityEnums::EntityStateTypeFlags);
 VARIANT_ENUM_CAST(EntityEnums::EntityStateTypeIndexes);
 VARIANT_ENUM_CAST(EntityEnums::CharacterSkeletonPoints);
