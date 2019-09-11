@@ -40,6 +40,9 @@ public:
 	Ref<ItemVisual> get_item_visual() const;
 	void set_item_visual(const Ref<ItemVisual> value);
 
+	int get_price() const;
+	void set_price(const int value);
+
 	int get_inventory_size_x() const;
 	void set_inventory_size_x(const int value);
 	
@@ -114,6 +117,8 @@ private:
 	ItemEnums::ItemType _item_type;
 	ItemEnums::ItemSubtype _item_sub_type;
 	ItemEnums::ItemSubSubtype _item_sub_sub_type;
+
+	int _price;
 
 	Ref<ItemVisual> _item_visual;
 

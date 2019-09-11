@@ -8,7 +8,6 @@
 int ItemTemplate::get_id() const {
 	return _id;
 }
-
 void ItemTemplate::set_id(const int value) {
 	_id = value;
 }
@@ -16,7 +15,6 @@ void ItemTemplate::set_id(const int value) {
 String ItemTemplate::get_name_key() const {
 	return _name_key;
 }
-
 void ItemTemplate::set_name_key(const String value) {
 	_name_key = value;
 }
@@ -24,7 +22,6 @@ void ItemTemplate::set_name_key(const String value) {
 ItemEnums::ItemType ItemTemplate::get_item_type() const {
 	return _item_type;
 }
-
 void ItemTemplate::set_item_type(const ItemEnums::ItemType value) {
 	_item_type = value;
 }
@@ -32,7 +29,6 @@ void ItemTemplate::set_item_type(const ItemEnums::ItemType value) {
 ItemEnums::ItemSubtype ItemTemplate::get_item_sub_type() const {
 	return _item_sub_type;
 }
-
 void ItemTemplate::set_item_sub_type(const ItemEnums::ItemSubtype value) {
 	_item_sub_type = value;
 }
@@ -40,7 +36,6 @@ void ItemTemplate::set_item_sub_type(const ItemEnums::ItemSubtype value) {
 ItemEnums::ItemSubSubtype ItemTemplate::get_item_sub_sub_type() const {
 	return _item_sub_sub_type;
 }
-
 void ItemTemplate::set_item_sub_sub_type(const ItemEnums::ItemSubSubtype value) {
 	_item_sub_sub_type = value;
 }
@@ -48,7 +43,6 @@ void ItemTemplate::set_item_sub_sub_type(const ItemEnums::ItemSubSubtype value) 
 ItemEnums::ItemRarity ItemTemplate::get_rarity() const {
 	return _rarity;
 }
-
 void ItemTemplate::set_rarity(const ItemEnums::ItemRarity value) {
 	_rarity = value;
 }
@@ -58,6 +52,14 @@ Ref<ItemVisual> ItemTemplate::get_item_visual() const {
 }
 void ItemTemplate::set_item_visual(const Ref<ItemVisual> value) {
 	_item_visual = value;
+}
+
+int ItemTemplate::get_price() const {
+	return _price;
+}
+
+void ItemTemplate::set_price(const int value) {
+	_price = value;
 }
 
 int ItemTemplate::get_inventory_size_x() const {
@@ -260,6 +262,7 @@ ItemTemplate::ItemTemplate() {
 	_item_sub_type = ItemEnums::ITEM_SUB_TYPE_NONE;
 	_item_sub_sub_type = ItemEnums::ITEM_SUB_SUB_TYPE_NONE;
 	_rarity = ItemEnums::ITEM_RARITY_NONE;
+	_price = 0;
 
 	_scale_x = 0;
 	_scale_y = 0;
@@ -330,6 +333,10 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_rarity"), &ItemTemplate::get_rarity);
 	ClassDB::bind_method(D_METHOD("set_rarity", "count"), &ItemTemplate::set_rarity);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rarity", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_RARITY), "set_rarity", "get_rarity");
+
+	ClassDB::bind_method(D_METHOD("get_price"), &ItemTemplate::get_price);
+	ClassDB::bind_method(D_METHOD("set_price", "count"), &ItemTemplate::set_price);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "price"), "set_price", "get_price");
 
 	ClassDB::bind_method(D_METHOD("get_item_visual"), &ItemTemplate::get_item_visual);
 	ClassDB::bind_method(D_METHOD("set_item_visual", "value"), &ItemTemplate::set_item_visual);
