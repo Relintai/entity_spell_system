@@ -179,6 +179,12 @@ public:
 
 	int getc_xp();
 	void setc_xp(int value);
+    
+    int gets_money();
+	void sets_money(int value);
+
+	int getc_money();
+	void setc_money(int value);
 
 	Ref<EntityData> getc_entity_data();
 	void setc_entity_data(Ref<EntityData> value);
@@ -517,6 +523,9 @@ private:
 
 	int _s_xp;
 	int _c_xp;
+    
+    int _s_money;
+    int _c_money;
 
 	Ref<EntityData> _s_entity_data;
 	Ref<EntityData> _c_entity_data;

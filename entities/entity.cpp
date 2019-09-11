@@ -173,6 +173,24 @@ void Entity::setc_xp(int value) {
 	_c_xp = value;
 }
 
+
+int Entity::gets_money() {
+	return _s_money;
+}
+void Entity::sets_money(int value) {
+	_s_money = value;
+
+	SEND_RPC(rpc("setc_money", value), setc_money(value));
+}
+
+int Entity::getc_money() {
+	return _c_money;
+}
+void Entity::setc_money(int value) {
+	_c_money = value;
+}
+
+
 Ref<EntityData> Entity::getc_entity_data() {
 	return _c_entity_data;
 }
@@ -215,6 +233,7 @@ void Entity::_setup() {
         sets_entity_flags(_s_entity_data->get_entity_flags());
         sets_entity_controller(_s_entity_data->get_entity_controller());
         sets_player_name(_s_entity_data->get_entity_name());
+        sets_money(_s_entity_data->get_money());
 	}
 
 	if (!Engine::get_singleton()->is_editor_hint())
@@ -241,6 +260,9 @@ Entity::Entity() {
 	_c_xp = 0;
 
 	_s_send_flag = 0;
+    
+    _c_money = 0;
+    _s_money = 0;
 
 	_s_player_name = "";
 	_c_player_name = "";
@@ -3118,6 +3140,14 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_xp"), &Entity::getc_xp);
 	ClassDB::bind_method(D_METHOD("setc_xp", "value"), &Entity::setc_xp);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "c_xp"), "setc_xp", "getc_xp");
+    
+    ClassDB::bind_method(D_METHOD("gets_money"), &Entity::gets_money);
+	ClassDB::bind_method(D_METHOD("sets_money", "value"), &Entity::sets_money);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "smoney"), "sets_money", "gets_money");
+    
+    ClassDB::bind_method(D_METHOD("getc_money"), &Entity::getc_money);
+	ClassDB::bind_method(D_METHOD("setc_money", "value"), &Entity::setc_money);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cmoney"), "setc_money", "getc_money");
 
 	ClassDB::bind_method(D_METHOD("gets_entity_data"), &Entity::gets_entity_data);
 	ClassDB::bind_method(D_METHOD("sets_entity_data", "value"), &Entity::sets_entity_data);

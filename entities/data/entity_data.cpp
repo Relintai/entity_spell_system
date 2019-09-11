@@ -56,6 +56,13 @@ void EntityData::set_entity_name(String value) {
 	_entity_name = value;
 }
 
+int EntityData::get_money() {
+	return _money;
+}
+void EntityData::set_money(int value) {
+	_money = value;
+}
+
 Ref<Texture> EntityData::get_icon() {
 	return _icon;
 }
@@ -1016,6 +1023,10 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_name"), &EntityData::get_entity_name);
 	ClassDB::bind_method(D_METHOD("set_entity_name", "value"), &EntityData::set_entity_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_name"), "set_entity_name", "get_entity_name");
+    
+    ClassDB::bind_method(D_METHOD("get_money"), &EntityData::get_money);
+	ClassDB::bind_method(D_METHOD("set_money", "value"), &EntityData::set_money);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "money"), "set_money", "get_money");
 
 	ClassDB::bind_method(D_METHOD("get_inherits"), &EntityData::get_inherits);
 	ClassDB::bind_method(D_METHOD("set_inherits", "value"), &EntityData::set_inherits);
@@ -1103,7 +1114,7 @@ void EntityData::_bind_methods() {
 EntityData::EntityData() {
 	_id = 0;
 	_player_resource_type = 0;
-    
+    _money = 0;
     
     _entity_type = EntityEnums::ENITIY_TYPE_NONE;
     _immunity_flags = 0;

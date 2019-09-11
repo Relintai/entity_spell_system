@@ -55,6 +55,9 @@ public:
 
 	String get_entity_name();
 	void set_entity_name(String value);
+    
+    int get_money();
+	void set_money(int value);
 
 	Ref<EntityData> get_inherits();
 	void set_inherits(Ref<EntityData> value);
@@ -239,6 +242,7 @@ private:
 	Ref<Texture> _icon;
 
 	int _player_resource_type;
+    int _money;
 
 	Ref<StatData> _stat_data;
 
