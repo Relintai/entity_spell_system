@@ -231,7 +231,10 @@ void Entity::_setup() {
         sets_entity_type(_s_entity_data->get_entity_type());
         sets_immunity_flags(_s_entity_data->get_immunity_flags());
         sets_entity_flags(_s_entity_data->get_entity_flags());
-        sets_entity_controller(_s_entity_data->get_entity_controller());
+
+		if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_NONE)
+			sets_entity_controller(_s_entity_data->get_entity_controller());
+
         sets_player_name(_s_entity_data->get_entity_name());
         sets_money(_s_entity_data->get_money());
 	}
@@ -456,8 +459,8 @@ void Entity::initialize(Ref<EntityCreateInfo> info) {
 	_s_player_name = info->get_player_name();
 	_c_player_name = info->get_player_name();
 
-	sets_entity_type(info->get_entity_type());
-	setc_entity_type(info->get_entity_type());
+	sets_entity_controller(info->get_entity_controller());
+	//setc_entity_controller(info->get_entity_type());
 
 	sets_level(info->get_level());
 	setc_level(info->get_level());
@@ -2708,9 +2711,9 @@ void Entity::removes_data(int index) {
     _s_data.remove(index);
 }
 Ref<EntityDataContainer> Entity::gets_data(int index) {
-	ERR_FAIL_INDEX_V(index, _s_data.size(),Ref<EntityDataContainer>());
+	ERR_FAIL_INDEX_V(index, _s_data.size(), Ref<EntityDataContainer>());
     
-    _s_data.get(index);
+    return _s_data.get(index);
 }
 int Entity::gets_data_count() {
 	return _s_data.size();
@@ -2728,7 +2731,7 @@ void Entity::removec_data(int index) {
 Ref<EntityDataContainer> Entity::getc_data(int index) {
 	ERR_FAIL_INDEX_V(index, _c_data.size(),Ref<EntityDataContainer>());
     
-    _c_data.get(index);
+    return _c_data.get(index);
 }
 int Entity::getc_data_count() {
 	return _c_data.size();

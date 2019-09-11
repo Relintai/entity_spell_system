@@ -7,6 +7,7 @@ const String Stat::MODIFIER_APPLY_TYPE_BINDING_STRING = "Standard,Only min modif
 Stat::Stat() {
 	_id = Stat::STAT_ID_NONE;
 
+	_locked = false;
 	_base = (float)(0);
 	_bonus = (float)(0);
 	_percent = (float)(0);
@@ -21,6 +22,7 @@ Stat::Stat() {
 Stat::Stat(Stat::StatId id) {
 	_id = id;
 
+	_locked = false;
 	_base = (float)(0);
 	_bonus = (float)(0);
 	_percent = (float)(0);
@@ -35,6 +37,7 @@ Stat::Stat(Stat::StatId id) {
 Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type) {
 	_id = id;
 
+	_locked = false;
 	_base = (float)(0);
 	_bonus = (float)(0);
 	_percent = (float)(0);
@@ -51,6 +54,7 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type) {
 Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float base, float bonus, float percent) {
 	_id = id;
 
+	_locked = false;
 	_base = (float)(0);
 	_bonus = (float)(0);
 	_percent = (float)(0);
@@ -71,6 +75,7 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float bas
 Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float base) {
 	_id = id;
 
+	_locked = false;
 	_base = (float)(0);
 	_bonus = (float)(0);
 	_percent = (float)(0);
@@ -128,10 +133,16 @@ void Stat::set_stat_modifier_type(Stat::StatModifierApplyType value) {
 	_modifier_apply_type = value;
 }
 
+bool Stat::get_locked() {
+	return _locked;
+}
+void Stat::set_locked(bool value) {
+	_locked = value;
+}
+
 bool Stat::get_dirty() {
 	return _dirty;
 }
-
 void Stat::set_dirty(bool value) {
 	_dirty = value;
 }
@@ -309,6 +320,10 @@ float Stat::gets_current() {
 }
 
 void Stat::sets_current(float value) {
+	if (_locked) {
+		return;
+	}
+
 	_s_current = value;
 
 	emit_signal("s_changed", Ref<Stat>(this));
@@ -480,6 +495,10 @@ void Stat::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stat_modifier_type"), &Stat::get_stat_modifier_type);
 	ClassDB::bind_method(D_METHOD("set_stat_modifier_type", "value"), &Stat::set_stat_modifier_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_type", PROPERTY_HINT_ENUM, "Standard, Min Modifier, Max modifier"), "set_stat_modifier_type", "get_stat_modifier_type");
+
+	ClassDB::bind_method(D_METHOD("get_locked"), &Stat::get_locked);
+	ClassDB::bind_method(D_METHOD("set_locked", "value"), &Stat::set_locked);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "locked"), "set_locked", "get_locked");
 
 	ClassDB::bind_method(D_METHOD("get_dirty"), &Stat::get_dirty);
 	ClassDB::bind_method(D_METHOD("set_dirty", "value"), &Stat::set_dirty);

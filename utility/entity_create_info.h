@@ -13,8 +13,8 @@ public:
 	int get_guid() { return _guid; }
 	void set_guid(int value) { _guid = value; }
 
-	EntityEnums::EntityType get_entity_type() { return _entity_type; }
-	void set_entity_type(EntityEnums::EntityType value) { _entity_type = value; }
+	EntityEnums::EntityController get_entity_controller() { return _entity_controller; }
+	void set_entity_controller(EntityEnums::EntityController value) { _entity_controller = value; }
 
 	String get_player_name() { return _player_name; }
 	void set_player_name(String value) { _player_name = value; }
@@ -30,9 +30,9 @@ public:
 
 protected:
 	static void _bind_methods() {
-		ClassDB::bind_method(D_METHOD("get_entity_type"), &EntityCreateInfo::get_entity_type);
-		ClassDB::bind_method(D_METHOD("set_entity_type", "value"), &EntityCreateInfo::set_entity_type);
-		ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_type", PROPERTY_HINT_ENUM, "None, Player, AI, Mob"), "set_entity_type", "get_entity_type");
+		ClassDB::bind_method(D_METHOD("get_entity_controller"), &EntityCreateInfo::get_entity_controller);
+		ClassDB::bind_method(D_METHOD("set_entity_controller", "value"), &EntityCreateInfo::set_entity_controller);
+		ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "set_entity_controller", "get_entity_controller");
 
 		ClassDB::bind_method(D_METHOD("get_player_name"), &EntityCreateInfo::get_player_name);
 		ClassDB::bind_method(D_METHOD("set_player_name", "value"), &EntityCreateInfo::set_player_name);
@@ -53,7 +53,7 @@ protected:
 
 private:
 	int _guid;
-	EntityEnums::EntityType _entity_type;
+	EntityEnums::EntityController _entity_controller;
 	String _player_name;
 	int _level;
 	int _xp;

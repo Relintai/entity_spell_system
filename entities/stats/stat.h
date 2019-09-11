@@ -87,6 +87,9 @@ public:
 	StatModifierApplyType get_stat_modifier_type();
 	void set_stat_modifier_type(StatModifierApplyType value);
 
+	bool get_locked();
+	void set_locked(bool value);
+
 	bool get_dirty();
 	void set_dirty(bool value);
 
@@ -143,6 +146,7 @@ private:
 
 	Vector<Ref<StatModifier> > _modifiers;
 
+	bool _locked;
 	bool _dirty;
 
 	float _base;
