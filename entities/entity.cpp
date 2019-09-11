@@ -251,9 +251,16 @@ Entity::Entity() {
 	_s_active_category_cooldowns = 0;
 	_c_active_category_cooldowns = 0;
 
-	_s_entity_type = EntityEnums::EntityType::ENITIY_TYPE_NONE;
-	_c_entity_type = EntityEnums::EntityType::ENITIY_TYPE_NONE;
+	_s_entity_type = EntityEnums::ENITIY_TYPE_NONE;
+	_c_entity_type = EntityEnums::ENITIY_TYPE_NONE;
 
+    _s_immunity_flags = 0;
+    
+    _s_entity_flags = 0;
+    _c_entity_flags = 0;
+    
+    _s_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
+    
 	_s_target = NULL;
 	_c_target = NULL;
 
