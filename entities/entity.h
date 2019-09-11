@@ -38,6 +38,8 @@
 
 #include "../inventory/bag.h"
 
+#include "./data/container_item_data.h"
+
 class EntityData;
 class AuraData;
 class Spell;
@@ -480,6 +482,18 @@ public:
 	void creceive_rank(int talentID, int rank);
 	//PlayerTalent *sget_talent(int id, bool create = false);
 	//PlayerTalent *cget_talent(int id, bool create = false);
+    
+    ////    Data    ////
+	void adds_data(Ref<EntityDataContainer> data);
+	void removes_data(int index);
+	Ref<EntityDataContainer> gets_data(int index);
+	int gets_data_count();
+    
+    void addc_data(Ref<EntityDataContainer> data);
+	void removec_data(int index);
+	Ref<EntityDataContainer> getc_data(int index);
+	int getc_data_count();
+
 
 	void loaded();
 	
@@ -628,6 +642,10 @@ private:
 
 	//Vector<Ref<PlayerTalent> > _s_talents;
 	//Vector<Ref<PlayerTalent> > _c_talents;
+    
+    ////    Data    ////
+    Vector<Ref<EntityDataContainer> > _s_data;
+	Vector<Ref<EntityDataContainer> > _c_data;
 };
 
 #endif

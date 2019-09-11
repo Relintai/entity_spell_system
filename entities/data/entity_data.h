@@ -25,6 +25,8 @@ class CharacterSpec;
 class Entity;
 class SpellCastInfo;
 class AIAction;
+class VendorItemData;
+class ContainerItemData;
 
 enum CharacterWeaponDataTypes {
 	CHARACTER_WEAPON_DATA_TYPES_NONE,
@@ -113,6 +115,26 @@ public:
 
 	Vector<Variant> get_ai_actions();
 	void set_ai_actions(const Vector<Variant> &ai_actions);
+    
+    //Vendor data
+	int get_num_vendor_datas();
+	void set_num_vendor_datas(int value);
+
+	Ref<VendorItemData> get_vendor_data(int index);
+	void set_vendor_data(int index, Ref<VendorItemData> aura);
+
+	Vector<Variant> get_vendor_datas();
+	void set_vendor_datas(const Vector<Variant> &ai_actions);
+    
+    //Container data
+	int get_num_container_datas();
+	void set_num_container_datas(int value);
+
+	Ref<ContainerItemData> get_container_data(int index);
+	void set_container_data(int index, Ref<ContainerItemData> aura);
+
+	Vector<Variant> get_container_datas();
+	void set_container_datas(const Vector<Variant> &ai_actions);
 
 	//Setup
 	void setup_resources(Entity *entity);
@@ -250,6 +272,8 @@ private:
 	Vector<Ref<CharacterSpec> > _specs;
 	Vector<Ref<Aura> > _auras;
 	Vector<Ref<AIAction> > _ai_actions;
+    Vector<Ref<VendorItemData> > _vendor_datas;
+	Vector<Ref<ContainerItemData> > _container_datas;
 
 	Ref<LootDataBase> _lootdb;
 

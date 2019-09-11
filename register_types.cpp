@@ -14,6 +14,9 @@
 
 #include "entities/data/entity_data.h"
 #include "entities/data/player_character_data.h"
+#include "entities/data/vendor_item_data.h"
+#include "entities/data/container_item_data.h"
+#include "entities/data/entity_data_container.h"
 
 #include "entities/data/talent_row_data.h"
 #include "entities/data/character_spec.h"
@@ -108,6 +111,9 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<EntityData>();
 	ClassDB::register_class<PlayerCharacterData>();
+    ClassDB::register_class<VendorItemData>();
+    ClassDB::register_class<ContainerItemData>();
+    ClassDB::register_class<EntityDataContainer>();
 	
 	ClassDB::register_class<XPData>();
 	ClassDB::register_class<ItemStatModifier>();

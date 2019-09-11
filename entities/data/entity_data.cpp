@@ -6,6 +6,8 @@
 #include "../../infos/spell_cast_info.h"
 #include "../entity.h"
 #include "character_spec.h"
+#include "vendor_item_data.h"
+#include "container_item_data.h"
 
 int EntityData::get_id() {
 	return _id;
@@ -269,6 +271,94 @@ void EntityData::set_ai_actions(const Vector<Variant> &ai_actions) {
 		Ref<AIAction> ai_action = Ref<AIAction>(ai_actions[i]);
 
 		_ai_actions.push_back(ai_action);
+	}
+}
+
+////    VENDOR DATA    ////
+
+int EntityData::get_num_vendor_datas() {
+	if (_vendor_datas.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_num_vendor_datas();
+	}
+
+	return _vendor_datas.size();
+}
+void EntityData::set_num_vendor_datas(int value) {
+	_vendor_datas.resize(value);
+}
+
+Ref<VendorItemData> EntityData::get_vendor_data(int index) {
+	if (_vendor_datas.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_vendor_data(index);
+	}
+
+	ERR_FAIL_INDEX_V(index, _vendor_datas.size(), Ref<VendorItemData>());
+
+	return _vendor_datas[index];
+}
+void EntityData::set_vendor_data(int index, Ref<VendorItemData> vendor_data) {
+	ERR_FAIL_INDEX(index, _vendor_datas.size());
+
+	_vendor_datas.set(index, vendor_data);
+}
+
+Vector<Variant> EntityData::get_vendor_datas() {
+	Vector<Variant> r;
+	for (int i = 0; i < _vendor_datas.size(); i++) {
+		r.push_back(_vendor_datas[i].get_ref_ptr());
+	}
+	return r;
+}
+void EntityData::set_vendor_datas(const Vector<Variant> &vendor_datas) {
+	_vendor_datas.clear();
+	for (int i = 0; i < vendor_datas.size(); i++) {
+		Ref<VendorItemData> vendor_data = Ref<VendorItemData>(vendor_datas[i]);
+
+		_vendor_datas.push_back(vendor_data);
+	}
+}
+
+////    Container Data    ////
+
+int EntityData::get_num_container_datas() {
+	if (_container_datas.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_num_container_datas();
+	}
+
+	return _container_datas.size();
+}
+void EntityData::set_num_container_datas(int value) {
+	_container_datas.resize(value);
+}
+
+Ref<ContainerItemData> EntityData::get_container_data(int index) {
+	if (_container_datas.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_container_data(index);
+	}
+
+	ERR_FAIL_INDEX_V(index, _container_datas.size(), Ref<ContainerItemData>());
+
+	return _container_datas[index];
+}
+void EntityData::set_container_data(int index, Ref<ContainerItemData> container_data) {
+	ERR_FAIL_INDEX(index, _container_datas.size());
+
+	_container_datas.set(index, container_data);
+}
+
+Vector<Variant> EntityData::get_container_datas() {
+	Vector<Variant> r;
+	for (int i = 0; i < _container_datas.size(); i++) {
+		r.push_back(_container_datas[i].get_ref_ptr());
+	}
+	return r;
+}
+void EntityData::set_container_datas(const Vector<Variant> &container_datas) {
+	_container_datas.clear();
+	for (int i = 0; i < container_datas.size(); i++) {
+		Ref<ContainerItemData> container_data = Ref<ContainerItemData>(container_datas[i]);
+
+		_container_datas.push_back(container_data);
 	}
 }
 
@@ -1109,6 +1199,30 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_ai_actions"), &EntityData::get_ai_actions);
 	ClassDB::bind_method(D_METHOD("set_ai_actions", "auras"), &EntityData::set_ai_actions);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ai_actions", PROPERTY_HINT_NONE, "17/17:AIAction", PROPERTY_USAGE_DEFAULT, "AIAction"), "set_ai_actions", "get_ai_actions");
+    
+    ////    Vendor data    ////
+    ADD_GROUP("Vendor Data", "vendor_datas");
+	ClassDB::bind_method(D_METHOD("get_num_vendor_datas"), &EntityData::get_num_vendor_datas);
+	ClassDB::bind_method(D_METHOD("set_num_vendor_datas", "value"), &EntityData::set_num_vendor_datas);
+
+	ClassDB::bind_method(D_METHOD("get_vendor_data", "index"), &EntityData::get_vendor_data);
+	ClassDB::bind_method(D_METHOD("set_vendor_data", "index", "vendor_data"), &EntityData::set_vendor_data);
+
+	ClassDB::bind_method(D_METHOD("get_vendor_datas"), &EntityData::get_vendor_datas);
+	ClassDB::bind_method(D_METHOD("set_vendor_datas", "vendor_datas"), &EntityData::set_vendor_datas);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "vendor_datas", PROPERTY_HINT_NONE, "17/17:VendorItemData", PROPERTY_USAGE_DEFAULT, "VendorItemData"), "set_vendor_datas", "get_vendor_datas");
+    
+    ////    Container data    ////
+    ADD_GROUP("Container Data", "container_datas");
+	ClassDB::bind_method(D_METHOD("get_num_container_datas"), &EntityData::get_num_container_datas);
+	ClassDB::bind_method(D_METHOD("set_num_container_datas", "value"), &EntityData::set_num_container_datas);
+
+	ClassDB::bind_method(D_METHOD("get_container_data", "index"), &EntityData::get_container_data);
+	ClassDB::bind_method(D_METHOD("set_container_data", "index", "container_data"), &EntityData::set_container_data);
+
+	ClassDB::bind_method(D_METHOD("get_container_datas"), &EntityData::get_container_datas);
+	ClassDB::bind_method(D_METHOD("set_container_datas", "container_datas"), &EntityData::set_container_datas);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "container_datas", PROPERTY_HINT_NONE, "17/17:ContainerItemData", PROPERTY_USAGE_DEFAULT, "ContainerItemData"), "set_container_datas", "get_container_datas");
 }
 
 EntityData::EntityData() {
@@ -1129,4 +1243,6 @@ EntityData::~EntityData() {
 	_specs.clear();
 	_auras.clear();
 	_ai_actions.clear();
+    _vendor_datas.clear();
+	_container_datas.clear();
 }

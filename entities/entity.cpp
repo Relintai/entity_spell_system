@@ -425,6 +425,29 @@ Entity::Entity() {
 }
 
 Entity::~Entity() {
+    //Ref<EntityData> _s_entity_data;
+	//Ref<EntityData> _c_entity_data;
+    
+    _s_resources.clear();
+	_c_resources.clear();
+    
+    //Ref<SpellCastInfo> _s_spell_cast_info;
+	//Ref<SpellCastInfo> _c_spell_cast_info;
+    
+    _s_auras.clear();
+	_c_auras.clear();
+    
+    _s_cooldowns.clear();
+	_c_cooldowns.clear();
+
+	_s_cooldown_map.clear();
+	_c_cooldown_map.clear();
+
+	_s_category_cooldowns.clear();
+	_c_category_cooldowns.clear();
+    
+    _s_data.clear();
+	_c_data.clear();
 }
 
 void Entity::initialize(Ref<EntityCreateInfo> info) {
@@ -2675,6 +2698,43 @@ void Entity::creceive_rank(int talentID, int rank) {
 //}
 
 
+////    DATA    ////
+void Entity::adds_data(Ref<EntityDataContainer> data) {
+	_s_data.push_back(data);
+}
+void Entity::removes_data(int index) {
+    ERR_FAIL_INDEX(index, _s_data.size());
+    
+    _s_data.remove(index);
+}
+Ref<EntityDataContainer> Entity::gets_data(int index) {
+	ERR_FAIL_INDEX_V(index, _s_data.size(),Ref<EntityDataContainer>());
+    
+    _s_data.get(index);
+}
+int Entity::gets_data_count() {
+	return _s_data.size();
+}
+
+
+void Entity::addc_data(Ref<EntityDataContainer> data) {
+	_c_data.push_back(data);
+}
+void Entity::removec_data(int index) {
+    ERR_FAIL_INDEX(index, _c_data.size());
+    
+    _c_data.remove(index);
+}
+Ref<EntityDataContainer> Entity::getc_data(int index) {
+	ERR_FAIL_INDEX_V(index, _c_data.size(),Ref<EntityDataContainer>());
+    
+    _c_data.get(index);
+}
+int Entity::getc_data_count() {
+	return _c_data.size();
+}
+
+
 void Entity::loaded() {
 	//sendstate = true;
 }
@@ -3211,7 +3271,18 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gets_global_cooldown"), &Entity::gets_global_cooldown);
 	ClassDB::bind_method(D_METHOD("sstart_global_cooldown", "value"), &Entity::sstart_global_cooldown);
 	ClassDB::bind_method(D_METHOD("cstart_global_cooldown", "value"), &Entity::cstart_global_cooldown);
+    
+    //Data
+    ClassDB::bind_method(D_METHOD("adds_data", "data"), &Entity::adds_data);
+    ClassDB::bind_method(D_METHOD("removes_data", "index"), &Entity::removes_data);
+    ClassDB::bind_method(D_METHOD("gets_data", "index"), &Entity::gets_data);
+    ClassDB::bind_method(D_METHOD("gets_data_count"), &Entity::gets_data_count);
 
+    ClassDB::bind_method(D_METHOD("addc_data", "data"), &Entity::addc_data);
+    ClassDB::bind_method(D_METHOD("removec_data", "index"), &Entity::removec_data);
+    ClassDB::bind_method(D_METHOD("getc_data", "index"), &Entity::getc_data);
+    ClassDB::bind_method(D_METHOD("getc_data_count"), &Entity::getc_data_count);
+    
 	//States
 	ADD_SIGNAL(MethodInfo("sstate_changed", PropertyInfo(Variant::INT, "value")));
 	ADD_SIGNAL(MethodInfo("cstate_changed", PropertyInfo(Variant::INT, "value")));
