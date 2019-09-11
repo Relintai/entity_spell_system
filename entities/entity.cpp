@@ -79,6 +79,37 @@ void Entity::setc_entity_type(EntityEnums::EntityType value) {
 	_c_entity_type = value;
 }
 
+int Entity::gets_immunity_flags() {
+	return _s_immunity_flags;
+}
+void Entity::sets_immunity_flags(int value) {
+	_s_immunity_flags = value;
+}
+
+
+int Entity::gets_entity_flags() {
+	return _s_entity_flags;
+}
+void Entity::sets_entity_flags(int value) {
+	_s_entity_flags = value;
+
+	SEND_RPC(rpc("setc_entity_flags", value), setc_entity_flags(value));
+}
+
+int Entity::getc_entity_flags() {
+	return _c_entity_flags;
+}
+void Entity::setc_entity_flags(int value) {
+	_c_entity_flags = value;
+}
+
+EntityEnums::EntityController Entity::gets_entity_controller() {
+	return _s_entity_controller;
+}
+void Entity::sets_entity_controller(EntityEnums::EntityController value) {
+	_s_entity_controller = value;
+}
+
 String Entity::gets_player_name() {
 	return _s_player_name;
 }
@@ -2986,11 +3017,27 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_entity_type"), &Entity::gets_entity_type);
 	ClassDB::bind_method(D_METHOD("sets_entity_type", "value"), &Entity::sets_entity_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "s_entity_type", PROPERTY_HINT_ENUM, "None, Player, AI, Mob"), "sets_entity_type", "gets_entity_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "sets_entity_type", "gets_entity_type");
 
 	ClassDB::bind_method(D_METHOD("getc_entity_type"), &Entity::getc_entity_type);
 	ClassDB::bind_method(D_METHOD("setc_entity_type", "value"), &Entity::sets_entity_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "c_entity_type", PROPERTY_HINT_ENUM, "None, Player, AI, Mob"), "setc_entity_type", "getc_entity_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "setc_entity_type", "getc_entity_type");
+    
+    ClassDB::bind_method(D_METHOD("gets_immunity_flags"), &Entity::gets_immunity_flags);
+	ClassDB::bind_method(D_METHOD("sets_immunity_flags", "value"), &Entity::sets_immunity_flags);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "simmunity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_IMMUNITY_FLAGS), "sets_immunity_flags", "gets_immunity_flags");
+    
+    ClassDB::bind_method(D_METHOD("gets_entity_flags"), &Entity::gets_entity_flags);
+	ClassDB::bind_method(D_METHOD("sets_entity_flags", "value"), &Entity::sets_entity_flags);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_FLAGS), "sets_entity_flags", "gets_entity_flags");
+    
+    ClassDB::bind_method(D_METHOD("getc_entity_flags"), &Entity::getc_entity_flags);
+	ClassDB::bind_method(D_METHOD("setc_entity_flags", "value"), &Entity::setc_entity_flags);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_FLAGS), "setc_entity_flags", "getc_entity_flags");
+    
+    ClassDB::bind_method(D_METHOD("gets_entity_controller"), &Entity::gets_entity_controller);
+	ClassDB::bind_method(D_METHOD("sets_entity_controller", "value"), &Entity::sets_entity_controller);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "sets_entity_controller", "gets_entity_controller");
 
 	ClassDB::bind_method(D_METHOD("gets_player_name"), &Entity::gets_player_name);
 	ClassDB::bind_method(D_METHOD("sets_player_name", "value"), &Entity::sets_player_name);

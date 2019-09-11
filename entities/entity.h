@@ -143,6 +143,19 @@ public:
 
 	EntityEnums::EntityType getc_entity_type();
 	void setc_entity_type(EntityEnums::EntityType value);
+    
+    int gets_immunity_flags();
+	void sets_immunity_flags(int value);
+    
+    
+    int gets_entity_flags();
+	void sets_entity_flags(int value);
+
+	int getc_entity_flags();
+	void setc_entity_flags(int value);
+    
+    EntityEnums::EntityController gets_entity_controller();
+	void sets_entity_controller(EntityEnums::EntityController value);
 
 	String gets_player_name();
 	void sets_player_name(String value);
@@ -568,7 +581,14 @@ private:
 
 	EntityEnums::EntityType _s_entity_type;
 	EntityEnums::EntityType _c_entity_type;
-
+    
+    int _s_immunity_flags;
+    
+    int _s_entity_flags;
+    int _c_entity_flags;
+    
+    EntityEnums::EntityController _s_entity_controller;
+    
 	////    Cooldowns    ////
 	Vector<Ref<Cooldown> > _s_cooldowns;
 	Vector<Ref<Cooldown> > _c_cooldowns;
