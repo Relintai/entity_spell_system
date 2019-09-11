@@ -4,10 +4,16 @@
 #include "../data/spell.h"
 #include "../data/aura.h"
 
+bool SpellDamageInfo::get_immune() {
+	return _crit;
+}
+void SpellDamageInfo::set_immune(bool value) {
+	_crit = value;
+}
+
 int SpellDamageInfo::get_damage() {
 	return _damage;
 }
-
 void SpellDamageInfo::set_damage(int value) {
 	_damage = value;
 }
@@ -15,7 +21,6 @@ void SpellDamageInfo::set_damage(int value) {
 bool SpellDamageInfo::get_crit() {
 	return _crit;
 }
-
 void SpellDamageInfo::set_crit(bool value) {
 	_crit = value;
 }
@@ -23,7 +28,6 @@ void SpellDamageInfo::set_crit(bool value) {
 int SpellDamageInfo::get_amount_absorbed() {
 	return _amount_absorbed;
 }
-
 void SpellDamageInfo::set_amount_absorbed(int value) {
 	_amount_absorbed = value;
 }
@@ -31,7 +35,6 @@ void SpellDamageInfo::set_amount_absorbed(int value) {
 SpellEnums::SpellType SpellDamageInfo::get_spell_type() {
 	return _spell_type;
 }
-
 void SpellDamageInfo::set_spell_type(SpellEnums::SpellType value) {
 	_spell_type = value;
 }
@@ -39,11 +42,9 @@ void SpellDamageInfo::set_spell_type(SpellEnums::SpellType value) {
 Entity *SpellDamageInfo::get_dealer() {
 	return _dealer;
 }
-
 void SpellDamageInfo::set_dealer(Entity *value) {
 	_dealer = value;
 }
-
 void SpellDamageInfo::set_dealer_bind(Node *value) {
 	if (!value) {
 		return;
@@ -61,11 +62,9 @@ void SpellDamageInfo::set_dealer_bind(Node *value) {
 Entity *SpellDamageInfo::get_receiver() {
 	return _receiver;
 }
-
 void SpellDamageInfo::set_receiver(Entity *value) {
 	_receiver = value;
 }
-
 void SpellDamageInfo::set_receiver_bind(Node *value) {
 	if (!value) {
 		return;
@@ -83,7 +82,6 @@ void SpellDamageInfo::set_receiver_bind(Node *value) {
 Ref<Reference> SpellDamageInfo::get_damage_source() {
 	return _damage_source;
 }
-
 void SpellDamageInfo::set_damage_source(Ref<Reference> value) {
 	_damage_source_type = DAMAGE_SOURCE_UNKNOWN;
 	_damage_source = value;
@@ -152,6 +150,10 @@ SpellDamageInfo::~SpellDamageInfo() {
 }
 
 void SpellDamageInfo::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("get_immune"), &SpellDamageInfo::get_immune);
+	ClassDB::bind_method(D_METHOD("set_immune", "value"), &SpellDamageInfo::set_immune);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "immune"), "set_immune", "get_immune");
+    
 	ClassDB::bind_method(D_METHOD("get_damage"), &SpellDamageInfo::get_damage);
 	ClassDB::bind_method(D_METHOD("set_damage", "value"), &SpellDamageInfo::set_damage);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage"), "set_damage", "get_damage");

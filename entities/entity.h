@@ -257,12 +257,14 @@ public:
 	void son_before_aura_applied(Ref<AuraData> data);
 	void son_after_aura_applied(Ref<AuraData> data);
 	
-	void son_hit(Ref<SpellDamageInfo> info);
+	void son_before_damage_hit(Ref<SpellDamageInfo> info);
+    void son_hit(Ref<SpellDamageInfo> info);
 	void son_before_damage(Ref<SpellDamageInfo> info);
 	void son_damage_receive(Ref<SpellDamageInfo> info);
 	void son_dealt_damage(Ref<SpellDamageInfo> info);
 	void son_damage_dealt(Ref<SpellDamageInfo> info);
 
+    void son_before_heal_hit(Ref<SpellHealInfo> info);
 	void son_before_heal(Ref<SpellHealInfo> info);
 	void son_heal_receive(Ref<SpellHealInfo> info);
 	void son_dealt_heal(Ref<SpellHealInfo> info);
@@ -282,11 +284,13 @@ public:
 
 	void son_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
 	void son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
-	
+    
 	void son_gcd_started();
 	void son_gcd_finished();
 	void con_gcd_started();
 	void con_gcd_finished();
+    
+    void son_physics_process();
 	
 	//Clientside EventHandlers
 	void con_cast_failed(Ref<SpellCastInfo> info);
@@ -317,7 +321,7 @@ public:
 
 	void sapply_passives_heal_receive(Ref<SpellHealInfo> info);
 	void sapply_passives_heal_deal(Ref<SpellHealInfo> info);
-
+    
 	//Spell operations
 	void scast_spell(int spell_id);
 	void crequest_spell_cast(int spell_id);
@@ -346,7 +350,7 @@ public:
 	void caura_refreshed(Ref<AuraData> aura);
 
 	void sremove_auras_with_group(int aura_group);
-
+    
 	//NOTE: No reason for shas_aura_by, just query it, and check for null.
 	int sget_aura_count();
 	Ref<AuraData> sget_aura(int index);

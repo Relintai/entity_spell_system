@@ -23,6 +23,9 @@ protected:
 	static void _bind_methods();
 
 public:
+    bool get_immune();
+	void set_immune(bool value);
+    
 	int get_damage();
 	void set_damage(int value);
 
@@ -64,6 +67,7 @@ public:
 	~SpellDamageInfo();
 
 private:
+    bool _immune;
 	int _damage;
 	int _original_damage;
 	int _amount_absorbed;

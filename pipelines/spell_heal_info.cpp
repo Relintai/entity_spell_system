@@ -4,6 +4,13 @@
 #include "../data/spell.h"
 #include "../entities/entity.h"
 
+bool SpellHealInfo::get_immune() {
+	return _crit;
+}
+void SpellHealInfo::set_immune(bool value) {
+	_crit = value;
+}
+
 int SpellHealInfo::get_heal() {
 	return _heal;
 }
@@ -140,6 +147,10 @@ SpellHealInfo::~SpellHealInfo() {
 }
 
 void SpellHealInfo::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("get_immune"), &SpellHealInfo::get_immune);
+	ClassDB::bind_method(D_METHOD("set_immune", "value"), &SpellHealInfo::set_immune);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "immune"), "set_immune", "get_immune");
+    
 	ClassDB::bind_method(D_METHOD("get_heal"), &SpellHealInfo::get_heal);
 	ClassDB::bind_method(D_METHOD("set_heal", "value"), &SpellHealInfo::set_heal);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal"), "set_heal", "get_heal");

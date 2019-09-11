@@ -127,12 +127,14 @@ public:
 	void son_cast_started(Ref<SpellCastInfo> info);
 	void son_cast_failed(Ref<SpellCastInfo> info);
     
+    void son_before_damage_hit(Ref<SpellDamageInfo> data);
 	void son_hit(Ref<SpellDamageInfo> data);
 	void son_before_damage(Ref<SpellDamageInfo> data);
 	void son_damage_receive(Ref<SpellDamageInfo> data);
 	void son_dealt_damage(Ref<SpellDamageInfo> data);
 	void son_damage_dealt(Ref<SpellDamageInfo> data);
 
+    void son_before_heal_hit(Ref<SpellHealInfo> data);
 	void son_before_heal(Ref<SpellHealInfo> data);
 	void son_heal_receive(Ref<SpellHealInfo> data);
 	void son_dealt_heal(Ref<SpellHealInfo> data);

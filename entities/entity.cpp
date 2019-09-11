@@ -651,12 +651,22 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 		return;
 	}
 
+	son_before_damage_hit(info);
+    
+    if (info->get_immune()) {
+        SEND_RPC(rpc("con_damage_dealt", info), con_damage_dealt(info));
+        return;
+    }
+	
 	//send it through the passive damage reductions pipeline
 	sapply_passives_damage_receive(info);
+    
 	//send it through the onbeforehit handler
 	son_before_damage(info);
+    
 	//send it throug the onhit pipeliine
 	son_hit(info);
+    
 	son_damage_receive(info);
 
 	int h = get_health()->gets_current() - info->get_damage();
@@ -712,9 +722,17 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 	if (gets_is_dead()) {
 		return;
 	}
+	
+	son_before_heal_hit(info);
+	
+	if (info->get_immune()) {
+        SEND_RPC(rpc("con_heal_dealt", info), con_heal_dealt(info));
+        return;
+    }
 
 	//send it through the passive damage reductions pipeline
 	sapply_passives_heal_receive(info);
+    
 	//send it through the onbeforehit handler
 	son_before_heal(info);
 
@@ -880,6 +898,23 @@ void Entity::son_before_cast_target(Ref<SpellCastInfo> info) {
 	}
 }
 
+void Entity::son_before_damage_hit(Ref<SpellDamageInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (_s_entity_data.is_valid()) {
+		_s_entity_data->son_before_damage_hit(info);
+	}
+
+	if (has_method("_son_before_damage_hit"))
+		call("_son_before_damage_hit", info);
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->son_before_damage_hit(ad, info);
+	}
+}
+
 void Entity::son_hit(Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
@@ -963,6 +998,23 @@ void Entity::son_damage_dealt(Ref<SpellDamageInfo> info) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_damage_dealt(ad, info);
+	}
+}
+
+void Entity::son_before_heal_hit(Ref<SpellHealInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (_s_entity_data.is_valid()) {
+		_s_entity_data->son_before_heal_hit(info);
+	}
+
+	if (has_method("_son_before_heal_hit"))
+		call("_son_before_heal_hit", info);
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->son_before_heal_hit(ad, info);
 	}
 }
 
@@ -1278,6 +1330,17 @@ void Entity::con_gcd_finished() {
 		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->con_gcd_finished(ad);
+	}
+}
+
+void Entity::son_physics_process() {
+	//if (has_method("_son_category_cooldown_removed"))
+	//	call("_son_category_cooldown_removed", category_cooldown);
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->son_physics_process(ad);
 	}
 }
 
@@ -2689,6 +2752,9 @@ void Entity::_notification(int p_what) {
 		case NOTIFICATION_PROCESS: {
 			update(get_process_delta_time());
 		} break;
+        case NOTIFICATION_PHYSICS_PROCESS: {
+            son_physics_process();
+        }break;
 		case NOTIFICATION_EXIT_TREE: {
 
 		} break;
@@ -2759,6 +2825,7 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_cast_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_finished_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
+    BIND_VMETHOD(MethodInfo("_son_before_damage_hit", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_hit", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
 	BIND_VMETHOD(MethodInfo("_son_before_damage", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
@@ -2766,6 +2833,7 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_dealt_damage", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_damage_dealt", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
+    BIND_VMETHOD(MethodInfo("_son_before_heal_hit", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_heal", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_son_heal_receive", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_son_dealt_heal", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
@@ -2782,16 +2850,18 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &Entity::son_before_aura_applied);
 	ClassDB::bind_method(D_METHOD("son_after_aura_applied", "data"), &Entity::son_after_aura_applied);
 
+    ClassDB::bind_method(D_METHOD("son_before_damage_hit", "data"), &Entity::son_before_damage_hit);
 	ClassDB::bind_method(D_METHOD("son_hit", "data"), &Entity::son_hit);
 	ClassDB::bind_method(D_METHOD("son_before_damage", "data"), &Entity::son_before_damage);
 	ClassDB::bind_method(D_METHOD("son_damage_receive", "data"), &Entity::son_damage_receive);
 	ClassDB::bind_method(D_METHOD("son_dealt_damage", "data"), &Entity::son_dealt_damage);
 	ClassDB::bind_method(D_METHOD("son_damage_dealt", "data"), &Entity::son_damage_dealt);
 
-	ClassDB::bind_method(D_METHOD("son_before_heal", "data"), &Entity::son_before_damage);
-	ClassDB::bind_method(D_METHOD("son_heal_receive", "data"), &Entity::son_damage_receive);
-	ClassDB::bind_method(D_METHOD("son_dealt_heal", "data"), &Entity::son_dealt_damage);
-	ClassDB::bind_method(D_METHOD("son_heal_dealt", "data"), &Entity::son_damage_dealt);
+    ClassDB::bind_method(D_METHOD("son_before_heal_hit", "data"), &Entity::son_before_heal_hit);
+	ClassDB::bind_method(D_METHOD("son_before_heal", "data"), &Entity::son_before_heal);
+	ClassDB::bind_method(D_METHOD("son_heal_receive", "data"), &Entity::son_heal_receive);
+	ClassDB::bind_method(D_METHOD("son_dealt_heal", "data"), &Entity::son_dealt_heal);
+	ClassDB::bind_method(D_METHOD("son_heal_dealt", "data"), &Entity::son_heal_dealt);
 
 	ClassDB::bind_method(D_METHOD("son_before_cast", "info"), &Entity::son_before_cast);
 	ClassDB::bind_method(D_METHOD("son_before_cast_target", "info"), &Entity::son_before_cast_target);

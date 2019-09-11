@@ -23,6 +23,9 @@ protected:
 	static void _bind_methods();
 
 public:
+    bool get_immune();
+	void set_immune(bool value);
+    
 	int get_heal();
 	void set_heal(int value);
 

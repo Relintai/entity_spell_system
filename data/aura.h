@@ -224,13 +224,14 @@ public:
 	void son_cast_finished(Ref<AuraData> aura, Ref<SpellCastInfo> info);
 	void son_cast_finished_target(Ref<AuraData> aura, Ref<SpellCastInfo> info);
 
+    void son_before_damage_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 	void son_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
-
 	void son_before_damage(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 	void son_damage_receive(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 	void son_dealt_damage(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 	void son_damage_dealt(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 
+    void son_before_heal_hit(Ref<AuraData> aura, Ref<SpellHealInfo> data);
 	void son_before_heal(Ref<AuraData> aura, Ref<SpellHealInfo> data);
 	void son_heal_receive(Ref<AuraData> aura, Ref<SpellHealInfo> data);
 	void son_dealt_heal(Ref<AuraData> aura, Ref<SpellHealInfo> data);
@@ -253,6 +254,8 @@ public:
 
 	void son_gcd_started(Ref<AuraData> data, float gcd);
 	void son_gcd_finished(Ref<AuraData> data);
+    
+    void son_physics_process(Ref<AuraData> data);
 	
 	//Clientside Event Handlers
 	void con_cast_failed(Ref<AuraData> data, Ref<SpellCastInfo> info);
