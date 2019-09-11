@@ -821,6 +821,27 @@ void Entity::sdeal_heal_to(Ref<SpellHealInfo> info) {
 	son_heal_dealt(info);
 }
 
+//Interactions
+bool Entity::cans_interact() {
+    if (!_s_entity_data.is_valid()) {
+        return false;
+    }
+    
+    return _s_entity_data->cans_interact(this);
+}
+
+void Entity::sinteract() {
+    if (!cans_interact()) {
+        return;
+    }
+    
+    _s_entity_data->sinteract(this);
+}
+
+void Entity::crequest_interact() {
+    sinteract();
+}
+
 void Entity::resurrect() {
 	/*
 	if (!CxNet::IsServer) {
@@ -3002,6 +3023,11 @@ void Entity::_bind_methods() {
 	//Heal Operations
 	ClassDB::bind_method(D_METHOD("stake_heal", "data"), &Entity::stake_heal);
 	ClassDB::bind_method(D_METHOD("sdeal_heal_to", "data"), &Entity::sdeal_heal_to);
+    
+    //Interactions
+    ClassDB::bind_method(D_METHOD("cans_interact"), &Entity::cans_interact);
+    ClassDB::bind_method(D_METHOD("sinteract"), &Entity::sinteract);
+    ClassDB::bind_method(D_METHOD("crequest_interact"), &Entity::crequest_interact);
 
 	//Aura Manipulation
 	ClassDB::bind_method(D_METHOD("sadd_aura", "aura"), &Entity::sadd_aura);

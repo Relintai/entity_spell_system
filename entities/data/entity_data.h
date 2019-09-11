@@ -127,6 +127,13 @@ public:
 
 	//int get_inspector_max_spells();
 	//void set_inspector_max_spells(int value);
+	
+	////    Interactions    ////
+    bool cans_interact(Entity* entity);
+    bool cans_interact_bind(Node* entity);
+    
+    void sinteract(Entity* entity);
+    void sinteract_bind(Node* entity);
 
 	////    Spell System    ////
 

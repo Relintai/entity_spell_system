@@ -303,6 +303,42 @@ void EntityData::set_inspector_max_spells(int value) {
 	_inspector_max_spells = value;
 }*/
 
+bool EntityData::cans_interact(Entity* entity) {
+    ERR_FAIL_COND_V(!ObjectDB::instance_validate(entity), false);
+    
+    if (has_method("_cans_interact"))
+        return call("_cans_interact");
+
+    return false;
+}
+
+bool EntityData::cans_interact_bind(Node* entity) {
+    ERR_FAIL_COND_V(!ObjectDB::instance_validate(entity), false);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND_V(e == NULL, false);
+
+	return cans_interact(e);
+}
+
+void EntityData::sinteract(Entity* entity) {
+    ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+    
+    if (has_method("_sinteract"))
+        call("_sinteract");
+}
+
+void EntityData::sinteract_bind(Node* entity) {
+    ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	sinteract(e);
+}
+
 void EntityData::start_casting(int spell_id, Entity *caster, float spellScale) {
 	if (_spells.size() == 0 && _inherits.is_valid()) {
 		_inherits->start_casting(spell_id, caster, spellScale);
@@ -836,6 +872,13 @@ String EntityData::generate_name() {
 }
 
 void EntityData::_bind_methods() {
+    //Interactions
+    BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "can"), "_cans_interact", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+    BIND_VMETHOD(MethodInfo("_sinteract", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+    
+    ClassDB::bind_method(D_METHOD("cans_interact", "entity"), &EntityData::cans_interact_bind);
+    ClassDB::bind_method(D_METHOD("sinteract", "entity"), &EntityData::sinteract_bind);
+    
 	//EventHandlers
 	ClassDB::bind_method(D_METHOD("son_before_cast", "info"), &EntityData::son_before_cast);
 	ClassDB::bind_method(D_METHOD("son_before_cast_target", "info"), &EntityData::son_before_cast_target);

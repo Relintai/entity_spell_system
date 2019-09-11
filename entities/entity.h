@@ -345,6 +345,11 @@ public:
 	//Heal Operations
 	void stake_heal(Ref<SpellHealInfo> info);
 	void sdeal_heal_to(Ref<SpellHealInfo> info);
+    
+    //Interactions
+    bool cans_interact();
+    void sinteract();
+	void crequest_interact();
 
 	//Aura Manipulation
 	void sadd_aura(Ref<AuraData> aura);
