@@ -38,7 +38,7 @@
 
 #include "../inventory/bag.h"
 
-#include "./data/container_item_data.h"
+#include "./data/entity_data_container.h"
 
 class EntityData;
 class AuraData;
