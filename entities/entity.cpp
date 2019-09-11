@@ -86,7 +86,6 @@ void Entity::sets_immunity_flags(int value) {
 	_s_immunity_flags = value;
 }
 
-
 int Entity::gets_entity_flags() {
 	return _s_entity_flags;
 }
@@ -191,18 +190,35 @@ Ref<EntityData> Entity::gets_entity_data() {
 void Entity::sets_entity_data(Ref<EntityData> value) {
 	_s_entity_data = value;
 
-	if (value.is_valid()) {
-		value->setup_resources(this);
-		sinitialize_stats();
-		sets_entity_data_id(value->get_id());
-	}
-
-	if (!Engine::get_singleton()->is_editor_hint())
-		set_process(value.is_valid());
+    setup();
 
 	emit_signal("sentity_data_changed", value);
 
 	//SEND_RPC(rpc("setc_entity_data", value), setc_entity_data(value));
+}
+
+void Entity::setup() {
+    if (has_method("_setup")) {
+        call("_setup");
+    }
+}
+
+void Entity::_setup() {
+    if (_s_entity_data.is_valid()) {
+		_s_entity_data->setup_resources(this);
+		sinitialize_stats();
+		sets_entity_data_id(_s_entity_data->get_id());
+        
+        
+        sets_entity_type(_s_entity_data->get_entity_type());
+        sets_immunity_flags(_s_entity_data->get_immunity_flags());
+        sets_entity_flags(_s_entity_data->get_entity_flags());
+        sets_entity_controller(_s_entity_data->get_entity_controller());
+        sets_player_name(_s_entity_data->get_entity_name());
+	}
+
+	if (!Engine::get_singleton()->is_editor_hint())
+		set_process(_s_entity_data.is_valid());
 }
 
 Entity::Entity() {
@@ -2822,7 +2838,7 @@ void Entity::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("sdied", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("cdied", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-
+    
 	//SpellCastSignals
 	ADD_SIGNAL(MethodInfo("scast_started", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("scast_failed", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -2849,6 +2865,13 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("caura_removed_expired", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	//ADD_SIGNAL(MethodInfo("caura_refreshed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
+    //setup
+    BIND_VMETHOD(MethodInfo("_setup", PropertyInfo(Variant::OBJECT, "entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData")));
+    
+    ClassDB::bind_method(D_METHOD("setup"), &Entity::setup);
+    ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
+    
+    //binds
 	ClassDB::bind_method(D_METHOD("sdie"), &Entity::sdie);
 	ClassDB::bind_method(D_METHOD("cdie"), &Entity::cdie);
 

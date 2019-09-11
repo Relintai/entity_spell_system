@@ -40,6 +40,18 @@ class EntityData : public Resource {
 public:
 	int get_id();
 	void set_id(int value);
+    
+	EntityEnums::EntityType get_entity_type();
+	void set_entity_type(EntityEnums::EntityType value);
+    
+    int get_immunity_flags();
+	void set_immunity_flags(int value);
+
+	int get_entity_flags();
+	void set_entity_flags(int value);
+    
+    EntityEnums::EntityController get_entity_controller();
+	void set_entity_controller(EntityEnums::EntityController value);
 
 	String get_entity_name();
 	void set_entity_name(String value);
@@ -207,6 +219,11 @@ protected:
 
 private:
 	int _id;
+    
+    EntityEnums::EntityType _entity_type;
+    int _immunity_flags;
+    int _entity_flags;
+    EntityEnums::EntityController _entity_controller;
 
 	String _entity_name;
 

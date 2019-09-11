@@ -21,6 +21,34 @@ void EntityData::set_inherits(Ref<EntityData> value) {
 	_inherits = value;
 }
 
+EntityEnums::EntityType EntityData::get_entity_type() {
+	return _entity_type;
+}
+void EntityData::set_entity_type(EntityEnums::EntityType value) {
+	_entity_type = value;
+}
+
+int EntityData::get_immunity_flags() {
+	return _immunity_flags;
+}
+void EntityData::set_immunity_flags(int value) {
+	_immunity_flags = value;
+}
+
+int EntityData::get_entity_flags() {
+	return _entity_flags;
+}
+void EntityData::set_entity_flags(int value) {
+	_entity_flags = value;
+}
+
+EntityEnums::EntityController EntityData::get_entity_controller() {
+	return _entity_controller;
+}
+void EntityData::set_entity_controller(EntityEnums::EntityController value) {
+	_entity_controller = value;
+}
+
 String EntityData::get_entity_name() {
 	return _entity_name;
 }
@@ -933,6 +961,14 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_id"), &EntityData::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityData::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
+    
+    ClassDB::bind_method(D_METHOD("get_entity_type"), &EntityData::get_entity_type);
+	ClassDB::bind_method(D_METHOD("set_entity_type", "value"), &EntityData::set_entity_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "set_entity_type", "get_entity_type");
+
+    ClassDB::bind_method(D_METHOD("get_entity_controller"), &EntityData::get_entity_controller);
+	ClassDB::bind_method(D_METHOD("set_entity_controller", "value"), &EntityData::set_entity_controller);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "set_entity_controller", "get_entity_controller");
 
 	ClassDB::bind_method(D_METHOD("get_entity_name"), &EntityData::get_entity_name);
 	ClassDB::bind_method(D_METHOD("set_entity_name", "value"), &EntityData::set_entity_name);
@@ -953,8 +989,27 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_player_resource_type"), &EntityData::get_player_resource_type);
 	ClassDB::bind_method(D_METHOD("set_player_resource_type", "value"), &EntityData::set_player_resource_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "player_resource_type", PROPERTY_HINT_ENUM, "None, Rage, Mana, Energy, Time Anomaly"), "set_player_resource_type", "get_player_resource_type");
+    
+	// Loot DB
+	ClassDB::bind_method(D_METHOD("get_loot_db"), &EntityData::get_loot_db);
+	ClassDB::bind_method(D_METHOD("set_loot_db", "value"), &EntityData::set_loot_db);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "loot_db", PROPERTY_HINT_RESOURCE_TYPE, "LootDataBase"), "set_loot_db", "get_loot_db");
 
+	ClassDB::bind_method(D_METHOD("generate_name"), &EntityData::generate_name);
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "name"), "_generate_name"));
+
+    ADD_GROUP("Immunities", "immunity");
+    ClassDB::bind_method(D_METHOD("get_immunity_flags"), &EntityData::get_immunity_flags);
+	ClassDB::bind_method(D_METHOD("set_immunity_flags", "value"), &EntityData::set_immunity_flags);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "immunity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_IMMUNITY_FLAGS), "set_immunity_flags", "get_immunity_flags");
+    
+    ADD_GROUP("Entity Flags", "entity_flags");
+    ClassDB::bind_method(D_METHOD("get_entity_flags"), &EntityData::get_entity_flags);
+	ClassDB::bind_method(D_METHOD("set_entity_flags", "value"), &EntityData::set_entity_flags);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_FLAGS), "set_entity_flags", "get_entity_flags");
+    
 	////    Specs    ////
+    ADD_GROUP("Specs", "specs");
 	ClassDB::bind_method(D_METHOD("get_num_specs"), &EntityData::get_num_specs);
 	ClassDB::bind_method(D_METHOD("set_num_specs", "value"), &EntityData::set_num_specs);
 
@@ -966,6 +1021,7 @@ void EntityData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "specs", PROPERTY_HINT_NONE, "17/17:CharacterSpec", PROPERTY_USAGE_DEFAULT, "CharacterSpec"), "set_specs", "get_specs");
 
 	////    Spell    ////
+    ADD_GROUP("Spells", "spells");
 	ClassDB::bind_method(D_METHOD("get_num_spells"), &EntityData::get_num_spells);
 	ClassDB::bind_method(D_METHOD("set_num_spells", "value"), &EntityData::set_num_spells);
 
@@ -977,6 +1033,7 @@ void EntityData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
 
 	////    AURAS    ////
+    ADD_GROUP("Auras", "auras");
 	ClassDB::bind_method(D_METHOD("get_num_auras"), &EntityData::get_num_auras);
 	ClassDB::bind_method(D_METHOD("set_num_auras", "value"), &EntityData::set_num_auras);
 
@@ -988,6 +1045,7 @@ void EntityData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
 
 	////    AI ACTIONS    ////
+    ADD_GROUP("Ai_actions", "ai_actions");
 	ClassDB::bind_method(D_METHOD("get_num_ai_actions"), &EntityData::get_num_ai_actions);
 	ClassDB::bind_method(D_METHOD("set_num_ai_actions", "value"), &EntityData::set_num_ai_actions);
 
@@ -997,23 +1055,24 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_ai_actions"), &EntityData::get_ai_actions);
 	ClassDB::bind_method(D_METHOD("set_ai_actions", "auras"), &EntityData::set_ai_actions);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ai_actions", PROPERTY_HINT_NONE, "17/17:AIAction", PROPERTY_USAGE_DEFAULT, "AIAction"), "set_ai_actions", "get_ai_actions");
-
-	// Loot DB
-	ClassDB::bind_method(D_METHOD("get_loot_db"), &EntityData::get_loot_db);
-	ClassDB::bind_method(D_METHOD("set_loot_db", "value"), &EntityData::set_loot_db);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "loot_db", PROPERTY_HINT_RESOURCE_TYPE, "LootDataBase"), "set_loot_db", "get_loot_db");
-
-	ClassDB::bind_method(D_METHOD("generate_name"), &EntityData::generate_name);
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "name"), "_generate_name"));
 }
 
 EntityData::EntityData() {
 	_id = 0;
 	_player_resource_type = 0;
+    
+    
+    _entity_type = EntityEnums::ENITIY_TYPE_NONE;
+    _immunity_flags = 0;
+    _entity_flags = 0;
+    _entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
+
+	_player_resource_type  = 0;
 }
 
 EntityData::~EntityData() {
 	_spells.clear();
 	_specs.clear();
 	_auras.clear();
+	_ai_actions.clear();
 }

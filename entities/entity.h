@@ -147,7 +147,6 @@ public:
     int gets_immunity_flags();
 	void sets_immunity_flags(int value);
     
-    
     int gets_entity_flags();
 	void sets_entity_flags(int value);
 
@@ -475,6 +474,9 @@ public:
 	
 	String random_name();
 	
+    void setup();
+    void _setup();
+    
 	Entity();
 	~Entity();
 
