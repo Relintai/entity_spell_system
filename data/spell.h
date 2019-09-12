@@ -88,6 +88,9 @@ public:
 	int get_spell_type();
 	void set_spell_type(int value);
 
+	SpellEnums::SpellCategory get_spell_category();
+	void set_spell_category(SpellEnums::SpellCategory value);
+
 	bool get_hide_from_actionbar();
 	void set_hide_from_actionbar(bool value);
 
@@ -303,56 +306,6 @@ public:
 	String get_name();
 	String get_description(int level);
 
-	/*
-	void TriggerGlobalCooldown(Entity *player);
-	bool IsCasting(Entity *player);
-	bool HasClobalCooldown(Entity *player);
-	bool IsStunned(Entity *player);
-	bool HasState(StateData::StateType state, Entity *player);
-	int GetId(Entity *spell);
-	bool IsSpellOnCooldown(int spellId, Entity *player);
-	void ApplyAura(int auraId, Entity *caster, float spellScale);
-	void ApplyAura(int auraId, Entity *caster, Entity *target, float spellScale);
-	void RemoveAura(int auraId, Entity *caster);
-	void AddCooldown(Entity *player, int spellId, float cooldown);
-	void DoStartCasting(Entity *player, int spellId, String spellName, float castTime, bool addMoveHook, float spellScale);
-	void DoCastFail(Entity *player, bool removeHook);
-	void AddOnMoveHook(Entity *player);
-	void RemoveOnMoveHook(Entity *player);
-	Entity *GetTarget(Entity *player);
-	void DealDamage(Entity *caster, Entity *target, int damage);
-	void DealDamage(Entity *caster, Entity *target, float spellScale);
-	void VashDealDamage(Entity *caster, Entity *target, bool increased, float spellScale);
-	void Heal(Entity *caster, Entity *target, float spellScale);
-	void Heal(Entity *caster, Entity *target, int heal);
-	bool checkParry(Entity *caster, Entity *target);
-
-
-	Node *OldLaunchFollowProjectile(Node *effect, Entity *caster, Entity *target, float speed, float spellScale, float time = (float)0);
-	Node *OldLaunchStraightProjectile(Node *effect, Entity *caster, float speed, float time, float range, float spellScale);
-	Node *OldLaunchProjectile(Entity *caster, Entity *target, float spellScale);
-	WorldSpell *SpawnProjectile(Entity *caster, Entity *target, float spellScale);
-	bool isInRange(Entity *target, Entity *player);
-	bool CanCast(Entity *caster, int skipCheck = 0);
-	bool CanCastTarget(Entity *caster, int skipCheck = 0);
-	bool CanCastTargetRange(Entity *caster, int skipCheck = 0);
-	bool SpellCostCheckAndRemove(Entity *caster);
-	bool SpellCostCheck(Entity *caster);
-	void SpellResourceGive(Entity *caster);
-	void AddSpellCastEffect(Entity *caster);
-	void RemoveSpellCastEffects(Entity *caster);
-	void AddEffect(Entity *player, Node *effectPrefab, EffectPoints bodyPart, Quaternion *rotation =);
-	void AddWorldEffect(Entity *location, Node *effectPrefab, Vector3 *offset =, Quaternion *rotation =);
-	void RemoveEffect(Entity *player, EffectPoints bodyPart);
-	String StringifyCooldown(float cooldown);
-	void SpellCastSuccess(Entity *caster);
-	void PlaySound(String sound);
-	void PlayStandardSpellCastFinish();
-	void PlayStandardSpellCastFinish(Entity *caster);
-	void PlayStandardIceArcherAttackSpellCastFinish(Entity *caster);
-	void PlayStandardBerserkerAttackSpellCastFinish(Entity *caster);
-	void AnimStop(Entity *player);*/
-
 	Spell();
 	~Spell();
 
@@ -362,6 +315,7 @@ protected:
 private:
 	int _spell_id;
 	int _spell_type;
+	SpellEnums::SpellCategory _spell_category;
 
 	bool _hide_from_actionbar;
 	float _cooldown;
