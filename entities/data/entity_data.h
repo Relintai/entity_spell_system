@@ -73,6 +73,9 @@ public:
 	int get_player_resource_type();
 	void set_player_resource_type(int value);
 
+	int get_stat_points_per_level();
+	void set_stat_points_per_level(int value);
+
 	Ref<LootDataBase> get_loot_db() const;
 	void set_loot_db(const Ref<LootDataBase> lootdb);
 
@@ -275,6 +278,8 @@ private:
 
 	int _player_resource_type;
     int _money;
+
+	int _stat_points_per_level;
 
 	Ref<StatData> _stat_data;
 

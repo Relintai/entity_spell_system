@@ -79,6 +79,13 @@ void EntityData::set_player_resource_type(int value) {
 	_player_resource_type = value;
 }
 
+int EntityData::get_stat_points_per_level() {
+	return _stat_points_per_level;
+}
+void EntityData::set_stat_points_per_level(int value) {
+	_stat_points_per_level = value;
+}
+
 Ref<LootDataBase> EntityData::get_loot_db() const {
 	return _lootdb;
 }
@@ -1211,7 +1218,11 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_player_resource_type"), &EntityData::get_player_resource_type);
 	ClassDB::bind_method(D_METHOD("set_player_resource_type", "value"), &EntityData::set_player_resource_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "player_resource_type", PROPERTY_HINT_ENUM, "None, Rage, Mana, Energy, Time Anomaly"), "set_player_resource_type", "get_player_resource_type");
-    
+
+	ClassDB::bind_method(D_METHOD("get_stat_points_per_level"), &EntityData::get_stat_points_per_level);
+	ClassDB::bind_method(D_METHOD("set_stat_points_per_level", "value"), &EntityData::set_stat_points_per_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_points_per_level"), "set_stat_points_per_level", "get_stat_points_per_level");
+
 	// Loot DB
 	ClassDB::bind_method(D_METHOD("get_loot_db"), &EntityData::get_loot_db);
 	ClassDB::bind_method(D_METHOD("set_loot_db", "value"), &EntityData::set_loot_db);
@@ -1314,6 +1325,7 @@ EntityData::EntityData() {
     _entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
 
 	_player_resource_type  = 0;
+	_stat_points_per_level = 5;
 }
 
 EntityData::~EntityData() {
