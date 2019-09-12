@@ -13,6 +13,8 @@
 
 #include "core/bind/core_bind.h"
 
+#include "xp_data.h"
+
 class Aura;
 class Spell;
 class Talent;
@@ -25,6 +27,10 @@ class DataManager : public Node {
 
 public:
 	static DataManager *get_instance();
+
+	String get_xp_data_path();
+	void set_xp_data_path(String path);
+	Ref<XPData> get_xp_data();
 
 	String get_entity_datas_folder();
 	void set_entity_datas_folder(String folder);
@@ -91,6 +97,7 @@ public:
 	int get_player_character_data_count();
 
 	void load_all();
+	void load_xp_data();
 	void load_spells();
 	void load_auras();
 	void load_talents();
@@ -120,6 +127,9 @@ protected:
 	void _notification(int p_what);
 
 private:
+	String _xp_data_path;
+	Ref<XPData> _xp_data;
+
 	String _entity_datas_folder;
 	Vector<Ref<EntityData> > _entity_datas;
 	HashMap<int, Ref<EntityData> > _entity_data_map;

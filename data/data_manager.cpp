@@ -1,7 +1,7 @@
 #include "data_manager.h"
 
-#include "aura.h"
 #include "../entities/data/entity_data.h"
+#include "aura.h"
 #include "craft_data_attribute.h"
 #include "spell.h"
 #include "talent.h"
@@ -25,6 +25,16 @@ void DataManager::_notification(int p_what) {
 
 		} break;
 	}
+}
+
+String DataManager::get_xp_data_path() {
+	return _xp_data_path;
+}
+void DataManager::set_xp_data_path(String path) {
+	_xp_data_path = path;
+}
+Ref<XPData> DataManager::get_xp_data() {
+	return _xp_data;
 }
 
 String DataManager::get_entity_datas_folder() {
@@ -229,7 +239,6 @@ int DataManager::get_item_template_count() {
 	return _item_templates.size();
 }
 
-
 String DataManager::get_mob_data_folder() {
 	return _mob_data_folder;
 }
@@ -262,7 +271,6 @@ Ref<EntityData> DataManager::get_mob_data_index(int index) {
 int DataManager::get_mob_data_count() {
 	return _mob_datas.size();
 }
-
 
 String DataManager::get_player_character_data_folder() {
 	return _player_character_data_folder;
@@ -297,16 +305,38 @@ int DataManager::get_player_character_data_count() {
 	return _player_character_datas.size();
 }
 
-
 void DataManager::load_all() {
+	load_xp_data();
 	load_spells();
 	load_auras();
 	load_talents();
 	load_characters();
 	load_craft_datas();
 	load_item_templates();
-    load_mob_datas();
-    load_player_character_datas();
+	load_mob_datas();
+	load_player_character_datas();
+}
+
+void DataManager::load_xp_data() {
+	_Directory dir;
+
+	ERR_FAIL_COND(_xp_data_path == "");
+
+	_ResourceLoader *rl = _ResourceLoader::get_singleton();
+
+	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(_xp_data_path, "XPData");
+
+	resl->wait();
+
+	Ref<Resource> s = resl->get_resource();
+
+	ERR_FAIL_COND(!s.is_valid());
+
+	Ref<XPData> d = s;
+
+	ERR_FAIL_COND(!d.is_valid());
+
+	_xp_data = d;
 }
 
 void DataManager::load_spells() {
@@ -674,6 +704,13 @@ void DataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &DataManager::set_automatic_load);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
 
+	//XPData
+	ClassDB::bind_method(D_METHOD("get_xp_data_path"), &DataManager::get_xp_data_path);
+	ClassDB::bind_method(D_METHOD("set_xp_data_path", "path"), &DataManager::set_xp_data_path);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "xp_data_path"), "set_xp_data_path", "get_xp_data_path");
+
+	ClassDB::bind_method(D_METHOD("get_xp_data"), &DataManager::get_xp_data);
+
 	//EntityData
 	ClassDB::bind_method(D_METHOD("get_entity_datas_folder"), &DataManager::get_entity_datas_folder);
 	ClassDB::bind_method(D_METHOD("set_entity_datas_folder", "folder"), &DataManager::set_entity_datas_folder);
@@ -733,8 +770,8 @@ void DataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_item_template", "item_template_id"), &DataManager::get_item_template);
 	ClassDB::bind_method(D_METHOD("get_item_template_index", "index"), &DataManager::get_item_template_index);
 	ClassDB::bind_method(D_METHOD("get_item_template_count"), &DataManager::get_item_template_count);
-    
-    //Mob Data
+
+	//Mob Data
 	ClassDB::bind_method(D_METHOD("get_mob_data_folder"), &DataManager::get_mob_data_folder);
 	ClassDB::bind_method(D_METHOD("set_mob_data_folder", "folder"), &DataManager::set_mob_data_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "mob_data_folder"), "set_mob_data_folder", "get_mob_data_folder");
@@ -744,7 +781,7 @@ void DataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_mob_data_index", "index"), &DataManager::get_mob_data_index);
 	ClassDB::bind_method(D_METHOD("get_mob_data_count"), &DataManager::get_mob_data_count);
 
-    //Player Character Data
+	//Player Character Data
 	ClassDB::bind_method(D_METHOD("get_player_character_data_folder"), &DataManager::get_player_character_data_folder);
 	ClassDB::bind_method(D_METHOD("set_player_character_data_folder", "folder"), &DataManager::set_player_character_data_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "player_character_data_folder"), "set_player_character_data_folder", "get_player_character_data_folder");
@@ -753,27 +790,28 @@ void DataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_player_character_data", "pcd_id"), &DataManager::get_player_character_data);
 	ClassDB::bind_method(D_METHOD("get_player_character_data_index", "index"), &DataManager::get_player_character_data_index);
 	ClassDB::bind_method(D_METHOD("get_player_character_data_count"), &DataManager::get_player_character_data_count);
-    
-    //load
-    ClassDB::bind_method(D_METHOD("load_all"), &DataManager::load_all);
+
+	//load
+	ClassDB::bind_method(D_METHOD("load_all"), &DataManager::load_all);
+	ClassDB::bind_method(D_METHOD("load_xp_data"), &DataManager::load_xp_data);
 	ClassDB::bind_method(D_METHOD("load_spells"), &DataManager::load_spells);
-    ClassDB::bind_method(D_METHOD("load_auras"), &DataManager::load_auras);
-    ClassDB::bind_method(D_METHOD("load_talents"), &DataManager::load_talents);
+	ClassDB::bind_method(D_METHOD("load_auras"), &DataManager::load_auras);
+	ClassDB::bind_method(D_METHOD("load_talents"), &DataManager::load_talents);
 	ClassDB::bind_method(D_METHOD("load_characters"), &DataManager::load_characters);
 	ClassDB::bind_method(D_METHOD("load_craft_datas"), &DataManager::load_craft_datas);
-    ClassDB::bind_method(D_METHOD("load_item_templates"), &DataManager::load_item_templates);
-    ClassDB::bind_method(D_METHOD("load_mob_datas"), &DataManager::load_mob_datas);
-    ClassDB::bind_method(D_METHOD("load_player_character_datas"), &DataManager::load_player_character_datas);
-    
+	ClassDB::bind_method(D_METHOD("load_item_templates"), &DataManager::load_item_templates);
+	ClassDB::bind_method(D_METHOD("load_mob_datas"), &DataManager::load_mob_datas);
+	ClassDB::bind_method(D_METHOD("load_player_character_datas"), &DataManager::load_player_character_datas);
+
 	//tests
-    ClassDB::bind_method(D_METHOD("list_characters"), &DataManager::list_characters);
+	ClassDB::bind_method(D_METHOD("list_characters"), &DataManager::list_characters);
 	ClassDB::bind_method(D_METHOD("list_spells"), &DataManager::list_spells);
 	ClassDB::bind_method(D_METHOD("list_auras"), &DataManager::list_auras);
 	ClassDB::bind_method(D_METHOD("list_talents"), &DataManager::list_talents);
 	ClassDB::bind_method(D_METHOD("list_craft_data"), &DataManager::list_craft_data);
 	ClassDB::bind_method(D_METHOD("list_item_templates"), &DataManager::list_item_templates);
-    ClassDB::bind_method(D_METHOD("list_mob_datas"), &DataManager::list_mob_datas);
-    ClassDB::bind_method(D_METHOD("list_player_character_datas"), &DataManager::list_player_character_datas);
+	ClassDB::bind_method(D_METHOD("list_mob_datas"), &DataManager::list_mob_datas);
+	ClassDB::bind_method(D_METHOD("list_player_character_datas"), &DataManager::list_player_character_datas);
 }
 
 DataManager::DataManager() {
@@ -787,25 +825,25 @@ DataManager::~DataManager() {
 
 	_entity_datas.clear();
 	_entity_data_map.clear();
-    
+
 	_spells.clear();
 	_spell_map.clear();
-    
+
 	_auras.clear();
 	_aura_map.clear();
 
 	_talents.clear();
 	_talent_map.clear();
-    
+
 	_craft_datas.clear();
 	_craft_data_map.clear();
-    
+
 	_item_templates.clear();
 	_item_template_map.clear();
 
 	_mob_datas.clear();
 	_mob_data_map.clear();
-    
+
 	_player_character_datas.clear();
 	_player_character_data_map.clear();
 }
