@@ -1,6 +1,7 @@
 #include "spell.h"
 
 #include "aura.h"
+#include "skill.h"
 
 int Spell::get_spell_id() {
 	return _spell_id;
@@ -463,7 +464,6 @@ void Spell::set_aoe_half_extents(Vector3 value) {
 	_aoe_half_extents = value;
 }
 
-
 Ref<PackedScene> Spell::get_projectile() {
 	return _projectile;
 }
@@ -521,6 +521,35 @@ int Spell::get_spell_cooldown_mainpulation_data_count() {
 }
 void Spell::set_spell_cooldown_mainpulation_data_count(int value) {
 	_spell_cooldown_mainpulation_data_count = value;
+}
+
+int Spell::get_training_cost() {
+	return _training_cost;
+}
+void Spell::set_training_cost(int value) {
+	_training_cost = value;
+}
+
+Ref<Spell> Spell::get_training_required_spell() {
+	return _training_required_spell;
+}
+void Spell::set_training_required_spell(Ref<Spell> spell) {
+	_training_required_spell = spell;
+}
+
+Ref<Skill> Spell::get_training_required_skill() {
+	return _training_required_skill;
+}
+void Spell::set_training_required_skill(Ref<Skill> skill) {
+	_training_required_skill = skill;
+}
+
+int Spell::get_training_required_skill_level() {
+	return _training_required_skill_level;
+}
+void Spell::set_training_required_skill_level(int value) {
+	_training_required_skill_level = value;
+
 }
 
 ////    Spell System    ////
@@ -704,7 +733,6 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 
 			handle_spell_damage(dpd);
 		}
-
 	}
 }
 
@@ -737,13 +765,12 @@ Spell::Spell() {
 
 	_cooldown = 0;
 	_cast_time = 0;
-	
+
 	_target_type = SpellTargetType::SPELL_TARGET_TYPE_TARGET;
 	_target_relation_type = TargetRelationType::TARGET_ENEMY;
 
 	_level = 1;
 	_rank = 0;
-
 
 	_item_cost = 0;
 	_craft_material_cost = 0;
@@ -776,7 +803,6 @@ Spell::Spell() {
 	_is_interrupt = false;
 	_interrupt_time = 0;
 
-
 	_is_aoe = false;
 	_aoe_targetType = SpellAOETargetType::SPELL_AOE_TARGET_TYPE_CASTER;
 	_aoe_movementType = SpellAOEMovementType::SPELL_AOE_MOVEMENT_TYPE_STATIC;
@@ -791,6 +817,9 @@ Spell::Spell() {
 	_projectile_collision = false;
 
 	_spell_cooldown_mainpulation_data_count = 0;
+
+	_training_cost = 0;
+	_training_required_skill_level = 0;
 }
 
 Spell::~Spell() {
@@ -943,7 +972,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_caster_aura_applys", "caster_aura_applys"), &Spell::set_caster_aura_applys);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "caster_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_caster_aura_applys", "get_caster_aura_applys");
 
-
 	ADD_GROUP("Target Aura Apply", "target_aura_applys");
 	ClassDB::bind_method(D_METHOD("get_num_target_aura_applys"), &Spell::get_num_target_aura_applys);
 	ClassDB::bind_method(D_METHOD("set_num_target_aura_applys", "value"), &Spell::set_num_target_aura_applys);
@@ -955,7 +983,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_target_aura_applys", "target_aura_applys"), &Spell::set_target_aura_applys);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "target_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_target_aura_applys", "get_target_aura_applys");
 
-
 	ADD_GROUP("Apply Auras On Learn", "on_learn_auras");
 	ClassDB::bind_method(D_METHOD("get_num_on_learn_auras"), &Spell::get_num_on_learn_auras);
 	ClassDB::bind_method(D_METHOD("set_num_on_learn_auras", "value"), &Spell::set_num_on_learn_auras);
@@ -966,7 +993,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_on_learn_auras"), &Spell::get_on_learn_auras);
 	ClassDB::bind_method(D_METHOD("set_on_learn_auras", "spells"), &Spell::set_on_learn_auras);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "on_learn_auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_on_learn_auras", "get_on_learn_auras");
-
 
 	ADD_GROUP("Range", "range");
 	ClassDB::bind_method(D_METHOD("get_has_range"), &Spell::get_has_range);
@@ -1122,6 +1148,24 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_spell_cooldown_mainpulation_data_count"), &Spell::get_spell_cooldown_mainpulation_data_count);
 	ClassDB::bind_method(D_METHOD("set_spell_cooldown_mainpulation_data_count", "value"), &Spell::set_spell_cooldown_mainpulation_data_count);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_cooldown_mainpulation_data_count"), "set_spell_cooldown_mainpulation_data_count", "get_spell_cooldown_mainpulation_data_count");
+
+	ADD_GROUP("Training", "training");
+	ClassDB::bind_method(D_METHOD("get_training_cost"), &Spell::get_training_cost);
+	ClassDB::bind_method(D_METHOD("set_training_cost", "value"), &Spell::set_training_cost);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "training_cost"), "set_training_cost", "get_training_cost");
+
+	ClassDB::bind_method(D_METHOD("get_training_required_spell"), &Spell::get_training_required_spell);
+	ClassDB::bind_method(D_METHOD("set_training_required_spell", "curspellve"), &Spell::set_training_required_spell);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "training_required_spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_training_required_spell", "get_training_required_spell");
+
+	ClassDB::bind_method(D_METHOD("get_training_required_skill"), &Spell::get_training_required_skill);
+	ClassDB::bind_method(D_METHOD("set_training_required_skill", "curve"), &Spell::set_training_required_skill);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "training_required_skill", PROPERTY_HINT_RESOURCE_TYPE, "Skill"), "set_training_required_skill", "get_training_required_skill");
+
+	ClassDB::bind_method(D_METHOD("get_training_required_skill_level"), &Spell::get_training_required_skill_level);
+	ClassDB::bind_method(D_METHOD("set_training_required_skill_level", "value"), &Spell::set_training_required_skill_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "training_required_skill_level"), "set_training_required_skill_level", "get_training_required_skill_level");
+
 
 	BIND_ENUM_CONSTANT(TARGET_SELF);
 	BIND_ENUM_CONSTANT(TARGET_ENEMY);

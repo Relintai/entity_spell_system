@@ -23,6 +23,7 @@ class Entity;
 class Aura;
 class SpellCastInfo;
 class Spell;
+class Skill;
 
 enum TargetRelationType {
 	TARGET_SELF = 1 << 0,
@@ -286,6 +287,18 @@ public:
 	int get_spell_cooldown_mainpulation_data_count();
 	void set_spell_cooldown_mainpulation_data_count(int value);
 
+	int get_training_cost();
+	void set_training_cost(int value);
+
+	Ref<Spell> get_training_required_spell();
+	void set_training_required_spell(Ref<Spell> spell);
+
+	Ref<Skill> get_training_required_skill();
+	void set_training_required_skill(Ref<Skill> skill);
+
+	int get_training_required_skill_level();
+	void set_training_required_skill_level(int value);
+
 	////    Spell Script    ////
 
 	float PLAYER_HIT_RADIUS;
@@ -404,6 +417,11 @@ private:
 	bool _projectile_collision;
 
 	int _spell_cooldown_mainpulation_data_count;
+
+	int _training_cost;
+	Ref<Spell> _training_required_spell;
+	Ref<Skill> _training_required_skill;
+	int _training_required_skill_level;
 };
 
 #endif
