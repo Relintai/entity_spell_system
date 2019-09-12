@@ -473,7 +473,7 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_aura", "index", "aura"), &ItemTemplate::set_aura);
 
 	ClassDB::bind_method(D_METHOD("get_auras"), &ItemTemplate::get_auras);
-	ClassDB::bind_method(D_METHOD("set_auras", "spells"), &ItemTemplate::set_auras);
+	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &ItemTemplate::set_auras);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
 
 	//StatMods Property binds

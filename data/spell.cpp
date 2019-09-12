@@ -51,58 +51,6 @@ void Spell::set_target_relation_type(TargetRelationType value) {
 	_target_relation_type = value;
 }
 
-Ref<Aura> Spell::get_caster_aura_apply() {
-	return Ref<Aura>(_caster_aura_apply);
-}
-
-void Spell::set_caster_aura_apply(Ref<Aura> value) {
-	_caster_aura_apply = (*value);
-
-	if (_caster_aura_apply_ref)
-		memdelete(_caster_aura_apply_ref);
-
-	_caster_aura_apply_ref = memnew(Ref<Aura>(value));
-}
-
-Ref<Aura> Spell::get_caster_aura_apply2() {
-	return Ref<Aura>(_caster_aura_apply2);
-}
-
-void Spell::set_caster_aura_apply2(Ref<Aura> value) {
-	_caster_aura_apply2 = (*value);
-
-	if (_caster_aura_apply2_ref)
-		memdelete(_caster_aura_apply2_ref);
-
-	_caster_aura_apply2_ref = memnew(Ref<Aura>(value));
-}
-
-Ref<Aura> Spell::get_target_aura_apply() {
-	return Ref<Aura>(_target_aura_apply);
-}
-
-void Spell::set_target_aura_apply(Ref<Aura> value) {
-	_target_aura_apply = (*value);
-
-	if (_target_aura_apply_ref)
-		memdelete(_target_aura_apply_ref);
-
-	_target_aura_apply_ref = memnew(Ref<Aura>(value));
-}
-
-Ref<Aura> Spell::get_target_aura_apply2() {
-	return Ref<Aura>(_target_aura_apply2);
-}
-
-void Spell::set_target_aura_apply2(Ref<Aura> value) {
-	_target_aura_apply2 = (*value);
-
-	if (_target_aura_apply2_ref)
-		memdelete(_target_aura_apply2_ref);
-
-	_target_aura_apply2_ref = memnew(Ref<Aura>(value));
-}
-
 int Spell::get_level() {
 	return _level;
 }
@@ -250,6 +198,116 @@ float Spell::get_absorb_scale_for_level(int level) {
 	//return getAbsorbLevelScaling()->Evaluate((float)(level));
 	return 1;
 }
+
+////    Caster Aura Apply    ////
+
+int Spell::get_num_caster_aura_applys() {
+	return _caster_aura_applys.size();
+}
+void Spell::set_num_caster_aura_applys(int value) {
+	_caster_aura_applys.resize(value);
+}
+
+Ref<Aura> Spell::get_caster_aura_apply(int index) const {
+	ERR_FAIL_INDEX_V(index, _caster_aura_applys.size(), Ref<Aura>());
+
+	return _caster_aura_applys[index];
+}
+void Spell::set_caster_aura_apply(int index, Ref<Aura> caster_aura_apply) {
+	ERR_FAIL_INDEX(index, _caster_aura_applys.size());
+
+	_caster_aura_applys.set(index, Ref<Aura>(caster_aura_apply));
+}
+
+Vector<Variant> Spell::get_caster_aura_applys() {
+	Vector<Variant> r;
+	for (int i = 0; i < _caster_aura_applys.size(); i++) {
+		r.push_back(_caster_aura_applys[i].get_ref_ptr());
+	}
+	return r;
+}
+void Spell::set_caster_aura_applys(const Vector<Variant> &caster_aura_applys) {
+	_caster_aura_applys.clear();
+	for (int i = 0; i < caster_aura_applys.size(); i++) {
+		Ref<Aura> aura = Ref<Aura>(caster_aura_applys[i]);
+
+		_caster_aura_applys.push_back(aura);
+	}
+}
+
+////    Target Aura Apply    ////
+
+int Spell::get_num_target_aura_applys() {
+	return _target_aura_applys.size();
+}
+void Spell::set_num_target_aura_applys(int value) {
+	_target_aura_applys.resize(value);
+}
+
+Ref<Aura> Spell::get_target_aura_apply(int index) const {
+	ERR_FAIL_INDEX_V(index, _target_aura_applys.size(), Ref<Aura>());
+
+	return _target_aura_applys[index];
+}
+void Spell::set_target_aura_apply(int index, Ref<Aura> target_aura_apply) {
+	ERR_FAIL_INDEX(index, _target_aura_applys.size());
+
+	_target_aura_applys.set(index, Ref<Aura>(target_aura_apply));
+}
+
+Vector<Variant> Spell::get_target_aura_applys() {
+	Vector<Variant> r;
+	for (int i = 0; i < _target_aura_applys.size(); i++) {
+		r.push_back(_target_aura_applys[i].get_ref_ptr());
+	}
+	return r;
+}
+void Spell::set_target_aura_applys(const Vector<Variant> &target_aura_applys) {
+	_target_aura_applys.clear();
+	for (int i = 0; i < target_aura_applys.size(); i++) {
+		Ref<Aura> aura = Ref<Aura>(target_aura_applys[i]);
+
+		_target_aura_applys.push_back(aura);
+	}
+}
+
+////    Apply Auras On Learn    ////
+
+int Spell::get_num_on_learn_auras() {
+	return _on_learn_auras.size();
+}
+void Spell::set_num_on_learn_auras(int value) {
+	_on_learn_auras.resize(value);
+}
+
+Ref<Aura> Spell::get_on_learn_aura(int index) const {
+	ERR_FAIL_INDEX_V(index, _on_learn_auras.size(), Ref<Aura>());
+
+	return _on_learn_auras[index];
+}
+void Spell::set_on_learn_aura(int index, Ref<Aura> on_learn_aura_apply) {
+	ERR_FAIL_INDEX(index, _on_learn_auras.size());
+
+	_on_learn_auras.set(index, Ref<Aura>(on_learn_aura_apply));
+}
+
+Vector<Variant> Spell::get_on_learn_auras() {
+	Vector<Variant> r;
+	for (int i = 0; i < _on_learn_auras.size(); i++) {
+		r.push_back(_on_learn_auras[i].get_ref_ptr());
+	}
+	return r;
+}
+void Spell::set_on_learn_auras(const Vector<Variant> &on_learn_aura_applys) {
+	_on_learn_auras.clear();
+	for (int i = 0; i < on_learn_aura_applys.size(); i++) {
+		Ref<Aura> aura = Ref<Aura>(on_learn_aura_applys[i]);
+
+		_on_learn_auras.push_back(aura);
+	}
+}
+
+////    Range    ////
 
 bool Spell::get_has_range() {
 	return _has_range;
@@ -647,49 +705,7 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 			handle_spell_damage(dpd);
 		}
 
-		if (spell->get_caster_aura_apply() != NULL) {
-			Ref<AuraApplyInfo> aainfo(memnew(AuraApplyInfo(info->get_caster(), info->get_caster(), info->get_spell_scale())));
-
-			spell->get_caster_aura_apply()->sapply(aainfo);
-		}
-
-		if (spell->get_caster_aura_apply2() != NULL) {
-			Ref<AuraApplyInfo> aainfo(memnew(AuraApplyInfo(info->get_caster(), info->get_caster(), info->get_spell_scale())));
-
-			spell->get_caster_aura_apply2()->sapply(aainfo);
-		}
-
-		if (spell->get_target_aura_apply() != NULL) {
-			Ref<AuraApplyInfo> aainfo(memnew(AuraApplyInfo(info->get_caster(), info->get_caster()->getc_target(), info->get_spell_scale())));
-
-			spell->get_target_aura_apply()->sapply(aainfo);
-		}
-
-		if (spell->get_target_aura_apply2() != NULL) {
-			Ref<AuraApplyInfo> aainfo(memnew(AuraApplyInfo(info->get_caster(), info->get_caster()->getc_target(), info->get_spell_scale())));
-
-			spell->get_target_aura_apply2()->sapply(aainfo);
-		}
 	}
-	/*
-	WorldEntity *worldEntity = null;
-	if (spell->GenericSpellData->NeedsTarget || damage) {
-		worldEntity = Spell::GetTarget(caster);
-	}
-
-	if (!hasCastTime) {
-		if (spell->SpellRangeData->Enabled && !Spell::isInRange(caster, worldEntity)) {
-			return;
-		}
-		HandleSpellEffect(caster, worldEntity, spellScale);
-		return;
-	} else {
-		if (!Spell::SpellCostCheck(caster)) {
-			return;
-		}
-		Spell::DoStartCasting(caster, spellId, spell->SpellName, spell->CastTime, !spell->GenericSpellData->CanMoveWhileCasting, spellScale);
-		return;
-	}*/
 }
 
 void Spell::_calculate_initial_damage(Ref<SpellDamageInfo> data) {
@@ -774,36 +790,13 @@ Spell::Spell() {
 	_projectile_destroy_on_impact = false;
 	_projectile_collision = false;
 
-	_caster_aura_apply = NULL;
-	_caster_aura_apply2 = NULL;
-	_target_aura_apply = NULL;
-	_target_aura_apply2 = NULL;
-
-	_caster_aura_apply_ref = NULL;
-	_caster_aura_apply2_ref = NULL;
-	_target_aura_apply_ref = NULL;
-	_target_aura_apply2_ref = NULL;
-
 	_spell_cooldown_mainpulation_data_count = 0;
 }
 
 Spell::~Spell() {
-	if (_caster_aura_apply_ref != NULL)
-		memdelete(_caster_aura_apply_ref);
-
-	if (_caster_aura_apply2_ref != NULL)
-		memdelete(_caster_aura_apply2_ref);
-
-	if (_target_aura_apply_ref != NULL)
-		memdelete(_target_aura_apply_ref);
-
-	if (_target_aura_apply2_ref != NULL)
-		memdelete(_target_aura_apply2_ref);
-
-	_caster_aura_apply = NULL;
-	_caster_aura_apply2 = NULL;
-	_target_aura_apply = NULL;
-	_target_aura_apply2 = NULL;
+	_caster_aura_applys.clear();
+	_target_aura_applys.clear();
+	_on_learn_auras.clear();
 }
 
 void Spell::_bind_methods() {
@@ -939,22 +932,41 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_has_global_cooldown", "value"), &Spell::set_has_global_cooldown);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cooldown_global_cooldown"), "set_has_global_cooldown", "has_global_cooldown");
 
-	ADD_GROUP("Auras", "aura");
-	ClassDB::bind_method(D_METHOD("get_caster_aura_apply"), &Spell::get_caster_aura_apply);
-	ClassDB::bind_method(D_METHOD("set_caster_aura_apply", "value"), &Spell::set_caster_aura_apply);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_caster_apply", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_caster_aura_apply", "get_caster_aura_apply");
+	ADD_GROUP("Caster Aura Applys", "caster_aura_applys");
+	ClassDB::bind_method(D_METHOD("get_num_caster_aura_applys"), &Spell::get_num_caster_aura_applys);
+	ClassDB::bind_method(D_METHOD("set_num_caster_aura_applys", "value"), &Spell::set_num_caster_aura_applys);
 
-	ClassDB::bind_method(D_METHOD("get_caster_aura_apply2"), &Spell::get_caster_aura_apply2);
-	ClassDB::bind_method(D_METHOD("set_caster_aura_apply2", "value"), &Spell::set_caster_aura_apply2);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_caster_aura_apply2", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_caster_aura_apply2", "get_caster_aura_apply2");
+	ClassDB::bind_method(D_METHOD("get_caster_aura_apply", "index"), &Spell::get_caster_aura_apply);
+	ClassDB::bind_method(D_METHOD("set_caster_aura_apply", "index", "aura"), &Spell::set_caster_aura_apply);
 
-	ClassDB::bind_method(D_METHOD("get_target_aura_apply"), &Spell::get_target_aura_apply);
-	ClassDB::bind_method(D_METHOD("set_target_aura_apply", "value"), &Spell::set_target_aura_apply);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_target_apply", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_target_aura_apply", "get_target_aura_apply");
+	ClassDB::bind_method(D_METHOD("get_caster_aura_applys"), &Spell::get_caster_aura_applys);
+	ClassDB::bind_method(D_METHOD("set_caster_aura_applys", "caster_aura_applys"), &Spell::set_caster_aura_applys);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "caster_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_caster_aura_applys", "get_caster_aura_applys");
 
-	ClassDB::bind_method(D_METHOD("get_target_aura_apply2"), &Spell::get_target_aura_apply2);
-	ClassDB::bind_method(D_METHOD("set_target_aura_apply2", "value"), &Spell::set_target_aura_apply2);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_target_apply2", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_target_aura_apply2", "get_target_aura_apply2");
+
+	ADD_GROUP("Target Aura Apply", "target_aura_applys");
+	ClassDB::bind_method(D_METHOD("get_num_target_aura_applys"), &Spell::get_num_target_aura_applys);
+	ClassDB::bind_method(D_METHOD("set_num_target_aura_applys", "value"), &Spell::set_num_target_aura_applys);
+
+	ClassDB::bind_method(D_METHOD("get_target_aura_apply", "index"), &Spell::get_target_aura_apply);
+	ClassDB::bind_method(D_METHOD("set_target_aura_apply", "index", "aura"), &Spell::set_target_aura_apply);
+
+	ClassDB::bind_method(D_METHOD("get_target_aura_applys"), &Spell::get_target_aura_applys);
+	ClassDB::bind_method(D_METHOD("set_target_aura_applys", "target_aura_applys"), &Spell::set_target_aura_applys);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "target_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_target_aura_applys", "get_target_aura_applys");
+
+
+	ADD_GROUP("Apply Auras On Learn", "on_learn_auras");
+	ClassDB::bind_method(D_METHOD("get_num_on_learn_auras"), &Spell::get_num_on_learn_auras);
+	ClassDB::bind_method(D_METHOD("set_num_on_learn_auras", "value"), &Spell::set_num_on_learn_auras);
+
+	ClassDB::bind_method(D_METHOD("get_on_learn_aura", "index"), &Spell::get_on_learn_aura);
+	ClassDB::bind_method(D_METHOD("set_on_learn_aura", "index", "aura"), &Spell::set_on_learn_aura);
+
+	ClassDB::bind_method(D_METHOD("get_on_learn_auras"), &Spell::get_on_learn_auras);
+	ClassDB::bind_method(D_METHOD("set_on_learn_auras", "spells"), &Spell::set_on_learn_auras);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "on_learn_auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_on_learn_auras", "get_on_learn_auras");
+
 
 	ADD_GROUP("Range", "range");
 	ClassDB::bind_method(D_METHOD("get_has_range"), &Spell::get_has_range);

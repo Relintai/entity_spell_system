@@ -103,18 +103,6 @@ public:
 	TargetRelationType get_target_relation_type();
 	void set_target_relation_type(TargetRelationType value);
 
-	Ref<Aura> get_caster_aura_apply();
-	void set_caster_aura_apply(Ref<Aura> value);
-
-	Ref<Aura> get_caster_aura_apply2();
-	void set_caster_aura_apply2(Ref<Aura> value);
-
-	Ref<Aura> get_target_aura_apply();
-	void set_target_aura_apply(Ref<Aura> value);
-
-	Ref<Aura> get_target_aura_apply2();
-	void set_target_aura_apply2(Ref<Aura> value);
-
 	int get_level();
 	void set_level(int value);
 
@@ -176,6 +164,37 @@ public:
 	float get_heal_scale_for_level(int level);
 	float get_absorb_scale_for_level(int level);
 
+	//Caster Aura Apply
+	int get_num_caster_aura_applys();
+	void set_num_caster_aura_applys(int value);
+
+	Ref<Aura> get_caster_aura_apply(int index) const;
+	void set_caster_aura_apply(int index, Ref<Aura> caster_aura_apply);
+
+	Vector<Variant> get_caster_aura_applys();
+	void set_caster_aura_applys(const Vector<Variant> &caster_aura_applys);
+
+	//Target Aura Apply
+	int get_num_target_aura_applys();
+	void set_num_target_aura_applys(int value);
+
+	Ref<Aura> get_target_aura_apply(int index) const;
+	void set_target_aura_apply(int index, Ref<Aura> target_aura_apply);
+
+	Vector<Variant> get_target_aura_applys();
+	void set_target_aura_applys(const Vector<Variant> &target_aura_applys);
+
+	//Apply Auras On Learn
+	int get_num_on_learn_auras();
+	void set_num_on_learn_auras(int value);
+
+	Ref<Aura> get_on_learn_aura(int index) const;
+	void set_on_learn_aura(int index, Ref<Aura> on_learn_aura);
+
+	Vector<Variant> get_on_learn_auras();
+	void set_on_learn_auras(const Vector<Variant> &on_learn_auras);
+
+	//Range
 	bool get_has_range();
 	void set_has_range(bool value);
 
@@ -322,15 +341,9 @@ private:
 	SpellTargetType _target_type;
 	TargetRelationType _target_relation_type;
 
-	Ref<Aura> *_caster_aura_apply_ref;
-	Ref<Aura> *_caster_aura_apply2_ref;
-	Ref<Aura> *_target_aura_apply_ref;
-	Ref<Aura> *_target_aura_apply2_ref;
-
-	Aura *_caster_aura_apply;
-	Aura *_caster_aura_apply2;
-	Aura *_target_aura_apply;
-	Aura *_target_aura_apply2;
+	Vector<Ref<Aura> > _caster_aura_applys;
+	Vector<Ref<Aura> > _target_aura_applys;
+	Vector<Ref<Aura> > _on_learn_auras;
 
 	int _level;
 	int _rank;
