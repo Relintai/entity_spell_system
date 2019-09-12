@@ -702,6 +702,40 @@ void EntityData::son_gcd_finished_bind(Node *entity) {
 	son_gcd_finished(e);
 }
 
+
+void EntityData::son_xp_gained(Entity *entity, int value) {
+	if (has_method("_son_xp_gained"))
+		call("_son_xp_gained", entity, value);
+	else if (_inherits.is_valid())
+		_inherits->son_xp_gained(entity, value);
+}
+void EntityData::son_xp_gained_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	son_xp_gained(e, value);
+}
+
+void EntityData::son_level_up(Entity *entity, int value) {
+	if (has_method("_son_level_up"))
+		call("_son_level_up", entity);
+	else if (_inherits.is_valid())
+		_inherits->son_level_up(entity, value);
+}
+void EntityData::son_level_up_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	son_level_up(e, value);
+}
+
+
 //Clientside Event Handlers
 void EntityData::con_cast_failed(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
@@ -890,6 +924,38 @@ void EntityData::con_gcd_finished_bind(Node *entity) {
 	con_gcd_finished(e);
 }
 
+void EntityData::con_xp_gained(Entity *entity, int value) {
+	if (has_method("_con_xp_gained"))
+		call("_con_xp_gained", entity, value);
+	else if (_inherits.is_valid())
+		_inherits->con_xp_gained(entity, value);
+}
+void EntityData::con_xp_gained_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	con_xp_gained(e, value);
+}
+
+void EntityData::con_level_up(Entity *entity, int value) {
+	if (has_method("_con_level_up"))
+		call("_con_level_up", entity);
+	else if (_inherits.is_valid())
+		_inherits->con_level_up(entity, value);
+}
+void EntityData::con_level_up_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	con_level_up(e, value);
+}
+
 void EntityData::sai_follow(Entity *entity) {
 	ERR_FAIL_COND(entity == NULL);
 
@@ -1011,6 +1077,9 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_gcd_started", "entity", "gcd"), &EntityData::son_gcd_started_bind);
 	ClassDB::bind_method(D_METHOD("son_gcd_finished", "entity"), &EntityData::son_gcd_finished_bind);
 
+	ClassDB::bind_method(D_METHOD("son_xp_gained", "entity", "value"), &EntityData::son_xp_gained_bind);
+	ClassDB::bind_method(D_METHOD("son_level_up", "entity", "value"), &EntityData::son_level_up_bind);
+
 	BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -1050,6 +1119,9 @@ void EntityData::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_gcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
 	BIND_VMETHOD(MethodInfo("_son_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
+	BIND_VMETHOD(MethodInfo("_son_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_son_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+
 	BIND_VMETHOD(MethodInfo("_setup_resources", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	//Clientside Event Handlers
@@ -1073,6 +1145,9 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_gcd_started", "entity", "gcd"), &EntityData::con_gcd_started_bind);
 	ClassDB::bind_method(D_METHOD("con_gcd_finished", "entity"), &EntityData::con_gcd_finished_bind);
 
+	ClassDB::bind_method(D_METHOD("con_xp_gained", "entity", "value"), &EntityData::con_xp_gained_bind);
+	ClassDB::bind_method(D_METHOD("con_level_up", "entity", "value"), &EntityData::con_level_up_bind);
+
 	BIND_VMETHOD(MethodInfo("_con_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_state_changed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -1092,6 +1167,9 @@ void EntityData::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_con_gcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
 	BIND_VMETHOD(MethodInfo("_con_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
+	BIND_VMETHOD(MethodInfo("_con_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_con_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
 	ClassDB::bind_method(D_METHOD("sai_follow", "entity"), &EntityData::sai_follow_bind);
 	ClassDB::bind_method(D_METHOD("sai_rest", "entity"), &EntityData::sai_rest_bind);

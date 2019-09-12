@@ -256,6 +256,9 @@ public:
 	void son_gcd_finished(Ref<AuraData> data);
     
     void son_physics_process(Ref<AuraData> data);
+
+	void son_xp_gained(Ref<AuraData> data, int value);
+	void son_level_up(Ref<AuraData> data, int value);
 	
 	//Clientside Event Handlers
 	void con_cast_failed(Ref<AuraData> data, Ref<SpellCastInfo> info);
@@ -282,7 +285,10 @@ public:
 	
 	void con_gcd_started(Ref<AuraData> data, float gcd);
 	void con_gcd_finished(Ref<AuraData> data);
-    
+
+	void con_xp_gained(Ref<AuraData> data, int value);
+	void con_level_up(Ref<AuraData> data, int value);
+
 	//Calculations / Queries
 	void setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
 

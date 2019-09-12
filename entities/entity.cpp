@@ -173,7 +173,6 @@ void Entity::setc_xp(int value) {
 	_c_xp = value;
 }
 
-
 int Entity::gets_money() {
 	return _s_money;
 }
@@ -189,7 +188,6 @@ int Entity::getc_money() {
 void Entity::setc_money(int value) {
 	_c_money = value;
 }
-
 
 Ref<EntityData> Entity::getc_entity_data() {
 	return _c_entity_data;
@@ -208,7 +206,7 @@ Ref<EntityData> Entity::gets_entity_data() {
 void Entity::sets_entity_data(Ref<EntityData> value) {
 	_s_entity_data = value;
 
-    setup();
+	setup();
 
 	emit_signal("sentity_data_changed", value);
 
@@ -216,27 +214,26 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 }
 
 void Entity::setup() {
-    if (has_method("_setup")) {
-        call("_setup");
-    }
+	if (has_method("_setup")) {
+		call("_setup");
+	}
 }
 
 void Entity::_setup() {
-    if (_s_entity_data.is_valid()) {
+	if (_s_entity_data.is_valid()) {
 		_s_entity_data->setup_resources(this);
 		sinitialize_stats();
 		sets_entity_data_id(_s_entity_data->get_id());
-        
-        
-        sets_entity_type(_s_entity_data->get_entity_type());
-        sets_immunity_flags(_s_entity_data->get_immunity_flags());
-        sets_entity_flags(_s_entity_data->get_entity_flags());
+
+		sets_entity_type(_s_entity_data->get_entity_type());
+		sets_immunity_flags(_s_entity_data->get_immunity_flags());
+		sets_entity_flags(_s_entity_data->get_entity_flags());
 
 		if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_NONE)
 			sets_entity_controller(_s_entity_data->get_entity_controller());
 
-        sets_player_name(_s_entity_data->get_entity_name());
-        sets_money(_s_entity_data->get_money());
+		sets_player_name(_s_entity_data->get_entity_name());
+		sets_money(_s_entity_data->get_money());
 	}
 
 	if (!Engine::get_singleton()->is_editor_hint())
@@ -263,9 +260,9 @@ Entity::Entity() {
 	_c_xp = 0;
 
 	_s_send_flag = 0;
-    
-    _c_money = 0;
-    _s_money = 0;
+
+	_c_money = 0;
+	_s_money = 0;
 
 	_s_player_name = "";
 	_c_player_name = "";
@@ -295,13 +292,13 @@ Entity::Entity() {
 	_s_entity_type = EntityEnums::ENITIY_TYPE_NONE;
 	_c_entity_type = EntityEnums::ENITIY_TYPE_NONE;
 
-    _s_immunity_flags = 0;
-    
-    _s_entity_flags = 0;
-    _c_entity_flags = 0;
-    
-    _s_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
-    
+	_s_immunity_flags = 0;
+
+	_s_entity_flags = 0;
+	_c_entity_flags = 0;
+
+	_s_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
+
 	_s_target = NULL;
 	_c_target = NULL;
 
@@ -428,19 +425,19 @@ Entity::Entity() {
 }
 
 Entity::~Entity() {
-    //Ref<EntityData> _s_entity_data;
+	//Ref<EntityData> _s_entity_data;
 	//Ref<EntityData> _c_entity_data;
-    
-    _s_resources.clear();
+
+	_s_resources.clear();
 	_c_resources.clear();
-    
-    //Ref<SpellCastInfo> _s_spell_cast_info;
+
+	//Ref<SpellCastInfo> _s_spell_cast_info;
 	//Ref<SpellCastInfo> _c_spell_cast_info;
-    
-    _s_auras.clear();
+
+	_s_auras.clear();
 	_c_auras.clear();
-    
-    _s_cooldowns.clear();
+
+	_s_cooldowns.clear();
 	_c_cooldowns.clear();
 
 	_s_cooldown_map.clear();
@@ -448,8 +445,8 @@ Entity::~Entity() {
 
 	_s_category_cooldowns.clear();
 	_c_category_cooldowns.clear();
-    
-    _s_data.clear();
+
+	_s_data.clear();
 	_c_data.clear();
 }
 
@@ -754,21 +751,21 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	}
 
 	son_before_damage_hit(info);
-    
-    if (info->get_immune()) {
-        SEND_RPC(rpc("con_damage_dealt", info), con_damage_dealt(info));
-        return;
-    }
-	
+
+	if (info->get_immune()) {
+		SEND_RPC(rpc("con_damage_dealt", info), con_damage_dealt(info));
+		return;
+	}
+
 	//send it through the passive damage reductions pipeline
 	sapply_passives_damage_receive(info);
-    
+
 	//send it through the onbeforehit handler
 	son_before_damage(info);
-    
+
 	//send it throug the onhit pipeliine
 	son_hit(info);
-    
+
 	son_damage_receive(info);
 
 	int h = get_health()->gets_current() - info->get_damage();
@@ -824,17 +821,17 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 	if (gets_is_dead()) {
 		return;
 	}
-	
+
 	son_before_heal_hit(info);
-	
+
 	if (info->get_immune()) {
-        SEND_RPC(rpc("con_heal_dealt", info), con_heal_dealt(info));
-        return;
-    }
+		SEND_RPC(rpc("con_heal_dealt", info), con_heal_dealt(info));
+		return;
+	}
 
 	//send it through the passive damage reductions pipeline
 	sapply_passives_heal_receive(info);
-    
+
 	//send it through the onbeforehit handler
 	son_before_heal(info);
 
@@ -871,23 +868,50 @@ void Entity::sdeal_heal_to(Ref<SpellHealInfo> info) {
 
 //Interactions
 bool Entity::cans_interact() {
-    if (!_s_entity_data.is_valid()) {
-        return false;
-    }
-    
-    return _s_entity_data->cans_interact(this);
+	if (!_s_entity_data.is_valid()) {
+		return false;
+	}
+
+	return _s_entity_data->cans_interact(this);
 }
 
 void Entity::sinteract() {
-    if (!cans_interact()) {
-        return;
-    }
-    
-    _s_entity_data->sinteract(this);
+	if (!cans_interact()) {
+		return;
+	}
+
+	_s_entity_data->sinteract(this);
 }
 
 void Entity::crequest_interact() {
-    sinteract();
+	sinteract();
+}
+
+//XP Operations
+void Entity::adds_xp(int value) {
+	_s_xp += value;
+
+	son_xp_gained(value);
+
+	SEND_RPC(rpc("addc_xp", value), addc_xp(value));
+}
+void Entity::addc_xp(int value) {
+	_c_xp += value;
+
+	con_xp_gained(value);
+}
+
+void Entity::s_levelup(int value) {
+	_s_level += value;
+
+	son_level_up(value);
+
+	SEND_RPC(rpc("c_levelup", value), c_levelup(value));
+}
+void Entity::c_levelup(int value) {
+	_s_level += value;
+
+	con_level_up(value);
 }
 
 void Entity::resurrect() {
@@ -1464,6 +1488,36 @@ void Entity::son_physics_process() {
 		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_physics_process(ad);
+	}
+}
+
+void Entity::son_xp_gained(int value) {
+	if (_s_entity_data.is_valid()) {
+		_s_entity_data->son_xp_gained(this, value);
+	}
+
+	if (has_method("_son_xp_gained"))
+		call("_son_xp_gained", value);
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->son_xp_gained(ad, value);
+	}
+}
+
+void Entity::son_level_up(int value) {
+	if (_s_entity_data.is_valid()) {
+		_s_entity_data->son_level_up(this, _s_level);
+	}
+
+	if (has_method("_son_level_up"))
+		call("_son_level_up", _s_level);
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->son_level_up(ad, _s_level);
 	}
 }
 
@@ -2056,6 +2110,36 @@ void Entity::con_dealt_heal(Ref<SpellHealInfo> info) {
 
 	//the current c health should probably be set here.
 	emit_signal("con_dealt_heal", this, info);
+}
+
+void Entity::con_xp_gained(int value) {
+	if (_s_entity_data.is_valid()) {
+		_s_entity_data->con_xp_gained(this, value);
+	}
+
+	if (has_method("_con_xp_gained"))
+		call("_con_xp_gained", value);
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->con_xp_gained(ad, value);
+	}
+}
+
+void Entity::con_level_up(int value) {
+	if (_s_entity_data.is_valid()) {
+		_s_entity_data->con_level_up(this, value);
+	}
+
+	if (has_method("_con_level_up"))
+		call("_con_level_up", value);
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->con_level_up(ad, value);
+	}
 }
 
 ////    Casting System    ////
@@ -2700,43 +2784,40 @@ void Entity::creceive_rank(int talentID, int rank) {
 //	return NULL;
 //}
 
-
 ////    DATA    ////
 void Entity::adds_data(Ref<EntityDataContainer> data) {
 	_s_data.push_back(data);
 }
 void Entity::removes_data(int index) {
-    ERR_FAIL_INDEX(index, _s_data.size());
-    
-    _s_data.remove(index);
+	ERR_FAIL_INDEX(index, _s_data.size());
+
+	_s_data.remove(index);
 }
 Ref<EntityDataContainer> Entity::gets_data(int index) {
 	ERR_FAIL_INDEX_V(index, _s_data.size(), Ref<EntityDataContainer>());
-    
-    return _s_data.get(index);
+
+	return _s_data.get(index);
 }
 int Entity::gets_data_count() {
 	return _s_data.size();
 }
 
-
 void Entity::addc_data(Ref<EntityDataContainer> data) {
 	_c_data.push_back(data);
 }
 void Entity::removec_data(int index) {
-    ERR_FAIL_INDEX(index, _c_data.size());
-    
-    _c_data.remove(index);
+	ERR_FAIL_INDEX(index, _c_data.size());
+
+	_c_data.remove(index);
 }
 Ref<EntityDataContainer> Entity::getc_data(int index) {
-	ERR_FAIL_INDEX_V(index, _c_data.size(),Ref<EntityDataContainer>());
-    
-    return _c_data.get(index);
+	ERR_FAIL_INDEX_V(index, _c_data.size(), Ref<EntityDataContainer>());
+
+	return _c_data.get(index);
 }
 int Entity::getc_data_count() {
 	return _c_data.size();
 }
-
 
 void Entity::loaded() {
 	//sendstate = true;
@@ -2912,9 +2993,9 @@ void Entity::_notification(int p_what) {
 		case NOTIFICATION_PROCESS: {
 			update(get_process_delta_time());
 		} break;
-        case NOTIFICATION_PHYSICS_PROCESS: {
-            son_physics_process();
-        }break;
+		case NOTIFICATION_PHYSICS_PROCESS: {
+			son_physics_process();
+		} break;
 		case NOTIFICATION_EXIT_TREE: {
 
 		} break;
@@ -2944,7 +3025,7 @@ void Entity::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("sdied", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("cdied", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-    
+
 	//SpellCastSignals
 	ADD_SIGNAL(MethodInfo("scast_started", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("scast_failed", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -2971,13 +3052,19 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("caura_removed_expired", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	//ADD_SIGNAL(MethodInfo("caura_refreshed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
-    //setup
-    BIND_VMETHOD(MethodInfo("_setup", PropertyInfo(Variant::OBJECT, "entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData")));
-    
-    ClassDB::bind_method(D_METHOD("setup"), &Entity::setup);
-    ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
-    
-    //binds
+	ADD_SIGNAL(MethodInfo("son_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("son_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+
+	ADD_SIGNAL(MethodInfo("con_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("con_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+
+	//setup
+	BIND_VMETHOD(MethodInfo("_setup", PropertyInfo(Variant::OBJECT, "entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData")));
+
+	ClassDB::bind_method(D_METHOD("setup"), &Entity::setup);
+	ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
+
+	//binds
 	ClassDB::bind_method(D_METHOD("sdie"), &Entity::sdie);
 	ClassDB::bind_method(D_METHOD("cdie"), &Entity::cdie);
 
@@ -2992,7 +3079,7 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_cast_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_finished_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
-    BIND_VMETHOD(MethodInfo("_son_before_damage_hit", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_before_damage_hit", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_hit", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
 	BIND_VMETHOD(MethodInfo("_son_before_damage", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
@@ -3000,7 +3087,7 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_dealt_damage", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_damage_dealt", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
-    BIND_VMETHOD(MethodInfo("_son_before_heal_hit", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_son_before_heal_hit", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_heal", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_son_heal_receive", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_son_dealt_heal", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
@@ -3014,17 +3101,20 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_gcd_started", PropertyInfo(Variant::REAL, "gcd")));
 	BIND_VMETHOD(MethodInfo("_son_gcd_finished"));
 
+	BIND_VMETHOD(MethodInfo("_son_xp_gained", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_son_level_up", PropertyInfo(Variant::INT, "value")));
+
 	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &Entity::son_before_aura_applied);
 	ClassDB::bind_method(D_METHOD("son_after_aura_applied", "data"), &Entity::son_after_aura_applied);
 
-    ClassDB::bind_method(D_METHOD("son_before_damage_hit", "data"), &Entity::son_before_damage_hit);
+	ClassDB::bind_method(D_METHOD("son_before_damage_hit", "data"), &Entity::son_before_damage_hit);
 	ClassDB::bind_method(D_METHOD("son_hit", "data"), &Entity::son_hit);
 	ClassDB::bind_method(D_METHOD("son_before_damage", "data"), &Entity::son_before_damage);
 	ClassDB::bind_method(D_METHOD("son_damage_receive", "data"), &Entity::son_damage_receive);
 	ClassDB::bind_method(D_METHOD("son_dealt_damage", "data"), &Entity::son_dealt_damage);
 	ClassDB::bind_method(D_METHOD("son_damage_dealt", "data"), &Entity::son_damage_dealt);
 
-    ClassDB::bind_method(D_METHOD("son_before_heal_hit", "data"), &Entity::son_before_heal_hit);
+	ClassDB::bind_method(D_METHOD("son_before_heal_hit", "data"), &Entity::son_before_heal_hit);
 	ClassDB::bind_method(D_METHOD("son_before_heal", "data"), &Entity::son_before_heal);
 	ClassDB::bind_method(D_METHOD("son_heal_receive", "data"), &Entity::son_heal_receive);
 	ClassDB::bind_method(D_METHOD("son_dealt_heal", "data"), &Entity::son_dealt_heal);
@@ -3041,6 +3131,10 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("son_gcd_started"), &Entity::son_gcd_started);
 	ClassDB::bind_method(D_METHOD("son_gcd_finished"), &Entity::son_gcd_finished);
+
+	ClassDB::bind_method(D_METHOD("son_xp_gained", "value"), &Entity::son_xp_gained);
+	ClassDB::bind_method(D_METHOD("son_level_up", "value"), &Entity::son_level_up);
+
 
 	//Clientside EventHandlers
 	BIND_VMETHOD(MethodInfo("_con_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -3068,6 +3162,9 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_gcd_started", PropertyInfo(Variant::REAL, "gcd")));
 	BIND_VMETHOD(MethodInfo("_con_gcd_finished"));
 
+	BIND_VMETHOD(MethodInfo("_con_xp_gained", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_con_level_up", PropertyInfo(Variant::INT, "value")));
+
 	ClassDB::bind_method(D_METHOD("con_cast_failed", "info"), &Entity::con_cast_failed);
 	ClassDB::bind_method(D_METHOD("con_cast_started", "info"), &Entity::con_cast_started);
 	ClassDB::bind_method(D_METHOD("con_cast_state_changed", "info"), &Entity::con_cast_state_changed);
@@ -3093,6 +3190,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_gcd_started"), &Entity::con_gcd_started);
 	ClassDB::bind_method(D_METHOD("con_gcd_finished"), &Entity::con_gcd_finished);
 
+	ClassDB::bind_method(D_METHOD("con_xp_gained", "value"), &Entity::con_xp_gained);
+	ClassDB::bind_method(D_METHOD("con_level_up", "value"), &Entity::con_level_up);
+
 	//Modifiers/Requesters
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Entity::sapply_passives_damage_receive);
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_deal", "data"), &Entity::sapply_passives_damage_deal);
@@ -3108,11 +3208,17 @@ void Entity::_bind_methods() {
 	//Heal Operations
 	ClassDB::bind_method(D_METHOD("stake_heal", "data"), &Entity::stake_heal);
 	ClassDB::bind_method(D_METHOD("sdeal_heal_to", "data"), &Entity::sdeal_heal_to);
-    
-    //Interactions
-    ClassDB::bind_method(D_METHOD("cans_interact"), &Entity::cans_interact);
-    ClassDB::bind_method(D_METHOD("sinteract"), &Entity::sinteract);
-    ClassDB::bind_method(D_METHOD("crequest_interact"), &Entity::crequest_interact);
+
+	//Interactions
+	ClassDB::bind_method(D_METHOD("cans_interact"), &Entity::cans_interact);
+	ClassDB::bind_method(D_METHOD("sinteract"), &Entity::sinteract);
+	ClassDB::bind_method(D_METHOD("crequest_interact"), &Entity::crequest_interact);
+
+	//XP Operations
+	ClassDB::bind_method(D_METHOD("adds_xp", "value"), &Entity::adds_xp);
+	ClassDB::bind_method(D_METHOD("addc_xp", "value"), &Entity::addc_xp);
+	ClassDB::bind_method(D_METHOD("s_levelup", "value"), &Entity::s_levelup);
+	ClassDB::bind_method(D_METHOD("c_levelup", "value"), &Entity::c_levelup);
 
 	//Aura Manipulation
 	ClassDB::bind_method(D_METHOD("sadd_aura", "aura"), &Entity::sadd_aura);
@@ -3163,20 +3269,20 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_entity_type"), &Entity::getc_entity_type);
 	ClassDB::bind_method(D_METHOD("setc_entity_type", "value"), &Entity::sets_entity_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "setc_entity_type", "getc_entity_type");
-    
-    ClassDB::bind_method(D_METHOD("gets_immunity_flags"), &Entity::gets_immunity_flags);
+
+	ClassDB::bind_method(D_METHOD("gets_immunity_flags"), &Entity::gets_immunity_flags);
 	ClassDB::bind_method(D_METHOD("sets_immunity_flags", "value"), &Entity::sets_immunity_flags);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "simmunity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_IMMUNITY_FLAGS), "sets_immunity_flags", "gets_immunity_flags");
-    
-    ClassDB::bind_method(D_METHOD("gets_entity_flags"), &Entity::gets_entity_flags);
+
+	ClassDB::bind_method(D_METHOD("gets_entity_flags"), &Entity::gets_entity_flags);
 	ClassDB::bind_method(D_METHOD("sets_entity_flags", "value"), &Entity::sets_entity_flags);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_FLAGS), "sets_entity_flags", "gets_entity_flags");
-    
-    ClassDB::bind_method(D_METHOD("getc_entity_flags"), &Entity::getc_entity_flags);
+
+	ClassDB::bind_method(D_METHOD("getc_entity_flags"), &Entity::getc_entity_flags);
 	ClassDB::bind_method(D_METHOD("setc_entity_flags", "value"), &Entity::setc_entity_flags);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_FLAGS), "setc_entity_flags", "getc_entity_flags");
-    
-    ClassDB::bind_method(D_METHOD("gets_entity_controller"), &Entity::gets_entity_controller);
+
+	ClassDB::bind_method(D_METHOD("gets_entity_controller"), &Entity::gets_entity_controller);
 	ClassDB::bind_method(D_METHOD("sets_entity_controller", "value"), &Entity::sets_entity_controller);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "sets_entity_controller", "gets_entity_controller");
 
@@ -3203,12 +3309,12 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_xp"), &Entity::getc_xp);
 	ClassDB::bind_method(D_METHOD("setc_xp", "value"), &Entity::setc_xp);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "c_xp"), "setc_xp", "getc_xp");
-    
-    ClassDB::bind_method(D_METHOD("gets_money"), &Entity::gets_money);
+
+	ClassDB::bind_method(D_METHOD("gets_money"), &Entity::gets_money);
 	ClassDB::bind_method(D_METHOD("sets_money", "value"), &Entity::sets_money);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "smoney"), "sets_money", "gets_money");
-    
-    ClassDB::bind_method(D_METHOD("getc_money"), &Entity::getc_money);
+
+	ClassDB::bind_method(D_METHOD("getc_money"), &Entity::getc_money);
 	ClassDB::bind_method(D_METHOD("setc_money", "value"), &Entity::setc_money);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cmoney"), "setc_money", "getc_money");
 
@@ -3274,18 +3380,18 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gets_global_cooldown"), &Entity::gets_global_cooldown);
 	ClassDB::bind_method(D_METHOD("sstart_global_cooldown", "value"), &Entity::sstart_global_cooldown);
 	ClassDB::bind_method(D_METHOD("cstart_global_cooldown", "value"), &Entity::cstart_global_cooldown);
-    
-    //Data
-    ClassDB::bind_method(D_METHOD("adds_data", "data"), &Entity::adds_data);
-    ClassDB::bind_method(D_METHOD("removes_data", "index"), &Entity::removes_data);
-    ClassDB::bind_method(D_METHOD("gets_data", "index"), &Entity::gets_data);
-    ClassDB::bind_method(D_METHOD("gets_data_count"), &Entity::gets_data_count);
 
-    ClassDB::bind_method(D_METHOD("addc_data", "data"), &Entity::addc_data);
-    ClassDB::bind_method(D_METHOD("removec_data", "index"), &Entity::removec_data);
-    ClassDB::bind_method(D_METHOD("getc_data", "index"), &Entity::getc_data);
-    ClassDB::bind_method(D_METHOD("getc_data_count"), &Entity::getc_data_count);
-    
+	//Data
+	ClassDB::bind_method(D_METHOD("adds_data", "data"), &Entity::adds_data);
+	ClassDB::bind_method(D_METHOD("removes_data", "index"), &Entity::removes_data);
+	ClassDB::bind_method(D_METHOD("gets_data", "index"), &Entity::gets_data);
+	ClassDB::bind_method(D_METHOD("gets_data_count"), &Entity::gets_data_count);
+
+	ClassDB::bind_method(D_METHOD("addc_data", "data"), &Entity::addc_data);
+	ClassDB::bind_method(D_METHOD("removec_data", "index"), &Entity::removec_data);
+	ClassDB::bind_method(D_METHOD("getc_data", "index"), &Entity::getc_data);
+	ClassDB::bind_method(D_METHOD("getc_data_count"), &Entity::getc_data_count);
+
 	//States
 	ADD_SIGNAL(MethodInfo("sstate_changed", PropertyInfo(Variant::INT, "value")));
 	ADD_SIGNAL(MethodInfo("cstate_changed", PropertyInfo(Variant::INT, "value")));
