@@ -115,32 +115,112 @@ void ItemTemplate::set_bag_size(const int size) {
 	_bag_size = size;
 }
 
-Ref<Spell> ItemTemplate::get_spell() const {
-	if (_spell)
-		return (*_spell);
+////    TEACHES    ////
 
-	return Ref<Spell>(NULL);
+int ItemTemplate::get_num_teaches_spells() {
+	return _teaches_spells.size();
+}
+void ItemTemplate::set_num_teaches_spells(int value) {
+	_teaches_spells.resize(value);
 }
 
-void ItemTemplate::set_spell(const Ref<Spell> spell) {
-	if (_spell)
-		memdelete(_spell);
+Ref<Spell> ItemTemplate::get_teaches_spell(int index) const {
+	ERR_FAIL_INDEX_V(index, _teaches_spells.size(), Ref<Spell>());
 
-	_spell = memnew(Ref<Spell>(spell));
+	return _teaches_spells[index];
+}
+void ItemTemplate::set_teaches_spell(int index, Ref<Spell> spell) {
+	ERR_FAIL_INDEX(index, _teaches_spells.size());
+
+	_teaches_spells.set(index, Ref<Spell>(spell));
 }
 
-Ref<Aura> ItemTemplate::get_aura(const int index) const {
-	if (_auras[index])
-		return (*_auras[index]);
+Vector<Variant> ItemTemplate::get_teaches_spells() {
+	Vector<Variant> r;
+	for (int i = 0; i < _teaches_spells.size(); i++) {
+		r.push_back(_teaches_spells[i].get_ref_ptr());
+	}
+	return r;
+}
+void ItemTemplate::set_teaches_spells(const Vector<Variant> &spells) {
+	_teaches_spells.clear();
+	for (int i = 0; i < spells.size(); i++) {
+		Ref<Spell> spell = Ref<Spell>(spells[i]);
 
-	return Ref<Aura>(NULL);
+		_teaches_spells.push_back(spell);
+	}
 }
 
-void ItemTemplate::set_aura(const int index, const Ref<Aura> aura) {
-	if (_auras[index])
-		memdelete(_auras[index]);
+////    GRANTS SPELLS    ////
 
-	_auras[index] = memnew(Ref<Aura>(aura));
+int ItemTemplate::get_num_grants_spells() {
+	return _grants_spells.size();
+}
+void ItemTemplate::set_num_grants_spells(int value) {
+	_grants_spells.resize(value);
+}
+
+Ref<Spell> ItemTemplate::get_grants_spell(int index) const {
+	ERR_FAIL_INDEX_V(index, _grants_spells.size(), Ref<Spell>());
+
+	return _grants_spells[index];
+}
+void ItemTemplate::set_grants_spell(int index, Ref<Spell> spell) {
+	ERR_FAIL_INDEX(index, _grants_spells.size());
+
+	_grants_spells.set(index, Ref<Spell>(spell));
+}
+
+Vector<Variant> ItemTemplate::get_grants_spells() {
+	Vector<Variant> r;
+	for (int i = 0; i < _grants_spells.size(); i++) {
+		r.push_back(_grants_spells[i].get_ref_ptr());
+	}
+	return r;
+}
+void ItemTemplate::set_grants_spells(const Vector<Variant> &spells) {
+	_grants_spells.clear();
+	for (int i = 0; i < spells.size(); i++) {
+		Ref<Spell> spell = Ref<Spell>(spells[i]);
+
+		_grants_spells.push_back(spell);
+	}
+}
+
+////    AURAS    ////
+
+int ItemTemplate::get_num_auras() {
+	return _auras.size();
+}
+void ItemTemplate::set_num_auras(int value) {
+	_auras.resize(value);
+}
+
+Ref<Aura> ItemTemplate::get_aura(int index) const {
+	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>());
+
+	return _auras[index];
+}
+void ItemTemplate::set_aura(int index, Ref<Aura> aura) {
+	ERR_FAIL_INDEX(index, _auras.size());
+
+	_auras.set(index, Ref<Aura>(aura));
+}
+
+Vector<Variant> ItemTemplate::get_auras() {
+	Vector<Variant> r;
+	for (int i = 0; i < _auras.size(); i++) {
+		r.push_back(_auras[i].get_ref_ptr());
+	}
+	return r;
+}
+void ItemTemplate::set_auras(const Vector<Variant> &auras) {
+	_auras.clear();
+	for (int i = 0; i < auras.size(); i++) {
+		Ref<Aura> spell = Ref<Aura>(auras[i]);
+
+		_auras.push_back(spell);
+	}
 }
 
 int ItemTemplate::get_item_stat_modifier_count() const {
@@ -272,12 +352,6 @@ ItemTemplate::ItemTemplate() {
 	_inventory_size_x = 0;
 	_inventory_size_y = 0;
 	_bag_size = 0;
-	
-	_spell = NULL;
-
-	for (int i = 0; i < MAX_AURAS; ++i) {
-		_auras[i] = NULL;
-	}
 
 	for (int i = 0; i < MAX_ITEM_STAT_MOD; ++i) {
 		_modifiers[i] = Ref<ItemTemplateStatModifier>(memnew(ItemTemplateStatModifier()));
@@ -285,14 +359,9 @@ ItemTemplate::ItemTemplate() {
 }
 
 ItemTemplate::~ItemTemplate() {
-
-	if (_spell)
-		memdelete(_spell);
-
-	for (int i = 0; i < MAX_AURAS; ++i) {
-		if (_auras[i])
-			memdelete(_auras[i]);
-	}
+	_teaches_spells.clear();
+	_grants_spells.clear();
+	_auras.clear();
 }
 
 void ItemTemplate::_validate_property(PropertyInfo &property) const {
@@ -369,22 +438,49 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_bag_size"), &ItemTemplate::get_bag_size);
 	ClassDB::bind_method(D_METHOD("set_bag_size", "size"), &ItemTemplate::set_bag_size);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "bag_size"), "set_bag_size", "get_bag_size");
-	
-	ClassDB::bind_method(D_METHOD("get_spell"), &ItemTemplate::get_spell);
-	ClassDB::bind_method(D_METHOD("set_spell", "spell"), &ItemTemplate::set_spell);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_spell", "get_spell");
+
+
+	////    Teaches    ////
+	ADD_GROUP("Teaches Spells", "teaches_spells");
+	ClassDB::bind_method(D_METHOD("get_num_teaches_spells"), &ItemTemplate::get_num_teaches_spells);
+	ClassDB::bind_method(D_METHOD("set_num_teaches_spells", "value"), &ItemTemplate::set_num_teaches_spells);
+
+	ClassDB::bind_method(D_METHOD("get_teaches_spell", "index"), &ItemTemplate::get_teaches_spell);
+	ClassDB::bind_method(D_METHOD("set_teaches_spell", "index", "spell"), &ItemTemplate::set_teaches_spell);
+
+	ClassDB::bind_method(D_METHOD("get_teaches_spells"), &ItemTemplate::get_teaches_spells);
+	ClassDB::bind_method(D_METHOD("set_teaches_spells", "spells"), &ItemTemplate::set_teaches_spells);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "teaches_spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_teaches_spells", "get_teaches_spells");
+
+	////    Grants Spells    ////
+	ADD_GROUP("Grants Spells", "grants_spells");
+	ClassDB::bind_method(D_METHOD("get_num_grants_spells"), &ItemTemplate::get_num_grants_spells);
+	ClassDB::bind_method(D_METHOD("set_num_grants_spells", "value"), &ItemTemplate::set_num_grants_spells);
+
+	ClassDB::bind_method(D_METHOD("get_grants_spell", "index"), &ItemTemplate::get_grants_spell);
+	ClassDB::bind_method(D_METHOD("set_grants_spell", "index", "spell"), &ItemTemplate::set_grants_spell);
+
+	ClassDB::bind_method(D_METHOD("get_grants_spells"), &ItemTemplate::get_grants_spells);
+	ClassDB::bind_method(D_METHOD("set_grants_spells", "spells"), &ItemTemplate::set_grants_spells);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "grants_spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_grants_spells", "get_grants_spells");
+
+	////    Auras    ////
+	ADD_GROUP("Auras", "auras");
+	ClassDB::bind_method(D_METHOD("get_num_auras"), &ItemTemplate::get_num_auras);
+	ClassDB::bind_method(D_METHOD("set_num_auras", "value"), &ItemTemplate::set_num_auras);
 
 	ClassDB::bind_method(D_METHOD("get_aura", "index"), &ItemTemplate::get_aura);
 	ClassDB::bind_method(D_METHOD("set_aura", "index", "aura"), &ItemTemplate::set_aura);
 
-	for (int i = 0; i < MAX_AURAS; ++i) {
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "aura_" + itos(i + 1), PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_aura", "get_aura", i);
-	}
+	ClassDB::bind_method(D_METHOD("get_auras"), &ItemTemplate::get_auras);
+	ClassDB::bind_method(D_METHOD("set_auras", "spells"), &ItemTemplate::set_auras);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
 
 	//StatMods Property binds
+	ADD_GROUP("Item Stat Modifiers", "item_stat_modifier");
 	ClassDB::bind_method(D_METHOD("get_item_stat_modifier_count"), &ItemTemplate::get_item_stat_modifier_count);
 	ClassDB::bind_method(D_METHOD("set_item_stat_modifier_count", "count"), &ItemTemplate::set_item_stat_modifier_count);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "set_item_stat_modifier_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_ITEM_STAT_MOD), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_item_stat_modifier_count", "get_item_stat_modifier_count");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "item_stat_modifier_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_ITEM_STAT_MOD), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_item_stat_modifier_count", "get_item_stat_modifier_count");
 
 	ClassDB::bind_method(D_METHOD("get_item_stat_id", "index"), &ItemTemplate::get_item_stat_id);
 	ClassDB::bind_method(D_METHOD("set_item_stat_id", "index", "value"), &ItemTemplate::set_item_stat_id);
@@ -414,15 +510,12 @@ void ItemTemplate::_bind_methods() {
 		ADD_PROPERTYI(PropertyInfo(Variant::INT, "Modifiers_" + itos(i) + "/stat_id", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_stat_id", "get_item_stat_id", i);
 
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/min_base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_min_base_mod", "get_item_min_base_mod", i);
-
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/max_base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_max_base_mod", "get_item_max_base_mod", i);
 
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/min_bonus_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_min_bonus_mod", "get_item_min_bonus_mod", i);
-
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/max_bonus_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_max_bonus_mod", "get_item_max_bonus_mod", i);
 
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/min_percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_min_percent_mod", "get_item_min_percent_mod", i);
-
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/max_percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_max_percent_mod", "get_item_max_percent_mod", i);
 
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/scaling_factor", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_scaling_factor", "get_item_scaling_factor", i);

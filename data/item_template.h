@@ -3,6 +3,7 @@
 
 #include "core/resource.h"
 #include "scene/resources/texture.h"
+#include "core/vector.h"
 
 #include "item_visual.h"
 #include "item_template_stat_modifier.h"
@@ -64,11 +65,36 @@ public:
 	int get_bag_size() const;
 	void set_bag_size(const int size);
 	
-	Ref<Spell> get_spell() const;
-	void set_spell(const Ref<Spell> spell);
+	//Teaches
+	int get_num_teaches_spells();
+	void set_num_teaches_spells(int value);
+
+	Ref<Spell> get_teaches_spell(int index) const;
+	void set_teaches_spell(int index, Ref<Spell> teaches_spell);
+
+	Vector<Variant> get_teaches_spells();
+	void set_teaches_spells(const Vector<Variant> &teaches_spells);
+
+	//Grants Spells
+	int get_num_grants_spells();
+	void set_num_grants_spells(int value);
+
+	Ref<Spell> get_grants_spell(int index) const;
+	void set_grants_spell(int index, Ref<Spell> grants_spell);
+
+	Vector<Variant> get_grants_spells();
+	void set_grants_spells(const Vector<Variant> &grants_spells);
+
+	//Auras
+	int get_num_auras();
+	void set_num_auras(int value);
 
 	Ref<Aura> get_aura(int index) const;
-	void set_aura(const int index, const Ref<Aura> aura);
+	void set_aura(int index, Ref<Aura> aura);
+
+	Vector<Variant> get_auras();
+	void set_auras(const Vector<Variant> &auras);
+
 
 	int get_item_stat_modifier_count() const;
 	void set_item_stat_modifier_count(const int value);
@@ -108,7 +134,6 @@ protected:
 private:
 	enum {
 		MAX_ITEM_STAT_MOD = 6,
-		MAX_AURAS = 5,
 	};
 
 	int _id;
@@ -133,8 +158,13 @@ private:
 	
 	int _bag_size;
 
-	Ref<Spell> *_spell;
-	Ref<Aura> *_auras[MAX_AURAS];
+	//Ref<Spell> *_spell;
+	//Ref<Aura> *_auras;
+
+	Vector<Ref<Spell> > _teaches_spells;
+	Vector<Ref<Spell> > _grants_spells;
+	Vector<Ref<Aura> > _auras;
+
 
 	int _modifier_count;
 	Ref<ItemTemplateStatModifier> _modifiers[MAX_ITEM_STAT_MOD];

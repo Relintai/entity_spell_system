@@ -1,5 +1,5 @@
-#ifndef TALENT_H
-#define TALENT_H
+#ifndef SKILL_H
+#define SKILL_H
 
 #include "core/resource.h"
 #include "core/ustring.h"
