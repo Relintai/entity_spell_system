@@ -117,8 +117,6 @@ class Entity : public KinematicBody {
 public:
 	void initialize(Ref<EntityCreateInfo> info);
 
-	void Update(); //old, remove
-
 	////    Base    ////
 
 	NodePath get_character_skeleton_path();
