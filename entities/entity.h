@@ -39,6 +39,8 @@
 
 #include "./data/entity_data_container.h"
 
+#include "./skills/entity_skill.h"
+
 class EntityData;
 class AuraData;
 class Spell;
@@ -468,6 +470,32 @@ public:
 	Ref<CategoryCooldown> getc_category_cooldown_index(int index);
 	int getc_category_cooldown_count();
 
+	//Known Spells
+	bool hass_spell(Ref<Spell> spell);
+	void adds_spell(Ref<Spell> spell);
+	void removes_spell(Ref<Spell> spell);
+	Ref<Spell> gets_spell(int index);
+	int gets_spell_count();
+
+	bool hasc_spell(Ref<Spell> spell);
+	void addc_spell(Ref<Spell> spell);
+	void removec_spell(Ref<Spell> spell);
+	Ref<Spell> getc_spell(int index);
+	int getc_spell_count();
+
+	//Skills
+	bool hass_skill(Ref<EntitySkill> skill);
+	void adds_skill(Ref<EntitySkill> skill);
+	void removes_skill(Ref<EntitySkill> skill);
+	Ref<EntitySkill> gets_skill(int skill);
+	int gets_skill_count();
+
+	bool hasc_skill(Ref<EntitySkill> skill);
+	void addc_skill(Ref<EntitySkill> skill);
+	void removec_skill(Ref<EntitySkill> skill);
+	Ref<EntitySkill> getc_skill(int index);
+	int getc_skill_count();
+
 	////    TargetComponent    ////
 
 	void crequest_target_change(NodePath path);
@@ -653,6 +681,18 @@ private:
 	////    Data    ////
 	Vector<Ref<EntityDataContainer> > _s_data;
 	Vector<Ref<EntityDataContainer> > _c_data;
+
+	////    Known Spells    ////
+	Vector<Ref<Spell> > _s_spells;
+	Vector<Ref<Spell> > _c_spells;
+
+	////    Skills    ////
+	Vector<Ref<EntitySkill> > _s_skills;
+	Vector<Ref<EntitySkill> > _c_skills;
+
+	////    Stat Allocations    ////
+	//int _unallocated_stats;
+	//int _stat_allocations[Stat::STAT_ID_TOTAL_STATS];
 };
 
 #endif

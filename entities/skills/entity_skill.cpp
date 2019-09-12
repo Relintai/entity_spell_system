@@ -5,6 +5,8 @@ int EntitySkill::get_skill_id() {
 }
 void EntitySkill::set_skill_id(int value) {
 	_skill_id = value;
+
+	emit_signal("skill_changed", Ref<EntitySkill>(this));
 }
 
 int EntitySkill::get_current() {
@@ -12,6 +14,8 @@ int EntitySkill::get_current() {
 }
 void EntitySkill::set_current(int value) {
 	_current = value;
+
+	emit_signal("skill_changed", Ref<EntitySkill>(this));
 }
 
 int EntitySkill::get_max() {
@@ -19,6 +23,8 @@ int EntitySkill::get_max() {
 }
 void EntitySkill::set_max(int value) {
 	_max = value;
+
+	emit_signal("skill_changed", Ref<EntitySkill>(this));
 }
 
 bool EntitySkill::get_disabled() {
@@ -26,6 +32,8 @@ bool EntitySkill::get_disabled() {
 }
 void EntitySkill::set_disabled(bool value) {
 	_disabled = value;
+
+	emit_signal("skill_changed", Ref<EntitySkill>(this));
 }
 
 EntitySkill::EntitySkill() {
@@ -36,6 +44,8 @@ EntitySkill::EntitySkill() {
 }
 
 void EntitySkill::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("skill_changed", PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
+
 	ClassDB::bind_method(D_METHOD("get_skill_id"), &EntitySkill::get_skill_id);
 	ClassDB::bind_method(D_METHOD("set_skill_id", "value"), &EntitySkill::set_skill_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "skill_id"), "set_skill_id", "get_skill_id");

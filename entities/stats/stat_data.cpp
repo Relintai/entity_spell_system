@@ -69,6 +69,8 @@ StatData::StatData() {
 	get_stat_data_enum(Stat::STAT_ID_BLOCK)->set_base(10);
 	get_stat_data_enum(Stat::STAT_ID_PARRY)->set_base(15);
 	get_stat_data_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION)->set_base(15);
+
+	get_stat_data_enum(Stat::STAT_ID_XP_RATE)->set_base(1);
 }
 
 void StatData::_bind_methods() {
