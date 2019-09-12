@@ -3218,7 +3218,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("adds_xp", "value"), &Entity::adds_xp);
 	ClassDB::bind_method(D_METHOD("addc_xp", "value"), &Entity::addc_xp);
 	ClassDB::bind_method(D_METHOD("s_levelup", "value"), &Entity::s_levelup);
-	ClassDB::bind_method(D_METHOD("c_levelup", "value"), &Entity::c_levelup);
+	ClassDB::bind_method(D_METHOD("c_levelup", "value"), &Entity::c_levelup); 
 
 	//Aura Manipulation
 	ClassDB::bind_method(D_METHOD("sadd_aura", "aura"), &Entity::sadd_aura);
