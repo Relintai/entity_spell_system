@@ -49,6 +49,10 @@ int Entity::gets_entity_data_id() {
 void Entity::sets_entity_data_id(int value) {
 	_s_class_id = value;
 
+	if (DataManager::get_instance() != NULL) {
+		sets_entity_data(DataManager::get_instance()->get_entity_data(value));
+	}
+
 	SEND_RPC(rpc("setc_entity_data_id", value), setc_entity_data_id(value));
 }
 
@@ -253,7 +257,7 @@ Dictionary Entity::_to_dict() {
 	////    PlayerData    ////
 
 	dict["guid"] = _s_guid;
-	dict["class_id"] = _s_class_id;
+	//dict["entity_data_id"] = _s_class_id;
 	dict["type"] = _s_type;
 	dict["gender"] = _s_gender;
 	dict["level"] = _s_level;
@@ -265,7 +269,7 @@ Dictionary Entity::_to_dict() {
 	else
 		dict["entity_data_id"] = 0;
 
-	dict["send_flag"] = _s_send_flag;
+	//dict["send_flag"] = _s_send_flag;
 	dict["player_name"] = _s_player_name;
 
 	////     Stats    ////
@@ -327,7 +331,6 @@ Dictionary Entity::_to_dict() {
 	dict["entity_flags"] = _s_entity_flags;
 	dict["entity_controller"] = _s_entity_controller;
 
-	
 	////    Cooldowns    ////
 
 	Dictionary cds;
@@ -337,8 +340,6 @@ Dictionary Entity::_to_dict() {
 	}
 
 	dict["cooldowns"] = cds;
-
-	Vector<Ref<CategoryCooldown> > _s_category_cooldowns;
 
 	Dictionary ccds;
 
@@ -351,8 +352,8 @@ Dictionary Entity::_to_dict() {
 	dict["active_category_cooldowns"] = _s_active_category_cooldowns;
 
 	////    Data    ////
-	Vector<Ref<EntityDataContainer> > _s_data;
-	Vector<Ref<EntityDataContainer> > _c_data;
+	//Vector<Ref<EntityDataContainer> > _s_data;
+	//Vector<Ref<EntityDataContainer> > _c_data;
 
 	////    Known Spells    ////
 
@@ -373,11 +374,156 @@ Dictionary Entity::_to_dict() {
 	}
 
 	dict["skills"] = skills;
-	
+
 	return dict;
 }
 void Entity::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
+
+	sets_guid(dict.get("guid", 0));
+	sets_guid(dict.get("guid", 0));
+
+	sets_entity_type((EntityEnums::EntityType)((int)dict.get("type", 0)));
+
+	sets_gender(dict.get("gender", 0));
+	sets_level(dict.get("level", 0));
+	sets_xp(dict.get("xp", 0));
+	sets_money(dict.get("money", 0));
+
+	sets_entity_data_id(dict.get("entity_data_id", 0));
+
+	sets_player_name(dict.get("player_name", ""));
+
+	////     Stats    ////
+
+	Dictionary stats = dict.get("stats", Dictionary());
+
+	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+		Ref<Stat> s = _stats[i];
+
+		s->from_dict(stats.get(i, Dictionary()));
+	}
+
+	////    Resources    ////
+
+	_s_resources.clear();
+	_c_resources.clear();
+
+	Dictionary rd = dict.get("resources", Dictionary());
+
+	for (int i = 0; i < rd.size(); ++i) {
+		Ref<EntityResource> r;
+		r.instance();
+
+		r->from_dict(rd.get(i, Dictionary()));
+
+		adds_resource(r);
+	}
+
+	////    GCD    ////
+
+	_s_gcd = dict.get("gcd", 0);
+	_c_gcd = _s_gcd;
+
+	////    States    ////
+
+	Dictionary statesd = dict.get("states", Dictionary());
+
+	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
+		_s_states[i] = statesd.get(i, 0);
+	}
+
+	_s_state = dict.get("state", Dictionary());
+	_c_state = _s_state;
+
+	//// AuraComponent    ////
+
+	_s_auras.clear();
+	_c_auras.clear();
+
+	Dictionary auras = dict.get("auras", Dictionary());
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> r;
+		r.instance();
+
+		r->from_dict(auras.get(i, Dictionary()));
+
+		_s_auras.push_back(r);
+		_c_auras.push_back(r);
+	}
+
+	sets_entity_type((EntityEnums::EntityType)((int)dict.get("entity_type", 0)));
+	sets_immunity_flags(dict.get("immunity_flags", 0));
+	sets_entity_flags(dict.get("entity_flags", 0));
+	sets_entity_controller((EntityEnums::EntityController)((int)dict.get("entity_controller", 0)));
+
+	////    Cooldowns    ////
+
+	_s_cooldowns.clear();
+	_c_cooldowns.clear();
+
+	Dictionary cds = dict.get("cooldowns", Dictionary());
+
+	for (int i = 0; i < cds.size(); ++i) {
+		Ref<Cooldown> cd;
+		cd.instance();
+
+		cd->from_dict(cds.get(i, Dictionary()));
+
+		_s_cooldowns.push_back(cd);
+		_c_cooldowns.push_back(cd);
+	}
+
+	Dictionary ccds = dict.get("category_cooldowns", Dictionary());
+
+	for (int i = 0; i < ccds.size(); ++i) {
+		Ref<CategoryCooldown> ccd;
+		ccd.instance();
+
+		ccd->from_dict(ccds.get(i, Dictionary()));
+
+		_s_category_cooldowns.push_back(ccd);
+		_c_category_cooldowns.push_back(ccd);
+	}
+
+	_s_active_category_cooldowns = dict.get("active_category_cooldowns", 0);
+	_c_active_category_cooldowns = _s_active_category_cooldowns;
+
+	////    Data    ////
+	//Vector<Ref<EntityDataContainer> > _s_data;
+	//Vector<Ref<EntityDataContainer> > _c_data;
+
+	////    Known Spells    ////
+
+	Dictionary known_spells = dict.get("known_spells", Dictionary());
+
+	for (int i = 0; i < known_spells.size(); ++i) {
+		int spell_id = known_spells.get(i, 0);
+
+		if (DataManager::get_instance() == NULL) {
+			Ref<Spell> sp = DataManager::get_instance()->get_spell(spell_id);
+
+			if (sp.is_valid()) {
+				_s_spells.push_back(sp);
+				_c_spells.push_back(sp);
+			}
+		}
+	}
+
+	////    Skills    ////
+
+	Dictionary skills = dict.get("skills", Dictionary());
+
+	for (int i = 0; i < skills.size(); ++i) {
+		Ref<EntitySkill> r;
+		r.instance();
+
+		r->from_dict(skills.get(i, Dictionary()));
+
+		_s_skills.push_back(r);
+		_c_skills.push_back(r);
+	}
 }
 
 Entity::Entity() {
