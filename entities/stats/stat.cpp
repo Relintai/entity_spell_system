@@ -4,96 +4,6 @@ const String Stat::STAT_BINDING_STRING = "Health,Speed,Mana,GCD,Haste,Agility,St
 
 const String Stat::MODIFIER_APPLY_TYPE_BINDING_STRING = "Standard,Only min modifier,Only Max modifier";
 
-Stat::Stat() {
-	_id = Stat::STAT_ID_NONE;
-
-	_locked = false;
-	_base = (float)(0);
-	_bonus = (float)(0);
-	_percent = (float)(0);
-	_s_max = (float)(0);
-	_s_current = (float)(0);
-	_c_max = (float)(0);
-	_c_current = (float)(0);
-
-	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
-}
-
-Stat::Stat(Stat::StatId id) {
-	_id = id;
-
-	_locked = false;
-	_base = (float)(0);
-	_bonus = (float)(0);
-	_percent = (float)(0);
-	_s_max = (float)(0);
-	_s_current = (float)(0);
-	_c_max = (float)(0);
-	_c_current = (float)(0);
-
-	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
-}
-
-Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type) {
-	_id = id;
-
-	_locked = false;
-	_base = (float)(0);
-	_bonus = (float)(0);
-	_percent = (float)(0);
-	_s_max = (float)(0);
-	_s_current = (float)(0);
-	_c_max = (float)(0);
-	_c_current = (float)(0);
-
-	_modifier_apply_type = modifier_apply_type;
-	_id = id;
-}
-
-//Stat
-Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float base, float bonus, float percent) {
-	_id = id;
-
-	_locked = false;
-	_base = (float)(0);
-	_bonus = (float)(0);
-	_percent = (float)(0);
-	_s_max = (float)(0);
-	_s_current = (float)(0);
-	_c_max = (float)(0);
-	_c_current = (float)(0);
-	_modifier_apply_type = modifier_apply_type;
-
-	_id = id;
-
-	_base = base;
-	_bonus = bonus;
-	_percent = percent;
-
-}
-
-Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float base) {
-	_id = id;
-
-	_locked = false;
-	_base = (float)(0);
-	_bonus = (float)(0);
-	_percent = (float)(0);
-	_s_max = (float)(0);
-	_s_current = (float)(0);
-	_c_max = (float)(0);
-	_c_current = (float)(0);
-
-	_modifier_apply_type = modifier_apply_type;
-	_id = id;
-	_base = base;
-	_percent = 100;
-	_bonus = 0;
-}
-
-Stat::~Stat() {
-	_modifiers.clear();
-}
 
 _FORCE_INLINE_ Vector<Ref<StatModifier> > *Stat::get_modifiers() {
 	return &_modifiers;
@@ -484,6 +394,133 @@ void Stat::set(float current, float max, float base, float bonus, float percent)
 	send();
 }
 
+Dictionary Stat::to_dict() {
+	return call("_to_dict");
+}
+void Stat::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary Stat::_to_dict() {
+	Dictionary dict;
+
+	dict["id"] = _id;
+	dict["modifier_apply_type"] = _modifier_apply_type;
+
+	dict["locked"] = _locked;
+	dict["dirty"] = _dirty;
+
+	dict["base"] = _base;
+	dict["bonus"] = _bonus;
+	dict["percent"] = _percent;
+
+	dict["current"] = _s_current;
+	dict["max"] = _s_max;
+
+	Dictionary modifiers;
+
+	for (int i = 0; _modifiers.size(); ++i) {
+		modifiers[i] = _modifiers.get(i)->to_dict();
+	}
+
+	dict["modifiers"] = modifiers;
+
+	return dict;
+}
+void Stat::_from_dict(const Dictionary &dict) {
+	ERR_FAIL_COND(dict.empty());
+}
+
+Stat::Stat() {
+	_id = Stat::STAT_ID_NONE;
+
+	_locked = false;
+	_base = (float)(0);
+	_bonus = (float)(0);
+	_percent = (float)(0);
+	_s_max = (float)(0);
+	_s_current = (float)(0);
+	_c_max = (float)(0);
+	_c_current = (float)(0);
+
+	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
+}
+
+Stat::Stat(Stat::StatId id) {
+	_id = id;
+
+	_locked = false;
+	_base = (float)(0);
+	_bonus = (float)(0);
+	_percent = (float)(0);
+	_s_max = (float)(0);
+	_s_current = (float)(0);
+	_c_max = (float)(0);
+	_c_current = (float)(0);
+
+	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
+}
+
+Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type) {
+	_id = id;
+
+	_locked = false;
+	_base = (float)(0);
+	_bonus = (float)(0);
+	_percent = (float)(0);
+	_s_max = (float)(0);
+	_s_current = (float)(0);
+	_c_max = (float)(0);
+	_c_current = (float)(0);
+
+	_modifier_apply_type = modifier_apply_type;
+	_id = id;
+}
+
+//Stat
+Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float base, float bonus, float percent) {
+	_id = id;
+
+	_locked = false;
+	_base = (float)(0);
+	_bonus = (float)(0);
+	_percent = (float)(0);
+	_s_max = (float)(0);
+	_s_current = (float)(0);
+	_c_max = (float)(0);
+	_c_current = (float)(0);
+	_modifier_apply_type = modifier_apply_type;
+
+	_id = id;
+
+	_base = base;
+	_bonus = bonus;
+	_percent = percent;
+}
+
+Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float base) {
+	_id = id;
+
+	_locked = false;
+	_base = (float)(0);
+	_bonus = (float)(0);
+	_percent = (float)(0);
+	_s_max = (float)(0);
+	_s_current = (float)(0);
+	_c_max = (float)(0);
+	_c_current = (float)(0);
+
+	_modifier_apply_type = modifier_apply_type;
+	_id = id;
+	_base = base;
+	_percent = 100;
+	_bonus = 0;
+}
+
+Stat::~Stat() {
+	_modifiers.clear();
+}
+
 void Stat::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("s_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
 	ADD_SIGNAL(MethodInfo("c_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
@@ -556,6 +593,16 @@ void Stat::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_dependency", "stat", "curve"), &Stat::set_dependency);
 	ClassDB::bind_method(D_METHOD("remove_dependencies"), &Stat::remove_dependencies);
+
+	//Serialization
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &Stat::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &Stat::to_dict);
+
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &Stat::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &Stat::_to_dict);
 
 	BIND_ENUM_CONSTANT(Stat::STAT_ID_HEALTH);
 	BIND_ENUM_CONSTANT(Stat::STAT_ID_SPEED);

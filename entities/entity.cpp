@@ -240,6 +240,131 @@ void Entity::_setup() {
 		set_process(_s_entity_data.is_valid());
 }
 
+Dictionary Entity::to_dict() {
+	return call("_to_dict");
+}
+void Entity::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary Entity::_to_dict() {
+	Dictionary dict;
+
+	////    PlayerData    ////
+
+	dict["guid"] = _s_guid;
+	dict["class_id"] = _s_class_id;
+	dict["type"] = _s_type;
+	dict["gender"] = _s_gender;
+	dict["level"] = _s_level;
+	dict["xp"] = _s_xp;
+	dict["money"] = _s_money;
+
+	if (_s_entity_data.is_valid())
+		dict["entity_data_id"] = _s_entity_data->get_id();
+	else
+		dict["entity_data_id"] = 0;
+
+	dict["send_flag"] = _s_send_flag;
+	dict["player_name"] = _s_player_name;
+
+	////     Stats    ////
+
+	Dictionary sd;
+
+	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+		Ref<Stat> s = _stats[i];
+
+		sd[i] = s->to_dict();
+	}
+
+	dict["stats"] = sd;
+
+	////    Resources    ////
+
+	Dictionary rd;
+
+	for (int i = 0; i < _s_resources.size(); ++i) {
+		rd[i] = _s_resources.get(i)->to_dict();
+	}
+
+	dict["resources"] = rd;
+
+	////    GCD    ////
+
+	dict["gcd"] = _s_gcd;
+
+	////    States    ////
+
+	Dictionary stated;
+
+	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
+		int _s_states[EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX];
+		stated[i] = _s_states[i];
+	}
+
+	dict["states"] = stated;
+
+	dict["state"] = _s_state;
+
+	/*
+	////    SpellCastData    ////
+
+	Ref<SpellCastInfo> _s_spell_cast_info;
+	Ref<SpellCastInfo> _c_spell_cast_info;
+
+	//// AuraComponent    ////
+
+	Vector<Ref<AuraData> > _s_auras;
+	Vector<Ref<AuraData> > _c_auras;
+
+	EntityEnums::EntityType _s_entity_type;
+	EntityEnums::EntityType _c_entity_type;
+
+	int _s_immunity_flags;
+
+	int _s_entity_flags;
+	int _c_entity_flags;
+
+	EntityEnums::EntityController _s_entity_controller;
+
+	////    Cooldowns    ////
+	Vector<Ref<Cooldown> > _s_cooldowns;
+	Vector<Ref<Cooldown> > _c_cooldowns;
+
+	HashMap<int, Ref<Cooldown> > _s_cooldown_map;
+	HashMap<int, Ref<Cooldown> > _c_cooldown_map;
+
+	Vector<Ref<CategoryCooldown> > _s_category_cooldowns;
+	Vector<Ref<CategoryCooldown> > _c_category_cooldowns;
+
+	int _s_active_category_cooldowns;
+	int _c_active_category_cooldowns;
+
+	////    targetComponent    ////
+
+	int _s_target_guid;
+	Entity *_s_target;
+	Entity *_c_target;
+
+	////    Data    ////
+	Vector<Ref<EntityDataContainer> > _s_data;
+	Vector<Ref<EntityDataContainer> > _c_data;
+
+	////    Known Spells    ////
+	Vector<Ref<Spell> > _s_spells;
+	Vector<Ref<Spell> > _c_spells;
+
+	////    Skills    ////
+	Vector<Ref<EntitySkill> > _s_skills;
+	Vector<Ref<EntitySkill> > _c_skills;
+	*/
+	return dict;
+}
+void Entity::_from_dict(const Dictionary &dict) {
+	ERR_FAIL_COND(dict.empty());
+}
+
 Entity::Entity() {
 	_s_guid = 0;
 	_c_guid = 0;
@@ -2625,7 +2750,6 @@ int Entity::gets_spell_count() {
 	return _s_spells.size();
 }
 
-
 bool Entity::hasc_spell(Ref<Spell> spell) {
 	for (int i = 0; i < _c_spells.size(); ++i) {
 		if (_c_spells.get(i) == spell) {
@@ -3688,4 +3812,15 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_target"), &Entity::getc_target);
 	ClassDB::bind_method(D_METHOD("setc_target", "target"), &Entity::setc_target);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ctarget", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "setc_target", "getc_target");
+
+	//Serialization
+
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &Entity::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &Entity::to_dict);
+
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &Entity::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &Entity::_to_dict);
 }

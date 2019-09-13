@@ -113,6 +113,30 @@ void EntityResource::receivec_update_string(String str) {
 		call("_receivec_update_string", str);
 }
 
+Dictionary EntityResource::to_dict() {
+	return call("_to_dict");
+}
+void EntityResource::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary EntityResource::_to_dict() {
+	Dictionary dict;
+
+	dict["dirty"] = _dirty;
+	dict["should_process"] = _should_process;
+
+	dict["type"] = _type;
+	dict["current"] = _current;
+
+	dict["max"] = _max;
+
+	return dict;
+}
+void EntityResource::_from_dict(const Dictionary &dict) {
+	ERR_FAIL_COND(dict.empty());
+}
+
 EntityResource::EntityResource() {
 	_dirty = false;
 
@@ -163,4 +187,14 @@ void EntityResource::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_receivec_update_string", PropertyInfo(Variant::STRING, "str")));
 
 	ADD_SIGNAL(MethodInfo("changed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+
+	//Serialization
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntityResource::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &EntityResource::to_dict);
+
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &EntityResource::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &EntityResource::_to_dict);
 }

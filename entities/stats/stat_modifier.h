@@ -33,24 +33,14 @@ public:
 	float get_percent_mod() { return _percent_mod; }
 	void set_percent_mod(float value) { _percent_mod = value; }
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	Dictionary _to_dict();
+	void _from_dict(const Dictionary &dict);
+
 protected:
-	static void _bind_methods() {
-		ClassDB::bind_method(D_METHOD("get_id"), &StatModifier::get_id);
-		ClassDB::bind_method(D_METHOD("set_id", "value"), &StatModifier::set_id);
-		ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
-
-		ClassDB::bind_method(D_METHOD("get_base_mod"), &StatModifier::get_base_mod);
-		ClassDB::bind_method(D_METHOD("set_base_mod", "value"), &StatModifier::set_base_mod);
-		ADD_PROPERTY(PropertyInfo(Variant::REAL, "base_mod"), "set_base_mod", "get_base_mod");
-		
-		ClassDB::bind_method(D_METHOD("get_bonus_mod"), &StatModifier::get_bonus_mod);
-		ClassDB::bind_method(D_METHOD("set_bonus_mod", "value"), &StatModifier::set_bonus_mod);
-		ADD_PROPERTY(PropertyInfo(Variant::REAL, "bonus_mod"), "set_bonus_mod", "get_bonus_mod");
-
-		ClassDB::bind_method(D_METHOD("get_percent_mod"), &StatModifier::get_percent_mod);
-		ClassDB::bind_method(D_METHOD("set_percent_mod", "value"), &StatModifier::set_percent_mod);
-		ADD_PROPERTY(PropertyInfo(Variant::REAL, "percent_mod"), "set_percent_mod", "get_percent_mod");
-	}
+	static void _bind_methods();
 
 private:
 	int _id;

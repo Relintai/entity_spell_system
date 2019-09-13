@@ -44,6 +44,12 @@ public:
 	String gets_update_string();
 	void receivec_update_string(String str);
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	Dictionary _to_dict();
+	void _from_dict(const Dictionary &dict);
+
 	EntityResource();
 
 protected:

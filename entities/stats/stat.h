@@ -138,6 +138,12 @@ public:
 
 	void send();
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	Dictionary _to_dict();
+	void _from_dict(const Dictionary &dict);
+
 protected:
 	static void _bind_methods();
 
