@@ -36,6 +36,27 @@ void EntitySkill::set_disabled(bool value) {
 	emit_signal("skill_changed", Ref<EntitySkill>(this));
 }
 
+Dictionary EntitySkill::to_dict() {
+	return call("_to_dict");
+}
+void EntitySkill::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary EntitySkill::_to_dict() {
+	Dictionary dict;
+
+	dict["skill_id"] = _skill_id;
+	dict["current"] = _current;
+	dict["max"] = _max;
+	dict["disabled"] = _disabled;
+
+	return dict;
+}
+void EntitySkill::_from_dict(const Dictionary &dict) {
+	ERR_FAIL_COND(dict.empty());
+}
+
 EntitySkill::EntitySkill() {
 	_skill_id = 0;
 	_current = 0;
@@ -61,4 +82,14 @@ void EntitySkill::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_disabled"), &EntitySkill::get_disabled);
 	ClassDB::bind_method(D_METHOD("set_disabled", "value"), &EntitySkill::set_disabled);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "disabled"), "set_disabled", "get_disabled");
+
+	//Serialization
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntitySkill::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &EntitySkill::to_dict);
+
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &EntitySkill::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &EntitySkill::_to_dict);
 }

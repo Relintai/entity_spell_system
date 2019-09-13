@@ -19,6 +19,12 @@ public:
 	bool get_disabled();
 	void set_disabled(bool value);
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	Dictionary _to_dict();
+	void _from_dict(const Dictionary &dict);
+
 	EntitySkill();
 
 protected:

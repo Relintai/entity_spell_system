@@ -299,7 +299,6 @@ Dictionary Entity::_to_dict() {
 	Dictionary stated;
 
 	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
-		int _s_states[EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX];
 		stated[i] = _s_states[i];
 	}
 
@@ -307,58 +306,74 @@ Dictionary Entity::_to_dict() {
 
 	dict["state"] = _s_state;
 
-	/*
 	////    SpellCastData    ////
 
-	Ref<SpellCastInfo> _s_spell_cast_info;
-	Ref<SpellCastInfo> _c_spell_cast_info;
+	//Not needed
+	//Ref<SpellCastInfo> _s_spell_cast_info;
+	//Ref<SpellCastInfo> _c_spell_cast_info;
 
 	//// AuraComponent    ////
 
-	Vector<Ref<AuraData> > _s_auras;
-	Vector<Ref<AuraData> > _c_auras;
+	Dictionary auras;
 
-	EntityEnums::EntityType _s_entity_type;
-	EntityEnums::EntityType _c_entity_type;
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		auras[i] = _s_auras.get(i)->to_dict();
+	}
 
-	int _s_immunity_flags;
+	dict["auras"] = auras;
 
-	int _s_entity_flags;
-	int _c_entity_flags;
+	dict["entity_type"] = _s_entity_type;
+	dict["immunity_flags"] = _s_immunity_flags;
+	dict["entity_flags"] = _s_entity_flags;
+	dict["entity_controller"] = _s_entity_controller;
 
-	EntityEnums::EntityController _s_entity_controller;
-
+	
 	////    Cooldowns    ////
-	Vector<Ref<Cooldown> > _s_cooldowns;
-	Vector<Ref<Cooldown> > _c_cooldowns;
 
-	HashMap<int, Ref<Cooldown> > _s_cooldown_map;
-	HashMap<int, Ref<Cooldown> > _c_cooldown_map;
+	Dictionary cds;
+
+	for (int i = 0; i < _s_cooldowns.size(); ++i) {
+		cds[i] = _s_cooldowns.get(i)->to_dict();
+	}
+
+	dict["cooldowns"] = cds;
 
 	Vector<Ref<CategoryCooldown> > _s_category_cooldowns;
-	Vector<Ref<CategoryCooldown> > _c_category_cooldowns;
 
-	int _s_active_category_cooldowns;
-	int _c_active_category_cooldowns;
+	Dictionary ccds;
 
-	////    targetComponent    ////
+	for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
+		ccds[i] = _s_category_cooldowns.get(i)->to_dict();
+	}
 
-	int _s_target_guid;
-	Entity *_s_target;
-	Entity *_c_target;
+	dict["category_cooldowns"] = ccds;
+
+	dict["active_category_cooldowns"] = _s_active_category_cooldowns;
 
 	////    Data    ////
 	Vector<Ref<EntityDataContainer> > _s_data;
 	Vector<Ref<EntityDataContainer> > _c_data;
 
 	////    Known Spells    ////
-	Vector<Ref<Spell> > _s_spells;
-	Vector<Ref<Spell> > _c_spells;
+
+	Dictionary known_spells;
+
+	for (int i = 0; i < _s_spells.size(); ++i) {
+		known_spells[i] = _s_spells.get(i)->get_spell_id();
+	}
+
+	dict["known_spells"] = known_spells;
 
 	////    Skills    ////
-	Vector<Ref<EntitySkill> > _s_skills;
-	Vector<Ref<EntitySkill> > _c_skills;
-	*/
+
+	Dictionary skills;
+
+	for (int i = 0; i < _s_skills.size(); ++i) {
+		skills[i] = _s_skills.get(i)->to_dict();
+	}
+
+	dict["skills"] = skills;
+	
 	return dict;
 }
 void Entity::_from_dict(const Dictionary &dict) {

@@ -3,26 +3,6 @@
 #include "../../data/aura.h"
 #include "../entity.h"
 
-AuraData::AuraData() {
-	_owner = NULL;
-	_aura_id = 0;
-	_remaining_time = 0;
-	_caster = NULL;
-	_caster_guid = 0;
-	_spell_scale = 0;
-	_aura_group = 0;
-
-	_is_timed = false;
-	_damage = 0;
-	_heal = 0;
-	_slow = 0;
-	_remaining_absorb = 0;
-	_tick = 0;
-	_time_since_last_tick = 0;
-	_damage_already_taken = 0;
-	_unhandled_ticks = 0;
-}
-
 float AuraData::get_damage_count() {
 	return _damage_already_taken;
 }
@@ -241,6 +221,62 @@ void AuraData::set_slow(float value) {
 	_slow = value;
 }
 
+Dictionary AuraData::to_dict() {
+	return call("_to_dict");
+}
+void AuraData::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary AuraData::_to_dict() {
+	Dictionary dict;
+
+	dict["aura_id"] = _aura_id;
+	dict["remaining_time"] = _remaining_time;
+	dict["caster_name"] = _caster->get_name();
+	dict["spell_scale"] = _spell_scale;
+
+	dict["spell_scale"] = _spell_scale;
+	dict["aura_group"] = _aura_group;
+	dict["aura_id"] = _aura->get_id();
+
+	dict["is_timed"] = _is_timed;
+	dict["damage"] = _damage;
+	dict["heal"] = _heal;
+	dict["slow"] = _slow;
+	dict["remaining_absorb"] = _remaining_absorb;
+	dict["tick"] = _tick;
+	dict["time_since_last_tick"] = _time_since_last_tick;
+	dict["damage_already_taken"] = _damage_already_taken;
+	dict["unhandled_ticks"] = _unhandled_ticks;
+
+	return dict;
+}
+void AuraData::_from_dict(const Dictionary &dict) {
+	ERR_FAIL_COND(dict.empty());
+}
+
+AuraData::AuraData() {
+	_owner = NULL;
+	_aura_id = 0;
+	_remaining_time = 0;
+	_caster = NULL;
+	_caster_guid = 0;
+	_spell_scale = 0;
+	_aura_group = 0;
+
+	_is_timed = false;
+	_damage = 0;
+	_heal = 0;
+	_slow = 0;
+	_remaining_absorb = 0;
+	_tick = 0;
+	_time_since_last_tick = 0;
+	_damage_already_taken = 0;
+	_unhandled_ticks = 0;
+}
+
+
 void AuraData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_aura_id"), &AuraData::get_aura_id);
 	ClassDB::bind_method(D_METHOD("set_aura_id", "value"), &AuraData::set_aura_id);
@@ -307,4 +343,14 @@ void AuraData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_slow"), &AuraData::get_slow);
 	ClassDB::bind_method(D_METHOD("set_slow", "value"), &AuraData::set_slow);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "slow"), "set_slow", "get_slow");
+
+	//Serialization
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &AuraData::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &AuraData::to_dict);
+
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &AuraData::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &AuraData::_to_dict);
 }

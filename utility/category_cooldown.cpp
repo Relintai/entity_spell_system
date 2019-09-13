@@ -33,6 +33,25 @@ bool CategoryCooldown::update(const float delta) {
     return false;
 }
 
+Dictionary CategoryCooldown::to_dict() {
+	return call("_to_dict");
+}
+void CategoryCooldown::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary CategoryCooldown::_to_dict() {
+	Dictionary dict;
+
+	dict["category_id"] = _category_id;
+	dict["remaining"] = _remaining;
+
+	return dict;
+}
+void CategoryCooldown::_from_dict(const Dictionary &dict) {
+	ERR_FAIL_COND(dict.empty());
+}
+
 	
 void CategoryCooldown::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_category_id"), &CategoryCooldown::get_category_id);
@@ -44,4 +63,14 @@ void CategoryCooldown::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::REAL, "remaining"), "set_remaining", "get_remaining");
     
     ClassDB::bind_method(D_METHOD("update", "delta"), &CategoryCooldown::update);
+
+	//Serialization
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &CategoryCooldown::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &CategoryCooldown::to_dict);
+
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &CategoryCooldown::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &CategoryCooldown::_to_dict);
 }

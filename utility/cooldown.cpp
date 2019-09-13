@@ -33,6 +33,24 @@ bool Cooldown::update(const float delta) {
     return false;
 }
 
+Dictionary Cooldown::to_dict() {
+	return call("_to_dict");
+}
+void Cooldown::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary Cooldown::_to_dict() {
+	Dictionary dict;
+
+	dict["spell_id"] = _spell_id;
+	dict["remaining"] = _remaining;
+
+	return dict;
+}
+void Cooldown::_from_dict(const Dictionary &dict) {
+	ERR_FAIL_COND(dict.empty());
+}
 	
 void Cooldown::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_spell_id"), &Cooldown::get_spell_id);
@@ -44,4 +62,14 @@ void Cooldown::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::REAL, "remaining"), "set_remaining", "get_remaining");
     
     ClassDB::bind_method(D_METHOD("update", "delta"), &Cooldown::update);
+
+	//Serialization
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &Cooldown::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &Cooldown::to_dict);
+
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &Cooldown::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &Cooldown::_to_dict);
 }

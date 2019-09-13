@@ -67,6 +67,12 @@ public:
 	float get_slow();
 	void set_slow(float value);
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	Dictionary _to_dict();
+	void _from_dict(const Dictionary &dict);
+
 	AuraData();
 
 protected:
