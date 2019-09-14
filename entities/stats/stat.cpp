@@ -4,7 +4,6 @@ const String Stat::STAT_BINDING_STRING = "Health,Speed,Mana,GCD,Haste,Agility,St
 
 const String Stat::MODIFIER_APPLY_TYPE_BINDING_STRING = "Standard,Only min modifier,Only Max modifier";
 
-
 _FORCE_INLINE_ Vector<Ref<StatModifier> > *Stat::get_modifiers() {
 	return &_modifiers;
 }
@@ -116,7 +115,7 @@ void Stat::apply_modifier(Ref<StatModifier> modifier) {
 			}
 		}
 	}
-	
+
 	recalculate();
 	emit_signal("s_changed", Ref<Stat>(this));
 	send();
@@ -156,7 +155,7 @@ void Stat::de_apply_modifier(Ref<StatModifier> modifier) {
 	recalculate();
 	emit_signal("s_changed", Ref<Stat>(this));
 	send();
-	
+
 	//	emit_signal("s_changed", Ref<Stat>(this));
 }
 
@@ -174,7 +173,7 @@ void Stat::re_apply_modifiers() {
 	} else {
 		re_apply_modifier_not_negative_stacking_percents();
 	}
-	
+
 	recalculate();
 	emit_signal("s_changed", Ref<Stat>(this));
 	send();
@@ -219,7 +218,7 @@ void Stat::re_apply_modifier_not_negative_stacking_percents() {
 	recalculate();
 	emit_signal("s_changed", Ref<Stat>(this));
 	send();
-	
+
 	//	emit_signal("s_changed", Ref<Stat>(this));
 }
 
@@ -320,13 +319,13 @@ void Stat::reset_values() {
 
 void Stat::recalculate() {
 	float diff = _s_current / _s_max;
-	
+
 	_s_max = (_base + _bonus) * (_percent / 100.0);
 
 	if (_s_current > _s_max) {
 		_s_current = _s_max;
 	}
-	
+
 	_s_current = _s_max * diff;
 
 	_dirty = true;
@@ -338,7 +337,6 @@ void Stat::send() {
 
 	emit_signal("c_changed", Ref<Stat>(this));
 }
-
 
 bool Stat::iss_current_zero() {
 	return (fabs(_s_current) < .000001);
@@ -429,6 +427,35 @@ Dictionary Stat::_to_dict() {
 }
 void Stat::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
+
+	_id = (Stat::StatId)((int)dict.get("id", 0));
+	_modifier_apply_type = (StatModifierApplyType)((int)dict.get("modifier_apply_type", 0));
+
+	_locked = dict.get("locked", false);
+	_dirty = dict.get("dirty", false);
+
+	_base = dict.get("base", 0);
+	_bonus = dict.get("bonus", 0);
+	_percent = dict.get("percent", 1);
+
+	_s_current = dict.get("current", 0);
+	_s_max = dict.get("max", 0);
+
+	_c_current = _s_current;
+	_c_max = _s_max;
+
+	_modifiers.clear();
+
+	Dictionary modifiers = dict.get("modifiers", Dictionary());
+
+	for (int i = 0; i < modifiers.size(); ++i) {
+		Ref<StatModifier> sm;
+		sm.instance();
+
+		sm->from_dict(modifiers.get(i, Dictionary()));
+
+		_modifiers.push_back(sm);
+	}
 }
 
 Stat::Stat() {
@@ -585,7 +612,6 @@ void Stat::_bind_methods() {
 	//ClassDB::bind_method(D_METHOD("apply_modifier", "modifier"), &Stat::apply_modifier);
 	//ClassDB::bind_method(D_METHOD("de_apply_modifier", "modifier"), &Stat::de_apply_modifier);
 	ClassDB::bind_method(D_METHOD("re_apply_modifier_not_negative_stacking_percents"), &Stat::re_apply_modifier_not_negative_stacking_percents);
-
 
 	ClassDB::bind_method(D_METHOD("add_modifier", "id", "base_mod", "bonus_mod", "percent_mod", "apply"), &Stat::add_modifier);
 	ClassDB::bind_method(D_METHOD("remove_modifier", "id", "apply"), &Stat::remove_modifier);

@@ -135,6 +135,12 @@ Dictionary EntityResource::_to_dict() {
 }
 void EntityResource::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
+
+	_dirty = dict.get("dirty", false);
+	_should_process = dict.get("should_process", false);
+	_type = dict.get("type", 0);
+	_current = dict.get("current", 0);
+	_max = dict.get("max", 0);
 }
 
 EntityResource::EntityResource() {

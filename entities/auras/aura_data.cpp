@@ -234,7 +234,6 @@ Dictionary AuraData::_to_dict() {
 	dict["aura_id"] = _aura_id;
 	dict["remaining_time"] = _remaining_time;
 	dict["caster_name"] = _caster->get_name();
-	dict["spell_scale"] = _spell_scale;
 
 	dict["spell_scale"] = _spell_scale;
 	dict["aura_group"] = _aura_group;
@@ -254,6 +253,34 @@ Dictionary AuraData::_to_dict() {
 }
 void AuraData::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
+
+	_aura_id = dict.get("aura_id", 0);
+	_remaining_time = dict.get("remaining_time", 0);
+	String caster_name = dict.get("caster_name", "");
+
+	_spell_scale = dict.get("spell_scale", 0);
+
+	_aura_group = dict.get("aura_group", 0);
+	int aura_id = dict.get("aura_id", 0);
+
+	if (DataManager::get_instance() != NULL) {
+		Ref<Aura> aura = DataManager::get_instance()->get_aura(aura_id);
+
+		if (aura.is_valid()) {
+			_aura = aura;
+		}
+	}
+
+	_is_timed = dict.get("is_timed", true);
+	_damage = dict.get("damage", 0);
+	_heal = dict.get("heal", 0);
+	_slow = dict.get("slow", 0);
+	_remaining_absorb = dict.get("remaining_absorb", 0);
+
+	_tick = dict.get("tick", 0);
+	_time_since_last_tick = dict.get("time_since_last_tick", 0);
+	_damage_already_taken = dict.get("damage_already_taken", 0);
+	_unhandled_ticks = dict.get("unhandled_ticks", 0);
 }
 
 AuraData::AuraData() {

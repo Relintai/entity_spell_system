@@ -50,6 +50,9 @@ Dictionary CategoryCooldown::_to_dict() {
 }
 void CategoryCooldown::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
+
+	_category_id = dict.get("category_id", 0);
+	_remaining = dict.get("remaining", 0);
 }
 
 	

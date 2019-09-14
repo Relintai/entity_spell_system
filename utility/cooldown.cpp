@@ -50,6 +50,9 @@ Dictionary Cooldown::_to_dict() {
 }
 void Cooldown::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
+
+	_spell_id = dict.get("spell_id", 0);
+	_remaining = dict.get("remaining", 0);
 }
 	
 void Cooldown::_bind_methods() {

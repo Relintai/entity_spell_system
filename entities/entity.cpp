@@ -443,7 +443,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	Dictionary auras = dict.get("auras", Dictionary());
 
-	for (int i = 0; i < _s_auras.size(); ++i) {
+	for (int i = 0; i < auras.size(); ++i) {
 		Ref<AuraData> r;
 		r.instance();
 
@@ -501,7 +501,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 	for (int i = 0; i < known_spells.size(); ++i) {
 		int spell_id = known_spells.get(i, 0);
 
-		if (DataManager::get_instance() == NULL) {
+		if (DataManager::get_instance() != NULL) {
 			Ref<Spell> sp = DataManager::get_instance()->get_spell(spell_id);
 
 			if (sp.is_valid()) {

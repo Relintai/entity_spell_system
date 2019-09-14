@@ -55,6 +55,11 @@ Dictionary EntitySkill::_to_dict() {
 }
 void EntitySkill::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
+
+	_skill_id = dict.get("skill_id", 0);
+	_current = dict.get("current", 0);
+	_max = dict.get("max", 0);
+	_disabled = dict.get("disabled", true);
 }
 
 EntitySkill::EntitySkill() {
