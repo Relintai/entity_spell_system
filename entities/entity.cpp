@@ -48,10 +48,10 @@ int Entity::gets_entity_data_id() {
 }
 void Entity::sets_entity_data_id(int value) {
 	_s_class_id = value;
-
+	/*
 	if (DataManager::get_instance() != NULL) {
 		sets_entity_data(DataManager::get_instance()->get_entity_data(value));
-	}
+	}*/
 
 	SEND_RPC(rpc("setc_entity_data_id", value), setc_entity_data_id(value));
 }
