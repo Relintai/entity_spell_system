@@ -1,8 +1,107 @@
 #include "stat.h"
 
-const String Stat::STAT_BINDING_STRING = "Health,Speed,Mana,GCD,Haste,Agility,Strength,Stamina,Intellect,Luck,Haste Rating,Resilience,Armor,Attack Power,Spell Power,Melee Crit,Melee Crit bonus,Spell Crit,Spell Crit Bonus,Block,Parry,Damage Reduction,Melee Damage Reduction,Spell Damage Reduction,Damage Taken,Heal Taken,Melee Damage,Spell Damage,Holy Resist,Shadow Resist,Nature Resist,Fire Resist,Frost Resist,Lightning Resist,Chaos Resist,Silence Resist,Fear Resist,None";
+const String Stat::STAT_BINDING_STRING = "Health,Speed,Mana,GCD,Haste,Agility,Strength,Stamina,Intellect,Luck,Haste Rating,Resilience,Armor,Attack Power,Spell Power,Melee Crit,Melee Crit bonus,Spell Crit,Spell Crit Bonus,Block,Parry,Damage Reduction,Melee Damage Reduction,Spell Damage Reduction,Damage Taken,Heal Taken,Melee Damage,Spell Damage,Holy Resist,Shadow Resist,Nature Resist,Fire Resist,Frost Resist,Lightning Resist,Chaos Resist,Silence Resist,Fear Resist,Stun Resist,Energy,Rage,XP Rate,None";
+const String Stat::MAIN_STAT_BINDING_STRING = "Agility,Strength,Stamina,Intellect,Luck";
 
 const String Stat::MODIFIER_APPLY_TYPE_BINDING_STRING = "Standard,Only min modifier,Only Max modifier";
+
+String Stat::stat_id_name(int stat_id) {
+	switch (stat_id) {
+		case STAT_ID_HEALTH:
+			return "health";
+		case STAT_ID_SPEED:
+			return "speed";
+		case STAT_ID_MANA:
+			return "mana";
+		case STAT_ID_GLOBAL_COOLDOWN:
+			return "gcd";
+		case STAT_ID_HASTE:
+			return "haste";
+
+		case STAT_ID_AGILITY:
+			return "agility";
+		case STAT_ID_STRENGTH:
+			return "strength";
+		case STAT_ID_STAMINA:
+			return "stamina";
+		case STAT_ID_INTELLECT:
+			return "intellect";
+		case STAT_ID_LUCK:
+			return "luck";
+
+		case STAT_ID_HASTE_RATING:
+			return "haste_rating";
+		case STAT_ID_RESLILIENCE:
+			return "resilience";
+		case STAT_ID_ARMOR:
+			return "armor";
+
+		case STAT_ID_ATTACK_POWER:
+			return "attack_power";
+		case STAT_ID_SPELL_POWER:
+			return "spell_power";
+
+		case STAT_ID_MELEE_CRIT:
+			return "melee_crit";
+		case STAT_ID_MELEE_CRIT_BONUS:
+			return "melee_crit_bonus";
+		case STAT_ID_SPELL_CRIT:
+			return "spell_crit";
+		case STAT_ID_SPELL_CRIT_BONUS:
+			return "spell_crit_bonus";
+
+		case STAT_ID_BLOCK:
+			return "block";
+		case STAT_ID_PARRY:
+			return "parry";
+		case STAT_ID_DAMAGE_REDUCTION:
+			return "damage_reduction";
+		case STAT_ID_MELEE_DAMAGE_REDUCTION:
+			return "melee_damage_reduction";
+		case STAT_ID_SPELL_DAMAGE_REDUCTION:
+			return "spell_damage_reduction";
+		case STAT_ID_DAMAGE_TAKEN:
+			return "damage_taken";
+		case STAT_ID_HEAL_TAKEN:
+			return "heal_taken";
+
+		case STAT_ID_MELEE_DAMAGE:
+			return "melee_damage";
+		case STAT_ID_SPELL_DAMAGE:
+			return "spell_damage";
+
+		case STAT_ID_HOLY_RESIST:
+			return "holy_resist";
+		case STAT_ID_SHADOW_RESIST:
+			return "shadow_resist";
+		case STAT_ID_NATURE_RESIST:
+			return "nature_resist";
+		case STAT_ID_FIRE_RESIST:
+			return "fire_resist";
+		case STAT_ID_FROST_RESIST:
+			return "frost_resist";
+		case STAT_ID_LIGHTNING_RESIST:
+			return "lightning_resist";
+		case STAT_ID_CHAOS_RESIST:
+			return "chaos_resist";
+		case STAT_ID_SILENCE_RESIST:
+			return "silence_resist";
+		case STAT_ID_FEAR_RESIST:
+			return "fear_resist";
+		case STAT_ID_STUN_RESIST:
+			return "stun_resist";
+
+		case STAT_ID_ENERGY:
+			return "energy";
+		case STAT_ID_RAGE:
+			return "rage";
+
+		case STAT_ID_XP_RATE:
+			return "xp_rate";
+	}
+
+	return "";
+}
 
 _FORCE_INLINE_ Vector<Ref<StatModifier> > *Stat::get_modifiers() {
 	return &_modifiers;
@@ -620,6 +719,8 @@ void Stat::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_dependency", "stat", "curve"), &Stat::set_dependency);
 	ClassDB::bind_method(D_METHOD("remove_dependencies"), &Stat::remove_dependencies);
 
+	//ClassDB::bind_method(D_METHOD("stat_id_name", "stat_id"), &Stat::stat_id_name);
+
 	//Serialization
 	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
@@ -678,4 +779,13 @@ void Stat::_bind_methods() {
 	BIND_ENUM_CONSTANT(Stat::MODIFIER_APPLY_TYPE_STANDARD);
 	BIND_ENUM_CONSTANT(Stat::MODIFIER_APPLY_TYPE_ONLY_MIN_MODIFIER);
 	BIND_ENUM_CONSTANT(Stat::MODIFIER_APPLY_TYPE_ONLY_MAX_MODIFIER);
+
+	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_AGILITY);
+	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_STRENGTH);
+	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_STAMINA);
+	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_INTELLECT);
+	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_LUCK);
+	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_COUNT);
+	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_MIN);
+	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_MAX);
 }

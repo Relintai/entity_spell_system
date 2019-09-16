@@ -23,21 +23,12 @@ void StatData::set_stat_data_enum(Stat::StatId stat_id, Ref<StatDataEntry> entry
 
 	_entries[stat_id] = entry;
 }
-
-Ref<Curve> StatData::get_hp_scaling_data() {
-	return _hp_scaling_data;
+Ref<LevelStatData> StatData::get_level_stat_data() {
+	return _level_stat_data;
 }
 
-void StatData::set_hp_scaling_data(Ref<Curve> value) {
-	_hp_scaling_data = value;
-}
-
-Ref<Curve> StatData::get_spell_scaling_data() {
-	return _spell_scaling_data;
-}
-
-void StatData::set_spell_scaling_data(Ref<Curve> value) {
-	_spell_scaling_data = value;
+void StatData::set_level_stat_data(Ref<LevelStatData> value) {
+	_level_stat_data = value;
 }
 
 void StatData::get_stat_for_stat(Ref<Stat> stat) {
@@ -81,18 +72,14 @@ void StatData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stat_data_enum", "index"), &StatData::get_stat_data_enum);
 	ClassDB::bind_method(D_METHOD("set_stat_data_enum", "stat_id", "entry"), &StatData::set_stat_data_enum);
 
+
+	ADD_GROUP("Base Stats", "base_stat");
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
-        ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "stat_" + itos(i + 1), PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry"), "set_stat_data_enum", "get_stat_data_enum", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "base_stat_" + Stat::stat_id_name(i), PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry"), "set_stat_data_enum", "get_stat_data_enum", i);
     }
 
-	ClassDB::bind_method(D_METHOD("get_hp_scaling_data"), &StatData::get_hp_scaling_data);
-	ClassDB::bind_method(D_METHOD("set_hp_scaling_data", "value"), &StatData::set_hp_scaling_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "hp_scaling_data", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_hp_scaling_data", "get_hp_scaling_data");
-
-	ClassDB::bind_method(D_METHOD("get_spell_scaling_data"), &StatData::get_spell_scaling_data);
-	ClassDB::bind_method(D_METHOD("set_spell_scaling_data", "value"), &StatData::set_spell_scaling_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell_scaling_data", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_spell_scaling_data", "get_spell_scaling_data");
-
-	//ClassDB::bind_method(D_METHOD("GetStatForStat", "stat"), &StatData::GetStatForStat);
+	ClassDB::bind_method(D_METHOD("get_level_stat_data"), &StatData::get_level_stat_data);
+	ClassDB::bind_method(D_METHOD("set_level_stat_data", "value"), &StatData::set_level_stat_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "level_stat_data", PROPERTY_HINT_RESOURCE_TYPE, "LevelStatData"), "set_level_stat_data", "get_level_stat_data");
 }
 

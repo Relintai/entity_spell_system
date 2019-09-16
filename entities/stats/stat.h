@@ -13,6 +13,7 @@ class Stat : public Reference {
 
 public:
 	static const String STAT_BINDING_STRING;
+	static const String MAIN_STAT_BINDING_STRING;
 	static const String MODIFIER_APPLY_TYPE_BINDING_STRING;
 
 	enum StatId {
@@ -74,6 +75,28 @@ public:
 		MODIFIER_APPLY_TYPE_ONLY_MIN_MODIFIER,
 		MODIFIER_APPLY_TYPE_ONLY_MAX_MODIFIER,
 	};
+
+	enum MainStats {
+		MAIN_STAT_AGILITY = 0,
+		MAIN_STAT_STRENGTH = 1,
+		MAIN_STAT_STAMINA = 2,
+		MAIN_STAT_INTELLECT = 3,
+		MAIN_STAT_LUCK = 4,
+	};
+
+	enum MainStatIds {
+		MAIN_STAT_ID_AGILITY = STAT_ID_AGILITY,
+		MAIN_STAT_ID_STRENGTH = STAT_ID_STRENGTH,
+		MAIN_STAT_ID_STAMINA = STAT_ID_STAMINA,
+		MAIN_STAT_ID_INTELLECT = STAT_ID_INTELLECT,
+		MAIN_STAT_ID_LUCK = STAT_ID_LUCK,
+
+		MAIN_STAT_ID_COUNT = 5,
+		MAIN_STAT_ID_MIN = MAIN_STAT_ID_AGILITY,
+		MAIN_STAT_ID_MAX = MAIN_STAT_ID_LUCK,
+	};
+
+	static String stat_id_name(int stat_id);
 
 public:
 	Stat();
@@ -172,6 +195,7 @@ private:
 };
 
 VARIANT_ENUM_CAST(Stat::StatId);
+VARIANT_ENUM_CAST(Stat::MainStatIds);
 VARIANT_ENUM_CAST(Stat::StatModifierApplyType);
 
 #endif

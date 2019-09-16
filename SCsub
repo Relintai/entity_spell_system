@@ -51,6 +51,10 @@ module_env.add_source_files(env.modules_sources,"data/spell/spell_data_constants
 module_env.add_source_files(env.modules_sources,"entities/stats/stat.cpp")
 module_env.add_source_files(env.modules_sources,"entities/stats/stat_modifier.cpp")
 module_env.add_source_files(env.modules_sources,"entities/stats/stat_data.cpp")
+module_env.add_source_files(env.modules_sources,"entities/stats/stat_data_entry.cpp")
+module_env.add_source_files(env.modules_sources,"entities/stats/level_stat_data.cpp")
+module_env.add_source_files(env.modules_sources,"entities/stats/simple_level_stat_data.cpp")
+module_env.add_source_files(env.modules_sources,"entities/stats/complex_level_stat_data.cpp")
 
 module_env.add_source_files(env.modules_sources,"spells/spell_projectile.cpp")
 module_env.add_source_files(env.modules_sources,"spells/world_spell_effect.cpp")

@@ -198,6 +198,10 @@ public:
 		AI_STATE_ATTACK,
 	};
 
+	enum {
+		MAX_LEVEL = 50,
+	};
+
 	EntityEnums() {}
 
 protected:

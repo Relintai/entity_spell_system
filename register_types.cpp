@@ -39,6 +39,12 @@
 #include "entities/stats/stat.h"
 #include "entities/stats/stat_modifier.h"
 #include "entities/stats/stat_data.h"
+#include "entities/stats/stat_data_entry.h"
+#include "entities/stats/level_stat_data.h"
+#include "entities/stats/simple_level_stat_data.h"
+#include "entities/stats/complex_level_stat_data.h"
+
+
 #include "inventory/bag.h"
 #include "inventory/inventory.h"
 
@@ -150,6 +156,10 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<Stat>();
 	ClassDB::register_class<StatDataEntry>();
 	ClassDB::register_class<StatData>();
+
+	ClassDB::register_class<LevelStatData>();
+	ClassDB::register_class<SimpleLevelStatData>();
+	ClassDB::register_class<ComplexLevelStatData>();
 
 	ClassDB::register_class<CharacterSpec>();
     
