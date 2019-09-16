@@ -62,20 +62,13 @@ void ItemTemplate::set_price(const int value) {
 	_price = value;
 }
 
-int ItemTemplate::get_inventory_size_x() const {
-	return _inventory_size_x;
+int ItemTemplate::get_stack_size() const {
+	return _stack_size;
 }
-void ItemTemplate::set_inventory_size_x(const int value) {
-	_inventory_size_x = value;
+void ItemTemplate::set_stack_size(const int value) {
+	_stack_size = value;
 }
 	
-int ItemTemplate::get_inventory_size_y() const {
-	return _inventory_size_y;
-}
-void ItemTemplate::set_inventory_size_y(const int value) {
-	_inventory_size_y = value;
-}
-
 Ref<Texture> ItemTemplate::get_icon() const {
 	return _icon;
 }
@@ -349,8 +342,7 @@ ItemTemplate::ItemTemplate() {
 	_scale_z = 0;
 	_modifier_count = 0;
 	
-	_inventory_size_x = 0;
-	_inventory_size_y = 0;
+	_stack_size = 1;
 	_bag_size = 0;
 
 	for (int i = 0; i < MAX_ITEM_STAT_MOD; ++i) {
@@ -411,13 +403,9 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_item_visual", "value"), &ItemTemplate::set_item_visual);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "item_visual", PROPERTY_HINT_RESOURCE_TYPE, "ItemVisual"), "set_item_visual", "get_item_visual");
 
-	ClassDB::bind_method(D_METHOD("get_inventory_size_x"), &ItemTemplate::get_inventory_size_x);
-	ClassDB::bind_method(D_METHOD("set_inventory_size_x", "value"), &ItemTemplate::set_inventory_size_x);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "inventory_size_x"), "set_inventory_size_x", "get_inventory_size_x");
-	
-	ClassDB::bind_method(D_METHOD("get_inventory_size_y"), &ItemTemplate::get_inventory_size_y);
-	ClassDB::bind_method(D_METHOD("set_inventory_size_y", "value"), &ItemTemplate::set_inventory_size_y);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "inventory_size_y"), "set_inventory_size_y", "get_inventory_size_y");
+	ClassDB::bind_method(D_METHOD("get_stack_size"), &ItemTemplate::get_stack_size);
+	ClassDB::bind_method(D_METHOD("set_stack_size", "value"), &ItemTemplate::set_stack_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "stack_size"), "set_stack_size", "get_stack_size");
 	
 	ClassDB::bind_method(D_METHOD("get_icon"), &ItemTemplate::get_icon);
 	ClassDB::bind_method(D_METHOD("set_icon", "value"), &ItemTemplate::set_icon);

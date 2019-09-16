@@ -15,8 +15,7 @@ class Bag : public Reference {
 public:
 	int get_allowed_item_types() const;
 	void set_allowed_item_types(const int value);
-	
-    /*
+
 	bool add_item(Ref<ItemInstance> item);
 	Ref<ItemInstance> get_item(const int index);
     Ref<ItemInstance> remove_item(const int index);
@@ -25,14 +24,19 @@ public:
     bool can_add_item(Ref<ItemInstance> item);
 	
 	int get_item_count();
+	int get_valid_item_count();
 
 	int get_size();
     void set_size(const int size);
     
-    bool is_full();*/
+    bool is_full();
+    bool is_overburdened();
 	
-	//to_dict();
-	//from_dict();
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	Dictionary _to_dict();
+	void _from_dict(const Dictionary &dict);
 	
 	Bag();
     ~Bag();
@@ -42,6 +46,8 @@ protected:
     
 private:
 	int _allowed_item_types;
+	int _bag_size;
+	Vector<Ref<ItemInstance> > _items;
 };
 
 #endif

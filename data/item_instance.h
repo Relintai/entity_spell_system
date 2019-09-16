@@ -18,12 +18,9 @@ public:
 	int get_id();
 	void set_id(int value);
 	
-	int get_inventory_position_x() const;
-	void set_inventory_position_x(const int value);
-	
-	int get_inventory_position_y() const;
-	void set_inventory_position_y(const int value);
-	
+	int get_inventory_position() const;
+	void set_inventory_position(const int value);
+
 	Ref<Bag> get_bag() const;
 	void set_bag(const Ref<Bag> bag);
 	
@@ -48,8 +45,8 @@ public:
 	float get_percent_mod(int index);
 	void set_percent_mod(int index, float value);
 	
-	int get_count();
-	void set_count(int value);
+	int get_stack_size();
+	void set_stack_size(int value);
 
 	//to_dict();
 	//from_dict();
@@ -68,15 +65,14 @@ private:
 
 	int _id;
 	
-	int _inventory_position_x;
-	int _inventory_position_y;
+	int _inventory_position;
 
 	int _item_tamplate_id;
 	Ref<ItemTemplate> _item_template;
 	
-	int _count;
+	int _stack_size;
 	
-	Ref<Bag> *_bag;
+	Ref<Bag> _bag;
 
 	int _modifier_count;
 	Ref<ItemStatModifier> _modifiers[MAX_ITEM_STAT_MOD];

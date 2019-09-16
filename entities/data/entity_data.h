@@ -45,7 +45,10 @@ public:
     
 	EntityEnums::EntityType get_entity_type();
 	void set_entity_type(EntityEnums::EntityType value);
-    
+
+	EntityEnums::EntityInteractionType get_entity_interaction_type();
+	void set_entity_interaction_type(EntityEnums::EntityInteractionType value);
+
     int get_immunity_flags();
 	void set_immunity_flags(int value);
 
@@ -60,6 +63,9 @@ public:
     
     int get_money();
 	void set_money(int value);
+
+	int get_bag_size();
+	void set_bag_size(int value);
 
 	Ref<EntityData> get_inherits();
 	void set_inherits(Ref<EntityData> value);
@@ -266,6 +272,9 @@ private:
 	int _id;
     
     EntityEnums::EntityType _entity_type;
+
+	EntityEnums::EntityInteractionType _interaction_type;
+
     int _immunity_flags;
     int _entity_flags;
     EntityEnums::EntityController _entity_controller;
@@ -278,6 +287,7 @@ private:
 
 	int _player_resource_type;
     int _money;
+    int _bag_size;
 
 	int _stat_points_per_level;
 

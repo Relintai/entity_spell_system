@@ -44,12 +44,9 @@ public:
 	int get_price() const;
 	void set_price(const int value);
 
-	int get_inventory_size_x() const;
-	void set_inventory_size_x(const int value);
+	int get_stack_size() const;
+	void set_stack_size(const int value);
 	
-	int get_inventory_size_y() const;
-	void set_inventory_size_y(const int value);
-
 	Ref<Texture> get_icon() const;
 	void set_icon(const Ref<Texture> value);
 
@@ -147,8 +144,7 @@ private:
 
 	Ref<ItemVisual> _item_visual;
 
-	int _inventory_size_x;
-	int _inventory_size_y;
+	int _stack_size;
 	
 	Ref<Texture> _icon;
 

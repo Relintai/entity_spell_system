@@ -11,35 +11,20 @@ void ItemInstance::set_id(int value) {
 	_id = value;
 }
 
-int ItemInstance::get_inventory_position_x() const {
-	return _inventory_position_x;
+int ItemInstance::get_inventory_position() const {
+	return _inventory_position;
 }
-void ItemInstance::set_inventory_position_x(const int value) {
-	_inventory_position_x = value;
+void ItemInstance::set_inventory_position(const int value) {
+	_inventory_position = value;
 }
 	
-int ItemInstance::get_inventory_position_y() const {
-	return _inventory_position_y;
-}
-void ItemInstance::set_inventory_position_y(const int value) {
-	_inventory_position_y = value;
-}
 
 Ref<Bag> ItemInstance::get_bag() const {
-	if (_bag == NULL) {
-		return Ref<Bag>(NULL);
-	}
-	
-	return *_bag;
+	return _bag;
 }
 
 void ItemInstance::set_bag(const Ref<Bag> bag) {
-	if (_bag == NULL) {
-		_bag = memnew(Ref<Bag>(NULL));
-	} else {
-		_bag->unref();
-		(*_bag) = bag;
-	}
+	_bag = bag;
 }
 
 Ref<ItemTemplate> ItemInstance::get_item_template() const {
@@ -97,20 +82,18 @@ void ItemInstance::set_percent_mod(int index, float value) {
 	_modifiers[index]->set_percent_mod(value);
 }
 
-int ItemInstance::get_count() {
-	return _count;
+int ItemInstance::get_stack_size() {
+	return _stack_size;
 }
 
-void ItemInstance::set_count(int value) {
-	_count = value;
+void ItemInstance::set_stack_size(int value) {
+	_stack_size = value;
 }
 
 ItemInstance::ItemInstance() {
 	_id = 0;
 	
-	_bag = NULL;
-	
-	_count = 0;
+	_stack_size = 1;
 	
 	_modifier_count = 0;
 
@@ -120,11 +103,6 @@ ItemInstance::ItemInstance() {
 }
 
 ItemInstance::~ItemInstance() {
-	if (_bag != NULL) {
-		_bag->unref();
-
-		memdelete(_bag);
-	}
 }
 
 void ItemInstance::_validate_property(PropertyInfo &property) const {
@@ -144,23 +122,19 @@ void ItemInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_id", "count"), &ItemInstance::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
 	
-	ClassDB::bind_method(D_METHOD("get_inventory_position_x"), &ItemInstance::get_inventory_position_x);
-	ClassDB::bind_method(D_METHOD("set_inventory_position_x", "value"), &ItemInstance::set_inventory_position_x);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "inventory_position_x"), "set_inventory_position_x", "get_inventory_position_x");
-	
-	ClassDB::bind_method(D_METHOD("get_inventory_position_y"), &ItemInstance::get_inventory_position_y);
-	ClassDB::bind_method(D_METHOD("set_inventory_position_y", "value"), &ItemInstance::set_inventory_position_y);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "inventory_position_y"), "set_inventory_position_y", "get_inventory_position_y");
-	
+	ClassDB::bind_method(D_METHOD("get_inventory_position"), &ItemInstance::get_inventory_position);
+	ClassDB::bind_method(D_METHOD("set_inventory_position", "value"), &ItemInstance::set_inventory_position);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "inventory_position"), "set_inventory_position", "get_inventory_position");
+		
 	ClassDB::bind_method(D_METHOD("get_bag"), &ItemInstance::get_bag);
 	ClassDB::bind_method(D_METHOD("set_bag", "bag"), &ItemInstance::set_bag);
 	
 	ClassDB::bind_method(D_METHOD("get_item_template"), &ItemInstance::get_item_template);
 	ClassDB::bind_method(D_METHOD("set_item_template", "value"), &ItemInstance::set_item_template);
 
-	ClassDB::bind_method(D_METHOD("get_count"), &ItemInstance::get_count);
-	ClassDB::bind_method(D_METHOD("set_count", "count"), &ItemInstance::set_count);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "ount"), "set_count", "get_count");
+	ClassDB::bind_method(D_METHOD("get_stack_size"), &ItemInstance::get_stack_size);
+	ClassDB::bind_method(D_METHOD("set_stack_size", "count"), &ItemInstance::set_stack_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "stack_size"), "set_stack_size", "get_stack_size");
 
 	ClassDB::bind_method(D_METHOD("get_item_stat_modifier", "index"), &ItemInstance::get_item_stat_modifier);
 	//ClassDB::bind_method(D_METHOD("set_item_stat_modifier", "index", "value"), &ItemInstance::set_item_stat_modifier);

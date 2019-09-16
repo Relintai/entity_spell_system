@@ -17,6 +17,7 @@ public:
     static const String BINDING_STRING_CHARCATER_SKELETON_POINTS;
     static const String BINDING_STRING_AI_STATES;
     static const String BINDING_STRING_ENTITY_IMMUNITY_FLAGS;
+    static const String BINDING_STRING_ENTITY_INTERACTION_TYPE;
 
 	static const int PLAYER_RESOURCE_TYPES_RAGE;
 	static const int PLAYER_RESOURCE_TYPES_MANA;
@@ -198,6 +199,14 @@ public:
 		AI_STATE_ATTACK,
 	};
 
+	enum EntityInteractionType {
+		ENITIY_INTERACTION_TYPE_NORMAL,
+		ENITIY_INTERACTION_TYPE_SPEAK,
+		ENITIY_INTERACTION_TYPE_LOOT,
+		ENITIY_INTERACTION_TYPE_USE,
+		ENITIY_INTERACTION_TYPE_NONE,
+	};
+
 	enum {
 		MAX_LEVEL = 50,
 	};
@@ -216,5 +225,6 @@ VARIANT_ENUM_CAST(EntityEnums::EntityStateTypeIndexes);
 VARIANT_ENUM_CAST(EntityEnums::CharacterSkeletonPoints);
 VARIANT_ENUM_CAST(EntityEnums::AIStates);
 VARIANT_ENUM_CAST(EntityEnums::EntityImmunityFlags);
+VARIANT_ENUM_CAST(EntityEnums::EntityInteractionType);
 
 #endif

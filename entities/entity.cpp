@@ -4,6 +4,7 @@
 #include "../data/spell.h"
 #include "../entities/auras/aura_data.h"
 #include "../infos/spell_cast_info.h"
+#include "../inventory/bag.h"
 #include "../pipelines/spell_damage_info.h"
 #include "../pipelines/spell_heal_info.h"
 
@@ -81,6 +82,23 @@ EntityEnums::EntityType Entity::getc_entity_type() {
 }
 void Entity::setc_entity_type(EntityEnums::EntityType value) {
 	_c_entity_type = value;
+}
+
+//EntityInteractionType
+EntityEnums::EntityInteractionType Entity::gets_entity_interaction_type() {
+	return _s_interaction_type;
+}
+void Entity::sets_entity_interaction_type(EntityEnums::EntityInteractionType value) {
+	_s_interaction_type = value;
+
+	SEND_RPC(rpc("setc_entity_interaction_type", value), setc_entity_interaction_type(value));
+}
+
+EntityEnums::EntityInteractionType Entity::getc_entity_interaction_type() {
+	return _c_interaction_type;
+}
+void Entity::setc_entity_interaction_type(EntityEnums::EntityInteractionType value) {
+	_c_interaction_type = value;
 }
 
 int Entity::gets_immunity_flags() {
@@ -218,8 +236,10 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 }
 
 void Entity::setup() {
+	_setup();
+
 	if (has_method("_setup")) {
-		call("_setup");
+		call_multilevel("_setup");
 	}
 }
 
@@ -230,6 +250,7 @@ void Entity::_setup() {
 		sets_entity_data_id(_s_entity_data->get_id());
 
 		sets_entity_type(_s_entity_data->get_entity_type());
+		sets_entity_interaction_type(_s_entity_data->get_entity_interaction_type());
 		sets_immunity_flags(_s_entity_data->get_immunity_flags());
 		sets_entity_flags(_s_entity_data->get_entity_flags());
 
@@ -374,6 +395,9 @@ Dictionary Entity::_to_dict() {
 	}
 
 	dict["skills"] = skills;
+
+	if (_s_bag.is_valid())
+		dict["bag"] = _s_bag->to_dict();
 
 	return dict;
 }
@@ -524,6 +548,21 @@ void Entity::_from_dict(const Dictionary &dict) {
 		_s_skills.push_back(r);
 		_c_skills.push_back(r);
 	}
+
+	Dictionary bagd = dict.get("known_spells", Dictionary());
+
+	if (!bagd.empty()) {
+		if (!_s_bag.is_valid()) {
+			Ref<Bag> bag;
+			bag.instance();
+
+			bag->from_dict(bagd);
+
+			sets_bag(_s_bag);
+		} else {
+			_s_bag->from_dict(bagd);
+		}
+	}
 }
 
 Entity::Entity() {
@@ -561,6 +600,9 @@ Entity::Entity() {
 
 	_s_gcd = 0;
 	_c_gcd = 0;
+
+	_s_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
+	_c_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
 
 	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
 		_s_states[i] = 0;
@@ -755,6 +797,7 @@ void Entity::initialize(Ref<EntityCreateInfo> info) {
 	setc_xp(info->get_xp());
 
 	sets_entity_data(info->get_entity_data());
+
 	//setc_entity_data(info->get_entity_data());
 	/*
 	if (gets_entity_data() != NULL) {
@@ -3235,6 +3278,43 @@ void Entity::creceive_rank(int talentID, int rank) {
 //	return NULL;
 //}
 
+////    Bag    ////
+
+Ref<Bag> Entity::gets_bag() const {
+	return _s_bag;
+}
+
+Ref<Bag> Entity::getc_bag() const {
+	return _c_bag;
+}
+
+void Entity::sets_bag(const Ref<Bag> bag) {
+	_s_bag = bag;
+
+	SEND_RPC(rpc("setc_bag", bag), setc_bag(bag));
+}
+void Entity::setc_bag(const Ref<Bag> bag) {
+	_c_bag = bag;
+}
+
+Ref<Bag> Entity::gets_target_bag() const {
+	return _s_target_bag;
+}
+
+void Entity::sets_target_bag(const Ref<Bag> bag) {
+	_s_target_bag = bag;
+
+	SEND_RPC(rpc("setc_target_bag", bag), setc_target_bag(bag));
+}
+
+Ref<Bag> Entity::getc_target_bag() const {
+	return _c_target_bag;
+}
+
+void Entity::setc_target_bag(const Ref<Bag> bag) {
+	_c_target_bag = bag;
+}
+
 ////    DATA    ////
 void Entity::adds_data(Ref<EntityDataContainer> data) {
 	_s_data.push_back(data);
@@ -3523,10 +3603,10 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("cskill_removed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
 
 	//setup
-	BIND_VMETHOD(MethodInfo("_setup", PropertyInfo(Variant::OBJECT, "entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData")));
+	BIND_VMETHOD(MethodInfo("_setup"));
 
 	ClassDB::bind_method(D_METHOD("setup"), &Entity::setup);
-	ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
+	//ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
 
 	//binds
 	ClassDB::bind_method(D_METHOD("sdie"), &Entity::sdie);
@@ -3732,6 +3812,15 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_entity_type"), &Entity::getc_entity_type);
 	ClassDB::bind_method(D_METHOD("setc_entity_type", "value"), &Entity::sets_entity_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "setc_entity_type", "getc_entity_type");
+
+	//Interaction type
+	ClassDB::bind_method(D_METHOD("gets_entity_interaction_type"), &Entity::gets_entity_interaction_type);
+	ClassDB::bind_method(D_METHOD("sets_entity_interaction_type", "value"), &Entity::sets_entity_interaction_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_interaction_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE), "sets_entity_interaction_type", "gets_entity_interaction_type");
+
+	ClassDB::bind_method(D_METHOD("getc_entity_interaction_type"), &Entity::getc_entity_interaction_type);
+	ClassDB::bind_method(D_METHOD("setc_entity_interaction_type", "value"), &Entity::setc_entity_interaction_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_interaction_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE), "setc_entity_interaction_type", "getc_entity_interaction_type");
 
 	ClassDB::bind_method(D_METHOD("gets_immunity_flags"), &Entity::gets_immunity_flags);
 	ClassDB::bind_method(D_METHOD("sets_immunity_flags", "value"), &Entity::sets_immunity_flags);
@@ -3974,8 +4063,25 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_target", "target"), &Entity::setc_target);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ctarget", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "setc_target", "getc_target");
 
-	//Serialization
+	////    Bag System    ////
 
+	ClassDB::bind_method(D_METHOD("gets_bag"), &Entity::gets_bag);
+	ClassDB::bind_method(D_METHOD("sets_bag", "bag"), &Entity::sets_bag);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sbag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "sets_bag", "gets_bag");
+
+	ClassDB::bind_method(D_METHOD("getc_bag"), &Entity::getc_bag);
+	ClassDB::bind_method(D_METHOD("setc_bag", "bag"), &Entity::setc_bag);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cbag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "setc_bag", "getc_bag");
+
+	ClassDB::bind_method(D_METHOD("gets_target_bag"), &Entity::gets_target_bag);
+	ClassDB::bind_method(D_METHOD("sets_target_bag", "bag"), &Entity::sets_target_bag);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "starget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "sets_target_bag", "gets_target_bag");
+
+	ClassDB::bind_method(D_METHOD("getc_target_bag"), &Entity::getc_target_bag);
+	ClassDB::bind_method(D_METHOD("setc_target_bag", "bag"), &Entity::setc_target_bag);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ctarget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "setc_target_bag", "getc_target_bag");
+
+	//Serialization
 	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
 

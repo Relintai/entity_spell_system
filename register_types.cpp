@@ -46,7 +46,7 @@
 
 
 #include "inventory/bag.h"
-#include "inventory/inventory.h"
+//#include "inventory/inventory.h"
 
 #include "data/craft_data_attribute_helper.h"
 #include "data/craft_data_attribute.h"
@@ -164,7 +164,7 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<CharacterSpec>();
     
 	ClassDB::register_class<Bag>();
-	ClassDB::register_class<Inventory>();
+	//ClassDB::register_class<Inventory>();
 
 	ClassDB::register_class<SpellDamageInfo>();
 	ClassDB::register_class<SpellHealInfo>();

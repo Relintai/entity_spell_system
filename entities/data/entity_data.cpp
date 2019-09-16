@@ -30,6 +30,14 @@ void EntityData::set_entity_type(EntityEnums::EntityType value) {
 	_entity_type = value;
 }
 
+EntityEnums::EntityInteractionType EntityData::get_entity_interaction_type() {
+	return _interaction_type;
+}
+
+void EntityData::set_entity_interaction_type(EntityEnums::EntityInteractionType value) {
+	_interaction_type = value;
+}
+
 int EntityData::get_immunity_flags() {
 	return _immunity_flags;
 }
@@ -63,6 +71,13 @@ int EntityData::get_money() {
 }
 void EntityData::set_money(int value) {
 	_money = value;
+}
+
+int EntityData::get_bag_size() {
+	return _bag_size;
+}
+void EntityData::set_bag_size(int value) {
+	_bag_size = value;
 }
 
 Ref<Texture> EntityData::get_icon() {
@@ -1191,6 +1206,10 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_entity_type", "value"), &EntityData::set_entity_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "set_entity_type", "get_entity_type");
 
+	ClassDB::bind_method(D_METHOD("get_entity_interaction_type"), &EntityData::get_entity_interaction_type);
+	ClassDB::bind_method(D_METHOD("set_entity_interaction_type", "value"), &EntityData::set_entity_interaction_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_interaction_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE), "set_entity_interaction_type", "get_entity_interaction_type");
+
     ClassDB::bind_method(D_METHOD("get_entity_controller"), &EntityData::get_entity_controller);
 	ClassDB::bind_method(D_METHOD("set_entity_controller", "value"), &EntityData::set_entity_controller);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "set_entity_controller", "get_entity_controller");
@@ -1202,6 +1221,10 @@ void EntityData::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_money"), &EntityData::get_money);
 	ClassDB::bind_method(D_METHOD("set_money", "value"), &EntityData::set_money);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "money"), "set_money", "get_money");
+
+	ClassDB::bind_method(D_METHOD("get_bag_size"), &EntityData::get_bag_size);
+	ClassDB::bind_method(D_METHOD("set_bag_size", "value"), &EntityData::set_bag_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "bag_size"), "set_bag_size", "get_bag_size");
 
 	ClassDB::bind_method(D_METHOD("get_inherits"), &EntityData::get_inherits);
 	ClassDB::bind_method(D_METHOD("set_inherits", "value"), &EntityData::set_inherits);
@@ -1318,8 +1341,10 @@ EntityData::EntityData() {
 	_id = 0;
 	_player_resource_type = 0;
     _money = 0;
+	_bag_size = 0;
     
     _entity_type = EntityEnums::ENITIY_TYPE_NONE;
+	_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
     _immunity_flags = 0;
     _entity_flags = 0;
     _entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;

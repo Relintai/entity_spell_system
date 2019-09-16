@@ -138,11 +138,19 @@ public:
 	int getc_entity_data_id();
 	void setc_entity_data_id(int value);
 
+	//EntityType
 	EntityEnums::EntityType gets_entity_type();
 	void sets_entity_type(EntityEnums::EntityType value);
 
 	EntityEnums::EntityType getc_entity_type();
 	void setc_entity_type(EntityEnums::EntityType value);
+
+	//EntityInteractionType
+	EntityEnums::EntityInteractionType gets_entity_interaction_type();
+	void sets_entity_interaction_type(EntityEnums::EntityInteractionType value);
+
+	EntityEnums::EntityInteractionType getc_entity_interaction_type();
+	void setc_entity_interaction_type(EntityEnums::EntityInteractionType value);
 
 	int gets_immunity_flags();
 	void sets_immunity_flags(int value);
@@ -496,7 +504,7 @@ public:
 	Ref<EntitySkill> getc_skill(int index);
 	int getc_skill_count();
 
-	////    TargetComponent    ////
+	////    Target    ////
 
 	void crequest_target_change(NodePath path);
 	void net_sets_target(NodePath path);
@@ -508,7 +516,7 @@ public:
 	Entity *getc_target();
 	void setc_target(Node *p_target);
 
-	////    TalentComponent    ////
+	////    Talents    ////
 
 	void csend_request_rank_increase(int talentID);
 	void csend_request_rank_decrease(int talentID);
@@ -518,6 +526,20 @@ public:
 	void creceive_rank(int talentID, int rank);
 	//PlayerTalent *sget_talent(int id, bool create = false);
 	//PlayerTalent *cget_talent(int id, bool create = false);
+
+	////    Inventory    ////
+
+	Ref<Bag> gets_bag() const;
+	Ref<Bag> getc_bag() const;
+
+	void sets_bag(const Ref<Bag> bag);
+	void setc_bag(const Ref<Bag> bag);
+
+	Ref<Bag> gets_target_bag() const;
+	void sets_target_bag(const Ref<Bag> bag);
+
+	Ref<Bag> getc_target_bag() const;
+	void setc_target_bag(const Ref<Bag> bag);
 
 	////    Data    ////
 	void adds_data(Ref<EntityDataContainer> data);
@@ -535,7 +557,7 @@ public:
 	String random_name();
 
 	void setup();
-	void _setup();
+	virtual void _setup();
 
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
@@ -589,6 +611,9 @@ private:
 
 	String _s_player_name;
 	String _c_player_name;
+
+	EntityEnums::EntityInteractionType _s_interaction_type;
+	EntityEnums::EntityInteractionType _c_interaction_type;
 
 	////     Stats    ////
 
@@ -699,6 +724,14 @@ private:
 	////    Stat Allocations    ////
 	//int _unallocated_stats;
 	//int _stat_allocations[Stat::STAT_ID_TOTAL_STATS];
+
+	////    Inventory    ////
+
+	Ref<Bag> _s_bag;
+	Ref<Bag> _c_bag;
+
+	Ref<Bag> _s_target_bag;
+	Ref<Bag> _c_target_bag;
 };
 
 #endif

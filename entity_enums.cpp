@@ -9,6 +9,7 @@ const String EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES = "None,Stun,Root,Fr
 const String EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS = "Root,Pelvis,Spine,Spine 1,Spine 2,Neck,Head,Left Clavicle,Left upper Arm,Left Forearm,Left Hand,Left Thumb Base,Left Thumb End,Left Fingers Base,Left Fingers End,Right Clavicle,Right upper Arm,Right Forearm,Right Hand,Right Thumb Base,Right Thumb End,Right Fingers Base,Right Fingers End,Left Thigh,Left Calf,Left Foot,Right Thigh,Right Calf,Right Foot";
 const String EntityEnums::BINDING_STRING_AI_STATES = "Off,Rest,Patrol,Follow Path,Regenerate,Attack";
 const String EntityEnums::BINDING_STRING_ENTITY_IMMUNITY_FLAGS = "Stun,Root,Freeze,Silence,Disorient,Fear,Burning,Cold,Pacify,Magic,Poison,Physical,Curse,Bleed,Melee,Holy,Shadow,Nature,Fire,Frost,Lightning,Chaos,Slow,Crit,AOE,Damage,Fall Damage,Projectile,Debuff,Attacks";
+const String EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE = "Normal,Speak,Loot,Use,None";
 
 const int EntityEnums::PLAYER_RESOURCE_TYPES_RAGE = 0;
 const int EntityEnums::PLAYER_RESOURCE_TYPES_MANA = 1;
@@ -156,6 +157,12 @@ void EntityEnums::_bind_methods() {
 	BIND_ENUM_CONSTANT(ENTITY_IMMUNITY_FLAG_PROJECTILE);
 	BIND_ENUM_CONSTANT(ENTITY_IMMUNITY_FLAG_DEBUFF);
 	BIND_ENUM_CONSTANT(ENTITY_IMMUNITY_FLAG_ATTACKS);
+
+	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_NORMAL);
+	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_SPEAK);
+	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_LOOT);
+	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_USE);
+	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_NONE);
 
 	BIND_CONSTANT(MAX_LEVEL);
 }
