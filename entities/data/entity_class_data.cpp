@@ -54,7 +54,8 @@ Ref<StatData> EntityClassData::get_stat_data() {
 		return _inherits->get_stat_data();
 	}
 
-	ERR_FAIL_COND_V(!_stat_data.is_valid(), Ref<StatData>());
+	if (!_stat_data.is_valid())
+		return Ref<StatData>();
 
 	return _stat_data;
 }

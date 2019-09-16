@@ -246,7 +246,9 @@ void Entity::setup() {
 void Entity::_setup() {
 	if (_s_entity_data.is_valid()) {
 		_s_entity_data->setup_resources(this);
+
 		sinitialize_stats();
+
 		sets_entity_data_id(_s_entity_data->get_id());
 
 		sets_entity_type(_s_entity_data->get_entity_type());
