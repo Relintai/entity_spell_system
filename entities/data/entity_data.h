@@ -19,6 +19,7 @@
 #include "../../loot/loot_data_base.h"
 
 #include "entity_class_data.h"
+#include "item_container_data.h"
 
 class Aura;
 class Spell;
@@ -28,7 +29,6 @@ class Entity;
 class SpellCastInfo;
 class AIAction;
 class VendorItemData;
-class ContainerItemData;
 
 class EntityData : public Resource {
 	GDCLASS(EntityData, Resource);
@@ -68,27 +68,13 @@ public:
 	void set_entity_class_data(Ref<EntityClassData> data);
 
 	Ref<LootDataBase> get_loot_db() const;
-	void set_loot_db(const Ref<LootDataBase> lootdb);
+	void set_loot_db(const Ref<LootDataBase> data);
 
-	//Vendor data
-	int get_num_vendor_datas();
-	void set_num_vendor_datas(int value);
+	Ref<VendorItemData> get_vendor_item_data() const;
+	void set_vendor_item_data(const Ref<VendorItemData> data);
 
-	Ref<VendorItemData> get_vendor_data(int index);
-	void set_vendor_data(int index, Ref<VendorItemData> aura);
-
-	Vector<Variant> get_vendor_datas();
-	void set_vendor_datas(const Vector<Variant> &ai_actions);
-
-	//Container data
-	int get_num_container_datas();
-	void set_num_container_datas(int value);
-
-	Ref<ContainerItemData> get_container_data(int index);
-	void set_container_data(int index, Ref<ContainerItemData> aura);
-
-	Vector<Variant> get_container_datas();
-	void set_container_datas(const Vector<Variant> &ai_actions);
+	Ref<ItemContainerData> get_item_container_data() const;
+	void set_item_container_data(const Ref<ItemContainerData> data);
 
 		/*
 	Vector<int> get_mob_party_ids();
@@ -233,10 +219,9 @@ private:
 
 	Ref<EntityClassData> _entity_class_data;
 
-	Vector<Ref<VendorItemData> > _vendor_datas;
-	Vector<Ref<ContainerItemData> > _container_datas;
-
 	Ref<LootDataBase> _lootdb;
+	Ref<VendorItemData> _vendor_item_data;
+	Ref<ItemContainerData> _item_container_data;
 
 	//Vector<int> _mob_party_ids;
 	//Vector<int> _mob_dislike_ids;

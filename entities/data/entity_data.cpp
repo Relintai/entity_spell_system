@@ -7,7 +7,6 @@
 #include "../entity.h"
 #include "character_spec.h"
 #include "vendor_item_data.h"
-#include "container_item_data.h"
 
 int EntityData::get_id() {
 	return _id;
@@ -95,93 +94,26 @@ void EntityData::set_loot_db(const Ref<LootDataBase> lootdb) {
 	_lootdb = lootdb;
 }
 
-
-////    VENDOR DATA    ////
-
-int EntityData::get_num_vendor_datas() {
-	if (_vendor_datas.size() == 0 && _inherits.is_valid()) {
-		return _inherits->get_num_vendor_datas();
+Ref<VendorItemData> EntityData::get_vendor_item_data() const {
+	if (!_vendor_item_data.is_valid() && _inherits.is_valid()) {
+		return _inherits->get_vendor_item_data();
 	}
 
-	return _vendor_datas.size();
+	return _vendor_item_data;
 }
-void EntityData::set_num_vendor_datas(int value) {
-	_vendor_datas.resize(value);
+void EntityData::set_vendor_item_data(const Ref<VendorItemData> data) {
+	_vendor_item_data = data;
 }
 
-Ref<VendorItemData> EntityData::get_vendor_data(int index) {
-	if (_vendor_datas.size() == 0 && _inherits.is_valid()) {
-		return _inherits->get_vendor_data(index);
+Ref<ItemContainerData> EntityData::get_item_container_data() const {
+	if (!_vendor_item_data.is_valid() && _inherits.is_valid()) {
+		return _inherits->get_item_container_data();
 	}
 
-	ERR_FAIL_INDEX_V(index, _vendor_datas.size(), Ref<VendorItemData>());
-
-	return _vendor_datas[index];
+	return _item_container_data;
 }
-void EntityData::set_vendor_data(int index, Ref<VendorItemData> vendor_data) {
-	ERR_FAIL_INDEX(index, _vendor_datas.size());
-
-	_vendor_datas.set(index, vendor_data);
-}
-
-Vector<Variant> EntityData::get_vendor_datas() {
-	Vector<Variant> r;
-	for (int i = 0; i < _vendor_datas.size(); i++) {
-		r.push_back(_vendor_datas[i].get_ref_ptr());
-	}
-	return r;
-}
-void EntityData::set_vendor_datas(const Vector<Variant> &vendor_datas) {
-	_vendor_datas.clear();
-	for (int i = 0; i < vendor_datas.size(); i++) {
-		Ref<VendorItemData> vendor_data = Ref<VendorItemData>(vendor_datas[i]);
-
-		_vendor_datas.push_back(vendor_data);
-	}
-}
-
-////    Container Data    ////
-
-int EntityData::get_num_container_datas() {
-	if (_container_datas.size() == 0 && _inherits.is_valid()) {
-		return _inherits->get_num_container_datas();
-	}
-
-	return _container_datas.size();
-}
-void EntityData::set_num_container_datas(int value) {
-	_container_datas.resize(value);
-}
-
-Ref<ContainerItemData> EntityData::get_container_data(int index) {
-	if (_container_datas.size() == 0 && _inherits.is_valid()) {
-		return _inherits->get_container_data(index);
-	}
-
-	ERR_FAIL_INDEX_V(index, _container_datas.size(), Ref<ContainerItemData>());
-
-	return _container_datas[index];
-}
-void EntityData::set_container_data(int index, Ref<ContainerItemData> container_data) {
-	ERR_FAIL_INDEX(index, _container_datas.size());
-
-	_container_datas.set(index, container_data);
-}
-
-Vector<Variant> EntityData::get_container_datas() {
-	Vector<Variant> r;
-	for (int i = 0; i < _container_datas.size(); i++) {
-		r.push_back(_container_datas[i].get_ref_ptr());
-	}
-	return r;
-}
-void EntityData::set_container_datas(const Vector<Variant> &container_datas) {
-	_container_datas.clear();
-	for (int i = 0; i < container_datas.size(); i++) {
-		Ref<ContainerItemData> container_data = Ref<ContainerItemData>(container_datas[i]);
-
-		_container_datas.push_back(container_data);
-	}
+void EntityData::set_item_container_data(const Ref<ItemContainerData> data) {
+	_item_container_data = data;
 }
 
 //void EntityData::_setup_resources(Entity *entity) {
@@ -902,8 +834,7 @@ EntityData::EntityData() {
 	_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
 }
 EntityData::~EntityData() {
-	_vendor_datas.clear();
-	_container_datas.clear();
+	
 }
 
 void EntityData::_bind_methods() {
@@ -1085,6 +1016,16 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_loot_db", "value"), &EntityData::set_loot_db);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "loot_db", PROPERTY_HINT_RESOURCE_TYPE, "LootDataBase"), "set_loot_db", "get_loot_db");
 
+	//VendorItemData
+	ClassDB::bind_method(D_METHOD("get_vendor_item_data"), &EntityData::get_vendor_item_data);
+	ClassDB::bind_method(D_METHOD("set_vendor_item_data", "value"), &EntityData::set_vendor_item_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "vendor_item_data", PROPERTY_HINT_RESOURCE_TYPE, "VendorItemData"), "set_vendor_item_data", "get_vendor_item_data");
+
+	//ItemContainerData
+	ClassDB::bind_method(D_METHOD("get_item_container_data"), &EntityData::get_item_container_data);
+	ClassDB::bind_method(D_METHOD("set_item_container_data", "value"), &EntityData::set_item_container_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "item_container_data", PROPERTY_HINT_RESOURCE_TYPE, "ItemContainerData"), "set_item_container_data", "get_item_container_data");
+
 	ClassDB::bind_method(D_METHOD("generate_name"), &EntityData::generate_name);
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "name"), "_generate_name"));
 
@@ -1098,27 +1039,5 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_entity_flags", "value"), &EntityData::set_entity_flags);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_FLAGS), "set_entity_flags", "get_entity_flags");
 
-	////    Vendor data    ////
-	ADD_GROUP("Vendor Data", "vendor_datas");
-	ClassDB::bind_method(D_METHOD("get_num_vendor_datas"), &EntityData::get_num_vendor_datas);
-	ClassDB::bind_method(D_METHOD("set_num_vendor_datas", "value"), &EntityData::set_num_vendor_datas);
 
-	ClassDB::bind_method(D_METHOD("get_vendor_data", "index"), &EntityData::get_vendor_data);
-	ClassDB::bind_method(D_METHOD("set_vendor_data", "index", "vendor_data"), &EntityData::set_vendor_data);
-
-	ClassDB::bind_method(D_METHOD("get_vendor_datas"), &EntityData::get_vendor_datas);
-	ClassDB::bind_method(D_METHOD("set_vendor_datas", "vendor_datas"), &EntityData::set_vendor_datas);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "vendor_datas", PROPERTY_HINT_NONE, "17/17:VendorItemData", PROPERTY_USAGE_DEFAULT, "VendorItemData"), "set_vendor_datas", "get_vendor_datas");
-
-	////    Container data    ////
-	ADD_GROUP("Container Data", "container_datas");
-	ClassDB::bind_method(D_METHOD("get_num_container_datas"), &EntityData::get_num_container_datas);
-	ClassDB::bind_method(D_METHOD("set_num_container_datas", "value"), &EntityData::set_num_container_datas);
-
-	ClassDB::bind_method(D_METHOD("get_container_data", "index"), &EntityData::get_container_data);
-	ClassDB::bind_method(D_METHOD("set_container_data", "index", "container_data"), &EntityData::set_container_data);
-
-	ClassDB::bind_method(D_METHOD("get_container_datas"), &EntityData::get_container_datas);
-	ClassDB::bind_method(D_METHOD("set_container_datas", "container_datas"), &EntityData::set_container_datas);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "container_datas", PROPERTY_HINT_NONE, "17/17:ContainerItemData", PROPERTY_USAGE_DEFAULT, "ContainerItemData"), "set_container_datas", "get_container_datas");
 }

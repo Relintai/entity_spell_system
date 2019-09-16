@@ -3,24 +3,22 @@
 
 #include "core/resource.h"
 
-class ItemTemplate;
+#include "vendor_item_data_entry.h"
 
 class VendorItemData : public Resource {
 	GDCLASS(VendorItemData, Resource);
 
 public:
-    Ref<ItemTemplate> get_item();
-	void set_item(Ref<ItemTemplate> item);
-    
-    int get_item_price() const;
-	void set_item_price(int value);
-    
-    int get_item_count() const;
-	void set_item_count(int value);
-    
-    int get_item_spawn_time() const;
-	void set_item_spawn_time(int time);
-	
+	//Vendor data
+	int get_num_vendor_datas();
+	void set_num_vendor_datas(int value);
+
+	Ref<VendorItemDataEntry> get_vendor_data(int index);
+	void set_vendor_data(int index, Ref<VendorItemDataEntry> data);
+
+	Vector<Variant> get_vendor_datas();
+	void set_vendor_datas(const Vector<Variant> &data);
+
 	VendorItemData();
 	~VendorItemData();
 
@@ -28,10 +26,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	Ref<ItemTemplate> _item;
-    int _item_price;
-    int _item_count;
-    int _item_spawn_time;
+	Vector<Ref<VendorItemData> > _vendor_datas;
 };
 
 #endif

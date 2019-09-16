@@ -5,8 +5,8 @@
 
 class ItemTemplate;
 
-class ContainerItemData : public Resource {
-	GDCLASS(ContainerItemData, Resource);
+class ItemContainerDataEntry : public Resource {
+	GDCLASS(ItemContainerDataEntry, Resource);
 
 public:
     Ref<ItemTemplate> get_item();
@@ -15,8 +15,8 @@ public:
     int get_item_count() const;
 	void set_item_count(int value);
 
-	ContainerItemData();
-	~ContainerItemData();
+	ItemContainerDataEntry();
+	~ItemContainerDataEntry();
 
 protected:
 	static void _bind_methods();
