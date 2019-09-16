@@ -822,7 +822,9 @@ void Entity::sinitialize_stats() {
 	//gets_entity_data()->get_stat_data()->get_stats_for_stat(_health);
 	//Ref<StatDataEntry> e = gets_entity_data()->get_stat_data()->get_stat_data_enum(Stat::STAT_ID_HEALTH);
 
-	Ref<EntityData> cc = gets_entity_data();
+	ERR_FAIL_COND(!gets_entity_data().is_valid());
+
+	Ref<EntityClassData> cc = gets_entity_data()->get_entity_class_data();
 
 	ERR_FAIL_COND(!cc.is_valid());
 

@@ -1,5 +1,5 @@
-#ifndef ENTITY_DATA_H
-#define ENTITY_DATA_H
+#ifndef ENTITY_CLASS_DATA_H
+#define ENTITY_CLASS_DATA_H
 
 #include "core/resource.h"
 #include "core/vector.h"
@@ -13,12 +13,8 @@
 #include "../../pipelines/spell_damage_info.h"
 #include "../../pipelines/spell_heal_info.h"
 
-#include "../../utility/category_cooldown.h"
 #include "../../utility/cooldown.h"
-
-#include "../../loot/loot_data_base.h"
-
-#include "entity_class_data.h"
+#include "../../utility/category_cooldown.h"
 
 class Aura;
 class Spell;
@@ -27,131 +23,120 @@ class CharacterSpec;
 class Entity;
 class SpellCastInfo;
 class AIAction;
-class VendorItemData;
-class ContainerItemData;
 
-class EntityData : public Resource {
-	GDCLASS(EntityData, Resource);
+enum CharacterWeaponDataTypes {
+	CHARACTER_WEAPON_DATA_TYPES_NONE,
+	CHARACTER_WEAPON_DATA_TYPES_SWORD,
+	CHARACTER_WEAPON_DATA_TYPES_BOW
+};
+
+VARIANT_ENUM_CAST(CharacterWeaponDataTypes)
+
+class EntityClassData : public Resource {
+	GDCLASS(EntityClassData, Resource);
 
 public:
 	int get_id();
 	void set_id(int value);
 
-	String get_entity_name();
-	void set_entity_name(String value);
+	String get_entity_class_name();
+	void set_entity_class_name(String value);
 
-	Ref<EntityData> get_inherits();
-	void set_inherits(Ref<EntityData> value);
+	Ref<EntityClassData> get_inherits();
+	void set_inherits(Ref<EntityClassData> value);
 
-	EntityEnums::EntityType get_entity_type();
-	void set_entity_type(EntityEnums::EntityType value);
+	Ref<Texture> get_icon();
+	void set_icon(Ref<Texture> value);
 
-	EntityEnums::EntityInteractionType get_entity_interaction_type();
-	void set_entity_interaction_type(EntityEnums::EntityInteractionType value);
+	Ref<StatData> get_stat_data();
+	void set_stat_data(Ref<StatData> value);
 
-	int get_immunity_flags();
-	void set_immunity_flags(int value);
+	int get_player_resource_type();
+	void set_player_resource_type(int value);
 
-	int get_entity_flags();
-	void set_entity_flags(int value);
+	int get_stat_points_per_level();
+	void set_stat_points_per_level(int value);
 
-	EntityEnums::EntityController get_entity_controller();
-	void set_entity_controller(EntityEnums::EntityController value);
+    //Specs
+	int get_num_specs();
+	void set_num_specs(int value);
 
-	int get_money();
-	void set_money(int value);
+	Ref<CharacterSpec> get_spec(int index) const;
+	void set_spec(int index, Ref<CharacterSpec> spec);
 
-	int get_bag_size();
-	void set_bag_size(int value);
+	Vector<Variant> get_specs();
+	void set_specs(const Vector<Variant> &specs);
 
-	Ref<EntityClassData> get_entity_class_data();
-	void set_entity_class_data(Ref<EntityClassData> data);
+    //Spells
+	int get_num_spells();
+	void set_num_spells(int value);
 
-	Ref<LootDataBase> get_loot_db() const;
-	void set_loot_db(const Ref<LootDataBase> lootdb);
+	Ref<Spell> get_spell(int index);
+	void set_spell(int index, Ref<Spell> spell);
 
-	//Vendor data
-	int get_num_vendor_datas();
-	void set_num_vendor_datas(int value);
+	Vector<Variant> get_spells();
+	void set_spells(const Vector<Variant> &spells);
+    
+    //Auras
+	int get_num_auras();
+	void set_num_auras(int value);
 
-	Ref<VendorItemData> get_vendor_data(int index);
-	void set_vendor_data(int index, Ref<VendorItemData> aura);
+	Ref<Aura> get_aura(int index);
+	void set_aura(int index, Ref<Aura> aura);
 
-	Vector<Variant> get_vendor_datas();
-	void set_vendor_datas(const Vector<Variant> &ai_actions);
+	Vector<Variant> get_auras();
+	void set_auras(const Vector<Variant> &auras);
 
-	//Container data
-	int get_num_container_datas();
-	void set_num_container_datas(int value);
+	//AI Actions
+	int get_num_ai_actions();
+	void set_num_ai_actions(int value);
 
-	Ref<ContainerItemData> get_container_data(int index);
-	void set_container_data(int index, Ref<ContainerItemData> aura);
+	Ref<AIAction> get_ai_action(int index);
+	void set_ai_action(int index, Ref<AIAction> aura);
 
-	Vector<Variant> get_container_datas();
-	void set_container_datas(const Vector<Variant> &ai_actions);
-
-		/*
-	Vector<int> get_mob_party_ids();
-	void set_mob_party_ids(Vector<int> ids);
-
-	Vector<int> get_mob_dislike_ids();
-	void set_mob_dislike_ids(Vector<int> ids);
-	*/
-	//MobSpellData *getMobSpellData();
-	//void setMobSpellData(MobSpellData *value);
-
-	//int get_inspector_max_spells();
-	//void set_inspector_max_spells(int value);
-
-	String generate_name();
-
+	Vector<Variant> get_ai_actions();
+	void set_ai_actions(const Vector<Variant> &ai_actions);
+    
 	//Setup
 	void setup_resources(Entity *entity);
 	//void _setup_resources(Entity *entity);
-
-	////    Interactions    ////
-	bool cans_interact(Entity *entity);
-	bool cans_interact_bind(Node *entity);
-
-	void sinteract(Entity *entity);
-	void sinteract_bind(Node *entity);
 
 	////    Spell System    ////
 
 	void start_casting(int spell_id, Entity *caster, float spellScale);
 
-	void son_before_cast(Ref<SpellCastInfo> info);
+    void son_before_cast(Ref<SpellCastInfo> info);
 	void son_before_cast_target(Ref<SpellCastInfo> info);
 	void son_cast_finished_target(Ref<SpellCastInfo> info);
 	void son_cast_finished(Ref<SpellCastInfo> info);
 	void son_cast_started(Ref<SpellCastInfo> info);
 	void son_cast_failed(Ref<SpellCastInfo> info);
-
-	void son_before_damage_hit(Ref<SpellDamageInfo> data);
+    
+    void son_before_damage_hit(Ref<SpellDamageInfo> data);
 	void son_hit(Ref<SpellDamageInfo> data);
 	void son_before_damage(Ref<SpellDamageInfo> data);
 	void son_damage_receive(Ref<SpellDamageInfo> data);
 	void son_dealt_damage(Ref<SpellDamageInfo> data);
 	void son_damage_dealt(Ref<SpellDamageInfo> data);
 
-	void son_before_heal_hit(Ref<SpellHealInfo> data);
+    void son_before_heal_hit(Ref<SpellHealInfo> data);
 	void son_before_heal(Ref<SpellHealInfo> data);
 	void son_heal_receive(Ref<SpellHealInfo> data);
 	void son_dealt_heal(Ref<SpellHealInfo> data);
 	void son_heal_dealt(Ref<SpellHealInfo> data);
 
-	void son_before_aura_applied(Ref<AuraData> data);
+    void son_before_aura_applied(Ref<AuraData> data);
 	void son_after_aura_applied(Ref<AuraData> data);
-
-	void son_death(Entity *entity);
-	void son_death_bind(Node *entity);
-
+    
+    void son_death(Entity *entity);
+    void son_death_bind(Node *entity);
+    
 	void son_cooldown_added(Ref<Cooldown> cooldown);
 	void son_cooldown_removed(Ref<Cooldown> cooldown);
-
+	
 	void son_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
 	void son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
-
+	
 	void son_gcd_started(Entity *entity, float gcd);
 	void son_gcd_finished(Entity *entity);
 	void son_gcd_started_bind(Node *entity, float gcd);
@@ -162,30 +147,30 @@ public:
 	void son_level_up(Entity *entity, int value);
 	void son_level_up_bind(Node *entity, int value);
 
-	//Clientside Event Handlers
+    //Clientside Event Handlers
 	void con_cast_failed(Ref<SpellCastInfo> info);
 	void con_cast_started(Ref<SpellCastInfo> info);
 	void con_cast_state_changed(Ref<SpellCastInfo> info);
 	void con_cast_finished(Ref<SpellCastInfo> info);
 	void con_spell_cast_success(Ref<SpellCastInfo> info);
-
+	
 	void con_death(Entity *entity);
-	void con_death_bind(Node *entity);
-
+    void con_death_bind(Node *entity);
+	
 	void con_cooldown_added(Ref<Cooldown> cooldown);
 	void con_cooldown_removed(Ref<Cooldown> cooldown);
 	void con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
 	void con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
-
+	
 	void con_aura_added(Ref<AuraData> data);
 	void con_aura_removed(Ref<AuraData> data);
 	void con_aura_refresh(Ref<AuraData> data);
-
+	
 	void con_damage_dealt(Ref<SpellDamageInfo> info);
 	void con_dealt_damage(Ref<SpellDamageInfo> info);
 	void con_heal_dealt(Ref<SpellHealInfo> info);
 	void con_dealt_heal(Ref<SpellHealInfo> info);
-
+	
 	void con_gcd_started(Entity *entity, float gcd);
 	void con_gcd_finished(Entity *entity);
 	void con_gcd_started_bind(Node *entity, float gcd);
@@ -196,7 +181,7 @@ public:
 	void con_level_up(Entity *entity, int value);
 	void con_level_up_bind(Node *entity, int value);
 
-	//    AI    //
+    //    AI    //
 	void sai_follow(Entity *entity);
 	void sai_rest(Entity *entity);
 	void sai_regenerate(Entity *entity);
@@ -207,8 +192,8 @@ public:
 	void sai_regenerate_bind(Node *entity);
 	void sai_attack_bind(Node *entity);
 
-	EntityData();
-	~EntityData();
+	EntityClassData();
+	~EntityClassData();
 
 protected:
 	static void _bind_methods();
@@ -216,32 +201,22 @@ protected:
 private:
 	int _id;
 
-	Ref<EntityData> _inherits;
+	String _entity_class_name;
 
-	EntityEnums::EntityType _entity_type;
+	Ref<EntityClassData> _inherits;
 
-	EntityEnums::EntityInteractionType _interaction_type;
+	Ref<Texture> _icon;
 
-	int _immunity_flags;
-	int _entity_flags;
-	EntityEnums::EntityController _entity_controller;
+	int _player_resource_type;
 
-	String _entity_name;
+	int _stat_points_per_level;
 
-	int _money;
-	int _bag_size;
+	Ref<StatData> _stat_data;
 
-	Ref<EntityClassData> _entity_class_data;
-
-	Vector<Ref<VendorItemData> > _vendor_datas;
-	Vector<Ref<ContainerItemData> > _container_datas;
-
-	Ref<LootDataBase> _lootdb;
-
-	//Vector<int> _mob_party_ids;
-	//Vector<int> _mob_dislike_ids;
-
-	//MobSpellData *_mob_spell_data;
+	Vector<Ref<Spell> > _spells;
+	Vector<Ref<CharacterSpec> > _specs;
+	Vector<Ref<Aura> > _auras;
+	Vector<Ref<AIAction> > _ai_actions;
 };
 
 #endif

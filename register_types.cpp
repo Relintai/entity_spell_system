@@ -14,7 +14,7 @@
 #include "data/spell_cooldown_manipulation_data.h"
 
 #include "entities/data/entity_data.h"
-#include "entities/data/player_character_data.h"
+#include "entities/data/entity_class_data.h"
 #include "entities/data/vendor_item_data.h"
 #include "entities/data/container_item_data.h"
 #include "entities/data/entity_data_container.h"
@@ -119,7 +119,7 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<AuraStatAttribute>();
 
 	ClassDB::register_class<EntityData>();
-	ClassDB::register_class<PlayerCharacterData>();
+	ClassDB::register_class<EntityClassData>();
     ClassDB::register_class<VendorItemData>();
     ClassDB::register_class<ContainerItemData>();
     ClassDB::register_class<EntityDataContainer>();

@@ -24,7 +24,7 @@ module_env.add_source_files(env.modules_sources,"data/item_template.cpp")
 module_env.add_source_files(env.modules_sources,"data/spell_cooldown_manipulation_data.cpp")
 
 module_env.add_source_files(env.modules_sources,"entities/data/entity_data.cpp")
-module_env.add_source_files(env.modules_sources,"entities/data/player_character_data.cpp")
+module_env.add_source_files(env.modules_sources,"entities/data/entity_class_data.cpp")
 module_env.add_source_files(env.modules_sources,"entities/data/vendor_item_data.cpp")
 module_env.add_source_files(env.modules_sources,"entities/data/container_item_data.cpp")
 module_env.add_source_files(env.modules_sources,"entities/data/entity_data_container.cpp")
