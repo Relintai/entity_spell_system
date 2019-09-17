@@ -131,20 +131,24 @@ void Entity::sets_entity_controller(EntityEnums::EntityController value) {
 	_s_entity_controller = value;
 }
 
-String Entity::gets_player_name() {
-	return _s_player_name;
+String Entity::gets_entity_name() {
+	return _s_entity_name;
 }
-void Entity::sets_player_name(String value) {
-	_s_player_name = value;
+void Entity::sets_entity_name(String value) {
+	_s_entity_name = value;
 
-	SEND_RPC(rpc("setc_player_name", value), setc_player_name(value));
+	emit_signal("sname_changed", this);
+
+	SEND_RPC(rpc("setc_entity_name", value), setc_entity_name(value));
 }
 
-String Entity::getc_player_name() {
-	return _c_player_name;
+String Entity::getc_entity_name() {
+	return _c_entity_name;
 }
-void Entity::setc_player_name(String value) {
-	_c_player_name = value;
+void Entity::setc_entity_name(String value) {
+	_c_entity_name = value;
+
+	emit_signal("cname_changed", this);
 }
 
 int Entity::gets_gender() {
@@ -259,7 +263,7 @@ void Entity::_setup() {
 		if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_NONE)
 			sets_entity_controller(_s_entity_data->get_entity_controller());
 
-		sets_player_name(_s_entity_data->get_entity_name());
+		sets_entity_name(_s_entity_data->get_entity_name());
 		sets_money(_s_entity_data->get_money());
 	}
 
@@ -293,7 +297,7 @@ Dictionary Entity::_to_dict() {
 		dict["entity_data_id"] = 0;
 
 	//dict["send_flag"] = _s_send_flag;
-	dict["player_name"] = _s_player_name;
+	dict["entity_name"] = _s_entity_name;
 
 	////     Stats    ////
 
@@ -418,7 +422,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	sets_entity_data_id(dict.get("entity_data_id", 0));
 
-	sets_player_name(dict.get("player_name", ""));
+	sets_entity_name(dict.get("entity_name", ""));
 
 	////     Stats    ////
 
@@ -591,8 +595,8 @@ Entity::Entity() {
 	_c_money = 0;
 	_s_money = 0;
 
-	_s_player_name = "";
-	_c_player_name = "";
+	_s_entity_name = "";
+	_c_entity_name = "";
 
 	_s_state = PlayerStates::STATE_NORMAL;
 	_c_state = PlayerStates::STATE_NORMAL;
@@ -684,7 +688,7 @@ Entity::Entity() {
 	SET_RPC_REMOTE("setc_guid");
 	SET_RPC_REMOTE("setc_entity_data_id");
 	SET_RPC_REMOTE("setc_entity_type");
-	SET_RPC_REMOTE("setc_player_name");
+	SET_RPC_REMOTE("setc_entity_name");
 	SET_RPC_REMOTE("setc_gender");
 	SET_RPC_REMOTE("setc_level");
 	SET_RPC_REMOTE("setc_xp");
@@ -786,8 +790,8 @@ Entity::~Entity() {
 void Entity::initialize(Ref<EntityCreateInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	_s_player_name = info->get_player_name();
-	_c_player_name = info->get_player_name();
+	_s_entity_name = info->get_entity_name();
+	_c_entity_name = info->get_entity_name();
 
 	sets_entity_controller(info->get_entity_controller());
 	//setc_entity_controller(info->get_entity_type());
@@ -3527,6 +3531,9 @@ void Entity::_notification(int p_what) {
 
 void Entity::_bind_methods() {
 	//Signals
+	ADD_SIGNAL(MethodInfo("sname_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	ADD_SIGNAL(MethodInfo("cname_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
 	ADD_SIGNAL(MethodInfo("starget_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("ctarget_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
@@ -3856,29 +3863,29 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sets_entity_controller", "value"), &Entity::sets_entity_controller);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "sets_entity_controller", "gets_entity_controller");
 
-	ClassDB::bind_method(D_METHOD("gets_player_name"), &Entity::gets_player_name);
-	ClassDB::bind_method(D_METHOD("sets_player_name", "value"), &Entity::sets_player_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "s_player_name"), "sets_player_name", "gets_player_name");
+	ClassDB::bind_method(D_METHOD("gets_entity_name"), &Entity::gets_entity_name);
+	ClassDB::bind_method(D_METHOD("sets_entity_name", "value"), &Entity::sets_entity_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "sentity_name"), "sets_entity_name", "gets_entity_name");
 
-	ClassDB::bind_method(D_METHOD("getc_player_name"), &Entity::getc_player_name);
-	ClassDB::bind_method(D_METHOD("setc_player_name", "value"), &Entity::setc_player_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "c_player_name"), "setc_player_name", "getc_player_name");
+	ClassDB::bind_method(D_METHOD("getc_entity_name"), &Entity::getc_entity_name);
+	ClassDB::bind_method(D_METHOD("setc_entity_name", "value"), &Entity::setc_entity_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "centity_name"), "setc_entity_name", "getc_entity_name");
 
 	ClassDB::bind_method(D_METHOD("gets_level"), &Entity::gets_level);
 	ClassDB::bind_method(D_METHOD("sets_level", "value"), &Entity::sets_level);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "s_level"), "sets_level", "gets_level");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "slevel"), "sets_level", "gets_level");
 
 	ClassDB::bind_method(D_METHOD("getc_level"), &Entity::getc_level);
 	ClassDB::bind_method(D_METHOD("setc_level", "value"), &Entity::setc_level);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "c_level"), "setc_level", "getc_level");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "clevel"), "setc_level", "getc_level");
 
 	ClassDB::bind_method(D_METHOD("gets_xp"), &Entity::gets_xp);
 	ClassDB::bind_method(D_METHOD("sets_xp", "value"), &Entity::sets_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "s_xp"), "sets_xp", "gets_xp");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "sxp"), "sets_xp", "gets_xp");
 
 	ClassDB::bind_method(D_METHOD("getc_xp"), &Entity::getc_xp);
 	ClassDB::bind_method(D_METHOD("setc_xp", "value"), &Entity::setc_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "c_xp"), "setc_xp", "getc_xp");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "cxp"), "setc_xp", "getc_xp");
 
 	ClassDB::bind_method(D_METHOD("gets_money"), &Entity::gets_money);
 	ClassDB::bind_method(D_METHOD("sets_money", "value"), &Entity::sets_money);
@@ -3890,11 +3897,11 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_entity_data"), &Entity::gets_entity_data);
 	ClassDB::bind_method(D_METHOD("sets_entity_data", "value"), &Entity::sets_entity_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "s_entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "sets_entity_data", "gets_entity_data");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sentity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "sets_entity_data", "gets_entity_data");
 
 	ClassDB::bind_method(D_METHOD("getc_entity_data"), &Entity::getc_entity_data);
 	ClassDB::bind_method(D_METHOD("setc_entity_data", "value"), &Entity::setc_entity_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "c_entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "setc_entity_data", "getc_entity_data");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "centity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "setc_entity_data", "getc_entity_data");
 
 	ClassDB::bind_method(D_METHOD("initialize", "entity_create_info"), &Entity::initialize);
 

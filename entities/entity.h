@@ -164,11 +164,11 @@ public:
 	EntityEnums::EntityController gets_entity_controller();
 	void sets_entity_controller(EntityEnums::EntityController value);
 
-	String gets_player_name();
-	void sets_player_name(String value);
+	String gets_entity_name();
+	void sets_entity_name(String value);
 
-	String getc_player_name();
-	void setc_player_name(String value);
+	String getc_entity_name();
+	void setc_entity_name(String value);
 
 	int gets_gender();
 	void sets_gender(int value);
@@ -616,8 +616,8 @@ private:
 
 	int _s_send_flag;
 
-	String _s_player_name;
-	String _c_player_name;
+	String _s_entity_name;
+	String _c_entity_name;
 
 	EntityEnums::EntityInteractionType _s_interaction_type;
 	EntityEnums::EntityInteractionType _c_interaction_type;

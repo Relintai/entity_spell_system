@@ -16,8 +16,8 @@ public:
 	EntityEnums::EntityController get_entity_controller() { return _entity_controller; }
 	void set_entity_controller(EntityEnums::EntityController value) { _entity_controller = value; }
 
-	String get_player_name() { return _player_name; }
-	void set_player_name(String value) { _player_name = value; }
+	String get_entity_name() { return _entity_name; }
+	void set_entity_name(String value) { _entity_name = value; }
 
 	int get_level() { return _level; }
 	void set_level(int value) { _level = value; }
@@ -34,9 +34,9 @@ protected:
 		ClassDB::bind_method(D_METHOD("set_entity_controller", "value"), &EntityCreateInfo::set_entity_controller);
 		ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "set_entity_controller", "get_entity_controller");
 
-		ClassDB::bind_method(D_METHOD("get_player_name"), &EntityCreateInfo::get_player_name);
-		ClassDB::bind_method(D_METHOD("set_player_name", "value"), &EntityCreateInfo::set_player_name);
-		ADD_PROPERTY(PropertyInfo(Variant::STRING, "player_name"), "set_player_name", "get_player_name");
+		ClassDB::bind_method(D_METHOD("get_entity_name"), &EntityCreateInfo::get_entity_name);
+		ClassDB::bind_method(D_METHOD("set_entity_name", "value"), &EntityCreateInfo::set_entity_name);
+		ADD_PROPERTY(PropertyInfo(Variant::STRING, "player_name"), "set_entity_name", "get_entity_name");
 
 		ClassDB::bind_method(D_METHOD("get_level"), &EntityCreateInfo::get_level);
 		ClassDB::bind_method(D_METHOD("set_level", "value"), &EntityCreateInfo::set_level);
@@ -54,7 +54,7 @@ protected:
 private:
 	int _guid;
 	EntityEnums::EntityController _entity_controller;
-	String _player_name;
+	String _entity_name;
 	int _level;
 	int _xp;
 
