@@ -1219,8 +1219,42 @@ void Entity::sinteract() {
 	_s_entity_data->sinteract(this);
 }
 
+bool Entity::canc_interact() {
+	if (!ObjectDB::instance_validate(_c_target)) {
+		return false;
+	}
+
+	EntityEnums::EntityInteractionType it = _c_target->getc_entity_interaction_type();
+
+	if (it == EntityEnums::ENITIY_INTERACTION_TYPE_NONE || it == EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL) {
+		return false;
+	}
+
+	return true;
+}
+
 void Entity::crequest_interact() {
 	sinteract();
+}
+
+void Entity::ssend_open_loot_window() {
+	copen_loot_window();
+}
+void Entity::ssend_open_container_window() {
+	copen_container_window();
+}
+void Entity::ssend_open_vendor_window() {
+	copen_vendor_window();
+}
+
+void Entity::copen_loot_window() {
+	emit_signal("onc_open_loot_winow_request");
+}
+void Entity::copen_container_window() {
+	emit_signal("onc_open_container_winow_request");
+}
+void Entity::copen_vendor_window() {
+	emit_signal("onc_open_vendor_winow_request");
 }
 
 //XP Operations
@@ -3609,6 +3643,11 @@ void Entity::_bind_methods() {
 	//setup
 	BIND_VMETHOD(MethodInfo("_setup"));
 
+	//Windows
+	ADD_SIGNAL(MethodInfo("onc_open_loot_winow_request"));
+	ADD_SIGNAL(MethodInfo("onc_open_container_winow_request"));
+	ADD_SIGNAL(MethodInfo("onc_open_vendor_winow_request"));
+
 	ClassDB::bind_method(D_METHOD("setup"), &Entity::setup);
 	//ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
 
@@ -3759,7 +3798,17 @@ void Entity::_bind_methods() {
 	//Interactions
 	ClassDB::bind_method(D_METHOD("cans_interact"), &Entity::cans_interact);
 	ClassDB::bind_method(D_METHOD("sinteract"), &Entity::sinteract);
+
+	ClassDB::bind_method(D_METHOD("canc_interact"), &Entity::canc_interact);
 	ClassDB::bind_method(D_METHOD("crequest_interact"), &Entity::crequest_interact);
+
+	ClassDB::bind_method(D_METHOD("ssend_open_loot_window"), &Entity::ssend_open_loot_window);
+	ClassDB::bind_method(D_METHOD("ssend_open_container_window"), &Entity::ssend_open_container_window);
+	ClassDB::bind_method(D_METHOD("ssend_open_vendor_window"), &Entity::ssend_open_vendor_window);
+
+	ClassDB::bind_method(D_METHOD("copen_loot_window"), &Entity::copen_loot_window);
+	ClassDB::bind_method(D_METHOD("copen_container_window"), &Entity::copen_container_window);
+	ClassDB::bind_method(D_METHOD("copen_vendor_window"), &Entity::copen_vendor_window);
 
 	//XP Operations
 	ClassDB::bind_method(D_METHOD("adds_xp", "value"), &Entity::adds_xp);
