@@ -1220,6 +1220,10 @@ void Entity::sinteract() {
 }
 
 bool Entity::canc_interact() {
+	if (has_method("_canc_interact")) {
+		return call("_canc_interact");
+	}
+
 	if (!ObjectDB::instance_validate(_c_target)) {
 		return false;
 	}
@@ -3750,6 +3754,8 @@ void Entity::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_con_xp_gained", PropertyInfo(Variant::INT, "value")));
 	BIND_VMETHOD(MethodInfo("_con_level_up", PropertyInfo(Variant::INT, "value")));
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_canc_interact"));
 
 	ClassDB::bind_method(D_METHOD("con_cast_failed", "info"), &Entity::con_cast_failed);
 	ClassDB::bind_method(D_METHOD("con_cast_started", "info"), &Entity::con_cast_started);
