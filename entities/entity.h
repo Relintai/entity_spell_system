@@ -528,14 +528,11 @@ public:
 
 	////    Talents    ////
 
-	void csend_request_rank_increase(int talentID);
-	void csend_request_rank_decrease(int talentID);
-	void ssend_rank(int talentID, int rank);
-	void sreceive_rank_increase(int talentID);
-	void sreceive_rank_decrease(int talentID);
-	void creceive_rank(int talentID, int rank);
-	//PlayerTalent *sget_talent(int id, bool create = false);
-	//PlayerTalent *cget_talent(int id, bool create = false);
+	void crequest_rank_increase(int talent_x, int talent_y);
+	void sreceive_talent_rank_increase_request(int talent_x, int talent_y);
+
+	void crequest_talent_reset();
+	void sreceive_reset_talent_request();
 
 	////    Inventory    ////
 

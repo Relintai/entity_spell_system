@@ -3250,75 +3250,25 @@ void Entity::setc_target(Node *p_target) {
 
 ////    TalentComponent    ////
 
-void Entity::csend_request_rank_increase(int talentID) {
-	//SEND_RPC();
+void Entity::crequest_rank_increase(int talent_x, int talent_y) {
+	sreceive_talent_rank_increase_request(talent_x, talent_y);
 }
 
-void Entity::csend_request_rank_decrease(int talentID) {
+void Entity::sreceive_talent_rank_increase_request(int talent_x, int talent_y) {
+	if (has_method("_sreceive_talent_rank_increase_request")) {
+		call("_sreceive_talent_rank_increase_request", talent_x, talent_y);
+	}
 }
 
-void Entity::ssend_rank(int talentID, int rank) {
+void Entity::crequest_talent_reset() {
+	sreceive_reset_talent_request();
 }
 
-void Entity::sreceive_rank_increase(int talentID) {
+void Entity::sreceive_reset_talent_request() {
+	if (has_method("_sreceive_reset_talent_request")) {
+		call("_sreceive_reset_talent_request");
+	}
 }
-
-void Entity::sreceive_rank_decrease(int talentID) {
-}
-
-void Entity::creceive_rank(int talentID, int rank) {
-	/*
-       PlayerTalent *playerTalent = CGetTalent(talentID, true);
-       if (owner->PlayerData->Character == null) {
-       return;
-       }
-       Talent *talent = Talents::Instance->GetData(talentID);
-       if (talent == null) {
-       return;
-       }
-       if (talent->MaxRank >= playerTalent->getRank()) {
-       PlayerTalent *expr_47 = playerTalent;
-       int rank2 = expr_47->getRank();
-       expr_47->setRank(rank2 + 1);
-       if (OnCTalenChangedAction != null) {
-       DELEGATE_INVOKE(OnCTalenChangedAction);
-       }
-       }*/
-}
-
-//PlayerTalent *Entity::sget_talent(int id, bool create) {
-/*
-       for (int i = 0; i < sTalents->Count; i += 1) {
-       if (sTalents->GetData(i)->TalentID == id) {
-       return sTalents->GetData(i);
-       }
-       }
-       if (create) {
-       PlayerTalent *playerTalent = new PlayerTalent(id);
-       sTalents->Add(playerTalent);
-       return playerTalent;
-       }
-       return null;*/
-
-//	return NULL;
-//}
-
-//PlayerTalent *Entity::cget_talent(int id, bool create) {
-/*
-       for (int i = 0; i < cTalents->Count; i += 1) {
-       if (cTalents->GetData(i)->TalentID == id) {
-       return cTalents->GetData(i);
-       }
-       }
-       if (create) {
-       PlayerTalent *playerTalent = new PlayerTalent(id);
-       cTalents->Add(playerTalent);
-       return playerTalent;
-       }
-       return null;*/
-
-//	return NULL;
-//}
 
 ////    Bag    ////
 
@@ -3695,6 +3645,9 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_xp_gained", PropertyInfo(Variant::INT, "value")));
 	BIND_VMETHOD(MethodInfo("_son_level_up", PropertyInfo(Variant::INT, "value")));
 
+	BIND_VMETHOD(MethodInfo("_sreceive_talent_rank_increase_request", PropertyInfo(Variant::INT, "talent_x"), PropertyInfo(Variant::INT, "talent_y")));
+	BIND_VMETHOD(MethodInfo("_sreceive_reset_talent_request"));
+
 	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &Entity::son_before_aura_applied);
 	ClassDB::bind_method(D_METHOD("son_after_aura_applied", "data"), &Entity::son_after_aura_applied);
 
@@ -3725,6 +3678,12 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("son_xp_gained", "value"), &Entity::son_xp_gained);
 	ClassDB::bind_method(D_METHOD("son_level_up", "value"), &Entity::son_level_up);
+
+	ClassDB::bind_method(D_METHOD("crequest_rank_increase", "talent_x", "talent_y"), &Entity::crequest_rank_increase);
+	ClassDB::bind_method(D_METHOD("sreceive_talent_rank_increase_request", "talent_x", "talent_y"), &Entity::sreceive_talent_rank_increase_request);
+
+	ClassDB::bind_method(D_METHOD("crequest_talent_reset"), &Entity::crequest_talent_reset);
+	ClassDB::bind_method(D_METHOD("sreceive_reset_talent_request"), &Entity::sreceive_reset_talent_request);
 
 	//Clientside EventHandlers
 	BIND_VMETHOD(MethodInfo("_con_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
