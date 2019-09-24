@@ -1,5 +1,5 @@
 #ifndef COMPLEX_LEVEL_STAT_DATA_H
-#define SIMPLE_LEVEL_STAT_DATA_H
+#define COMPLEX_LEVEL_STAT_DATA_H
 
 #include "core/resource.h"
 
