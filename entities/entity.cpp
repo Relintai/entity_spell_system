@@ -2555,6 +2555,8 @@ void Entity::sfail_cast() {
 
 	emit_signal("scast_failed", _s_spell_cast_info);
 
+	_s_spell_cast_info.unref();
+
 	SEND_RPC(rpc("cfail_cast"), cfail_cast());
 }
 
@@ -2582,7 +2584,7 @@ void Entity::sfinish_cast() {
 
 	emit_signal("scast_finished", _s_spell_cast_info);
 
-	_s_spell_cast_info = Ref<SpellCastInfo>(NULL);
+	_s_spell_cast_info.unref();
 
 	SEND_RPC(rpc("cfinish_cast"), cfinish_cast());
 }
@@ -2595,6 +2597,8 @@ void Entity::sinterrupt_cast() {
 	}
 
 	emit_signal("scast_interrupted", _s_spell_cast_info);
+
+	_s_spell_cast_info.unref();
 
 	SEND_RPC(rpc("cinterrupt_cast"), cinterrupt_cast());
 }
@@ -2612,7 +2616,7 @@ void Entity::cfail_cast() {
 
 	emit_signal("ccast_failed", _c_spell_cast_info);
 
-	_c_spell_cast_info = Ref<SpellCastInfo>(NULL);
+	_c_spell_cast_info.unref();
 }
 
 void Entity::cdelay_cast() {
@@ -2625,13 +2629,13 @@ void Entity::cdelay_cast() {
 void Entity::cfinish_cast() {
 	con_cast_finished(_c_spell_cast_info);
 	emit_signal("ccast_finished", _c_spell_cast_info);
-	_c_spell_cast_info = Ref<SpellCastInfo>(NULL);
+	_c_spell_cast_info.unref();
 }
 
 void Entity::cinterrupt_cast() {
 	con_cast_failed(_c_spell_cast_info);
 	emit_signal("ccast_interrupted", _c_spell_cast_info);
-	_c_spell_cast_info = Ref<SpellCastInfo>(NULL);
+	_c_spell_cast_info.unref();
 }
 
 ////    Cooldowns    ////
