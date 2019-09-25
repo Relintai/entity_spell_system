@@ -111,5 +111,5 @@ module_env.add_source_files(env.modules_sources,"loot/loot_data_item.cpp")
 module_env.add_source_files(env.modules_sources,"ai/ai_action.cpp")
 module_env.add_source_files(env.modules_sources,"ai/ai_spell_action.cpp")
 module_env.add_source_files(env.modules_sources,"ai/ai_action_container.cpp")
-module_env.add_source_files(env.modules_sources,"ai/ai_spell_action_container.cpp")
+#module_env.add_source_files(env.modules_sources,"ai/ai_spell_action_container.cpp")
 

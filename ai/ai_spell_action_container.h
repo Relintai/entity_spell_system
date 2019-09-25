@@ -1,6 +1,7 @@
 #ifndef AI_SPELL_ACTION_CONTAINER_H
 #define AI_SPELL_ACTION_CONTAINER_H
 
+#include "ai_action.h"
 #include "ai_spell_action.h"
 
 class AISpellActionContainer : public AIAction {
