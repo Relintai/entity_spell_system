@@ -24,14 +24,6 @@ class Entity;
 class SpellCastInfo;
 class AIAction;
 
-enum CharacterWeaponDataTypes {
-	CHARACTER_WEAPON_DATA_TYPES_NONE,
-	CHARACTER_WEAPON_DATA_TYPES_SWORD,
-	CHARACTER_WEAPON_DATA_TYPES_BOW
-};
-
-VARIANT_ENUM_CAST(CharacterWeaponDataTypes)
-
 class EntityClassData : public Resource {
 	GDCLASS(EntityClassData, Resource);
 
@@ -56,6 +48,9 @@ public:
 
 	int get_stat_points_per_level();
 	void set_stat_points_per_level(int value);
+
+	EntityEnums::EntityClassPlaystyleType get_playstyle_type();
+	void set_playstyle_type(EntityEnums::EntityClassPlaystyleType playstyle_type);
 
     //Specs
 	int get_num_specs();
@@ -210,6 +205,8 @@ private:
 	int _player_resource_type;
 
 	int _stat_points_per_level;
+
+	EntityEnums::EntityClassPlaystyleType _playstyle_type;
 
 	Ref<StatData> _stat_data;
 

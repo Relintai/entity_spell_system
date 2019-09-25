@@ -18,6 +18,7 @@ public:
     static const String BINDING_STRING_AI_STATES;
     static const String BINDING_STRING_ENTITY_IMMUNITY_FLAGS;
     static const String BINDING_STRING_ENTITY_INTERACTION_TYPE;
+    static const String BINDING_STRING_ENTITY_PLAYSTYLE_TYPE;
 
 	static const int PLAYER_RESOURCE_TYPES_RAGE;
 	static const int PLAYER_RESOURCE_TYPES_MANA;
@@ -207,6 +208,13 @@ public:
 		ENITIY_INTERACTION_TYPE_NONE,
 	};
 
+	enum EntityClassPlaystyleType {
+		ENTITY_CLASS_PLAYSTYLE_TYPE_MELEE,
+		ENTITY_CLASS_PLAYSTYLE_TYPE_SPELL,
+		ENTITY_CLASS_PLAYSTYLE_TYPE_HYBRID,
+		ENTITY_CLASS_PLAYSTYLE_TYPE_NONE,
+	};
+
 	enum {
 		MAX_LEVEL = 50,
 	};
@@ -226,5 +234,6 @@ VARIANT_ENUM_CAST(EntityEnums::CharacterSkeletonPoints);
 VARIANT_ENUM_CAST(EntityEnums::AIStates);
 VARIANT_ENUM_CAST(EntityEnums::EntityImmunityFlags);
 VARIANT_ENUM_CAST(EntityEnums::EntityInteractionType);
+VARIANT_ENUM_CAST(EntityEnums::EntityClassPlaystyleType);
 
 #endif

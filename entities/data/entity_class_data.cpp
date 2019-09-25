@@ -49,6 +49,13 @@ void EntityClassData::set_stat_points_per_level(int value) {
 	_stat_points_per_level = value;
 }
 
+EntityEnums::EntityClassPlaystyleType EntityClassData::get_playstyle_type() {
+	return _playstyle_type;
+}
+void EntityClassData::set_playstyle_type(EntityEnums::EntityClassPlaystyleType playstyle_type) {
+	_playstyle_type = playstyle_type;
+}
+
 Ref<StatData> EntityClassData::get_stat_data() {
 	if (!_stat_data.is_valid() && _inherits.is_valid()) {
 		return _inherits->get_stat_data();
@@ -463,7 +470,6 @@ void EntityClassData::son_gcd_finished_bind(Node *entity) {
 	son_gcd_finished(e);
 }
 
-
 void EntityClassData::son_xp_gained(Entity *entity, int value) {
 	if (has_method("_son_xp_gained"))
 		call("_son_xp_gained", entity, value);
@@ -491,7 +497,6 @@ void EntityClassData::son_level_up_bind(Node *entity, int value) {
 
 	son_level_up(e, value);
 }
-
 
 //Clientside Event Handlers
 void EntityClassData::con_cast_failed(Ref<SpellCastInfo> info) {
@@ -739,6 +744,7 @@ EntityClassData::EntityClassData() {
 
 	_player_resource_type = 0;
 	_stat_points_per_level = 5;
+	_playstyle_type = EntityEnums::ENTITY_CLASS_PLAYSTYLE_TYPE_MELEE;
 }
 
 EntityClassData::~EntityClassData() {
@@ -757,14 +763,14 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_cast_finished", "info"), &EntityClassData::son_cast_finished);
 	ClassDB::bind_method(D_METHOD("son_cast_finished_target", "info"), &EntityClassData::son_cast_finished_target);
 
-    ClassDB::bind_method(D_METHOD("son_before_damage_hit", "data"), &EntityClassData::son_before_damage_hit);
+	ClassDB::bind_method(D_METHOD("son_before_damage_hit", "data"), &EntityClassData::son_before_damage_hit);
 	ClassDB::bind_method(D_METHOD("son_hit", "data"), &EntityClassData::son_hit);
 	ClassDB::bind_method(D_METHOD("son_before_damage", "data"), &EntityClassData::son_before_damage);
 	ClassDB::bind_method(D_METHOD("son_damage_receive", "data"), &EntityClassData::son_damage_receive);
 	ClassDB::bind_method(D_METHOD("son_dealt_damage", "data"), &EntityClassData::son_dealt_damage);
 	ClassDB::bind_method(D_METHOD("son_damage_dealt", "data"), &EntityClassData::son_damage_dealt);
 
-    ClassDB::bind_method(D_METHOD("son_before_heal_hit", "data"), &EntityClassData::son_before_heal_hit);
+	ClassDB::bind_method(D_METHOD("son_before_heal_hit", "data"), &EntityClassData::son_before_heal_hit);
 	ClassDB::bind_method(D_METHOD("son_before_heal", "data"), &EntityClassData::son_before_heal);
 	ClassDB::bind_method(D_METHOD("son_heal_receive", "data"), &EntityClassData::son_heal_receive);
 	ClassDB::bind_method(D_METHOD("son_dealt_heal", "data"), &EntityClassData::son_dealt_heal);
@@ -794,14 +800,14 @@ void EntityClassData::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_cast_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_finished_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
-    BIND_VMETHOD(MethodInfo("_son_before_damage_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	BIND_VMETHOD(MethodInfo("_son_before_damage_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_damage_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_dealt_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_damage_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
-    BIND_VMETHOD(MethodInfo("_son_before_heal_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_son_before_heal_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_son_heal_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_son_dealt_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
@@ -886,11 +892,11 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_id"), &EntityClassData::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityClassData::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
-    
+
 	ClassDB::bind_method(D_METHOD("get_entity_class_name"), &EntityClassData::get_entity_class_name);
 	ClassDB::bind_method(D_METHOD("set_entity_class_name", "value"), &EntityClassData::set_entity_class_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_class_name"), "set_entity_class_name", "get_entity_class_name");
-    
+
 	ClassDB::bind_method(D_METHOD("get_inherits"), &EntityClassData::get_inherits);
 	ClassDB::bind_method(D_METHOD("set_inherits", "value"), &EntityClassData::set_inherits);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "inherits", PROPERTY_HINT_RESOURCE_TYPE, "EntityClassData"), "set_inherits", "get_inherits");
@@ -911,8 +917,12 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_stat_points_per_level", "value"), &EntityClassData::set_stat_points_per_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_points_per_level"), "set_stat_points_per_level", "get_stat_points_per_level");
 
+	ClassDB::bind_method(D_METHOD("get_playstyle_type"), &EntityClassData::get_playstyle_type);
+	ClassDB::bind_method(D_METHOD("set_playstyle_type", "value"), &EntityClassData::set_playstyle_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "playstyle_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_PLAYSTYLE_TYPE), "set_playstyle_type", "get_playstyle_type");
+
 	////    Specs    ////
-    ADD_GROUP("Specs", "specs");
+	ADD_GROUP("Specs", "specs");
 	ClassDB::bind_method(D_METHOD("get_num_specs"), &EntityClassData::get_num_specs);
 	ClassDB::bind_method(D_METHOD("set_num_specs", "value"), &EntityClassData::set_num_specs);
 
@@ -924,7 +934,7 @@ void EntityClassData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "specs", PROPERTY_HINT_NONE, "17/17:CharacterSpec", PROPERTY_USAGE_DEFAULT, "CharacterSpec"), "set_specs", "get_specs");
 
 	////    Spell    ////
-    ADD_GROUP("Spells", "spells");
+	ADD_GROUP("Spells", "spells");
 	ClassDB::bind_method(D_METHOD("get_num_spells"), &EntityClassData::get_num_spells);
 	ClassDB::bind_method(D_METHOD("set_num_spells", "value"), &EntityClassData::set_num_spells);
 
@@ -936,7 +946,7 @@ void EntityClassData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
 
 	////    AURAS    ////
-    ADD_GROUP("Auras", "auras");
+	ADD_GROUP("Auras", "auras");
 	ClassDB::bind_method(D_METHOD("get_num_auras"), &EntityClassData::get_num_auras);
 	ClassDB::bind_method(D_METHOD("set_num_auras", "value"), &EntityClassData::set_num_auras);
 
@@ -948,7 +958,7 @@ void EntityClassData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
 
 	////    AI ACTIONS    ////
-    ADD_GROUP("Ai_actions", "ai_actions");
+	ADD_GROUP("Ai_actions", "ai_actions");
 	ClassDB::bind_method(D_METHOD("get_num_ai_actions"), &EntityClassData::get_num_ai_actions);
 	ClassDB::bind_method(D_METHOD("set_num_ai_actions", "value"), &EntityClassData::set_num_ai_actions);
 
@@ -959,5 +969,3 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_ai_actions", "auras"), &EntityClassData::set_ai_actions);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ai_actions", PROPERTY_HINT_NONE, "17/17:AIAction", PROPERTY_USAGE_DEFAULT, "AIAction"), "set_ai_actions", "get_ai_actions");
 }
-
-

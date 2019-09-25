@@ -10,6 +10,7 @@ const String EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS = "Root,Pelvi
 const String EntityEnums::BINDING_STRING_AI_STATES = "Off,Rest,Patrol,Follow Path,Regenerate,Attack";
 const String EntityEnums::BINDING_STRING_ENTITY_IMMUNITY_FLAGS = "Stun,Root,Freeze,Silence,Disorient,Fear,Burning,Cold,Pacify,Magic,Poison,Physical,Curse,Bleed,Melee,Holy,Shadow,Nature,Fire,Frost,Lightning,Chaos,Slow,Crit,AOE,Damage,Fall Damage,Projectile,Debuff,Attacks";
 const String EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE = "Normal,Speak,Loot,Use,None";
+const String EntityEnums::BINDING_STRING_ENTITY_PLAYSTYLE_TYPE = "Melee,Spell,Hybrid,None";
 
 const int EntityEnums::PLAYER_RESOURCE_TYPES_RAGE = 0;
 const int EntityEnums::PLAYER_RESOURCE_TYPES_MANA = 1;
@@ -163,6 +164,11 @@ void EntityEnums::_bind_methods() {
 	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_LOOT);
 	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_USE);
 	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_NONE);
+
+	BIND_ENUM_CONSTANT(ENTITY_CLASS_PLAYSTYLE_TYPE_MELEE);
+	BIND_ENUM_CONSTANT(ENTITY_CLASS_PLAYSTYLE_TYPE_SPELL);
+	BIND_ENUM_CONSTANT(ENTITY_CLASS_PLAYSTYLE_TYPE_HYBRID);
+	BIND_ENUM_CONSTANT(ENTITY_CLASS_PLAYSTYLE_TYPE_NONE);
 
 	BIND_CONSTANT(MAX_LEVEL);
 }
