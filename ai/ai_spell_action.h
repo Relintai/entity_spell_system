@@ -30,6 +30,19 @@ public:
 	Ref<Spell> get_spell();
 	void set_spell(Ref<Spell> spell);
 
+	int get_keep_aura_on_target() const;
+	void set_keep_aura_on_target(const int value);
+
+	int get_keep_aura_on_target_index() const;
+	void set_keep_aura_on_target_index(const int value);
+
+
+	int get_keep_aura_on_self() const;
+	void set_keep_aura_on_self(const int value);
+
+	int get_keep_aura_on_self_index() const;
+	void set_keep_aura_on_self_index(const int value);
+
 	AISpellAction();
 
 protected:
@@ -38,6 +51,12 @@ protected:
 private:
 	AISpellActionType _type;
 	Ref<Spell> _spell;
+
+	bool _keep_aura_on_target;
+	int _keep_aura_on_target_index;
+
+	bool _keep_aura_on_self;
+	int _keep_aura_on_self_index;
 };
 
 VARIANT_ENUM_CAST(AISpellAction::AISpellActionType);

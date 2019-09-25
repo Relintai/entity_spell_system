@@ -101,6 +101,7 @@
 #include "ai/ai_action.h"
 #include "ai/ai_spell_action.h"
 #include "ai/ai_action_container.h"
+#include "ai/ai_spell_action_container.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_plugin.h"
@@ -222,6 +223,7 @@ void register_entity_spell_system_types() {
     ClassDB::register_class<AIAction>();
     ClassDB::register_class<AISpellAction>();
     ClassDB::register_class<AIActionContainer>();
+    ClassDB::register_class<AISpellActionContainer>();
 
 	//meshes
 	ClassDB::register_class<MeshDataResource>();
