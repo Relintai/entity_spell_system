@@ -2191,11 +2191,15 @@ void Entity::moved() {
 void Entity::onc_mouse_enter() {
 	if (has_method("_onc_mouse_enter"))
 		call("_onc_mouse_enter");
+
+	emit_signal("onc_mouse_entered");
 }
 
 void Entity::onc_mouse_exit() {
 	if (has_method("_onc_mouse_exit"))
 		call("_onc_mouse_exit");
+
+	emit_signal("onc_mouse_exited");
 }
 
 void Entity::con_cast_failed(Ref<SpellCastInfo> info) {
@@ -3827,6 +3831,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("cget_aura", "index"), &Entity::cget_aura);
 
 	//Hooks
+	ADD_SIGNAL(MethodInfo("onc_mouse_entered"));
+	ADD_SIGNAL(MethodInfo("onc_mouse_exited"));
+
 	ClassDB::bind_method(D_METHOD("moved"), &Entity::moved);
 	ClassDB::bind_method(D_METHOD("onc_mouse_enter"), &Entity::onc_mouse_enter);
 	ClassDB::bind_method(D_METHOD("onc_mouse_exit"), &Entity::onc_mouse_exit);
