@@ -65,10 +65,10 @@ void AISpellAction::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_spell", "value"), &AISpellAction::set_spell);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_spell", "get_spell");
 
-	ADD_GROUP("keep_aura", "Keep Auras");
+	ADD_GROUP("Keep Auras", "keep_aura");
 	ClassDB::bind_method(D_METHOD("get_keep_aura_on_target"), &AISpellAction::get_keep_aura_on_target);
 	ClassDB::bind_method(D_METHOD("set_keep_aura_on_target", "value"), &AISpellAction::set_keep_aura_on_target);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "keep_aura_on_target"), "set_keep_aura_on_target", "get_keep_aura_on_target");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "keep_aura_on_target"), "set_keep_aura_on_target", "get_keep_aura_on_target");
 
 	ClassDB::bind_method(D_METHOD("get_keep_aura_on_target_index"), &AISpellAction::get_keep_aura_on_target_index);
 	ClassDB::bind_method(D_METHOD("set_keep_aura_on_target_index", "value"), &AISpellAction::set_keep_aura_on_target_index);
@@ -76,7 +76,7 @@ void AISpellAction::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_keep_aura_on_self"), &AISpellAction::get_keep_aura_on_self);
 	ClassDB::bind_method(D_METHOD("set_keep_aura_on_self", "value"), &AISpellAction::set_keep_aura_on_self);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "keep_aura_on_self"), "set_keep_aura_on_self", "get_keep_aura_on_self");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "keep_aura_on_self"), "set_keep_aura_on_self", "get_keep_aura_on_self");
 
 	ClassDB::bind_method(D_METHOD("get_keep_aura_on_self_index"), &AISpellAction::get_keep_aura_on_self_index);
 	ClassDB::bind_method(D_METHOD("set_keep_aura_on_self_index", "value"), &AISpellAction::set_keep_aura_on_self_index);
