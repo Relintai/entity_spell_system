@@ -416,6 +416,9 @@ public:
 	//Hooks
 	void moved();
 
+	void onc_mouse_enter();
+	void onc_mouse_exit();
+
 	//Update
 	void update_auras(float delta);
 

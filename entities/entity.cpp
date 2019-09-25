@@ -2188,6 +2188,16 @@ void Entity::moved() {
 		call("_moved");
 }
 
+void Entity::onc_mouse_enter() {
+	if (has_method("_onc_mouse_enter"))
+		call("_onc_mouse_enter");
+}
+
+void Entity::onc_mouse_exit() {
+	if (has_method("_onc_mouse_exit"))
+		call("_onc_mouse_exit");
+}
+
 void Entity::con_cast_failed(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
@@ -3818,8 +3828,12 @@ void Entity::_bind_methods() {
 
 	//Hooks
 	ClassDB::bind_method(D_METHOD("moved"), &Entity::moved);
+	ClassDB::bind_method(D_METHOD("onc_mouse_enter"), &Entity::onc_mouse_enter);
+	ClassDB::bind_method(D_METHOD("onc_mouse_exit"), &Entity::onc_mouse_exit);
 
 	BIND_VMETHOD(MethodInfo("_moved"));
+	BIND_VMETHOD(MethodInfo("_onc_mouse_enter"));
+	BIND_VMETHOD(MethodInfo("_onc_mouse_exit"));
 
 	//Properties
 	ClassDB::bind_method(D_METHOD("get_character_skeleton_path"), &Entity::get_character_skeleton_path);
