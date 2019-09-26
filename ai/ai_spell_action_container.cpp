@@ -37,6 +37,10 @@ void AISpellActionContainer::set_ai_spell_actions(const Vector<Variant> &ai_spel
 AISpellActionContainer::AISpellActionContainer() {
 }
 
+AISpellActionContainer::~AISpellActionContainer() {
+	_ai_spell_actions.clear();
+}
+
 void AISpellActionContainer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_num_ai_spell_actions"), &AISpellActionContainer::get_num_ai_spell_actions);
 	ClassDB::bind_method(D_METHOD("set_num_ai_spell_actions", "value"), &AISpellActionContainer::set_num_ai_spell_actions);

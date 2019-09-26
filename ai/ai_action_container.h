@@ -17,6 +17,7 @@ public:
 	void set_ai_actions(const Vector<Variant> &auras);
 
 	AIActionContainer();
+	~AIActionContainer();
 
 protected:
 	static void _bind_methods();

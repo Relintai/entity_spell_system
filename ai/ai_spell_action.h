@@ -44,6 +44,7 @@ public:
 	void set_keep_aura_on_self_index(const int value);
 
 	AISpellAction();
+	~AISpellAction();
 
 protected:
 	static void _bind_methods();

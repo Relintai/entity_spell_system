@@ -92,7 +92,11 @@ public:
 	Vector<Variant> get_auras();
 	void set_auras(const Vector<Variant> &auras);
 
+	//use spell
+	Ref<Spell> get_use_spell() const;
+	void set_use_spell(Ref<Spell> use_spell);
 
+	//Stat mods
 	int get_item_stat_modifier_count() const;
 	void set_item_stat_modifier_count(const int value);
 
@@ -154,13 +158,10 @@ private:
 	
 	int _bag_size;
 
-	//Ref<Spell> *_spell;
-	//Ref<Aura> *_auras;
-
 	Vector<Ref<Spell> > _teaches_spells;
 	Vector<Ref<Spell> > _grants_spells;
 	Vector<Ref<Aura> > _auras;
-
+	Ref<Spell> _use_spell;
 
 	int _modifier_count;
 	Ref<ItemTemplateStatModifier> _modifiers[MAX_ITEM_STAT_MOD];

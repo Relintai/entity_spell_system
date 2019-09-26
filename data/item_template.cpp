@@ -216,6 +216,13 @@ void ItemTemplate::set_auras(const Vector<Variant> &auras) {
 	}
 }
 
+Ref<Spell> ItemTemplate::get_use_spell() const {
+	return _use_spell;
+}
+void ItemTemplate::set_use_spell(Ref<Spell> use_spell) {
+	_use_spell = use_spell;
+}
+
 int ItemTemplate::get_item_stat_modifier_count() const {
 	return _modifier_count;
 }
@@ -463,6 +470,11 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_auras"), &ItemTemplate::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &ItemTemplate::set_auras);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
+
+	//Use spell
+	ClassDB::bind_method(D_METHOD("get_use_spell"), &ItemTemplate::get_use_spell);
+	ClassDB::bind_method(D_METHOD("set_use_spell", "size"), &ItemTemplate::set_use_spell);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "use_spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_use_spell", "get_use_spell");
 
 	//StatMods Property binds
 	ADD_GROUP("Item Stat Modifiers", "item_stat_modifier");

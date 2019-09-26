@@ -48,8 +48,6 @@ bool Bag::add_item(Ref<ItemInstance> item) {
 		}
 	}
 
-	item->set_bag(Ref<Bag>(this));
-
 	for (int i = 0; i < _items.size(); ++i) {
 		Ref<ItemInstance> ii = _items.get(i);
 
@@ -98,8 +96,6 @@ Ref<ItemInstance> Bag::remove_item(const int index) {
 
 	if (!ii.is_valid())
 		return ii;
-
-	ii->set_bag(Ref<Bag>());
 
 	_items.set(index, Ref<ItemInstance>());
 

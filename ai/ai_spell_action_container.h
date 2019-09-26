@@ -18,6 +18,7 @@ public:
 	void set_ai_spell_actions(const Vector<Variant> &auras);
 
 	AISpellActionContainer();
+	~AISpellActionContainer();
 
 protected:
 	static void _bind_methods();

@@ -56,6 +56,10 @@ AISpellAction::AISpellAction() {
 	_keep_aura_on_self_index = 0;
 }
 
+AISpellAction::~AISpellAction() {
+	_spell.unref();
+}
+
 void AISpellAction::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_type"), &AISpellAction::get_type);
 	ClassDB::bind_method(D_METHOD("set_type", "value"), &AISpellAction::set_type);

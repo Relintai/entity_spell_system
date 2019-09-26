@@ -37,6 +37,10 @@ void AIActionContainer::set_ai_actions(const Vector<Variant> &ai_actions) {
 AIActionContainer::AIActionContainer() {
 }
 
+AIActionContainer::~AIActionContainer() {
+	_ai_actions.clear();
+}
+
 void AIActionContainer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_num_ai_actions"), &AIActionContainer::get_num_ai_actions);
 	ClassDB::bind_method(D_METHOD("set_num_ai_actions", "value"), &AIActionContainer::set_num_ai_actions);
