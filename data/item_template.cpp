@@ -3,7 +3,6 @@
 #include "item_instance.h"
 #include "aura.h"
 #include "spell.h"
-#include "../inventory/bag.h"
 
 int ItemTemplate::get_id() const {
 	return _id;

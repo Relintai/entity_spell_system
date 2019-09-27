@@ -13,7 +13,6 @@
 class ItemInstance;
 class Aura;
 class Spell;
-class Bag;
 
 class ItemTemplate : public Resource {
 	GDCLASS(ItemTemplate, Resource);

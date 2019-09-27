@@ -80,7 +80,9 @@ Ref<ItemInstance> Bag::get_item(const int index) {
 		return call("_get_item", index);
 	}
 
-	ERR_FAIL_INDEX_V(index, _items.size(), Ref<ItemInstance>());
+	if (index >= _items.size()) {
+		return Ref<ItemInstance>();
+	}
 
 	return _items.get(index);
 }
