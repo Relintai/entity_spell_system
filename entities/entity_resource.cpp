@@ -86,13 +86,13 @@ void EntityResource::onc_stat_changed(Ref<Stat> stat) {
 		call("_onc_stat_changed", stat);
 }
 
-void EntityResource::ons_target_changed(Entity *entity) {
+void EntityResource::ons_target_changed(Entity *entity, Entity *old_target) {
 	if (has_method("_ons_target_changed"))
-		call("_ons_target_changed", entity);
+		call("_ons_target_changed", entity, old_target);
 }
-void EntityResource::onc_target_changed(Entity *entity) {
+void EntityResource::onc_target_changed(Entity *entity, Entity *old_target) {
 	if (has_method("_ons_target_changed"))
-		call("_ons_target_changed", entity);
+		call("_ons_target_changed", entity, old_target);
 }
 
 void EntityResource::process(float delta) {
@@ -181,8 +181,8 @@ void EntityResource::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_ons_stat_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
 	BIND_VMETHOD(MethodInfo("_onc_stat_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
 
-	BIND_VMETHOD(MethodInfo("_ons_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	BIND_VMETHOD(MethodInfo("_onc_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_ons_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_onc_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	BIND_VMETHOD(MethodInfo("_ons_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_onc_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));

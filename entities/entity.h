@@ -419,6 +419,9 @@ public:
 	void onc_mouse_enter();
 	void onc_mouse_exit();
 
+	void onc_targeted();
+	void onc_untargeted();
+
 	//Update
 	void update_auras(float delta);
 

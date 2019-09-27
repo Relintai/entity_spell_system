@@ -2194,12 +2194,24 @@ void Entity::onc_mouse_enter() {
 
 	emit_signal("onc_mouse_entered");
 }
-
 void Entity::onc_mouse_exit() {
 	if (has_method("_onc_mouse_exit"))
 		call("_onc_mouse_exit");
 
 	emit_signal("onc_mouse_exited");
+}
+
+void Entity::onc_targeted() {
+	if (has_method("_onc_targeted"))
+		call("_onc_targeted");
+
+	emit_signal("onc_targeted");
+}
+void Entity::onc_untargeted() {
+	if (has_method("_onc_untargeted"))
+		call("_onc_untargeted");
+
+	emit_signal("onc_untargeted");
 }
 
 void Entity::con_cast_failed(Ref<SpellCastInfo> info) {
@@ -3208,14 +3220,20 @@ Entity *Entity::gets_target() {
 }
 
 void Entity::sets_target(Node *p_target) {
+	Entity *original_target = _s_target;
+
 	if (p_target == NULL) {
 		_s_target = NULL;
 
-		for (int i = 0; i < _s_resources.size(); ++i) {
-			_s_resources.get(i)->ons_target_changed(_s_target);
+		if (has_method("_son_target_changed")) {
+			call("_son_target_changed", this, original_target);
 		}
 
-		emit_signal("starget_changed", _s_target);
+		for (int i = 0; i < _s_resources.size(); ++i) {
+			_s_resources.get(i)->ons_target_changed(this, original_target);
+		}
+
+		emit_signal("starget_changed", this, original_target);
 		setc_target(p_target);
 		return;
 	}
@@ -3228,11 +3246,15 @@ void Entity::sets_target(Node *p_target) {
 
 	_s_target = e;
 
-	for (int i = 0; i < _s_resources.size(); ++i) {
-		_s_resources.get(i)->ons_target_changed(_s_target);
+	if (has_method("_son_target_changed")) {
+		call("_son_target_changed", this, original_target);
 	}
 
-	emit_signal("starget_changed", _s_target);
+	for (int i = 0; i < _s_resources.size(); ++i) {
+		_s_resources.get(i)->ons_target_changed(this, original_target);
+	}
+
+	emit_signal("starget_changed", this, original_target);
 
 	if (is_inside_tree() && !get_tree()->has_network_peer()) {
 		setc_target(p_target);
@@ -3243,14 +3265,20 @@ Entity *Entity::getc_target() {
 	return _c_target;
 }
 void Entity::setc_target(Node *p_target) {
+	Entity *original_target = _c_target;
+
 	if (p_target == NULL) {
 		_c_target = NULL;
 
-		for (int i = 0; i < _c_resources.size(); ++i) {
-			_c_resources.get(i)->onc_target_changed(_c_target);
+		if (has_method("_con_target_changed")) {
+			call("_con_target_changed", this, original_target);
 		}
 
-		emit_signal("ctarget_changed", _c_target);
+		for (int i = 0; i < _c_resources.size(); ++i) {
+			_c_resources.get(i)->onc_target_changed(this, original_target);
+		}
+
+		emit_signal("ctarget_changed", this, original_target);
 
 		return;
 	}
@@ -3263,11 +3291,15 @@ void Entity::setc_target(Node *p_target) {
 
 	_c_target = e;
 
-	for (int i = 0; i < _c_resources.size(); ++i) {
-		_c_resources.get(i)->onc_target_changed(_c_target);
+	if (has_method("_con_target_changed")) {
+		call("_con_target_changed", this, original_target);
 	}
 
-	emit_signal("ctarget_changed", _c_target);
+	for (int i = 0; i < _c_resources.size(); ++i) {
+		_c_resources.get(i)->onc_target_changed(this, original_target);
+	}
+
+	emit_signal("ctarget_changed", this, original_target);
 }
 
 ////    TalentComponent    ////
@@ -3552,8 +3584,8 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("sname_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("cname_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	ADD_SIGNAL(MethodInfo("starget_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	ADD_SIGNAL(MethodInfo("ctarget_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	ADD_SIGNAL(MethodInfo("starget_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	ADD_SIGNAL(MethodInfo("ctarget_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	ADD_SIGNAL(MethodInfo("son_damage_received", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	ADD_SIGNAL(MethodInfo("con_damage_received", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
@@ -3669,6 +3701,9 @@ void Entity::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_son_xp_gained", PropertyInfo(Variant::INT, "value")));
 	BIND_VMETHOD(MethodInfo("_son_level_up", PropertyInfo(Variant::INT, "value")));
+
+	BIND_VMETHOD(MethodInfo("_son_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_con_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	BIND_VMETHOD(MethodInfo("_sreceive_talent_rank_increase_request", PropertyInfo(Variant::INT, "talent_x"), PropertyInfo(Variant::INT, "talent_y")));
 	BIND_VMETHOD(MethodInfo("_sreceive_reset_talent_request"));
@@ -3831,16 +3866,26 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("cget_aura", "index"), &Entity::cget_aura);
 
 	//Hooks
+	BIND_VMETHOD(MethodInfo("_moved"));
+	ClassDB::bind_method(D_METHOD("moved"), &Entity::moved);
+
 	ADD_SIGNAL(MethodInfo("onc_mouse_entered"));
 	ADD_SIGNAL(MethodInfo("onc_mouse_exited"));
 
-	ClassDB::bind_method(D_METHOD("moved"), &Entity::moved);
+	BIND_VMETHOD(MethodInfo("_onc_mouse_enter"));
+	BIND_VMETHOD(MethodInfo("_onc_mouse_exit"));
+
 	ClassDB::bind_method(D_METHOD("onc_mouse_enter"), &Entity::onc_mouse_enter);
 	ClassDB::bind_method(D_METHOD("onc_mouse_exit"), &Entity::onc_mouse_exit);
 
-	BIND_VMETHOD(MethodInfo("_moved"));
-	BIND_VMETHOD(MethodInfo("_onc_mouse_enter"));
-	BIND_VMETHOD(MethodInfo("_onc_mouse_exit"));
+	ADD_SIGNAL(MethodInfo("onc_targeted"));
+	ADD_SIGNAL(MethodInfo("onc_untargeted"));
+
+	BIND_VMETHOD(MethodInfo("_onc_targeted"));
+	BIND_VMETHOD(MethodInfo("_onc_untargeted"));
+
+	ClassDB::bind_method(D_METHOD("onc_targeted"), &Entity::onc_targeted);
+	ClassDB::bind_method(D_METHOD("onc_untargeted"), &Entity::onc_untargeted);
 
 	//Properties
 	ClassDB::bind_method(D_METHOD("get_character_skeleton_path"), &Entity::get_character_skeleton_path);

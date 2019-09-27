@@ -35,8 +35,8 @@ public:
 	void ons_stat_changed(Ref<Stat> stat);
 	void onc_stat_changed(Ref<Stat> stat);
 
-	void ons_target_changed(Entity *target);
-	void onc_target_changed(Entity *target);
+	void ons_target_changed(Entity *entity, Entity *old_target);
+	void onc_target_changed(Entity *entity, Entity *old_target);
 
 	void process(float delta);
 	void _process(float delta);
