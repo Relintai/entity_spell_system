@@ -3222,6 +3222,11 @@ Entity *Entity::gets_target() {
 void Entity::sets_target(Node *p_target) {
 	Entity *original_target = _s_target;
 
+	if (!ObjectDB::instance_validate(original_target)) {
+		original_target = NULL;
+			_s_target = NULL;
+	}
+
 	if (p_target == NULL) {
 		_s_target = NULL;
 
@@ -3266,6 +3271,11 @@ Entity *Entity::getc_target() {
 }
 void Entity::setc_target(Node *p_target) {
 	Entity *original_target = _c_target;
+
+	if (!ObjectDB::instance_validate(original_target)) {
+		original_target = NULL;
+		_c_target = NULL;
+	}
 
 	if (p_target == NULL) {
 		_c_target = NULL;
