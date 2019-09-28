@@ -302,6 +302,7 @@ public:
 	void son_cast_finished(Ref<SpellCastInfo> info);
 	void son_cast_started(Ref<SpellCastInfo> info);
 	void son_cast_failed(Ref<SpellCastInfo> info);
+	void son_spell_cast_success(Ref<SpellCastInfo> info);
 
 	void son_death();
 
@@ -454,6 +455,9 @@ public:
 	void cdelay_cast();
 	void cfinish_cast();
 	void cinterrupt_cast();
+
+	void sspell_cast_success(Ref<SpellCastInfo> info);
+	void cspell_cast_success(Ref<SpellCastInfo> info);
 
 	////    Cooldowns    ////
 	Vector<Ref<Cooldown> > *gets_cooldowns();

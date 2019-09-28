@@ -501,6 +501,14 @@ void Aura::son_cast_finished_target(Ref<AuraData> aura, Ref<SpellCastInfo> info)
 		call("_son_cast_finished_target", aura, info);
 }
 
+void Aura::son_spell_cast_success(Ref<AuraData> aura, Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!aura.is_valid());
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_son_spell_cast_success"))
+		call("_son_spell_cast_success", aura, info);
+}
+
 void Aura::son_before_damage_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!aura.is_valid());
 	ERR_FAIL_COND(!data.is_valid());
@@ -1063,6 +1071,7 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_cast_failed", "aura", "info"), &Aura::son_cast_failed);
 	ClassDB::bind_method(D_METHOD("son_cast_finished", "aura", "info"), &Aura::son_cast_finished);
 	ClassDB::bind_method(D_METHOD("son_cast_finished_target", "aura", "info"), &Aura::son_cast_finished_target);
+	ClassDB::bind_method(D_METHOD("son_spell_cast_success", "aura", "info"), &Aura::son_spell_cast_success);
 
     ClassDB::bind_method(D_METHOD("son_before_damage_hit", "aura", "data"), &Aura::son_before_damage_hit);
 	ClassDB::bind_method(D_METHOD("son_hit", "aura", "data"), &Aura::son_hit);
@@ -1106,6 +1115,7 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_cast_failed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_finished", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_finished_target", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_spell_cast_success", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
     BIND_VMETHOD(MethodInfo("_son_before_damage_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_son_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));

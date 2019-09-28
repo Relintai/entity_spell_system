@@ -223,6 +223,7 @@ public:
 	void son_cast_failed(Ref<AuraData> aura, Ref<SpellCastInfo> info);
 	void son_cast_finished(Ref<AuraData> aura, Ref<SpellCastInfo> info);
 	void son_cast_finished_target(Ref<AuraData> aura, Ref<SpellCastInfo> info);
+	void son_spell_cast_success(Ref<AuraData> aura, Ref<SpellCastInfo> info);
 
     void son_before_damage_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 	void son_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data);

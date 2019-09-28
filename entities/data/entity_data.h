@@ -112,6 +112,7 @@ public:
 	void son_cast_finished(Ref<SpellCastInfo> info);
 	void son_cast_started(Ref<SpellCastInfo> info);
 	void son_cast_failed(Ref<SpellCastInfo> info);
+	void son_spell_cast_success(Ref<SpellCastInfo> info);
 
 	void son_before_damage_hit(Ref<SpellDamageInfo> data);
 	void son_hit(Ref<SpellDamageInfo> data);
