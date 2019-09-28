@@ -1,4 +1,4 @@
-#include "Skill.h"
+#include "skill.h"
 
 Skill::Skill() {
 	set_aura_type(SpellEnums::AURA_TYPE_SKILL);
