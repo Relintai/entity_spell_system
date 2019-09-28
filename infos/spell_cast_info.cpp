@@ -4,7 +4,11 @@
 
 ////    SpellCastInfo    ////
 
-Entity *SpellCastInfo::get_caster() const {
+Entity *SpellCastInfo::get_caster()  {
+	if (_caster && !ObjectDB::instance_validate(_caster)) {
+		_caster = NULL;
+	}
+
 	return _caster;
 }
 
@@ -26,7 +30,11 @@ void SpellCastInfo::set_caster_bind(Node *caster) {
 	_caster = e;
 }
 
-Entity *SpellCastInfo::get_target() const {
+Entity *SpellCastInfo::get_target() {
+	if (_target && !ObjectDB::instance_validate(_target)) {
+		_target = NULL;
+	}
+
 	return _target;
 }
 

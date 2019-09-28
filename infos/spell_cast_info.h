@@ -11,11 +11,11 @@ class SpellCastInfo : public Reference {
 	GDCLASS(SpellCastInfo, Reference);
 
 public:
-	Entity *get_caster() const;
+	Entity *get_caster();
 	void set_caster(Entity *caster);
 	void set_caster_bind(Node *caster);
 
-	Entity *get_target() const;
+	Entity *get_target();
 	void set_target(Entity *caster);
 	void set_target_bind(Node *caster);
 

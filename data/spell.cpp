@@ -555,7 +555,7 @@ void Spell::set_training_required_skill_level(int value) {
 ////    Spell System    ////
 
 void Spell::sstart_casting_simple(Entity *caster, float spell_scale) {
-	ERR_FAIL_COND(caster == NULL);
+	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
 
 	Ref<SpellCastInfo> info = Ref<SpellCastInfo>(memnew(SpellCastInfo()));
 
@@ -570,7 +570,7 @@ void Spell::sstart_casting_simple(Entity *caster, float spell_scale) {
 }
 
 void Spell::sinterrupt_cast_simple(Entity *caster) {
-	ERR_FAIL_COND(caster == NULL);
+	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
 
 	Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
 
@@ -581,7 +581,7 @@ void Spell::sinterrupt_cast_simple(Entity *caster) {
 }
 
 void Spell::sstart_casting_triggered_simple(Entity *caster) {
-	ERR_FAIL_COND(caster == NULL);
+	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
 
 	Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
 
