@@ -2230,7 +2230,7 @@ void Entity::con_cast_failed(Ref<SpellCastInfo> info) {
 	}
 
 	if (has_method("_con_cast_failed"))
-		call("_con_cast_failed");
+		call("_con_cast_failed", info);
 }
 
 void Entity::con_cast_started(Ref<SpellCastInfo> info) {
@@ -2249,7 +2249,7 @@ void Entity::con_cast_started(Ref<SpellCastInfo> info) {
 	}
 
 	if (has_method("_con_cast_started"))
-		call("_con_cast_started");
+		call("_con_cast_started", info);
 }
 
 void Entity::con_cast_state_changed(Ref<SpellCastInfo> info) {
@@ -2268,7 +2268,7 @@ void Entity::con_cast_state_changed(Ref<SpellCastInfo> info) {
 	}
 
 	if (has_method("_con_cast_state_changed"))
-		call("_con_cast_state_changed");
+		call("_con_cast_state_changed", info);
 }
 
 void Entity::con_cast_finished(Ref<SpellCastInfo> info) {
@@ -2287,7 +2287,7 @@ void Entity::con_cast_finished(Ref<SpellCastInfo> info) {
 	}
 
 	if (has_method("_con_cast_finished"))
-		call("_con_cast_finished");
+		call("_con_cast_finished", info);
 }
 
 void Entity::con_spell_cast_success(Ref<SpellCastInfo> info) {
@@ -2306,7 +2306,7 @@ void Entity::con_spell_cast_success(Ref<SpellCastInfo> info) {
 	}
 
 	if (has_method("_con_spell_cast_success"))
-		call("_con_spell_cast_success");
+		call("_con_spell_cast_success", info);
 }
 
 void Entity::con_death() {
@@ -2338,7 +2338,7 @@ void Entity::con_cooldown_added(Ref<Cooldown> cooldown) {
 	}
 
 	if (has_method("_con_cooldown_added"))
-		call("_con_cooldown_added");
+		call("_con_cooldown_added", cooldown);
 }
 void Entity::con_cooldown_removed(Ref<Cooldown> cooldown) {
 	ERR_FAIL_COND(!cooldown.is_valid());
@@ -2354,7 +2354,7 @@ void Entity::con_cooldown_removed(Ref<Cooldown> cooldown) {
 	}
 
 	if (has_method("_con_cooldown_removed"))
-		call("_con_cooldown_removed");
+		call("_con_cooldown_removed", cooldown);
 }
 void Entity::con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
 	ERR_FAIL_COND(!category_cooldown.is_valid());
@@ -2370,7 +2370,7 @@ void Entity::con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown
 	}
 
 	if (has_method("_con_category_cooldown_added"))
-		call("_con_category_cooldown_added");
+		call("_con_category_cooldown_added", category_cooldown);
 }
 void Entity::con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
 	ERR_FAIL_COND(!category_cooldown.is_valid());
@@ -2386,7 +2386,7 @@ void Entity::con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldo
 	}
 
 	if (has_method("_con_category_cooldown_removed"))
-		call("_con_category_cooldown_removed");
+		call("_con_category_cooldown_removed", category_cooldown);
 }
 
 void Entity::con_aura_added(Ref<AuraData> data) {
@@ -2403,7 +2403,7 @@ void Entity::con_aura_added(Ref<AuraData> data) {
 	}
 
 	if (has_method("_con_aura_added"))
-		call("_con_aura_added");
+		call("_con_aura_added", data);
 }
 
 void Entity::con_aura_removed(Ref<AuraData> data) {
@@ -2420,7 +2420,7 @@ void Entity::con_aura_removed(Ref<AuraData> data) {
 	}
 
 	if (has_method("_con_aura_removed"))
-		call("_con_aura_removed");
+		call("_con_aura_removed", data);
 }
 
 void Entity::con_aura_refresh(Ref<AuraData> data) {
@@ -2437,7 +2437,7 @@ void Entity::con_aura_refresh(Ref<AuraData> data) {
 	}
 
 	if (has_method("_con_aura_refresh"))
-		call("_con_aura_refresh");
+		call("_con_aura_refresh", data);
 }
 
 void Entity::con_damage_dealt(Ref<SpellDamageInfo> info) {
