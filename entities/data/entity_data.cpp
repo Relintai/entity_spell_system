@@ -169,7 +169,7 @@ bool EntityData::cans_interact(Entity *entity) {
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(entity), false);
 
 	if (has_method("_cans_interact"))
-		return call("_cans_interact");
+		return call("_cans_interact", entity);
 
 	return false;
 }
@@ -188,7 +188,7 @@ void EntityData::sinteract(Entity *entity) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	if (has_method("_sinteract"))
-		call("_sinteract");
+		call("_sinteract", entity);
 }
 
 void EntityData::sinteract_bind(Node *entity) {
