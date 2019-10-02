@@ -2670,7 +2670,6 @@ void Entity::cinterrupt_cast() {
 	_c_spell_cast_info.unref();
 }
 
-
 void Entity::sspell_cast_success(Ref<SpellCastInfo> info) {
 	son_spell_cast_success(info);
 
@@ -3241,7 +3240,7 @@ void Entity::sets_target(Node *p_target) {
 
 	if (!ObjectDB::instance_validate(original_target)) {
 		original_target = NULL;
-			_s_target = NULL;
+		_s_target = NULL;
 	}
 
 	if (p_target == NULL) {
@@ -3386,6 +3385,21 @@ Ref<Bag> Entity::getc_target_bag() const {
 
 void Entity::setc_target_bag(const Ref<Bag> bag) {
 	_c_target_bag = bag;
+}
+
+void Entity::crequest_loot(int index) {
+	sloot(index);
+}
+void Entity::sloot(int index) {
+	ERR_FAIL_COND(!_s_bag.is_valid());
+	ERR_FAIL_COND(!_s_target_bag.is_valid());
+
+	Ref<ItemInstance> ii = _s_target_bag->get_item(index);
+
+	if (_s_bag->can_add_item(ii)) {
+		_s_target_bag->remove_item(index);
+		_s_bag->add_item(ii);
+	}
 }
 
 ////    DATA    ////
@@ -4192,7 +4206,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_target", "target"), &Entity::setc_target);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ctarget", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "setc_target", "getc_target");
 
-	////    Bag System    ////
+	////    Inventory System    ////
 
 	ClassDB::bind_method(D_METHOD("gets_bag"), &Entity::gets_bag);
 	ClassDB::bind_method(D_METHOD("sets_bag", "bag"), &Entity::sets_bag);
@@ -4209,6 +4223,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_target_bag"), &Entity::getc_target_bag);
 	ClassDB::bind_method(D_METHOD("setc_target_bag", "bag"), &Entity::setc_target_bag);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ctarget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "setc_target_bag", "getc_target_bag");
+
+	ClassDB::bind_method(D_METHOD("crequest_loot"), &Entity::crequest_loot);
+	ClassDB::bind_method(D_METHOD("sloot"), &Entity::sloot);
 
 	//Serialization
 	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));

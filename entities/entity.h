@@ -558,6 +558,9 @@ public:
 	Ref<Bag> getc_target_bag() const;
 	void setc_target_bag(const Ref<Bag> bag);
 
+	void crequest_loot(int index);
+	void sloot(int index);
+
 	////    Data    ////
 	void adds_data(Ref<EntityDataContainer> data);
 	void removes_data(int index);
