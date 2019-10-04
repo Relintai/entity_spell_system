@@ -50,7 +50,8 @@ Vector<Ref<EntityData> > *DataManager::get_entity_datas() {
 }
 
 Ref<EntityData> DataManager::get_entity_data(int class_id) {
-	ERR_FAIL_COND_V(!_entity_data_map.has(class_id), Ref<EntityData>(NULL));
+	if (!_entity_data_map.has(class_id))
+		return Ref<EntityData>(NULL);
 
 	return _entity_data_map.get(class_id);
 }

@@ -263,7 +263,7 @@ void Entity::_setup() {
 		if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_NONE)
 			sets_entity_controller(_s_entity_data->get_entity_controller());
 
-		sets_entity_name(_s_entity_data->get_entity_name());
+		//sets_entity_name(_s_entity_data->get_entity_name());
 		sets_money(_s_entity_data->get_money());
 	}
 
@@ -431,7 +431,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
 		Ref<Stat> s = _stats[i];
 
-		s->from_dict(stats.get(i, Dictionary()));
+		s->from_dict(stats.get(String::num(i), Dictionary()));
 	}
 
 	////    Resources    ////
@@ -445,7 +445,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 		Ref<EntityResource> r;
 		r.instance();
 
-		r->from_dict(rd.get(i, Dictionary()));
+		r->from_dict(rd.get(String::num(i), Dictionary()));
 
 		adds_resource(r);
 	}
@@ -477,7 +477,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 		Ref<AuraData> r;
 		r.instance();
 
-		r->from_dict(auras.get(i, Dictionary()));
+		r->from_dict(auras.get(String::num(i), Dictionary()));
 
 		_s_auras.push_back(r);
 		_c_auras.push_back(r);
@@ -499,7 +499,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 		Ref<Cooldown> cd;
 		cd.instance();
 
-		cd->from_dict(cds.get(i, Dictionary()));
+		cd->from_dict(cds.get(String::num(i), Dictionary()));
 
 		_s_cooldowns.push_back(cd);
 		_c_cooldowns.push_back(cd);
@@ -511,7 +511,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 		Ref<CategoryCooldown> ccd;
 		ccd.instance();
 
-		ccd->from_dict(ccds.get(i, Dictionary()));
+		ccd->from_dict(ccds.get(String::num(i), Dictionary()));
 
 		_s_category_cooldowns.push_back(ccd);
 		_c_category_cooldowns.push_back(ccd);
@@ -549,7 +549,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 		Ref<EntitySkill> r;
 		r.instance();
 
-		r->from_dict(skills.get(i, Dictionary()));
+		r->from_dict(skills.get(String::num(i), Dictionary()));
 
 		_s_skills.push_back(r);
 		_c_skills.push_back(r);
@@ -568,6 +568,10 @@ void Entity::_from_dict(const Dictionary &dict) {
 		} else {
 			_s_bag->from_dict(bagd);
 		}
+	}
+
+	if (DataManager::get_instance() != NULL) {
+		sets_entity_data(DataManager::get_instance()->get_entity_data(gets_entity_data_id()));
 	}
 }
 
