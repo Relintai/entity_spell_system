@@ -560,87 +560,97 @@ void Stat::_from_dict(const Dictionary &dict) {
 Stat::Stat() {
 	_id = Stat::STAT_ID_NONE;
 
-	_locked = false;
-	_base = (float)(0);
-	_bonus = (float)(0);
-	_percent = (float)(0);
-	_s_max = (float)(0);
-	_s_current = (float)(0);
-	_c_max = (float)(0);
-	_c_current = (float)(0);
-
 	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
+
+	_locked = false;
+	_dirty = true;
+
+	_base = 0;
+	_bonus = 0;
+	_percent = 100;
+
+	_s_current = 0;
+	_s_max = 0;
+
+	_c_current = 0;
+	_c_max = 0;
 }
 
 Stat::Stat(Stat::StatId id) {
 	_id = id;
 
-	_locked = false;
-	_base = (float)(0);
-	_bonus = (float)(0);
-	_percent = (float)(0);
-	_s_max = (float)(0);
-	_s_current = (float)(0);
-	_c_max = (float)(0);
-	_c_current = (float)(0);
-
 	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
+
+	_locked = false;
+	_dirty = true;
+
+	_base = 0;
+	_bonus = 0;
+	_percent = 100;
+
+	_s_current = 0;
+	_s_max = 0;
+
+	_c_current = 0;
+	_c_max = 0;
 }
 
 Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type) {
 	_id = id;
 
-	_locked = false;
-	_base = (float)(0);
-	_bonus = (float)(0);
-	_percent = (float)(0);
-	_s_max = (float)(0);
-	_s_current = (float)(0);
-	_c_max = (float)(0);
-	_c_current = (float)(0);
-
 	_modifier_apply_type = modifier_apply_type;
-	_id = id;
+
+	_locked = false;
+	_dirty = true;
+
+	_base = 0;
+	_bonus = 0;
+	_percent = 100;
+
+	_s_current = 0;
+	_s_max = 0;
+
+	_c_current = 0;
+	_c_max = 0;
 }
 
 //Stat
 Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float base, float bonus, float percent) {
 	_id = id;
 
-	_locked = false;
-	_base = (float)(0);
-	_bonus = (float)(0);
-	_percent = (float)(0);
-	_s_max = (float)(0);
-	_s_current = (float)(0);
-	_c_max = (float)(0);
-	_c_current = (float)(0);
 	_modifier_apply_type = modifier_apply_type;
 
-	_id = id;
+	_locked = false;
+	_dirty = true;
 
 	_base = base;
 	_bonus = bonus;
 	_percent = percent;
+
+	_s_current = 0;
+	_s_max = 0;
+
+	_c_current = 0;
+	_c_max = 0;
 }
 
 Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float base) {
 	_id = id;
 
-	_locked = false;
-	_base = (float)(0);
-	_bonus = (float)(0);
-	_percent = (float)(0);
-	_s_max = (float)(0);
-	_s_current = (float)(0);
-	_c_max = (float)(0);
-	_c_current = (float)(0);
-
 	_modifier_apply_type = modifier_apply_type;
-	_id = id;
+
+	_locked = false;
+	_dirty = true;
+
 	_base = base;
-	_percent = 100;
 	_bonus = 0;
+	_percent = 100;
+
+	_s_current = 0;
+	_s_max = 0;
+
+	_c_current = 0;
+	_c_max = 0;
 }
 
 Stat::~Stat() {
