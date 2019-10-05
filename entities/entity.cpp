@@ -1213,6 +1213,10 @@ void Entity::sdeal_heal_to(Ref<SpellHealInfo> info) {
 //Interactions
 bool Entity::cans_interact() {
 	if (!_s_entity_data.is_valid()) {
+		if (has_method("_cans_interact")) {
+			return call("_cans_interact");
+		}
+
 		return false;
 	}
 
@@ -1222,6 +1226,12 @@ bool Entity::cans_interact() {
 void Entity::sinteract() {
 	if (!cans_interact()) {
 		return;
+	}
+
+	if (!_s_entity_data.is_valid()) {
+		if (has_method("_sinteract")) {
+			call("_sinteract");
+		}
 	}
 
 	_s_entity_data->sinteract(this);
@@ -3824,6 +3834,8 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_level_up", PropertyInfo(Variant::INT, "value")));
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_canc_interact"));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_cans_interact"));
+	BIND_VMETHOD(MethodInfo("_sinteract"));
 
 	ClassDB::bind_method(D_METHOD("con_cast_failed", "info"), &Entity::con_cast_failed);
 	ClassDB::bind_method(D_METHOD("con_cast_started", "info"), &Entity::con_cast_started);
