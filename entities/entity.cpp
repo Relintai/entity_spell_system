@@ -3383,7 +3383,17 @@ void Entity::_sreceive_talent_learn_request(int spec_index, int talent_row, int 
 		if (hass_talent(talent_id))
 			continue;
 
-		//check requirement
+		if (talent->get_required_talent().is_valid()) {
+			if (!hass_talent(talent->get_required_talent()->get_id())) {
+				return;
+			}
+		}
+
+		if (talent->get_required_spell().is_valid()) {
+			if (!hass_spell(talent->get_required_spell())) {
+				return;
+			}
+		}
 
 		Ref<AuraApplyInfo> info;
 		info.instance();
