@@ -206,25 +206,27 @@ public:
 
 	////     Stats    ////
 
-	_FORCE_INLINE_ Ref<Stat> get_health() { return _health; }
-	_FORCE_INLINE_ Ref<Stat> get_mana() { return _mana; }
-	_FORCE_INLINE_ Ref<Stat> get_energy() { return _energy; }
-	_FORCE_INLINE_ Ref<Stat> get_rage() { return _rage; }
-	_FORCE_INLINE_ Ref<Stat> get_speed() { return _speed; }
-	_FORCE_INLINE_ Ref<Stat> get_gcd() { return _gcd; }
-	_FORCE_INLINE_ Ref<Stat> get_melee_crit() { return _melee_crit; }
-	_FORCE_INLINE_ Ref<Stat> get_melee_crit_bonus() { return _melee_crit_bonus; }
-	_FORCE_INLINE_ Ref<Stat> get_spell_crit() { return _spell_crit; }
-	_FORCE_INLINE_ Ref<Stat> get_spell_crit_bonus() { return _spell_crit_bonus; }
-	_FORCE_INLINE_ Ref<Stat> get_block() { return _block; }
-	_FORCE_INLINE_ Ref<Stat> get_parry() { return _parry; }
-	_FORCE_INLINE_ Ref<Stat> get_damage_reduction() { return _damage_reduction; }
-	_FORCE_INLINE_ Ref<Stat> get_melee_damage_reduction() { return _melee_damage_reduction; }
-	_FORCE_INLINE_ Ref<Stat> get_spell_damage_reduction() { return _spell_damage_reduction; }
-	_FORCE_INLINE_ Ref<Stat> get_damage_taken() { return _damage_taken; }
-	_FORCE_INLINE_ Ref<Stat> get_heal_taken() { return _heal_taken; }
-	_FORCE_INLINE_ Ref<Stat> get_melee_damage() { return _melee_damage; }
-	_FORCE_INLINE_ Ref<Stat> get_spell_damage() { return _spell_damage; }
+	_FORCE_INLINE_ Ref<Stat> get_health() { return _stats[Stat::STAT_ID_HEALTH]; }
+	_FORCE_INLINE_ Ref<Stat> get_mana() { return _stats[Stat::STAT_ID_MANA]; }
+	_FORCE_INLINE_ Ref<Stat> get_energy() { return _stats[Stat::STAT_ID_RAGE]; }
+	_FORCE_INLINE_ Ref<Stat> get_rage() { return _stats[Stat::STAT_ID_ENERGY]; }
+	_FORCE_INLINE_ Ref<Stat> get_speed() { return _stats[Stat::STAT_ID_SPEED]; }
+	_FORCE_INLINE_ Ref<Stat> get_gcd() { return _stats[Stat::STAT_ID_GLOBAL_COOLDOWN]; }
+
+	_FORCE_INLINE_ Ref<Stat> get_melee_crit() { return _stats[Stat::STAT_ID_MELEE_CRIT]; }
+	_FORCE_INLINE_ Ref<Stat> get_melee_crit_bonus() { return _stats[Stat::STAT_ID_MELEE_CRIT_BONUS]; }
+	_FORCE_INLINE_ Ref<Stat> get_spell_crit() { return _stats[Stat::STAT_ID_SPELL_CRIT]; }
+	_FORCE_INLINE_ Ref<Stat> get_spell_crit_bonus() { return _stats[Stat::STAT_ID_SPELL_CRIT_BONUS]; }
+
+	_FORCE_INLINE_ Ref<Stat> get_block() { return _stats[Stat::STAT_ID_BLOCK]; }
+	_FORCE_INLINE_ Ref<Stat> get_parry() { return _stats[Stat::STAT_ID_PARRY]; }
+	_FORCE_INLINE_ Ref<Stat> get_damage_reduction() { return _stats[Stat::STAT_ID_DAMAGE_REDUCTION]; }
+	_FORCE_INLINE_ Ref<Stat> get_melee_damage_reduction() { return _stats[Stat::STAT_ID_MELEE_DAMAGE_REDUCTION]; }
+	_FORCE_INLINE_ Ref<Stat> get_spell_damage_reduction() { return _stats[Stat::STAT_ID_SPELL_DAMAGE_REDUCTION]; }
+	_FORCE_INLINE_ Ref<Stat> get_damage_taken() { return _stats[Stat::STAT_ID_DAMAGE_TAKEN]; }
+	_FORCE_INLINE_ Ref<Stat> get_heal_taken() { return _stats[Stat::STAT_ID_HEAL_TAKEN]; }
+	_FORCE_INLINE_ Ref<Stat> get_melee_damage() { return _stats[Stat::STAT_ID_MELEE_DAMAGE]; }
+	_FORCE_INLINE_ Ref<Stat> get_spell_damage() { return _stats[Stat::STAT_ID_SPELL_DAMAGE]; }
 
 	Ref<Stat> get_stat_int(int index);
 	void set_stat_int(int index, Ref<Stat> entry);
@@ -673,27 +675,6 @@ private:
 	EntityEnums::EntityInteractionType _c_interaction_type;
 
 	////     Stats    ////
-
-	Ref<Stat> _health;
-	Ref<Stat> _mana;
-	Ref<Stat> _rage;
-	Ref<Stat> _energy;
-	Ref<Stat> _speed;
-	Ref<Stat> _gcd;
-
-	Ref<Stat> _melee_crit;
-	Ref<Stat> _melee_crit_bonus;
-	Ref<Stat> _spell_crit;
-	Ref<Stat> _spell_crit_bonus;
-	Ref<Stat> _block;
-	Ref<Stat> _parry;
-	Ref<Stat> _damage_reduction;
-	Ref<Stat> _melee_damage_reduction;
-	Ref<Stat> _spell_damage_reduction;
-	Ref<Stat> _damage_taken;
-	Ref<Stat> _heal_taken;
-	Ref<Stat> _melee_damage;
-	Ref<Stat> _spell_damage;
 
 	Ref<Stat> _stats[Stat::STAT_ID_TOTAL_STATS];
 

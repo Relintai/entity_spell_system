@@ -697,28 +697,6 @@ Entity::Entity() {
 	get_stat_enum(Stat::STAT_ID_PARRY)->set_base(15);
 	get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION)->set_base(15);
 
-	_health = Ref<Stat>(get_stat_enum(Stat::STAT_ID_HEALTH));
-	_mana = Ref<Stat>(get_stat_enum(Stat::STAT_ID_MANA));
-	_rage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_RAGE));
-	_energy = Ref<Stat>(get_stat_enum(Stat::STAT_ID_ENERGY));
-	_speed = Ref<Stat>(get_stat_enum(Stat::STAT_ID_SPEED));
-	_gcd = Ref<Stat>(get_stat_enum(Stat::STAT_ID_GLOBAL_COOLDOWN));
-
-	_melee_crit = Ref<Stat>(get_stat_enum(Stat::STAT_ID_MELEE_CRIT));
-	_melee_crit_bonus = Ref<Stat>(get_stat_enum(Stat::STAT_ID_MELEE_CRIT_BONUS));
-	_spell_crit = Ref<Stat>(get_stat_enum(Stat::STAT_ID_SPELL_CRIT));
-	_spell_crit_bonus = Ref<Stat>(get_stat_enum(Stat::STAT_ID_SPELL_CRIT_BONUS));
-
-	_block = Ref<Stat>(get_stat_enum(Stat::STAT_ID_BLOCK));
-	_parry = Ref<Stat>(get_stat_enum(Stat::STAT_ID_PARRY));
-	_damage_reduction = Ref<Stat>(get_stat_enum(Stat::STAT_ID_DAMAGE_REDUCTION));
-	_melee_damage_reduction = Ref<Stat>(get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION));
-	_spell_damage_reduction = Ref<Stat>(get_stat_enum(Stat::STAT_ID_SPELL_DAMAGE_REDUCTION));
-	_damage_taken = Ref<Stat>(get_stat_enum(Stat::STAT_ID_DAMAGE_TAKEN));
-	_heal_taken = Ref<Stat>(get_stat_enum(Stat::STAT_ID_HEAL_TAKEN));
-	_melee_damage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE));
-	_spell_damage = Ref<Stat>(get_stat_enum(Stat::STAT_ID_SPELL_DAMAGE));
-
 	SET_RPC_REMOTE("crequest_spell_cast");
 	SET_RPC_REMOTE("csend_request_rank_increase");
 	SET_RPC_REMOTE("csend_request_rank_decrease");
