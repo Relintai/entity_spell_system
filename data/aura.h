@@ -82,15 +82,13 @@ public:
 	float get_heal_scale_for_level(int level);
 	float get_absorb_scale_for_level(int level);
 	void set(int id, float time, int auraGroup);
+	
+	Ref<Spell> get_teaches_spell() const;
+	void set_teaches_spell(const Ref<Spell> spell);
 
 	//   AnimationCurve* getDamageLevelScaling();
 	//  AnimationCurve* getAbsorbLevelScaling();
 	//   AnimationCurve* getHealLevelScaling();
-
-	//  void SetScalingData(AbilityScalingData* scalingData);
-
-	// static void FromJSON(Aura* ada, JsonReader* r);
-	//  static void ToJSON(Aura* ada, JsonWriter* w);
 
 	//Damage
 	bool is_damage_enabled();
@@ -175,6 +173,13 @@ public:
 
 	Ref<Spell> get_trigger_spell(int index) const;
 	void set_trigger_spell(int index, const Ref<Spell> value);
+
+	//Talent
+	Ref<Aura> get_talent_required_talent() const;
+	void set_talent_required_talent(const Ref<Aura> rank);
+
+	Ref<Spell> get_talent_required_spell() const;
+	void set_talent_required_spell(const Ref<Spell> spell);
 
 	//AuraStatAttributes
 	int get_aura_stat_attribute_count() const;
@@ -393,6 +398,7 @@ private:
 	SpellEnums::AuraType _aura_type;
 	bool _is_debuff;
 	bool _hide;
+	Ref<Spell> _teaches_spell;
 
 	String _aura_name;
 	String _aura_description;
@@ -435,6 +441,10 @@ private:
 
 	static const int DIMINISHING_RETURN_ROOT_AURA_ID = 1;
 	static const int DIMINISHING_RETURN_TIME = 15;
+
+	//Talent
+	Ref<Aura> _talent_required_talent;
+	Ref<Spell> _talent_required_spell;
 };
 
 #endif

@@ -120,6 +120,13 @@ void Aura::set_diminishing_category(SpellEnums::DiminishingReturnCategory dimini
 	_diminishing_category = diminishingCategory;
 }
 
+Ref<Spell> Aura::get_teaches_spell() const {
+	return _teaches_spell;
+}
+void Aura::set_teaches_spell(const Ref<Spell> spell) {
+	_teaches_spell = spell;
+}
+
 void Aura::set(int id, float time, int auraGroup) {
 	this->set_id(id);
 	this->set_time(time);
@@ -291,6 +298,29 @@ Aura::Aura() {
 }
 
 Aura::~Aura() {
+	_icon.unref();
+
+	_teaches_spell.unref();
+
+	_visual_spell_effects.unref();
+	_spell_projectile_data.unref();
+	_world_effect_data.unref();
+
+	_damage_scaling_curve.unref();
+	_absorb_scaling_curve.unref();
+	_heal_scaling_curve.unref();
+
+	for (int i = 0; i < MAX_TRIGGER_DATA; ++i) {
+		_trigger_datas[i].unref();
+	}
+
+	for (int i = 0; i < MAX_AURA_STATS; ++i) {
+		_aura_stat_attributes[i].unref();
+	}
+
+	_talent_required_talent.unref();
+	_talent_required_spell.unref();
+	
 }
 
 //////     Triggers      ///////
@@ -339,6 +369,21 @@ void Aura::set_trigger_spell(int index, const Ref<Spell> value) {
 	ERR_FAIL_COND(index < 0 || index > _trigger_count);
 
 	_trigger_datas[index]->set_spell(value);
+}
+
+////    Talent    ////
+Ref<Aura> Aura::get_talent_required_talent() const {
+	return _talent_required_talent;
+}
+void Aura::set_talent_required_talent(const Ref<Aura> rank) {
+	_talent_required_talent = rank;
+}
+
+Ref<Spell> Aura::get_talent_required_spell() const {
+	return _talent_required_talent;
+}
+void Aura::set_talent_required_spell(const Ref<Spell> spell) {
+	_talent_required_spell = spell;
 }
 
 ////// Aura Stat Attributes //////
@@ -1306,6 +1351,10 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_world_effect_data", "value"), &Aura::set_world_effect_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_effect_data", PROPERTY_HINT_RESOURCE_TYPE, "WorldEffectData"), "set_world_effect_data", "get_world_effect_data");
 
+	ClassDB::bind_method(D_METHOD("get_teaches_spell"), &Aura::get_teaches_spell);
+	ClassDB::bind_method(D_METHOD("set_teaches_spell", "next_rank"), &Aura::set_teaches_spell);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "teaches_spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_teaches_spell", "get_teaches_spell");
+
 	ADD_GROUP("Damage", "damage");
 	//Damage
 	ClassDB::bind_method(D_METHOD("is_damage_enabled"), &Aura::is_damage_enabled);
@@ -1392,6 +1441,17 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_supress_states"), &Aura::get_supress_states);
 	ClassDB::bind_method(D_METHOD("set_supress_states", "value"), &Aura::set_supress_states);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "states_supress", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES), "set_supress_states", "get_supress_states");
+
+	////    Talents    ////
+	ADD_GROUP("Talent", "talent");
+	ClassDB::bind_method(D_METHOD("get_talent_required_talent"), &Aura::get_talent_required_talent);
+	ClassDB::bind_method(D_METHOD("set_talent_required_talent", "next_rank"), &Aura::set_talent_required_talent);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "talent_required_talent", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_talent_required_talent", "get_talent_required_talent");
+
+	ClassDB::bind_method(D_METHOD("get_talent_required_spell"), &Aura::get_talent_required_spell);
+	ClassDB::bind_method(D_METHOD("set_talent_required_spell", "next_rank"), &Aura::set_talent_required_spell);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "talent_required_spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_talent_required_spell", "get_talent_required_spell");
+
 
 	////    Triggers    ////
 	ADD_GROUP("Triggers", "trigger");

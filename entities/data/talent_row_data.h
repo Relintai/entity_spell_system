@@ -4,22 +4,22 @@
 #include "core/reference.h"
 #include "core/ustring.h"
 
-#include "../../data/talent.h"
+#include "../../data/aura.h"
 
-class Talent;
+class Aura;
 
 class TalentRowData : public Resource {
 	GDCLASS(TalentRowData, Resource);
 
 public:
-	Ref<Talent> get_talent_index(int index) const;
-	void set_talent_index(int index, Ref<Talent> talent);
+	Ref<Aura> get_talent_index(int index) const;
+	void set_talent_index(int index, Ref<Aura> talent);
 
-	Ref<Talent> get_talent(int culomn, int rank) const;
-	void set_talent(int culomn, int rank, Ref<Talent> talent);
+	Ref<Aura> get_talent(int culomn, int rank) const;
+	void set_talent(int culomn, int rank, Ref<Aura> talent);
 
 	bool has_talent_with_id(int id);
-	Ref<Talent> get_talent_with_id(int id);
+	Ref<Aura> get_talent_with_id(int id);
 
 	TalentRowData();
 	~TalentRowData();
@@ -35,7 +35,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	Ref<Talent> _talents[TOTAL_ENTRIES];
+	Ref<Aura> _talents[TOTAL_ENTRIES];
 };
 
 #endif

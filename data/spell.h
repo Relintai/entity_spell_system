@@ -23,7 +23,6 @@ class Entity;
 class Aura;
 class SpellCastInfo;
 class Spell;
-class Skill;
 
 enum TargetRelationType {
 	TARGET_SELF = 1 << 0,
@@ -290,8 +289,8 @@ public:
 	Ref<Spell> get_training_required_spell();
 	void set_training_required_spell(Ref<Spell> spell);
 
-	Ref<Skill> get_training_required_skill();
-	void set_training_required_skill(Ref<Skill> skill);
+	Ref<Aura> get_training_required_skill();
+	void set_training_required_skill(Ref<Aura> skill);
 
 	int get_training_required_skill_level();
 	void set_training_required_skill_level(int value);
@@ -416,7 +415,7 @@ private:
 
 	int _training_cost;
 	Ref<Spell> _training_required_spell;
-	Ref<Skill> _training_required_skill;
+	Ref<Aura> _training_required_skill;
 	int _training_required_skill_level;
 };
 

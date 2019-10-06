@@ -8,7 +8,7 @@
 #include "talent_row_data.h"
 
 class TalentRowData;
-class Talent;
+class Aura;
 
 class CharacterSpec : public Resource {
 	GDCLASS(CharacterSpec, Resource);
@@ -28,7 +28,7 @@ public:
 	Vector<Variant> get_talent_rows();
 	void set_talent_rows(const Vector<Variant> &auras);
 
-	Ref<Talent> get_talent(const int row_index, const int culomn, const int rank) const;
+	Ref<Aura> get_talent(const int row_index, const int culomn, const int rank) const;
 
 	CharacterSpec();
 	~CharacterSpec();

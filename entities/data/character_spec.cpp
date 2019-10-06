@@ -1,6 +1,6 @@
 #include "character_spec.h"
 
-#include "../../data/talent.h"
+#include "../../data/aura.h"
 
 int CharacterSpec::get_spec_id() {
 	return _spec_id;
@@ -50,14 +50,14 @@ void CharacterSpec::set_talent_rows(const Vector<Variant> &talent_rows) {
 	}
 }
 
-Ref<Talent> CharacterSpec::get_talent(const int row_index, const int culomn, const int rank) const {
-	ERR_FAIL_INDEX_V(row_index, _rows.size(), Ref<Talent>(NULL));
+Ref<Aura> CharacterSpec::get_talent(const int row_index, const int culomn, const int rank) const {
+	ERR_FAIL_INDEX_V(row_index, _rows.size(), Ref<Aura>(NULL));
 
 	if (_rows[row_index].is_valid()) {
 		return _rows[row_index]->get_talent(culomn, rank);
 	}
 
-	return Ref<Talent>(NULL);
+	return Ref<Aura>(NULL);
 }
 
 
@@ -89,6 +89,4 @@ void CharacterSpec::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_talent_rows"), &CharacterSpec::get_talent_rows);
 	ClassDB::bind_method(D_METHOD("set_talent_rows", "auras"), &CharacterSpec::set_talent_rows);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "talent_rows", PROPERTY_HINT_NONE, "17/17:TalentRowData", PROPERTY_USAGE_DEFAULT, "TalentRowData"), "set_talent_rows", "get_talent_rows");
-
-	ClassDB::bind_method(D_METHOD("get_talent", "row_index", "index"), &CharacterSpec::get_talent);
 }

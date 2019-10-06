@@ -6,8 +6,6 @@
 #include "data/aura.h"
 #include "data/aura_stat_attribute.h"
 #include "data/data_manager.h"
-#include "data/talent.h"
-#include "data/skill.h"
 #include "data/xp_data.h"
 #include "data/item_stat_modifier.h"
 #include "data/item_template_stat_modifier.h"
@@ -138,8 +136,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<ItemTemplate>();
 	ClassDB::register_class<ItemInstance>();
 	ClassDB::register_class<SpellCooldownManipulationData>();
-	ClassDB::register_class<Talent>();
-	ClassDB::register_class<Skill>();
 	ClassDB::register_class<TalentRowData>();
 
 	ClassDB::register_class<EntitySkill>();

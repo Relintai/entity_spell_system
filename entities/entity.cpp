@@ -3373,7 +3373,7 @@ void Entity::_sreceive_talent_learn_request(int spec_index, int talent_row, int 
 	ERR_FAIL_COND(!tr.is_valid());
 
 	for (int i = 0; i < TalentRowData::MAX_TALENTS_PER_ENTRY; ++i) {
-		Ref<Talent> talent = tr->get_talent(talent_culomn, i);
+		Ref<Aura> talent = tr->get_talent(talent_culomn, i);
 
 		if (!talent.is_valid())
 			return;
@@ -3383,20 +3383,20 @@ void Entity::_sreceive_talent_learn_request(int spec_index, int talent_row, int 
 		if (hass_talent(talent_id))
 			continue;
 
-		if (talent->get_required_talent().is_valid()) {
-			if (!hass_talent(talent->get_required_talent()->get_id())) {
+		if (talent->get_talent_required_talent().is_valid()) {
+			if (!hass_talent(talent->get_talent_required_talent()->get_id())) {
 				return;
 			}
 		}
 
-		if (talent->get_required_spell().is_valid()) {
-			if (!hass_spell(talent->get_required_spell())) {
+		if (talent->get_talent_required_spell().is_valid()) {
+			if (!hass_spell(talent->get_talent_required_spell())) {
 				return;
 			}
 		}
 
 		if (i > 0) {
-			Ref<Talent> pt = tr->get_talent(talent_culomn, i - 1);
+			Ref<Aura> pt = tr->get_talent(talent_culomn, i - 1);
 
 			for (int j = 0; j < sget_aura_count(); ++j) {
 				Ref<AuraData> ad = sget_aura(j);
