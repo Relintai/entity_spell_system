@@ -115,6 +115,7 @@ void EntityClassData::set_specs(const Vector<Variant> &specs) {
 	}
 }
 
+
 ////    SPELLS    ////
 
 int EntityClassData::get_num_spells() {

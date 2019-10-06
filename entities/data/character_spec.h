@@ -28,7 +28,7 @@ public:
 	Vector<Variant> get_talent_rows();
 	void set_talent_rows(const Vector<Variant> &auras);
 
-	Ref<Talent> get_talent(const int row_index, const int index) const;
+	Ref<Talent> get_talent(const int row_index, const int culomn, const int rank) const;
 
 	CharacterSpec();
 	~CharacterSpec();

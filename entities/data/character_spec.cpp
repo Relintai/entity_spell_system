@@ -50,11 +50,11 @@ void CharacterSpec::set_talent_rows(const Vector<Variant> &talent_rows) {
 	}
 }
 
-Ref<Talent> CharacterSpec::get_talent(const int row_index, const int index) const {
+Ref<Talent> CharacterSpec::get_talent(const int row_index, const int culomn, const int rank) const {
 	ERR_FAIL_INDEX_V(row_index, _rows.size(), Ref<Talent>(NULL));
 
 	if (_rows[row_index].is_valid()) {
-		return _rows[row_index]->get_talent(index);
+		return _rows[row_index]->get_talent(culomn, rank);
 	}
 
 	return Ref<Talent>(NULL);
@@ -83,6 +83,8 @@ void CharacterSpec::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_talent_row", "index"), &CharacterSpec::get_talent_row);
 	ClassDB::bind_method(D_METHOD("set_talent_row", "index", "row"), &CharacterSpec::set_talent_row);
+
+	ClassDB::bind_method(D_METHOD("get_talent", "row_index", "culomn", "rank"), &CharacterSpec::get_talent);
 
 	ClassDB::bind_method(D_METHOD("get_talent_rows"), &CharacterSpec::get_talent_rows);
 	ClassDB::bind_method(D_METHOD("set_talent_rows", "auras"), &CharacterSpec::set_talent_rows);

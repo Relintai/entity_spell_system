@@ -20,25 +20,18 @@
 #include "core/vector.h"
 
 #include "entity_resource.h"
-
 #include "../data/spell.h"
 #include "stats/stat.h"
 
 #include "../data/data_manager.h"
-
 #include "../entity_enums.h"
-
 #include "../skeleton/character_skeleton.h"
-
 #include "../utility/entity_create_info.h"
 
 #include "../utility/category_cooldown.h"
 #include "../utility/cooldown.h"
-
 #include "../inventory/bag.h"
-
 #include "./data/entity_data_container.h"
-
 #include "./skills/entity_skill.h"
 
 class EntityData;
@@ -48,6 +41,8 @@ class SpellDamageInfo;
 class SpellHealInfo;
 class SpellCastInfo;
 class EntityCreateInfo;
+class TalentRowData;
+class CharacterSpec;
 
 enum SpellCastDataSignals {
 	CastFailed,
@@ -538,11 +533,30 @@ public:
 
 	////    Talents    ////
 
-	void crequest_rank_increase(int talent_x, int talent_y);
-	void sreceive_talent_rank_increase_request(int talent_x, int talent_y);
+	void crequest_talent_learn(int spec_index, int talent_row, int talent_culomn);
+	void sreceive_talent_learn_request(int spec_index, int talent_row, int talent_culomn);
+	void _sreceive_talent_learn_request(int spec_index, int talent_row, int talent_culomn);
 
 	void crequest_talent_reset();
 	void sreceive_reset_talent_request();
+	void _sreceive_reset_talent_request();
+
+	void sreset_talents();
+	void creset_talents();
+
+	void adds_talent(int talent);
+	void removes_talent(int talent);
+	bool hass_talent(int talent);
+	int gets_talent(int index);
+	int gets_talent_count();
+	void sclear_talents();
+
+	void addc_talent(int talent);
+	void removec_talent(int talent);
+	bool hasc_talent(int talent);
+	int getc_talent(int index);
+	int getc_talent_count();
+	void cclear_talents();
 
 	////    Inventory    ////
 
@@ -562,6 +576,7 @@ public:
 	void sloot(int index);
 
 	////    Data    ////
+
 	void adds_data(Ref<EntityDataContainer> data);
 	void removes_data(int index);
 	Ref<EntityDataContainer> gets_data(int index);
@@ -718,16 +733,16 @@ private:
 	int _s_active_category_cooldowns;
 	int _c_active_category_cooldowns;
 
-	////    targetComponent    ////
+	////    Targeting    ////
 
 	int _s_target_guid;
 	Entity *_s_target;
 	Entity *_c_target;
 
-	////    TalentComponent    ////
+	////    Talents    ////
 
-	//Vector<Ref<PlayerTalent> > _s_talents;
-	//Vector<Ref<PlayerTalent> > _c_talents;
+	Vector<int> _s_talents;
+	Vector<int> _c_talents;
 
 	////    Data    ////
 	Vector<Ref<EntityDataContainer> > _s_data;
