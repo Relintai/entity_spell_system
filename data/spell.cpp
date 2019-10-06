@@ -66,13 +66,6 @@ void Spell::set_rank(int value) {
 	_rank = value;
 }
 
-Ref<Spell> Spell::get_next_rank() {
-	return _next_rank;
-}
-void Spell::set_next_rank(Ref<Spell> value) {
-	_next_rank = value;
-}
-
 int Spell::get_item_cost() {
 	return _item_cost;
 }
@@ -906,10 +899,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_rank"), &Spell::get_rank);
 	ClassDB::bind_method(D_METHOD("set_rank", "value"), &Spell::set_rank);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rank"), "set_rank", "get_rank");
-
-	ClassDB::bind_method(D_METHOD("get_next_rank"), &Spell::get_next_rank);
-	ClassDB::bind_method(D_METHOD("set_next_rank", "value"), &Spell::set_next_rank);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "next_rank", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_next_rank", "get_next_rank");
 
 	ClassDB::bind_method(D_METHOD("get_is_local_spell"), &Spell::get_is_local_spell);
 	ClassDB::bind_method(D_METHOD("set_is_local_spell", "value"), &Spell::set_is_local_spell);

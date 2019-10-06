@@ -3395,6 +3395,20 @@ void Entity::_sreceive_talent_learn_request(int spec_index, int talent_row, int 
 			}
 		}
 
+		if (i > 0) {
+			Ref<Talent> pt = tr->get_talent(talent_culomn, i - 1);
+
+			for (int j = 0; j < sget_aura_count(); ++j) {
+				Ref<AuraData> ad = sget_aura(j);
+
+				if (ad->get_aura_id() == pt->get_id()) {
+					sremove_aura(ad);
+
+					break;
+				}
+			}
+		}
+
 		Ref<AuraApplyInfo> info;
 		info.instance();
 
@@ -3458,6 +3472,17 @@ void Entity::removes_talent(int talent) {
 	for (int i = 0; i < _s_talents.size(); ++i) {
 		if (_s_talents[i] == talent) {
 			_s_talents.remove(i);
+
+			for (int j = 0; j < sget_aura_count(); ++j) {
+				Ref<AuraData> ad = sget_aura(j);
+
+				if (ad->get_aura_id() == talent) {
+					sremove_aura(ad);
+
+					break;
+				}
+			}
+
 			break;
 		}
 	}

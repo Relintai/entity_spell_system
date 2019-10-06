@@ -110,9 +110,6 @@ public:
 	int get_rank();
 	void set_rank(int value);
 
-	Ref<Spell> get_next_rank();
-	void set_next_rank(Ref<Spell> value);
-
 	int get_item_cost();
 	void set_item_cost(int value);
 
@@ -360,7 +357,6 @@ private:
 
 	int _level;
 	int _rank;
-	Ref<Spell> _next_rank;
 	int _item_cost;
 	int _craft_material_cost;
 	int _required_item;
