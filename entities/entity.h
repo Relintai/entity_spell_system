@@ -238,6 +238,11 @@ public:
 	void ons_stat_changed(Ref<Stat> stat);
 	void onc_stat_changed(Ref<Stat> stat);
 
+	////    Equip Slots    ////
+
+	Ref<ItemInstance> equip(Ref<ItemInstance> item);
+	Ref<ItemInstance> get_equip_slot(int index);
+
 	////    Resources    ////
 
 	Ref<EntityResource> gets_resource(int index);
@@ -254,7 +259,8 @@ public:
 	void removec_resource(int index);
 	void clearc_resource();
 
-	//GCD
+	////    Global Cooldown    ////
+
 	bool getc_has_global_cooldown();
 	bool gets_has_global_cooldown();
 	bool getc_global_cooldown();
@@ -691,6 +697,10 @@ private:
 
 	Ref<Stat> _stats[Stat::STAT_ID_TOTAL_STATS];
 
+	////    Equipment    ////
+
+	Ref<ItemInstance> _equipment[ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX];
+
 	////    Resources    ////
 
 	Vector<Ref<EntityResource> > _s_resources;
@@ -707,10 +717,12 @@ private:
 	float cRezTimer;
 
 	////    GCD    ////
+
 	float _s_gcd;
 	float _c_gcd;
 
 	////    States    ////
+
 	int _s_states[EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX];
 
 	int _s_state;
@@ -777,10 +789,12 @@ private:
 	Vector<Ref<Spell> > _c_spells;
 
 	////    Skills    ////
+
 	Vector<Ref<EntitySkill> > _s_skills;
 	Vector<Ref<EntitySkill> > _c_skills;
 
 	////    Stat Allocations    ////
+
 	//int _unallocated_stats;
 	//int _stat_allocations[Stat::STAT_ID_TOTAL_STATS];
 

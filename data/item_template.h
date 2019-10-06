@@ -37,6 +37,9 @@ public:
 	ItemEnums::ItemRarity get_rarity() const;
 	void set_rarity(const ItemEnums::ItemRarity value);
 
+	ItemEnums::EquipSlots get_equip_slot() const;
+	void set_equip_slot(const ItemEnums::EquipSlots value);
+
 	Ref<ItemVisual> get_item_visual() const;
 	void set_item_visual(const Ref<ItemVisual> value);
 
@@ -142,6 +145,7 @@ private:
 	ItemEnums::ItemType _item_type;
 	ItemEnums::ItemSubtype _item_sub_type;
 	ItemEnums::ItemSubSubtype _item_sub_sub_type;
+	ItemEnums::EquipSlots _equip_slot;
 
 	int _price;
 

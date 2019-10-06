@@ -1,7 +1,7 @@
 #include "item_template.h"
 
-#include "item_instance.h"
 #include "aura.h"
+#include "item_instance.h"
 #include "spell.h"
 
 int ItemTemplate::get_id() const {
@@ -46,6 +46,13 @@ void ItemTemplate::set_rarity(const ItemEnums::ItemRarity value) {
 	_rarity = value;
 }
 
+ItemEnums::EquipSlots ItemTemplate::get_equip_slot() const {
+	return _equip_slot;
+}
+void ItemTemplate::set_equip_slot(const ItemEnums::EquipSlots value) {
+	_equip_slot = value;
+}
+
 Ref<ItemVisual> ItemTemplate::get_item_visual() const {
 	return _item_visual;
 }
@@ -67,7 +74,7 @@ int ItemTemplate::get_stack_size() const {
 void ItemTemplate::set_stack_size(const int value) {
 	_stack_size = value;
 }
-	
+
 Ref<Texture> ItemTemplate::get_icon() const {
 	return _icon;
 }
@@ -341,13 +348,14 @@ ItemTemplate::ItemTemplate() {
 	_item_sub_type = ItemEnums::ITEM_SUB_TYPE_NONE;
 	_item_sub_sub_type = ItemEnums::ITEM_SUB_SUB_TYPE_NONE;
 	_rarity = ItemEnums::ITEM_RARITY_NONE;
+	_equip_slot = ItemEnums::EQUIP_SLOT_NONE;
 	_price = 0;
 
 	_scale_x = 0;
 	_scale_y = 0;
 	_scale_z = 0;
 	_modifier_count = 0;
-	
+
 	_stack_size = 1;
 	_bag_size = 0;
 
@@ -374,7 +382,7 @@ void ItemTemplate::_validate_property(PropertyInfo &property) const {
 
 void ItemTemplate::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_create_item_instance"));
-	
+
 	ClassDB::bind_method(D_METHOD("create_item_instance"), &ItemTemplate::create_item_instance);
 
 	ClassDB::bind_method(D_METHOD("get_id"), &ItemTemplate::get_id);
@@ -401,6 +409,10 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_rarity", "count"), &ItemTemplate::set_rarity);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rarity", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_RARITY), "set_rarity", "get_rarity");
 
+	ClassDB::bind_method(D_METHOD("get_equip_slot"), &ItemTemplate::get_equip_slot);
+	ClassDB::bind_method(D_METHOD("set_equip_slot", "count"), &ItemTemplate::set_equip_slot);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "equip_slot", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_EQUIP_SLOTS), "set_equip_slot", "get_equip_slot");
+
 	ClassDB::bind_method(D_METHOD("get_price"), &ItemTemplate::get_price);
 	ClassDB::bind_method(D_METHOD("set_price", "count"), &ItemTemplate::set_price);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "price"), "set_price", "get_price");
@@ -412,7 +424,7 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stack_size"), &ItemTemplate::get_stack_size);
 	ClassDB::bind_method(D_METHOD("set_stack_size", "value"), &ItemTemplate::set_stack_size);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "stack_size"), "set_stack_size", "get_stack_size");
-	
+
 	ClassDB::bind_method(D_METHOD("get_icon"), &ItemTemplate::get_icon);
 	ClassDB::bind_method(D_METHOD("set_icon", "value"), &ItemTemplate::set_icon);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "icon", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_icon", "get_icon");
@@ -432,7 +444,6 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_bag_size"), &ItemTemplate::get_bag_size);
 	ClassDB::bind_method(D_METHOD("set_bag_size", "size"), &ItemTemplate::set_bag_size);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "bag_size"), "set_bag_size", "get_bag_size");
-
 
 	////    Teaches    ////
 	ADD_GROUP("Teaches Spells", "teaches_spells");

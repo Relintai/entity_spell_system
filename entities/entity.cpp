@@ -313,6 +313,10 @@ Dictionary Entity::_to_dict() {
 
 	dict["stats"] = sd;
 
+	////    Equipment    ////
+
+	//todo
+
 	////    Resources    ////
 
 	Dictionary rd;
@@ -442,6 +446,10 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 		s->from_dict(stats.get(String::num(i), Dictionary()));
 	}
+
+	////    Equipment    ////
+
+	//todo
 
 	////    Resources    ////
 
@@ -821,6 +829,14 @@ Entity::~Entity() {
 
 	_s_talents.clear();
 	_c_talents.clear();
+
+	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+		_stats[i].unref();
+	}
+
+	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+		_equipment[i].unref();
+	}
 }
 
 void Entity::initialize(Ref<EntityCreateInfo> info) {
@@ -1040,6 +1056,21 @@ void Entity::onc_stat_changed(Ref<Stat> stat) {
 	for (int i = 0; i < _c_resources.size(); ++i) {
 		_c_resources.get(i)->onc_stat_changed(stat);
 	}
+}
+
+////    Equip Slots    ////
+
+Ref<ItemInstance> Entity::equip(Ref<ItemInstance> item) {
+	if (!has_method("_equip")) {
+		return item;
+	}
+
+	return call("_equip", item);
+}
+Ref<ItemInstance> Entity::get_equip_slot(int index) {
+	ERR_FAIL_INDEX_V(index, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX, Ref<ItemInstance>());
+
+	return _equipment[index];
 }
 
 ////    Resources    ////
@@ -4354,6 +4385,15 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_stat_enum", "index"), &Entity::get_stat_enum);
 	ClassDB::bind_method(D_METHOD("set_stat_enum", "stat_id", "entry"), &Entity::set_stat_enum);
+
+	//Equipment System
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_equip", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+
+	ADD_SIGNAL(MethodInfo("equipment_changed", PropertyInfo(Variant::INT, "slot")));
+
+	ClassDB::bind_method(D_METHOD("equip", "item"), &Entity::equip);
+	ClassDB::bind_method(D_METHOD("get_equip_slot", "index"), &Entity::get_equip_slot);
 
 	//Resources
 	ClassDB::bind_method(D_METHOD("gets_resource", "index"), &Entity::gets_resource);
