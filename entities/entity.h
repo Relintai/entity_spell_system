@@ -455,6 +455,7 @@ public:
 	void cspell_cast_success(Ref<SpellCastInfo> info);
 
 	////    Cooldowns    ////
+
 	Vector<Ref<Cooldown> > *gets_cooldowns();
 	Vector<Ref<Cooldown> > *getc_cooldowns();
 
@@ -476,6 +477,7 @@ public:
 	int getc_cooldown_count();
 
 	//Category Cooldowns
+
 	Vector<Ref<CategoryCooldown> > gets_category_cooldowns();
 	Vector<Ref<CategoryCooldown> > getc_category_cooldowns();
 
@@ -494,6 +496,13 @@ public:
 	int getc_category_cooldown_count();
 
 	//Known Spells
+
+	int gets_free_spell_points();
+	void sets_free_spell_points(int value);
+
+	int getc_free_spell_points();
+	void setc_free_spell_points(int value);
+
 	bool hass_spell(Ref<Spell> spell);
 	void adds_spell(Ref<Spell> spell);
 	void removes_spell(Ref<Spell> spell);
@@ -507,6 +516,7 @@ public:
 	int getc_spell_count();
 
 	//Skills
+
 	bool hass_skill(Ref<EntitySkill> skill);
 	void adds_skill(Ref<EntitySkill> skill);
 	void removes_skill(Ref<EntitySkill> skill);
@@ -532,6 +542,12 @@ public:
 	void setc_target(Node *p_target);
 
 	////    Talents    ////
+
+	int gets_free_talent_points();
+	void sets_free_talent_points(int value);
+
+	int getc_free_talent_points();
+	void setc_free_talent_points(int value);
 
 	void crequest_talent_learn(int spec_index, int talent_row, int talent_culomn);
 	void sreceive_talent_learn_request(int spec_index, int talent_row, int talent_culomn);
@@ -741,14 +757,22 @@ private:
 
 	////    Talents    ////
 
+	int _s_free_talent_points;
+	int _c_free_talent_points;
+
 	Vector<int> _s_talents;
 	Vector<int> _c_talents;
 
 	////    Data    ////
+
 	Vector<Ref<EntityDataContainer> > _s_data;
 	Vector<Ref<EntityDataContainer> > _c_data;
 
 	////    Known Spells    ////
+
+	int _s_free_spell_points;
+	int _c_free_spell_points;
+
 	Vector<Ref<Spell> > _s_spells;
 	Vector<Ref<Spell> > _c_spells;
 

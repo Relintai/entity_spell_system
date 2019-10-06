@@ -46,8 +46,8 @@ public:
 	int get_player_resource_type();
 	void set_player_resource_type(int value);
 
-	int get_stat_points_per_level();
-	void set_stat_points_per_level(int value);
+	int get_spell_points_per_level();
+	void set_spell_points_per_level(int value);
 
 	EntityEnums::EntityClassPlaystyleType get_playstyle_type();
 	void set_playstyle_type(EntityEnums::EntityClassPlaystyleType playstyle_type);
@@ -205,7 +205,7 @@ private:
 
 	int _player_resource_type;
 
-	int _stat_points_per_level;
+	int _spell_points_per_level;
 
 	EntityEnums::EntityClassPlaystyleType _playstyle_type;
 

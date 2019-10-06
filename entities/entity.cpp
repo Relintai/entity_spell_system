@@ -380,11 +380,18 @@ Dictionary Entity::_to_dict() {
 
 	dict["active_category_cooldowns"] = _s_active_category_cooldowns;
 
+	////    Talents    ////
+
+	dict["free_talent_points"] = _s_free_talent_points;
+	dict["talents"] = _s_talents;
+
 	////    Data    ////
 	//Vector<Ref<EntityDataContainer> > _s_data;
 	//Vector<Ref<EntityDataContainer> > _c_data;
 
 	////    Known Spells    ////
+
+	dict["free_spell_points"] = _s_free_spell_points;
 
 	Dictionary known_spells;
 
@@ -468,7 +475,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 	_s_state = dict.get("state", Dictionary());
 	_c_state = _s_state;
 
-	//// AuraComponent    ////
+	////    Auras    ////
 
 	_s_auras.clear();
 	_c_auras.clear();
@@ -522,11 +529,22 @@ void Entity::_from_dict(const Dictionary &dict) {
 	_s_active_category_cooldowns = dict.get("active_category_cooldowns", 0);
 	_c_active_category_cooldowns = _s_active_category_cooldowns;
 
+	////    Talents    ////
+
+	_s_free_talent_points = dict.get("free_talent_points", 0);
+	_c_free_talent_points = _s_free_talent_points;
+
+	_s_talents = dict.get("talents", Vector<int>());
+
 	////    Data    ////
+
 	//Vector<Ref<EntityDataContainer> > _s_data;
 	//Vector<Ref<EntityDataContainer> > _c_data;
 
 	////    Known Spells    ////
+
+	_s_free_spell_points = dict.get("free_spell_points", 0);
+	_s_free_spell_points = _c_free_spell_points;
 
 	Dictionary known_spells = dict.get("known_spells", Dictionary());
 
@@ -641,6 +659,12 @@ Entity::Entity() {
 
 	_s_target = NULL;
 	_c_target = NULL;
+
+	_s_free_talent_points = 0;
+	_c_free_talent_points = 0;
+
+	_s_free_spell_points = 0;
+	_c_free_spell_points = 0;
 
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
 		Ref<Stat> s = Ref<Stat>(memnew(Stat(static_cast<Stat::StatId>(i))));
@@ -791,6 +815,12 @@ Entity::~Entity() {
 
 	_s_spells.clear();
 	_c_spells.clear();
+
+	_s_free_talent_points = 0;
+	_c_free_talent_points = 0;
+
+	_s_talents.clear();
+	_c_talents.clear();
 }
 
 void Entity::initialize(Ref<EntityCreateInfo> info) {
@@ -3022,6 +3052,23 @@ int Entity::getc_category_cooldown_count() {
 }
 
 //Known Spells
+
+int Entity::gets_free_spell_points() {
+	return _s_free_spell_points;
+}
+void Entity::sets_free_spell_points(int value) {
+	_s_free_spell_points = value;
+
+	SEND_RPC(rpc("setc_free_spell_points", value), setc_free_spell_points(value));
+}
+
+int Entity::getc_free_spell_points() {
+	return _c_free_spell_points;
+}
+void Entity::setc_free_spell_points(int value) {
+	_c_free_spell_points = value;
+}
+
 bool Entity::hass_spell(Ref<Spell> spell) {
 	for (int i = 0; i < _s_spells.size(); ++i) {
 		if (_s_spells.get(i) == spell) {
@@ -3345,6 +3392,22 @@ void Entity::setc_target(Node *p_target) {
 }
 
 ////    Talents    ////
+
+int Entity::gets_free_talent_points() {
+	return _s_free_talent_points;
+}
+void Entity::sets_free_talent_points(int value) {
+	_s_free_talent_points = value;
+
+	SEND_RPC(rpc("setc_free_talent_points", value), setc_free_talent_points(value));
+}
+
+int Entity::getc_free_talent_points() {
+	return _c_free_talent_points;
+}
+void Entity::setc_free_talent_points(int value) {
+	_c_free_talent_points = value;
+}
 
 void Entity::crequest_talent_learn(int spec_index, int talent_row, int talent_culomn) {
 	sreceive_talent_learn_request(spec_index, talent_row, talent_culomn);
@@ -3985,6 +4048,14 @@ void Entity::_bind_methods() {
 
 	//Talents
 
+	ClassDB::bind_method(D_METHOD("gets_free_talent_points"), &Entity::gets_free_talent_points);
+	ClassDB::bind_method(D_METHOD("sets_free_talent_points", "value"), &Entity::sets_free_talent_points);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_talent_points"), "sets_free_talent_points", "gets_free_talent_points");
+
+	ClassDB::bind_method(D_METHOD("getc_free_talent_points"), &Entity::getc_free_talent_points);
+	ClassDB::bind_method(D_METHOD("setc_free_talent_points", "value"), &Entity::setc_free_talent_points);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_talent_points"), "setc_free_talent_points", "getc_free_talent_points");
+
 	BIND_VMETHOD(MethodInfo("_sreceive_talent_learn_request", PropertyInfo(Variant::INT, "spec_index"), PropertyInfo(Variant::INT, "talent_row"), PropertyInfo(Variant::INT, "talent_culomn")));
 	BIND_VMETHOD(MethodInfo("_sreceive_reset_talent_request"));
 
@@ -4401,6 +4472,14 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_category_cooldown_count"), &Entity::getc_category_cooldown_count);
 
 	//Known Spells
+	ClassDB::bind_method(D_METHOD("gets_free_spell_points"), &Entity::gets_free_spell_points);
+	ClassDB::bind_method(D_METHOD("sets_free_spell_points", "value"), &Entity::sets_free_spell_points);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_spell_points"), "sets_free_spell_points", "gets_free_spell_points");
+
+	ClassDB::bind_method(D_METHOD("getc_free_spell_points"), &Entity::getc_free_spell_points);
+	ClassDB::bind_method(D_METHOD("setc_free_spell_points", "value"), &Entity::setc_free_spell_points);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_spell_points"), "setc_free_spell_points", "getc_free_spell_points");
+
 	ClassDB::bind_method(D_METHOD("hass_spell", "spell"), &Entity::hass_spell);
 	ClassDB::bind_method(D_METHOD("adds_spell", "spell"), &Entity::adds_spell);
 	ClassDB::bind_method(D_METHOD("removes_spell", "spell"), &Entity::removes_spell);

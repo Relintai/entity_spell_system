@@ -42,11 +42,11 @@ void EntityClassData::set_player_resource_type(int value) {
 	_player_resource_type = value;
 }
 
-int EntityClassData::get_stat_points_per_level() {
-	return _stat_points_per_level;
+int EntityClassData::get_spell_points_per_level() {
+	return _spell_points_per_level;
 }
-void EntityClassData::set_stat_points_per_level(int value) {
-	_stat_points_per_level = value;
+void EntityClassData::set_spell_points_per_level(int value) {
+	_spell_points_per_level = value;
 }
 
 EntityEnums::EntityClassPlaystyleType EntityClassData::get_playstyle_type() {
@@ -751,7 +751,7 @@ EntityClassData::EntityClassData() {
 	_player_resource_type = 0;
 
 	_player_resource_type = 0;
-	_stat_points_per_level = 5;
+	_spell_points_per_level = 3;
 	_playstyle_type = EntityEnums::ENTITY_CLASS_PLAYSTYLE_TYPE_MELEE;
 }
 
@@ -923,9 +923,9 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_player_resource_type", "value"), &EntityClassData::set_player_resource_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "player_resource_type", PROPERTY_HINT_ENUM, "None, Rage, Mana, Energy, Time Anomaly"), "set_player_resource_type", "get_player_resource_type");
 
-	ClassDB::bind_method(D_METHOD("get_stat_points_per_level"), &EntityClassData::get_stat_points_per_level);
-	ClassDB::bind_method(D_METHOD("set_stat_points_per_level", "value"), &EntityClassData::set_stat_points_per_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_points_per_level"), "set_stat_points_per_level", "get_stat_points_per_level");
+	ClassDB::bind_method(D_METHOD("get_spell_points_per_level"), &EntityClassData::get_spell_points_per_level);
+	ClassDB::bind_method(D_METHOD("set_spell_points_per_level", "value"), &EntityClassData::set_spell_points_per_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_points_per_level"), "set_spell_points_per_level", "get_spell_points_per_level");
 
 	ClassDB::bind_method(D_METHOD("get_playstyle_type"), &EntityClassData::get_playstyle_type);
 	ClassDB::bind_method(D_METHOD("set_playstyle_type", "value"), &EntityClassData::set_playstyle_type);
