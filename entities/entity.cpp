@@ -393,6 +393,16 @@ Dictionary Entity::_to_dict() {
 	//Vector<Ref<EntityDataContainer> > _s_data;
 	//Vector<Ref<EntityDataContainer> > _c_data;
 
+	////    Crafting    ////
+
+	Dictionary known_recipes;
+
+	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
+		known_recipes[i] = _s_craft_recipes.get(i)->get_id();
+	}
+
+	dict["known_recipes"] = known_recipes;
+
 	////    Known Spells    ////
 
 	dict["free_spell_points"] = _s_free_spell_points;
@@ -548,6 +558,23 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	//Vector<Ref<EntityDataContainer> > _s_data;
 	//Vector<Ref<EntityDataContainer> > _c_data;
+
+	////    Crafting    ////
+
+	Dictionary known_recipes = dict.get("known_recipes", Dictionary());
+
+	for (int i = 0; i < known_recipes.size(); ++i) {
+		int crid = known_recipes.get(i, 0);
+
+		if (DataManager::get_instance() != NULL) {
+			Ref<CraftRecipe> cr = DataManager::get_instance()->get_craft_data(crid);
+
+			if (cr.is_valid()) {
+				_s_craft_recipes.push_back(cr);
+				_s_craft_recipes.push_back(cr);
+			}
+		}
+	}
 
 	////    Known Spells    ////
 
@@ -799,6 +826,9 @@ Entity::~Entity() {
 	_s_data.clear();
 	_c_data.clear();
 
+	_s_craft_recipes.clear();
+	_c_craft_recipes.clear();
+
 	_s_spells.clear();
 	_c_spells.clear();
 
@@ -973,6 +1003,95 @@ void Entity::sremove_state_ref(int state_index) {
 		sets_state(gets_state() ^ EntityEnums::get_state_flag_for_index(state_index));
 	}
 }
+
+////    Crafting System    ////
+
+void Entity::crequest_craft(int id) {
+	scraft(id);
+}
+void Entity::scraft(int id) {
+	if (has_method("_scraft")) {
+		call("_scraft", id);
+	}
+}
+
+bool Entity::hass_craft_recipe(Ref<CraftRecipe> craft_recipe) {
+	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
+		if (_s_craft_recipes.get(i) == craft_recipe) {
+			return true;
+		}
+	}
+
+	return false;
+}
+void Entity::adds_craft_recipe(Ref<CraftRecipe> craft_recipe) {
+	if (hass_craft_recipe(craft_recipe))
+		return;
+
+	_s_craft_recipes.push_back(craft_recipe);
+
+	emit_signal("scraft_recipe_added", this, craft_recipe);
+
+	SEND_RPC(rpc("addc_craft_recipe", craft_recipe), addc_craft_recipe(craft_recipe));
+}
+void Entity::removes_craft_recipe(Ref<CraftRecipe> craft_recipe) {
+	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
+		if (_s_craft_recipes.get(i) == craft_recipe) {
+			_s_craft_recipes.remove(i);
+			break;
+		}
+	}
+
+	emit_signal("scraft_recipe_removed", this, craft_recipe);
+
+	SEND_RPC(rpc("removec_craft_recipe", craft_recipe), removec_craft_recipe(craft_recipe));
+}
+Ref<CraftRecipe> Entity::gets_craft_recipe(int index) {
+	ERR_FAIL_INDEX_V(index, _s_craft_recipes.size(), Ref<CraftRecipe>());
+
+	return _s_craft_recipes.get(index);
+}
+int Entity::gets_craft_recipe_count() {
+	return _s_craft_recipes.size();
+}
+
+bool Entity::hasc_craft_recipe(Ref<CraftRecipe> craft_recipe) {
+	for (int i = 0; i < _c_craft_recipes.size(); ++i) {
+		if (_c_craft_recipes.get(i) == craft_recipe) {
+			return true;
+		}
+	}
+
+	return false;
+}
+void Entity::addc_craft_recipe(Ref<CraftRecipe> craft_recipe) {
+	if (hasc_craft_recipe(craft_recipe))
+		return;
+
+	_c_craft_recipes.push_back(craft_recipe);
+
+	emit_signal("ccraft_recipe_added", this, craft_recipe);
+}
+void Entity::removec_craft_recipe(Ref<CraftRecipe> craft_recipe) {
+	for (int i = 0; i < _c_craft_recipes.size(); ++i) {
+		if (_c_craft_recipes.get(i) == craft_recipe) {
+			_c_craft_recipes.remove(i);
+			break;
+		}
+	}
+
+	emit_signal("ccraft_recipe_removed", this, craft_recipe);
+}
+Ref<CraftRecipe> Entity::getc_craft_recipe(int index) {
+	ERR_FAIL_INDEX_V(index, _c_craft_recipes.size(), Ref<CraftRecipe>());
+
+	return _c_craft_recipes.get(index);
+}
+int Entity::getc_craft_recipe_count() {
+	return _c_craft_recipes.size();
+}
+
+////    Stat System    ////
 
 Ref<Stat> Entity::get_stat_int(int index) {
 	return _stats[index];
@@ -3955,12 +4074,6 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("con_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 	ADD_SIGNAL(MethodInfo("con_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
-	//Known Spells
-	ADD_SIGNAL(MethodInfo("sspell_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
-	ADD_SIGNAL(MethodInfo("sspell_removed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
-	ADD_SIGNAL(MethodInfo("cspell_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
-	ADD_SIGNAL(MethodInfo("cspell_removed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
-
 	//Skills
 	ADD_SIGNAL(MethodInfo("sskill_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
 	ADD_SIGNAL(MethodInfo("sskill_removed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
@@ -4490,6 +4603,11 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_category_cooldown_count"), &Entity::getc_category_cooldown_count);
 
 	//Known Spells
+	ADD_SIGNAL(MethodInfo("sspell_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
+	ADD_SIGNAL(MethodInfo("sspell_removed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
+	ADD_SIGNAL(MethodInfo("cspell_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
+	ADD_SIGNAL(MethodInfo("cspell_removed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
+
 	ClassDB::bind_method(D_METHOD("gets_free_spell_points"), &Entity::gets_free_spell_points);
 	ClassDB::bind_method(D_METHOD("sets_free_spell_points", "value"), &Entity::sets_free_spell_points);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_spell_points"), "sets_free_spell_points", "gets_free_spell_points");
@@ -4509,6 +4627,27 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("removec_spell", "spell"), &Entity::removec_spell);
 	ClassDB::bind_method(D_METHOD("getc_spell", "spell"), &Entity::getc_spell);
 	ClassDB::bind_method(D_METHOD("getc_spell_count"), &Entity::getc_spell_count);
+
+	//Crafting
+	BIND_VMETHOD(MethodInfo("_scraft", PropertyInfo(Variant::INT, "id")));
+
+	ADD_SIGNAL(MethodInfo("scraft_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	ADD_SIGNAL(MethodInfo("ccraft_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+
+	ClassDB::bind_method(D_METHOD("crequest_craft", "id"), &Entity::crequest_craft);
+	ClassDB::bind_method(D_METHOD("scraft", "id"), &Entity::scraft);
+
+	ClassDB::bind_method(D_METHOD("hass_craft_recipe", "craft_recipe"), &Entity::hass_craft_recipe);
+	ClassDB::bind_method(D_METHOD("adds_craft_recipe", "craft_recipe"), &Entity::adds_craft_recipe);
+	ClassDB::bind_method(D_METHOD("removes_craft_recipe", "craft_recipe"), &Entity::removes_craft_recipe);
+	ClassDB::bind_method(D_METHOD("gets_craft_recipe", "craft_recipe"), &Entity::gets_craft_recipe);
+	ClassDB::bind_method(D_METHOD("gets_craft_recipe_count"), &Entity::gets_craft_recipe_count);
+
+	ClassDB::bind_method(D_METHOD("hasc_craft_recipe", "craft_recipe"), &Entity::hasc_craft_recipe);
+	ClassDB::bind_method(D_METHOD("addc_craft_recipe", "craft_recipe"), &Entity::addc_craft_recipe);
+	ClassDB::bind_method(D_METHOD("removec_craft_recipe", "craft_recipe"), &Entity::removec_craft_recipe);
+	ClassDB::bind_method(D_METHOD("getc_craft_recipe", "craft_recipe"), &Entity::getc_craft_recipe);
+	ClassDB::bind_method(D_METHOD("getc_craft_recipe_count"), &Entity::getc_craft_recipe_count);
 
 	//Skills
 	ClassDB::bind_method(D_METHOD("hass_skill", "skill"), &Entity::hass_skill);

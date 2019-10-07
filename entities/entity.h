@@ -280,6 +280,23 @@ public:
 	void sadd_state_ref(int state_index);
 	void sremove_state_ref(int state_index);
 
+	////    Crafting System    ////
+
+	void crequest_craft(int id);
+	void scraft(int id);
+
+	bool hass_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	void adds_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	void removes_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	Ref<CraftRecipe> gets_craft_recipe(int index);
+	int gets_craft_recipe_count();
+
+	bool hasc_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	void addc_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	void removec_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	Ref<CraftRecipe> getc_craft_recipe(int index);
+	int getc_craft_recipe_count();
+
 	////    SpellSystem    ////
 
 	//EventHandlers
@@ -760,6 +777,11 @@ private:
 
 	Vector<Ref<EntityDataContainer> > _s_data;
 	Vector<Ref<EntityDataContainer> > _c_data;
+
+	////    Crafting System    ////
+
+	Vector<Ref<CraftRecipe> > _s_craft_recipes;
+	Vector<Ref<CraftRecipe> > _c_craft_recipes;
 
 	////    Known Spells    ////
 
