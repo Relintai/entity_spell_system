@@ -8,6 +8,12 @@ Ref<ItemTemplate> ItemInstance::get_item_template() const {
 }
 void ItemInstance::set_item_template(const Ref<ItemTemplate> value) {
 	_item_template = value;
+
+	_item_template_id = 0;
+
+	if (value.is_valid())
+		_item_template_id = value->get_id();
+	 
 }
 
 Ref<ItemStatModifier> ItemInstance::get_item_stat_modifier(int index) {
@@ -37,8 +43,56 @@ void ItemInstance::set_stack_size(int value) {
 	_stack_size = value;
 }
 
+Dictionary ItemInstance::to_dict() {
+	return call("_to_dict");
+}
+void ItemInstance::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary ItemInstance::_to_dict() {
+	Dictionary dict;
+
+	dict["item_id"] = _item_template->get_id();
+
+	dict["stack_size"] = _stack_size;
+
+	Array mods;
+
+	for (int i = 0; i < _modifiers.size(); ++i) {
+		mods.append(_modifiers.get(i)->to_dict());
+	}
+
+	dict["modifiers"] = mods;
+
+	return dict;
+}
+void ItemInstance::_from_dict(const Dictionary &dict) {
+	ERR_FAIL_COND(dict.empty());
+
+	_item_template_id = dict.get("item_id", 0);
+
+	if (DataManager::get_instance() != NULL) {
+		_item_template = DataManager::get_instance()->get_item_template(_item_template_id);
+	}
+
+	_stack_size = dict.get("stack_size", 0);
+
+	Array mods = dict.get("modifiers", Array());
+
+	for (int i = 0; i < mods.size(); ++i) {
+		Ref<ItemStatModifier> mod;
+		mod.instance();
+
+		mod->from_dict(mods.get(i));
+
+		_modifiers.push_back(mod);
+	}
+}
+
 ItemInstance::ItemInstance() {
 	_stack_size = 1;
+	_item_template_id = 0;
 }
 ItemInstance::~ItemInstance() {
 	_modifiers.clear();
@@ -60,4 +114,14 @@ void ItemInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("remove_item_stat_modifier", "index"), &ItemInstance::remove_item_stat_modifier);
 	ClassDB::bind_method(D_METHOD("clear_item_stat_modifiers"), &ItemInstance::clear_item_stat_modifiers);
 	ClassDB::bind_method(D_METHOD("get_item_stat_modifier_count"), &ItemInstance::get_item_stat_modifier_count);
+
+	//Serialization
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &ItemInstance::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &ItemInstance::to_dict);
+
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &ItemInstance::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &ItemInstance::_to_dict);
 }

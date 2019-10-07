@@ -20,6 +20,12 @@ public:
 	float get_percent_mod();
 	void set_percent_mod(float value);
 
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	virtual Dictionary _to_dict();
+	virtual void _from_dict(const Dictionary &dict);
+
 	ItemStatModifier();
 
 protected:

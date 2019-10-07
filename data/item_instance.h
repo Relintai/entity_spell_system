@@ -8,6 +8,8 @@
 #include "../entities/stats/stat.h"
 #include "../item_enums.h"
 
+#include "data_manager.h"
+
 class ItemTemplate;
 
 class ItemInstance : public Reference {
@@ -27,8 +29,11 @@ public:
 	int get_stack_size();
 	void set_stack_size(int value);
 
-	//to_dict();
-	//from_dict();
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	virtual Dictionary _to_dict();
+	virtual void _from_dict(const Dictionary &dict);
 	
 	ItemInstance();
 	~ItemInstance();
@@ -38,6 +43,7 @@ protected:
 
 private:
 	Ref<ItemTemplate> _item_template;
+	int _item_template_id;
 	
 	int _stack_size;
 

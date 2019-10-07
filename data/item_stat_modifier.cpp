@@ -34,6 +34,34 @@ void ItemStatModifier::set_percent_mod(float value) {
 	_percent_mod = value;
 }
 
+Dictionary ItemStatModifier::to_dict() {
+	return call("_to_dict");
+}
+void ItemStatModifier::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary ItemStatModifier::_to_dict() {
+	Dictionary dict;
+
+	dict["stat_id"] = static_cast<int>(_stat_id);
+
+	dict["base_mod"] = _base_mod;
+	dict["bonus_mod"] = _bonus_mod;
+	dict["percent_mod"] = _percent_mod;
+
+	return dict;
+}
+void ItemStatModifier::_from_dict(const Dictionary &dict) {
+	ERR_FAIL_COND(dict.empty());
+
+
+	_stat_id = static_cast<Stat::StatId>(static_cast<int>(dict.get("stat_id", 0)));
+	_base_mod = dict.get("base_mod", 0);
+	_bonus_mod = dict.get("bonus_mod", 0);
+	_percent_mod = dict.get("percent_mod", 0);
+}
+
 ItemStatModifier::ItemStatModifier() {
 	_stat_id = Stat::STAT_ID_HEALTH;
 	_base_mod = 0;
