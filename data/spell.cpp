@@ -1,6 +1,7 @@
 #include "spell.h"
 
 #include "aura.h"
+#include "craft_recipe.h"
 
 int Spell::get_spell_id() {
 	return _spell_id;
@@ -175,6 +176,13 @@ Ref<WorldEffectData> Spell::get_world_effect_data() {
 }
 void Spell::set_world_effect_data(Ref<WorldEffectData> value) {
 	_world_effect_data = value;
+}
+
+Ref<CraftRecipe> Spell::get_teaches_craft_recipe() {
+	return _teaches_craft_recipe;
+}
+void Spell::set_teaches_craft_recipe(Ref<CraftRecipe> value) {
+	_teaches_craft_recipe = value;
 }
 
 float Spell::get_damage_scale_for_level(int level) {
@@ -922,6 +930,10 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_world_effect_data"), &Spell::get_world_effect_data);
 	ClassDB::bind_method(D_METHOD("set_world_effect_data", "value"), &Spell::set_world_effect_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_effect_data", PROPERTY_HINT_RESOURCE_TYPE, "WorldEffectData"), "set_world_effect_data", "get_world_effect_data");
+
+	ClassDB::bind_method(D_METHOD("get_teaches_craft_recipe"), &Spell::get_teaches_craft_recipe);
+	ClassDB::bind_method(D_METHOD("set_teaches_craft_recipe", "value"), &Spell::set_teaches_craft_recipe);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "teaches_craft_recipe", PROPERTY_HINT_RESOURCE_TYPE, "CraftRecipe"), "set_teaches_craft_recipe", "get_teaches_craft_recipe");
 
 	ClassDB::bind_method(D_METHOD("get_damage_scale_for_level"), &Spell::get_damage_scale_for_level);
 	ClassDB::bind_method(D_METHOD("get_heal_scale_for_level"), &Spell::get_heal_scale_for_level);
