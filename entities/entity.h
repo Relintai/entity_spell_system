@@ -9,7 +9,7 @@
 #include "scene/3d/physics_body.h"
 #endif
 
-#include "../data/craft_data_attribute.h"
+#include "../data/craft_recipe.h"
 #include "../data/item_instance.h"
 #include "../data/spell.h"
 #include "../data/xp_data.h"

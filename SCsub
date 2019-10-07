@@ -45,8 +45,8 @@ module_env.add_source_files(env.modules_sources,"atlases/character_atlas_entry.c
 
 module_env.add_source_files(env.modules_sources,"skeleton/character_bones.cpp")
 
-module_env.add_source_files(env.modules_sources,"data/craft_data_attribute_helper.cpp")
-module_env.add_source_files(env.modules_sources,"data/craft_data_attribute.cpp")
+module_env.add_source_files(env.modules_sources,"data/craft_recipe_helper.cpp")
+module_env.add_source_files(env.modules_sources,"data/craft_recipe.cpp")
 
 module_env.add_source_files(env.modules_sources,"data/spell.cpp")
 module_env.add_source_files(env.modules_sources,"data/spell/spell_data_constants.cpp")

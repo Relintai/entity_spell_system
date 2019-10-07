@@ -18,7 +18,7 @@
 class Aura;
 class Spell;
 class EntityData;
-class CraftDataAttribute;
+class CraftRecipe;
 class ItemTemplate;
 
 class DataManager : public Node {
@@ -57,11 +57,11 @@ public:
 
 	String get_craft_data_folder();
 	void set_craft_data_folder(String folder);
-	Vector<Ref<CraftDataAttribute> > *get_craft_datas();
-	Ref<CraftDataAttribute> get_craft_data(int craft_id);
-	Ref<CraftDataAttribute> get_craft_data_index(int index);
+	Vector<Ref<CraftRecipe> > *get_craft_datas();
+	Ref<CraftRecipe> get_craft_data(int craft_id);
+	Ref<CraftRecipe> get_craft_data_index(int index);
 	int get_craft_data_count();
-	void add_craft_data(Ref<CraftDataAttribute> aura);
+	void add_craft_data(Ref<CraftRecipe> aura);
 
 	String get_item_template_folder();
 	void set_item_template_folder(String folder);
@@ -132,8 +132,8 @@ private:
 	HashMap<int, Ref<Aura> > _aura_map;
 
 	String _craft_data_folder;
-	Vector<Ref<CraftDataAttribute> > _craft_datas;
-	HashMap<int, Ref<CraftDataAttribute> > _craft_data_map;
+	Vector<Ref<CraftRecipe> > _craft_datas;
+	HashMap<int, Ref<CraftRecipe> > _craft_data_map;
 
 	String _item_template_folder;
 	Vector<Ref<ItemTemplate> > _item_templates;

@@ -2,7 +2,7 @@
 
 #include "../entities/data/entity_data.h"
 #include "aura.h"
-#include "craft_data_attribute.h"
+#include "craft_recipe.h"
 #include "spell.h"
 
 DataManager *DataManager::instance;
@@ -139,7 +139,7 @@ int DataManager::get_aura_count() {
 }
 
 //Craft Data
-void DataManager::add_craft_data(Ref<CraftDataAttribute> cda) {
+void DataManager::add_craft_data(Ref<CraftRecipe> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_craft_datas.push_back(cda);
@@ -152,18 +152,18 @@ String DataManager::get_craft_data_folder() {
 void DataManager::set_craft_data_folder(String folder) {
 	_craft_data_folder = folder;
 }
-Vector<Ref<CraftDataAttribute> > *DataManager::get_craft_datas() {
+Vector<Ref<CraftRecipe> > *DataManager::get_craft_datas() {
 	return &_craft_datas;
 }
 
-Ref<CraftDataAttribute> DataManager::get_craft_data(int craft_id) {
-	ERR_FAIL_COND_V(!_craft_data_map.has(craft_id), Ref<CraftDataAttribute>(NULL));
+Ref<CraftRecipe> DataManager::get_craft_data(int craft_id) {
+	ERR_FAIL_COND_V(!_craft_data_map.has(craft_id), Ref<CraftRecipe>(NULL));
 
 	return _craft_data_map.get(craft_id);
 }
 
-Ref<CraftDataAttribute> DataManager::get_craft_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _craft_datas.size(), Ref<CraftDataAttribute>(NULL));
+Ref<CraftRecipe> DataManager::get_craft_data_index(int index) {
+	ERR_FAIL_INDEX_V(index, _craft_datas.size(), Ref<CraftRecipe>(NULL));
 
 	return _craft_datas.get(index);
 }
@@ -438,7 +438,7 @@ void DataManager::load_craft_datas() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "CraftDataAttribute");
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "CraftRecipe");
 
 				resl->wait();
 
@@ -446,7 +446,7 @@ void DataManager::load_craft_datas() {
 
 				ERR_CONTINUE(!s.is_valid());
 
-				Ref<CraftDataAttribute> cda = s;
+				Ref<CraftRecipe> cda = s;
 
 				ERR_CONTINUE(!cda.is_valid());
 

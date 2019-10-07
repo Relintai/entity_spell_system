@@ -1,5 +1,5 @@
-#ifndef CRAFT_DATA_ATTRIBUTE_H
-#define CRAFT_DATA_ATTRIBUTE_H
+#ifndef CRAFT_RECIPE_H
+#define CRAFT_RECIPE_H
 
 #include "core/vector.h"
 #include "core/resource.h"
@@ -7,10 +7,10 @@
 
 #include "item_template.h"
 
-#include "craft_data_attribute_helper.h"
+#include "craft_recipe_helper.h"
 
-class CraftDataAttribute : public Resource {
-	GDCLASS(CraftDataAttribute, Resource);
+class CraftRecipe : public Resource {
+	GDCLASS(CraftRecipe, Resource);
 
 public:
 	static const String BINDING_STRING_CRAFT_CATEGORIES;
@@ -19,6 +19,10 @@ public:
 	enum CraftCategories {
 		CRAFT_CATEGORY_NONE,
 		CRAFT_CATEGORY_ALCHEMY,
+		CRAFT_CATEGORY_SMITHING,
+		CRAFT_CATEGORY_TAILORING,
+		CRAFT_CATEGORY_ENCHANTING,
+		CRAFT_CATEGORY_ENGINEERING,
 	};
 
 	enum CraftSubCategories {
@@ -37,25 +41,25 @@ public:
 	void set_sub_category(CraftSubCategories value);
 
 	//Tools
-	Ref<CraftDataAttributeHelper> get_required_tool(int index);
-	void set_required_tool(int index, const Ref<CraftDataAttributeHelper> value);
+	Ref<CraftRecipeHelper> get_required_tool(int index);
+	void set_required_tool(int index, const Ref<CraftRecipeHelper> value);
 
 	int get_required_tools_count();
 	void set_required_tools_count(int value);
 
 	//Materials
-	Ref<CraftDataAttributeHelper> get_required_material(int index);
-	void set_required_material(int index, const Ref<CraftDataAttributeHelper> value);
+	Ref<CraftRecipeHelper> get_required_material(int index);
+	void set_required_material(int index, const Ref<CraftRecipeHelper> value);
 
 	int get_required_materials_count();
 	void set_required_materials_count(int value);
 
 	//Item
-	Ref<CraftDataAttributeHelper> get_item();
-	void set_item(Ref<CraftDataAttributeHelper> value);
+	Ref<CraftRecipeHelper> get_item();
+	void set_item(Ref<CraftRecipeHelper> value);
 
-	CraftDataAttribute();
-	~CraftDataAttribute();
+	CraftRecipe();
+	~CraftRecipe();
 
 protected:
 	static void _bind_methods();
@@ -73,15 +77,15 @@ private:
 	CraftSubCategories _sub_category;
 
 	int _required_tools_count;
-	Ref<CraftDataAttributeHelper> _required_tools[MAX_REQUIRED_TOOLS];
+	Ref<CraftRecipeHelper> _required_tools[MAX_REQUIRED_TOOLS];
 
 	int _required_materials_count;
-	Ref<CraftDataAttributeHelper> _required_materials[MAX_REQUIRED_MATERIALS];
+	Ref<CraftRecipeHelper> _required_materials[MAX_REQUIRED_MATERIALS];
 
-	Ref<CraftDataAttributeHelper> _item;
+	Ref<CraftRecipeHelper> _item;
 };
 
-VARIANT_ENUM_CAST(CraftDataAttribute::CraftSubCategories);
-VARIANT_ENUM_CAST(CraftDataAttribute::CraftCategories);
+VARIANT_ENUM_CAST(CraftRecipe::CraftSubCategories);
+VARIANT_ENUM_CAST(CraftRecipe::CraftCategories);
 
 #endif

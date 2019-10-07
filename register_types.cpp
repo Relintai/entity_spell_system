@@ -48,8 +48,8 @@
 #include "inventory/bag.h"
 //#include "inventory/inventory.h"
 
-#include "data/craft_data_attribute_helper.h"
-#include "data/craft_data_attribute.h"
+#include "data/craft_recipe_helper.h"
+#include "data/craft_recipe.h"
 
 #include "infos/spell_cast_info.h"
 #include "infos/aura_infos.h"
@@ -112,8 +112,8 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<SpellEnums>();
 
 	//data
-	ClassDB::register_class<CraftDataAttributeHelper>();
-	ClassDB::register_class<CraftDataAttribute>();
+	ClassDB::register_class<CraftRecipeHelper>();
+	ClassDB::register_class<CraftRecipe>();
 
 	ClassDB::register_class<Spell>();
 	ClassDB::register_class<Aura>();
