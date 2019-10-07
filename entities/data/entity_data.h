@@ -29,6 +29,7 @@ class Entity;
 class SpellCastInfo;
 class AIAction;
 class VendorItemData;
+class CraftRecipe;
 
 class EntityData : public Resource {
 	GDCLASS(EntityData, Resource);
@@ -75,6 +76,15 @@ public:
 
 	Ref<ItemContainerData> get_item_container_data() const;
 	void set_item_container_data(const Ref<ItemContainerData> data);
+
+	//Craft Recipes
+	int get_num_craft_recipes();
+
+	Ref<CraftRecipe> get_craft_recipe(int index);
+	void set_craft_recipe(int index, Ref<CraftRecipe> recipe);
+
+	Vector<Variant> get_craft_recipes();
+	void set_craft_recipes(const Vector<Variant> &recipe);
 
 		/*
 	Vector<int> get_mob_party_ids();
@@ -223,6 +233,7 @@ private:
 	Ref<LootDataBase> _lootdb;
 	Ref<VendorItemData> _vendor_item_data;
 	Ref<ItemContainerData> _item_container_data;
+	Vector<Ref<CraftRecipe> > _craft_recipes;
 
 	//Vector<int> _mob_party_ids;
 	//Vector<int> _mob_dislike_ids;
