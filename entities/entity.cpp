@@ -1453,14 +1453,14 @@ void Entity::addc_xp(int value) {
 	con_xp_gained(value);
 }
 
-void Entity::s_levelup(int value) {
+void Entity::slevelup(int value) {
 	_s_level += value;
 
 	son_level_up(value);
 
-	SEND_RPC(rpc("c_levelup", value), c_levelup(value));
+	SEND_RPC(rpc("clevelup", value), clevelup(value));
 }
-void Entity::c_levelup(int value) {
+void Entity::clevelup(int value) {
 	_s_level += value;
 
 	con_level_up(value);
@@ -4315,8 +4315,8 @@ void Entity::_bind_methods() {
 	//XP Operations
 	ClassDB::bind_method(D_METHOD("adds_xp", "value"), &Entity::adds_xp);
 	ClassDB::bind_method(D_METHOD("addc_xp", "value"), &Entity::addc_xp);
-	ClassDB::bind_method(D_METHOD("s_levelup", "value"), &Entity::s_levelup);
-	ClassDB::bind_method(D_METHOD("c_levelup", "value"), &Entity::c_levelup);
+	ClassDB::bind_method(D_METHOD("slevelup", "value"), &Entity::slevelup);
+	ClassDB::bind_method(D_METHOD("clevelup", "value"), &Entity::clevelup);
 
 	//Aura Manipulation
 	ClassDB::bind_method(D_METHOD("sadd_aura", "aura"), &Entity::sadd_aura);

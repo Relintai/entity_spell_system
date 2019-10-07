@@ -405,8 +405,8 @@ public:
 	//XP Operations
 	void adds_xp(int value);
 	void addc_xp(int value);
-	void s_levelup(int value);
-	void c_levelup(int value);
+	void slevelup(int value);
+	void clevelup(int value);
 
 	//Aura Manipulation
 	void sadd_aura(Ref<AuraData> aura);
