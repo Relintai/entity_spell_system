@@ -390,8 +390,14 @@ Dictionary Entity::_to_dict() {
 	dict["talents"] = _s_talents;
 
 	////    Data    ////
-	//Vector<Ref<EntityDataContainer> > _s_data;
-	//Vector<Ref<EntityDataContainer> > _c_data;
+
+	Array entity_datas;
+
+	for (int i = 0; i < _s_data.size(); ++i) {
+		entity_datas.append(_s_data.get(i)->to_dict());
+	}
+
+	dict["entity_datas"] = entity_datas;
 
 	////    Crafting    ////
 
@@ -556,8 +562,24 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	////    Data    ////
 
-	//Vector<Ref<EntityDataContainer> > _s_data;
-	//Vector<Ref<EntityDataContainer> > _c_data;
+	Array entity_datas = dict.get("entity_datas", Array());
+
+	for (int i = 0; i < entity_datas.size(); ++i) {
+		Dictionary entry = entity_datas.get(i);
+
+		String class_name = dict.get("class_name", EntityDataContainer::get_class_static());
+
+		if (ClassDB::can_instance(class_name) && ClassDB::is_parent_class(class_name, EntityDataContainer::get_class_static())) {
+			Ref<EntityDataContainer> data = Ref<EntityDataContainer>(ClassDB::instance(class_name));
+
+			if (data.is_valid()) {
+				data->from_dict(entry);
+
+				_s_data.push_back(data);
+				_c_data.push_back(data);
+			}
+		}
+	}
 
 	////    Crafting    ////
 
