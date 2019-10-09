@@ -160,6 +160,50 @@ void EntityClassData::set_spells(const Vector<Variant> &spells) {
 	}
 }
 
+////    Start Spells    ////
+
+int EntityClassData::get_num_start_spells() {
+	if (_start_spells.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_num_start_spells();
+	}
+
+	return _start_spells.size();
+}
+void EntityClassData::set_num_start_spells(int value) {
+	_start_spells.resize(value);
+}
+
+Ref<Spell> EntityClassData::get_start_spell(int index) {
+	if (_start_spells.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_start_spell(index);
+	}
+
+	ERR_FAIL_INDEX_V(index, _start_spells.size(), Ref<Spell>());
+
+	return _start_spells[index];
+}
+void EntityClassData::set_start_spell(int index, Ref<Spell> spell) {
+	ERR_FAIL_INDEX(index, _start_spells.size());
+
+	_start_spells.set(index, Ref<Spell>(spell));
+}
+
+Vector<Variant> EntityClassData::get_start_spells() {
+	Vector<Variant> r;
+	for (int i = 0; i < _start_spells.size(); i++) {
+		r.push_back(_start_spells[i].get_ref_ptr());
+	}
+	return r;
+}
+void EntityClassData::set_start_spells(const Vector<Variant> &spells) {
+	_start_spells.clear();
+	for (int i = 0; i < spells.size(); i++) {
+		Ref<Spell> spell = Ref<Spell>(spells[i]);
+
+		_start_spells.push_back(spell);
+	}
+}
+
 ////    AURAS    ////
 
 int EntityClassData::get_num_auras() {
@@ -751,7 +795,7 @@ EntityClassData::EntityClassData() {
 	_player_resource_type = 0;
 
 	_player_resource_type = 0;
-	_spell_points_per_level = 3;
+	_spell_points_per_level = 1;
 	_playstyle_type = EntityEnums::ENTITY_CLASS_PLAYSTYLE_TYPE_MELEE;
 }
 
@@ -932,7 +976,6 @@ void EntityClassData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "playstyle_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_PLAYSTYLE_TYPE), "set_playstyle_type", "get_playstyle_type");
 
 	////    Specs    ////
-	ADD_GROUP("Specs", "specs");
 	ClassDB::bind_method(D_METHOD("get_num_specs"), &EntityClassData::get_num_specs);
 	ClassDB::bind_method(D_METHOD("set_num_specs", "value"), &EntityClassData::set_num_specs);
 
@@ -944,7 +987,6 @@ void EntityClassData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "specs", PROPERTY_HINT_NONE, "17/17:CharacterSpec", PROPERTY_USAGE_DEFAULT, "CharacterSpec"), "set_specs", "get_specs");
 
 	////    Spell    ////
-	ADD_GROUP("Spells", "spells");
 	ClassDB::bind_method(D_METHOD("get_num_spells"), &EntityClassData::get_num_spells);
 	ClassDB::bind_method(D_METHOD("set_num_spells", "value"), &EntityClassData::set_num_spells);
 
@@ -955,8 +997,18 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_spells", "spells"), &EntityClassData::set_spells);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
 
+	////    Start Spells    ////
+	ClassDB::bind_method(D_METHOD("get_num_start_spells"), &EntityClassData::get_num_start_spells);
+	ClassDB::bind_method(D_METHOD("set_num_start_spells", "value"), &EntityClassData::set_num_start_spells);
+
+	ClassDB::bind_method(D_METHOD("get_start_spell", "index"), &EntityClassData::get_start_spell);
+	ClassDB::bind_method(D_METHOD("set_start_spell", "index", "spell"), &EntityClassData::set_start_spell);
+
+	ClassDB::bind_method(D_METHOD("get_start_spells"), &EntityClassData::get_start_spells);
+	ClassDB::bind_method(D_METHOD("set_start_spells", "spells"), &EntityClassData::set_start_spells);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "start_spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_start_spells", "get_start_spells");
+
 	////    AURAS    ////
-	ADD_GROUP("Auras", "auras");
 	ClassDB::bind_method(D_METHOD("get_num_auras"), &EntityClassData::get_num_auras);
 	ClassDB::bind_method(D_METHOD("set_num_auras", "value"), &EntityClassData::set_num_auras);
 
@@ -968,7 +1020,6 @@ void EntityClassData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
 
 	////    AI ACTIONS    ////
-	ADD_GROUP("Ai_actions", "ai_actions");
 	ClassDB::bind_method(D_METHOD("get_num_ai_actions"), &EntityClassData::get_num_ai_actions);
 	ClassDB::bind_method(D_METHOD("set_num_ai_actions", "value"), &EntityClassData::set_num_ai_actions);
 

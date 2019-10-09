@@ -271,6 +271,14 @@ void Entity::_setup() {
 
 		//sets_entity_name(_s_entity_data->get_entity_name());
 		sets_money(_s_entity_data->get_money());
+
+		Ref<EntityClassData> cd = _s_entity_data->get_entity_class_data();
+
+		if (cd.is_valid()) {
+			for (int i = 0; i < cd->get_num_start_spells(); ++i) {
+				adds_spell(cd->get_start_spell(i));
+			}
+		}
 	}
 
 	if (!Engine::get_singleton()->is_editor_hint())
@@ -518,7 +526,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 	Dictionary statesd = dict.get("states", Dictionary());
 
 	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
-		_s_states[i] = statesd.get(i, 0);
+		_s_states[i] = statesd.get(String::num(i), 0);
 	}
 
 	_s_state = dict.get("state", Dictionary());
@@ -536,6 +544,9 @@ void Entity::_from_dict(const Dictionary &dict) {
 		r.instance();
 
 		r->from_dict(auras.get(String::num(i), Dictionary()));
+		r->set_owner(this);
+		//TODO hack
+		r->set_caster(this);
 
 		_s_auras.push_back(r);
 		_c_auras.push_back(r);
@@ -611,7 +622,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 	Dictionary known_recipes = dict.get("known_recipes", Dictionary());
 
 	for (int i = 0; i < known_recipes.size(); ++i) {
-		int crid = known_recipes.get(i, 0);
+		int crid = known_recipes.get(String::num(i), 0);
 
 		if (DataManager::get_instance() != NULL) {
 			Ref<CraftRecipe> cr = DataManager::get_instance()->get_craft_data(crid);
@@ -625,13 +636,12 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	////    Known Spells    ////
 
-	_s_free_spell_points = dict.get("free_spell_points", 0);
-	_s_free_spell_points = _c_free_spell_points;
+	sets_free_spell_points(dict.get("free_spell_points", 0));
 
 	Dictionary known_spells = dict.get("known_spells", Dictionary());
 
 	for (int i = 0; i < known_spells.size(); ++i) {
-		int spell_id = known_spells.get(i, 0);
+		int spell_id = known_spells.get(String::num(i), 0);
 
 		if (DataManager::get_instance() != NULL) {
 			Ref<Spell> sp = DataManager::get_instance()->get_spell(spell_id);
@@ -1510,7 +1520,7 @@ void Entity::slevelup(int value) {
 	SEND_RPC(rpc("clevelup", value), clevelup(value));
 }
 void Entity::clevelup(int value) {
-	_s_level += value;
+	_c_level += value;
 
 	con_level_up(value);
 }
@@ -3236,6 +3246,8 @@ int Entity::gets_free_spell_points() {
 void Entity::sets_free_spell_points(int value) {
 	_s_free_spell_points = value;
 
+	emit_signal("sfree_spell_points_changed", this, value);
+
 	SEND_RPC(rpc("setc_free_spell_points", value), setc_free_spell_points(value));
 }
 
@@ -3244,6 +3256,36 @@ int Entity::getc_free_spell_points() {
 }
 void Entity::setc_free_spell_points(int value) {
 	_c_free_spell_points = value;
+
+	emit_signal("cfree_spell_points_changed", this, value);
+}
+
+void Entity::crequest_spell_learn(int id) {
+	slearn_spell(id);
+}
+void Entity::slearn_spell(int id) {
+	if (has_method("_slearn_spell")) {
+		call("_slearn_spell", id);
+		return;
+	}
+
+	ERR_FAIL_COND(gets_free_spell_points() <= 0);
+
+	ERR_FAIL_COND(!_s_entity_data.is_valid());
+
+	Ref<EntityClassData> cd = _s_entity_data->get_entity_class_data();
+
+	ERR_FAIL_COND(!cd.is_valid());
+
+	for (int i = 0; i < cd->get_num_spells(); ++i) {
+		Ref<Spell> sp = cd->get_spell(i);
+
+		if (sp->get_spell_id() == id) {
+			adds_spell(sp);
+			sets_free_spell_points(_s_free_spell_points - 1);
+			return;
+		}
+	}
 }
 
 bool Entity::hass_spell(Ref<Spell> spell) {
@@ -4664,6 +4706,9 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("cspell_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
 	ADD_SIGNAL(MethodInfo("cspell_removed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
 
+	ADD_SIGNAL(MethodInfo("sfree_spell_points_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "new_value")));
+	ADD_SIGNAL(MethodInfo("cfree_spell_points_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "new_value")));
+
 	ClassDB::bind_method(D_METHOD("gets_free_spell_points"), &Entity::gets_free_spell_points);
 	ClassDB::bind_method(D_METHOD("sets_free_spell_points", "value"), &Entity::sets_free_spell_points);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_spell_points"), "sets_free_spell_points", "gets_free_spell_points");
@@ -4671,6 +4716,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_free_spell_points"), &Entity::getc_free_spell_points);
 	ClassDB::bind_method(D_METHOD("setc_free_spell_points", "value"), &Entity::setc_free_spell_points);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_spell_points"), "setc_free_spell_points", "getc_free_spell_points");
+
+	ClassDB::bind_method(D_METHOD("crequest_spell_learn", "id"), &Entity::crequest_spell_learn);
+	ClassDB::bind_method(D_METHOD("slearn_spell", "id"), &Entity::slearn_spell);
 
 	ClassDB::bind_method(D_METHOD("hass_spell", "spell"), &Entity::hass_spell);
 	ClassDB::bind_method(D_METHOD("adds_spell", "spell"), &Entity::adds_spell);

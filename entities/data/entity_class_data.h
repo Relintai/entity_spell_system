@@ -71,6 +71,16 @@ public:
 
 	Vector<Variant> get_spells();
 	void set_spells(const Vector<Variant> &spells);
+
+	//Start Spells
+	int get_num_start_spells();
+	void set_num_start_spells(int value);
+
+	Ref<Spell> get_start_spell(int index);
+	void set_start_spell(int index, Ref<Spell> spell);
+
+	Vector<Variant> get_start_spells();
+	void set_start_spells(const Vector<Variant> &spells);
     
     //Auras
 	int get_num_auras();
@@ -212,6 +222,7 @@ private:
 	Ref<StatData> _stat_data;
 
 	Vector<Ref<Spell> > _spells;
+	Vector<Ref<Spell> > _start_spells;
 	Vector<Ref<CharacterSpec> > _specs;
 	Vector<Ref<Aura> > _auras;
 	Vector<Ref<AIAction> > _ai_actions;

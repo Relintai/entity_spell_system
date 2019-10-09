@@ -446,7 +446,6 @@ void ItemTemplate::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "bag_size"), "set_bag_size", "get_bag_size");
 
 	////    Teaches    ////
-	ADD_GROUP("Teaches Spells", "teaches_spells");
 	ClassDB::bind_method(D_METHOD("get_num_teaches_spells"), &ItemTemplate::get_num_teaches_spells);
 	ClassDB::bind_method(D_METHOD("set_num_teaches_spells", "value"), &ItemTemplate::set_num_teaches_spells);
 
@@ -458,7 +457,6 @@ void ItemTemplate::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "teaches_spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_teaches_spells", "get_teaches_spells");
 
 	////    Grants Spells    ////
-	ADD_GROUP("Grants Spells", "grants_spells");
 	ClassDB::bind_method(D_METHOD("get_num_grants_spells"), &ItemTemplate::get_num_grants_spells);
 	ClassDB::bind_method(D_METHOD("set_num_grants_spells", "value"), &ItemTemplate::set_num_grants_spells);
 
@@ -470,7 +468,6 @@ void ItemTemplate::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "grants_spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_grants_spells", "get_grants_spells");
 
 	////    Auras    ////
-	ADD_GROUP("Auras", "auras");
 	ClassDB::bind_method(D_METHOD("get_num_auras"), &ItemTemplate::get_num_auras);
 	ClassDB::bind_method(D_METHOD("set_num_auras", "value"), &ItemTemplate::set_num_auras);
 
@@ -487,7 +484,6 @@ void ItemTemplate::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "use_spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_use_spell", "get_use_spell");
 
 	//StatMods Property binds
-	ADD_GROUP("Item Stat Modifiers", "item_stat_modifier");
 	ClassDB::bind_method(D_METHOD("get_item_stat_modifier_count"), &ItemTemplate::get_item_stat_modifier_count);
 	ClassDB::bind_method(D_METHOD("set_item_stat_modifier_count", "count"), &ItemTemplate::set_item_stat_modifier_count);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "item_stat_modifier_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_ITEM_STAT_MOD), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_item_stat_modifier_count", "get_item_stat_modifier_count");

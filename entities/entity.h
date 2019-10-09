@@ -528,6 +528,9 @@ public:
 	int getc_free_spell_points();
 	void setc_free_spell_points(int value);
 
+	void crequest_spell_learn(int id);
+	void slearn_spell(int id);
+
 	bool hass_spell(Ref<Spell> spell);
 	void adds_spell(Ref<Spell> spell);
 	void removes_spell(Ref<Spell> spell);

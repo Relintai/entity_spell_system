@@ -233,7 +233,7 @@ Dictionary AuraData::_to_dict() {
 
 	dict["aura_id"] = _aura_id;
 	dict["remaining_time"] = _remaining_time;
-	dict["caster_name"] = _caster->get_name();
+	dict["caster_name"] = _caster->gets_entity_name();
 
 	dict["spell_scale"] = _spell_scale;
 	dict["aura_group"] = _aura_group;
