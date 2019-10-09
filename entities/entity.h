@@ -602,9 +602,9 @@ public:
 	////    Inventory    ////
 
 	Ref<Bag> gets_bag() const;
-	Ref<Bag> getc_bag() const;
-
 	void sets_bag(const Ref<Bag> bag);
+
+	Ref<Bag> getc_bag() const;
 	void setc_bag(const Ref<Bag> bag);
 
 	Ref<Bag> gets_target_bag() const;

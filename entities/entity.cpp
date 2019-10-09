@@ -315,7 +315,16 @@ Dictionary Entity::_to_dict() {
 
 	////    Equipment    ////
 
-	//todo
+	Dictionary equipment;
+
+	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+		Ref<ItemInstance> ii = _equipment[i];
+
+		if (ii.is_valid())
+			equipment[i] = ii->to_dict();
+	}
+
+	dict["equipment"] = equipment;
 
 	////    Resources    ////
 
@@ -431,6 +440,8 @@ Dictionary Entity::_to_dict() {
 
 	dict["skills"] = skills;
 
+	////    Bags    ////
+
 	if (_s_bag.is_valid())
 		dict["bag"] = _s_bag->to_dict();
 
@@ -465,7 +476,17 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	////    Equipment    ////
 
-	//todo
+	Dictionary equipment = dict.get("equipment", Dictionary());
+
+	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+		if (equipment.has(String::num(i))) {
+			Ref<ItemInstance> ii = _equipment[i];
+
+			ii->from_dict(dict[String::num(i)]);
+
+			_equipment[i] = ii;
+		}
+	}
 
 	////    Resources    ////
 
@@ -632,7 +653,9 @@ void Entity::_from_dict(const Dictionary &dict) {
 		_c_skills.push_back(r);
 	}
 
-	Dictionary bagd = dict.get("known_spells", Dictionary());
+	////    Bags    ////
+
+	Dictionary bagd = dict.get("bag", Dictionary());
 
 	if (!bagd.empty()) {
 		if (!_s_bag.is_valid()) {
@@ -641,7 +664,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 			bag->from_dict(bagd);
 
-			sets_bag(_s_bag);
+			sets_bag(bag);
 		} else {
 			_s_bag->from_dict(bagd);
 		}
@@ -3770,18 +3793,21 @@ void Entity::cclear_talents() {
 Ref<Bag> Entity::gets_bag() const {
 	return _s_bag;
 }
+void Entity::sets_bag(const Ref<Bag> bag) {
+	_s_bag = bag;
+
+	emit_signal("sbag_changed", this, _s_bag);
+
+	SEND_RPC(rpc("setc_bag", bag), setc_bag(bag));
+}
 
 Ref<Bag> Entity::getc_bag() const {
 	return _c_bag;
 }
-
-void Entity::sets_bag(const Ref<Bag> bag) {
-	_s_bag = bag;
-
-	SEND_RPC(rpc("setc_bag", bag), setc_bag(bag));
-}
 void Entity::setc_bag(const Ref<Bag> bag) {
 	_c_bag = bag;
+
+	emit_signal("cbag_changed", this, _c_bag);
 }
 
 Ref<Bag> Entity::gets_target_bag() const {
@@ -4702,6 +4728,9 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ctarget", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "setc_target", "getc_target");
 
 	////    Inventory System    ////
+
+	ADD_SIGNAL(MethodInfo("sbag_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
+	ADD_SIGNAL(MethodInfo("cbag_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
 
 	ClassDB::bind_method(D_METHOD("gets_bag"), &Entity::gets_bag);
 	ClassDB::bind_method(D_METHOD("sets_bag", "bag"), &Entity::sets_bag);

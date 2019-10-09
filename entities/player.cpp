@@ -21,7 +21,7 @@ void Player::setc_seed(int value) {
 void Player::_setup() {
 	Entity::_setup();
 
-	if (gets_entity_data().is_valid()) {
+	if (gets_entity_data().is_valid() && !gets_bag().is_valid()) {
 		Ref<Bag> bag;
 		bag.instance();
 

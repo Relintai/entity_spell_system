@@ -1,7 +1,7 @@
 #include "bag.h"
 
-#include "../data/item_template.h"
 #include "../data/item_instance.h"
+#include "../data/item_template.h"
 
 int Bag::get_allowed_item_types() const {
 	return _allowed_item_types;
@@ -133,7 +133,7 @@ bool Bag::can_add_item(const Ref<ItemInstance> item) {
 		return call("_can_add_item", item);
 	}
 
-    return true;
+	return true;
 }
 
 int Bag::get_item_count() {
@@ -184,8 +184,9 @@ void Bag::set_size(const int size) {
 	}
 
 	_bag_size = size;
-}
 
+	emit_signal("size_changed", Ref<Bag>(this));
+}
 
 bool Bag::is_full() {
 	if (has_method("_is_full")) {
@@ -213,10 +214,40 @@ void Bag::from_dict(const Dictionary &dict) {
 Dictionary Bag::_to_dict() {
 	Dictionary dict;
 
+	dict["allowed_item_types"] = _allowed_item_types;
+	dict["bag_size"] = _bag_size;
+
+	Dictionary items;
+
+	for (int i = 0; i < _items.size(); ++i) {
+		Ref<ItemInstance> ii = _items[i];
+
+		if (ii.is_valid())
+			items[i] = ii->to_dict();
+	}
+
+	dict["items"] = items;
+
 	return dict;
 }
 void Bag::_from_dict(const Dictionary &dict) {
 	_items.clear();
+
+	Dictionary items = dict.get("items", Dictionary());
+
+	Array keys = items.keys();
+
+	for (int i = 0; i < keys.size(); ++i) {
+		Ref<ItemInstance> ii;
+		ii.instance();
+
+		ii->from_dict(items[String::num(i)]);
+
+		_items.push_back(ii);
+	}
+
+	_allowed_item_types = dict.get("allowed_item_types", 0xFFFFFF);
+	set_size(dict.get("bag_size", 0));
 }
 
 Bag::Bag() {
@@ -247,25 +278,26 @@ void Bag::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("item_count_changed", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "slot_id")));
 	ADD_SIGNAL(MethodInfo("overburdened", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
 	ADD_SIGNAL(MethodInfo("overburden_removed", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
+	ADD_SIGNAL(MethodInfo("size_changed", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
 
 	ClassDB::bind_method(D_METHOD("get_allowed_item_types"), &Bag::get_allowed_item_types);
 	ClassDB::bind_method(D_METHOD("set_allowed_item_types", "count"), &Bag::set_allowed_item_types);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "allowed_item_types", PROPERTY_HINT_FLAGS, ItemEnums::BINDING_STRING_ITEM_TYPE_FLAGS), "set_allowed_item_types", "get_allowed_item_types");
-	
 
 	ClassDB::bind_method(D_METHOD("add_item", "item"), &Bag::add_item);
 	ClassDB::bind_method(D_METHOD("get_item", "index"), &Bag::get_item);
 	ClassDB::bind_method(D_METHOD("remove_item", "index"), &Bag::remove_item);
-    ClassDB::bind_method(D_METHOD("swap_items", "item1_index", "item2_index"), &Bag::swap_items);
+	ClassDB::bind_method(D_METHOD("swap_items", "item1_index", "item2_index"), &Bag::swap_items);
 
-    ClassDB::bind_method(D_METHOD("can_add_item", "item"), &Bag::can_add_item);
-    
+	ClassDB::bind_method(D_METHOD("can_add_item", "item"), &Bag::can_add_item);
+
 	ClassDB::bind_method(D_METHOD("get_item_count"), &Bag::get_item_count);
-	
+
 	ClassDB::bind_method(D_METHOD("get_size"), &Bag::get_size);
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &Bag::set_size);
-    
-    ClassDB::bind_method(D_METHOD("is_full"), &Bag::is_full);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "size"), "set_size", "get_size");
+
+	ClassDB::bind_method(D_METHOD("is_full"), &Bag::is_full);
 	ClassDB::bind_method(D_METHOD("is_overburdened"), &Bag::is_overburdened);
 
 	//Serialization
