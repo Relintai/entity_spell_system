@@ -2788,7 +2788,7 @@ void Entity::con_xp_gained(int value) {
 		ad->get_aura()->con_xp_gained(ad, value);
 	}
 
-	emit_signal("con_level_up", this, value);
+	emit_signal("con_xp_gained", this, value);
 }
 
 void Entity::con_level_up(int value) {
