@@ -549,7 +549,11 @@ void Entity::_from_dict(const Dictionary &dict) {
 		r->set_caster(this);
 
 		_s_auras.push_back(r);
-		_c_auras.push_back(r);
+
+		if (!r->get_aura()->get_hide())
+			SEND_RPC(rpc("cadd_aura", r), cadd_aura(r));
+
+		//_c_auras.push_back(r);
 	}
 
 	sets_entity_type((EntityEnums::EntityType)((int)dict.get("entity_type", 0)));
@@ -594,7 +598,11 @@ void Entity::_from_dict(const Dictionary &dict) {
 	_s_free_talent_points = dict.get("free_talent_points", 0);
 	_c_free_talent_points = _s_free_talent_points;
 
-	_s_talents = dict.get("talents", Vector<int>());
+	Vector<int> talents = dict.get("talents", Vector<int>());
+
+	for (int i = 0; i < talents.size(); ++i) {
+		adds_talent(talents[i]);
+	}
 
 	////    Data    ////
 
@@ -3637,7 +3645,7 @@ void Entity::sreceive_talent_learn_request(int spec_index, int talent_row, int t
 }
 
 void Entity::_sreceive_talent_learn_request(int spec_index, int talent_row, int talent_culomn) {
-	if (gets_talent_count() <= 0)
+	if (gets_free_talent_points() <= 0)
 		return;
 
 	ERR_FAIL_COND(!_s_entity_data.is_valid());
@@ -3795,15 +3803,14 @@ void Entity::sclear_talents() {
 }
 
 void Entity::addc_talent(int talent) {
-	if (hasc_talent(talent))
-		return;
+	if (hasc_talent(talent)) return;
+
+	_c_talents.push_back(talent);
 
 	if (has_method("_con_talent_learned"))
 		call("_con_talent_learned", talent);
 
 	emit_signal("ctalent_learned", this, talent);
-
-	_c_talents.push_back(talent);
 }
 void Entity::removec_talent(int talent) {
 	for (int i = 0; i < _c_talents.size(); ++i) {
@@ -4128,8 +4135,8 @@ void Entity::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("con_heal_dealt", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 
-	ADD_SIGNAL(MethodInfo("sentity_data_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	ADD_SIGNAL(MethodInfo("centity_data_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	ADD_SIGNAL(MethodInfo("sentity_data_changed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData")));
+	ADD_SIGNAL(MethodInfo("centity_data_changed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData")));
 
 	ADD_SIGNAL(MethodInfo("sdied", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("cdied", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
