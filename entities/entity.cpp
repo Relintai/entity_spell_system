@@ -279,6 +279,10 @@ void Entity::_setup() {
 				adds_spell(cd->get_start_spell(i));
 			}
 		}
+
+		for (int i = 0; i < _s_entity_data->get_num_craft_recipes(); ++i) {
+			adds_craft_recipe(_s_entity_data->get_craft_recipe(i));
+		}
 	}
 
 	if (!Engine::get_singleton()->is_editor_hint())
@@ -627,6 +631,9 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	////    Crafting    ////
 
+	_s_craft_recipes.clear();
+	_c_craft_recipes.clear();
+
 	Dictionary known_recipes = dict.get("known_recipes", Dictionary());
 
 	for (int i = 0; i < known_recipes.size(); ++i) {
@@ -636,8 +643,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 			Ref<CraftRecipe> cr = DataManager::get_instance()->get_craft_data(crid);
 
 			if (cr.is_valid()) {
-				_s_craft_recipes.push_back(cr);
-				_s_craft_recipes.push_back(cr);
+				adds_craft_recipe(cr);
 			}
 		}
 	}
