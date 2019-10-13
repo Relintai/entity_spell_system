@@ -703,6 +703,17 @@ void Entity::_from_dict(const Dictionary &dict) {
 		} else {
 			_s_bag->from_dict(bagd);
 		}
+		/*
+		if (!_c_bag.is_valid()) {
+			Ref<Bag> bag;
+			bag.instance();
+
+			bag->from_dict(bagd);
+
+			setc_bag(bag);
+		} else {
+			_c_bag->from_dict(bagd);
+		}*/
 	}
 
 	if (DataManager::get_instance() != NULL) {
@@ -1310,31 +1321,37 @@ void Entity::con_equip_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> 
 	emit_signal("con_equip_fail", this, equip_slot, item, old_item, bag_slot);
 }
 
-void Entity::crequest_equip(int equip_slot, int bag_slot) {
+void Entity::crequest_equip(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 	sequip(equip_slot, bag_slot);
 }
-void Entity::sequip(int equip_slot, int bag_slot) {
+void Entity::sequip(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 	call("_sequip", equip_slot, bag_slot);
 }
-void Entity::_sequip(int equip_slot, int bag_slot) {
-}
+void Entity::_sequip(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 
-void Entity::sequip_succeeded(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	son_equip_success(equip_slot, item, old_item, bag_slot);
 
-	SEND_RPC(rpc("cequip_succeeded", equip_slot, item, old_item, bag_slot), cequip_succeeded(equip_slot, item, old_item, bag_slot));
 }
-void Entity::sequip_failed(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	son_equip_fail(equip_slot, item, old_item, bag_slot);
+void Entity::cequip_success(ItemEnums::EquipSlots equip_slot, int bag_slot) {
+	ERR_FAIL_INDEX(equip_slot, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
+	ERR_FAIL_COND(!_c_bag.is_valid());
 
-	SEND_RPC(rpc("cequip_failed", equip_slot, item, old_item, bag_slot), cequip_failed(equip_slot, item, old_item, bag_slot));
-}
+	Ref<ItemInstance> bag_item = _c_bag->get_item(bag_slot);
+	Ref<ItemInstance> equipped_item = getc_equip_slot(equip_slot);
 
-void Entity::cequip_succeeded(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	con_equip_success(equip_slot, item, old_item, bag_slot);
+	//Not Yet
+	//setc_equip_slot(equip_slot, bag_item);
+	//_c_bag->set_item(bag_slot, old_item);
+
+	con_equip_success(equip_slot, equipped_item, bag_item, bag_slot);
 }
-void Entity::cequip_failed(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	con_equip_fail(equip_slot, item, old_item, bag_slot);
+void Entity::cequip_fail(ItemEnums::EquipSlots equip_slot, int bag_slot) {
+	ERR_FAIL_INDEX(equip_slot, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
+	ERR_FAIL_COND(!_c_bag.is_valid());
+
+	Ref<ItemInstance> bag_item = _c_bag->get_item(bag_slot);
+	Ref<ItemInstance> equipped_item = getc_equip_slot(equip_slot);
+
+	con_equip_success(equip_slot, equipped_item, bag_item, bag_slot);
 }
 
 Ref<ItemInstance> Entity::gets_equip_slot(int index) {
@@ -1342,11 +1359,21 @@ Ref<ItemInstance> Entity::gets_equip_slot(int index) {
 
 	return _s_equipment[index];
 }
+void Entity::sets_equip_slot(int index, Ref<ItemInstance> item) {
+	ERR_FAIL_INDEX(index, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
+
+	_s_equipment[index] = item;
+}
 
 Ref<ItemInstance> Entity::getc_equip_slot(int index) {
 	ERR_FAIL_INDEX_V(index, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX, Ref<ItemInstance>());
 
 	return _c_equipment[index];
+}
+void Entity::setc_equip_slot(int index, Ref<ItemInstance> item) {
+	ERR_FAIL_INDEX(index, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
+
+	_c_equipment[index] = item;
 }
 
 void Entity::sapply_item_stats(Ref<ItemInstance> item) {
@@ -4733,10 +4760,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sequip", "equip_slot", "bag_slot"), &Entity::sequip);
 	ClassDB::bind_method(D_METHOD("_sequip", "equip_slot", "bag_slot"), &Entity::_sequip);
 
-	ClassDB::bind_method(D_METHOD("sequip_succeeded", "equip_slot", "item", "old_item", "bag_slot"), &Entity::sequip_succeeded);
-	ClassDB::bind_method(D_METHOD("sequip_failed", "equip_slot", "item", "old_item", "bag_slot"), &Entity::sequip_failed);
-	ClassDB::bind_method(D_METHOD("cequip_succeeded", "equip_slot", "item", "old_item", "bag_slot"), &Entity::cequip_succeeded);
-	ClassDB::bind_method(D_METHOD("cequip_failed", "equip_slot", "item", "old_item", "bag_slot"), &Entity::cequip_failed);
+	ClassDB::bind_method(D_METHOD("cequip_success", "equip_slot", "bag_slot"), &Entity::cequip_success);
+	ClassDB::bind_method(D_METHOD("cequip_fail", "equip_slot", "bag_slot"), &Entity::cequip_fail);
 
 	ClassDB::bind_method(D_METHOD("gets_equip_slot", "index"), &Entity::gets_equip_slot);
 	ClassDB::bind_method(D_METHOD("getc_equip_slot", "index"), &Entity::getc_equip_slot);
