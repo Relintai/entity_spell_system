@@ -296,6 +296,8 @@ public:
 	void con_level_up(Ref<AuraData> data, int value);
 
 	//Equipment
+	bool should_deny_equip(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);
+
 	void son_equip_success(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 	void son_equip_fail(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 

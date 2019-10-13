@@ -242,6 +242,8 @@ public:
 
 	////    Equip Slots    ////
 
+	bool should_deny_equip(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);
+
 	void son_equip_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 	void son_equip_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 
