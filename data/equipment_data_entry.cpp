@@ -1,6 +1,6 @@
 #include "equipment_data_entry.h"
 
-#include "item_instance.h"
+
 
 Ref<ItemInstance> EquipmentDataEntry::get_item() {
 	if (has_method("_get_item")) {

@@ -246,7 +246,8 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 }
 
 void Entity::setup() {
-	_setup();
+	if (_deserialized)
+		return;
 
 	if (has_method("_setup")) {
 		call_multilevel("_setup");
@@ -283,6 +284,17 @@ void Entity::_setup() {
 		for (int i = 0; i < _s_entity_data->get_num_craft_recipes(); ++i) {
 			adds_craft_recipe(_s_entity_data->get_craft_recipe(i));
 		}
+
+		if (_s_entity_data->get_equipment_data().is_valid()) {
+			Ref<EquipmentData> eqd = _s_entity_data->get_equipment_data();
+
+			for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+				Ref<ItemInstance> ii = eqd->get_item(i);
+
+				if (ii.is_valid())
+					_s_equipment[i] = ii;
+			}
+		}
 	}
 
 	if (!Engine::get_singleton()->is_editor_hint())
@@ -294,6 +306,8 @@ Dictionary Entity::to_dict() {
 }
 void Entity::from_dict(const Dictionary &dict) {
 	call("_from_dict", dict);
+
+	_deserialized = true;
 
 	emit_signal("deserialized", this);
 }
@@ -722,6 +736,8 @@ void Entity::_from_dict(const Dictionary &dict) {
 }
 
 Entity::Entity() {
+	_deserialized = false;
+
 	_s_guid = 0;
 	_c_guid = 0;
 
@@ -1328,8 +1344,6 @@ void Entity::sequip(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 	call("_sequip", equip_slot, bag_slot);
 }
 void Entity::_sequip(ItemEnums::EquipSlots equip_slot, int bag_slot) {
-
-
 }
 void Entity::cequip_success(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 	ERR_FAIL_INDEX(equip_slot, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
@@ -4338,7 +4352,7 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("onc_open_vendor_winow_request"));
 
 	ClassDB::bind_method(D_METHOD("setup"), &Entity::setup);
-	//ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
+	ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
 
 	//binds
 	ClassDB::bind_method(D_METHOD("sdie"), &Entity::sdie);

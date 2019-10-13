@@ -21,6 +21,8 @@
 #include "entity_class_data.h"
 #include "item_container_data.h"
 
+#include "../../data/equipment_data.h"
+
 class Aura;
 class Spell;
 class Entity;
@@ -67,6 +69,9 @@ public:
 
 	Ref<EntityClassData> get_entity_class_data();
 	void set_entity_class_data(Ref<EntityClassData> data);
+
+	Ref<EquipmentData> get_equipment_data();
+	void set_equipment_data(Ref<EquipmentData> data);
 
 	Ref<LootDataBase> get_loot_db() const;
 	void set_loot_db(const Ref<LootDataBase> data);
@@ -241,6 +246,7 @@ private:
 	int _bag_size;
 
 	Ref<EntityClassData> _entity_class_data;
+	Ref<EquipmentData> _equipment_data;
 
 	Ref<LootDataBase> _lootdb;
 	Ref<VendorItemData> _vendor_item_data;

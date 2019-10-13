@@ -676,6 +676,7 @@ protected:
 
 private:
 	const float SAVE_BASE_SECONDS = 10.0;
+	bool _deserialized;
 
 	////    Paths    ////
 

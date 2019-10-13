@@ -3,6 +3,8 @@
 
 #include "core/resource.h"
 
+#include "item_instance.h"
+
 class ItemInstance;
 
 class EquipmentDataEntry : public Resource {

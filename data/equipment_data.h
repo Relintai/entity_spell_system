@@ -13,6 +13,8 @@ public:
 	Ref<EquipmentDataEntry> get_slot(int index);
 	void set_slot(int index, Ref<EquipmentDataEntry> entry);
 
+	Ref<ItemInstance> get_item(int index);
+
 	EquipmentData();
 	~EquipmentData();
 

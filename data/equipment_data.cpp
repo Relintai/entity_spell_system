@@ -11,6 +11,17 @@ void EquipmentData::set_slot(int index, Ref<EquipmentDataEntry> entry) {
 	_entries[index] = entry;
 }
 
+Ref<ItemInstance> EquipmentData::get_item(int index) {
+	ERR_FAIL_INDEX_V(index, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX, Ref<ItemInstance>());
+
+	Ref<EquipmentDataEntry> ede = _entries[index];
+
+	if (!ede.is_valid())
+		return Ref<ItemInstance>();
+
+	return ede->get_item();
+}
+
 EquipmentData::EquipmentData() {
 }
 

@@ -2,8 +2,8 @@
 
 #include "../../ai/ai_action.h"
 #include "../../data/aura.h"
-#include "../../data/spell.h"
 #include "../../data/craft_recipe.h"
+#include "../../data/spell.h"
 #include "../../infos/spell_cast_info.h"
 #include "../entity.h"
 #include "character_spec.h"
@@ -80,12 +80,18 @@ void EntityData::set_bag_size(int value) {
 	_bag_size = value;
 }
 
-
 Ref<EntityClassData> EntityData::get_entity_class_data() {
 	return _entity_class_data;
 }
 void EntityData::set_entity_class_data(Ref<EntityClassData> data) {
 	_entity_class_data = data;
+}
+
+Ref<EquipmentData> EntityData::get_equipment_data() {
+	return _equipment_data;
+}
+void EntityData::set_equipment_data(Ref<EquipmentData> data) {
+	_equipment_data = data;
 }
 
 Ref<LootDataBase> EntityData::get_loot_db() const {
@@ -148,7 +154,6 @@ void EntityData::set_craft_recipes(const Vector<Variant> &craft_datas) {
 		_craft_recipes.push_back(craft_data);
 	}
 }
-
 
 //void EntityData::_setup_resources(Entity *entity) {
 //}
@@ -798,14 +803,14 @@ void EntityData::con_level_up_bind(Node *entity, int value) {
 
 //Equipment
 
-void EntityData::son_equip_success(Entity* entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityData::son_equip_success(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	if (_entity_class_data.is_valid())
 		_entity_class_data->son_equip_success(entity, equip_slot, item, old_item, bag_slot);
 
 	if (has_method("_son_equip_success"))
 		call("_son_equip_success", entity, equip_slot, item, old_item, bag_slot);
 }
-void EntityData::son_equip_success_bind(Node* entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityData::son_equip_success_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
@@ -815,14 +820,14 @@ void EntityData::son_equip_success_bind(Node* entity, ItemEnums::EquipSlots equi
 	son_equip_success(e, equip_slot, item, old_item, bag_slot);
 }
 
-void EntityData::son_equip_fail(Entity* entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityData::son_equip_fail(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	if (_entity_class_data.is_valid())
 		_entity_class_data->son_equip_fail(entity, equip_slot, item, old_item, bag_slot);
 
 	if (has_method("_son_equip_fail"))
 		call("_son_equip_fail", entity, equip_slot, item, old_item, bag_slot);
 }
-void EntityData::son_equip_fail_bind(Node* entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityData::son_equip_fail_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
@@ -832,14 +837,14 @@ void EntityData::son_equip_fail_bind(Node* entity, ItemEnums::EquipSlots equip_s
 	son_equip_fail(e, equip_slot, item, old_item, bag_slot);
 }
 
-void EntityData::con_equip_success(Entity* entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityData::con_equip_success(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	if (_entity_class_data.is_valid())
 		_entity_class_data->con_equip_success(entity, equip_slot, item, old_item, bag_slot);
 
 	if (has_method("_con_equip_success"))
 		call("_con_equip_success", entity, equip_slot, item, old_item, bag_slot);
 }
-void EntityData::con_equip_success_bind(Node* entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityData::con_equip_success_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
@@ -849,14 +854,14 @@ void EntityData::con_equip_success_bind(Node* entity, ItemEnums::EquipSlots equi
 	con_equip_success(e, equip_slot, item, old_item, bag_slot);
 }
 
-void EntityData::con_equip_fail(Entity* entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityData::con_equip_fail(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	if (_entity_class_data.is_valid())
 		_entity_class_data->con_equip_fail(entity, equip_slot, item, old_item, bag_slot);
 
 	if (has_method("_con_equip_fail"))
 		call("_con_equip_fail", entity, equip_slot, item, old_item, bag_slot);
 }
-void EntityData::con_equip_fail_bind(Node* entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityData::con_equip_fail_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
@@ -889,7 +894,7 @@ void EntityData::sai_regenerate(Entity *entity) {
 
 	if (has_method("_sai_regenerate"))
 		call("_sai_regenerate", entity);
-	else if(_entity_class_data.is_valid())
+	else if (_entity_class_data.is_valid())
 		_entity_class_data->sai_regenerate(entity);
 }
 void EntityData::sai_attack(Entity *entity) {
@@ -897,7 +902,7 @@ void EntityData::sai_attack(Entity *entity) {
 
 	if (has_method("_sai_attack"))
 		call("_sai_attack", entity);
-	else if (_entity_class_data.is_valid()) 
+	else if (_entity_class_data.is_valid())
 		_entity_class_data->sai_attack(entity);
 }
 
