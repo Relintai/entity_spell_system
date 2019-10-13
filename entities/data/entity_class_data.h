@@ -15,10 +15,12 @@
 
 #include "../../utility/cooldown.h"
 #include "../../utility/category_cooldown.h"
+#include "../../item_enums.h"
 
 class Aura;
 class Spell;
 class Entity;
+class ItemInstance;
 class CharacterSpec;
 class Entity;
 class SpellCastInfo;
@@ -186,6 +188,18 @@ public:
 	void con_xp_gained_bind(Node *entity, int value);
 	void con_level_up(Entity *entity, int value);
 	void con_level_up_bind(Node *entity, int value);
+
+	//Equipment
+
+	void son_equip_success(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void son_equip_success_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void son_equip_fail(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void son_equip_fail_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+
+	void con_equip_success(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void con_equip_success_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void con_equip_fail(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void con_equip_fail_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 
     //    AI    //
 	void sai_follow(Entity *entity);

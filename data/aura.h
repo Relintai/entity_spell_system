@@ -295,6 +295,13 @@ public:
 	void con_xp_gained(Ref<AuraData> data, int value);
 	void con_level_up(Ref<AuraData> data, int value);
 
+	//Equipment
+	void son_equip_success(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void son_equip_fail(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+
+	void con_equip_success(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void con_equip_fail(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+
 	//Calculations / Queries
 	void setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
 
