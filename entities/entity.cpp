@@ -1364,6 +1364,21 @@ void Entity::sequip(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 	call("_sequip", equip_slot, bag_slot);
 }
 void Entity::_sequip(ItemEnums::EquipSlots equip_slot, int bag_slot) {
+	ERR_FAIL_INDEX(equip_slot, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
+	ERR_FAIL_COND(!_c_bag.is_valid());
+
+	Ref<ItemInstance> bag_item = _s_bag->get_item(bag_slot);
+	Ref<ItemInstance> equipped_item = gets_equip_slot(equip_slot);
+
+	//check if it goes into the slot
+	//check armor type
+	//check required skills
+	//check deny equip
+
+	//swap items
+	//remove, apply mods
+
+	//RPC to client (even fails)
 }
 void Entity::cequip_success(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 	ERR_FAIL_INDEX(equip_slot, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
