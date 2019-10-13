@@ -20,6 +20,8 @@ module_env.add_source_files(env.modules_sources,"data/item_template_stat_modifie
 module_env.add_source_files(env.modules_sources,"data/item_instance.cpp")
 module_env.add_source_files(env.modules_sources,"data/item_template.cpp")
 module_env.add_source_files(env.modules_sources,"data/spell_cooldown_manipulation_data.cpp")
+module_env.add_source_files(env.modules_sources,"data/equipment_data.cpp")
+module_env.add_source_files(env.modules_sources,"data/equipment_data_entry.cpp")
 
 module_env.add_source_files(env.modules_sources,"entities/data/entity_data.cpp")
 module_env.add_source_files(env.modules_sources,"entities/data/entity_class_data.cpp")
