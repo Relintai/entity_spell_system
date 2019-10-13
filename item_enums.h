@@ -2,6 +2,7 @@
 #define ITEM_ENUMS_H
 
 #include "core/object.h"
+#include "core/ustring.h"
 
 class ItemEnums : public Object {
 	GDCLASS(ItemEnums, Object);
@@ -14,6 +15,7 @@ public:
 	static const String BINDING_STRING_ITEM_SUB_TYPE;
 	static const String BINDING_STRING_ITEM_SUB_SUB_TYPE;
 	static const String BINDING_STRING_EQUIP_SLOTS;
+	static const String BINDING_STRING_ARMOR_TYPE;
 	
 	enum ItemRarity {
 		ITEM_RARITY_NONE = 0,
@@ -97,6 +99,18 @@ public:
 		EQUIP_SLOT_NONE = 14
 	};
 
+	enum ArmorType {
+		ARMOR_TYPE_NONE = 0,
+		ARMOR_TYPE_CLOTH = 1,
+		ARMOR_TYPE_LEATHER = 2,
+		ARMOR_TYPE_MAIL = 3,
+		ARMOR_TYPE_PLATE = 4,
+		ARMOR_TYPE_MAX = 5,
+	};
+
+	static String get_equip_slot_string(int slot);
+	static String get_armor_type_string(int type);
+
 	ItemEnums() {}
 
 protected:
@@ -170,6 +184,13 @@ protected:
 		BIND_ENUM_CONSTANT(EQUIP_SLOT_NONE);
 
 		BIND_ENUM_CONSTANT(EQUIP_SLOT_EQUIP_SLOT_MAX);
+
+		BIND_ENUM_CONSTANT(ARMOR_TYPE_NONE);
+		BIND_ENUM_CONSTANT(ARMOR_TYPE_CLOTH);
+		BIND_ENUM_CONSTANT(ARMOR_TYPE_LEATHER);
+		BIND_ENUM_CONSTANT(ARMOR_TYPE_MAIL);
+		BIND_ENUM_CONSTANT(ARMOR_TYPE_PLATE);
+		BIND_ENUM_CONSTANT(ARMOR_TYPE_MAX);
 	}
 };
 
@@ -179,6 +200,7 @@ VARIANT_ENUM_CAST(ItemEnums::ItemType);
 VARIANT_ENUM_CAST(ItemEnums::ItemSubtype);
 VARIANT_ENUM_CAST(ItemEnums::ItemSubSubtype);
 VARIANT_ENUM_CAST(ItemEnums::EquipSlots);
+VARIANT_ENUM_CAST(ItemEnums::ArmorType);
 
 
 #endif

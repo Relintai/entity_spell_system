@@ -12,6 +12,7 @@
 #include "scene/main/node.h"
 
 #include "core/bind/core_bind.h"
+#include "../item_enums.h"
 
 #include "xp_data.h"
 
@@ -26,6 +27,9 @@ class DataManager : public Node {
 
 public:
 	static DataManager *get_instance();
+
+	Ref<Aura> get_skill_for_armor_type(int index);
+	void set_skill_for_armor_type(int index, Ref<Aura> aura);
 
 	String get_xp_data_path();
 	void set_xp_data_path(String path);
@@ -146,6 +150,8 @@ private:
     String _player_character_data_folder;
 	Vector<Ref<EntityData> > _player_character_datas;
 	HashMap<int, Ref<EntityData> > _player_character_data_map;
+
+	Ref<Aura> _armor_type_skills[ItemEnums::ARMOR_TYPE_MAX];
 
 	static DataManager *instance;
 

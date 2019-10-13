@@ -26,6 +26,17 @@ void DataManager::_notification(int p_what) {
 	}
 }
 
+Ref<Aura> DataManager::get_skill_for_armor_type(int index) {
+	ERR_FAIL_INDEX_V(index, ItemEnums::ARMOR_TYPE_MAX, Ref<Aura>());
+
+	return _armor_type_skills[index];
+}
+void DataManager::set_skill_for_armor_type(int index, Ref<Aura> aura) {
+	ERR_FAIL_INDEX(index, ItemEnums::ARMOR_TYPE_MAX);
+
+	_armor_type_skills[index] = aura;
+}
+
 String DataManager::get_xp_data_path() {
 	return _xp_data_path;
 }
@@ -620,6 +631,13 @@ void DataManager::list_player_character_datas() {
 }
 
 void DataManager::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_skill_for_armor_type", "index"), &DataManager::get_skill_for_armor_type);
+	ClassDB::bind_method(D_METHOD("set_skill_for_armor_type", "index", "aura"), &DataManager::set_skill_for_armor_type);
+
+	for (int i = 0; i < ItemEnums::ARMOR_TYPE_MAX; ++i) {
+		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "skill_for_armor_type_" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_skill_for_armor_type", "get_skill_for_armor_type", i);
+	}
+
 	ClassDB::bind_method(D_METHOD("get_automatic_load"), &DataManager::get_automatic_load);
 	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &DataManager::set_automatic_load);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
