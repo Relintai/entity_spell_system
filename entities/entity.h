@@ -248,8 +248,24 @@ public:
 	void con_equip_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 	void con_equip_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 
-	Ref<ItemInstance> equip(Ref<ItemInstance> item);
-	Ref<ItemInstance> get_equip_slot(int index);
+	void crequest_equip(int equip_slot, int bag_slot);
+	void sequip(int equip_slot, int bag_slot);
+	void _sequip(int equip_slot, int bag_slot);
+
+	void sequip_succeeded(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void sequip_failed(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+
+	void cequip_succeeded(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void cequip_failed(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+
+	Ref<ItemInstance> gets_equip_slot(int index);
+	Ref<ItemInstance> getc_equip_slot(int index);
+
+	void sapply_item_stats(Ref<ItemInstance> item);
+	void sdeapply_item_stats(Ref<ItemInstance> item);
+
+	void _sapply_item_stats(Ref<ItemInstance> item);
+	void _sdeapply_item_stats(Ref<ItemInstance> item);
 
 	////    Resources    ////
 
@@ -706,7 +722,8 @@ private:
 
 	////    Equipment    ////
 
-	Ref<ItemInstance> _equipment[ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX];
+	Ref<ItemInstance> _s_equipment[ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX];
+	Ref<ItemInstance> _c_equipment[ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX];
 
 	////    Resources    ////
 
