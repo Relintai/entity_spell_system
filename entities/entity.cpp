@@ -1365,7 +1365,7 @@ void Entity::sequip(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 }
 void Entity::_sequip(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 	ERR_FAIL_INDEX(equip_slot, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
-	ERR_FAIL_COND(!_c_bag.is_valid());
+	ERR_FAIL_COND(!_s_bag.is_valid());
 
 	Ref<ItemInstance> bag_item = _s_bag->get_item(bag_slot);
 	Ref<ItemInstance> equipped_item = gets_equip_slot(equip_slot);
