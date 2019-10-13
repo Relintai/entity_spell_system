@@ -13,6 +13,7 @@
 class ItemInstance;
 class Aura;
 class Spell;
+class EntityClassData;
 
 class ItemTemplate : public Resource {
 	GDCLASS(ItemTemplate, Resource);
@@ -37,11 +38,17 @@ public:
 	ItemEnums::ItemRarity get_rarity() const;
 	void set_rarity(const ItemEnums::ItemRarity value);
 
+	ItemEnums::ArmorType get_armor_type() const;
+	void set_armor_type(const ItemEnums::ArmorType value);
+
 	ItemEnums::EquipSlots get_equip_slot() const;
 	void set_equip_slot(const ItemEnums::EquipSlots value);
 
 	Ref<ItemVisual> get_item_visual() const;
 	void set_item_visual(const Ref<ItemVisual> value);
+
+	Ref<EntityClassData> get_required_character_class() const;
+	void set_required_character_class(const Ref<EntityClassData> value);
 
 	int get_price() const;
 	void set_price(const int value);
@@ -94,6 +101,15 @@ public:
 	Vector<Variant> get_auras();
 	void set_auras(const Vector<Variant> &auras);
 
+	//Required Skills
+	int get_num_required_skills();
+
+	Ref<Aura> get_required_skill(int index) const;
+	void set_required_skill(int index, Ref<Aura> skills);
+
+	Vector<Variant> get_required_skills();
+	void set_required_skills(const Vector<Variant> &grants_spells);
+
 	//use spell
 	Ref<Spell> get_use_spell() const;
 	void set_use_spell(Ref<Spell> use_spell);
@@ -130,6 +146,12 @@ public:
 	ItemTemplate();
 	~ItemTemplate();
 
+public:
+	struct SkillEntry {
+		Ref<Aura> aura;
+		int level;
+	};
+
 protected:
 	static void _bind_methods();
 	void _validate_property(PropertyInfo &property) const;
@@ -145,10 +167,12 @@ private:
 	ItemEnums::ItemType _item_type;
 	ItemEnums::ItemSubtype _item_sub_type;
 	ItemEnums::ItemSubSubtype _item_sub_sub_type;
+	ItemEnums::ArmorType _armor_type;
 	ItemEnums::EquipSlots _equip_slot;
 
 	int _price;
 
+	Ref<EntityClassData> _required_character_class;
 	Ref<ItemVisual> _item_visual;
 
 	int _stack_size;
@@ -164,6 +188,7 @@ private:
 	Vector<Ref<Spell> > _teaches_spells;
 	Vector<Ref<Spell> > _grants_spells;
 	Vector<Ref<Aura> > _auras;
+	Vector<Ref<Aura> > _required_skills;
 	Ref<Spell> _use_spell;
 
 	int _modifier_count;

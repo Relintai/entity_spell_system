@@ -1,5 +1,6 @@
 #include "item_template.h"
 
+#include "../entities/data/entity_class_data.h"
 #include "aura.h"
 #include "item_instance.h"
 #include "spell.h"
@@ -46,6 +47,13 @@ void ItemTemplate::set_rarity(const ItemEnums::ItemRarity value) {
 	_rarity = value;
 }
 
+ItemEnums::ArmorType ItemTemplate::get_armor_type() const {
+	return _armor_type;
+}
+void ItemTemplate::set_armor_type(const ItemEnums::ArmorType value) {
+	_armor_type = value;
+}
+
 ItemEnums::EquipSlots ItemTemplate::get_equip_slot() const {
 	return _equip_slot;
 }
@@ -58,6 +66,13 @@ Ref<ItemVisual> ItemTemplate::get_item_visual() const {
 }
 void ItemTemplate::set_item_visual(const Ref<ItemVisual> value) {
 	_item_visual = value;
+}
+
+Ref<EntityClassData> ItemTemplate::get_required_character_class() const {
+	return _required_character_class;
+}
+void ItemTemplate::set_required_character_class(const Ref<EntityClassData> value) {
+	_required_character_class = value;
 }
 
 int ItemTemplate::get_price() const {
@@ -222,6 +237,39 @@ void ItemTemplate::set_auras(const Vector<Variant> &auras) {
 	}
 }
 
+//Required Skills
+int ItemTemplate::get_num_required_skills() {
+	return _required_skills.size();
+}
+
+Ref<Aura> ItemTemplate::get_required_skill(int index) const {
+	ERR_FAIL_INDEX_V(index, _required_skills.size(), Ref<Aura>());
+
+	return _required_skills.get(index);
+}
+void ItemTemplate::set_required_skill(int index, Ref<Aura> aura) {
+	ERR_FAIL_INDEX(index, _required_skills.size());
+
+	_required_skills.set(index, aura);
+}
+
+Vector<Variant> ItemTemplate::get_required_skills() {
+	Vector<Variant> r;
+	for (int i = 0; i < _required_skills.size(); i++) {
+		r.push_back(_required_skills[i].get_ref_ptr());
+	}
+	return r;
+}
+void ItemTemplate::set_required_skills(const Vector<Variant> &skills) {
+	_required_skills.clear();
+	for (int i = 0; i < skills.size(); i++) {
+		Ref<Aura> skill = Ref<Aura>(skills[i]);
+
+		_required_skills.push_back(skill);
+	}
+}
+
+//use spell
 Ref<Spell> ItemTemplate::get_use_spell() const {
 	return _use_spell;
 }
@@ -348,6 +396,7 @@ ItemTemplate::ItemTemplate() {
 	_item_sub_type = ItemEnums::ITEM_SUB_TYPE_NONE;
 	_item_sub_sub_type = ItemEnums::ITEM_SUB_SUB_TYPE_NONE;
 	_rarity = ItemEnums::ITEM_RARITY_NONE;
+	_armor_type = ItemEnums::ARMOR_TYPE_NONE;
 	_equip_slot = ItemEnums::EQUIP_SLOT_NONE;
 	_price = 0;
 
@@ -368,6 +417,7 @@ ItemTemplate::~ItemTemplate() {
 	_teaches_spells.clear();
 	_grants_spells.clear();
 	_auras.clear();
+	_required_character_class.unref();
 }
 
 void ItemTemplate::_validate_property(PropertyInfo &property) const {
@@ -408,6 +458,10 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_rarity"), &ItemTemplate::get_rarity);
 	ClassDB::bind_method(D_METHOD("set_rarity", "count"), &ItemTemplate::set_rarity);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rarity", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_RARITY), "set_rarity", "get_rarity");
+
+	ClassDB::bind_method(D_METHOD("get_armor_type"), &ItemTemplate::get_armor_type);
+	ClassDB::bind_method(D_METHOD("set_armor_type", "value"), &ItemTemplate::set_armor_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "armor_type", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_ARMOR_TYPE), "set_armor_type", "get_armor_type");
 
 	ClassDB::bind_method(D_METHOD("get_equip_slot"), &ItemTemplate::get_equip_slot);
 	ClassDB::bind_method(D_METHOD("set_equip_slot", "count"), &ItemTemplate::set_equip_slot);
@@ -478,6 +532,16 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &ItemTemplate::set_auras);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
 
+	////    Required Skills    ////
+	ClassDB::bind_method(D_METHOD("get_num_required_skills"), &ItemTemplate::get_num_required_skills);
+
+	ClassDB::bind_method(D_METHOD("get_required_skill", "index"), &ItemTemplate::get_required_skill);
+	ClassDB::bind_method(D_METHOD("set_required_skill", "index", "aura"), &ItemTemplate::set_required_skill);
+
+	ClassDB::bind_method(D_METHOD("get_required_skills"), &ItemTemplate::get_required_skills);
+	ClassDB::bind_method(D_METHOD("set_required_skills", "auras"), &ItemTemplate::set_required_skills);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "required_skills", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_required_skills", "get_required_skills");
+
 	//Use spell
 	ClassDB::bind_method(D_METHOD("get_use_spell"), &ItemTemplate::get_use_spell);
 	ClassDB::bind_method(D_METHOD("set_use_spell", "size"), &ItemTemplate::set_use_spell);
@@ -531,4 +595,6 @@ void ItemTemplate::_bind_methods() {
 	//ClassDB::bind_method(D_METHOD("set_item_stat_modifier", "index", "value"), &ItemTemplate::set_item_stat_modifier);
 
 	ClassDB::bind_method(D_METHOD("get_animator_weapon_type"), &ItemTemplate::get_animator_weapon_type);
+
+	BIND_CONSTANT(MAX_ITEM_STAT_MOD);
 }
