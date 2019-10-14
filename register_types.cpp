@@ -103,6 +103,17 @@
 #include "ai/ai_action_container.h"
 #include "ai/ai_spell_action_container.h"
 
+#include "profile_manager/input/input_profile_modifier.h"
+#include "profile_manager/input/input_profile_modifier_entry.h"
+#include "profile_manager/input/input_profile.h"
+
+#include "profile_manager/actionbar/action_bar_button_entry.h"
+#include "profile_manager/actionbar/action_bar_entry.h"
+#include "profile_manager/actionbar/action_bar_profile.h"
+
+#include "profile_manager/class_profile.h"
+#include "profile_manager/profile_manager.h"
+
 #ifdef TOOLS_ENABLED
 #include "editor/editor_plugin.h"
 
@@ -228,6 +239,18 @@ void register_entity_spell_system_types() {
 
 	//meshes
 	ClassDB::register_class<MeshDataResource>();
+
+	//ProfileManager
+	ClassDB::register_class<InputProfileModifier>();
+	ClassDB::register_class<InputProfileModifierEntry>();
+	ClassDB::register_class<InputProfile>();
+
+	ClassDB::register_class<ActionBarButtonEntry>();
+	ClassDB::register_class<ActionBarEntry>();
+	ClassDB::register_class<ActionBarProfile>();
+
+	ClassDB::register_class<ClassProfile>();
+	ClassDB::register_class<ProfileManager>();
 
 	#ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<EditorPluginColladaMdr>();
