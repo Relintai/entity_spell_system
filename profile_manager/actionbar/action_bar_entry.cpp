@@ -52,10 +52,6 @@ Ref<ActionBarButtonEntry> ActionBarEntry::get_button(int index) {
 	return _button_entries.get(index);
 }
 
-	int _action_bar_id;
-int _slot_num;
-Vector<Ref<ActionBarButtonEntry> > _button_entries;
-
 Dictionary ActionBarEntry::to_dict() const  {
 	Dictionary dict;
 
@@ -87,7 +83,7 @@ void ActionBarEntry::from_dict(const Dictionary &dict) {
 	for (int i = 0; i < arr.size(); ++i) {
 		Ref<ActionBarButtonEntry> e;
 		e.instance();
-
+		
 		e->from_dict(arr.get(i));
 
 		_button_entries.push_back(e);

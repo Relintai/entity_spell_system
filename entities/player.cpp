@@ -18,16 +18,39 @@ void Player::setc_seed(int value) {
 	_c_seed = value;
 }
 
+//Ref<InputProfile> Player::get_input_profile() {
+//	return _input_profile;
+//}
+
 void Player::_setup() {
 	Entity::_setup();
 
-	if (gets_entity_data().is_valid() && !gets_bag().is_valid()) {
-		Ref<Bag> bag;
-		bag.instance();
+	if (gets_entity_data().is_valid()) {
+		ProfileManager *pm = ProfileManager::get_instance();
 
-		bag->set_size(gets_entity_data()->get_bag_size());
+		if (pm != NULL) {
+			Ref<ClassProfile> cp = pm->get_class_profile(gets_entity_data()->get_id());
 
-		sets_bag(bag);
+			if (cp.is_valid()) {
+				set_actionbar_locked(cp->get_actionbar_locked());
+
+				get_action_bar_profile()->clear_action_bars();
+
+				Ref<ActionBarProfile> abp = cp->get_action_bar_profile();
+
+				get_action_bar_profile()->from_actionbar_profile(abp);
+			}
+		}
+
+		if (!gets_bag().is_valid()) {
+
+			Ref<Bag> bag;
+			bag.instance();
+
+			bag->set_size(gets_entity_data()->get_bag_size());
+
+			sets_bag(bag);
+		}
 	}
 }
 
@@ -48,7 +71,14 @@ void Player::_from_dict(const Dictionary &dict) {
 Player::Player() {
 	//_seed = 0; don't it will be random by default like this
 	_c_seed = _s_seed;
+
+	//_input_profile = Ref<InputProfile>(memnew(InputProfile()));
 }
+
+Player::~Player() {
+	//_input_profile.unref();
+}
+
 
 void Player::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gets_seed"), &Player::gets_seed);
@@ -58,4 +88,6 @@ void Player::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_seed"), &Player::getc_seed);
 	ClassDB::bind_method(D_METHOD("setc_seed", "value"), &Player::setc_seed);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cseed"), "setc_seed", "getc_seed");
+
+	//ClassDB::bind_method(D_METHOD("get_input_profile"), &Player::get_input_profile);
 }

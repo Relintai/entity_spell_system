@@ -43,7 +43,6 @@ void ClassProfile::set_xp(int value)
 bool ClassProfile::get_actionbar_locked() {
 	return _actionbar_locked;
 }
-
 void ClassProfile::set_actionbar_locked(bool value) {
 	_actionbar_locked = value;
 }
@@ -52,7 +51,6 @@ Ref<InputProfile> ClassProfile::get_input_profile()
 {
     return _input_profile;
 }
-
 Ref<ActionBarProfile> ClassProfile::get_action_bar_profile()
 {
     return _action_bar_profile;
@@ -73,7 +71,6 @@ Dictionary ClassProfile::to_dict() const {
 	dict["level"] = _level;
 	dict["xp"] = _xp;
 	dict["actionbar_locked"] = _actionbar_locked;
-
 	dict["actionbar_profile"] = _action_bar_profile->to_dict();
 
 	dict["custom_data"] = _custom_data;

@@ -2,6 +2,7 @@
 #define ACTION_BAR_PROFILE_H
 
 #include "core/reference.h"
+#include "core/ustring.h"
 #include "core/vector.h"
 #include "core/dictionary.h"
 #include "core/array.h"
@@ -25,6 +26,8 @@ public:
 
 	Dictionary to_dict() const;
 	void from_dict(const Dictionary &dict);
+
+	void from_actionbar_profile(Ref<ActionBarProfile> other);
 
 	ActionBarProfile();
 	~ActionBarProfile();

@@ -305,9 +305,9 @@ Dictionary Entity::to_dict() {
 	return call("_to_dict");
 }
 void Entity::from_dict(const Dictionary &dict) {
-	call("_from_dict", dict);
-
 	_deserialized = true;
+
+	call("_from_dict", dict);
 
 	emit_signal("deserialized", this);
 }
@@ -477,13 +477,18 @@ Dictionary Entity::_to_dict() {
 	if (_s_bag.is_valid())
 		dict["bag"] = _s_bag->to_dict();
 
+	////     Actionbars    ////
+
+	dict["actionbar_locked"] = _actionbar_locked;
+	dict["actionbar_profile"] = _action_bar_profile->to_dict();
+
 	return dict;
 }
 void Entity::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
 	sets_guid(dict.get("guid", 0));
-	sets_guid(dict.get("guid", 0));
+	//setc_guid(dict.get("guid", 0));
 
 	sets_entity_type((EntityEnums::EntityType)((int)dict.get("type", 0)));
 
@@ -491,8 +496,6 @@ void Entity::_from_dict(const Dictionary &dict) {
 	sets_level(dict.get("level", 0));
 	sets_xp(dict.get("xp", 0));
 	sets_money(dict.get("money", 0));
-
-	sets_entity_data_id(dict.get("entity_data_id", 0));
 
 	sets_entity_name(dict.get("entity_name", ""));
 
@@ -502,7 +505,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
 		Ref<Stat> s = _stats[i];
-
+		
 		s->from_dict(stats.get(String::num(i), Dictionary()));
 	}
 
@@ -730,9 +733,18 @@ void Entity::_from_dict(const Dictionary &dict) {
 		}*/
 	}
 
+	////     Actionbars    ////
+
+	_actionbar_locked = dict.get("actionbar_locked", false);
+	_action_bar_profile->from_dict(dict.get("actionbar_profile", Dictionary()));
+
+	int edi = dict.get("entity_data_id", 0);
+
 	if (DataManager::get_instance() != NULL) {
-		sets_entity_data(DataManager::get_instance()->get_entity_data(gets_entity_data_id()));
+		sets_entity_data(DataManager::get_instance()->get_entity_data(edi));
 	}
+
+	sets_entity_data_id(edi);
 }
 
 Entity::Entity() {
@@ -807,6 +819,9 @@ Entity::Entity() {
 
 	_s_free_spell_points = 0;
 	_c_free_spell_points = 0;
+
+	_action_bar_profile.instance();
+	_actionbar_locked = false;
 
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
 		Ref<Stat> s = Ref<Stat>(memnew(Stat(static_cast<Stat::StatId>(i))));
@@ -953,6 +968,8 @@ Entity::~Entity() {
 		_s_equipment[i].unref();
 		_c_equipment[i].unref();
 	}
+
+	_action_bar_profile.unref();
 }
 
 void Entity::initialize(Ref<EntityCreateInfo> info) {
@@ -4131,6 +4148,19 @@ int Entity::getc_data_count() {
 	return _c_data.size();
 }
 
+////    Actionbars    ////
+
+bool Entity::get_actionbar_locked() {
+	return _actionbar_locked;
+}
+void Entity::set_actionbar_locked(bool value) {
+	_actionbar_locked = value;
+}
+
+Ref<ActionBarProfile> Entity::get_action_bar_profile() {
+	return _action_bar_profile;
+}
+
 void Entity::loaded() {
 	//sendstate = true;
 }
@@ -5063,4 +5093,12 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &Entity::_from_dict);
 	ClassDB::bind_method(D_METHOD("_to_dict"), &Entity::_to_dict);
+
+	//Actionbars
+
+	ClassDB::bind_method(D_METHOD("get_actionbar_locked"), &Entity::get_actionbar_locked);
+	ClassDB::bind_method(D_METHOD("set_actionbar_locked", "value"), &Entity::set_actionbar_locked);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "actionbar_locked"), "set_actionbar_locked", "get_actionbar_locked");
+
+	ClassDB::bind_method(D_METHOD("get_action_bar_profile"), &Entity::get_action_bar_profile);
 }

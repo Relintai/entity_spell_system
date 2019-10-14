@@ -34,6 +34,8 @@
 #include "./data/entity_data_container.h"
 #include "./skills/entity_skill.h"
 
+#include "../profile_manager/actionbar/action_bar_profile.h"
+
 class EntityData;
 class AuraData;
 class Spell;
@@ -655,6 +657,13 @@ public:
 	Ref<EntityDataContainer> getc_data(int index);
 	int getc_data_count();
 
+	////    Actionbars    ////
+
+	bool get_actionbar_locked();
+	void set_actionbar_locked(bool value);
+
+	Ref<ActionBarProfile> get_action_bar_profile();
+
 	void loaded();
 
 	String random_name();
@@ -806,6 +815,11 @@ private:
 
 	Vector<Ref<EntityDataContainer> > _s_data;
 	Vector<Ref<EntityDataContainer> > _c_data;
+
+	////    Actionbars    ////
+
+	bool _actionbar_locked;
+	Ref<ActionBarProfile> _action_bar_profile;
 
 	////    Crafting System    ////
 

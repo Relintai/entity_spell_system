@@ -76,7 +76,8 @@ Dictionary ActionBarProfile::to_dict() const {
 	return dict;
 }
 void ActionBarProfile::from_dict(const Dictionary &dict) {
-	ERR_FAIL_COND(dict.empty());
+	if (dict.empty())
+		return;
 
 	_action_bars.clear();
 
@@ -91,6 +92,16 @@ void ActionBarProfile::from_dict(const Dictionary &dict) {
 		e->from_dict(arr.get(i));
 
 		_action_bars.push_back(e);
+	}
+}
+
+void ActionBarProfile::from_actionbar_profile(Ref<ActionBarProfile> other) {
+	_action_bars.clear();
+
+	_name = other->get_action_bar_profile_name();
+
+	for (int i = 0; i < other->get_action_bar_count(); ++i) {
+		_action_bars.push_back(other->get_action_bar(i));
 	}
 }
 
@@ -116,5 +127,7 @@ void ActionBarProfile::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &ActionBarProfile::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &ActionBarProfile::to_dict);
+
+	ClassDB::bind_method(D_METHOD("from_actionbar_profile", "other"), &ActionBarProfile::from_actionbar_profile);
 }
 
