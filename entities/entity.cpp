@@ -1217,12 +1217,7 @@ void Entity::set_stat_int(int index, Ref<Stat> entry) {
 }
 
 Ref<Stat> Entity::get_stat_enum(Stat::StatId stat_id) {
-	//ERR_FAIL_COND_V(stat_id == Stat::STAT_ID_NONE);
-
-	if (stat_id == Stat::STAT_ID_NONE) {
-		print_error("Add fail cond here, stat has STAT_ID_NONE!");
-		return _stats[0];
-	}
+	ERR_FAIL_INDEX_V(stat_id, Stat::STAT_ID_TOTAL_STATS, Ref<Stat>());
 
 	return _stats[stat_id];
 }

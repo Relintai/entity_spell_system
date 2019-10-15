@@ -305,7 +305,7 @@ void Stat::remove_modifier_index(int index) {
 }
 
 void Stat::apply_modifiers() {
-	ERR_FAIL_COND(_owner == NULL);
+	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
 	ERR_FAIL_COND(!_stat_data_entry.is_valid());
 
 	reset_values();

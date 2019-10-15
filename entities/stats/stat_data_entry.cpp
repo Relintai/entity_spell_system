@@ -111,6 +111,7 @@ StatDataEntry::StatDataEntry() {
 	_modifier_apply_type = Stat::MODIFIER_APPLY_TYPE_STANDARD;
 
 	for (int i = 0; i < MAX_MOD_STATS; ++i) {
+		_mod_stats[i].stat_id = Stat::STAT_ID_HEALTH;
 		_mod_stats[i].max_value = 1000;
 	}
 }
