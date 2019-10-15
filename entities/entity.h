@@ -463,10 +463,6 @@ public:
 	//Update
 	void update_auras(float delta);
 
-	//Old stuff, remove or update
-	void resurrect();
-	void creceive_resurrect();
-	void creceive_mana_changed(int amount);
 	bool gets_is_dead();
 	bool getc_is_dead();
 

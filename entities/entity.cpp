@@ -1740,42 +1740,6 @@ void Entity::clevelup(int value) {
 	con_level_up(value);
 }
 
-void Entity::resurrect() {
-	/*
-	if (!CxNet::IsServer) {
-		return;
-	}
-	sIsDead = false;
-	SHealth->SetToMax();
-	SHealth->Dirty = false;
-	if (SOnResurrect != null) {
-		DELEGATE_INVOKE(SOnResurrect);
-	}
-	GameObject *graveyardSpawnPoint = GameObject::FindGameObjectWithTag(new String("StartPosition"))->GetComponent<SpawnPointManager>()->GetGraveyardSpawnPoint();
-	owner->transform->position = graveyardSpawnPoint->transform->position;
-	owner->transform->rotation = graveyardSpawnPoint->transform->rotation;
-	SendResurrectMessage();*/
-}
-
-void Entity::creceive_resurrect() {
-	/*
-	if (OnResurrect != null) {
-		DELEGATE_INVOKE(OnResurrect);
-	}
-	cIsDead = false;
-	CHealth->SetToMax();
-	CHealth->Dirty = false;*/
-}
-
-void Entity::creceive_mana_changed(int amount) {
-	/*
-	Stat *expr_06 = CMana;
-	expr_06->Current -= (float)(amount);
-	for (int i = 0; i < eventHandlers->Count; i += 1) {
-		eventHandlers->GetData(i)->OnManaUse(owner->transform->gameObject, amount, (int)(CMana->Current));
-	}*/
-}
-
 void Entity::son_before_aura_applied(Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
