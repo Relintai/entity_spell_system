@@ -347,13 +347,14 @@ void Stat::apply_modifiers() {
 	for (int i = 0; i < _stat_data_entry->get_mod_stat_count(); ++i) {
 		Ref<Stat> stat = _owner->get_stat_enum(_stat_data_entry->get_mod_stat_id(i));
 		Ref<Curve> curve = _stat_data_entry->get_mod_stat_curve(i);
+		float max_value = _stat_data_entry->get_mod_stat_max_value(i);
 
 		ERR_FAIL_COND(!stat.is_valid());
 		ERR_FAIL_COND(!curve.is_valid());
 
 		Ref<StatModifier> sm = stat->get_or_add_modifier(-(static_cast<int>(_id) + 1));
 
-		sm->set_base_mod(_s_current * curve->interpolate(_s_current));
+		sm->set_base_mod(_s_current * curve->interpolate(_s_current / max_value));
 	}
 
 	_owner->ons_stat_changed(Ref<Stat>(this));

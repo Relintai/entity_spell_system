@@ -30,13 +30,18 @@ public:
 	void set_modifier_apply_type(Stat::StatModifierApplyType value);
 
 	bool has_mod_stats();
+
 	int get_mod_stat_count();
+	void set_mod_stat_count(int value);
 
 	Stat::StatId get_mod_stat_id(int index);
 	void set_mod_stat_id(int index, Stat::StatId value);
 
 	Ref<Curve> get_mod_stat_curve(int index);
 	void set_mod_stat_curve(int index, Ref<Curve> curve);
+
+	float get_mod_stat_max_value(int index);
+	void set_mod_stat_max_value(int index, float value);
 
 	void get_stats_for_stat(Ref<Stat> stat);
 
@@ -51,6 +56,7 @@ public:
 	struct ModStat {
 		Stat::StatId stat_id;
 		Ref<Curve> curve;
+		float max_value;
 	};
 
 	enum {

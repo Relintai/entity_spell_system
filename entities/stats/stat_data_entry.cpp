@@ -48,8 +48,12 @@ void StatDataEntry::set_modifier_apply_type(Stat::StatModifierApplyType value) {
 bool StatDataEntry::has_mod_stats() {
 	return _mod_stat_count > 0;
 }
+
 int StatDataEntry::get_mod_stat_count() {
 	return _mod_stat_count;
+}
+void StatDataEntry::set_mod_stat_count(int value) {
+	_mod_stat_count = value;
 }
 
 Stat::StatId StatDataEntry::get_mod_stat_id(int index) {
@@ -74,6 +78,17 @@ void StatDataEntry::set_mod_stat_curve(int index, Ref<Curve> curve) {
 	_mod_stats[index].curve = curve;
 }
 
+float StatDataEntry::get_mod_stat_max_value(int index) {
+	ERR_FAIL_INDEX_V(index, MAX_MOD_STATS, 1);
+
+	return _mod_stats[index].max_value;
+}
+void StatDataEntry::set_mod_stat_max_value(int index, float value) {
+	ERR_FAIL_INDEX(index, 1);
+
+	_mod_stats[index].max_value = value;
+}
+
 void StatDataEntry::get_stats_for_stat(Ref<Stat> stat) {
 	stat->set_stat_modifier_type(get_modifier_apply_type());
 
@@ -94,6 +109,10 @@ StatDataEntry::StatDataEntry() {
 	_mod_stat_count = 0;
 
 	_modifier_apply_type = Stat::MODIFIER_APPLY_TYPE_STANDARD;
+
+	for (int i = 0; i < MAX_MOD_STATS; ++i) {
+		_mod_stats[i].max_value = 1000;
+	}
 }
 
 StatDataEntry::~StatDataEntry() {
@@ -124,7 +143,10 @@ void StatDataEntry::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "modifier_apply_type", PROPERTY_HINT_ENUM, Stat::MODIFIER_APPLY_TYPE_BINDING_STRING), "set_modifier_apply_type", "get_modifier_apply_type");
 
 	ClassDB::bind_method(D_METHOD("has_mod_stats"), &StatDataEntry::has_mod_stats);
+
 	ClassDB::bind_method(D_METHOD("get_mod_stat_count"), &StatDataEntry::get_mod_stat_count);
+	ClassDB::bind_method(D_METHOD("set_mod_stat_count", "value"), &StatDataEntry::set_mod_stat_count);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "mod_stat_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_MOD_STATS), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_mod_stat_count", "get_mod_stat_count");
 
 	ClassDB::bind_method(D_METHOD("get_mod_stat_id", "index"), &StatDataEntry::get_mod_stat_id);
 	ClassDB::bind_method(D_METHOD("set_mod_stat_id", "index", "value"), &StatDataEntry::set_mod_stat_id);
@@ -132,9 +154,13 @@ void StatDataEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_mod_stat_curve", "index"), &StatDataEntry::get_mod_stat_curve);
 	ClassDB::bind_method(D_METHOD("set_mod_stat_curve", "index", "value"), &StatDataEntry::set_mod_stat_curve);
 
+	ClassDB::bind_method(D_METHOD("get_mod_stat_max_value", "index"), &StatDataEntry::get_mod_stat_max_value);
+	ClassDB::bind_method(D_METHOD("set_mod_stat_max_value", "index", "value"), &StatDataEntry::set_mod_stat_max_value);
+
 	for (int i = 0; i < MAX_MOD_STATS; i++) {
 		ADD_PROPERTYI(PropertyInfo(Variant::INT, "ModStat_" + itos(i) + "/stat_id", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_id", "get_mod_stat_id", i);
 		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "ModStat_" + itos(i) + "/curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_curve", "get_mod_stat_curve", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "ModStat_" + itos(i) + "/max_value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_max_value", "get_mod_stat_max_value", i);
 	}
 
 	ClassDB::bind_method(D_METHOD("get_stats_for_stat", "stat"), &StatDataEntry::get_stats_for_stat);

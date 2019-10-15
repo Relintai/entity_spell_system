@@ -72,7 +72,6 @@ void StatData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stat_data_enum", "index"), &StatData::get_stat_data_enum);
 	ClassDB::bind_method(D_METHOD("set_stat_data_enum", "stat_id", "entry"), &StatData::set_stat_data_enum);
 
-
 	ADD_GROUP("Base Stats", "base_stat");
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
 		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "base_stat_" + Stat::stat_id_name(i), PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry"), "set_stat_data_enum", "get_stat_data_enum", i);
