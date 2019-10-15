@@ -256,9 +256,9 @@ void Entity::setup() {
 
 void Entity::_setup() {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->setup_resources(this);
-
 		sinitialize_stats();
+
+		_s_entity_data->setup_resources(this);
 
 		sets_entity_data_id(_s_entity_data->get_id());
 
@@ -505,7 +505,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
 		Ref<Stat> s = _stats[i];
-		
+
 		s->from_dict(stats.get(String::num(i), Dictionary()));
 	}
 
@@ -832,6 +832,7 @@ Entity::Entity() {
 		_stats[i] = s;
 	}
 
+	/*
 	get_stat_enum(Stat::STAT_ID_HEALTH)->set_base(10000);
 	get_stat_enum(Stat::STAT_ID_MANA)->set_base(100);
 	get_stat_enum(Stat::STAT_ID_RAGE)->set_base(100);
@@ -844,7 +845,7 @@ Entity::Entity() {
 	get_stat_enum(Stat::STAT_ID_SPELL_CRIT_BONUS)->set_base(50);
 	get_stat_enum(Stat::STAT_ID_BLOCK)->set_base(10);
 	get_stat_enum(Stat::STAT_ID_PARRY)->set_base(15);
-	get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION)->set_base(15);
+	get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION)->set_base(15);*/
 
 	SET_RPC_REMOTE("crequest_spell_cast");
 	SET_RPC_REMOTE("csend_request_rank_increase");
@@ -1019,24 +1020,9 @@ void Entity::sinitialize_stats() {
 
 	ERR_FAIL_COND(!cc.is_valid());
 
-	cc->get_stat_data()->get_stat_for_stat(get_health());
-	cc->get_stat_data()->get_stat_for_stat(get_mana());
-	cc->get_stat_data()->get_stat_for_stat(get_rage());
-	cc->get_stat_data()->get_stat_for_stat(get_energy());
-	cc->get_stat_data()->get_stat_for_stat(get_speed());
-	cc->get_stat_data()->get_stat_for_stat(get_gcd());
-	cc->get_stat_data()->get_stat_for_stat(get_melee_crit());
-	cc->get_stat_data()->get_stat_for_stat(get_melee_crit_bonus());
-	cc->get_stat_data()->get_stat_for_stat(get_spell_crit());
-	cc->get_stat_data()->get_stat_for_stat(get_spell_crit_bonus());
-	cc->get_stat_data()->get_stat_for_stat(get_block());
-	cc->get_stat_data()->get_stat_for_stat(get_parry());
-	cc->get_stat_data()->get_stat_for_stat(get_melee_damage_reduction());
-	cc->get_stat_data()->get_stat_for_stat(get_spell_damage_reduction());
-	cc->get_stat_data()->get_stat_for_stat(get_damage_taken());
-	cc->get_stat_data()->get_stat_for_stat(get_heal_taken());
-	cc->get_stat_data()->get_stat_for_stat(get_melee_damage());
-	cc->get_stat_data()->get_stat_for_stat(get_spell_damage());
+	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+		cc->get_stat_data()->get_stat_for_stat(_stats[i]);
+	}
 
 	for (int i = 0; i < cc->get_num_auras(); ++i) {
 		Ref<Aura> a = cc->get_aura(i);
@@ -4299,6 +4285,22 @@ void Entity::update(float delta) {
 			sfinish_cast();
 		}
 	}
+
+	for (int i = 0; i < Stat::MAIN_STAT_ID_MAX; ++i) {
+		Ref<Stat> s = _stats[i];
+
+		if (!s.is_valid())
+			continue;
+
+		if (s->get_dirty_mods())
+			s->apply_modifiers();
+
+		if (s->get_dirty()) {
+			//send target is nout public
+			s->setc_values(s->gets_current(), s->gets_max());
+			s->set_dirty(false);
+		}
+	}
 }
 
 String Entity::random_name() {
@@ -4821,7 +4823,7 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("con_equip_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
 	ADD_SIGNAL(MethodInfo("con_equip_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret") , "_should_deny_equip", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_should_deny_equip", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 
 	BIND_VMETHOD(MethodInfo("_son_equip_success", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
 	BIND_VMETHOD(MethodInfo("_son_equip_fail", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));

@@ -99,18 +99,14 @@ public:
 	static String stat_id_name(int stat_id);
 
 public:
-	Stat();
-	Stat(Stat::StatId id);
-	Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type);
-	Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float base, float bonus, float percent);
-	Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, float base);
-	~Stat();
-
 	Stat::StatId get_id();
 	void set_id(Stat::StatId id);
 
 	StatModifierApplyType get_stat_modifier_type();
 	void set_stat_modifier_type(StatModifierApplyType value);
+
+	bool get_public();
+	void set_public(bool value);
 
 	bool get_locked();
 	void set_locked(bool value);
@@ -118,12 +114,12 @@ public:
 	bool get_dirty();
 	void set_dirty(bool value);
 
+	bool get_dirty_mods();
+	void set_dirty_mods(bool value);
+
 	float get_base();
-	void set_base(float value);
 	float get_bonus();
-	void set_bonus(float value);
 	float get_percent();
-	void set_percent(float value);
 
 	float gets_current();
 	void sets_current(float value);
@@ -135,37 +131,36 @@ public:
 	float getc_max();
 	void setc_max(float value);
 
-	void reset_values();
-	void recalculate();
-	bool iss_current_zero();
-	bool isc_current_zero();
-	void set(float current, float max, float base, float bonus, float percent);
-	void set_from_stat(Ref<Stat> other);
-
-	void set_to_max();
-	void set_values(float current, float base, float percent);
-
-	void apply_modifier(Ref<StatModifier> modifier);
-	void de_apply_modifier(Ref<StatModifier> modifier);
-	void re_apply_modifier_not_negative_stacking_percents();
+	void setc_values(int ccurrent, int cmax);
 
 	Vector<Ref<StatModifier> > *get_modifiers();
-	void add_modifier(int id, float base_mod, float bonus_mod, float percent_mod, bool apply = true);
-	void remove_modifier(int id, bool apply = true);
-	void re_apply_modifiers();
+	Ref<StatModifier> add_modifier(int id, float base_mod, float bonus_mod, float percent_mod);
+	void remove_modifier(int id);
 	int get_modifier_count();
+	void clear_modifiers();
 	Ref<StatModifier> get_modifier(int index);
 
-	void set_dependency(Ref<Stat> other, Ref<Curve> curve);
-	void remove_dependencies();
+	void apply_modifiers();
 
-	void send();
+	void reset_values();
+	void refresh_currmax();
+	bool iss_current_zero();
+	bool isc_current_zero();
+
+	void set_to_max();
+
+	void modifier_changed(Ref<StatModifier> modifier);
 
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
 
 	Dictionary _to_dict();
 	void _from_dict(const Dictionary &dict);
+
+	Stat();
+	Stat(Stat::StatId id);
+	Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type);
+	~Stat();
 
 protected:
 	static void _bind_methods();
@@ -177,8 +172,10 @@ private:
 
 	Vector<Ref<StatModifier> > _modifiers;
 
+	bool _public;
 	bool _locked;
 	bool _dirty;
+	bool _dirty_mods;
 
 	float _base;
 	float _bonus;
@@ -189,9 +186,6 @@ private:
 
 	float _c_current;
 	float _c_max;
-
-	Ref<Stat> _dependency;
-	Ref<Curve> _dependency_curve;
 };
 
 VARIANT_ENUM_CAST(Stat::StatId);

@@ -31,14 +31,16 @@ public:
 	Stat::StatId get_depends_on() { return _depends_on; }
 	void set_depends_on(Stat::StatId value) { _depends_on = value; }
 
-	Ref<LevelStatData> get_dependdency_curve() { return _dependdency_curve; }
-	void set_dependdency_curve(Ref<LevelStatData> curve) { _dependdency_curve = curve; }
+	Ref<Curve> get_dependdency_curve() { return _dependdency_curve; }
+	void set_dependdency_curve(Ref<Curve> curve) { _dependdency_curve = curve; }
 
 
 	void get_stats_for_stat(Ref<Stat> stat) {
 		stat->set_stat_modifier_type(get_modifier_apply_type());
-		stat->set_values(get_base(), get_bonus(), get_percent());
-		stat->set_stat_modifier_type(get_modifier_apply_type());
+
+		stat->clear_modifiers();
+
+		stat->add_modifier(0, get_base(), get_bonus(), get_percent());
 
 		stat->set_to_max();
 	}
