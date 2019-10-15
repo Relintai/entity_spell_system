@@ -68,6 +68,11 @@ Dictionary StatModifier::_to_dict() {
 }
 void StatModifier::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
+
+	_id = dict.get("id", 0);
+	_base_mod = dict.get("base_mod", 0);
+	_bonus_mod = dict.get("bonus_mod", 0);
+	_percent_mod = dict.get("percent_mod", 0);
 }
 
 StatModifier::StatModifier() {
