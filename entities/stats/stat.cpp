@@ -311,46 +311,34 @@ void Stat::apply_modifiers() {
 	reset_values();
 
 	if (_modifier_apply_type == MODIFIER_APPLY_TYPE_STANDARD) {
-		for (int i = 0; i < _modifiers.size(); i += 1) {
+		for (int i = 0; i < _modifiers.size(); ++i) {
 			Ref<StatModifier> mod = _modifiers.get(i);
-			print_error("apply  " + String::num(mod->get_base_mod()));
+			
 			_base += mod->get_base_mod();
 			_bonus += mod->get_bonus_mod();
 			_percent += mod->get_percent_mod();
 		}
 	} else {
-		for (int i = 0; i < _modifiers.size(); i += 1) {
+		for (int i = 0; i < _modifiers.size(); ++i) {
 			Ref<StatModifier> modifier = _modifiers.get(i);
 
-			if (modifier->get_percent_mod() >= (float)0) {
-				_base += modifier->get_base_mod();
-				_bonus += modifier->get_bonus_mod();
+			_base += modifier->get_base_mod();
+			_bonus += modifier->get_bonus_mod();
+
+			if (modifier->get_percent_mod() >= 0) {
 				_percent += modifier->get_percent_mod();
-			} else {
-
-				int num = -1;
-				if (get_modifiers()->size() > 0) {
-					float percent_mod = get_modifiers()->get(0)->get_percent_mod();
-					for (int i = 1; i < get_modifiers()->size(); i += 1) {
-						if ((_modifiers.get(i)->get_percent_mod() < (float)0) && (_modifiers.get(i)->get_percent_mod() < percent_mod)) {
-							num = i;
-							percent_mod = _modifiers.get(i)->get_percent_mod();
-						}
-					}
-				}
-
-				if (num != -1) {
-					if (modifier->get_percent_mod() < _modifiers.get(num)->get_percent_mod()) {
-						_percent -= _modifiers.get(num)->get_percent_mod();
-					}
-
-					_percent += modifier->get_percent_mod();
-				} else {
-
-					_percent += modifier->get_percent_mod();
-				}
 			}
 		}
+
+		float p = 0;
+		for (int i = 0; i < _modifiers.size(); ++i) {
+			Ref<StatModifier> modifier = _modifiers.get(i);
+
+			if (modifier->get_percent_mod() < p)
+				p = modifier->get_percent_mod();
+		}
+
+		_percent += p;
 	}
 
 	refresh_currmax();
@@ -373,22 +361,19 @@ void Stat::apply_modifiers() {
 }
 
 void Stat::reset_values() {
-	_percent = 100;
-	_bonus = 0;
 	_percent = 0;
+	_bonus = 0;
+	_base = 0;
 
 	_dirty = true;
 	_dirty_mods = true;
 }
 
 void Stat::refresh_currmax() {
-	float diff = _s_current / _s_max;
+	//According to people on stack overflow this should be fine, because 0.0 has a unique representation
+	float diff = _s_max == 0.0 ? 1.0 : _s_current / _s_max;
 
 	_s_max = (_base + _bonus) * (_percent / 100.0);
-
-	if (_s_current > _s_max) {
-		_s_current = _s_max;
-	}
 
 	_s_current = _s_max * diff;
 
@@ -445,8 +430,8 @@ Dictionary Stat::_to_dict() {
 
 	Dictionary modifiers;
 
-	for (int i = 0; _modifiers.size(); ++i) {
-		modifiers[i] = _modifiers.get(i)->to_dict();
+	for (int i = 0; i < _modifiers.size(); ++i) {
+		modifiers[String::num(i)] = _modifiers.get(i)->to_dict();
 	}
 
 	dict["modifiers"] = modifiers;
@@ -482,7 +467,7 @@ void Stat::_from_dict(const Dictionary &dict) {
 		Ref<StatModifier> sm;
 		sm.instance();
 
-		sm->from_dict(modifiers.get(i, Dictionary()));
+		sm->from_dict(modifiers.get(String::num(i), Dictionary()));
 		sm->set_owner(this);
 
 		_modifiers.push_back(sm);
@@ -503,7 +488,7 @@ Stat::Stat() {
 
 	_base = 0;
 	_bonus = 0;
-	_percent = 100;
+	_percent = 0;
 
 	_s_current = 0;
 	_s_max = 0;
@@ -526,7 +511,7 @@ Stat::Stat(Stat::StatId id, Entity *owner) {
 
 	_base = 0;
 	_bonus = 0;
-	_percent = 100;
+	_percent = 0;
 
 	_s_current = 0;
 	_s_max = 0;
@@ -549,7 +534,7 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, Entity *o
 
 	_base = 0;
 	_bonus = 0;
-	_percent = 100;
+	_percent = 0;
 
 	_s_current = 0;
 	_s_max = 0;

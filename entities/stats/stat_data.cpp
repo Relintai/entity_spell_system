@@ -48,7 +48,7 @@ StatData::StatData() {
 
 		_entries[i] = Ref<StatDataEntry>(entry);
 	}
-
+	
 	get_stat_data_enum(Stat::STAT_ID_HEALTH)->set_base(100);
 	get_stat_data_enum(Stat::STAT_ID_MANA)->set_base(100);
 	get_stat_data_enum(Stat::STAT_ID_SPEED)->set_base(4.2);

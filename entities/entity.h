@@ -197,8 +197,6 @@ public:
 	Ref<EntityData> gets_entity_data();
 	void sets_entity_data(Ref<EntityData> value);
 
-	void sinitialize_stats();
-
 	////     Stats    ////
 
 	_FORCE_INLINE_ Ref<Stat> get_health() { return _stats[Stat::STAT_ID_HEALTH]; }

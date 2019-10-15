@@ -269,10 +269,42 @@ void Entity::_setup() {
 			_stats[i]->set_stat_data_entry(sde);
 		}
 
+		for (int i = 0; i < _s_auras.size(); ++i) {
+			Ref<AuraData> ad = _s_auras.get(i);
+
+			if (!ad->get_aura()->get_hide())
+				SEND_RPC(rpc("cadd_aura", ad), cadd_aura(ad));
+		}
+
 		return;
 	}
 
-	sinitialize_stats();
+	ERR_FAIL_COND(!gets_entity_data().is_valid());
+
+	Ref<EntityClassData> cc = gets_entity_data()->get_entity_class_data();
+
+	ERR_FAIL_COND(!cc.is_valid());
+
+	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+		cc->get_stat_data()->get_stat_for_stat(_stats[i]);
+	}
+
+	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+		Ref<Stat> s = _stats[i];
+
+		s->apply_modifiers();
+
+		s->setc_values(s->gets_current(), s->gets_max());
+		s->set_dirty(false);
+	}
+
+	for (int i = 0; i < cc->get_num_auras(); ++i) {
+		Ref<Aura> a = cc->get_aura(i);
+
+		if (a.is_valid()) {
+			a->sapply_simple(this, this, 1.0);
+		}
+	}
 
 	_s_entity_data->setup_resources(this);
 
@@ -598,10 +630,6 @@ void Entity::_from_dict(const Dictionary &dict) {
 		r->set_caster(this);
 
 		_s_auras.push_back(r);
-
-		if (!r->get_aura()->get_hide())
-			SEND_RPC(rpc("cadd_aura", r), cadd_aura(r));
-
 		//_c_auras.push_back(r);
 	}
 
@@ -1007,29 +1035,6 @@ void Entity::initialize(Ref<EntityCreateInfo> info) {
 	setc_xp(info->get_xp());
 
 	sets_entity_data(info->get_entity_data());
-}
-
-void Entity::sinitialize_stats() {
-	//gets_entity_data()->get_stat_data()->get_stats_for_stat(_health);
-	//Ref<StatDataEntry> e = gets_entity_data()->get_stat_data()->get_stat_data_enum(Stat::STAT_ID_HEALTH);
-
-	ERR_FAIL_COND(!gets_entity_data().is_valid());
-
-	Ref<EntityClassData> cc = gets_entity_data()->get_entity_class_data();
-
-	ERR_FAIL_COND(!cc.is_valid());
-
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
-		cc->get_stat_data()->get_stat_for_stat(_stats[i]);
-	}
-
-	for (int i = 0; i < cc->get_num_auras(); ++i) {
-		Ref<Aura> a = cc->get_aura(i);
-
-		if (a.is_valid()) {
-			a->sapply_simple(this, this, 1.0);
-		}
-	}
 }
 
 //////     Stat System      //////
@@ -4233,11 +4238,8 @@ void Entity::update(float delta) {
 		}
 	}
 
-	for (int i = 0; i < Stat::MAIN_STAT_ID_MAX; ++i) {
+	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
 		Ref<Stat> s = _stats[i];
-
-		if (!s.is_valid())
-			continue;
 
 		if (s->get_dirty_mods())
 			s->apply_modifiers();
@@ -4251,19 +4253,6 @@ void Entity::update(float delta) {
 }
 
 String Entity::random_name() {
-	/*/
-      String text = new String(l1->GetData(UnityEngine::Random::Range(0, l1->Length)));
-      bool flag = true;
-      int num = UnityEngine::Random::Range(3, 6);
-      for (int i = 0; i < num; i += 1) {
-      if (flag) {
-     *text += *(new String(l3->GetData(UnityEngine::Random::Range(0, l3->Length))));
-     } else {
-     *text += *(new String(l2->GetData(UnityEngine::Random::Range(0, l2->Length))));
-     }
-     }
-     return text;*/
-
 	return "";
 }
 

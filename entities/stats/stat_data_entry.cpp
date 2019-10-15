@@ -82,8 +82,6 @@ void StatDataEntry::get_stats_for_stat(Ref<Stat> stat) {
 	stat->set_public(_public);
 	stat->add_modifier(0, get_base(), get_bonus(), get_percent());
 	stat->set_stat_data_entry(Ref<StatDataEntry>(this));
-
-	stat->set_to_max();
 }
 
 StatDataEntry::StatDataEntry() {

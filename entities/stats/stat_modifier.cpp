@@ -49,7 +49,6 @@ void StatModifier::set_percent_mod(float value) {
 	}
 }
 
-
 Dictionary StatModifier::to_dict() {
 	return call("_to_dict");
 }
