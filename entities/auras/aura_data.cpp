@@ -59,11 +59,9 @@ bool AuraData::update(float delta) {
 Entity *AuraData::get_owner() {
 	return _owner;
 }
-
 void AuraData::set_owner(Entity *value) {
 	_owner = value;
 }
-
 void AuraData::set_owner_bind(Node *value) {
 	if (!value) {
 		return;

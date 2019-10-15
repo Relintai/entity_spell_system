@@ -25,32 +25,38 @@ void Player::setc_seed(int value) {
 void Player::_setup() {
 	Entity::_setup();
 
-	if (gets_entity_data().is_valid()) {
-		ProfileManager *pm = ProfileManager::get_instance();
+	if (!gets_entity_data().is_valid())
+		return;
 
-		if (pm != NULL) {
-			Ref<ClassProfile> cp = pm->get_class_profile(gets_entity_data()->get_id());
+	if (is_deserialized()) {
 
-			if (cp.is_valid()) {
-				set_actionbar_locked(cp->get_actionbar_locked());
+		return;
+	}
 
-				get_action_bar_profile()->clear_action_bars();
+	ProfileManager *pm = ProfileManager::get_instance();
 
-				Ref<ActionBarProfile> abp = cp->get_action_bar_profile();
+	if (pm != NULL) {
+		Ref<ClassProfile> cp = pm->get_class_profile(gets_entity_data()->get_id());
 
-				get_action_bar_profile()->from_actionbar_profile(abp);
-			}
+		if (cp.is_valid()) {
+			set_actionbar_locked(cp->get_actionbar_locked());
+
+			get_action_bar_profile()->clear_action_bars();
+
+			Ref<ActionBarProfile> abp = cp->get_action_bar_profile();
+
+			get_action_bar_profile()->from_actionbar_profile(abp);
 		}
+	}
 
-		if (!gets_bag().is_valid()) {
+	if (!gets_bag().is_valid()) {
 
-			Ref<Bag> bag;
-			bag.instance();
+		Ref<Bag> bag;
+		bag.instance();
 
-			bag->set_size(gets_entity_data()->get_bag_size());
+		bag->set_size(gets_entity_data()->get_bag_size());
 
-			sets_bag(bag);
-		}
+		sets_bag(bag);
 	}
 }
 
@@ -78,7 +84,6 @@ Player::Player() {
 Player::~Player() {
 	//_input_profile.unref();
 }
-
 
 void Player::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gets_seed"), &Player::gets_seed);

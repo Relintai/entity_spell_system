@@ -1,12 +1,15 @@
 #ifndef STAT_H
 #define STAT_H
 
-#include "core/ustring.h"
 #include "core/reference.h"
+#include "core/ustring.h"
 #include "core/vector.h"
 #include "scene/resources/curve.h"
 
 #include "stat_modifier.h"
+
+class StatDataEntry;
+class Entity;
 
 class Stat : public Reference {
 	GDCLASS(Stat, Reference);
@@ -102,6 +105,13 @@ public:
 	Stat::StatId get_id();
 	void set_id(Stat::StatId id);
 
+	Ref<StatDataEntry> get_stat_data_entry();
+	void set_stat_data_entry(Ref<StatDataEntry> entry);
+
+	Entity *get_owner();
+	void set_owner(Entity *value);
+	void set_owner_bind(Node *value);
+
 	StatModifierApplyType get_stat_modifier_type();
 	void set_stat_modifier_type(StatModifierApplyType value);
 
@@ -135,7 +145,9 @@ public:
 
 	Vector<Ref<StatModifier> > *get_modifiers();
 	Ref<StatModifier> add_modifier(int id, float base_mod, float bonus_mod, float percent_mod);
+	Ref<StatModifier> get_or_add_modifier(int id);
 	void remove_modifier(int id);
+	void remove_modifier_index(int index);
 	int get_modifier_count();
 	void clear_modifiers();
 	Ref<StatModifier> get_modifier(int index);
@@ -158,8 +170,8 @@ public:
 	void _from_dict(const Dictionary &dict);
 
 	Stat();
-	Stat(Stat::StatId id);
-	Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type);
+	Stat(Stat::StatId id, Entity* owner);
+	Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, Entity *owner);
 	~Stat();
 
 protected:
@@ -186,6 +198,9 @@ private:
 
 	float _c_current;
 	float _c_max;
+
+	Entity *_owner;
+	Ref<StatDataEntry> _stat_data_entry;
 };
 
 VARIANT_ENUM_CAST(Stat::StatId);

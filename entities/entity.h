@@ -199,13 +199,6 @@ public:
 
 	void sinitialize_stats();
 
-	void reward_xp_for_mob(int level);
-	void level_up(int num = 1);
-	void set_level_without_modifiers(int newLevel, bool a);
-	void apply_level_modifiers();
-	void rpc_level_up();
-	void registers();
-
 	////     Stats    ////
 
 	_FORCE_INLINE_ Ref<Stat> get_health() { return _stats[Stat::STAT_ID_HEALTH]; }
@@ -670,6 +663,10 @@ public:
 
 	void setup();
 	virtual void _setup();
+
+	////    Serialization    ////
+
+	bool is_deserialized();
 
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);

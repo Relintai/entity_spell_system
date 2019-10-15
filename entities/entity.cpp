@@ -246,59 +246,80 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 }
 
 void Entity::setup() {
-	if (_deserialized)
-		return;
-
 	if (has_method("_setup")) {
 		call_multilevel("_setup");
 	}
 }
 
 void Entity::_setup() {
-	if (_s_entity_data.is_valid()) {
-		sinitialize_stats();
+	if (!_s_entity_data.is_valid())
+		return;
 
-		_s_entity_data->setup_resources(this);
+	if (_deserialized) {
+		Ref<EntityClassData> cc = gets_entity_data()->get_entity_class_data();
+		ERR_FAIL_COND(!cc.is_valid());
 
-		sets_entity_data_id(_s_entity_data->get_id());
+		Ref<StatData> stat_data = cc->get_stat_data();
 
-		sets_entity_type(_s_entity_data->get_entity_type());
-		sets_entity_interaction_type(_s_entity_data->get_entity_interaction_type());
-		sets_immunity_flags(_s_entity_data->get_immunity_flags());
-		sets_entity_flags(_s_entity_data->get_entity_flags());
+		ERR_FAIL_COND(!stat_data.is_valid());
 
-		if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_NONE)
-			sets_entity_controller(_s_entity_data->get_entity_controller());
+		for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+			Ref<StatDataEntry> sde = stat_data->get_stat_data_int(i);
 
-		//sets_entity_name(_s_entity_data->get_entity_name());
-		sets_money(_s_entity_data->get_money());
-
-		Ref<EntityClassData> cd = _s_entity_data->get_entity_class_data();
-
-		if (cd.is_valid()) {
-			for (int i = 0; i < cd->get_num_start_spells(); ++i) {
-				adds_spell(cd->get_start_spell(i));
-			}
+			_stats[i]->set_stat_data_entry(sde);
 		}
 
-		for (int i = 0; i < _s_entity_data->get_num_craft_recipes(); ++i) {
-			adds_craft_recipe(_s_entity_data->get_craft_recipe(i));
+		return;
+	}
+
+	sinitialize_stats();
+
+	_s_entity_data->setup_resources(this);
+
+	sets_entity_data_id(_s_entity_data->get_id());
+
+	sets_entity_type(_s_entity_data->get_entity_type());
+	sets_entity_interaction_type(_s_entity_data->get_entity_interaction_type());
+	sets_immunity_flags(_s_entity_data->get_immunity_flags());
+	sets_entity_flags(_s_entity_data->get_entity_flags());
+
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_NONE)
+		sets_entity_controller(_s_entity_data->get_entity_controller());
+
+	//sets_entity_name(_s_entity_data->get_entity_name());
+	sets_money(_s_entity_data->get_money());
+
+	Ref<EntityClassData> cd = _s_entity_data->get_entity_class_data();
+
+	if (cd.is_valid()) {
+		for (int i = 0; i < cd->get_num_start_spells(); ++i) {
+			adds_spell(cd->get_start_spell(i));
 		}
+	}
 
-		if (_s_entity_data->get_equipment_data().is_valid()) {
-			Ref<EquipmentData> eqd = _s_entity_data->get_equipment_data();
+	for (int i = 0; i < _s_entity_data->get_num_craft_recipes(); ++i) {
+		adds_craft_recipe(_s_entity_data->get_craft_recipe(i));
+	}
 
-			for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
-				Ref<ItemInstance> ii = eqd->get_item(i);
+	if (_s_entity_data->get_equipment_data().is_valid()) {
+		Ref<EquipmentData> eqd = _s_entity_data->get_equipment_data();
 
-				if (ii.is_valid())
-					_s_equipment[i] = ii;
-			}
+		for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+			Ref<ItemInstance> ii = eqd->get_item(i);
+
+			if (ii.is_valid())
+				_s_equipment[i] = ii;
 		}
 	}
 
 	if (!Engine::get_singleton()->is_editor_hint())
 		set_process(_s_entity_data.is_valid());
+}
+
+////    Serialization    ////
+
+bool Entity::is_deserialized() {
+	return _deserialized;
 }
 
 Dictionary Entity::to_dict() {
@@ -824,10 +845,7 @@ Entity::Entity() {
 	_actionbar_locked = false;
 
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
-		Ref<Stat> s = Ref<Stat>(memnew(Stat(static_cast<Stat::StatId>(i))));
-
-		s->connect("s_changed", this, "ons_stat_changed");
-		s->connect("c_changed", this, "onc_stat_changed");
+		Ref<Stat> s = Ref<Stat>(memnew(Stat(static_cast<Stat::StatId>(i), this)));
 
 		_stats[i] = s;
 	}
@@ -989,25 +1007,6 @@ void Entity::initialize(Ref<EntityCreateInfo> info) {
 	setc_xp(info->get_xp());
 
 	sets_entity_data(info->get_entity_data());
-
-	//setc_entity_data(info->get_entity_data());
-	/*
-	if (gets_entity_data() != NULL) {
-		Ref<StatData> sd = gets_entity_data()->get_stat_data();
-
-		for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
-			Ref<StatDataEntry> entry = sd->get_stat_data_int(i);
-			Ref<Stat> stat = get_stat_int(i);
-
-			entry->get_stats_for_stat(stat);
-
-			if (entry->has_dependency()) {
-				Ref<Stat> other = get_stat_enum(entry->get_depends_on());
-
-				stat->set_dependency(other, entry->get_dependdency_curve());
-			}
-		}
-	}*/
 }
 
 void Entity::sinitialize_stats() {
@@ -4153,58 +4152,6 @@ void Entity::loaded() {
 
 ////    PlayerData    ////
 
-void Entity::reward_xp_for_mob(int level) {
-	/*
-       int l = level - Level;
-
-       if (Mathf.Abs(l) > 5) {
-       if (l < 0) {
-       l = -5;
-       } else {
-       l = 5;
-       }
-       }
-
-       l += 5;
-
-       Xp += (l * 20);*/
-}
-
-void Entity::level_up(int num) {
-	/*
-       Xp = 0;
-       Level += num;
-
-       if (SOnLevelUp != null) {
-       SOnLevelUp(owner);
-       }
-
-       RpcLevelUp();*/
-}
-
-void Entity::set_level_without_modifiers(int newLevel, bool a) {
-	/*
-       level = newLevel;
-
-       if (SOnLevelChanged != null) {
-       SOnLevelChanged(owner, newLevel);
-       }*/
-}
-
-void Entity::apply_level_modifiers() {
-	/*
-       owner.Stats.SHealth.Modifiers.Remove(-10);
-
-       owner.Stats.SHealth.Modifiers.Add(-10, 0f, -((1 - character.Stats.HPScaling.Evaluate((float)Level)) * 100f));*/
-}
-
-void Entity::rpc_level_up() {
-	/*
-       if (COnLevelUp != null) {
-       COnLevelUp(owner);
-       }*/
-}
-
 void Entity::update(float delta) {
 	if (_s_gcd > 0.0000001) {
 		_s_gcd -= delta;
@@ -5086,16 +5033,6 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("crequest_loot"), &Entity::crequest_loot);
 	ClassDB::bind_method(D_METHOD("sloot"), &Entity::sloot);
 
-	//Serialization
-	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
-
-	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &Entity::from_dict);
-	ClassDB::bind_method(D_METHOD("to_dict"), &Entity::to_dict);
-
-	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &Entity::_from_dict);
-	ClassDB::bind_method(D_METHOD("_to_dict"), &Entity::_to_dict);
-
 	//Actionbars
 
 	ClassDB::bind_method(D_METHOD("get_actionbar_locked"), &Entity::get_actionbar_locked);
@@ -5103,4 +5040,16 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "actionbar_locked"), "set_actionbar_locked", "get_actionbar_locked");
 
 	ClassDB::bind_method(D_METHOD("get_action_bar_profile"), &Entity::get_action_bar_profile);
+
+	//Serialization
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+
+	ClassDB::bind_method(D_METHOD("is_deserialized"), &Entity::is_deserialized);
+
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &Entity::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &Entity::to_dict);
+
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &Entity::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &Entity::_to_dict);
 }

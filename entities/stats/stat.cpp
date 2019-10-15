@@ -1,5 +1,8 @@
 #include "stat.h"
 
+#include "../entity.h"
+#include "stat_data_entry.h"
+
 const String Stat::STAT_BINDING_STRING = "Health,Speed,Mana,GCD,Haste,Agility,Strength,Stamina,Intellect,Luck,Haste Rating,Resilience,Armor,Attack Power,Spell Power,Melee Crit,Melee Crit bonus,Spell Crit,Spell Crit Bonus,Block,Parry,Damage Reduction,Melee Damage Reduction,Spell Damage Reduction,Damage Taken,Heal Taken,Melee Damage,Spell Damage,Holy Resist,Shadow Resist,Nature Resist,Fire Resist,Frost Resist,Lightning Resist,Chaos Resist,Silence Resist,Fear Resist,Stun Resist,Energy,Rage,XP Rate,None";
 const String Stat::MAIN_STAT_BINDING_STRING = "Agility,Strength,Stamina,Intellect,Luck";
 
@@ -103,12 +106,38 @@ String Stat::stat_id_name(int stat_id) {
 	return "";
 }
 
-
 Stat::StatId Stat::get_id() {
 	return _id;
 }
 void Stat::set_id(Stat::StatId id) {
 	_id = id;
+}
+
+Ref<StatDataEntry> Stat::get_stat_data_entry() {
+	return _stat_data_entry;
+}
+void Stat::set_stat_data_entry(Ref<StatDataEntry> entry) {
+	_stat_data_entry = entry;
+}
+
+Entity *Stat::get_owner() {
+	return _owner;
+}
+void Stat::set_owner(Entity *value) {
+	_owner = value;
+}
+void Stat::set_owner_bind(Node *value) {
+	if (!value) {
+		return;
+	}
+
+	Entity *e = cast_to<Entity>(value);
+
+	if (!e) {
+		return;
+	}
+
+	_owner = e;
 }
 
 Stat::StatModifierApplyType Stat::get_stat_modifier_type() {
@@ -117,7 +146,6 @@ Stat::StatModifierApplyType Stat::get_stat_modifier_type() {
 void Stat::set_stat_modifier_type(Stat::StatModifierApplyType value) {
 	_modifier_apply_type = value;
 }
-
 
 bool Stat::get_public() {
 	return _public;
@@ -183,7 +211,11 @@ float Stat::getc_current() {
 	return _c_current;
 }
 void Stat::setc_current(float value) {
+	ERR_FAIL_COND(_owner == NULL);
+
 	_c_current = value;
+
+	_owner->onc_stat_changed(Ref<Stat>(this));
 
 	emit_signal("c_changed", Ref<Stat>(this));
 }
@@ -192,15 +224,22 @@ float Stat::getc_max() {
 	return _c_max;
 }
 void Stat::setc_max(float value) {
+	ERR_FAIL_COND(_owner == NULL);
+
 	_s_current = value;
+
+	_owner->onc_stat_changed(Ref<Stat>(this));
 
 	emit_signal("c_changed", Ref<Stat>(this));
 }
 
 void Stat::setc_values(int ccurrent, int cmax) {
+	ERR_FAIL_COND(_owner == NULL);
+
 	_c_current = ccurrent;
 	_c_max = cmax;
 
+	_owner->onc_stat_changed(Ref<Stat>(this));
 	emit_signal("c_changed", Ref<Stat>(this));
 }
 
@@ -234,8 +273,22 @@ Ref<StatModifier> Stat::add_modifier(int id, float base_mod, float bonus_mod, fl
 	return stat_modifier;
 }
 
+Ref<StatModifier> Stat::get_or_add_modifier(int id) {
+	for (int i = 0; i < _modifiers.size(); ++i) {
+		if (_modifiers.get(i)->get_id() == id) {
+			return _modifiers.get(i);
+		}
+	}
+
+	Ref<StatModifier> stat_modifier = Ref<StatModifier>(memnew(StatModifier(id, 0, 0, 0, this)));
+
+	_modifiers.push_back(stat_modifier);
+
+	return stat_modifier;
+}
+
 void Stat::remove_modifier(int id) {
-	for (int i = 0; i < _modifiers.size(); i += 1) {
+	for (int i = 0; i < _modifiers.size(); ++i) {
 		if (_modifiers.get(i)->get_id() == id) {
 			Ref<StatModifier> modifier = _modifiers.get(i);
 			_modifiers.remove(i);
@@ -247,7 +300,14 @@ void Stat::remove_modifier(int id) {
 	}
 }
 
+void Stat::remove_modifier_index(int index) {
+	_modifiers.remove(index);
+}
+
 void Stat::apply_modifiers() {
+	ERR_FAIL_COND(_owner == NULL);
+	ERR_FAIL_COND(!_stat_data_entry.is_valid());
+
 	reset_values();
 
 	if (_modifier_apply_type == MODIFIER_APPLY_TYPE_STANDARD) {
@@ -293,11 +353,24 @@ void Stat::apply_modifiers() {
 		}
 	}
 
+	refresh_currmax();
 	_dirty_mods = false;
 
+	for (int i = 0; i < _stat_data_entry->get_mod_stat_count(); ++i) {
+		Ref<Stat> stat = _owner->get_stat_enum(_stat_data_entry->get_mod_stat_id(i));
+		Ref<Curve> curve = _stat_data_entry->get_mod_stat_curve(i);
+
+		ERR_FAIL_COND(!stat.is_valid());
+		ERR_FAIL_COND(!curve.is_valid());
+
+		Ref<StatModifier> sm = stat->get_or_add_modifier(-(static_cast<int>(_id) + 1));
+
+		sm->set_base_mod(_s_current * curve->interpolate(_s_current));
+	}
+
+	_owner->ons_stat_changed(Ref<Stat>(this));
 	emit_signal("s_changed", Ref<Stat>(this));
 }
-
 
 void Stat::reset_values() {
 	_percent = 100;
@@ -331,17 +404,19 @@ bool Stat::isc_current_zero() {
 }
 
 void Stat::set_to_max() {
+	ERR_FAIL_COND(_owner == NULL);
+
 	_s_current = _s_max;
 
 	_dirty = true;
 
+	_owner->ons_stat_changed(Ref<Stat>(this));
 	emit_signal("s_changed", Ref<Stat>(this));
 }
 
 void Stat::modifier_changed(Ref<StatModifier> modifier) {
 	_dirty_mods = true;
 }
-
 
 Dictionary Stat::to_dict() {
 	return call("_to_dict");
@@ -389,7 +464,6 @@ void Stat::_from_dict(const Dictionary &dict) {
 	_dirty = dict.get("dirty", false);
 	_dirty_mods = dict.get("dirty_mods", false);
 
-
 	_base = dict.get("base", 0);
 	_bonus = dict.get("bonus", 0);
 	_percent = dict.get("percent", 1);
@@ -407,7 +481,7 @@ void Stat::_from_dict(const Dictionary &dict) {
 	for (int i = 0; i < modifiers.size(); ++i) {
 		Ref<StatModifier> sm;
 		sm.instance();
-		
+
 		sm->from_dict(modifiers.get(i, Dictionary()));
 		sm->set_owner(this);
 
@@ -417,6 +491,7 @@ void Stat::_from_dict(const Dictionary &dict) {
 
 Stat::Stat() {
 	_id = Stat::STAT_ID_NONE;
+	_owner = NULL;
 
 	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
 
@@ -437,8 +512,9 @@ Stat::Stat() {
 	_c_max = 0;
 }
 
-Stat::Stat(Stat::StatId id) {
+Stat::Stat(Stat::StatId id, Entity *owner) {
 	_id = id;
+	_owner = owner;
 
 	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
 
@@ -459,8 +535,9 @@ Stat::Stat(Stat::StatId id) {
 	_c_max = 0;
 }
 
-Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type) {
+Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, Entity *owner) {
 	_id = id;
+	_owner = owner;
 
 	_modifier_apply_type = modifier_apply_type;
 
@@ -481,9 +558,10 @@ Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type) {
 	_c_max = 0;
 }
 
-
 Stat::~Stat() {
 	_modifiers.clear();
+	_owner = NULL;
+	_stat_data_entry.unref();
 }
 
 void Stat::_bind_methods() {
@@ -493,6 +571,14 @@ void Stat::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_id"), &Stat::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "id"), &Stat::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id", PROPERTY_HINT_ENUM, STAT_BINDING_STRING), "set_id", "get_id");
+
+	ClassDB::bind_method(D_METHOD("get_stat_data_entry"), &Stat::get_stat_data_entry);
+	ClassDB::bind_method(D_METHOD("set_stat_data_entry", "value"), &Stat::set_stat_data_entry);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "stat_data_entry", PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry"), "set_stat_data_entry", "get_stat_data_entry");
+
+	ClassDB::bind_method(D_METHOD("get_owner"), &Stat::get_owner);
+	ClassDB::bind_method(D_METHOD("set_owner", "value"), &Stat::set_owner_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_owner", "get_owner");
 
 	ClassDB::bind_method(D_METHOD("get_stat_modifier_type"), &Stat::get_stat_modifier_type);
 	ClassDB::bind_method(D_METHOD("set_stat_modifier_type", "value"), &Stat::set_stat_modifier_type);
@@ -537,7 +623,9 @@ void Stat::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_values", "ccurrent", "cmax"), &Stat::setc_values);
 
 	ClassDB::bind_method(D_METHOD("add_modifier", "id", "base_mod", "bonus_mod", "percent_mod"), &Stat::add_modifier);
+	ClassDB::bind_method(D_METHOD("get_or_add_modifier", "id"), &Stat::get_or_add_modifier);
 	ClassDB::bind_method(D_METHOD("remove_modifier", "id"), &Stat::remove_modifier);
+	ClassDB::bind_method(D_METHOD("remove_modifier_index", "index"), &Stat::remove_modifier_index);
 	ClassDB::bind_method(D_METHOD("get_modifier_count"), &Stat::get_modifier_count);
 	ClassDB::bind_method(D_METHOD("clear_modifiers"), &Stat::clear_modifiers);
 	ClassDB::bind_method(D_METHOD("get_modifier", "index"), &Stat::get_modifier);
