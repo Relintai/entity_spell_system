@@ -21,8 +21,8 @@ public:
 	int get_intellect_per_level();
 	void set_intellect_per_level(int value);
 
-	int get_luck_per_level();
-	void set_luck_per_level(int value);
+	int get_spirit_per_level();
+	void set_spirit_per_level(int value);
 
 	int _get_stat_diff(int stat, int old_level, int new_level);
 
@@ -36,7 +36,7 @@ private:
 	int _strength_per_level;
 	int _stamina_per_level;
 	int _intellect_per_level;
-	int _luck_per_level;
+	int _spirit_per_level;
 };
 
 #endif

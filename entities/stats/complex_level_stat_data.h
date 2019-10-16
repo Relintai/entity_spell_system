@@ -22,8 +22,8 @@ public:
 	int get_intellect_for_level(int level);
 	void set_intellect_for_level(int level, int value);
 
-	int get_luck_for_level(int level);
-	void set_luck_for_level(int level, int value);
+	int get_spirit_for_level(int level);
+	void set_spirit_for_level(int level, int value);
 
 	int _get_stat_diff(int stat, int old_level, int new_level);
 
@@ -33,14 +33,14 @@ public:
 		int strength;
 		int stamina;
 		int intellect;
-		int luck;
+		int spirit;
 
 		ComplexLevelStatsEntry() {
 			agility = 0;
 			strength = 0;
 			stamina = 0;
 			intellect = 0;
-			luck = 0;
+			spirit = 0;
 		}
 	};
 

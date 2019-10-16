@@ -3,8 +3,8 @@
 #include "../entity.h"
 #include "stat_data_entry.h"
 
-const String Stat::STAT_BINDING_STRING = "Health,Speed,Mana,GCD,Haste,Agility,Strength,Stamina,Intellect,Luck,Haste Rating,Resilience,Armor,Attack Power,Spell Power,Melee Crit,Melee Crit bonus,Spell Crit,Spell Crit Bonus,Block,Parry,Damage Reduction,Melee Damage Reduction,Spell Damage Reduction,Damage Taken,Heal Taken,Melee Damage,Spell Damage,Holy Resist,Shadow Resist,Nature Resist,Fire Resist,Frost Resist,Lightning Resist,Chaos Resist,Silence Resist,Fear Resist,Stun Resist,Energy,Rage,XP Rate,None";
-const String Stat::MAIN_STAT_BINDING_STRING = "Agility,Strength,Stamina,Intellect,Luck";
+const String Stat::STAT_BINDING_STRING = "Health,Speed,Mana,GCD,Haste,Agility,Strength,Stamina,Intellect,Spirit,Haste Rating,Resilience,Armor,Attack Power,Spell Power,Melee Crit,Melee Crit bonus,Spell Crit,Spell Crit Bonus,Block,Parry,Damage Reduction,Melee Damage Reduction,Spell Damage Reduction,Damage Taken,Heal Taken,Melee Damage,Spell Damage,Holy Resist,Shadow Resist,Nature Resist,Fire Resist,Frost Resist,Lightning Resist,Chaos Resist,Silence Resist,Fear Resist,Stun Resist,Energy,Rage,XP Rate,None";
+const String Stat::MAIN_STAT_BINDING_STRING = "Agility,Strength,Stamina,Intellect,Spirit";
 
 const String Stat::MODIFIER_APPLY_TYPE_BINDING_STRING = "Standard,Only min modifier,Only Max modifier";
 
@@ -29,8 +29,8 @@ String Stat::stat_id_name(int stat_id) {
 			return "stamina";
 		case STAT_ID_INTELLECT:
 			return "intellect";
-		case STAT_ID_LUCK:
-			return "luck";
+		case STAT_ID_SPIRIT:
+			return "spirit";
 
 		case STAT_ID_HASTE_RATING:
 			return "haste_rating";
@@ -647,7 +647,7 @@ void Stat::_bind_methods() {
 	BIND_ENUM_CONSTANT(Stat::STAT_ID_STRENGTH);
 	BIND_ENUM_CONSTANT(Stat::STAT_ID_STAMINA);
 	BIND_ENUM_CONSTANT(Stat::STAT_ID_INTELLECT);
-	BIND_ENUM_CONSTANT(Stat::STAT_ID_LUCK);
+	BIND_ENUM_CONSTANT(Stat::STAT_ID_SPIRIT);
 
 	BIND_ENUM_CONSTANT(Stat::STAT_ID_HASTE_RATING);
 	BIND_ENUM_CONSTANT(Stat::STAT_ID_RESLILIENCE);
@@ -690,7 +690,7 @@ void Stat::_bind_methods() {
 	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_STRENGTH);
 	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_STAMINA);
 	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_INTELLECT);
-	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_LUCK);
+	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_SPIRIT);
 	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_COUNT);
 	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_MIN);
 	BIND_ENUM_CONSTANT(Stat::MAIN_STAT_ID_MAX);

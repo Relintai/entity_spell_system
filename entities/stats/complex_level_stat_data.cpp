@@ -28,11 +28,11 @@ void ComplexLevelStatData::set_intellect_for_level(int level, int value) {
 	_entries[level].intellect = value;
 }
 
-int ComplexLevelStatData::get_luck_for_level(int level) {
-	return _entries[level].luck;
+int ComplexLevelStatData::get_spirit_for_level(int level) {
+	return _entries[level].spirit;
 }
-void ComplexLevelStatData::set_luck_for_level(int level, int value) {
-	_entries[level].luck = value;
+void ComplexLevelStatData::set_spirit_for_level(int level, int value) {
+	_entries[level].spirit = value;
 }
 
 int ComplexLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_level) {
@@ -52,8 +52,8 @@ int ComplexLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_l
 			case Stat::MAIN_STAT_INTELLECT:
 				s += get_intellect_for_level(i);
 				break;
-			case Stat::MAIN_STAT_LUCK:
-				s += get_luck_for_level(i);
+			case Stat::MAIN_STAT_SPIRIT:
+				s += get_spirit_for_level(i);
 				break;
 		}
 	}
@@ -76,8 +76,8 @@ void ComplexLevelStatData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_intellect_for_level", "level"), &ComplexLevelStatData::get_intellect_for_level);
 	ClassDB::bind_method(D_METHOD("set_intellect_for_level", "level", "value"), &ComplexLevelStatData::set_intellect_for_level);
 
-	ClassDB::bind_method(D_METHOD("get_luck_for_level", "level"), &ComplexLevelStatData::get_luck_for_level);
-	ClassDB::bind_method(D_METHOD("set_luck_for_level", "level", "value"), &ComplexLevelStatData::set_luck_for_level);
+	ClassDB::bind_method(D_METHOD("get_spirit_for_level", "level"), &ComplexLevelStatData::get_spirit_for_level);
+	ClassDB::bind_method(D_METHOD("set_spirit_for_level", "level", "value"), &ComplexLevelStatData::set_spirit_for_level);
 
 
 	for (int i = 0; i < EntityEnums::MAX_LEVEL; ++i) {
@@ -86,6 +86,6 @@ void ComplexLevelStatData::_bind_methods() {
 		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_strength"), "set_strength_for_level", "get_strength_for_level", i);
 		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_stamina"), "set_stamina_for_level", "get_stamina_for_level", i);
 		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_intellect"), "set_intellect_for_level", "get_intellect_for_level", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_luck"), "set_luck_for_level", "get_luck_for_level", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_spirit"), "set_spirit_for_level", "get_spirit_for_level", i);
 	}
 }

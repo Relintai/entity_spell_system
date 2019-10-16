@@ -28,11 +28,11 @@ void SimpleLevelStatData::set_intellect_per_level(int value) {
 	_intellect_per_level = value;
 }
 
-int SimpleLevelStatData::get_luck_per_level() {
-	return _luck_per_level;
+int SimpleLevelStatData::get_spirit_per_level() {
+	return _spirit_per_level;
 }
-void SimpleLevelStatData::set_luck_per_level(int value) {
-	_luck_per_level = value;
+void SimpleLevelStatData::set_spirit_per_level(int value) {
+	_spirit_per_level = value;
 }
 
 int SimpleLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_level) {
@@ -51,8 +51,8 @@ int SimpleLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_le
 		case Stat::MAIN_STAT_INTELLECT:
 			s = _intellect_per_level;
 			break;
-		case Stat::MAIN_STAT_LUCK:
-			s = _luck_per_level;
+		case Stat::MAIN_STAT_SPIRIT:
+			s = _spirit_per_level;
 			break;
 	}
 
@@ -66,7 +66,7 @@ SimpleLevelStatData::SimpleLevelStatData() {
 	_strength_per_level = 0;
 	_stamina_per_level = 0;
 	_intellect_per_level = 0;
-	_luck_per_level = 0;
+	_spirit_per_level = 0;
 }
 
 void SimpleLevelStatData::_bind_methods() {
@@ -86,9 +86,9 @@ void SimpleLevelStatData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_intellect_per_level", "value"), &SimpleLevelStatData::set_intellect_per_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "intellect_per_level"), "set_intellect_per_level", "get_intellect_per_level");
 
-	ClassDB::bind_method(D_METHOD("get_luck_per_level"), &SimpleLevelStatData::get_luck_per_level);
-	ClassDB::bind_method(D_METHOD("set_luck_per_level", "value"), &SimpleLevelStatData::set_luck_per_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "luck_per_level"), "set_luck_per_level", "get_luck_per_level");
+	ClassDB::bind_method(D_METHOD("get_spirit_per_level"), &SimpleLevelStatData::get_spirit_per_level);
+	ClassDB::bind_method(D_METHOD("set_spirit_per_level", "value"), &SimpleLevelStatData::set_spirit_per_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spirit_per_level"), "set_spirit_per_level", "get_spirit_per_level");
 
 	ClassDB::bind_method(D_METHOD("_get_stat_diff", "stat", "old_level", "new_level"), &SimpleLevelStatData::_get_stat_diff);
 }
