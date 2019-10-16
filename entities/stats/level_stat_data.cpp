@@ -2,7 +2,7 @@
 
 int LevelStatData::get_stat_diff(int main_stat, int old_level, int new_level) {
 	if (has_method("_get_stat_diff"))
-		return call("_get_stat_diff");
+		return call("_get_stat_diff", main_stat, old_level, new_level);
 
 	return 0;
 }

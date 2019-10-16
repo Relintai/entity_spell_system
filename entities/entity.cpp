@@ -2317,16 +2317,16 @@ void Entity::son_xp_gained(int value) {
 
 void Entity::son_level_up(int value) {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_level_up(this, _s_level);
+		_s_entity_data->son_level_up(this, value);
 	}
 
 	if (has_method("_son_level_up"))
-		call("_son_level_up", _s_level);
+		call("_son_level_up", value);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_level_up(ad, _s_level);
+		ad->get_aura()->son_level_up(ad, value);
 	}
 
 	emit_signal("son_level_up", this, value);
