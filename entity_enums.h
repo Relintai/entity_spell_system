@@ -217,6 +217,7 @@ public:
 
 	enum {
 		MAX_LEVEL = 50,
+		BASE_XP = 50,
 	};
 
 	EntityEnums() {}
