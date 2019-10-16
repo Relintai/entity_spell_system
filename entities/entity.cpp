@@ -1723,6 +1723,9 @@ void Entity::addc_xp(int value) {
 }
 
 void Entity::slevelup(int value) {
+	if (_s_level == EntityEnums::MAX_LEVEL)
+		return;
+
 	_s_level += value;
 
 	son_level_up(value);
