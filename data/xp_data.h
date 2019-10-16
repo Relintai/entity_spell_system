@@ -10,11 +10,9 @@ class XPData : public Resource {
 
 public:
 	int get_max_level();
-	int xp_required_for_level(int level);
+	int get_xp(int level);
+	void set_xp(int level, int value);
 	bool can_level_up(int level);
-
-	PoolIntArray get_xps();
-	void set_xps(const PoolIntArray &xps);
 
 	XPData();
 	~XPData();
@@ -22,9 +20,8 @@ public:
 protected:
 	static void _bind_methods();
 
-
 private:
-	PoolIntArray _xp_required;
+	Vector<int> _xps;
 };
 
 #endif
