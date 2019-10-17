@@ -6,15 +6,20 @@ const String CraftRecipe::BINDING_STRING_CRAFT_SUB_CATEGORIES = "None,Potions";
 int CraftRecipe::get_id() {
 	return _id;
 }
-
 void CraftRecipe::set_id(int value) {
 	_id = value;
+}
+
+String CraftRecipe::get_recipe_name() {
+	return _recipe_name;
+}
+void CraftRecipe::set_recipe_name(String name) {
+	_recipe_name = name;
 }
 
 CraftRecipe::CraftCategories CraftRecipe::get_category() {
 	return _category;
 }
-
 void CraftRecipe::set_category(CraftCategories value) {
 	_category = value;
 }
@@ -111,6 +116,10 @@ void CraftRecipe::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_id"), &CraftRecipe::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &CraftRecipe::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
+
+	ClassDB::bind_method(D_METHOD("get_recipe_name"), &CraftRecipe::get_recipe_name);
+	ClassDB::bind_method(D_METHOD("set_recipe_name", "value"), &CraftRecipe::set_recipe_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "recipe_name"), "set_recipe_name", "get_recipe_name");
 
 	ClassDB::bind_method(D_METHOD("get_category"), &CraftRecipe::get_category);
 	ClassDB::bind_method(D_METHOD("set_category", "value"), &CraftRecipe::set_category);

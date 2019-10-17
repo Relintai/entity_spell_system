@@ -57,6 +57,9 @@ public:
 	SpellEnums::AuraType get_aura_type();
 	void set_aura_type(SpellEnums::AuraType value);
 
+	int get_rank();
+	void set_rank(int value);
+
 	String get_aura_name();
 	void set_aura_name(String name);
 
@@ -412,6 +415,7 @@ private:
 	String _aura_name;
 	String _aura_description;
 	int ability_scale_data_id;
+	int _rank;
 
 	Ref<SpellEffectVisual> _visual_spell_effects;
 	Ref<SpellProjectileData> _spell_projectile_data;

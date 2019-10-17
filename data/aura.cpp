@@ -49,6 +49,13 @@ void Aura::set_aura_type(SpellEnums::AuraType value) {
 	_aura_type = value;
 }
 
+int Aura::get_rank() {
+	return _rank;
+}
+void Aura::set_rank(int value) {
+	_rank = value;
+}
+
 String Aura::get_aura_name() {
 	return _aura_name;
 }
@@ -264,6 +271,7 @@ Aura::Aura() {
 	_is_debuff = false;
 	aura_group = 0;
 	_hide = false;
+	_rank = 0;
 
 	_damage_enabled = false;
 	_damage_type = 0;
@@ -1367,6 +1375,10 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_is_debuff"), &Aura::get_is_debuff);
 	ClassDB::bind_method(D_METHOD("set_is_debuff", "value"), &Aura::set_is_debuff);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "debuff"), "set_is_debuff", "get_is_debuff");
+
+	ClassDB::bind_method(D_METHOD("get_rank"), &Aura::get_rank);
+	ClassDB::bind_method(D_METHOD("set_rank", "value"), &Aura::set_rank);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "rank"), "set_rank", "get_rank");
 
 	ClassDB::bind_method(D_METHOD("get_aura_type"), &Aura::get_aura_type);
 	ClassDB::bind_method(D_METHOD("set_aura_type", "value"), &Aura::set_aura_type);
