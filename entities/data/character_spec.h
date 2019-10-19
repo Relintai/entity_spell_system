@@ -16,8 +16,9 @@ class CharacterSpec : public Resource {
 public:
 	int get_spec_id();
 	void set_spec_id(int value);
-	String get_spec_name();
-	void set_spec_name(String value);
+
+	String get_text_name();
+	void set_text_name(String value);
 
 	int get_num_talent_rows();
 	void set_num_talent_rows(int value);
@@ -38,7 +39,7 @@ protected:
 
 private:
 	int _spec_id;
-	String _spec_name;
+	String _text_name;
 	Vector<Ref<TalentRowData> > _rows;
 };
 

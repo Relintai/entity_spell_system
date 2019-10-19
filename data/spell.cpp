@@ -136,25 +136,18 @@ void Spell::set_icon(Ref<Texture> value) {
 	_icon = Ref<Texture>(value);
 }
 
-String Spell::get_name_key() {
-	return _name_key;
+String Spell::get_text_name() {
+	return _text_name;
 }
-void Spell::set_name_key(String value) {
-	_name_key = value;
-}
-
-String Spell::get_spell_name() {
-	return _spell_name;
-}
-void Spell::set_spell_name(String value) {
-	_spell_name = value;
+void Spell::set_text_name(String value) {
+	_text_name = value;
 }
 
-String Spell::get_spell_description() {
-	return _spell_description;
+String Spell::get_text_description() {
+	return _text_description;
 }
-void Spell::set_spell_description(String value) {
-	_spell_description = value;
+void Spell::set_text_description(String value) {
+	_text_description = value;
 }
 
 Ref<SpellEffectVisual> Spell::get_visual_spell_effects() {
@@ -747,11 +740,11 @@ void Spell::_handle_spell_damage(Ref<SpellDamageInfo> data) {
 }
 
 String Spell::get_name() {
-	return _spell_name;
+	return _text_name;
 }
 
 String Spell::get_description(int level) {
-	return _spell_description;
+	return _text_description;
 }
 
 Spell::Spell() {
@@ -940,17 +933,16 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_absorb_scale_for_level"), &Spell::get_absorb_scale_for_level);
 
 	ADD_GROUP("Texts", "text");
-	ClassDB::bind_method(D_METHOD("get_name_key"), &Spell::get_name_key);
-	ClassDB::bind_method(D_METHOD("set_name_key", "value"), &Spell::set_name_key);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name_key"), "set_name_key", "get_name_key");
+	ClassDB::bind_method(D_METHOD("get_text_name"), &Spell::get_text_name);
+	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &Spell::set_text_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_spell_name"), "set_text_name", "get_text_name"); //REMOVE
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name_key"), "set_text_name", "get_text_name"); //REMOVE
 
-	ClassDB::bind_method(D_METHOD("get_spell_name"), &Spell::get_spell_name);
-	ClassDB::bind_method(D_METHOD("set_spell_name", "value"), &Spell::set_spell_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_spell_name"), "set_spell_name", "get_spell_name");
-
-	ClassDB::bind_method(D_METHOD("get_spell_description"), &Spell::get_spell_description);
-	ClassDB::bind_method(D_METHOD("set_spell_description", "value"), &Spell::set_spell_description);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_spell_description", PROPERTY_HINT_MULTILINE_TEXT), "set_spell_description", "get_spell_description");
+	ClassDB::bind_method(D_METHOD("get_text_description"), &Spell::get_text_description);
+	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &Spell::set_text_description);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_text_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_spell_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description"); //REMOVE
 
 	ADD_GROUP("Cooldown", "cooldown");
 	ClassDB::bind_method(D_METHOD("get_cooldown"), &Spell::get_cooldown);

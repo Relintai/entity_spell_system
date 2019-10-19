@@ -9,11 +9,11 @@ void CharacterSpec::set_spec_id(int value) {
 	_spec_id = value;
 }
 
-String CharacterSpec::get_spec_name() {
-	return _spec_name;
+String CharacterSpec::get_text_name() {
+	return _text_name;
 }
-void CharacterSpec::set_spec_name(String value) {
-	_spec_name = value;
+void CharacterSpec::set_text_name(String value) {
+	_text_name = value;
 }
 
 int CharacterSpec::get_num_talent_rows() {
@@ -74,9 +74,10 @@ void CharacterSpec::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_spec_id", "value"), &CharacterSpec::set_spec_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "spec_id"), "set_spec_id", "get_spec_id");
 
-	ClassDB::bind_method(D_METHOD("get_spec_name"), &CharacterSpec::get_spec_name);
-	ClassDB::bind_method(D_METHOD("set_spec_name", "value"), &CharacterSpec::set_spec_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "spec_name"), "set_spec_name", "get_spec_name");
+	ClassDB::bind_method(D_METHOD("get_text_name"), &CharacterSpec::get_text_name);
+	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &CharacterSpec::set_text_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "spec_name"), "set_text_name", "get_text_name"); //REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_num_talent_rows"), &CharacterSpec::get_num_talent_rows);
 	ClassDB::bind_method(D_METHOD("set_num_talent_rows", "value"), &CharacterSpec::set_num_talent_rows);

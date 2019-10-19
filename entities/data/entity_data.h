@@ -40,8 +40,8 @@ public:
 	int get_id();
 	void set_id(int value);
 
-	String get_entity_name();
-	void set_entity_name(String value);
+	String get_text_name();
+	void set_text_name(String value);
 
 	Ref<EntityData> get_inherits();
 	void set_inherits(Ref<EntityData> value);
@@ -243,7 +243,7 @@ private:
 	int _entity_flags;
 	EntityEnums::EntityController _entity_controller;
 
-	String _entity_name;
+	String _text_name;
 
 	int _money;
 	int _bag_size;

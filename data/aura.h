@@ -60,14 +60,14 @@ public:
 	int get_rank();
 	void set_rank(int value);
 
-	String get_aura_name();
-	void set_aura_name(String name);
+	String get_text_name();
+	void set_text_name(String name);
+
+	String get_text_description();
+	void set_text_description(String description);
 
 	bool get_hide();
 	void set_hide(bool value);
-
-	String get_aura_description();
-	void set_aura_description(String description);
 
 	Ref<SpellEffectVisual> get_visual_spell_effects();
 	void set_visual_spell_effects(Ref<SpellEffectVisual> value);
@@ -412,8 +412,8 @@ private:
 	bool _hide;
 	Ref<Spell> _teaches_spell;
 
-	String _aura_name;
-	String _aura_description;
+	String _text_name;
+	String _text_description;
 	int ability_scale_data_id;
 	int _rank;
 

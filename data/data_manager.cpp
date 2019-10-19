@@ -590,43 +590,43 @@ void DataManager::load_player_character_datas() {
 
 void DataManager::list_characters() {
 	for (int i = 0; i < _entity_datas.size(); ++i) {
-		print_error(itos(i) + ": " + _entity_datas.get(i)->get_entity_name());
+		print_error(itos(i) + ": " + _entity_datas.get(i)->get_text_name());
 	}
 }
 
 void DataManager::list_spells() {
 	for (int i = 0; i < _spells.size(); ++i) {
-		print_error(itos(i) + ": " + _spells.get(i)->get_spell_name());
+		print_error(itos(i) + ": " + _spells.get(i)->get_text_name());
 	}
 }
 
 void DataManager::list_auras() {
 	for (int i = 0; i < _auras.size(); ++i) {
-		print_error(itos(i) + ": " + _auras.get(i)->get_aura_name());
+		print_error(itos(i) + ": " + _auras.get(i)->get_text_name());
 	}
 }
 
 void DataManager::list_craft_data() {
 	for (int i = 0; i < _craft_datas.size(); ++i) {
-		print_error(itos(i) + ": " + _craft_datas.get(i)->get_name());
+		print_error(itos(i) + ": " + _craft_datas.get(i)->get_text_name());
 	}
 }
 
 void DataManager::list_item_templates() {
 	for (int i = 0; i < _item_templates.size(); ++i) {
-		print_error(itos(i) + ": " + _item_templates.get(i)->get_name());
+		print_error(itos(i) + ": " + _item_templates.get(i)->get_text_name());
 	}
 }
 
 void DataManager::list_mob_datas() {
 	for (int i = 0; i < _mob_datas.size(); ++i) {
-		print_error(itos(i) + ": " + _mob_datas.get(i)->get_name());
+		print_error(itos(i) + ": " + _mob_datas.get(i)->get_text_name());
 	}
 }
 
 void DataManager::list_player_character_datas() {
 	for (int i = 0; i < _player_character_datas.size(); ++i) {
-		print_error(itos(i) + ": " + _player_character_datas.get(i)->get_name());
+		print_error(itos(i) + ": " + _player_character_datas.get(i)->get_text_name());
 	}
 }
 

@@ -56,11 +56,18 @@ void Aura::set_rank(int value) {
 	_rank = value;
 }
 
-String Aura::get_aura_name() {
-	return _aura_name;
+String Aura::get_text_name() {
+	return _text_name;
 }
-void Aura::set_aura_name(String name) {
-	_aura_name = name;
+void Aura::set_text_name(String name) {
+	_text_name = name;
+}
+
+String Aura::get_text_description() {
+	return _text_description;
+}
+void Aura::set_text_description(String description) {
+	_text_description = description;
 }
 
 bool Aura::get_hide() {
@@ -70,12 +77,6 @@ void Aura::set_hide(bool value) {
 	_hide = value;
 }
 
-String Aura::get_aura_description() {
-	return _aura_description;
-}
-void Aura::set_aura_description(String description) {
-	_aura_description = description;
-}
 
 Ref<SpellEffectVisual> Aura::get_visual_spell_effects() {
 	return _visual_spell_effects;
@@ -1397,13 +1398,15 @@ void Aura::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "ability_scale_data_id"), "set_ability_scale_data_id", "get_ability_scale_data_id");
 
 	ADD_GROUP("Texts", "text");
-	ClassDB::bind_method(D_METHOD("get_aura_name"), &Aura::get_aura_name);
-	ClassDB::bind_method(D_METHOD("set_aura_name", "value"), &Aura::set_aura_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_aura_name"), "set_aura_name", "get_aura_name");
+	ClassDB::bind_method(D_METHOD("get_text_name"), &Aura::get_text_name);
+	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &Aura::set_text_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_aura_name"), "set_text_name", "get_text_name"); //REMOVE
 
-	ClassDB::bind_method(D_METHOD("get_aura_description"), &Aura::get_aura_description);
-	ClassDB::bind_method(D_METHOD("set_aura_description", "value"), &Aura::set_aura_description);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_aura_description", PROPERTY_HINT_MULTILINE_TEXT), "set_aura_description", "get_aura_description");
+	ClassDB::bind_method(D_METHOD("get_text_description"), &Aura::get_text_description);
+	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &Aura::set_text_description);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_aura_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description"); //REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_visual_spell_effects"), &Aura::get_visual_spell_effects);
 	ClassDB::bind_method(D_METHOD("set_visual_spell_effects", "value"), &Aura::set_visual_spell_effects);

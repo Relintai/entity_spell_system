@@ -16,11 +16,11 @@ void EntityData::set_id(int value) {
 	_id = value;
 }
 
-String EntityData::get_entity_name() {
-	return _entity_name;
+String EntityData::get_text_name() {
+	return _text_name;
 }
-void EntityData::set_entity_name(String value) {
-	_entity_name = value;
+void EntityData::set_text_name(String value) {
+	_text_name = value;
 }
 
 Ref<EntityData> EntityData::get_inherits() {
@@ -189,7 +189,7 @@ String EntityData::generate_name() {
 		return call("_generate_name");
 	}
 
-	return _entity_name;
+	return _text_name;
 }
 
 ////    SETUP    ////
@@ -1156,9 +1156,10 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_entity_controller", "value"), &EntityData::set_entity_controller);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "set_entity_controller", "get_entity_controller");
 
-	ClassDB::bind_method(D_METHOD("get_entity_name"), &EntityData::get_entity_name);
-	ClassDB::bind_method(D_METHOD("set_entity_name", "value"), &EntityData::set_entity_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_name"), "set_entity_name", "get_entity_name");
+	ClassDB::bind_method(D_METHOD("get_text_name"), &EntityData::get_text_name);
+	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &EntityData::set_text_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_name"), "set_text_name", "get_text_name"); //REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_money"), &EntityData::get_money);
 	ClassDB::bind_method(D_METHOD("set_money", "value"), &EntityData::set_money);

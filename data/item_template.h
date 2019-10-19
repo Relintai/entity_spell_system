@@ -23,8 +23,8 @@ public:
 	int get_id() const;
 	void set_id(const int value);
 
-	String get_name_key() const;
-	void set_name_key(const String value);
+	String get_text_name() const;
+	void set_text_name(const String value);
 
 	ItemEnums::ItemType get_item_type() const;
 	void set_item_type(const ItemEnums::ItemType value);
@@ -162,7 +162,7 @@ private:
 	};
 
 	int _id;
-	String _name_key;
+	String _text_name;
 	ItemEnums::ItemRarity _rarity;
 	ItemEnums::ItemType _item_type;
 	ItemEnums::ItemSubtype _item_sub_type;

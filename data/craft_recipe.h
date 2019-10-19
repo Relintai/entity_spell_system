@@ -34,8 +34,8 @@ public:
 	int get_id();
 	void set_id(int value);
 
-	String get_recipe_name();
-	void set_recipe_name(String name);
+	String get_text_name();
+	void set_text_name(String name);
 
 	CraftCategories get_category();
 	void set_category(CraftCategories value);
@@ -75,7 +75,7 @@ private:
 	};
 
 	int _id;
-	String _recipe_name;
+	String _text_name;
 
 	CraftCategories _category;
 	CraftSubCategories _sub_category;

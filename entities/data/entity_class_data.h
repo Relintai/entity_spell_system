@@ -33,8 +33,8 @@ public:
 	int get_id();
 	void set_id(int value);
 
-	String get_entity_class_name();
-	void set_entity_class_name(String value);
+	String get_text_name();
+	void set_text_name(String value);
 
 	Ref<EntityClassData> get_inherits();
 	void set_inherits(Ref<EntityClassData> value);
@@ -224,7 +224,7 @@ protected:
 private:
 	int _id;
 
-	String _entity_class_name;
+	String _text_name;
 
 	Ref<EntityClassData> _inherits;
 

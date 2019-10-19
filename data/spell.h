@@ -140,14 +140,11 @@ public:
 	Ref<Texture> get_icon();
 	void set_icon(Ref<Texture> value);
 
-	String get_name_key();
-	void set_name_key(String value);
+	String get_text_name();
+	void set_text_name(String value);
 
-	String get_spell_name();
-	void set_spell_name(String value);
-
-	String get_spell_description();
-	void set_spell_description(String value);
+	String get_text_description();
+	void set_text_description(String value);
 
 	Ref<SpellEffectVisual> get_visual_spell_effects();
 	void set_visual_spell_effects(Ref<SpellEffectVisual> value);
@@ -370,9 +367,9 @@ private:
 	bool _has_global_cooldown;
 	bool _is_local_spell;
 	Ref<Texture> _icon;
-	String _name_key;
-	String _spell_name;
-	String _spell_description;
+
+	String _text_name;
+	String _text_description;
 
 	Ref<SpellEffectVisual> _visual_spell_effects;
 	Ref<SpellProjectileData> _spell_projectile_data;

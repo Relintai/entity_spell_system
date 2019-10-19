@@ -1,10 +1,10 @@
 #include "spell_effect_visual.h"
 
-String SpellEffectVisual::get_effect_name() {
-	return _effect_name;
+String SpellEffectVisual::get_text_name() {
+	return _text_name;
 }
-void SpellEffectVisual::set_effect_name(String name) {
-	_effect_name = name;
+void SpellEffectVisual::set_text_name(String name) {
+	_text_name = name;
 }
 
 SpellEffectVisual::SpellEffectVisual() {
@@ -14,7 +14,8 @@ SpellEffectVisual::~SpellEffectVisual() {
 }
 
 void SpellEffectVisual::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_effect_name"), &SpellEffectVisual::get_effect_name);
-	ClassDB::bind_method(D_METHOD("set_effect_name", "value"), &SpellEffectVisual::set_effect_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "effect_name"), "set_effect_name", "get_effect_name");
+	ClassDB::bind_method(D_METHOD("get_text_name"), &SpellEffectVisual::get_text_name);
+	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &SpellEffectVisual::set_text_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "effect_name"), "set_text_name", "get_text_name"); //REMOVE
 }
