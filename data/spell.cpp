@@ -871,7 +871,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_id"), &Spell::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &Spell::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_id"), "set_id", "get_id");//REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_spell_type"), &Spell::get_spell_type);
 	ClassDB::bind_method(D_METHOD("set_spell_type", "value"), &Spell::set_spell_type);

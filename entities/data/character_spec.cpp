@@ -73,7 +73,6 @@ void CharacterSpec::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_id"), &CharacterSpec::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &CharacterSpec::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spec_id"), "set_id", "get_id");//REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_text_name"), &CharacterSpec::get_text_name);
 	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &CharacterSpec::set_text_name);
