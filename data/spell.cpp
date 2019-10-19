@@ -939,7 +939,8 @@ void Spell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_text_description"), &Spell::get_text_description);
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &Spell::set_text_description);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_text_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_text_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description");//REMOVE
 
 	ADD_GROUP("Cooldown", "cooldown");
 	ClassDB::bind_method(D_METHOD("get_cooldown"), &Spell::get_cooldown);
