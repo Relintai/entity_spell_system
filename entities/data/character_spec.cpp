@@ -2,11 +2,11 @@
 
 #include "../../data/aura.h"
 
-int CharacterSpec::get_spec_id() {
-	return _spec_id;
+int CharacterSpec::get_id() {
+	return _id;
 }
-void CharacterSpec::set_spec_id(int value) {
-	_spec_id = value;
+void CharacterSpec::set_id(int value) {
+	_id = value;
 }
 
 String CharacterSpec::get_text_name() {
@@ -62,7 +62,7 @@ Ref<Aura> CharacterSpec::get_talent(const int row_index, const int culomn, const
 
 
 CharacterSpec::CharacterSpec() {
-	_spec_id = 0;
+	_id = 0;
 }
 
 CharacterSpec::~CharacterSpec() {
@@ -70,9 +70,10 @@ CharacterSpec::~CharacterSpec() {
 }
 
 void CharacterSpec::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_spec_id"), &CharacterSpec::get_spec_id);
-	ClassDB::bind_method(D_METHOD("set_spec_id", "value"), &CharacterSpec::set_spec_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spec_id"), "set_spec_id", "get_spec_id");
+	ClassDB::bind_method(D_METHOD("get_id"), &CharacterSpec::get_id);
+	ClassDB::bind_method(D_METHOD("set_id", "value"), &CharacterSpec::set_id);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spec_id"), "set_id", "get_id");//REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_text_name"), &CharacterSpec::get_text_name);
 	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &CharacterSpec::set_text_name);

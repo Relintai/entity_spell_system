@@ -83,8 +83,8 @@ class Spell : public Resource {
 	GDCLASS(Spell, Resource);
 
 public:
-	int get_spell_id();
-	void set_spell_id(int value);
+	int get_id();
+	void set_id(int value);
 
 	int get_spell_type();
 	void set_spell_type(int value);
@@ -342,7 +342,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	int _spell_id;
+	int _id;
 	int _spell_type;
 	SpellEnums::SpellCategory _spell_category;
 

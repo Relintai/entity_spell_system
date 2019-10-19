@@ -3,11 +3,11 @@
 #include "aura.h"
 #include "craft_recipe.h"
 
-int Spell::get_spell_id() {
-	return _spell_id;
+int Spell::get_id() {
+	return _id;
 }
-void Spell::set_spell_id(int value) {
-	_spell_id = value;
+void Spell::set_id(int value) {
+	_id = value;
 }
 
 int Spell::get_spell_type() {
@@ -750,7 +750,7 @@ String Spell::get_description(int level) {
 Spell::Spell() {
 	PLAYER_HIT_RADIUS = (float)0.5;
 
-	_spell_id = 1;
+	_id = 1;
 	_spell_type = SpellEnums::SPELL_TYPE_NONE;
 	_spell_category = SpellEnums::SPELL_CATEGORY_NORMAL;
 
@@ -868,9 +868,10 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_handle_spell_damage", "info"), &Spell::_handle_spell_damage);
 
 	//Properties
-	ClassDB::bind_method(D_METHOD("get_spell_id"), &Spell::get_spell_id);
-	ClassDB::bind_method(D_METHOD("set_spell_id", "value"), &Spell::set_spell_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_id"), "set_spell_id", "get_spell_id");
+	ClassDB::bind_method(D_METHOD("get_id"), &Spell::get_id);
+	ClassDB::bind_method(D_METHOD("set_id", "value"), &Spell::set_id);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_id"), "set_id", "get_id");//REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_spell_type"), &Spell::get_spell_type);
 	ClassDB::bind_method(D_METHOD("set_spell_type", "value"), &Spell::set_spell_type);

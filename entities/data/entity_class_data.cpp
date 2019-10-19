@@ -316,7 +316,7 @@ void EntityClassData::start_casting(int spell_id, Entity *caster, float spellSca
 			return;
 		}
 
-		if (s->get_spell_id() == spell_id) {
+		if (s->get_id() == spell_id) {
 			s->sstart_casting_simple(caster, spellScale);
 			return;
 		}

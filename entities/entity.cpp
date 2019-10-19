@@ -510,7 +510,7 @@ Dictionary Entity::_to_dict() {
 	Dictionary known_spells;
 
 	for (int i = 0; i < _s_spells.size(); ++i) {
-		known_spells[i] = _s_spells.get(i)->get_spell_id();
+		known_spells[i] = _s_spells.get(i)->get_id();
 	}
 
 	dict["known_spells"] = known_spells;
@@ -3457,7 +3457,7 @@ void Entity::slearn_spell(int id) {
 	for (int i = 0; i < cd->get_num_spells(); ++i) {
 		Ref<Spell> sp = cd->get_spell(i);
 
-		if (sp->get_spell_id() == id) {
+		if (sp->get_id() == id) {
 			adds_spell(sp);
 			sets_free_spell_points(_s_free_spell_points - 1);
 			return;

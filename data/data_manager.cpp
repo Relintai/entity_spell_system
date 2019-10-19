@@ -113,7 +113,7 @@ void DataManager::add_spell(Ref<Spell> spell) {
 	ERR_FAIL_COND(!spell.is_valid());
 
 	_spells.push_back(spell);
-	_spell_map.set(spell->get_spell_id(), spell);
+	_spell_map.set(spell->get_id(), spell);
 }
 
 void DataManager::add_aura(Ref<Aura> aura) {

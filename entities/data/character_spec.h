@@ -14,8 +14,8 @@ class CharacterSpec : public Resource {
 	GDCLASS(CharacterSpec, Resource);
 
 public:
-	int get_spec_id();
-	void set_spec_id(int value);
+	int get_id();
+	void set_id(int value);
 
 	String get_text_name();
 	void set_text_name(String value);
@@ -38,7 +38,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	int _spec_id;
+	int _id;
 	String _text_name;
 	Vector<Ref<TalentRowData> > _rows;
 };
