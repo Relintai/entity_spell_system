@@ -52,8 +52,8 @@ int Entity::gets_entity_data_id() {
 void Entity::sets_entity_data_id(int value) {
 	_s_class_id = value;
 	/*
-	if (DataManager::get_instance() != NULL) {
-		sets_entity_data(DataManager::get_instance()->get_entity_data(value));
+	if (EntityDataManager::get_instance() != NULL) {
+		sets_entity_data(EntityDataManager::get_instance()->get_entity_data(value));
 	}*/
 
 	SEND_RPC(rpc("setc_entity_data_id", value), setc_entity_data_id(value));
@@ -65,8 +65,8 @@ int Entity::getc_entity_data_id() {
 void Entity::setc_entity_data_id(int value) {
 	_c_class_id = value;
 
-	if (DataManager::get_instance() != NULL) {
-		setc_entity_data(DataManager::get_instance()->get_entity_data(value));
+	if (EntityDataManager::get_instance() != NULL) {
+		setc_entity_data(EntityDataManager::get_instance()->get_entity_data(value));
 	}
 }
 
@@ -712,8 +712,8 @@ void Entity::_from_dict(const Dictionary &dict) {
 	for (int i = 0; i < known_recipes.size(); ++i) {
 		int crid = known_recipes.get(String::num(i), 0);
 
-		if (DataManager::get_instance() != NULL) {
-			Ref<CraftRecipe> cr = DataManager::get_instance()->get_craft_data(crid);
+		if (EntityDataManager::get_instance() != NULL) {
+			Ref<CraftRecipe> cr = EntityDataManager::get_instance()->get_craft_data(crid);
 
 			if (cr.is_valid()) {
 				adds_craft_recipe(cr);
@@ -730,8 +730,8 @@ void Entity::_from_dict(const Dictionary &dict) {
 	for (int i = 0; i < known_spells.size(); ++i) {
 		int spell_id = known_spells.get(String::num(i), 0);
 
-		if (DataManager::get_instance() != NULL) {
-			Ref<Spell> sp = DataManager::get_instance()->get_spell(spell_id);
+		if (EntityDataManager::get_instance() != NULL) {
+			Ref<Spell> sp = EntityDataManager::get_instance()->get_spell(spell_id);
 
 			if (sp.is_valid()) {
 				_s_spells.push_back(sp);
@@ -789,8 +789,8 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	int edi = dict.get("entity_data_id", 0);
 
-	if (DataManager::get_instance() != NULL) {
-		sets_entity_data(DataManager::get_instance()->get_entity_data(edi));
+	if (EntityDataManager::get_instance() != NULL) {
+		sets_entity_data(EntityDataManager::get_instance()->get_entity_data(edi));
 	}
 
 	sets_entity_data_id(edi);

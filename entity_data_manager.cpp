@@ -1,17 +1,17 @@
-#include "data_manager.h"
+#include "entity_data_manager.h"
 
-#include "../entities/data/entity_data.h"
-#include "aura.h"
-#include "craft_recipe.h"
-#include "spell.h"
+#include "./entities/data/entity_data.h"
+#include "./data/aura.h"
+#include "./data/craft_recipe.h"
+#include "./data/spell.h"
 
-DataManager *DataManager::instance;
+EntityDataManager *EntityDataManager::instance;
 
-DataManager *DataManager::get_instance() {
+EntityDataManager *EntityDataManager::get_instance() {
 	return instance;
 }
 
-void DataManager::_notification(int p_what) {
+void EntityDataManager::_notification(int p_what) {
 
 	switch (p_what) {
 
@@ -26,263 +26,263 @@ void DataManager::_notification(int p_what) {
 	}
 }
 
-Ref<Aura> DataManager::get_skill_for_armor_type(int index) {
+Ref<Aura> EntityDataManager::get_skill_for_armor_type(int index) {
 	ERR_FAIL_INDEX_V(index, ItemEnums::ARMOR_TYPE_MAX, Ref<Aura>());
 
 	return _armor_type_skills[index];
 }
-void DataManager::set_skill_for_armor_type(int index, Ref<Aura> aura) {
+void EntityDataManager::set_skill_for_armor_type(int index, Ref<Aura> aura) {
 	ERR_FAIL_INDEX(index, ItemEnums::ARMOR_TYPE_MAX);
 
 	_armor_type_skills[index] = aura;
 }
 
-String DataManager::get_xp_data_path() {
+String EntityDataManager::get_xp_data_path() {
 	return _xp_data_path;
 }
-void DataManager::set_xp_data_path(String path) {
+void EntityDataManager::set_xp_data_path(String path) {
 	_xp_data_path = path;
 }
-Ref<XPData> DataManager::get_xp_data() {
+Ref<XPData> EntityDataManager::get_xp_data() {
 	return _xp_data;
 }
 
-String DataManager::get_entity_datas_folder() {
+String EntityDataManager::get_entity_datas_folder() {
 	return _entity_datas_folder;
 }
 
-void DataManager::set_entity_datas_folder(String folder) {
+void EntityDataManager::set_entity_datas_folder(String folder) {
 	_entity_datas_folder = folder;
 }
 
-Vector<Ref<EntityData> > *DataManager::get_entity_datas() {
+Vector<Ref<EntityData> > *EntityDataManager::get_entity_datas() {
 	return &_entity_datas;
 }
 
-Ref<EntityData> DataManager::get_entity_data(int class_id) {
+Ref<EntityData> EntityDataManager::get_entity_data(int class_id) {
 	if (!_entity_data_map.has(class_id))
 		return Ref<EntityData>(NULL);
 
 	return _entity_data_map.get(class_id);
 }
 
-Ref<EntityData> DataManager::get_entity_data_index(int index) {
+Ref<EntityData> EntityDataManager::get_entity_data_index(int index) {
 	ERR_FAIL_INDEX_V(index, _entity_datas.size(), Ref<EntityData>(NULL));
 
 	return _entity_datas.get(index);
 }
 
-int DataManager::get_entity_data_count() {
+int EntityDataManager::get_entity_data_count() {
 	return _entity_datas.size();
 }
 
-void DataManager::add_entity_data(Ref<EntityData> cls) {
+void EntityDataManager::add_entity_data(Ref<EntityData> cls) {
 	ERR_FAIL_COND(!cls.is_valid());
 
 	_entity_datas.push_back(cls);
 	_entity_data_map.set(cls->get_id(), cls);
 }
 
-String DataManager::get_spells_folder() {
+String EntityDataManager::get_spells_folder() {
 	return _spells_folder;
 }
-void DataManager::set_spells_folder(String folder) {
+void EntityDataManager::set_spells_folder(String folder) {
 	_spells_folder = folder;
 }
-Vector<Ref<Spell> > *DataManager::get_spells() {
+Vector<Ref<Spell> > *EntityDataManager::get_spells() {
 	return &_spells;
 }
 
-Ref<Spell> DataManager::get_spell(int spell_id) {
+Ref<Spell> EntityDataManager::get_spell(int spell_id) {
 	ERR_FAIL_COND_V(!_spell_map.has(spell_id), Ref<Spell>(NULL));
 
 	return _spell_map.get(spell_id);
 }
 
-Ref<Spell> DataManager::get_spell_index(int index) {
+Ref<Spell> EntityDataManager::get_spell_index(int index) {
 	ERR_FAIL_INDEX_V(index, _spells.size(), Ref<Spell>(NULL));
 
 	return _spells.get(index);
 }
 
-int DataManager::get_spell_count() {
+int EntityDataManager::get_spell_count() {
 	return _spells.size();
 }
 
-void DataManager::add_spell(Ref<Spell> spell) {
+void EntityDataManager::add_spell(Ref<Spell> spell) {
 	ERR_FAIL_COND(!spell.is_valid());
 
 	_spells.push_back(spell);
 	_spell_map.set(spell->get_id(), spell);
 }
 
-void DataManager::add_aura(Ref<Aura> aura) {
+void EntityDataManager::add_aura(Ref<Aura> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	_auras.push_back(aura);
 	_aura_map.set(aura->get_id(), aura);
 }
 
-String DataManager::get_auras_folder() {
+String EntityDataManager::get_auras_folder() {
 	return _auras_folder;
 }
-void DataManager::set_auras_folder(String folder) {
+void EntityDataManager::set_auras_folder(String folder) {
 	_auras_folder = folder;
 }
-Vector<Ref<Aura> > *DataManager::get_auras() {
+Vector<Ref<Aura> > *EntityDataManager::get_auras() {
 	return &_auras;
 }
 
-Ref<Aura> DataManager::get_aura(int aura_id) {
+Ref<Aura> EntityDataManager::get_aura(int aura_id) {
 	ERR_FAIL_COND_V(!_aura_map.has(aura_id), Ref<Aura>(NULL));
 
 	return _aura_map.get(aura_id);
 }
 
-Ref<Aura> DataManager::get_aura_index(int index) {
+Ref<Aura> EntityDataManager::get_aura_index(int index) {
 	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>(NULL));
 
 	return _auras.get(index);
 }
 
-int DataManager::get_aura_count() {
+int EntityDataManager::get_aura_count() {
 	return _auras.size();
 }
 
 //Craft Data
-void DataManager::add_craft_data(Ref<CraftRecipe> cda) {
+void EntityDataManager::add_craft_data(Ref<CraftRecipe> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_craft_datas.push_back(cda);
 	_craft_data_map.set(cda->get_id(), cda);
 }
 
-String DataManager::get_craft_data_folder() {
+String EntityDataManager::get_craft_data_folder() {
 	return _craft_data_folder;
 }
-void DataManager::set_craft_data_folder(String folder) {
+void EntityDataManager::set_craft_data_folder(String folder) {
 	_craft_data_folder = folder;
 }
-Vector<Ref<CraftRecipe> > *DataManager::get_craft_datas() {
+Vector<Ref<CraftRecipe> > *EntityDataManager::get_craft_datas() {
 	return &_craft_datas;
 }
 
-Ref<CraftRecipe> DataManager::get_craft_data(int craft_id) {
+Ref<CraftRecipe> EntityDataManager::get_craft_data(int craft_id) {
 	ERR_FAIL_COND_V(!_craft_data_map.has(craft_id), Ref<CraftRecipe>(NULL));
 
 	return _craft_data_map.get(craft_id);
 }
 
-Ref<CraftRecipe> DataManager::get_craft_data_index(int index) {
+Ref<CraftRecipe> EntityDataManager::get_craft_data_index(int index) {
 	ERR_FAIL_INDEX_V(index, _craft_datas.size(), Ref<CraftRecipe>(NULL));
 
 	return _craft_datas.get(index);
 }
 
-int DataManager::get_craft_data_count() {
+int EntityDataManager::get_craft_data_count() {
 	return _craft_datas.size();
 }
 
-String DataManager::get_item_template_folder() {
+String EntityDataManager::get_item_template_folder() {
 	return _item_template_folder;
 }
-void DataManager::set_item_template_folder(String folder) {
+void EntityDataManager::set_item_template_folder(String folder) {
 	_item_template_folder = folder;
 }
-Vector<Ref<ItemTemplate> > *DataManager::get_item_templates() {
+Vector<Ref<ItemTemplate> > *EntityDataManager::get_item_templates() {
 	return &_item_templates;
 }
 
-void DataManager::add_item_template(Ref<ItemTemplate> cda) {
+void EntityDataManager::add_item_template(Ref<ItemTemplate> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_item_templates.push_back(cda);
 	_item_template_map.set(cda->get_id(), cda);
 }
 
-Ref<ItemTemplate> DataManager::get_item_template(int item_id) {
+Ref<ItemTemplate> EntityDataManager::get_item_template(int item_id) {
 	ERR_FAIL_COND_V(!_item_template_map.has(item_id), Ref<ItemTemplate>(NULL));
 
 	return _item_template_map.get(item_id);
 }
 
-Ref<ItemTemplate> DataManager::get_item_template_index(int index) {
+Ref<ItemTemplate> EntityDataManager::get_item_template_index(int index) {
 	ERR_FAIL_INDEX_V(index, _item_templates.size(), Ref<ItemTemplate>(NULL));
 
 	return _item_templates.get(index);
 }
 
-int DataManager::get_item_template_count() {
+int EntityDataManager::get_item_template_count() {
 	return _item_templates.size();
 }
 
-String DataManager::get_mob_data_folder() {
+String EntityDataManager::get_mob_data_folder() {
 	return _mob_data_folder;
 }
-void DataManager::set_mob_data_folder(String folder) {
+void EntityDataManager::set_mob_data_folder(String folder) {
 	_mob_data_folder = folder;
 }
-Vector<Ref<EntityData> > *DataManager::get_mob_datas() {
+Vector<Ref<EntityData> > *EntityDataManager::get_mob_datas() {
 	return &_mob_datas;
 }
 
-void DataManager::add_mob_data(Ref<EntityData> cda) {
+void EntityDataManager::add_mob_data(Ref<EntityData> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_mob_datas.push_back(cda);
 	_mob_data_map.set(cda->get_id(), cda);
 }
 
-Ref<EntityData> DataManager::get_mob_data(int item_id) {
+Ref<EntityData> EntityDataManager::get_mob_data(int item_id) {
 	ERR_FAIL_COND_V(!_mob_data_map.has(item_id), Ref<EntityData>(NULL));
 
 	return _mob_data_map.get(item_id);
 }
 
-Ref<EntityData> DataManager::get_mob_data_index(int index) {
+Ref<EntityData> EntityDataManager::get_mob_data_index(int index) {
 	ERR_FAIL_INDEX_V(index, _mob_datas.size(), Ref<EntityData>(NULL));
 
 	return _mob_datas.get(index);
 }
 
-int DataManager::get_mob_data_count() {
+int EntityDataManager::get_mob_data_count() {
 	return _mob_datas.size();
 }
 
-String DataManager::get_player_character_data_folder() {
+String EntityDataManager::get_player_character_data_folder() {
 	return _player_character_data_folder;
 }
-void DataManager::set_player_character_data_folder(String folder) {
+void EntityDataManager::set_player_character_data_folder(String folder) {
 	_player_character_data_folder = folder;
 }
-Vector<Ref<EntityData> > *DataManager::get_player_character_datas() {
+Vector<Ref<EntityData> > *EntityDataManager::get_player_character_datas() {
 	return &_player_character_datas;
 }
 
-void DataManager::add_player_character_data(Ref<EntityData> cda) {
+void EntityDataManager::add_player_character_data(Ref<EntityData> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_player_character_datas.push_back(cda);
 	_player_character_data_map.set(cda->get_id(), cda);
 }
 
-Ref<EntityData> DataManager::get_player_character_data(int item_id) {
+Ref<EntityData> EntityDataManager::get_player_character_data(int item_id) {
 	ERR_FAIL_COND_V(!_player_character_data_map.has(item_id), Ref<EntityData>(NULL));
 
 	return _player_character_data_map.get(item_id);
 }
 
-Ref<EntityData> DataManager::get_player_character_data_index(int index) {
+Ref<EntityData> EntityDataManager::get_player_character_data_index(int index) {
 	ERR_FAIL_INDEX_V(index, _player_character_datas.size(), Ref<EntityData>(NULL));
 
 	return _player_character_datas.get(index);
 }
 
-int DataManager::get_player_character_data_count() {
+int EntityDataManager::get_player_character_data_count() {
 	return _player_character_datas.size();
 }
 
-void DataManager::load_all() {
+void EntityDataManager::load_all() {
 	load_xp_data();
 	load_spells();
 	load_auras();
@@ -293,7 +293,7 @@ void DataManager::load_all() {
 	load_player_character_datas();
 }
 
-void DataManager::load_xp_data() {
+void EntityDataManager::load_xp_data() {
 	_Directory dir;
 
 	ERR_FAIL_COND(_xp_data_path == "");
@@ -315,7 +315,7 @@ void DataManager::load_xp_data() {
 	_xp_data = d;
 }
 
-void DataManager::load_spells() {
+void EntityDataManager::load_spells() {
 	_Directory dir;
 
 	ERR_FAIL_COND(_spells_folder.ends_with("/"));
@@ -354,7 +354,7 @@ void DataManager::load_spells() {
 	}
 }
 
-void DataManager::load_auras() {
+void EntityDataManager::load_auras() {
 	_Directory dir;
 
 	ERR_FAIL_COND(_auras_folder.ends_with("/"));
@@ -393,7 +393,7 @@ void DataManager::load_auras() {
 	}
 }
 
-void DataManager::load_characters() {
+void EntityDataManager::load_characters() {
 	_Directory dir;
 
 	ERR_FAIL_COND(_entity_datas_folder.ends_with("/"));
@@ -432,7 +432,7 @@ void DataManager::load_characters() {
 	}
 }
 
-void DataManager::load_craft_datas() {
+void EntityDataManager::load_craft_datas() {
 	_Directory dir;
 
 	ERR_FAIL_COND(_craft_data_folder.ends_with("/"));
@@ -471,7 +471,7 @@ void DataManager::load_craft_datas() {
 	}
 }
 
-void DataManager::load_item_templates() {
+void EntityDataManager::load_item_templates() {
 	_Directory dir;
 
 	ERR_FAIL_COND(_item_template_folder.ends_with("/"));
@@ -510,7 +510,7 @@ void DataManager::load_item_templates() {
 	}
 }
 
-void DataManager::load_mob_datas() {
+void EntityDataManager::load_mob_datas() {
 	_Directory dir;
 
 	ERR_FAIL_COND(_mob_data_folder.ends_with("/"));
@@ -549,7 +549,7 @@ void DataManager::load_mob_datas() {
 	}
 }
 
-void DataManager::load_player_character_datas() {
+void EntityDataManager::load_player_character_datas() {
 	_Directory dir;
 
 	ERR_FAIL_COND(_player_character_data_folder.ends_with("/"));
@@ -588,165 +588,165 @@ void DataManager::load_player_character_datas() {
 	}
 }
 
-void DataManager::list_characters() {
+void EntityDataManager::list_characters() {
 	for (int i = 0; i < _entity_datas.size(); ++i) {
 		print_error(itos(i) + ": " + _entity_datas.get(i)->get_text_name());
 	}
 }
 
-void DataManager::list_spells() {
+void EntityDataManager::list_spells() {
 	for (int i = 0; i < _spells.size(); ++i) {
 		print_error(itos(i) + ": " + _spells.get(i)->get_text_name());
 	}
 }
 
-void DataManager::list_auras() {
+void EntityDataManager::list_auras() {
 	for (int i = 0; i < _auras.size(); ++i) {
 		print_error(itos(i) + ": " + _auras.get(i)->get_text_name());
 	}
 }
 
-void DataManager::list_craft_data() {
+void EntityDataManager::list_craft_data() {
 	for (int i = 0; i < _craft_datas.size(); ++i) {
 		print_error(itos(i) + ": " + _craft_datas.get(i)->get_text_name());
 	}
 }
 
-void DataManager::list_item_templates() {
+void EntityDataManager::list_item_templates() {
 	for (int i = 0; i < _item_templates.size(); ++i) {
 		print_error(itos(i) + ": " + _item_templates.get(i)->get_text_name());
 	}
 }
 
-void DataManager::list_mob_datas() {
+void EntityDataManager::list_mob_datas() {
 	for (int i = 0; i < _mob_datas.size(); ++i) {
 		print_error(itos(i) + ": " + _mob_datas.get(i)->get_text_name());
 	}
 }
 
-void DataManager::list_player_character_datas() {
+void EntityDataManager::list_player_character_datas() {
 	for (int i = 0; i < _player_character_datas.size(); ++i) {
 		print_error(itos(i) + ": " + _player_character_datas.get(i)->get_text_name());
 	}
 }
 
-void DataManager::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_skill_for_armor_type", "index"), &DataManager::get_skill_for_armor_type);
-	ClassDB::bind_method(D_METHOD("set_skill_for_armor_type", "index", "aura"), &DataManager::set_skill_for_armor_type);
+void EntityDataManager::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_skill_for_armor_type", "index"), &EntityDataManager::get_skill_for_armor_type);
+	ClassDB::bind_method(D_METHOD("set_skill_for_armor_type", "index", "aura"), &EntityDataManager::set_skill_for_armor_type);
 
 	for (int i = 0; i < ItemEnums::ARMOR_TYPE_MAX; ++i) {
 		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "skill_for_armor_type_" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_skill_for_armor_type", "get_skill_for_armor_type", i);
 	}
 
-	ClassDB::bind_method(D_METHOD("get_automatic_load"), &DataManager::get_automatic_load);
-	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &DataManager::set_automatic_load);
+	ClassDB::bind_method(D_METHOD("get_automatic_load"), &EntityDataManager::get_automatic_load);
+	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &EntityDataManager::set_automatic_load);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
 
 	//XPData
-	ClassDB::bind_method(D_METHOD("get_xp_data_path"), &DataManager::get_xp_data_path);
-	ClassDB::bind_method(D_METHOD("set_xp_data_path", "path"), &DataManager::set_xp_data_path);
+	ClassDB::bind_method(D_METHOD("get_xp_data_path"), &EntityDataManager::get_xp_data_path);
+	ClassDB::bind_method(D_METHOD("set_xp_data_path", "path"), &EntityDataManager::set_xp_data_path);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "xp_data_path"), "set_xp_data_path", "get_xp_data_path");
 
-	ClassDB::bind_method(D_METHOD("get_xp_data"), &DataManager::get_xp_data);
+	ClassDB::bind_method(D_METHOD("get_xp_data"), &EntityDataManager::get_xp_data);
 
 	//EntityData
-	ClassDB::bind_method(D_METHOD("get_entity_datas_folder"), &DataManager::get_entity_datas_folder);
-	ClassDB::bind_method(D_METHOD("set_entity_datas_folder", "folder"), &DataManager::set_entity_datas_folder);
+	ClassDB::bind_method(D_METHOD("get_entity_datas_folder"), &EntityDataManager::get_entity_datas_folder);
+	ClassDB::bind_method(D_METHOD("set_entity_datas_folder", "folder"), &EntityDataManager::set_entity_datas_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_datas_folder"), "set_entity_datas_folder", "get_entity_datas_folder");
 
-	ClassDB::bind_method(D_METHOD("add_entity_data", "cls"), &DataManager::add_entity_data);
-	ClassDB::bind_method(D_METHOD("get_entity_data", "class_id"), &DataManager::get_entity_data);
-	ClassDB::bind_method(D_METHOD("get_entity_data_index", "index"), &DataManager::get_entity_data_index);
-	ClassDB::bind_method(D_METHOD("get_entity_data_count"), &DataManager::get_entity_data_count);
+	ClassDB::bind_method(D_METHOD("add_entity_data", "cls"), &EntityDataManager::add_entity_data);
+	ClassDB::bind_method(D_METHOD("get_entity_data", "class_id"), &EntityDataManager::get_entity_data);
+	ClassDB::bind_method(D_METHOD("get_entity_data_index", "index"), &EntityDataManager::get_entity_data_index);
+	ClassDB::bind_method(D_METHOD("get_entity_data_count"), &EntityDataManager::get_entity_data_count);
 
 	//Spell
-	ClassDB::bind_method(D_METHOD("get_spells_folder"), &DataManager::get_spells_folder);
-	ClassDB::bind_method(D_METHOD("set_spells_folder", "folder"), &DataManager::set_spells_folder);
+	ClassDB::bind_method(D_METHOD("get_spells_folder"), &EntityDataManager::get_spells_folder);
+	ClassDB::bind_method(D_METHOD("set_spells_folder", "folder"), &EntityDataManager::set_spells_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "spells_folder"), "set_spells_folder", "get_spells_folder");
 
-	ClassDB::bind_method(D_METHOD("add_spell", "spell"), &DataManager::add_spell);
-	ClassDB::bind_method(D_METHOD("get_spell", "spell_id"), &DataManager::get_spell);
-	ClassDB::bind_method(D_METHOD("get_spell_index", "index"), &DataManager::get_spell_index);
-	ClassDB::bind_method(D_METHOD("get_spell_count"), &DataManager::get_spell_count);
+	ClassDB::bind_method(D_METHOD("add_spell", "spell"), &EntityDataManager::add_spell);
+	ClassDB::bind_method(D_METHOD("get_spell", "spell_id"), &EntityDataManager::get_spell);
+	ClassDB::bind_method(D_METHOD("get_spell_index", "index"), &EntityDataManager::get_spell_index);
+	ClassDB::bind_method(D_METHOD("get_spell_count"), &EntityDataManager::get_spell_count);
 
 	//Aura
-	ClassDB::bind_method(D_METHOD("get_auras_folder"), &DataManager::get_auras_folder);
-	ClassDB::bind_method(D_METHOD("set_auras_folder", "folder"), &DataManager::set_auras_folder);
+	ClassDB::bind_method(D_METHOD("get_auras_folder"), &EntityDataManager::get_auras_folder);
+	ClassDB::bind_method(D_METHOD("set_auras_folder", "folder"), &EntityDataManager::set_auras_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "auras_folder"), "set_auras_folder", "get_auras_folder");
 
-	ClassDB::bind_method(D_METHOD("add_aura", "spell"), &DataManager::add_aura);
-	ClassDB::bind_method(D_METHOD("get_aura", "id"), &DataManager::get_aura);
-	ClassDB::bind_method(D_METHOD("get_aura_index", "index"), &DataManager::get_aura_index);
-	ClassDB::bind_method(D_METHOD("get_aura_count"), &DataManager::get_aura_count);
+	ClassDB::bind_method(D_METHOD("add_aura", "spell"), &EntityDataManager::add_aura);
+	ClassDB::bind_method(D_METHOD("get_aura", "id"), &EntityDataManager::get_aura);
+	ClassDB::bind_method(D_METHOD("get_aura_index", "index"), &EntityDataManager::get_aura_index);
+	ClassDB::bind_method(D_METHOD("get_aura_count"), &EntityDataManager::get_aura_count);
 
 	//Craft Data
-	ClassDB::bind_method(D_METHOD("get_craft_data_folder"), &DataManager::get_craft_data_folder);
-	ClassDB::bind_method(D_METHOD("set_craft_data_folder", "folder"), &DataManager::set_craft_data_folder);
+	ClassDB::bind_method(D_METHOD("get_craft_data_folder"), &EntityDataManager::get_craft_data_folder);
+	ClassDB::bind_method(D_METHOD("set_craft_data_folder", "folder"), &EntityDataManager::set_craft_data_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "craft_data_folder"), "set_craft_data_folder", "get_craft_data_folder");
 
-	ClassDB::bind_method(D_METHOD("add_craft_data", "craft_data"), &DataManager::add_craft_data);
-	ClassDB::bind_method(D_METHOD("get_craft_data", "craft_data_id"), &DataManager::get_craft_data);
-	ClassDB::bind_method(D_METHOD("get_craft_data_index", "index"), &DataManager::get_craft_data_index);
-	ClassDB::bind_method(D_METHOD("get_craft_data_count"), &DataManager::get_craft_data_count);
+	ClassDB::bind_method(D_METHOD("add_craft_data", "craft_data"), &EntityDataManager::add_craft_data);
+	ClassDB::bind_method(D_METHOD("get_craft_data", "craft_data_id"), &EntityDataManager::get_craft_data);
+	ClassDB::bind_method(D_METHOD("get_craft_data_index", "index"), &EntityDataManager::get_craft_data_index);
+	ClassDB::bind_method(D_METHOD("get_craft_data_count"), &EntityDataManager::get_craft_data_count);
 
 	//Item Templates
-	ClassDB::bind_method(D_METHOD("get_item_template_folder"), &DataManager::get_item_template_folder);
-	ClassDB::bind_method(D_METHOD("set_item_template_folder", "folder"), &DataManager::set_item_template_folder);
+	ClassDB::bind_method(D_METHOD("get_item_template_folder"), &EntityDataManager::get_item_template_folder);
+	ClassDB::bind_method(D_METHOD("set_item_template_folder", "folder"), &EntityDataManager::set_item_template_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "item_template_folder"), "set_item_template_folder", "get_item_template_folder");
 
-	ClassDB::bind_method(D_METHOD("add_item_template", "item_template"), &DataManager::add_item_template);
-	ClassDB::bind_method(D_METHOD("get_item_template", "item_template_id"), &DataManager::get_item_template);
-	ClassDB::bind_method(D_METHOD("get_item_template_index", "index"), &DataManager::get_item_template_index);
-	ClassDB::bind_method(D_METHOD("get_item_template_count"), &DataManager::get_item_template_count);
+	ClassDB::bind_method(D_METHOD("add_item_template", "item_template"), &EntityDataManager::add_item_template);
+	ClassDB::bind_method(D_METHOD("get_item_template", "item_template_id"), &EntityDataManager::get_item_template);
+	ClassDB::bind_method(D_METHOD("get_item_template_index", "index"), &EntityDataManager::get_item_template_index);
+	ClassDB::bind_method(D_METHOD("get_item_template_count"), &EntityDataManager::get_item_template_count);
 
 	//Mob Data
-	ClassDB::bind_method(D_METHOD("get_mob_data_folder"), &DataManager::get_mob_data_folder);
-	ClassDB::bind_method(D_METHOD("set_mob_data_folder", "folder"), &DataManager::set_mob_data_folder);
+	ClassDB::bind_method(D_METHOD("get_mob_data_folder"), &EntityDataManager::get_mob_data_folder);
+	ClassDB::bind_method(D_METHOD("set_mob_data_folder", "folder"), &EntityDataManager::set_mob_data_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "mob_data_folder"), "set_mob_data_folder", "get_mob_data_folder");
 
-	ClassDB::bind_method(D_METHOD("add_mob_data", "mob_data"), &DataManager::add_mob_data);
-	ClassDB::bind_method(D_METHOD("get_mob_data", "mob_data_id"), &DataManager::get_mob_data);
-	ClassDB::bind_method(D_METHOD("get_mob_data_index", "index"), &DataManager::get_mob_data_index);
-	ClassDB::bind_method(D_METHOD("get_mob_data_count"), &DataManager::get_mob_data_count);
+	ClassDB::bind_method(D_METHOD("add_mob_data", "mob_data"), &EntityDataManager::add_mob_data);
+	ClassDB::bind_method(D_METHOD("get_mob_data", "mob_data_id"), &EntityDataManager::get_mob_data);
+	ClassDB::bind_method(D_METHOD("get_mob_data_index", "index"), &EntityDataManager::get_mob_data_index);
+	ClassDB::bind_method(D_METHOD("get_mob_data_count"), &EntityDataManager::get_mob_data_count);
 
 	//Player Character Data
-	ClassDB::bind_method(D_METHOD("get_player_character_data_folder"), &DataManager::get_player_character_data_folder);
-	ClassDB::bind_method(D_METHOD("set_player_character_data_folder", "folder"), &DataManager::set_player_character_data_folder);
+	ClassDB::bind_method(D_METHOD("get_player_character_data_folder"), &EntityDataManager::get_player_character_data_folder);
+	ClassDB::bind_method(D_METHOD("set_player_character_data_folder", "folder"), &EntityDataManager::set_player_character_data_folder);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "player_character_data_folder"), "set_player_character_data_folder", "get_player_character_data_folder");
 
-	ClassDB::bind_method(D_METHOD("add_player_character_data", "pcd"), &DataManager::add_player_character_data);
-	ClassDB::bind_method(D_METHOD("get_player_character_data", "pcd_id"), &DataManager::get_player_character_data);
-	ClassDB::bind_method(D_METHOD("get_player_character_data_index", "index"), &DataManager::get_player_character_data_index);
-	ClassDB::bind_method(D_METHOD("get_player_character_data_count"), &DataManager::get_player_character_data_count);
+	ClassDB::bind_method(D_METHOD("add_player_character_data", "pcd"), &EntityDataManager::add_player_character_data);
+	ClassDB::bind_method(D_METHOD("get_player_character_data", "pcd_id"), &EntityDataManager::get_player_character_data);
+	ClassDB::bind_method(D_METHOD("get_player_character_data_index", "index"), &EntityDataManager::get_player_character_data_index);
+	ClassDB::bind_method(D_METHOD("get_player_character_data_count"), &EntityDataManager::get_player_character_data_count);
 
 	//load
-	ClassDB::bind_method(D_METHOD("load_all"), &DataManager::load_all);
-	ClassDB::bind_method(D_METHOD("load_xp_data"), &DataManager::load_xp_data);
-	ClassDB::bind_method(D_METHOD("load_spells"), &DataManager::load_spells);
-	ClassDB::bind_method(D_METHOD("load_auras"), &DataManager::load_auras);
-	ClassDB::bind_method(D_METHOD("load_characters"), &DataManager::load_characters);
-	ClassDB::bind_method(D_METHOD("load_craft_datas"), &DataManager::load_craft_datas);
-	ClassDB::bind_method(D_METHOD("load_item_templates"), &DataManager::load_item_templates);
-	ClassDB::bind_method(D_METHOD("load_mob_datas"), &DataManager::load_mob_datas);
-	ClassDB::bind_method(D_METHOD("load_player_character_datas"), &DataManager::load_player_character_datas);
+	ClassDB::bind_method(D_METHOD("load_all"), &EntityDataManager::load_all);
+	ClassDB::bind_method(D_METHOD("load_xp_data"), &EntityDataManager::load_xp_data);
+	ClassDB::bind_method(D_METHOD("load_spells"), &EntityDataManager::load_spells);
+	ClassDB::bind_method(D_METHOD("load_auras"), &EntityDataManager::load_auras);
+	ClassDB::bind_method(D_METHOD("load_characters"), &EntityDataManager::load_characters);
+	ClassDB::bind_method(D_METHOD("load_craft_datas"), &EntityDataManager::load_craft_datas);
+	ClassDB::bind_method(D_METHOD("load_item_templates"), &EntityDataManager::load_item_templates);
+	ClassDB::bind_method(D_METHOD("load_mob_datas"), &EntityDataManager::load_mob_datas);
+	ClassDB::bind_method(D_METHOD("load_player_character_datas"), &EntityDataManager::load_player_character_datas);
 
 	//tests
-	ClassDB::bind_method(D_METHOD("list_characters"), &DataManager::list_characters);
-	ClassDB::bind_method(D_METHOD("list_spells"), &DataManager::list_spells);
-	ClassDB::bind_method(D_METHOD("list_auras"), &DataManager::list_auras);
-	ClassDB::bind_method(D_METHOD("list_craft_data"), &DataManager::list_craft_data);
-	ClassDB::bind_method(D_METHOD("list_item_templates"), &DataManager::list_item_templates);
-	ClassDB::bind_method(D_METHOD("list_mob_datas"), &DataManager::list_mob_datas);
-	ClassDB::bind_method(D_METHOD("list_player_character_datas"), &DataManager::list_player_character_datas);
+	ClassDB::bind_method(D_METHOD("list_characters"), &EntityDataManager::list_characters);
+	ClassDB::bind_method(D_METHOD("list_spells"), &EntityDataManager::list_spells);
+	ClassDB::bind_method(D_METHOD("list_auras"), &EntityDataManager::list_auras);
+	ClassDB::bind_method(D_METHOD("list_craft_data"), &EntityDataManager::list_craft_data);
+	ClassDB::bind_method(D_METHOD("list_item_templates"), &EntityDataManager::list_item_templates);
+	ClassDB::bind_method(D_METHOD("list_mob_datas"), &EntityDataManager::list_mob_datas);
+	ClassDB::bind_method(D_METHOD("list_player_character_datas"), &EntityDataManager::list_player_character_datas);
 }
 
-DataManager::DataManager() {
+EntityDataManager::EntityDataManager() {
 	instance = this;
 
 	_automatic_load = true;
 }
 
-DataManager::~DataManager() {
+EntityDataManager::~EntityDataManager() {
 	instance = NULL;
 
 	_entity_datas.clear();

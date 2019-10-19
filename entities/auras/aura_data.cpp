@@ -261,8 +261,8 @@ void AuraData::_from_dict(const Dictionary &dict) {
 	_aura_group = dict.get("aura_group", 0);
 	int aura_id = dict.get("aura_id", 0);
 
-	if (DataManager::get_instance() != NULL) {
-		Ref<Aura> aura = DataManager::get_instance()->get_aura(aura_id);
+	if (EntityDataManager::get_instance() != NULL) {
+		Ref<Aura> aura = EntityDataManager::get_instance()->get_aura(aura_id);
 
 		if (aura.is_valid()) {
 			_aura = aura;

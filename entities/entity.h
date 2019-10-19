@@ -23,7 +23,7 @@
 #include "../data/spell.h"
 #include "stats/stat.h"
 
-#include "../data/data_manager.h"
+#include "../entity_data_manager.h"
 #include "../entity_enums.h"
 #include "../skeleton/character_skeleton.h"
 #include "../utility/entity_create_info.h"

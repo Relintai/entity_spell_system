@@ -13,7 +13,6 @@ module_env.add_source_files(env.modules_sources,"item_enums.cpp")
 
 module_env.add_source_files(env.modules_sources,"data/aura.cpp")
 module_env.add_source_files(env.modules_sources,"data/talent_rank_data.cpp")
-module_env.add_source_files(env.modules_sources,"data/data_manager.cpp")
 module_env.add_source_files(env.modules_sources,"data/xp_data.cpp")
 module_env.add_source_files(env.modules_sources,"data/item_stat_modifier.cpp")
 module_env.add_source_files(env.modules_sources,"data/item_template_stat_modifier.cpp")
@@ -124,3 +123,5 @@ env.add_source_files(env.modules_sources,"profile_manager/actionbar/action_bar_p
 
 env.add_source_files(env.modules_sources,"profile_manager/class_profile.cpp")
 env.add_source_files(env.modules_sources,"profile_manager/profile_manager.cpp")
+
+module_env.add_source_files(env.modules_sources,"entity_data_manager.cpp")

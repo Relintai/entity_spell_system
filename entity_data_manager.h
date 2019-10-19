@@ -1,5 +1,5 @@
-#ifndef DATA_MANAGER_H
-#define DATA_MANAGER_H
+#ifndef ENTITY_DATA_MANAGER_H
+#define ENTITY_DATA_MANAGER_H
 
 #include "core/array.h"
 #include "core/hash_map.h"
@@ -12,9 +12,10 @@
 #include "scene/main/node.h"
 
 #include "core/bind/core_bind.h"
-#include "../item_enums.h"
 
-#include "xp_data.h"
+#include "item_enums.h"
+
+#include "./data/xp_data.h"
 
 class Aura;
 class Spell;
@@ -22,11 +23,11 @@ class EntityData;
 class CraftRecipe;
 class ItemTemplate;
 
-class DataManager : public Node {
-	GDCLASS(DataManager, Node);
+class EntityDataManager : public Node {
+	GDCLASS(EntityDataManager, Node);
 
 public:
-	static DataManager *get_instance();
+	static EntityDataManager *get_instance();
 
 	Ref<Aura> get_skill_for_armor_type(int index);
 	void set_skill_for_armor_type(int index, Ref<Aura> aura);
@@ -112,8 +113,8 @@ public:
 	bool get_automatic_load() { return _automatic_load; }
 	void set_automatic_load(bool load) { _automatic_load = load; }
 
-	DataManager();
-	~DataManager();
+	EntityDataManager();
+	~EntityDataManager();
 
 protected:
 	static void _bind_methods();
@@ -153,7 +154,7 @@ private:
 
 	Ref<Aura> _armor_type_skills[ItemEnums::ARMOR_TYPE_MAX];
 
-	static DataManager *instance;
+	static EntityDataManager *instance;
 
 	bool _automatic_load;
 };

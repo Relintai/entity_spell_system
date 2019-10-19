@@ -5,7 +5,7 @@
 
 #include "data/aura.h"
 #include "data/aura_stat_attribute.h"
-#include "data/data_manager.h"
+#include "entity_data_manager.h"
 #include "data/xp_data.h"
 #include "data/item_stat_modifier.h"
 #include "data/item_template_stat_modifier.h"
@@ -158,7 +158,7 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<CharacterSkeletonVisualEntry>();
 
-	ClassDB::register_class<DataManager>();
+	ClassDB::register_class<EntityDataManager>();
 
 	ClassDB::register_class<ItemVisual>();
 	ClassDB::register_class<ItemVisualEntry>();
