@@ -77,7 +77,6 @@ void CharacterSpec::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_text_name"), &CharacterSpec::get_text_name);
 	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &CharacterSpec::set_text_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "spec_name"), "set_text_name", "get_text_name"); //REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_num_talent_rows"), &CharacterSpec::get_num_talent_rows);
 	ClassDB::bind_method(D_METHOD("set_num_talent_rows", "value"), &CharacterSpec::set_num_talent_rows);

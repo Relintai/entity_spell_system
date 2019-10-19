@@ -936,13 +936,10 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_text_name"), &Spell::get_text_name);
 	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &Spell::set_text_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_spell_name"), "set_text_name", "get_text_name"); //REMOVE
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name_key"), "set_text_name", "get_text_name"); //REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_text_description"), &Spell::get_text_description);
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &Spell::set_text_description);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_text_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description");
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_spell_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description"); //REMOVE
 
 	ADD_GROUP("Cooldown", "cooldown");
 	ClassDB::bind_method(D_METHOD("get_cooldown"), &Spell::get_cooldown);

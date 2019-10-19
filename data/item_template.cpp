@@ -443,8 +443,6 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_text_name", "count"), &ItemTemplate::set_text_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
 
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "name_key"), "set_text_name", "get_text_name");
-
 	ClassDB::bind_method(D_METHOD("get_item_type"), &ItemTemplate::get_item_type);
 	ClassDB::bind_method(D_METHOD("set_item_type", "count"), &ItemTemplate::set_item_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "item_type", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_ITEM_TYPE), "set_item_type", "get_item_type");

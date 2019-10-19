@@ -1401,12 +1401,10 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_text_name"), &Aura::get_text_name);
 	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &Aura::set_text_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_aura_name"), "set_text_name", "get_text_name"); //REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_text_description"), &Aura::get_text_description);
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &Aura::set_text_description);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description");
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_aura_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description"); //REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_visual_spell_effects"), &Aura::get_visual_spell_effects);
 	ClassDB::bind_method(D_METHOD("set_visual_spell_effects", "value"), &Aura::set_visual_spell_effects);

@@ -1046,7 +1046,6 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_text_name"), &EntityClassData::get_text_name);
 	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &EntityClassData::set_text_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_class_name"), "set_text_name", "get_text_name"); //REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_inherits"), &EntityClassData::get_inherits);
 	ClassDB::bind_method(D_METHOD("set_inherits", "value"), &EntityClassData::set_inherits);

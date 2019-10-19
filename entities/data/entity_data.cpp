@@ -1159,7 +1159,6 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_text_name"), &EntityData::get_text_name);
 	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &EntityData::set_text_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_name"), "set_text_name", "get_text_name"); //REMOVE
 
 	ClassDB::bind_method(D_METHOD("get_money"), &EntityData::get_money);
 	ClassDB::bind_method(D_METHOD("set_money", "value"), &EntityData::set_money);
