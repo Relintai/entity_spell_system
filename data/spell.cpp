@@ -935,7 +935,7 @@ void Spell::_bind_methods() {
 	ADD_GROUP("Texts", "text");
 	ClassDB::bind_method(D_METHOD("get_text_name"), &Spell::get_text_name);
 	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &Spell::set_text_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_spell_name"), "set_text_name", "get_text_name"); //REMOVE
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name_key"), "set_text_name", "get_text_name"); //REMOVE
 
