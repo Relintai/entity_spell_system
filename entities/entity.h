@@ -433,6 +433,7 @@ public:
 	void sremove_aura_dispelled(Ref<AuraData> aura);
 	void saura_refreshed(Ref<AuraData> aura);
 
+	void rcadd_aura(Array aura);
 	void cadd_aura(Ref<AuraData> aura);
 	void cremove_aura(Ref<AuraData> aura);
 	void cremove_aura_exact(Ref<AuraData> aura);

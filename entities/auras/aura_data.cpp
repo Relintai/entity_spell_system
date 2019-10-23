@@ -225,7 +225,6 @@ Dictionary AuraData::to_dict() {
 void AuraData::from_dict(const Dictionary &dict) {
 	call("_from_dict", dict);
 }
-
 Dictionary AuraData::_to_dict() {
 	Dictionary dict;
 
@@ -279,6 +278,27 @@ void AuraData::_from_dict(const Dictionary &dict) {
 	_time_since_last_tick = dict.get("time_since_last_tick", 0);
 	_damage_already_taken = dict.get("damage_already_taken", 0);
 	_unhandled_ticks = dict.get("unhandled_ticks", 0);
+}
+
+Array AuraData::to_send_array() {
+	return call("_to_send_array");
+}
+void AuraData::from_send_array(const Array &arr) {
+	call("_from_send_array", arr);
+}
+Array AuraData::_to_send_array() {
+	Array arr;
+
+	arr.append(_aura_id);
+	arr.append(_remaining_time);
+
+	return arr;
+}
+void AuraData::_from_send_array(const Array &arr) {
+	ERR_FAIL_COND(arr.size() < 2);
+
+	_aura_id = arr.get(0);
+	_remaining_time = arr.get(1);
 }
 
 AuraData::AuraData() {
@@ -375,7 +395,16 @@ void AuraData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &AuraData::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &AuraData::to_dict);
-
 	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &AuraData::_from_dict);
 	ClassDB::bind_method(D_METHOD("_to_dict"), &AuraData::_to_dict);
+
+	//Networking
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::ARRAY, "arr"), "_to_send_array"));
+	BIND_VMETHOD(MethodInfo("_from_send_array", PropertyInfo(Variant::ARRAY, "arr")));
+
+	ClassDB::bind_method(D_METHOD("to_send_array"), &AuraData::to_send_array);
+	ClassDB::bind_method(D_METHOD("from_send_array", "arr"), &AuraData::from_send_array);
+	
+	ClassDB::bind_method(D_METHOD("_to_send_array"), &AuraData::_to_send_array);
+	ClassDB::bind_method(D_METHOD("_from_send_array", "arr"), &AuraData::_from_send_array);
 }

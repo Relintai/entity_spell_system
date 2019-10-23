@@ -1,8 +1,11 @@
 #ifndef AURA_DATA_H
 #define AURA_DATA_H
 
-#include "../../spell_enums.h"
 #include "core/reference.h"
+#include "core/array.h"
+#include "core/dictionary.h"
+
+#include "../../spell_enums.h"
 
 class Aura;
 class Entity;
@@ -69,9 +72,13 @@ public:
 
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
-
 	Dictionary _to_dict();
 	void _from_dict(const Dictionary &dict);
+
+	Array to_send_array();
+	void from_send_array(const Array &arr);
+	Array _to_send_array();
+	void _from_send_array(const Array &arr);
 
 	AuraData();
 

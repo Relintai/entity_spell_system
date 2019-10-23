@@ -2346,7 +2346,7 @@ void Entity::sadd_aura(Ref<AuraData> aura) {
 	emit_signal("saura_added", aura);
 
 	if (!aura->get_aura()->get_hide())
-		SEND_RPC(rpc("cadd_aura", aura), cadd_aura(aura));
+		SEND_RPC(rpc("rcadd_aura", aura), cadd_aura(aura));
 }
 
 void Entity::sremove_aura(Ref<AuraData> aura) {
@@ -2448,6 +2448,16 @@ void Entity::saura_refreshed(Ref<AuraData> aura) {
 
 	if (!aura->get_aura()->get_hide())
 		SEND_RPC(rpc("caura_refreshed", aura), caura_refreshed(aura));
+}
+
+void Entity::rcadd_aura(Array arr) {
+	Ref<AuraData> ad;
+	ad.instance();
+
+	ad->set_owner(this);
+	ad->from_send_array(arr);
+
+	cadd_aura(ad);
 }
 
 void Entity::cadd_aura(Ref<AuraData> aura) {
