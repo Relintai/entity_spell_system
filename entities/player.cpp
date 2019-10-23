@@ -75,7 +75,7 @@ void Player::_from_dict(const Dictionary &dict) {
 }
 
 Player::Player() {
-	//_seed = 0; don't it will be random by default like this
+	_s_seed = 0;
 	_c_seed = _s_seed;
 
 	//_input_profile = Ref<InputProfile>(memnew(InputProfile()));
