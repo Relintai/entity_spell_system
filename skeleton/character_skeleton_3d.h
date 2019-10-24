@@ -11,6 +11,8 @@
 #include "../data/character_skeleton_visual_entry.h"
 #include "../entity_enums.h"
 
+class ItemVisual;
+
 class CharacterSkeleton3D : public CharacterSkeleton {
 	GDCLASS(CharacterSkeleton3D, CharacterSkeleton);
 

@@ -11,7 +11,6 @@
 #include "data/item_template_stat_modifier.h"
 #include "data/spell_cooldown_manipulation_data.h"
 #include "data/equipment_data.h"
-#include "data/equipment_data_entry.h"
 
 #include "entities/data/entity_data.h"
 #include "entities/data/entity_class_data.h"
@@ -152,7 +151,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<TalentRowData>();
 
 	ClassDB::register_class<EquipmentData>();
-	ClassDB::register_class<EquipmentDataEntry>();
 
 	ClassDB::register_class<EntitySkill>();
 
@@ -183,7 +181,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<CharacterSpec>();
     
 	ClassDB::register_class<Bag>();
-	//ClassDB::register_class<Inventory>();
 
 	ClassDB::register_class<SpellDamageInfo>();
 	ClassDB::register_class<SpellHealInfo>();

@@ -1,5 +1,6 @@
 #include "character_skeleton_3d.h"
 
+#include "../data/item_visual.h"
 
 NodePath CharacterSkeleton3D::get_bone_path(int index) {
     ERR_FAIL_INDEX_V(index, EntityEnums::SKELETON_POINTS_MAX, NodePath());

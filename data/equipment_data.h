@@ -4,7 +4,6 @@
 #include "core/resource.h"
 
 #include "../item_enums.h"
-#include "equipment_data_entry.h"
 
 class ItemTemplate;
 class ItemInstance;
