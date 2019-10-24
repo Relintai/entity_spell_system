@@ -52,6 +52,8 @@ private:
 
 	Node *_bone_nodes[EntityEnums::SKELETON_POINTS_MAX];
 
+	Vector<Ref<ItemVisual> > _item_visuals;
+
 	Ref<CharacterSkeletonVisualEntry> _visuals[EntityEnums::SKELETON_POINTS_MAX];
 };
 
