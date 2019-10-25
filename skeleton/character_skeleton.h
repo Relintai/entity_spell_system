@@ -30,11 +30,11 @@ class CharacterSkeleton : public Spatial {
 #endif
 
 public:
-	virtual void add_item_visual(Ref<ItemVisual> vis);
-	virtual void remove_item_visual(Ref<ItemVisual> vis);
-	virtual Ref<ItemVisual> get_item_visual();
-	virtual int get_item_visual_count();
-	virtual void clear_item_visuals();
+	//virtual void add_item_visual(Ref<ItemVisual> vis);
+	//virtual void remove_item_visual(Ref<ItemVisual> vis);
+	//virtual Ref<ItemVisual> get_item_visual();
+	//virtual int get_item_visual_count();
+	//virtual void clear_item_visuals();
 
 	CharacterSkeleton();
 

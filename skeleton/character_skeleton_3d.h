@@ -37,11 +37,11 @@ public:
 
 	AnimationTree *get_animation_tree();
 
-	void add_item_visual(Ref<ItemVisual> vis);
-	void remove_item_visual(Ref<ItemVisual> vis);
-	Ref<ItemVisual> get_item_visual();
-	int get_item_visual_count();
-	void clear_item_visuals();
+	//void add_item_visual(Ref<ItemVisual> vis);
+	//void remove_item_visual(Ref<ItemVisual> vis);
+	//Ref<ItemVisual> get_item_visual();
+	//int get_item_visual_count();
+	//void clear_item_visuals();
 
 	void update_nodes();
 
