@@ -36,6 +36,9 @@ public:
 	String get_text_name();
 	void set_text_name(String value);
 
+	String get_text_description();
+	void set_text_description(String value);
+
 	Ref<EntityClassData> get_inherits();
 	void set_inherits(Ref<EntityClassData> value);
 
@@ -225,6 +228,7 @@ private:
 	int _id;
 
 	String _text_name;
+	String _text_description;
 
 	Ref<EntityClassData> _inherits;
 

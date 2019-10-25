@@ -23,6 +23,13 @@ void EntityData::set_text_name(String value) {
 	_text_name = value;
 }
 
+String EntityData::get_text_description() {
+	return _text_description;
+}
+void EntityData::set_text_description(String value) {
+	_text_description = value;
+}
+
 Ref<EntityData> EntityData::get_inherits() {
 	return _inherits;
 }
@@ -1159,6 +1166,10 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_text_name"), &EntityData::get_text_name);
 	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &EntityData::set_text_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+
+	ClassDB::bind_method(D_METHOD("get_text_description"), &EntityData::get_text_description);
+	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &EntityData::set_text_description);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_description"), "set_text_description", "get_text_description");
 
 	ClassDB::bind_method(D_METHOD("get_money"), &EntityData::get_money);
 	ClassDB::bind_method(D_METHOD("set_money", "value"), &EntityData::set_money);
