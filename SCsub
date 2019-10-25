@@ -94,6 +94,7 @@ module_env.add_source_files(env.modules_sources,"skeleton/character_skeleton_3d.
 
 module_env.add_source_files(env.modules_sources,"skeleton/entity_species_data.cpp")
 module_env.add_source_files(env.modules_sources,"skeleton/species_model_data.cpp")
+module_env.add_source_files(env.modules_sources,"skeleton/skeleton_model_entry.cpp")
 
 module_env.add_source_files(env.modules_sources,"utility/entity_create_info.cpp")
 

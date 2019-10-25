@@ -79,6 +79,7 @@
 
 #include "skeleton/species_model_data.h"
 #include "skeleton/entity_species_data.h"
+#include "skeleton/skeleton_model_entry.h"
 
 #include "utility/entity_create_info.h"
 #include "utility/cooldown.h"
@@ -217,6 +218,7 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<EntitySpeciesData>();
 	ClassDB::register_class<SpeciesModelData>();
+	ClassDB::register_class<SkeletonModelEntry>();
     
     ClassDB::register_class<Cooldown>();
     ClassDB::register_class<CategoryCooldown>();
