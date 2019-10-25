@@ -2,8 +2,8 @@
 #define ENTITY_DATA_H
 
 #include "core/resource.h"
-#include "core/vector.h"
 #include "core/ustring.h"
+#include "core/vector.h"
 #include "scene/resources/texture.h"
 
 #include "../../entities/stats/stat_data.h"
@@ -22,6 +22,8 @@
 #include "item_container_data.h"
 
 #include "../../data/equipment_data.h"
+
+#include "../../skeleton/entity_species_data.h"
 
 class Aura;
 class Spell;
@@ -70,6 +72,9 @@ public:
 	int get_bag_size();
 	void set_bag_size(int value);
 
+	Ref<EntitySpeciesData> get_entity_species_data();
+	void set_entity_species_data(Ref<EntitySpeciesData> value);
+
 	Ref<EntityClassData> get_entity_class_data();
 	void set_entity_class_data(Ref<EntityClassData> data);
 
@@ -94,7 +99,7 @@ public:
 	Vector<Variant> get_craft_recipes();
 	void set_craft_recipes(const Vector<Variant> &recipe);
 
-		/*
+	/*
 	Vector<int> get_mob_party_ids();
 	void set_mob_party_ids(Vector<int> ids);
 
@@ -253,6 +258,7 @@ private:
 	int _bag_size;
 
 	Ref<EntityClassData> _entity_class_data;
+	Ref<EntitySpeciesData> _entity_species_data;
 	Ref<EquipmentData> _equipment_data;
 
 	Ref<LootDataBase> _lootdb;

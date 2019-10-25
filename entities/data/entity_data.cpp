@@ -87,6 +87,13 @@ void EntityData::set_bag_size(int value) {
 	_bag_size = value;
 }
 
+Ref<EntitySpeciesData> EntityData::get_entity_species_data() {
+	return _entity_species_data;
+}
+void EntityData::set_entity_species_data(Ref<EntitySpeciesData> value) {
+	_entity_species_data = value;
+}
+
 Ref<EntityClassData> EntityData::get_entity_class_data() {
 	return _entity_class_data;
 }
@@ -1179,9 +1186,17 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_bag_size", "value"), &EntityData::set_bag_size);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "bag_size"), "set_bag_size", "get_bag_size");
 
+	ClassDB::bind_method(D_METHOD("get_entity_species_data"), &EntityData::get_entity_species_data);
+	ClassDB::bind_method(D_METHOD("set_entity_species_data", "value"), &EntityData::set_entity_species_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entity_species_data", PROPERTY_HINT_RESOURCE_TYPE, "EntitySpeciesData"), "set_entity_species_data", "get_entity_species_data");
+
 	ClassDB::bind_method(D_METHOD("get_entity_class_data"), &EntityData::get_entity_class_data);
 	ClassDB::bind_method(D_METHOD("set_entity_class_data", "value"), &EntityData::set_entity_class_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entity_class_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityClassData"), "set_entity_class_data", "get_entity_class_data");
+
+	ClassDB::bind_method(D_METHOD("get_equipment_data"), &EntityData::get_equipment_data);
+	ClassDB::bind_method(D_METHOD("set_equipment_data", "value"), &EntityData::set_equipment_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "equipment_data", PROPERTY_HINT_RESOURCE_TYPE, "EquipmentData"), "set_equipment_data", "get_equipment_data");
 
 	// Loot DB
 	ClassDB::bind_method(D_METHOD("get_loot_db"), &EntityData::get_loot_db);
