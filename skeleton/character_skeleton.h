@@ -15,6 +15,8 @@
 #include "../data/character_skeleton_visual_entry.h"
 #include "../entity_enums.h"
 
+#include "../data/item_visual.h"
+
 #ifdef ENTITIES_2D
 
 class CharacterSkeleton : public Node2D {
@@ -28,6 +30,12 @@ class CharacterSkeleton : public Spatial {
 #endif
 
 public:
+	virtual void add_item_visual(Ref<ItemVisual> vis);
+	virtual void remove_item_visual(Ref<ItemVisual> vis);
+	virtual Ref<ItemVisual> get_item_visual();
+	virtual int get_item_visual_count();
+	virtual void clear_item_visuals();
+
 	CharacterSkeleton();
 
 protected:

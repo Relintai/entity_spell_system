@@ -3,6 +3,8 @@
 
 #include "character_skeleton.h"
 
+#include "core/vector.h"
+
 #include "core/node_path.h"
 #include "core/ustring.h"
 #include "scene/animation/animation_player.h"
@@ -35,6 +37,12 @@ public:
 
 	AnimationTree *get_animation_tree();
 
+	void add_item_visual(Ref<ItemVisual> vis);
+	void remove_item_visual(Ref<ItemVisual> vis);
+	Ref<ItemVisual> get_item_visual();
+	int get_item_visual_count();
+	void clear_item_visuals();
+
 	void update_nodes();
 
 	CharacterSkeleton3D();
@@ -57,6 +65,8 @@ private:
 	Vector<Ref<ItemVisual> > _item_visuals;
 
 	Ref<CharacterSkeletonVisualEntry> _visuals[EntityEnums::SKELETON_POINTS_MAX];
+
+	Vector<Ref<CharacterSkeletonVisualEntry> > _entries[EntityEnums::SKELETON_POINTS_MAX];
 };
 
 

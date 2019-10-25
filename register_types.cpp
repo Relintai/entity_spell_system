@@ -77,6 +77,9 @@
 #include "skeleton/character_skeleton.h"
 #include "skeleton/character_skeleton_3d.h"
 
+#include "skeleton/species_model_data.h"
+#include "skeleton/entity_species_data.h"
+
 #include "utility/entity_create_info.h"
 #include "utility/cooldown.h"
 #include "utility/cooldown.h"
@@ -211,6 +214,9 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<CharacterSkeleton>();
 	ClassDB::register_class<CharacterSkeleton3D>();
+
+	ClassDB::register_class<EntitySpeciesData>();
+	ClassDB::register_class<SpeciesModelData>();
     
     ClassDB::register_class<Cooldown>();
     ClassDB::register_class<CategoryCooldown>();
