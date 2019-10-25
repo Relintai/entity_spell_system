@@ -4217,7 +4217,7 @@ void Entity::update(float delta) {
 			s->apply_modifiers();
 
 		if (s->get_dirty()) {
-			//send target is nout public
+			//send target is not public
 			s->setc_values(s->gets_current(), s->gets_max());
 			s->set_dirty(false);
 		}

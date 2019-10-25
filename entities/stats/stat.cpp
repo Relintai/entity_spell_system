@@ -473,6 +473,9 @@ void Stat::_from_dict(const Dictionary &dict) {
 
 		_modifiers.push_back(sm);
 	}
+
+	_dirty = true;
+	_dirty_mods = true;
 }
 
 Stat::Stat() {
