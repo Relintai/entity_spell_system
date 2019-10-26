@@ -12,13 +12,20 @@
 
 #include "../data/character_skeleton_visual_entry.h"
 #include "../entity_enums.h"
+#include "skeleton_model_entry.h"
+
+#include "../data/item_visual_entry.h"
 
 class ItemVisual;
 
+//Rename to HumanoidCharSkeleton
 class CharacterSkeleton3D : public CharacterSkeleton {
 	GDCLASS(CharacterSkeleton3D, CharacterSkeleton);
 
 public:
+	bool get_model_dirty() const;
+	void set_model_dirty(bool value);
+
 	NodePath get_bone_path(int index);
 	void set_bone_path(int index, NodePath path);
 
@@ -37,19 +44,43 @@ public:
 
 	AnimationTree *get_animation_tree();
 
-	//void add_item_visual(Ref<ItemVisual> vis);
-	//void remove_item_visual(Ref<ItemVisual> vis);
-	//Ref<ItemVisual> get_item_visual();
-	//int get_item_visual_count();
-	//void clear_item_visuals();
-
 	void update_nodes();
 
+	void add_item_visual(Ref<ItemVisual> vis);
+	void remove_item_visual(Ref<ItemVisual> vis);
+	void remove_item_visual_index(int index);
+	Ref<ItemVisual> get_item_visual(int index);
+	int get_item_visual_count();
+	void clear_item_visuals();
+
+	void add_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive);
+	void remove_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive);
+
+	Ref<SkeletonModelEntry> get_model_entry(const int bone_index, const int index);
+	int get_model_entry_count(const int bone_index);
+
+	void sort_layers();
+
+	void build_model();
+	void _build_model();
+
 	CharacterSkeleton3D();
+	~CharacterSkeleton3D();
 
 protected:
 	static void _bind_methods();
 	virtual void _notification(int p_notification);
+
+protected:
+	struct _ModelEntryComparator {
+		_FORCE_INLINE_ bool operator()(const Ref<SkeletonModelEntry> &a, const Ref<SkeletonModelEntry> &b) const {
+			if (!a.is_valid() || !b.is_valid()) {
+				return false;
+			}
+
+			return (a->get_priority() < b->get_priority());
+		}
+	};
 
 private:
 	NodePath _animation_player_path;
@@ -62,11 +93,11 @@ private:
 
 	Node *_bone_nodes[EntityEnums::SKELETON_POINTS_MAX];
 
-	Vector<Ref<ItemVisual> > _item_visuals;
-
 	Ref<CharacterSkeletonVisualEntry> _visuals[EntityEnums::SKELETON_POINTS_MAX];
 
-	Vector<Ref<CharacterSkeletonVisualEntry> > _entries[EntityEnums::SKELETON_POINTS_MAX];
+	bool _model_dirty;
+	Vector<Ref<ItemVisual> > _item_visuals;
+	Vector<Ref<SkeletonModelEntry> > _entries[EntityEnums::SKELETON_POINTS_MAX];
 };
 
 

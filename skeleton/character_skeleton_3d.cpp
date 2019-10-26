@@ -2,14 +2,21 @@
 
 #include "../data/item_visual.h"
 
+bool CharacterSkeleton3D::get_model_dirty() const {
+	return _model_dirty;
+}
+void CharacterSkeleton3D::set_model_dirty(bool value) {
+	_model_dirty = value;
+}
+
 NodePath CharacterSkeleton3D::get_bone_path(int index) {
-    ERR_FAIL_INDEX_V(index, EntityEnums::SKELETON_POINTS_MAX, NodePath());
-    
+	ERR_FAIL_INDEX_V(index, EntityEnums::SKELETON_POINTS_MAX, NodePath());
+
 	return _bone_paths[index];
 }
 void CharacterSkeleton3D::set_bone_path(int index, NodePath path) {
-    ERR_FAIL_INDEX(index, EntityEnums::SKELETON_POINTS_MAX);
-    
+	ERR_FAIL_INDEX(index, EntityEnums::SKELETON_POINTS_MAX);
+
 	_bone_paths[index] = path;
 
 	_bone_nodes[index] = get_node_or_null(path);
@@ -72,19 +79,166 @@ AnimationTree *CharacterSkeleton3D::get_animation_tree() {
 
 void CharacterSkeleton3D::update_nodes() {
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-        _bone_nodes[i] = get_node_or_null(_bone_paths[i]);
-    }
+		_bone_nodes[i] = get_node_or_null(_bone_paths[i]);
+	}
 
 	set_animation_player_path(_animation_player_path);
 	set_animation_tree_path(_animation_tree_path);
 }
 
+void CharacterSkeleton3D::add_item_visual(Ref<ItemVisual> vis) {
+	ERR_FAIL_COND(!vis.is_valid());
+
+	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
+		Ref<ItemVisualEntry> e = vis->get_visual(i);
+
+		if (e.is_valid())
+			add_item_visual_entry(vis, e);
+	}
+
+	_item_visuals.push_back(vis);
+}
+void CharacterSkeleton3D::remove_item_visual(Ref<ItemVisual> vis) {
+	ERR_FAIL_COND(!vis.is_valid());
+
+	int index = _item_visuals.find(vis);
+
+	if (index == -1)
+		return;
+
+	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
+		Ref<ItemVisualEntry> e = vis->get_visual(i);
+
+		if (e.is_valid())
+			remove_item_visual_entry(vis, e);
+	}
+
+	_item_visuals.remove(index);
+}
+void CharacterSkeleton3D::remove_item_visual_index(int index) {
+	ERR_FAIL_INDEX(index, _item_visuals.size());
+
+	_item_visuals.remove(index);
+}
+Ref<ItemVisual> CharacterSkeleton3D::get_item_visual(int index) {
+	ERR_FAIL_INDEX_V(index, _item_visuals.size(), Ref<ItemVisual>());
+
+	return _item_visuals.get(index);
+}
+int CharacterSkeleton3D::get_item_visual_count() {
+	return _item_visuals.size();
+}
+void CharacterSkeleton3D::clear_item_visuals() {
+	_item_visuals.clear();
+
+	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
+		_entries[i].clear();
+	}
+
+	_model_dirty = true;
+	set_process(true);
+}
+
+void CharacterSkeleton3D::add_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive) {
+	ERR_FAIL_COND(!vis.is_valid());
+	ERR_FAIL_COND(!ive.is_valid());
+
+	int target_bone_idx = static_cast<int>(ive->get_target_bone());
+
+	Vector<Ref<SkeletonModelEntry> > &entries = _entries[target_bone_idx];
+
+	for (int i = 0; i < entries.size(); ++i) {
+		Ref<SkeletonModelEntry> e = entries.get(i);
+
+		if (e->get_entry() == ive) {
+			e->set_count(e->get_count() + 1);
+			return;
+		}
+	}
+
+	Ref<SkeletonModelEntry> e;
+	e.instance();
+
+	e->set_priority(static_cast<int>(vis->get_layer()));
+	e->set_color(ive->get_color());
+	e->set_entry(ive);
+
+	entries.push_back(e);
+	_model_dirty = true;
+	set_process(true);
+}
+void CharacterSkeleton3D::remove_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive) {
+	ERR_FAIL_COND(!vis.is_valid());
+	ERR_FAIL_COND(!ive.is_valid());
+
+	int target_bone_idx = static_cast<int>(ive->get_target_bone());
+
+	Vector<Ref<SkeletonModelEntry> > &entries = _entries[target_bone_idx];
+
+	for (int i = 0; i < entries.size(); ++i) {
+		Ref<SkeletonModelEntry> e = entries.get(i);
+
+		if (e->get_entry() == ive) {
+			e->set_count(e->get_count() - 1);
+
+			if (e->get_count() <= 0) {
+				entries.remove(i);
+
+				_model_dirty = true;
+				set_process(true);
+			}
+
+			return;
+		}
+	}
+}
+
+Ref<SkeletonModelEntry> CharacterSkeleton3D::get_model_entry(const int bone_index, const int index) {
+	ERR_FAIL_INDEX_V(bone_index, EntityEnums::SKELETON_POINTS_MAX, Ref<SkeletonModelEntry>());
+	ERR_FAIL_INDEX_V(index, _entries[bone_index].size(), Ref<SkeletonModelEntry>());
+
+	return _entries[bone_index].get(index);
+}
+int CharacterSkeleton3D::get_model_entry_count(const int bone_index) {
+	ERR_FAIL_INDEX_V(bone_index, EntityEnums::SKELETON_POINTS_MAX, 0);
+
+	return _entries[bone_index].size();
+}
+
+void CharacterSkeleton3D::sort_layers() {
+	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
+		Vector<Ref<SkeletonModelEntry> > &entries = _entries[i];
+
+		entries.sort_custom<_ModelEntryComparator>();
+	}
+}
+
+void CharacterSkeleton3D::build_model() {
+	call("_build_model");
+}
+
+void CharacterSkeleton3D::_build_model() {
+	set_process(false);
+}
+
 CharacterSkeleton3D::CharacterSkeleton3D() {
+	_model_dirty = false;
+
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
 		_bone_nodes[i] = NULL;
 	}
 
 	_animation_player = NULL;
+}
+
+CharacterSkeleton3D::~CharacterSkeleton3D() {
+	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
+		_entries[i].clear();
+
+		_visuals[i].unref();
+	}
+
+	_item_visuals.clear();
 }
 
 void CharacterSkeleton3D::_notification(int p_what) {
@@ -93,6 +247,8 @@ void CharacterSkeleton3D::_notification(int p_what) {
 			update_nodes();
 		} break;
 		case NOTIFICATION_PROCESS: {
+			if (_model_dirty)
+				build_model();
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 
@@ -101,13 +257,49 @@ void CharacterSkeleton3D::_notification(int p_what) {
 }
 
 void CharacterSkeleton3D::_bind_methods() {
+	BIND_VMETHOD(MethodInfo("_build_model"));
+
+	ClassDB::bind_method(D_METHOD("get_model_dirty"), &CharacterSkeleton3D::get_model_dirty);
+	ClassDB::bind_method(D_METHOD("set_model_dirty", "value"), &CharacterSkeleton3D::set_model_dirty);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "model_dirty"), "set_model_dirty", "get_model_dirty");
+
+	ClassDB::bind_method(D_METHOD("get_animation_player_path"), &CharacterSkeleton3D::get_animation_player_path);
+	ClassDB::bind_method(D_METHOD("set_animation_player_path", "path"), &CharacterSkeleton3D::set_animation_player_path);
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "animation_player_path"), "set_animation_player_path", "get_animation_player_path");
+
+	ClassDB::bind_method(D_METHOD("get_animation_tree_path"), &CharacterSkeleton3D::get_animation_tree_path);
+	ClassDB::bind_method(D_METHOD("set_animation_tree_path", "path"), &CharacterSkeleton3D::set_animation_tree_path);
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "animation_tree_path"), "set_animation_tree_path", "get_animation_tree_path");
+
+	ClassDB::bind_method(D_METHOD("add_item_visual_entry", "vis", "ive"), &CharacterSkeleton3D::add_item_visual_entry);
+	ClassDB::bind_method(D_METHOD("remove_item_visual_entry", "vis", "ive"), &CharacterSkeleton3D::remove_item_visual_entry);
+	ClassDB::bind_method(D_METHOD("get_model_entry", "bone_index", "index"), &CharacterSkeleton3D::get_model_entry);
+	ClassDB::bind_method(D_METHOD("get_model_entry_count", "bone_index"), &CharacterSkeleton3D::get_model_entry_count);
+
+	ClassDB::bind_method(D_METHOD("sort_layers"), &CharacterSkeleton3D::sort_layers);
+
+	ClassDB::bind_method(D_METHOD("build_model"), &CharacterSkeleton3D::build_model);
+	ClassDB::bind_method(D_METHOD("_build_model"), &CharacterSkeleton3D::_build_model);
+
+	//Bone Paths
 	ClassDB::bind_method(D_METHOD("get_bone_path", "index"), &CharacterSkeleton3D::get_bone_path);
 	ClassDB::bind_method(D_METHOD("set_bone_path", "index", "path"), &CharacterSkeleton3D::set_bone_path);
 
+	ADD_GROUP("Bone Paths", "bone_path_");
+	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_root"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_ROOT);
+
+	ClassDB::bind_method(D_METHOD("get_bone_node", "bone_idx"), &CharacterSkeleton3D::get_bone_node);
+
+	ClassDB::bind_method(D_METHOD("get_animation_player"), &CharacterSkeleton3D::get_animation_player);
+	ClassDB::bind_method(D_METHOD("get_animation_tree"), &CharacterSkeleton3D::get_animation_tree);
+
+	ClassDB::bind_method(D_METHOD("update_nodes"), &CharacterSkeleton3D::update_nodes);
+
+	//Visuals
 	ClassDB::bind_method(D_METHOD("get_visual", "index"), &CharacterSkeleton3D::get_visual);
 	ClassDB::bind_method(D_METHOD("set_visual", "index", "entry"), &CharacterSkeleton3D::set_visual);
-	
-    ADD_GROUP("Visuals", "visual_");
+
+	ADD_GROUP("Visuals", "visual_");
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_root", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_ROOT);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_pelvis", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_PELVIS);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_spine", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_SPINE);
@@ -141,22 +333,4 @@ void CharacterSkeleton3D::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_thigh", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_THIGH);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_calf", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_CALF);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_foot", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_FOOT);
-
-    ADD_GROUP("Bone Paths", "bone_path_");
-	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_root"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_ROOT);
-
-	ClassDB::bind_method(D_METHOD("get_bone_node", "bone_idx"), &CharacterSkeleton3D::get_bone_node);
-
-	ClassDB::bind_method(D_METHOD("get_animation_player_path"), &CharacterSkeleton3D::get_animation_player_path);
-	ClassDB::bind_method(D_METHOD("set_animation_player_path", "path"), &CharacterSkeleton3D::set_animation_player_path);
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "animation_player_path"), "set_animation_player_path", "get_animation_player_path");
-
-	ClassDB::bind_method(D_METHOD("get_animation_tree_path"), &CharacterSkeleton3D::get_animation_tree_path);
-	ClassDB::bind_method(D_METHOD("set_animation_tree_path", "path"), &CharacterSkeleton3D::set_animation_tree_path);
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "animation_tree_path"), "set_animation_tree_path", "get_animation_tree_path");
-
-	ClassDB::bind_method(D_METHOD("get_animation_player"), &CharacterSkeleton3D::get_animation_player);
-	ClassDB::bind_method(D_METHOD("get_animation_tree"), &CharacterSkeleton3D::get_animation_tree);
-
-	ClassDB::bind_method(D_METHOD("update_nodes"), &CharacterSkeleton3D::update_nodes);
 }

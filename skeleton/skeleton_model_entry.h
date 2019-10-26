@@ -8,11 +8,14 @@ class SkeletonModelEntry : public Reference {
 	GDCLASS(SkeletonModelEntry, Reference);
 
 public:
-    int get_priority();
-	void set_priority(int value);
+	int get_count() const;
+	void set_count(const int value);
 
-	Color get_color();
-	void set_color(Color value);
+    int get_priority() const;
+	void set_priority(const int value);
+
+	Color get_color() const;
+	void set_color(const Color value);
     
 	Ref<ItemVisualEntry> get_entry();
 	void set_entry(Ref<ItemVisualEntry> entry);
@@ -24,6 +27,7 @@ protected:
 	static void _bind_methods();
 
 private:
+	int _count;
 	int _priority;
 	Color _color;
 	Ref<ItemVisualEntry> _entry;
