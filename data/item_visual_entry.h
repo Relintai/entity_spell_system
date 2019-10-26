@@ -17,14 +17,8 @@ class ItemVisualEntry : public Resource {
 	GDCLASS(ItemVisualEntry, Resource);
 
 public:
-	int get_id();
-	void set_id(int id);
-
-	EntityEnums::CharacterSkeletonPoints get_target_bone();
-	void set_target_bone(EntityEnums::CharacterSkeletonPoints bone);
-
-	ItemEnums::EntityTextureLayers get_layer();
-	void set_layer(ItemEnums::EntityTextureLayers layer);
+	ItemEnums::EntityTextureLayers get_override_layer();
+	void set_override_layer(ItemEnums::EntityTextureLayers layer);
 
 	Ref<MeshDataResource> get_mesh();
 	void set_mesh(Ref<MeshDataResource> mesh);
@@ -45,10 +39,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	int _id;
-	
-	EntityEnums::CharacterSkeletonPoints _target_bone;
-	ItemEnums::EntityTextureLayers _layer;
+	ItemEnums::EntityTextureLayers _override_layer;
 	Ref<MeshDataResource> _mesh;
 
 	Ref<Texture> _texture;

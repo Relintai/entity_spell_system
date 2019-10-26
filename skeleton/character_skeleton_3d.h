@@ -53,8 +53,8 @@ public:
 	int get_item_visual_count();
 	void clear_item_visuals();
 
-	void add_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive);
-	void remove_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive);
+	void add_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive, int target_bone);
+	void remove_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive, int target_bone);
 
 	Ref<SkeletonModelEntry> get_model_entry(const int bone_index, const int index);
 	int get_model_entry_count(const int bone_index);

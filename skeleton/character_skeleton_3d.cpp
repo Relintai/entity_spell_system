@@ -93,7 +93,7 @@ void CharacterSkeleton3D::add_item_visual(Ref<ItemVisual> vis) {
 		Ref<ItemVisualEntry> e = vis->get_visual(i);
 
 		if (e.is_valid())
-			add_item_visual_entry(vis, e);
+			add_item_visual_entry(vis, e, i);
 	}
 
 	_item_visuals.push_back(vis);
@@ -110,7 +110,7 @@ void CharacterSkeleton3D::remove_item_visual(Ref<ItemVisual> vis) {
 		Ref<ItemVisualEntry> e = vis->get_visual(i);
 
 		if (e.is_valid())
-			remove_item_visual_entry(vis, e);
+			remove_item_visual_entry(vis, e, i);
 	}
 
 	_item_visuals.remove(index);
@@ -139,11 +139,11 @@ void CharacterSkeleton3D::clear_item_visuals() {
 	set_process(true);
 }
 
-void CharacterSkeleton3D::add_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive) {
+void CharacterSkeleton3D::add_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive, int target_bone) {
 	ERR_FAIL_COND(!vis.is_valid());
 	ERR_FAIL_COND(!ive.is_valid());
 
-	int target_bone_idx = static_cast<int>(ive->get_target_bone());
+	int target_bone_idx = target_bone;
 
 	Vector<Ref<SkeletonModelEntry> > &entries = _entries[target_bone_idx];
 
@@ -167,11 +167,11 @@ void CharacterSkeleton3D::add_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVis
 	_model_dirty = true;
 	set_process(true);
 }
-void CharacterSkeleton3D::remove_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive) {
+void CharacterSkeleton3D::remove_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive, int target_bone) {
 	ERR_FAIL_COND(!vis.is_valid());
 	ERR_FAIL_COND(!ive.is_valid());
 
-	int target_bone_idx = static_cast<int>(ive->get_target_bone());
+	int target_bone_idx = target_bone;
 
 	Vector<Ref<SkeletonModelEntry> > &entries = _entries[target_bone_idx];
 
