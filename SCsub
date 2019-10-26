@@ -75,8 +75,6 @@ module_env.add_source_files(env.modules_sources,"inventory/bag.cpp")
 module_env.add_source_files(env.modules_sources,"infos/aura_infos.cpp")
 module_env.add_source_files(env.modules_sources,"infos/spell_cast_info.cpp")
 
-module_env.add_source_files(env.modules_sources,"data/character_skeleton_visual_entry.cpp")
-
 module_env.add_source_files(env.modules_sources,"pipelines/spell_damage_info.cpp")
 module_env.add_source_files(env.modules_sources,"pipelines/spell_heal_info.cpp")
 module_env.add_source_files(env.modules_sources,"entities/auras/aura_data.cpp")
@@ -104,8 +102,6 @@ module_env.add_source_files(env.modules_sources,"utility/category_cooldown.cpp")
 module_env.add_source_files(env.modules_sources,"meshes/mesh_data_resource.cpp")
 module_env.add_source_files(env.modules_sources,"meshes/editor_import_collada_mdr.cpp")
 module_env.add_source_files(env.modules_sources,"meshes/editor_plugin_collada_mdr.cpp")
-
-module_env.add_source_files(env.modules_sources,"skeleton/entity_equipset.cpp")
 
 module_env.add_source_files(env.modules_sources,"loot/loot_data_base.cpp")
 module_env.add_source_files(env.modules_sources,"loot/loot_data_container.cpp")

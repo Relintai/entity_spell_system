@@ -56,8 +56,6 @@
 #include "infos/spell_cast_info.h"
 #include "infos/aura_infos.h"
 
-#include "data/character_skeleton_visual_entry.h"
-
 #include "pipelines/spell_damage_info.h"
 #include "pipelines/spell_heal_info.h"
 
@@ -87,8 +85,6 @@
 #include "utility/category_cooldown.h"
 
 #include "meshes/mesh_data_resource.h"
-
-#include "skeleton/entity_equipset.h"
 
 #include "loot/loot_data_base.h"
 #include "loot/loot_data_item.h"
@@ -160,8 +156,6 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<EntitySkill>();
 
-	ClassDB::register_class<CharacterSkeletonVisualEntry>();
-
 	ClassDB::register_class<EntityDataManager>();
 
 	ClassDB::register_class<ItemVisual>();
@@ -222,8 +216,6 @@ void register_entity_spell_system_types() {
     
     ClassDB::register_class<Cooldown>();
     ClassDB::register_class<CategoryCooldown>();
-
-    ClassDB::register_class<EntityEquipSet>();
 
 	ClassDB::register_class<LootDataBase>();
 	ClassDB::register_class<LootDataItem>();

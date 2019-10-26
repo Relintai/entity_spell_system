@@ -10,7 +10,6 @@
 #include "scene/animation/animation_player.h"
 #include "scene/animation/animation_tree.h"
 
-#include "../data/character_skeleton_visual_entry.h"
 #include "../entity_enums.h"
 #include "skeleton_model_entry.h"
 
@@ -28,9 +27,6 @@ public:
 
 	NodePath get_bone_path(int index);
 	void set_bone_path(int index, NodePath path);
-
-	Ref<CharacterSkeletonVisualEntry> get_visual(int index);
-	void set_visual(int index, Ref<CharacterSkeletonVisualEntry> entry);
 
 	Node *get_bone_node(EntityEnums::CharacterSkeletonPoints node_id);
 
@@ -92,8 +88,6 @@ private:
 	AnimationTree *_animation_tree;
 
 	Node *_bone_nodes[EntityEnums::SKELETON_POINTS_MAX];
-
-	Ref<CharacterSkeletonVisualEntry> _visuals[EntityEnums::SKELETON_POINTS_MAX];
 
 	bool _model_dirty;
 	Vector<Ref<ItemVisual> > _item_visuals;

@@ -22,17 +22,6 @@ void CharacterSkeleton3D::set_bone_path(int index, NodePath path) {
 	_bone_nodes[index] = get_node_or_null(path);
 }
 
-Ref<CharacterSkeletonVisualEntry> CharacterSkeleton3D::get_visual(int index) {
-	ERR_FAIL_INDEX_V(index, EntityEnums::SKELETON_POINTS_MAX, Ref<CharacterSkeletonVisualEntry>());
-
-	return _visuals[index];
-}
-void CharacterSkeleton3D::set_visual(int index, Ref<CharacterSkeletonVisualEntry> entry) {
-	ERR_FAIL_INDEX(index, EntityEnums::SKELETON_POINTS_MAX);
-
-	_visuals[index] = entry;
-}
-
 Node *CharacterSkeleton3D::get_bone_node(EntityEnums::CharacterSkeletonPoints node_id) {
 	return _bone_nodes[node_id];
 }
@@ -234,8 +223,6 @@ CharacterSkeleton3D::CharacterSkeleton3D() {
 CharacterSkeleton3D::~CharacterSkeleton3D() {
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
 		_entries[i].clear();
-
-		_visuals[i].unref();
 	}
 
 	_item_visuals.clear();
@@ -295,7 +282,8 @@ void CharacterSkeleton3D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("update_nodes"), &CharacterSkeleton3D::update_nodes);
 
-	//Visuals
+	/*
+	//Attack Points?
 	ClassDB::bind_method(D_METHOD("get_visual", "index"), &CharacterSkeleton3D::get_visual);
 	ClassDB::bind_method(D_METHOD("set_visual", "index", "entry"), &CharacterSkeleton3D::set_visual);
 
@@ -333,4 +321,5 @@ void CharacterSkeleton3D::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_thigh", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_THIGH);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_calf", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_CALF);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_foot", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_FOOT);
+	*/
 }
