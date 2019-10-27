@@ -2,62 +2,41 @@
 
 #include "../entities/entity.h"
 
-int AIAction::get_default_priority() const {
-	return _default_priority;
+int AIAction::get_utility() const {
+	return _utility;
 }
-void AIAction::set_default_priority(const int value) {
-	_default_priority = value;
-}
-
-int AIAction::get_priority(Entity *entity) {
-	return call("_get_priority");
+void AIAction::set_utility(const int value) {
+	_utility = value;
 }
 
-int AIAction::get_priority_bind(Node *entity) {
+void AIAction::set_owner(Entity *entity) {
+	_owner = entity;
+
+	call("_on_set_owner");
+}
+
+void AIAction::set_owner_bind(Node *entity) {
 	if (!entity) {
-		return 0;
+		return;
 	}
 
 	Entity *e = cast_to<Entity>(entity);
 
 	if (!e) {
-		return 0;
+		return;
 	}
 
-	return get_priority(e);
+	return set_owner(e);
 }
 
-int AIAction::_get_priority(Node *entity) {
-	return _default_priority;
-}
-
-bool AIAction::should_use(Entity *entity) {
-	if (has_method("_should_use")) {
-		return call("_should_use", entity);
-	}
-
-	return false;
-}
-
-bool AIAction::should_use_bind(Node *entity) {
-	if (!entity) {
-		return false;
-	}
-
-	Entity *e = cast_to<Entity>(entity);
-
-	if (!e) { 
-		return false;
-	}
-
-	return should_use(e);
+Entity *AIAction::get_owner() {
+	return _owner;
 }
 
 void AIAction::set_editor_description(const String &p_editor_description) {
 	set_meta("_editor_description_", p_editor_description);
 }
 String AIAction::get_editor_description() const {
-
 	if (has_meta("_editor_description_")) {
 		return get_meta("_editor_description_");
 	} else {
@@ -65,22 +44,39 @@ String AIAction::get_editor_description() const {
 	}
 }
 
+void AIAction::update(float delta) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
+
+	if (has_method("_update"))
+		call("_update", delta);
+}
+void AIAction::execute() {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
+
+	if (has_method("_execute"))
+		call("_execute");
+}
+
 AIAction::AIAction() {
-	_default_priority = 0;
+	_owner = NULL;
+	_utility = 0;
 }
 
 void AIAction::_bind_methods() {
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_should_use", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"), "_get_priority", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_on_set_owner"));
+	BIND_VMETHOD(MethodInfo("_update", PropertyInfo(Variant::REAL, "delta")));
+	BIND_VMETHOD(MethodInfo( "_execute"));
 
-	ClassDB::bind_method(D_METHOD("get_default_priority"), &AIAction::get_default_priority);
-	ClassDB::bind_method(D_METHOD("set_default_priority", "value"), &AIAction::set_default_priority);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "default_priority"), "set_default_priority", "get_default_priority");
+	ClassDB::bind_method(D_METHOD("get_utility"), &AIAction::get_utility);
+	ClassDB::bind_method(D_METHOD("set_utility", "value"), &AIAction::set_utility);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "utility", PROPERTY_HINT_NONE, "", 0), "set_utility", "get_utility");
 
-	ClassDB::bind_method(D_METHOD("get_priority", "entity"), &AIAction::get_priority_bind);
-	ClassDB::bind_method(D_METHOD("_get_priority", "entity"), &AIAction::_get_priority);
+	ClassDB::bind_method(D_METHOD("get_owner"), &AIAction::get_owner);
+	ClassDB::bind_method(D_METHOD("set_owner", "entity"), &AIAction::set_owner_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity", 0), "set_owner", "get_owner");
 
-	ClassDB::bind_method(D_METHOD("should_use", "entity"), &AIAction::should_use_bind);
+	ClassDB::bind_method(D_METHOD("update", "entity"), &AIAction::update);
+	ClassDB::bind_method(D_METHOD("execute"), &AIAction::execute);
 
 	ClassDB::bind_method(D_METHOD("_set_editor_description", "editor_description"), &AIAction::set_editor_description);
 	ClassDB::bind_method(D_METHOD("_get_editor_description"), &AIAction::get_editor_description);
