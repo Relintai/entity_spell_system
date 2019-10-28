@@ -80,6 +80,38 @@ enum PlayerSendFlags {
 #define SET_RPC_MASTERSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_MASTERSYNC);
 #define SET_RPC_PUPPETSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_PUPPETSYNC);
 
+//Normal
+#define RPCN(func)                                             \
+	if (is_inside_tree() && get_tree()->has_network_peer()) { \
+		rpc(#func);                                           \
+	}                                                         \
+	func();
+
+#define VRPCN(func)                                            \
+	if (is_inside_tree() && get_tree()->has_network_peer()) { \
+		vrpc(#func);                                          \
+	}                                                         \
+	func();
+
+#define ORPCN(func)                                                        \
+	if (is_inside_tree() && get_tree()->has_network_peer()) {             \
+		if (get_tree()->is_network_server() && get_network_master() != 1) \
+			rpc_id(get_network_master(), #func);                          \
+	}                                                                     \
+	func();
+
+#define RPCSN(func)                                            \
+	if (is_inside_tree() && get_tree()->has_network_peer()) { \
+		if (get_tree()->is_network_server()) {                \
+			func();                                           \
+		} else {                                              \
+			rpc_id(1, #func);                                 \
+		}                                                     \
+	} else {                                                  \
+		func();                                               \
+	}
+
+//Variadic
 // f.e.   RPC(method, arg0, arg1, etc)
 #define RPC(func, ...)                                        \
 	if (is_inside_tree() && get_tree()->has_network_peer()) { \
@@ -477,7 +509,7 @@ public:
 	void sremove_aura_expired(Ref<AuraData> aura);
 	void sremove_aura_dispelled(Ref<AuraData> aura);
 	void saura_refreshed(Ref<AuraData> aura);
-	
+
 	void cadd_aura_rpc(String data);
 	void cremove_aura_rpc(String data);
 	void cremove_aura_exact_rpc(String data);
