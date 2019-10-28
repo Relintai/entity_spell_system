@@ -124,6 +124,51 @@ bool SpellCastInfo::update_cast_time(float delta) {
 	return false;
 }
 
+Dictionary SpellCastInfo::to_dict() {
+	Dictionary dict;
+
+	if (ObjectDB::instance_validate(_caster))
+		dict["caster"] = _caster->get_path();
+
+	if (ObjectDB::instance_validate(_target))
+		dict["target"] = _target->get_path();
+
+	dict["has_cast_time"] = _has_cast_time;
+	dict["cast_time"] = _cast_time;
+
+	dict["current_cast_time"] = _current_cast_time;
+	dict["num_pushbacks"] = _num_pushbacks;
+	dict["is_casting"] = _is_casting;
+
+	dict["spell_id"] = _spell->get_id();
+
+	return dict;
+}
+void SpellCastInfo::from_dict(Node *owner, const Dictionary &dict) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
+	ERR_FAIL_COND(dict.empty());
+
+	_caster = Object::cast_to<Entity>(owner->get_node_or_null(dict.get("caster", "")));
+	_target = Object::cast_to<Entity>(owner->get_node_or_null(dict.get("target", "")));
+
+	_has_cast_time = dict.get("has_cast_time", true);
+	_cast_time = dict.get("cast_time", 0);
+
+	_current_cast_time = dict.get("current_cast_time", 0);
+	_num_pushbacks = dict.get("num_pushbacks", 0);
+	_is_casting = dict.get("is_casting", true);
+
+	int spell_id = dict.get("spell_id", 0);
+
+	if (EntityDataManager::get_instance() != NULL) {
+		Ref<Spell> spell = EntityDataManager::get_instance()->get_spell(spell_id);
+
+		if (spell.is_valid()) {
+			_spell = spell;
+		}
+	}
+}
+
 SpellCastInfo::SpellCastInfo() {
 	_caster = NULL;
 	_target = NULL;
@@ -182,4 +227,7 @@ void SpellCastInfo::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_spell", "get_spell");
 
 	ClassDB::bind_method(D_METHOD("update_cast_time", "delta"), &SpellCastInfo::update_cast_time);
+
+	ClassDB::bind_method(D_METHOD("from_dict", "owner", "dict"), &SpellCastInfo::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &SpellCastInfo::to_dict);
 }

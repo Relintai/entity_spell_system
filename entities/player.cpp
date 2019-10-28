@@ -79,6 +79,8 @@ Player::Player() {
 	_c_seed = _s_seed;
 
 	//_input_profile = Ref<InputProfile>(memnew(InputProfile()));
+
+	SET_RPC_REMOTE("setc_seed");
 }
 
 Player::~Player() {

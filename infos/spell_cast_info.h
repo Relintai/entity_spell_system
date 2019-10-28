@@ -42,6 +42,9 @@ public:
 
 	bool update_cast_time(float delta);
 
+	Dictionary to_dict();
+	void from_dict(Node *owner, const Dictionary &dict);
+
 	SpellCastInfo();
 	~SpellCastInfo();
 

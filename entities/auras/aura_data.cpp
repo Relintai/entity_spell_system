@@ -321,7 +321,6 @@ AuraData::AuraData() {
 	_unhandled_ticks = 0;
 }
 
-
 void AuraData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_aura_id"), &AuraData::get_aura_id);
 	ClassDB::bind_method(D_METHOD("set_aura_id", "value"), &AuraData::set_aura_id);

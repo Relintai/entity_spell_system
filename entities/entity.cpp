@@ -264,7 +264,7 @@ void Entity::_setup() {
 			Ref<AuraData> ad = _s_auras.get(i);
 
 			if (!ad->get_aura()->get_hide())
-				VRPC(cadd_aura, ad);
+				VRPCOBJ(cadd_aura_rpc, JSON::print(ad->to_dict()), cadd_aura, ad);
 		}
 
 		return;
@@ -1030,6 +1030,23 @@ void Entity::onc_stat_changed(Ref<Stat> stat) {
 	}
 }
 
+void Entity::ssend_stat(int id, int ccurrent, int cmax) {
+	ERR_FAIL_INDEX(id, Stat::STAT_ID_TOTAL_STATS);
+
+	if (id <= Stat::STAT_ID_MANA) {
+		VRPC(creceive_stat, id, ccurrent, cmax);
+		return;
+	}
+
+	ORPC(creceive_stat, id, ccurrent, cmax);
+}
+
+void Entity::creceive_stat(int id, int ccurrent, int cmax) {
+	ERR_FAIL_INDEX(id, Stat::STAT_ID_TOTAL_STATS);
+
+	_stats[id]->setc_values(ccurrent, cmax);
+}
+
 ////    Equip Slots    ////
 
 bool Entity::should_deny_equip(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
@@ -1292,6 +1309,8 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 
 	if (info->get_immune()) {
 		VRPC(con_damage_dealt, info);
+
+		//VRPCOBJ(cadd_aura_rpc, JSON::print(ad->to_dict()), cadd_aura, ad);
 		return;
 	}
 
@@ -2111,7 +2130,7 @@ void Entity::sadd_aura(Ref<AuraData> aura) {
 	emit_signal("saura_added", aura);
 
 	if (!aura->get_aura()->get_hide())
-		VRPC(cadd_aura, aura);
+		VRPCOBJ(cadd_aura_rpc, JSON::print(aura->to_dict()), cadd_aura, aura);
 }
 
 void Entity::sremove_aura(Ref<AuraData> aura) {
@@ -2136,7 +2155,7 @@ void Entity::sremove_aura(Ref<AuraData> aura) {
 		emit_signal("saura_removed", a);
 
 		if (!aura->get_aura()->get_hide())
-			VRPC(cremove_aura, a);
+			VRPCOBJ(cremove_aura_rpc, JSON::print(aura->to_dict()), cremove_aura, aura);
 	}
 }
 
@@ -2158,7 +2177,7 @@ void Entity::sremove_aura_exact(Ref<AuraData> aura) {
 	emit_signal("saura_removed", aura);
 
 	if (!aura->get_aura()->get_hide())
-		VRPC(cremove_aura, aura);
+		VRPCOBJ(cremove_aura_rpc, JSON::print(aura->to_dict()), cremove_aura, aura);
 }
 
 void Entity::sremove_aura_expired(Ref<AuraData> aura) {
@@ -2179,7 +2198,7 @@ void Entity::sremove_aura_expired(Ref<AuraData> aura) {
 	emit_signal("saura_removed_expired", aura);
 
 	if (!aura->get_aura()->get_hide())
-		VRPC(cremove_aura, aura);
+		VRPCOBJ(cremove_aura_rpc, JSON::print(aura->to_dict()), cremove_aura, aura);
 }
 
 void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
@@ -2200,7 +2219,7 @@ void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
 	emit_signal("saura_removed_dispelled", aura);
 
 	if (!aura->get_aura()->get_hide())
-		VRPC(cremove_aura, aura);
+		VRPCOBJ(cremove_aura_rpc, JSON::print(aura->to_dict()), cremove_aura, aura);
 }
 
 void Entity::saura_refreshed(Ref<AuraData> aura) {
@@ -2212,17 +2231,55 @@ void Entity::saura_refreshed(Ref<AuraData> aura) {
 	emit_signal("caura_refreshed", aura);
 
 	if (!aura->get_aura()->get_hide())
-		VRPC(caura_refreshed, aura);
+		VRPCOBJ(caura_refreshed_rpc, JSON::print(aura->to_dict()), caura_refreshed, aura);
 }
 
-void Entity::rcadd_aura(Array arr) {
-	Ref<AuraData> ad;
-	ad.instance();
+void Entity::cadd_aura_rpc(String data) {
+	Ref<AuraData> aura;
+	aura.instance();
+	aura->from_dict(data_as_dict(data));
 
-	ad->set_owner(this);
-	ad->from_send_array(arr);
+	cadd_aura(aura);
+}
 
-	cadd_aura(ad);
+void Entity::cremove_aura_rpc(String data) {
+	Ref<AuraData> aura;
+	aura.instance();
+	aura->from_dict(data_as_dict(data));
+
+	cremove_aura(aura);
+}
+
+void Entity::cremove_aura_exact_rpc(String data) {
+	Ref<AuraData> aura;
+	aura.instance();
+	aura->from_dict(data_as_dict(data));
+
+	cremove_aura_exact(aura);
+}
+
+void Entity::cremove_aura_expired_rpc(String data) {
+	Ref<AuraData> aura;
+	aura.instance();
+	aura->from_dict(data_as_dict(data));
+
+	cremove_aura_expired(aura);
+}
+
+void Entity::cremove_aura_dispelled_rpc(String data) {
+	Ref<AuraData> aura;
+	aura.instance();
+	aura->from_dict(data_as_dict(data));
+
+	cremove_aura_dispelled(aura);
+}
+
+void Entity::caura_refreshed_rpc(String data) {
+	Ref<AuraData> aura;
+	aura.instance();
+	aura->from_dict(data_as_dict(data));
+
+	caura_refreshed(aura);
 }
 
 void Entity::cadd_aura(Ref<AuraData> aura) {
@@ -2775,7 +2832,7 @@ void Entity::sstart_casting(Ref<SpellCastInfo> info) {
 
 	emit_signal("scast_started", info);
 
-	VRPC(cstart_casting, info);
+	VRPCOBJ(cstart_casting_rpc, JSON::print(info->to_dict()), cstart_casting, info);
 }
 
 void Entity::sfail_cast() {
@@ -2820,6 +2877,14 @@ void Entity::sinterrupt_cast() {
 	VRPC(cinterrupt_cast);
 }
 
+void Entity::cstart_casting_rpc(String data) {
+	Ref<SpellCastInfo> info;
+	info.instance();
+	info->from_dict(this, data_as_dict(data));
+
+	cstart_casting(info);
+}
+
 void Entity::cstart_casting(Ref<SpellCastInfo> info) {
 	_c_spell_cast_info = Ref<SpellCastInfo>(info);
 
@@ -2858,7 +2923,15 @@ void Entity::cinterrupt_cast() {
 void Entity::sspell_cast_success(Ref<SpellCastInfo> info) {
 	son_spell_cast_success(info);
 
-	VRPC(cspell_cast_success, info);
+	VRPCOBJ(cspell_cast_success_rpc, JSON::print(info->to_dict()), cspell_cast_success, info);
+}
+
+void Entity::cspell_cast_success_rpc(String data) {
+	Ref<SpellCastInfo> info;
+	info.instance();
+	info->from_dict(this, data_as_dict(data));
+
+	cspell_cast_success(info);
 }
 
 void Entity::cspell_cast_success(Ref<SpellCastInfo> info) {
@@ -3257,7 +3330,7 @@ void Entity::adds_spell(Ref<Spell> spell) {
 
 	emit_signal("sspell_added", this, spell);
 
-	ORPC(addc_spell, spell);
+	ORPCOBJ(addc_spell_rpc, spell->get_id(), addc_spell, spell);
 }
 void Entity::removes_spell(Ref<Spell> spell) {
 	for (int i = 0; i < _s_spells.size(); ++i) {
@@ -3269,7 +3342,7 @@ void Entity::removes_spell(Ref<Spell> spell) {
 
 	emit_signal("sspell_removed", this, spell);
 
-	ORPC(removec_spell, spell);
+	ORPCOBJ(removec_spell_rpc, spell->get_id(), removec_spell, spell);
 }
 Ref<Spell> Entity::gets_spell(int index) {
 	ERR_FAIL_INDEX_V(index, _s_spells.size(), Ref<Spell>());
@@ -3314,6 +3387,17 @@ Ref<Spell> Entity::getc_spell(int index) {
 }
 int Entity::getc_spell_count() {
 	return _c_spells.size();
+}
+
+void Entity::addc_spell_rpc(int id) {
+	ERR_FAIL_COND(EntityDataManager::get_instance() == NULL);
+
+	addc_spell(EntityDataManager::get_instance()->get_spell(id));
+}
+void Entity::removec_spell_rpc(int id) {
+	ERR_FAIL_COND(EntityDataManager::get_instance() == NULL);
+
+	removec_spell(EntityDataManager::get_instance()->get_spell(id));
 }
 
 //Skills
@@ -3975,16 +4059,18 @@ void Entity::update(float delta) {
 		}
 	}
 
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
-		Ref<Stat> s = _stats[i];
+	if (ISSERVER()) {
+		for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+			Ref<Stat> s = _stats[i];
 
-		if (s->get_dirty_mods())
-			s->apply_modifiers();
+			if (s->get_dirty_mods())
+				s->apply_modifiers();
 
-		if (s->get_dirty()) {
-			//send target is not public
-			s->setc_values(s->gets_current(), s->gets_max());
-			s->set_dirty(false);
+			if (s->get_dirty()) {
+				ssend_stat(s->get_id(), s->gets_current(), s->gets_max());
+
+				s->set_dirty(false);
+			}
 		}
 	}
 }
@@ -4060,6 +4146,9 @@ void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
 		if (netm != 0)
 			rpcp(netm, false, p_method, argptr, argc);
 	}
+
+	if (get_network_master() != 1)
+		rpcp(get_network_master(), false, p_method, argptr, argc);
 }
 
 Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
@@ -4094,10 +4183,24 @@ Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::Call
 			rpcp(netm, false, method, &p_args[1], p_argcount - 1);
 	}
 
-	call(method, &p_args[1], p_argcount - 1);
+	//call(method, &p_args[1], p_argcount - 1);
 
 	r_error.error = Variant::CallError::CALL_OK;
 	return Variant();
+}
+
+Dictionary Entity::data_as_dict(String &data) {
+	Error err;
+	String err_txt;
+	int err_line;
+	Variant v;
+	err = JSON::parse(data, v, err_txt, err_line);
+
+	ERR_FAIL_COND_V(err != OK, v);
+
+	Dictionary d = v;
+
+	return d;
 }
 
 Entity::Entity() {
@@ -4197,7 +4300,6 @@ Entity::Entity() {
 	get_stat_enum(Stat::STAT_ID_PARRY)->set_base(15);
 	get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION)->set_base(15);*/
 
-	SET_RPC_REMOTE("crequest_spell_cast");
 	SET_RPC_REMOTE("csend_request_rank_increase");
 	SET_RPC_REMOTE("csend_request_rank_decrease");
 
@@ -4209,11 +4311,41 @@ Entity::Entity() {
 	SET_RPC_REMOTE("setc_level");
 	SET_RPC_REMOTE("setc_xp");
 
+	//EntityType
+
+	SET_RPC_REMOTE("setc_entity_type");
+
+	//EntityInteractionType
+
+	SET_RPC_REMOTE("setc_entity_interaction_type");
+	SET_RPC_REMOTE("setc_entity_flags");
+	SET_RPC_REMOTE("setc_entity_name");
+	SET_RPC_REMOTE("setc_gender");
+	SET_RPC_REMOTE("setc_level");
+	SET_RPC_REMOTE("setc_xp");
+	SET_RPC_REMOTE("setc_money");
+	SET_RPC_REMOTE("setc_entity_data_id");
+
 	////     Stats    ////
 
-	//send stats
+	SET_RPC_REMOTE("creceive_stat");
 
-	//GCD
+	SET_RPC_REMOTE("cdie");
+
+	//send_stat
+
+	////    Equip Slots    ////
+
+	SET_RPC_REMOTE("sequip");
+	SET_RPC_REMOTE("cequip_success");
+	SET_RPC_REMOTE("cequip_fail");
+	SET_RPC_REMOTE("cstart_casting");
+
+	////    Resources    ////
+
+	//SendResource
+
+	////    Global Cooldown    ////
 
 	SET_RPC_REMOTE("cstart_global_cooldown");
 
@@ -4221,41 +4353,60 @@ Entity::Entity() {
 
 	SET_RPC_REMOTE("setc_state");
 
+	////    Crafting System    ////
+
+	SET_RPC_REMOTE("scraft");
+
+	SET_RPC_REMOTE("addc_craft_recipe");
+	SET_RPC_REMOTE("removec_craft_recipe");
+
 	////    SpellSystem    ////
 
-	//Clientside EventHandlers
+	SET_RPC_REMOTE("scast_spell");
 
-	SET_RPC_REMOTE("con_cast_failed");
-	SET_RPC_REMOTE("con_cast_started");
-	SET_RPC_REMOTE("con_cast_state_changed");
-	SET_RPC_REMOTE("con_cast_finished");
-	SET_RPC_REMOTE("con_spell_cast_success");
+	//Damage Operations
 
-	//Spell operations
+	SET_RPC_REMOTE("stake_damage");
+	SET_RPC_REMOTE("stake_damage");
 
-	SET_RPC_REMOTE("crequest_spell_cast");
+	//Heal Operations
+
+	SET_RPC_REMOTE("stake_heal");
+	SET_RPC_REMOTE("sdeal_heal_to");
+
+	//Interactions
+
+	SET_RPC_REMOTE("sinteract");
+
+	SET_RPC_REMOTE("copen_loot_window");
+	SET_RPC_REMOTE("copen_container_window");
+	SET_RPC_REMOTE("copen_vendor_window");
+
+	//XP Operations
+
+	SET_RPC_REMOTE("addc_xp");
+	SET_RPC_REMOTE("clevelup");
 
 	//Aura Manipulation
 
-	SET_RPC_REMOTE("cadd_aura");
-	SET_RPC_REMOTE("cremove_aura");
-	SET_RPC_REMOTE("cremove_aura_expired");
-	SET_RPC_REMOTE("cremove_aura_dispelled");
-
-	//Clientside hooks
-
-	SET_RPC_REMOTE("con_damage_dealt");
-	SET_RPC_REMOTE("con_dealt_damage");
-	SET_RPC_REMOTE("con_heal_dealt");
-	SET_RPC_REMOTE("con_dealt_heal");
+	SET_RPC_REMOTE("cadd_aura_rpc");
+	SET_RPC_REMOTE("cremove_aura_rpc");
+	SET_RPC_REMOTE("cremove_aura_exact_rpc");
+	SET_RPC_REMOTE("cremove_aura_expired_rpc");
+	SET_RPC_REMOTE("cremove_aura_dispelled_rpc");
+	SET_RPC_REMOTE("caura_refreshed_rpc");
 
 	////    Casting System    ////
 
-	SET_RPC_REMOTE("cstart_casting");
+	SET_RPC_REMOTE("setc_spell_cast_info");
+
+	SET_RPC_REMOTE("cstart_casting_rpc");
 	SET_RPC_REMOTE("cfail_cast");
 	SET_RPC_REMOTE("cdelay_cast");
 	SET_RPC_REMOTE("cfinish_cast");
 	SET_RPC_REMOTE("cinterrupt_cast");
+
+	SET_RPC_REMOTE("cspell_cast_success_rpc");
 
 	////    Cooldowns    ////
 
@@ -4267,11 +4418,46 @@ Entity::Entity() {
 	SET_RPC_REMOTE("addc_category_cooldown");
 	SET_RPC_REMOTE("removec_category_cooldown");
 
-	////    TargetComponent    ////
+	//Known Spells
 
-	SET_RPC_REMOTE("crequest_tagret_change");
+	SET_RPC_REMOTE("setc_free_spell_points");
+	SET_RPC_REMOTE("slearn_spell");
+
+	SET_RPC_REMOTE("addc_spell_rpc");
+	SET_RPC_REMOTE("removec_spell_rpc");
+
+	//Skills
+
+	SET_RPC_REMOTE("addc_skill");
+	SET_RPC_REMOTE("removec_skill");
+
+	////    Target    ////
+
 	SET_RPC_REMOTE("net_sets_target");
 	SET_RPC_REMOTE("net_setc_target");
+
+	////    Talents    ////
+
+	SET_RPC_REMOTE("setc_free_talent_points");
+	SET_RPC_REMOTE("sreceive_talent_learn_request");
+	SET_RPC_REMOTE("sreceive_reset_talent_request");
+
+	SET_RPC_REMOTE("sreset_talents");
+
+	SET_RPC_REMOTE("addc_talent");
+	SET_RPC_REMOTE("removec_talent");
+
+	////    Inventory    ////
+
+	SET_RPC_REMOTE("setc_bag");
+	SET_RPC_REMOTE("setc_target_bag");
+
+	SET_RPC_REMOTE("sloot");
+
+	////    Data    ////
+
+	SET_RPC_REMOTE("addc_data");
+	SET_RPC_REMOTE("removec_data");
 }
 
 Entity::~Entity() {
@@ -4427,6 +4613,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
 
 	//binds
+
+	ClassDB::bind_method(D_METHOD("ssend_stat", "id", "ccurrent", "cmax"), &Entity::ssend_stat);
+	ClassDB::bind_method(D_METHOD("creceive_stat", "id", "ccurrent", "cmax"), &Entity::creceive_stat);
+
 	ClassDB::bind_method(D_METHOD("sdie"), &Entity::sdie);
 	ClassDB::bind_method(D_METHOD("cdie"), &Entity::cdie);
 
@@ -4587,6 +4777,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_cast_state_changed", "info"), &Entity::con_cast_state_changed);
 	ClassDB::bind_method(D_METHOD("con_cast_finished", "info"), &Entity::con_cast_finished);
 	ClassDB::bind_method(D_METHOD("cspell_cast_success", "info"), &Entity::cspell_cast_success);
+	ClassDB::bind_method(D_METHOD("cspell_cast_success_rpc", "data"), &Entity::cspell_cast_success_rpc);
 
 	ClassDB::bind_method(D_METHOD("con_spell_cast_success", "info"), &Entity::con_spell_cast_success);
 
@@ -4669,6 +4860,12 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sremove_aura_expired", "aura"), &Entity::sremove_aura_expired);
 	ClassDB::bind_method(D_METHOD("sremove_aura_dispelled", "aura"), &Entity::sremove_aura_dispelled);
 	//ClassDB::bind_method(D_METHOD("saura_refreshed", "aura"), &Entity::saura_refreshed);
+
+	ClassDB::bind_method(D_METHOD("cadd_aura_rpc", "data"), &Entity::cadd_aura_rpc);
+	ClassDB::bind_method(D_METHOD("cremove_aura_rpc", "data"), &Entity::cremove_aura_rpc);
+	ClassDB::bind_method(D_METHOD("cremove_aura_exact_rpc", "data"), &Entity::cremove_aura_exact_rpc);
+	ClassDB::bind_method(D_METHOD("cremove_aura_expired_rpc", "data"), &Entity::cremove_aura_expired_rpc);
+	ClassDB::bind_method(D_METHOD("cremove_aura_dispelled_rpc", "data"), &Entity::cremove_aura_dispelled_rpc);
 
 	ClassDB::bind_method(D_METHOD("cadd_aura", "aura"), &Entity::cadd_aura);
 	ClassDB::bind_method(D_METHOD("cremove_aura", "aura"), &Entity::cremove_aura);
@@ -4762,21 +4959,29 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_entity_name", "value"), &Entity::setc_entity_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "centity_name"), "setc_entity_name", "getc_entity_name");
 
+	ClassDB::bind_method(D_METHOD("gets_gender"), &Entity::gets_gender);
+	ClassDB::bind_method(D_METHOD("sets_gender", "value"), &Entity::sets_gender);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sgender"), "sets_gender", "gets_gender");
+
+	ClassDB::bind_method(D_METHOD("getc_gender"), &Entity::getc_gender);
+	ClassDB::bind_method(D_METHOD("setc_gender", "value"), &Entity::setc_gender);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cgender"), "setc_gender", "getc_gender");
+
 	ClassDB::bind_method(D_METHOD("gets_level"), &Entity::gets_level);
 	ClassDB::bind_method(D_METHOD("sets_level", "value"), &Entity::sets_level);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "slevel"), "sets_level", "gets_level");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "slevel"), "sets_level", "gets_level");
 
 	ClassDB::bind_method(D_METHOD("getc_level"), &Entity::getc_level);
 	ClassDB::bind_method(D_METHOD("setc_level", "value"), &Entity::setc_level);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "clevel"), "setc_level", "getc_level");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "clevel"), "setc_level", "getc_level");
 
 	ClassDB::bind_method(D_METHOD("gets_xp"), &Entity::gets_xp);
 	ClassDB::bind_method(D_METHOD("sets_xp", "value"), &Entity::sets_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "sxp"), "sets_xp", "gets_xp");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sxp"), "sets_xp", "gets_xp");
 
 	ClassDB::bind_method(D_METHOD("getc_xp"), &Entity::getc_xp);
 	ClassDB::bind_method(D_METHOD("setc_xp", "value"), &Entity::setc_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "cxp"), "setc_xp", "getc_xp");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cxp"), "setc_xp", "getc_xp");
 
 	ClassDB::bind_method(D_METHOD("gets_money"), &Entity::gets_money);
 	ClassDB::bind_method(D_METHOD("sets_money", "value"), &Entity::sets_money);
@@ -4934,6 +5139,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sfinish_cast"), &Entity::sfinish_cast);
 	ClassDB::bind_method(D_METHOD("sinterrupt_cast"), &Entity::sinterrupt_cast);
 
+	ClassDB::bind_method(D_METHOD("cstart_casting_rpc", "data"), &Entity::cstart_casting_rpc);
 	ClassDB::bind_method(D_METHOD("cstart_casting", "info"), &Entity::cstart_casting);
 	ClassDB::bind_method(D_METHOD("cfail_cast"), &Entity::cfail_cast);
 	ClassDB::bind_method(D_METHOD("cdelay_cast"), &Entity::cdelay_cast);
@@ -5012,6 +5218,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("removec_spell", "spell"), &Entity::removec_spell);
 	ClassDB::bind_method(D_METHOD("getc_spell", "spell"), &Entity::getc_spell);
 	ClassDB::bind_method(D_METHOD("getc_spell_count"), &Entity::getc_spell_count);
+
+	ClassDB::bind_method(D_METHOD("addc_spell_rpc", "id"), &Entity::addc_spell_rpc);
+	ClassDB::bind_method(D_METHOD("removec_spell_rpc", "id"), &Entity::removec_spell_rpc);
 
 	//Crafting
 	BIND_VMETHOD(MethodInfo("_scraft", PropertyInfo(Variant::INT, "id")));
