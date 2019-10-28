@@ -8,7 +8,7 @@ int Player::gets_seed() {
 void Player::sets_seed(int value) {
 	_s_seed = value;
 
-	SEND_RPC(rpc("setc_seed", value), setc_seed(value));
+	ORPC(setc_seed, value);
 }
 
 int Player::getc_seed() {

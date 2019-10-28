@@ -19,8 +19,8 @@
 #include "core/ustring.h"
 #include "core/vector.h"
 
-#include "entity_resource.h"
 #include "../data/spell.h"
+#include "entity_resource.h"
 #include "stats/stat.h"
 
 #include "../entity_data_manager.h"
@@ -28,9 +28,9 @@
 #include "../skeleton/character_skeleton.h"
 #include "../utility/entity_create_info.h"
 
+#include "../inventory/bag.h"
 #include "../utility/category_cooldown.h"
 #include "../utility/cooldown.h"
-#include "../inventory/bag.h"
 #include "./data/entity_data_container.h"
 #include "./skills/entity_skill.h"
 
@@ -69,6 +69,9 @@ enum PlayerSendFlags {
 	SEND_FLAG_AURAS,
 };
 
+#define ISSERVER() (is_inside_tree() && (!get_tree()->has_network_peer() || (get_tree()->has_network_peer() && get_tree()->is_network_server())))
+#define ISCLIENT() (is_inside_tree() && get_tree()->has_network_peer() && !get_tree()->is_network_server() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED)                                                                                                                                                 
+
 #define SET_RPC_OFF(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_DISABLED);
 #define SET_RPC_REMOTE(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_REMOTE);
 #define SET_RPC_MASTER(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_MASTER);
@@ -77,26 +80,43 @@ enum PlayerSendFlags {
 #define SET_RPC_MASTERSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_MASTERSYNC);
 #define SET_RPC_PUPPETSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_PUPPETSYNC);
 
-// f.e.   SEND_RPC(rpc("method", arg), method(arg))
-#define SEND_RPC(rpc_func, normal_func)                                                                                                                                    \
+// f.e.   RPC(method, arg0, arg1, etc)
+#define RPC(func, ...)                                                                                                                                                     \
 	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED) { \
-		rpc_func;                                                                                                                                                          \
+		rpc(#func, __VA_ARGS__);                                                                                                                                           \
 	}                                                                                                                                                                      \
-	normal_func;
+	func(__VA_ARGS__);
 
-// f.e.   SEND_RPC_TO_SERVER(rpc_id(1, "method", arg), method(arg))
-#define SEND_RPC_TO_SERVER(rpc_func, normal_func)                                                                                                                          \
+#define VRPC(func, ...)                                                                                                                                                    \
 	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED) { \
-		if (get_tree()->is_network_server())                                                                                                                               \
-			normal_func;                                                                                                                                                   \
+		vrpc(#func, __VA_ARGS__);                                                                                                                                          \
+	}                                                                                                                                                                      \
+	func(__VA_ARGS__);
+
+#define ORPC(func, ...)                                                                                                                                                    \
+	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED) { \
+		int nm = get_network_master();                                                                                                                                     \
+                                                                                                                                                                           \
+		if (nm == 0)                                                                                                                                                       \
+			func(__VA_ARGS__);                                                                                                                                             \
 		else                                                                                                                                                               \
-			rpc_func;                                                                                                                                                      \
+			rpc_id(nm, #func, __VA_ARGS__);                                                                                                                                \
+	}                                                                                                                                                                      \
+	func(__VA_ARGS__);
+
+#define RPCS(func, ...)                                                                                                                                                    \
+	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED) { \
+		if (get_tree()->is_network_server()) {                                                                                                                             \
+			func(__VA_ARGS__);                                                                                                                                             \
+		} else {                                                                                                                                                           \
+			rpc_id(1, #func, __VA_ARGS__);                                                                                                                                 \
+		}                                                                                                                                                                  \
 	} else {                                                                                                                                                               \
-		normal_func;                                                                                                                                                       \
+		func(__VA_ARGS__);                                                                                                                                                 \
 	}
 
-// f.e. SEND_RSET(rset("property", "value"), property, value)
-#define SEND_RSET(rset_func, variable, value)                                                                                                                              \
+// f.e. RSET(rset("property", "value"), property, value)
+#define RSET(rset_func, variable, value)                                                                                                                                   \
 	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED) { \
 		rset_func;                                                                                                                                                         \
 	}                                                                                                                                                                      \
@@ -122,18 +142,6 @@ public:
 	void set_character_skeleton_path(NodePath value);
 
 	CharacterSkeleton *get_character_skeleton();
-
-	int getc_guid();
-	void setc_guid(int value);
-
-	int gets_guid();
-	void sets_guid(int value);
-
-	int gets_entity_data_id();
-	void sets_entity_data_id(int value);
-
-	int getc_entity_data_id();
-	void setc_entity_data_id(int value);
 
 	//EntityType
 	EntityEnums::EntityType gets_entity_type();
@@ -191,11 +199,17 @@ public:
 	int getc_money();
 	void setc_money(int value);
 
+	Ref<EntityData> gets_entity_data();
+	void sets_entity_data(Ref<EntityData> value);
+
 	Ref<EntityData> getc_entity_data();
 	void setc_entity_data(Ref<EntityData> value);
 
-	Ref<EntityData> gets_entity_data();
-	void sets_entity_data(Ref<EntityData> value);
+	int gets_entity_data_id();
+	void sets_entity_data_id(int value);
+
+	int getc_entity_data_id();
+	void setc_entity_data_id(int value);
 
 	////     Stats    ////
 
@@ -669,6 +683,9 @@ public:
 	virtual Dictionary _to_dict();
 	virtual void _from_dict(const Dictionary &dict);
 
+	//Networking
+	void vrpc(const StringName &p_method, VARIANT_ARG_LIST); //rpc call, honors RPCMode
+
 	Entity();
 	~Entity();
 
@@ -843,6 +860,9 @@ private:
 
 	Ref<Bag> _s_target_bag;
 	Ref<Bag> _c_target_bag;
+
+	//Networking
+	Vector<Entity *> _s_sees;
 };
 
 #endif

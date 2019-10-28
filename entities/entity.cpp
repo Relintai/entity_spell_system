@@ -30,53 +30,13 @@ CharacterSkeleton *Entity::get_character_skeleton() {
 	return _character_skeleton;
 }
 
-int Entity::getc_guid() {
-	return _c_guid;
-}
-void Entity::setc_guid(int value) {
-	_c_guid = value;
-}
-
-int Entity::gets_guid() {
-	return _s_guid;
-}
-void Entity::sets_guid(int value) {
-	_s_guid = value;
-
-	SEND_RPC(rpc("setc_guid", value), setc_guid(value));
-}
-
-int Entity::gets_entity_data_id() {
-	return _s_class_id;
-}
-void Entity::sets_entity_data_id(int value) {
-	_s_class_id = value;
-	/*
-	if (EntityDataManager::get_instance() != NULL) {
-		sets_entity_data(EntityDataManager::get_instance()->get_entity_data(value));
-	}*/
-
-	SEND_RPC(rpc("setc_entity_data_id", value), setc_entity_data_id(value));
-}
-
-int Entity::getc_entity_data_id() {
-	return _c_class_id;
-}
-void Entity::setc_entity_data_id(int value) {
-	_c_class_id = value;
-
-	if (EntityDataManager::get_instance() != NULL) {
-		setc_entity_data(EntityDataManager::get_instance()->get_entity_data(value));
-	}
-}
-
 EntityEnums::EntityType Entity::gets_entity_type() {
 	return _s_entity_type;
 }
 void Entity::sets_entity_type(EntityEnums::EntityType value) {
 	_s_entity_type = value;
 
-	SEND_RPC(rpc("setc_entity_type", value), setc_entity_type(value));
+	VRPC(setc_entity_type, value);
 }
 
 EntityEnums::EntityType Entity::getc_entity_type() {
@@ -93,7 +53,7 @@ EntityEnums::EntityInteractionType Entity::gets_entity_interaction_type() {
 void Entity::sets_entity_interaction_type(EntityEnums::EntityInteractionType value) {
 	_s_interaction_type = value;
 
-	SEND_RPC(rpc("setc_entity_interaction_type", value), setc_entity_interaction_type(value));
+	VRPC(setc_entity_interaction_type, value);
 }
 
 EntityEnums::EntityInteractionType Entity::getc_entity_interaction_type() {
@@ -116,7 +76,7 @@ int Entity::gets_entity_flags() {
 void Entity::sets_entity_flags(int value) {
 	_s_entity_flags = value;
 
-	SEND_RPC(rpc("setc_entity_flags", value), setc_entity_flags(value));
+	VRPC(setc_entity_flags, value);
 }
 
 int Entity::getc_entity_flags() {
@@ -141,7 +101,7 @@ void Entity::sets_entity_name(String value) {
 
 	emit_signal("sname_changed", this);
 
-	SEND_RPC(rpc("setc_entity_name", value), setc_entity_name(value));
+	VRPC(setc_entity_name, value);
 }
 
 String Entity::getc_entity_name() {
@@ -159,7 +119,7 @@ int Entity::gets_gender() {
 void Entity::sets_gender(int value) {
 	_s_gender = value;
 
-	SEND_RPC(rpc("setc_gender", value), setc_gender(value));
+	VRPC(setc_gender, value);
 }
 
 int Entity::getc_gender() {
@@ -177,7 +137,7 @@ void Entity::sets_level(int value) {
 
 	emit_signal("son_level_changed", this, value);
 
-	SEND_RPC(rpc("setc_level", value), setc_level(value));
+	VRPC(setc_level, value);
 }
 
 int Entity::getc_level() {
@@ -195,7 +155,7 @@ int Entity::gets_xp() {
 void Entity::sets_xp(int value) {
 	_s_xp = value;
 
-	SEND_RPC(rpc("setc_xp", value), setc_xp(value));
+	ORPC(setc_xp, value);
 }
 
 int Entity::getc_xp() {
@@ -211,7 +171,7 @@ int Entity::gets_money() {
 void Entity::sets_money(int value) {
 	_s_money = value;
 
-	SEND_RPC(rpc("setc_money", value), setc_money(value));
+	ORPC(setc_money, value);
 }
 
 int Entity::getc_money() {
@@ -219,6 +179,51 @@ int Entity::getc_money() {
 }
 void Entity::setc_money(int value) {
 	_c_money = value;
+}
+
+int Entity::gets_entity_data_id() {
+	return _s_class_id;
+}
+
+void Entity::sets_entity_data_id(int value) {
+	_s_class_id = value;
+}
+
+int Entity::getc_entity_data_id() {
+	return _c_class_id;
+}
+
+void Entity::setc_entity_data_id(int value) {
+	_c_class_id = value;
+
+	if (_c_class_id == 0) {
+		setc_entity_data(Ref<EntityData>());
+		return;
+	}
+
+	if (EntityDataManager::get_instance() != NULL) {
+		setc_entity_data(EntityDataManager::get_instance()->get_entity_data(_c_class_id));
+	}
+}
+
+Ref<EntityData> Entity::gets_entity_data() {
+	return _s_entity_data;
+}
+
+void Entity::sets_entity_data(Ref<EntityData> value) {
+	_s_class_id = 0;
+
+	if (value.is_valid()) {
+		_s_class_id = value->get_id();
+	}
+
+	_s_entity_data = value;
+
+	setup();
+
+	emit_signal("sentity_data_changed", value);
+
+	VRPC(setc_entity_data_id, _s_class_id);
 }
 
 Ref<EntityData> Entity::getc_entity_data() {
@@ -229,20 +234,6 @@ void Entity::setc_entity_data(Ref<EntityData> value) {
 	_c_entity_data = value;
 
 	emit_signal("centity_data_changed", value);
-}
-
-Ref<EntityData> Entity::gets_entity_data() {
-	return _s_entity_data;
-}
-
-void Entity::sets_entity_data(Ref<EntityData> value) {
-	_s_entity_data = value;
-
-	setup();
-
-	emit_signal("sentity_data_changed", value);
-
-	//SEND_RPC(rpc("setc_entity_data", value), setc_entity_data(value));
 }
 
 void Entity::setup() {
@@ -273,7 +264,7 @@ void Entity::_setup() {
 			Ref<AuraData> ad = _s_auras.get(i);
 
 			if (!ad->get_aura()->get_hide())
-				SEND_RPC(rpc("cadd_aura", ad), cadd_aura(ad));
+				VRPC(cadd_aura, ad);
 		}
 
 		return;
@@ -540,9 +531,6 @@ Dictionary Entity::_to_dict() {
 void Entity::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
-	sets_guid(dict.get("guid", 0));
-	//setc_guid(dict.get("guid", 0));
-
 	sets_entity_type((EntityEnums::EntityType)((int)dict.get("type", 0)));
 
 	sets_gender(dict.get("gender", 0));
@@ -794,6 +782,37 @@ void Entity::_from_dict(const Dictionary &dict) {
 	}
 
 	sets_entity_data_id(edi);
+}
+
+//Networking
+
+void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
+
+	VARIANT_ARGPTRS;
+
+	int argc = 0;
+	for (int i = 0; i < VARIANT_ARG_MAX; i++) {
+		if (argptr[i]->get_type() == Variant::NIL)
+			break;
+		argc++;
+	}
+
+	for (int i = 0; i < _s_sees.size(); ++i) {
+		Entity *e = _s_sees.get(i);
+
+		if (unlikely(!ObjectDB::instance_validate(e))) {
+			_s_sees.remove(i);
+			--i;
+			continue;
+		}
+
+		int netm = e->get_network_master();
+
+		if (netm != 0)
+			rpcp(netm, false, p_method, argptr, argc);
+	}
+
+	rpcp(get_network_master(), false, p_method, argptr, argc);
 }
 
 Entity::Entity() {
@@ -1070,7 +1089,7 @@ void Entity::sstart_global_cooldown(float value) {
 
 	emit_signal("sgcd_started", _s_gcd);
 
-	SEND_RPC(rpc("cstart_global_cooldown", value), cstart_global_cooldown(value));
+	ORPC(cstart_global_cooldown, value);
 }
 
 void Entity::cstart_global_cooldown(float value) {
@@ -1091,7 +1110,7 @@ void Entity::sets_state(int state) {
 
 	emit_signal("sstate_changed", state);
 
-	SEND_RPC(rpc("setc_state", state), setc_state(state));
+	VRPC(setc_state, state);
 }
 
 int Entity::getc_state() {
@@ -1147,7 +1166,7 @@ void Entity::adds_craft_recipe(Ref<CraftRecipe> craft_recipe) {
 
 	emit_signal("scraft_recipe_added", this, craft_recipe);
 
-	SEND_RPC(rpc("addc_craft_recipe", craft_recipe), addc_craft_recipe(craft_recipe));
+	ORPC(addc_craft_recipe, craft_recipe);
 }
 void Entity::removes_craft_recipe(Ref<CraftRecipe> craft_recipe) {
 	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
@@ -1159,7 +1178,7 @@ void Entity::removes_craft_recipe(Ref<CraftRecipe> craft_recipe) {
 
 	emit_signal("scraft_recipe_removed", this, craft_recipe);
 
-	SEND_RPC(rpc("removec_craft_recipe", craft_recipe), removec_craft_recipe(craft_recipe));
+	ORPC(removec_craft_recipe, craft_recipe);
 }
 Ref<CraftRecipe> Entity::gets_craft_recipe(int index) {
 	ERR_FAIL_INDEX_V(index, _s_craft_recipes.size(), Ref<CraftRecipe>());
@@ -1242,7 +1261,7 @@ void Entity::sdie() {
 	son_death();
 
 	//send an event to client
-	SEND_RPC(rpc("cdie"), cdie());
+	VRPC(cdie);
 
 	//signal
 	emit_signal("sdied", this);
@@ -1526,7 +1545,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	son_before_damage_hit(info);
 
 	if (info->get_immune()) {
-		SEND_RPC(rpc("con_damage_dealt", info), con_damage_dealt(info));
+		VRPC(con_damage_dealt, info);
 		return;
 	}
 
@@ -1555,7 +1574,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	emit_signal("son_damage_received", this, info);
 
 	//send an event to client
-	SEND_RPC(rpc("con_damage_dealt", info), con_damage_dealt(info));
+	VRPC(con_damage_dealt, info);
 
 	if (get_health()->gets_current() <= 0) {
 		sdie();
@@ -1576,7 +1595,7 @@ void Entity::sdeal_damage_to(Ref<SpellDamageInfo> info) {
 	son_dealt_damage(info);
 
 	//send an event to client
-	SEND_RPC(rpc("con_dealt_damage", info), con_dealt_damage(info));
+	VRPC(con_dealt_damage, info);
 
 	//signal
 	emit_signal("son_damage_received", this, info);
@@ -1598,7 +1617,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 	son_before_heal_hit(info);
 
 	if (info->get_immune()) {
-		SEND_RPC(rpc("con_heal_dealt", info), con_heal_dealt(info));
+		VRPC(con_heal_dealt, info);
 		return;
 	}
 
@@ -1618,7 +1637,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 	get_health()->sets_current(h);
 
 	//send an event to client
-	SEND_RPC(rpc("con_heal_dealt", info), con_heal_dealt(info));
+	VRPC(con_heal_dealt, info);
 
 	//signal
 	emit_signal("son_heal_received", this, info);
@@ -1714,7 +1733,7 @@ void Entity::adds_xp(int value) {
 
 	son_xp_gained(value);
 
-	SEND_RPC(rpc("addc_xp", value), addc_xp(value));
+	ORPC(addc_xp, value);
 }
 void Entity::addc_xp(int value) {
 	_c_xp += value;
@@ -1730,7 +1749,7 @@ void Entity::slevelup(int value) {
 
 	son_level_up(value);
 
-	SEND_RPC(rpc("clevelup", value), clevelup(value));
+	VRPC(clevelup, value);
 }
 void Entity::clevelup(int value) {
 	_c_level += value;
@@ -1788,7 +1807,7 @@ void Entity::scast_spell(int spell_id) {
 }
 
 void Entity::crequest_spell_cast(int spell_id) {
-	SEND_RPC_TO_SERVER(rpc_id(1, "scast_spell", spell_id), scast_spell(spell_id));
+	RPCS(scast_spell, spell_id);
 }
 
 void Entity::update_auras(float delta) {
@@ -2346,7 +2365,7 @@ void Entity::sadd_aura(Ref<AuraData> aura) {
 	emit_signal("saura_added", aura);
 
 	if (!aura->get_aura()->get_hide())
-		SEND_RPC(rpc("rcadd_aura", aura), cadd_aura(aura));
+		VRPC(cadd_aura, aura);
 }
 
 void Entity::sremove_aura(Ref<AuraData> aura) {
@@ -2371,7 +2390,7 @@ void Entity::sremove_aura(Ref<AuraData> aura) {
 		emit_signal("saura_removed", a);
 
 		if (!aura->get_aura()->get_hide())
-			SEND_RPC(rpc("cremove_aura", a), cremove_aura(a));
+			VRPC(cremove_aura, a);
 	}
 }
 
@@ -2393,7 +2412,7 @@ void Entity::sremove_aura_exact(Ref<AuraData> aura) {
 	emit_signal("saura_removed", aura);
 
 	if (!aura->get_aura()->get_hide())
-		SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
+		VRPC(cremove_aura, aura);
 }
 
 void Entity::sremove_aura_expired(Ref<AuraData> aura) {
@@ -2414,7 +2433,7 @@ void Entity::sremove_aura_expired(Ref<AuraData> aura) {
 	emit_signal("saura_removed_expired", aura);
 
 	if (!aura->get_aura()->get_hide())
-		SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
+		VRPC(cremove_aura, aura);
 }
 
 void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
@@ -2435,7 +2454,7 @@ void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
 	emit_signal("saura_removed_dispelled", aura);
 
 	if (!aura->get_aura()->get_hide())
-		SEND_RPC(rpc("cremove_aura", aura), cremove_aura(aura));
+		VRPC(cremove_aura, aura);
 }
 
 void Entity::saura_refreshed(Ref<AuraData> aura) {
@@ -2447,7 +2466,7 @@ void Entity::saura_refreshed(Ref<AuraData> aura) {
 	emit_signal("caura_refreshed", aura);
 
 	if (!aura->get_aura()->get_hide())
-		SEND_RPC(rpc("caura_refreshed", aura), caura_refreshed(aura));
+		VRPC(caura_refreshed, aura);
 }
 
 void Entity::rcadd_aura(Array arr) {
@@ -3010,7 +3029,7 @@ void Entity::sstart_casting(Ref<SpellCastInfo> info) {
 
 	emit_signal("scast_started", info);
 
-	SEND_RPC(rpc("cstart_casting", info), cstart_casting(info));
+	VRPC(cstart_casting, info);
 }
 
 void Entity::sfail_cast() {
@@ -3020,13 +3039,13 @@ void Entity::sfail_cast() {
 
 	_s_spell_cast_info.unref();
 
-	SEND_RPC(rpc("cfail_cast"), cfail_cast());
+	VRPC(cfail_cast);
 }
 
 void Entity::sdelay_cast() {
 	emit_signal("scast_delayed", _s_spell_cast_info);
 
-	SEND_RPC(rpc("cdelay_cast"), cdelay_cast());
+	VRPC(cdelay_cast);
 }
 
 void Entity::sfinish_cast() {
@@ -3038,7 +3057,7 @@ void Entity::sfinish_cast() {
 
 	_s_spell_cast_info.unref();
 
-	SEND_RPC(rpc("cfinish_cast"), cfinish_cast());
+	VRPC(cfinish_cast);
 }
 
 void Entity::sinterrupt_cast() {
@@ -3052,7 +3071,7 @@ void Entity::sinterrupt_cast() {
 
 	_s_spell_cast_info.unref();
 
-	SEND_RPC(rpc("cinterrupt_cast"), cinterrupt_cast());
+	VRPC(cinterrupt_cast);
 }
 
 void Entity::cstart_casting(Ref<SpellCastInfo> info) {
@@ -3093,7 +3112,7 @@ void Entity::cinterrupt_cast() {
 void Entity::sspell_cast_success(Ref<SpellCastInfo> info) {
 	son_spell_cast_success(info);
 
-	SEND_RPC(rpc("csspell_cast_success", info), cspell_cast_success(info));
+	VRPC(cspell_cast_success, info);
 }
 
 void Entity::cspell_cast_success(Ref<SpellCastInfo> info) {
@@ -3128,7 +3147,7 @@ void Entity::adds_cooldown(int spell_id, float value) {
 
 		emit_signal("scooldown_added", cd);
 
-		SEND_RPC(rpc("addc_cooldown", spell_id, value), addc_cooldown(spell_id, value));
+		ORPC(addc_cooldown, spell_id, value);
 
 		return;
 	}
@@ -3146,7 +3165,7 @@ void Entity::adds_cooldown(int spell_id, float value) {
 
 	emit_signal("scooldown_added", cd);
 
-	SEND_RPC(rpc("addc_cooldown", spell_id, value), addc_cooldown(spell_id, value));
+	ORPC(addc_cooldown, spell_id, value);
 }
 void Entity::removes_cooldown(int spell_id) {
 	Ref<Cooldown> cd;
@@ -3169,7 +3188,7 @@ void Entity::removes_cooldown(int spell_id) {
 
 	emit_signal("scooldown_removed", cd);
 
-	SEND_RPC(rpc("removec_cooldown", spell_id), removec_cooldown(spell_id));
+	ORPC(removec_cooldown, spell_id);
 }
 Ref<Cooldown> Entity::gets_cooldown(int spell_id) {
 	if (!_s_cooldown_map.has(spell_id)) {
@@ -3277,7 +3296,7 @@ void Entity::adds_category_cooldown(int category_id, float value) {
 
 				emit_signal("scategory_cooldown_added", cc);
 
-				SEND_RPC(rpc("addc_category_cooldown", category_id, value), addc_category_cooldown(category_id, value));
+				ORPC(addc_category_cooldown, category_id, value);
 
 				return;
 			}
@@ -3298,7 +3317,7 @@ void Entity::adds_category_cooldown(int category_id, float value) {
 
 	emit_signal("scategory_cooldown_added", cc);
 
-	SEND_RPC(rpc("addc_category_cooldown", category_id, value), addc_category_cooldown(category_id, value));
+	ORPC(addc_category_cooldown, category_id, value);
 }
 void Entity::removes_category_cooldown(int category_id) {
 	Ref<CategoryCooldown> cc;
@@ -3320,7 +3339,7 @@ void Entity::removes_category_cooldown(int category_id) {
 
 	emit_signal("scategory_cooldown_removed", cc);
 
-	SEND_RPC(rpc("removec_category_cooldown", category_id), removec_category_cooldown(category_id));
+	ORPC(removec_category_cooldown, category_id);
 }
 Ref<CategoryCooldown> Entity::gets_category_cooldown(int category_id) {
 	ERR_FAIL_COND_V(!(category_id & _s_active_category_cooldowns), Ref<CategoryCooldown>());
@@ -3435,7 +3454,7 @@ void Entity::sets_free_spell_points(int value) {
 
 	emit_signal("sfree_spell_points_changed", this, value);
 
-	SEND_RPC(rpc("setc_free_spell_points", value), setc_free_spell_points(value));
+	ORPC(setc_free_spell_points, value);
 }
 
 int Entity::getc_free_spell_points() {
@@ -3492,7 +3511,7 @@ void Entity::adds_spell(Ref<Spell> spell) {
 
 	emit_signal("sspell_added", this, spell);
 
-	SEND_RPC(rpc("addc_spell", spell), addc_spell(spell));
+	ORPC(addc_spell, spell);
 }
 void Entity::removes_spell(Ref<Spell> spell) {
 	for (int i = 0; i < _s_spells.size(); ++i) {
@@ -3504,7 +3523,7 @@ void Entity::removes_spell(Ref<Spell> spell) {
 
 	emit_signal("sspell_removed", this, spell);
 
-	SEND_RPC(rpc("removec_spell", spell), removec_spell(spell));
+	ORPC(removec_spell, spell);
 }
 Ref<Spell> Entity::gets_spell(int index) {
 	ERR_FAIL_INDEX_V(index, _s_spells.size(), Ref<Spell>());
@@ -3569,7 +3588,7 @@ void Entity::adds_skill(Ref<EntitySkill> skill) {
 
 	emit_signal("sskill_added", this, skill);
 
-	SEND_RPC(rpc("addc_skill", skill), addc_skill(skill));
+	ORPC(addc_skill, skill);
 }
 void Entity::removes_skill(Ref<EntitySkill> skill) {
 	for (int i = 0; i < _s_skills.size(); ++i) {
@@ -3581,7 +3600,7 @@ void Entity::removes_skill(Ref<EntitySkill> skill) {
 
 	emit_signal("sskill_removed", this, skill);
 
-	SEND_RPC(rpc("removec_skill", skill), removec_skill(skill));
+	ORPC(removec_skill, skill);
 }
 Ref<EntitySkill> Entity::gets_skill(int index) {
 	ERR_FAIL_INDEX_V(index, _s_skills.size(), Ref<EntitySkill>());
@@ -3673,11 +3692,11 @@ void Entity::sremove_auras_with_group(int aura_group) {
 }
 
 void Entity::crequest_target_change(NodePath path) {
-	SEND_RPC_TO_SERVER(rpc_id(1, "net_sets_target", path), sets_target(get_node_or_null(path)));
+	RPCS(net_sets_target, path);
 }
 
 void Entity::net_sets_target(NodePath path) {
-	if (!get_tree()->is_network_server())
+	if (!ISSERVER())
 		return;
 
 	Node *p_target = get_node_or_null(path);
@@ -3685,12 +3704,12 @@ void Entity::net_sets_target(NodePath path) {
 	sets_target(p_target);
 
 	if (p_target == NULL) {
-		SEND_RPC(rpc("net_setc_target", NodePath()), );
+		VRPC(net_setc_target, NodePath());
 	} else {
 		if (gets_target() == NULL) {
-			SEND_RPC(rpc("net_setc_target", NodePath()), );
+			VRPC(net_setc_target, NodePath());
 		} else {
-			SEND_RPC(rpc("net_setc_target", gets_target()->get_path()), );
+			VRPC(net_setc_target, gets_target()->get_path());
 		}
 	}
 }
@@ -3805,7 +3824,7 @@ int Entity::gets_free_talent_points() {
 void Entity::sets_free_talent_points(int value) {
 	_s_free_talent_points = value;
 
-	SEND_RPC(rpc("setc_free_talent_points", value), setc_free_talent_points(value));
+	ORPC(setc_free_talent_points, value);
 }
 
 int Entity::getc_free_talent_points() {
@@ -3913,7 +3932,7 @@ void Entity::sreset_talents() {
 
 	emit_signal("stalent_reset", this);
 
-	SEND_RPC(rpc("creset_talents"), creset_talents());
+	ORPC(creset_talents);
 }
 void Entity::creset_talents() {
 	_c_talents.clear();
@@ -3935,7 +3954,7 @@ void Entity::adds_talent(int talent) {
 
 	emit_signal("stalent_learned", this, talent);
 
-	SEND_RPC(rpc("addc_talent", talent), addc_talent(talent));
+	ORPC(addc_talent, talent);
 }
 void Entity::removes_talent(int talent) {
 	for (int i = 0; i < _s_talents.size(); ++i) {
@@ -3956,7 +3975,7 @@ void Entity::removes_talent(int talent) {
 		}
 	}
 
-	SEND_RPC(rpc("removec_talent", talent), removec_talent(talent));
+	ORPC(removec_talent, talent);
 }
 bool Entity::hass_talent(int talent) {
 	for (int i = 0; i < _s_talents.size(); ++i) {
@@ -3978,7 +3997,7 @@ int Entity::gets_talent_count() {
 void Entity::sclear_talents() {
 	_s_talents.clear();
 
-	SEND_RPC(rpc("cclear_talents"), cclear_talents());
+	ORPC(cclear_talents);
 }
 
 void Entity::addc_talent(int talent) {
@@ -4030,7 +4049,7 @@ void Entity::sets_bag(const Ref<Bag> bag) {
 
 	emit_signal("sbag_changed", this, _s_bag);
 
-	SEND_RPC(rpc("setc_bag", bag), setc_bag(bag));
+	ORPC(setc_bag, bag);
 }
 
 Ref<Bag> Entity::getc_bag() const {
@@ -4049,7 +4068,7 @@ Ref<Bag> Entity::gets_target_bag() const {
 void Entity::sets_target_bag(const Ref<Bag> bag) {
 	_s_target_bag = bag;
 
-	SEND_RPC(rpc("setc_target_bag", bag), setc_target_bag(bag));
+	ORPC(setc_target_bag, bag);
 }
 
 Ref<Bag> Entity::getc_target_bag() const {
