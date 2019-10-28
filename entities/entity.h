@@ -70,7 +70,7 @@ enum PlayerSendFlags {
 };
 
 #define ISSERVER() (is_inside_tree() && (!get_tree()->has_network_peer() || (get_tree()->has_network_peer() && get_tree()->is_network_server())))
-#define ISCLIENT() (is_inside_tree() && get_tree()->has_network_peer() && !get_tree()->is_network_server() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED)                                                                                                                                                 
+#define ISCLIENT() (is_inside_tree() && get_tree()->has_network_peer() && !get_tree()->is_network_server() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED)
 
 #define SET_RPC_OFF(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_DISABLED);
 #define SET_RPC_REMOTE(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_REMOTE);
@@ -95,12 +95,11 @@ enum PlayerSendFlags {
 
 #define ORPC(func, ...)                                                                                                                                                    \
 	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->get_network_peer()->get_connection_status() == NetworkedMultiplayerPeer::CONNECTION_CONNECTED) { \
-		int nm = get_network_master();                                                                                                                                     \
-                                                                                                                                                                           \
-		if (nm == 0)                                                                                                                                                       \
+		if (get_tree()->is_network_server()) {                                                                                                                             \
 			func(__VA_ARGS__);                                                                                                                                             \
-		else                                                                                                                                                               \
-			rpc_id(nm, #func, __VA_ARGS__);                                                                                                                                \
+		} else {                                                                                                                                                           \
+			rpc_id(get_network_master(), #func, __VA_ARGS__);                                                                                                              \
+		}                                                                                                                                                                  \
 	}                                                                                                                                                                      \
 	func(__VA_ARGS__);
 
@@ -684,7 +683,16 @@ public:
 	virtual void _from_dict(const Dictionary &dict);
 
 	//Networking
-	void vrpc(const StringName &p_method, VARIANT_ARG_LIST); //rpc call, honors RPCMode
+	Entity *gets_sees(int index);
+	void removes_sees_index(int index);
+	void removes_sees(Entity *entity);
+	void removes_sees_bind(Node *entity);
+	void adds_sees(Entity *entity);
+	void adds_sees_bind(Node *entity);
+	int gets_sees_count();
+
+	void vrpc(const StringName &p_method, VARIANT_ARG_LIST);
+	Variant _vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
 
 	Entity();
 	~Entity();

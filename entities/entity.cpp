@@ -784,260 +784,6 @@ void Entity::_from_dict(const Dictionary &dict) {
 	sets_entity_data_id(edi);
 }
 
-//Networking
-
-void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
-
-	VARIANT_ARGPTRS;
-
-	int argc = 0;
-	for (int i = 0; i < VARIANT_ARG_MAX; i++) {
-		if (argptr[i]->get_type() == Variant::NIL)
-			break;
-		argc++;
-	}
-
-	for (int i = 0; i < _s_sees.size(); ++i) {
-		Entity *e = _s_sees.get(i);
-
-		if (unlikely(!ObjectDB::instance_validate(e))) {
-			_s_sees.remove(i);
-			--i;
-			continue;
-		}
-
-		int netm = e->get_network_master();
-
-		if (netm != 0)
-			rpcp(netm, false, p_method, argptr, argc);
-	}
-
-	rpcp(get_network_master(), false, p_method, argptr, argc);
-}
-
-Entity::Entity() {
-	_deserialized = false;
-
-	_s_guid = 0;
-	_c_guid = 0;
-
-	_s_class_id = 0;
-	_c_class_id = 0;
-
-	_s_type = 0;
-	_c_type = 0;
-
-	_s_gender = 0;
-	_c_gender = 0;
-
-	_s_level = 1;
-	_c_level = 1;
-
-	_s_xp = 0;
-	_c_xp = 0;
-
-	_s_send_flag = 0;
-
-	_c_money = 0;
-	_s_money = 0;
-
-	_s_entity_name = "";
-	_c_entity_name = "";
-
-	_s_state = PlayerStates::STATE_NORMAL;
-	_c_state = PlayerStates::STATE_NORMAL;
-
-	sIsDead = false;
-	cIsDead = false;
-
-	_s_gcd = 0;
-	_c_gcd = 0;
-
-	_s_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
-	_c_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
-
-	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
-		_s_states[i] = 0;
-	}
-
-	_s_state = 0;
-	_c_state = 0;
-
-	sRezTimer = 0;
-	cRezTimer = 0;
-
-	_s_active_category_cooldowns = 0;
-	_c_active_category_cooldowns = 0;
-
-	_s_entity_type = EntityEnums::ENITIY_TYPE_NONE;
-	_c_entity_type = EntityEnums::ENITIY_TYPE_NONE;
-
-	_s_immunity_flags = 0;
-
-	_s_entity_flags = 0;
-	_c_entity_flags = 0;
-
-	_s_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
-
-	_s_target = NULL;
-	_c_target = NULL;
-
-	_s_free_talent_points = 0;
-	_c_free_talent_points = 0;
-
-	_s_free_spell_points = 0;
-	_c_free_spell_points = 0;
-
-	_action_bar_profile.instance();
-	_actionbar_locked = false;
-
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
-		Ref<Stat> s = Ref<Stat>(memnew(Stat(static_cast<Stat::StatId>(i), this)));
-
-		_stats[i] = s;
-	}
-
-	/*
-	get_stat_enum(Stat::STAT_ID_HEALTH)->set_base(10000);
-	get_stat_enum(Stat::STAT_ID_MANA)->set_base(100);
-	get_stat_enum(Stat::STAT_ID_RAGE)->set_base(100);
-	get_stat_enum(Stat::STAT_ID_ENERGY)->set_base(100);
-	get_stat_enum(Stat::STAT_ID_SPEED)->set_base(4.2);
-	get_stat_enum(Stat::STAT_ID_GLOBAL_COOLDOWN)->set_base(1.5);
-	get_stat_enum(Stat::STAT_ID_MELEE_CRIT)->set_base(5);
-	get_stat_enum(Stat::STAT_ID_MELEE_CRIT_BONUS)->set_base(50);
-	get_stat_enum(Stat::STAT_ID_SPELL_CRIT)->set_base(5);
-	get_stat_enum(Stat::STAT_ID_SPELL_CRIT_BONUS)->set_base(50);
-	get_stat_enum(Stat::STAT_ID_BLOCK)->set_base(10);
-	get_stat_enum(Stat::STAT_ID_PARRY)->set_base(15);
-	get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION)->set_base(15);*/
-
-	SET_RPC_REMOTE("crequest_spell_cast");
-	SET_RPC_REMOTE("csend_request_rank_increase");
-	SET_RPC_REMOTE("csend_request_rank_decrease");
-
-	SET_RPC_REMOTE("setc_guid");
-	SET_RPC_REMOTE("setc_entity_data_id");
-	SET_RPC_REMOTE("setc_entity_type");
-	SET_RPC_REMOTE("setc_entity_name");
-	SET_RPC_REMOTE("setc_gender");
-	SET_RPC_REMOTE("setc_level");
-	SET_RPC_REMOTE("setc_xp");
-
-	////     Stats    ////
-
-	//send stats
-
-	//GCD
-
-	SET_RPC_REMOTE("cstart_global_cooldown");
-
-	////    States    ////
-
-	SET_RPC_REMOTE("setc_state");
-
-	////    SpellSystem    ////
-
-	//Clientside EventHandlers
-
-	SET_RPC_REMOTE("con_cast_failed");
-	SET_RPC_REMOTE("con_cast_started");
-	SET_RPC_REMOTE("con_cast_state_changed");
-	SET_RPC_REMOTE("con_cast_finished");
-	SET_RPC_REMOTE("con_spell_cast_success");
-
-	//Spell operations
-
-	SET_RPC_REMOTE("crequest_spell_cast");
-
-	//Aura Manipulation
-
-	SET_RPC_REMOTE("cadd_aura");
-	SET_RPC_REMOTE("cremove_aura");
-	SET_RPC_REMOTE("cremove_aura_expired");
-	SET_RPC_REMOTE("cremove_aura_dispelled");
-
-	//Clientside hooks
-
-	SET_RPC_REMOTE("con_damage_dealt");
-	SET_RPC_REMOTE("con_dealt_damage");
-	SET_RPC_REMOTE("con_heal_dealt");
-	SET_RPC_REMOTE("con_dealt_heal");
-
-	////    Casting System    ////
-
-	SET_RPC_REMOTE("cstart_casting");
-	SET_RPC_REMOTE("cfail_cast");
-	SET_RPC_REMOTE("cdelay_cast");
-	SET_RPC_REMOTE("cfinish_cast");
-	SET_RPC_REMOTE("cinterrupt_cast");
-
-	////    Cooldowns    ////
-
-	SET_RPC_REMOTE("addc_cooldown");
-	SET_RPC_REMOTE("removec_cooldown");
-
-	//Category Cooldowns
-
-	SET_RPC_REMOTE("addc_category_cooldown");
-	SET_RPC_REMOTE("removec_category_cooldown");
-
-	////    TargetComponent    ////
-
-	SET_RPC_REMOTE("crequest_tagret_change");
-	SET_RPC_REMOTE("net_sets_target");
-	SET_RPC_REMOTE("net_setc_target");
-}
-
-Entity::~Entity() {
-	//Ref<EntityData> _s_entity_data;
-	//Ref<EntityData> _c_entity_data;
-
-	_s_resources.clear();
-	_c_resources.clear();
-
-	//Ref<SpellCastInfo> _s_spell_cast_info;
-	//Ref<SpellCastInfo> _c_spell_cast_info;
-
-	_s_auras.clear();
-	_c_auras.clear();
-
-	_s_cooldowns.clear();
-	_c_cooldowns.clear();
-
-	_s_cooldown_map.clear();
-	_c_cooldown_map.clear();
-
-	_s_category_cooldowns.clear();
-	_c_category_cooldowns.clear();
-
-	_s_data.clear();
-	_c_data.clear();
-
-	_s_craft_recipes.clear();
-	_c_craft_recipes.clear();
-
-	_s_spells.clear();
-	_c_spells.clear();
-
-	_s_free_talent_points = 0;
-	_c_free_talent_points = 0;
-
-	_s_talents.clear();
-	_c_talents.clear();
-
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
-		_stats[i].unref();
-	}
-
-	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
-		_s_equipment[i].unref();
-		_c_equipment[i].unref();
-	}
-
-	_action_bar_profile.unref();
-}
-
 void Entity::initialize(Ref<EntityCreateInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
@@ -4247,6 +3993,338 @@ String Entity::random_name() {
 	return "";
 }
 
+//Networking
+
+Entity *Entity::gets_sees(int index) {
+	ERR_FAIL_INDEX_V(index, _s_sees.size(), NULL);
+
+	return _s_sees.get(index);
+}
+
+void Entity::removes_sees_index(int index) {
+	_s_sees.remove(index);
+}
+
+void Entity::removes_sees(Entity *entity) {
+	_s_sees.erase(entity);
+}
+void Entity::removes_sees_bind(Node *entity) {
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	if (!e)
+		return;
+
+	removes_sees(e);
+}
+
+void Entity::adds_sees(Entity *entity) {
+	_s_sees.push_back(entity);
+}
+void Entity::adds_sees_bind(Node *entity) {
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	if (!e)
+		return;
+
+	adds_sees(e);
+}
+
+int Entity::gets_sees_count() {
+	return _s_sees.size();
+}
+
+void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
+
+	VARIANT_ARGPTRS;
+
+	int argc = 0;
+	for (int i = 0; i < VARIANT_ARG_MAX; i++) {
+		if (argptr[i]->get_type() == Variant::NIL)
+			break;
+		argc++;
+	}
+
+	for (int i = 0; i < _s_sees.size(); ++i) {
+		Entity *e = _s_sees.get(i);
+
+		if (unlikely(!ObjectDB::instance_validate(e))) {
+			_s_sees.remove(i);
+			--i;
+			continue;
+		}
+
+		int netm = e->get_network_master();
+
+		print_error(String::num(netm));
+
+		if (netm != 0)
+			rpcp(netm, false, p_method, argptr, argc);
+	}
+}
+
+Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
+
+	if (p_argcount < 1) {
+		r_error.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
+		r_error.argument = 1;
+		return Variant();
+	}
+
+	if (p_args[0]->get_type() != Variant::STRING) {
+		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+		r_error.argument = 0;
+		r_error.expected = Variant::STRING;
+		return Variant();
+	}
+
+	StringName method = *p_args[0];
+
+	for (int i = 0; i < _s_sees.size(); ++i) {
+		Entity *e = _s_sees.get(i);
+
+		if (unlikely(!ObjectDB::instance_validate(e))) {
+			_s_sees.remove(i);
+			--i;
+			continue;
+		}
+
+		int netm = e->get_network_master();
+
+		if (netm != 0)
+			rpcp(netm, false, method, &p_args[1], p_argcount - 1);
+	}
+
+	call(method, &p_args[1], p_argcount - 1);
+
+	r_error.error = Variant::CallError::CALL_OK;
+	return Variant();
+}
+
+Entity::Entity() {
+	_deserialized = false;
+
+	_s_guid = 0;
+	_c_guid = 0;
+
+	_s_class_id = 0;
+	_c_class_id = 0;
+
+	_s_type = 0;
+	_c_type = 0;
+
+	_s_gender = 0;
+	_c_gender = 0;
+
+	_s_level = 1;
+	_c_level = 1;
+
+	_s_xp = 0;
+	_c_xp = 0;
+
+	_s_send_flag = 0;
+
+	_c_money = 0;
+	_s_money = 0;
+
+	_s_entity_name = "";
+	_c_entity_name = "";
+
+	_s_state = PlayerStates::STATE_NORMAL;
+	_c_state = PlayerStates::STATE_NORMAL;
+
+	sIsDead = false;
+	cIsDead = false;
+
+	_s_gcd = 0;
+	_c_gcd = 0;
+
+	_s_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
+	_c_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
+
+	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
+		_s_states[i] = 0;
+	}
+
+	_s_state = 0;
+	_c_state = 0;
+
+	sRezTimer = 0;
+	cRezTimer = 0;
+
+	_s_active_category_cooldowns = 0;
+	_c_active_category_cooldowns = 0;
+
+	_s_entity_type = EntityEnums::ENITIY_TYPE_NONE;
+	_c_entity_type = EntityEnums::ENITIY_TYPE_NONE;
+
+	_s_immunity_flags = 0;
+
+	_s_entity_flags = 0;
+	_c_entity_flags = 0;
+
+	_s_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
+
+	_s_target = NULL;
+	_c_target = NULL;
+
+	_s_free_talent_points = 0;
+	_c_free_talent_points = 0;
+
+	_s_free_spell_points = 0;
+	_c_free_spell_points = 0;
+
+	_action_bar_profile.instance();
+	_actionbar_locked = false;
+
+	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+		Ref<Stat> s = Ref<Stat>(memnew(Stat(static_cast<Stat::StatId>(i), this)));
+
+		_stats[i] = s;
+	}
+
+	/*
+	get_stat_enum(Stat::STAT_ID_HEALTH)->set_base(10000);
+	get_stat_enum(Stat::STAT_ID_MANA)->set_base(100);
+	get_stat_enum(Stat::STAT_ID_RAGE)->set_base(100);
+	get_stat_enum(Stat::STAT_ID_ENERGY)->set_base(100);
+	get_stat_enum(Stat::STAT_ID_SPEED)->set_base(4.2);
+	get_stat_enum(Stat::STAT_ID_GLOBAL_COOLDOWN)->set_base(1.5);
+	get_stat_enum(Stat::STAT_ID_MELEE_CRIT)->set_base(5);
+	get_stat_enum(Stat::STAT_ID_MELEE_CRIT_BONUS)->set_base(50);
+	get_stat_enum(Stat::STAT_ID_SPELL_CRIT)->set_base(5);
+	get_stat_enum(Stat::STAT_ID_SPELL_CRIT_BONUS)->set_base(50);
+	get_stat_enum(Stat::STAT_ID_BLOCK)->set_base(10);
+	get_stat_enum(Stat::STAT_ID_PARRY)->set_base(15);
+	get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION)->set_base(15);*/
+
+	SET_RPC_REMOTE("crequest_spell_cast");
+	SET_RPC_REMOTE("csend_request_rank_increase");
+	SET_RPC_REMOTE("csend_request_rank_decrease");
+
+	SET_RPC_REMOTE("setc_guid");
+	SET_RPC_REMOTE("setc_entity_data_id");
+	SET_RPC_REMOTE("setc_entity_type");
+	SET_RPC_REMOTE("setc_entity_name");
+	SET_RPC_REMOTE("setc_gender");
+	SET_RPC_REMOTE("setc_level");
+	SET_RPC_REMOTE("setc_xp");
+
+	////     Stats    ////
+
+	//send stats
+
+	//GCD
+
+	SET_RPC_REMOTE("cstart_global_cooldown");
+
+	////    States    ////
+
+	SET_RPC_REMOTE("setc_state");
+
+	////    SpellSystem    ////
+
+	//Clientside EventHandlers
+
+	SET_RPC_REMOTE("con_cast_failed");
+	SET_RPC_REMOTE("con_cast_started");
+	SET_RPC_REMOTE("con_cast_state_changed");
+	SET_RPC_REMOTE("con_cast_finished");
+	SET_RPC_REMOTE("con_spell_cast_success");
+
+	//Spell operations
+
+	SET_RPC_REMOTE("crequest_spell_cast");
+
+	//Aura Manipulation
+
+	SET_RPC_REMOTE("cadd_aura");
+	SET_RPC_REMOTE("cremove_aura");
+	SET_RPC_REMOTE("cremove_aura_expired");
+	SET_RPC_REMOTE("cremove_aura_dispelled");
+
+	//Clientside hooks
+
+	SET_RPC_REMOTE("con_damage_dealt");
+	SET_RPC_REMOTE("con_dealt_damage");
+	SET_RPC_REMOTE("con_heal_dealt");
+	SET_RPC_REMOTE("con_dealt_heal");
+
+	////    Casting System    ////
+
+	SET_RPC_REMOTE("cstart_casting");
+	SET_RPC_REMOTE("cfail_cast");
+	SET_RPC_REMOTE("cdelay_cast");
+	SET_RPC_REMOTE("cfinish_cast");
+	SET_RPC_REMOTE("cinterrupt_cast");
+
+	////    Cooldowns    ////
+
+	SET_RPC_REMOTE("addc_cooldown");
+	SET_RPC_REMOTE("removec_cooldown");
+
+	//Category Cooldowns
+
+	SET_RPC_REMOTE("addc_category_cooldown");
+	SET_RPC_REMOTE("removec_category_cooldown");
+
+	////    TargetComponent    ////
+
+	SET_RPC_REMOTE("crequest_tagret_change");
+	SET_RPC_REMOTE("net_sets_target");
+	SET_RPC_REMOTE("net_setc_target");
+}
+
+Entity::~Entity() {
+	//Ref<EntityData> _s_entity_data;
+	//Ref<EntityData> _c_entity_data;
+
+	_s_resources.clear();
+	_c_resources.clear();
+
+	//Ref<SpellCastInfo> _s_spell_cast_info;
+	//Ref<SpellCastInfo> _c_spell_cast_info;
+
+	_s_auras.clear();
+	_c_auras.clear();
+
+	_s_cooldowns.clear();
+	_c_cooldowns.clear();
+
+	_s_cooldown_map.clear();
+	_c_cooldown_map.clear();
+
+	_s_category_cooldowns.clear();
+	_c_category_cooldowns.clear();
+
+	_s_data.clear();
+	_c_data.clear();
+
+	_s_craft_recipes.clear();
+	_c_craft_recipes.clear();
+
+	_s_spells.clear();
+	_c_spells.clear();
+
+	_s_free_talent_points = 0;
+	_c_free_talent_points = 0;
+
+	_s_talents.clear();
+	_c_talents.clear();
+
+	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+		_stats[i].unref();
+	}
+
+	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+		_s_equipment[i].unref();
+		_c_equipment[i].unref();
+	}
+
+	_action_bar_profile.unref();
+
+	_s_sees.clear();
+}
+
 void Entity::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
@@ -5032,4 +5110,18 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &Entity::_from_dict);
 	ClassDB::bind_method(D_METHOD("_to_dict"), &Entity::_to_dict);
+
+	//Networking
+	ClassDB::bind_method(D_METHOD("gets_sees", "index"), &Entity::gets_sees);
+	ClassDB::bind_method(D_METHOD("removes_sees_index", "index"), &Entity::removes_sees_index);
+	ClassDB::bind_method(D_METHOD("removes_sees", "entity"), &Entity::removes_sees_bind);
+	ClassDB::bind_method(D_METHOD("adds_sees", "entity"), &Entity::adds_sees_bind);
+	ClassDB::bind_method(D_METHOD("gets_sees_count"), &Entity::gets_sees_count);
+
+	MethodInfo mi;
+
+	mi.arguments.push_back(PropertyInfo(Variant::STRING, "method"));
+
+	mi.name = "vrpc";
+	ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "vrpc", &Entity::_vrpc_bind, mi);
 }
