@@ -3879,7 +3879,7 @@ void Entity::sets_bag(const Ref<Bag> bag) {
 
 	emit_signal("sbag_changed", this, _s_bag);
 
-	ORPC(setc_bag, bag);
+	ORPCOBJ(setc_bag_rpc, JSON::print(_s_bag->to_dict()), setc_bag, bag);
 }
 
 Ref<Bag> Entity::getc_bag() const {
@@ -3894,19 +3894,32 @@ void Entity::setc_bag(const Ref<Bag> bag) {
 Ref<Bag> Entity::gets_target_bag() const {
 	return _s_target_bag;
 }
-
 void Entity::sets_target_bag(const Ref<Bag> bag) {
 	_s_target_bag = bag;
 
-	ORPC(setc_target_bag, bag);
+	ORPCOBJ(setc_target_bag_rpc, JSON::print(_s_target_bag->to_dict()), setc_target_bag, bag);
 }
 
 Ref<Bag> Entity::getc_target_bag() const {
 	return _c_target_bag;
 }
-
 void Entity::setc_target_bag(const Ref<Bag> bag) {
 	_c_target_bag = bag;
+}
+
+void Entity::setc_bag_rpc(String data) {
+	Ref<Bag> bag;
+	bag.instance();
+	bag->from_dict(data_as_dict(data));
+
+	setc_bag(bag);
+}
+void Entity::setc_target_bag_rpc(String data) {
+	Ref<Bag> bag;
+	bag.instance();
+	bag->from_dict(data_as_dict(data));
+
+	setc_target_bag(bag);
 }
 
 void Entity::crequest_loot(int index) {
@@ -4119,6 +4132,44 @@ int Entity::gets_sees_count() {
 	return _s_sees.size();
 }
 
+Entity *Entity::gets_seen_by(int index) {
+	ERR_FAIL_INDEX_V(index, _s_seen_by.size(), NULL);
+
+	return _s_seen_by.get(index);
+}
+
+void Entity::removes_seen_by_index(int index) {
+	_s_seen_by.remove(index);
+}
+
+void Entity::removes_seen_by(Entity *entity) {
+	_s_seen_by.erase(entity);
+}
+void Entity::removes_seen_by_bind(Node *entity) {
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	if (!e)
+		return;
+
+	removes_seen_by(e);
+}
+
+void Entity::adds_seen_by(Entity *entity) {
+	_s_seen_by.push_back(entity);
+}
+void Entity::adds_seen_by_bind(Node *entity) {
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	if (!e)
+		return;
+
+	adds_seen_by(e);
+}
+
+int Entity::gets_seen_by_count() {
+	return _s_seen_by.size();
+}
+
 void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
 
 	VARIANT_ARGPTRS;
@@ -4130,11 +4181,11 @@ void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
 		argc++;
 	}
 
-	for (int i = 0; i < _s_sees.size(); ++i) {
-		Entity *e = _s_sees.get(i);
+	for (int i = 0; i < _s_seen_by.size(); ++i) {
+		Entity *e = _s_seen_by.get(i);
 
 		if (unlikely(!ObjectDB::instance_validate(e))) {
-			_s_sees.remove(i);
+			_s_seen_by.remove(i);
 			--i;
 			continue;
 		}
@@ -4168,11 +4219,11 @@ Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::Call
 
 	StringName method = *p_args[0];
 
-	for (int i = 0; i < _s_sees.size(); ++i) {
-		Entity *e = _s_sees.get(i);
+	for (int i = 0; i < _s_seen_by.size(); ++i) {
+		Entity *e = _s_seen_by.get(i);
 
 		if (unlikely(!ObjectDB::instance_validate(e))) {
-			_s_sees.remove(i);
+			_s_seen_by.remove(i);
 			--i;
 			continue;
 		}
@@ -4449,8 +4500,8 @@ Entity::Entity() {
 
 	////    Inventory    ////
 
-	SET_RPC_REMOTE("setc_bag");
-	SET_RPC_REMOTE("setc_target_bag");
+	SET_RPC_REMOTE("setc_bag_rpc");
+	SET_RPC_REMOTE("setc_target_bag_rpc");
 
 	SET_RPC_REMOTE("sloot");
 
@@ -4509,6 +4560,7 @@ Entity::~Entity() {
 	_action_bar_profile.unref();
 
 	_s_sees.clear();
+	_s_seen_by.clear();
 }
 
 void Entity::_notification(int p_what) {
@@ -5297,6 +5349,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_target_bag", "bag"), &Entity::setc_target_bag);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ctarget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "setc_target_bag", "getc_target_bag");
 
+	ClassDB::bind_method(D_METHOD("setc_bag_rpc", "data"), &Entity::setc_bag_rpc);
+	ClassDB::bind_method(D_METHOD("setc_target_bag_rpc", "data"), &Entity::setc_target_bag_rpc);
+
 	ClassDB::bind_method(D_METHOD("crequest_loot"), &Entity::crequest_loot);
 	ClassDB::bind_method(D_METHOD("sloot"), &Entity::sloot);
 
@@ -5326,6 +5381,12 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("removes_sees", "entity"), &Entity::removes_sees_bind);
 	ClassDB::bind_method(D_METHOD("adds_sees", "entity"), &Entity::adds_sees_bind);
 	ClassDB::bind_method(D_METHOD("gets_sees_count"), &Entity::gets_sees_count);
+
+	ClassDB::bind_method(D_METHOD("gets_seen_by", "index"), &Entity::gets_seen_by);
+	ClassDB::bind_method(D_METHOD("removes_seen_by_index", "index"), &Entity::removes_seen_by_index);
+	ClassDB::bind_method(D_METHOD("removes_seen_by", "entity"), &Entity::removes_seen_by_bind);
+	ClassDB::bind_method(D_METHOD("adds_seen_by", "entity"), &Entity::adds_seen_by_bind);
+	ClassDB::bind_method(D_METHOD("gets_seen_by_count"), &Entity::gets_seen_by_count);
 
 	MethodInfo mi;
 

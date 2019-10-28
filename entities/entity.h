@@ -687,6 +687,9 @@ public:
 	Ref<Bag> getc_target_bag() const;
 	void setc_target_bag(const Ref<Bag> bag);
 
+	void setc_bag_rpc(String data);
+	void setc_target_bag_rpc(String data);
+
 	void crequest_loot(int index);
 	void sloot(int index);
 
@@ -734,6 +737,14 @@ public:
 	void adds_sees(Entity *entity);
 	void adds_sees_bind(Node *entity);
 	int gets_sees_count();
+
+	Entity *gets_seen_by(int index);
+	void removes_seen_by_index(int index);
+	void removes_seen_by(Entity *entity);
+	void removes_seen_by_bind(Node *entity);
+	void adds_seen_by(Entity *entity);
+	void adds_seen_by_bind(Node *entity);
+	int gets_seen_by_count();
 
 	void vrpc(const StringName &p_method, VARIANT_ARG_LIST);
 	Variant _vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
@@ -917,6 +928,7 @@ private:
 
 	//Networking
 	Vector<Entity *> _s_sees;
+	Vector<Entity *> _s_seen_by;
 };
 
 #endif
