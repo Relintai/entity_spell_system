@@ -80,55 +80,23 @@ enum PlayerSendFlags {
 #define SET_RPC_MASTERSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_MASTERSYNC);
 #define SET_RPC_PUPPETSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_PUPPETSYNC);
 
-//Normal
-#define RPCN(func)                                             \
-	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		rpc(#func);                                           \
-	}                                                         \
-	func();
-
-#define VRPCN(func)                                            \
-	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		vrpc(#func);                                          \
-	}                                                         \
-	func();
-
-#define ORPCN(func)                                                        \
-	if (is_inside_tree() && get_tree()->has_network_peer()) {             \
-		if (get_tree()->is_network_server() && get_network_master() != 1) \
-			rpc_id(get_network_master(), #func);                          \
-	}                                                                     \
-	func();
-
-#define RPCSN(func)                                            \
-	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		if (get_tree()->is_network_server()) {                \
-			func();                                           \
-		} else {                                              \
-			rpc_id(1, #func);                                 \
-		}                                                     \
-	} else {                                                  \
-		func();                                               \
-	}
-
-//Variadic
 // f.e.   RPC(method, arg0, arg1, etc)
 #define RPC(func, ...)                                        \
 	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		rpc(#func, __VA_ARGS__);                              \
+		rpc(#func, ##__VA_ARGS__);                            \
 	}                                                         \
 	func(__VA_ARGS__);
 
 #define VRPC(func, ...)                                       \
 	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		vrpc(#func, __VA_ARGS__);                             \
+		vrpc(#func, ##__VA_ARGS__);                           \
 	}                                                         \
 	func(__VA_ARGS__);
 
 #define ORPC(func, ...)                                                   \
 	if (is_inside_tree() && get_tree()->has_network_peer()) {             \
 		if (get_tree()->is_network_server() && get_network_master() != 1) \
-			rpc_id(get_network_master(), #func, __VA_ARGS__);             \
+			rpc_id(get_network_master(), #func, ##__VA_ARGS__);           \
 	}                                                                     \
 	func(__VA_ARGS__);
 
@@ -137,7 +105,7 @@ enum PlayerSendFlags {
 		if (get_tree()->is_network_server()) {                \
 			func(__VA_ARGS__);                                \
 		} else {                                              \
-			rpc_id(1, #func, __VA_ARGS__);                    \
+			rpc_id(1, #func, ##__VA_ARGS__);                  \
 		}                                                     \
 	} else {                                                  \
 		func(__VA_ARGS__);                                    \

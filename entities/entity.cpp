@@ -1007,7 +1007,7 @@ void Entity::sdie() {
 	son_death();
 
 	//send an event to client
-	VRPCN(cdie);
+	VRPC(cdie);
 
 	//signal
 	emit_signal("sdied", this);
@@ -2842,13 +2842,13 @@ void Entity::sfail_cast() {
 
 	_s_spell_cast_info.unref();
 
-	VRPCN(cfail_cast);
+	VRPC(cfail_cast);
 }
 
 void Entity::sdelay_cast() {
 	emit_signal("scast_delayed", _s_spell_cast_info);
 
-	VRPCN(cdelay_cast);
+	VRPC(cdelay_cast);
 }
 
 void Entity::sfinish_cast() {
@@ -2860,7 +2860,7 @@ void Entity::sfinish_cast() {
 
 	_s_spell_cast_info.unref();
 
-	VRPCN(cfinish_cast);
+	VRPC(cfinish_cast);
 }
 
 void Entity::sinterrupt_cast() {
@@ -2874,7 +2874,7 @@ void Entity::sinterrupt_cast() {
 
 	_s_spell_cast_info.unref();
 
-	VRPCN(cinterrupt_cast);
+	VRPC(cinterrupt_cast);
 }
 
 void Entity::cstart_casting_rpc(String data) {
@@ -3762,7 +3762,7 @@ void Entity::sreset_talents() {
 
 	emit_signal("stalent_reset", this);
 
-	ORPCN(creset_talents);
+	ORPC(creset_talents);
 }
 void Entity::creset_talents() {
 	_c_talents.clear();
@@ -3827,7 +3827,7 @@ int Entity::gets_talent_count() {
 void Entity::sclear_talents() {
 	_s_talents.clear();
 
-	ORPCN(cclear_talents);
+	ORPC(cclear_talents);
 }
 
 void Entity::addc_talent(int talent) {
