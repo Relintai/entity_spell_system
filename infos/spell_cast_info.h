@@ -42,8 +42,9 @@ public:
 
 	bool update_cast_time(float delta);
 
+	void resolve_references(Node *owner);
 	Dictionary to_dict();
-	void from_dict(Node *owner, const Dictionary &dict);
+	void from_dict(const Dictionary &dict);
 
 	SpellCastInfo();
 	~SpellCastInfo();
@@ -63,7 +64,10 @@ private:
 
 	bool _is_casting;
 
+	int _spell_id;
 	Ref<Spell> _spell;
+
+	NodePath _target_path;
 };
 
 #endif

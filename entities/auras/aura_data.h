@@ -70,6 +70,7 @@ public:
 	float get_slow();
 	void set_slow(float value);
 
+	void resolve_references(Node *owner);
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
 	Dictionary _to_dict();

@@ -13,7 +13,7 @@ class SpellHealInfo : public Reference {
 	GDCLASS(SpellHealInfo, Reference);
 
 public:
-	enum HealSource {
+	enum HealSourceType {
 		HEAL_SOURCE_UNKNOWN,
 		HEAL_SOURCE_SPELL,
 		HEAL_SOURCE_AURA,
@@ -56,27 +56,37 @@ public:
 	int get_heal_source_id();
 	void set_heal_source_id(int value);
 
-	HealSource get_heal_source_type();
-	void set_heal_source_type(HealSource value);
+	HealSourceType get_heal_source_type();
+	void set_heal_source_type(HealSourceType value);
 
 	void reset();
+
+	void resolve_references(Node *owner);
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
 
 	SpellHealInfo();
 	~SpellHealInfo();
 
 private:
+	bool _immune;
 	int _heal;
 	int _original_heal;
 	int _amount_absorbed;
 	bool _crit;
 	SpellEnums::SpellType _spell_type;
-	Entity *_dealer;
-	Entity *_receiver;
-	HealSource _heal_source_type;
+
+	HealSourceType _heal_source_type;
 	Ref<Reference> _heal_source;
 	int _heal_source_id;
+
+	Entity *_dealer;
+	Entity *_receiver;
+
+	NodePath _dealer_path;
+	NodePath _receiver_path;
 };
 
-VARIANT_ENUM_CAST(SpellHealInfo::HealSource);
+VARIANT_ENUM_CAST(SpellHealInfo::HealSourceType);
 
 #endif

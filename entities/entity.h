@@ -449,6 +449,12 @@ public:
 	void stake_heal(Ref<SpellHealInfo> info);
 	void sdeal_heal_to(Ref<SpellHealInfo> info);
 
+	//Damage, Heal RPCs
+	void cdamage_dealt_rpc(String data);
+	void cdealt_damage_rpc(String data);
+	void cheal_dealt_rpc(String data);
+	void cdealt_heal_rpc(String data);
+
 	//Interactions
 	bool cans_interact();
 	void sinteract();

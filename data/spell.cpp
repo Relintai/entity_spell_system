@@ -697,9 +697,9 @@ void Spell::handle_spell_damage(Ref<SpellDamageInfo> data) {
 void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid() || info->get_spell() == NULL);
 
-	Ref<Spell> spell = info->get_spell();
+	//Ref<Spell> spell = info->get_spell();
 
-	if (spell->get_needs_target() || spell->get_has_damage()) {
+	if (get_needs_target() || get_has_damage()) {
 		if (!info->get_target()) {
 			//print_error("no target, return");
 
@@ -707,7 +707,7 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 		}
 	}
 
-	if (spell->get_has_cast_time()) {
+	if (get_has_cast_time()) {
 		//can cast
 		info->get_caster()->son_before_cast(info);
 
@@ -717,10 +717,10 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 
 		info->get_caster()->sstart_casting(info);
 	} else {
-		if (spell->get_has_damage()) {
+		if (get_has_damage()) {
 			Ref<SpellDamageInfo> dpd = Ref<SpellDamageInfo>(memnew(SpellDamageInfo()));
 
-			dpd->set_spell_damage_source(spell);
+			dpd->set_spell_damage_source(Ref<Spell>(this));
 			dpd->set_dealer(info->get_caster());
 			dpd->set_receiver(info->get_target());
 

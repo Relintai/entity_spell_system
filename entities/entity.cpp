@@ -614,8 +614,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 		r->from_dict(auras.get(String::num(i), Dictionary()));
 		r->set_owner(this);
-		//TODO hack
-		r->set_caster(this);
+		r->resolve_references(this);
 
 		_s_auras.push_back(r);
 		//_c_auras.push_back(r);
@@ -1308,9 +1307,8 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	son_before_damage_hit(info);
 
 	if (info->get_immune()) {
-		VRPC(con_damage_dealt, info);
+		VRPCOBJ(cdamage_dealt_rpc, JSON::print(info->to_dict()), con_damage_dealt, info);
 
-		//VRPCOBJ(cadd_aura_rpc, JSON::print(ad->to_dict()), cadd_aura, ad);
 		return;
 	}
 
@@ -1339,7 +1337,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	emit_signal("son_damage_received", this, info);
 
 	//send an event to client
-	VRPC(con_damage_dealt, info);
+	VRPCOBJ(cdamage_dealt_rpc, JSON::print(info->to_dict()), con_damage_dealt, info);
 
 	if (get_health()->gets_current() <= 0) {
 		sdie();
@@ -1360,7 +1358,7 @@ void Entity::sdeal_damage_to(Ref<SpellDamageInfo> info) {
 	son_dealt_damage(info);
 
 	//send an event to client
-	VRPC(con_dealt_damage, info);
+	VRPCOBJ(cdealt_damage_rpc, JSON::print(info->to_dict()), con_dealt_damage, info);
 
 	//signal
 	emit_signal("son_damage_received", this, info);
@@ -1382,7 +1380,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 	son_before_heal_hit(info);
 
 	if (info->get_immune()) {
-		VRPC(con_heal_dealt, info);
+		VRPCOBJ(cheal_dealt_rpc, JSON::print(info->to_dict()), con_heal_dealt, info);
 		return;
 	}
 
@@ -1402,7 +1400,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 	get_health()->sets_current(h);
 
 	//send an event to client
-	VRPC(con_heal_dealt, info);
+	VRPCOBJ(cheal_dealt_rpc, JSON::print(info->to_dict()), con_heal_dealt, info);
 
 	//signal
 	emit_signal("son_heal_received", this, info);
@@ -1421,6 +1419,44 @@ void Entity::sdeal_heal_to(Ref<SpellHealInfo> info) {
 	sapply_passives_heal_deal(info);
 	info->get_receiver()->stake_heal(info);
 	son_heal_dealt(info);
+
+	VRPCOBJ(cdealt_heal_rpc, JSON::print(info->to_dict()), con_dealt_heal, info);
+
+	emit_signal("son_heal_dealt", this, info);
+}
+
+//Damage, Heal RPCs
+void Entity::cdamage_dealt_rpc(String data) {
+	Ref<SpellDamageInfo> info;
+	info.instance();
+	info->from_dict(data_as_dict(data));
+	info->resolve_references(this);
+
+	con_damage_dealt(info);
+}
+void Entity::cdealt_damage_rpc(String data) {
+	Ref<SpellDamageInfo> info;
+	info.instance();
+	info->from_dict(data_as_dict(data));
+	info->resolve_references(this);
+
+	con_dealt_damage(info);
+}
+void Entity::cheal_dealt_rpc(String data) {
+	Ref<SpellHealInfo> info;
+	info.instance();
+	info->from_dict(data_as_dict(data));
+	info->resolve_references(this);
+
+	con_heal_dealt(info);
+}
+void Entity::cdealt_heal_rpc(String data) {
+	Ref<SpellHealInfo> info;
+	info.instance();
+	info->from_dict(data_as_dict(data));
+	info->resolve_references(this);
+
+	con_dealt_heal(info);
 }
 
 //Interactions
@@ -2239,7 +2275,7 @@ void Entity::cadd_aura_rpc(String data) {
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
-	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
+	aura->resolve_references(this);
 
 	cadd_aura(aura);
 }
@@ -2249,7 +2285,7 @@ void Entity::cremove_aura_rpc(String data) {
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
-	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
+	aura->resolve_references(this);
 
 	cremove_aura(aura);
 }
@@ -2259,7 +2295,7 @@ void Entity::cremove_aura_exact_rpc(String data) {
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
-	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
+	aura->resolve_references(this);
 
 	cremove_aura_exact(aura);
 }
@@ -2269,7 +2305,7 @@ void Entity::cremove_aura_expired_rpc(String data) {
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
-	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
+	aura->resolve_references(this);
 
 	cremove_aura_expired(aura);
 }
@@ -2279,7 +2315,7 @@ void Entity::cremove_aura_dispelled_rpc(String data) {
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
-	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
+	aura->resolve_references(this);
 
 	cremove_aura_dispelled(aura);
 }
@@ -2289,7 +2325,7 @@ void Entity::caura_refreshed_rpc(String data) {
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
-	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
+	aura->resolve_references(this);
 
 	caura_refreshed(aura);
 }
@@ -2892,7 +2928,8 @@ void Entity::sinterrupt_cast() {
 void Entity::cstart_casting_rpc(String data) {
 	Ref<SpellCastInfo> info;
 	info.instance();
-	info->from_dict(this, data_as_dict(data));
+	info->from_dict(data_as_dict(data));
+	info->resolve_references(this);
 
 	cstart_casting(info);
 }
@@ -2941,7 +2978,8 @@ void Entity::sspell_cast_success(Ref<SpellCastInfo> info) {
 void Entity::cspell_cast_success_rpc(String data) {
 	Ref<SpellCastInfo> info;
 	info.instance();
-	info->from_dict(this, data_as_dict(data));
+	info->from_dict(data_as_dict(data));
+	info->resolve_references(this);
 
 	cspell_cast_success(info);
 }
@@ -4444,6 +4482,13 @@ Entity::Entity() {
 	SET_RPC_REMOTE("stake_heal");
 	SET_RPC_REMOTE("sdeal_heal_to");
 
+	//Damage, Heal RPCs
+
+	SET_RPC_REMOTE("cdamage_dealt_rpc");
+	SET_RPC_REMOTE("cdealt_damage_rpc");
+	SET_RPC_REMOTE("cheal_dealt_rpc");
+	SET_RPC_REMOTE("cdealt_heal_rpc");
+
 	//Interactions
 
 	SET_RPC_REMOTE("sinteract");
@@ -4633,8 +4678,10 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("son_heal_received", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	ADD_SIGNAL(MethodInfo("con_heal_received", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 
+	ADD_SIGNAL(MethodInfo("son_dealt_heal", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	ADD_SIGNAL(MethodInfo("con_dealt_heal", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 
+	ADD_SIGNAL(MethodInfo("son_heal_dealt", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	ADD_SIGNAL(MethodInfo("con_heal_dealt", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 
 	ADD_SIGNAL(MethodInfo("sentity_data_changed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData")));
@@ -4895,6 +4942,12 @@ void Entity::_bind_methods() {
 	//Heal Operations
 	ClassDB::bind_method(D_METHOD("stake_heal", "data"), &Entity::stake_heal);
 	ClassDB::bind_method(D_METHOD("sdeal_heal_to", "data"), &Entity::sdeal_heal_to);
+
+	//Damage, Heal RPCs
+	ClassDB::bind_method(D_METHOD("cdamage_dealt_rpc", "data"), &Entity::cdamage_dealt_rpc);
+	ClassDB::bind_method(D_METHOD("cdealt_damage_rpc", "data"), &Entity::cdealt_damage_rpc);
+	ClassDB::bind_method(D_METHOD("cheal_dealt_rpc", "data"), &Entity::cheal_dealt_rpc);
+	ClassDB::bind_method(D_METHOD("cdealt_heal_rpc", "data"), &Entity::cdealt_heal_rpc);
 
 	//Interactions
 	ClassDB::bind_method(D_METHOD("cans_interact"), &Entity::cans_interact);

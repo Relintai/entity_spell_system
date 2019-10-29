@@ -124,6 +124,25 @@ bool SpellCastInfo::update_cast_time(float delta) {
 	return false;
 }
 
+void SpellCastInfo::resolve_references(Node *owner) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
+	ERR_FAIL_COND(!owner->is_inside_tree());
+
+	_caster = Object::cast_to<Entity>(owner);
+
+	if (owner->is_inside_tree()) {
+		_target = Object::cast_to<Entity>(owner->get_node_or_null(_target_path));
+	}
+
+	if (EntityDataManager::get_instance() != NULL) {
+		Ref<Spell> spell = EntityDataManager::get_instance()->get_spell(_spell_id);
+
+		if (spell.is_valid()) {
+			_spell = spell;
+		}
+	}
+}
+
 Dictionary SpellCastInfo::to_dict() {
 	Dictionary dict;
 
@@ -144,14 +163,9 @@ Dictionary SpellCastInfo::to_dict() {
 
 	return dict;
 }
-void SpellCastInfo::from_dict(Node *owner, const Dictionary &dict) {
-	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
+void SpellCastInfo::from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
-	if (owner->is_inside_tree()) {
-		_caster = Object::cast_to<Entity>(owner->get_node_or_null(dict.get("caster", "")));
-		_target = Object::cast_to<Entity>(owner->get_node_or_null(dict.get("target", "")));
-	}
 
 	_has_cast_time = dict.get("has_cast_time", true);
 	_cast_time = dict.get("cast_time", 0);
@@ -160,15 +174,7 @@ void SpellCastInfo::from_dict(Node *owner, const Dictionary &dict) {
 	_num_pushbacks = dict.get("num_pushbacks", 0);
 	_is_casting = dict.get("is_casting", true);
 
-	int spell_id = dict.get("spell_id", 0);
-
-	if (EntityDataManager::get_instance() != NULL) {
-		Ref<Spell> spell = EntityDataManager::get_instance()->get_spell(spell_id);
-
-		if (spell.is_valid()) {
-			_spell = spell;
-		}
-	}
+	_spell_id = dict.get("spell_id", 0);
 }
 
 SpellCastInfo::SpellCastInfo() {
@@ -183,6 +189,8 @@ SpellCastInfo::SpellCastInfo() {
 	_num_pushbacks = 0;
 
 	_is_casting = false;
+
+	_spell_id = 0;
 }
 
 SpellCastInfo::~SpellCastInfo() {
@@ -230,6 +238,6 @@ void SpellCastInfo::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("update_cast_time", "delta"), &SpellCastInfo::update_cast_time);
 
-	ClassDB::bind_method(D_METHOD("from_dict", "owner", "dict"), &SpellCastInfo::from_dict);
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &SpellCastInfo::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &SpellCastInfo::to_dict);
 }

@@ -13,7 +13,7 @@ class SpellDamageInfo : public Reference {
 	GDCLASS(SpellDamageInfo, Reference);
 
 public:
-	enum DamageSource {
+	enum DamageSourceType {
 		DAMAGE_SOURCE_UNKNOWN,
 		DAMAGE_SOURCE_SPELL,
 		DAMAGE_SOURCE_AURA,
@@ -23,9 +23,9 @@ protected:
 	static void _bind_methods();
 
 public:
-    bool get_immune();
+	bool get_immune();
 	void set_immune(bool value);
-    
+
 	int get_damage();
 	void set_damage(int value);
 
@@ -58,28 +58,37 @@ public:
 	int get_damage_source_id();
 	void set_damage_source_id(int value);
 
-	DamageSource get_damage_source_type();
-	void set_damage_source_type(DamageSource value);
+	DamageSourceType get_damage_source_type();
+	void set_damage_source_type(DamageSourceType value);
 
 	void reset();
+
+	void resolve_references(Node *owner);
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
 
 	SpellDamageInfo();
 	~SpellDamageInfo();
 
 private:
-    bool _immune;
+	bool _immune;
 	int _damage;
 	int _original_damage;
 	int _amount_absorbed;
 	bool _crit;
 	SpellEnums::SpellType _spell_type;
-	Entity *_dealer;
-	Entity *_receiver;
-	DamageSource _damage_source_type;
+
+	DamageSourceType _damage_source_type;
 	Ref<Reference> _damage_source;
 	int _damage_source_id;
+
+	Entity *_dealer;
+	Entity *_receiver;
+
+	NodePath _dealer_path;
+	NodePath _receiver_path;
 };
 
-VARIANT_ENUM_CAST(SpellDamageInfo::DamageSource);
+VARIANT_ENUM_CAST(SpellDamageInfo::DamageSourceType);
 
 #endif

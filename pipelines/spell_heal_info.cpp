@@ -5,10 +5,10 @@
 #include "../entities/entity.h"
 
 bool SpellHealInfo::get_immune() {
-	return _crit;
+	return _immune;
 }
 void SpellHealInfo::set_immune(bool value) {
-	_crit = value;
+	_immune = value;
 }
 
 int SpellHealInfo::get_heal() {
@@ -89,23 +89,29 @@ void SpellHealInfo::set_heal_source(Ref<Reference> value) {
 }
 
 Ref<Spell> SpellHealInfo::get_spell_heal_source() {
-	//cast
-	return NULL;
+	return Ref<Spell>(_heal_source);
 }
 
 void SpellHealInfo::set_spell_heal_source(Ref<Spell> value) {
 	_heal_source_type = HEAL_SOURCE_SPELL;
 	_heal_source = value;
+
+	ERR_FAIL_COND(!value.is_valid());
+
+	_heal_source_id = value->get_id();
 }
 
 Ref<Aura> SpellHealInfo::get_aura_heal_source() {
-	//cast
-	return NULL;
+	return Ref<Aura>(_heal_source);
 }
 
 void SpellHealInfo::set_aura_heal_source(Ref<Aura> value) {
 	_heal_source_type = HEAL_SOURCE_AURA;
 	_heal_source = value;
+
+	ERR_FAIL_COND(!value.is_valid());
+
+	_heal_source_id = value->get_id();
 }
 
 int SpellHealInfo::get_heal_source_id() {
@@ -116,16 +122,69 @@ void SpellHealInfo::set_heal_source_id(int value) {
 	_heal_source_id = value;
 }
 
-SpellHealInfo::HealSource SpellHealInfo::get_heal_source_type() {
+SpellHealInfo::HealSourceType SpellHealInfo::get_heal_source_type() {
 	return _heal_source_type;
 }
 
-void SpellHealInfo::set_heal_source_type(HealSource value) {
+void SpellHealInfo::set_heal_source_type(HealSourceType value) {
 	_heal_source_type = value;
 }
 
 void SpellHealInfo::reset() {
 	_original_heal = -1;
+}
+
+void SpellHealInfo::resolve_references(Node *owner) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
+	ERR_FAIL_COND(!owner->is_inside_tree());
+
+	_dealer = Object::cast_to<Entity>(owner->get_node_or_null(_dealer_path));
+	_receiver = Object::cast_to<Entity>(owner->get_node_or_null(_receiver_path));
+
+	if (EntityDataManager::get_instance() != NULL) {
+		if (_heal_source_type == HEAL_SOURCE_SPELL) {
+			_heal_source = EntityDataManager::get_instance()->get_spell(_heal_source_id);
+		} else if (_heal_source_type == HEAL_SOURCE_AURA) {
+			_heal_source = EntityDataManager::get_instance()->get_aura(_heal_source_id);
+		}
+	}
+}
+
+Dictionary SpellHealInfo::to_dict() {
+	Dictionary dict;
+
+	if (ObjectDB::instance_validate(_dealer))
+		dict["dealer_path"] = _dealer->get_path();
+
+	if (ObjectDB::instance_validate(_receiver))
+		dict["receiver_path"] = _receiver->get_path();
+
+	dict["immune"] = _immune;
+	dict["heal"] = _heal;
+
+	dict["original_heal"] = _original_heal;
+	dict["amount_absorbed"] = _amount_absorbed;
+	dict["crit"] = _crit;
+
+	dict["spell_type"] = _spell_type;
+	dict["heal_source_type"] = _heal_source_type;
+	dict["heal_source_id"] = _heal_source_id;
+
+	return dict;
+}
+void SpellHealInfo::from_dict(const Dictionary &dict) {
+	ERR_FAIL_COND(dict.empty());
+
+	_immune = dict.get("immune", true);
+	_heal = dict.get("heal", 0);
+
+	_original_heal = dict.get("original_heal", 0);
+	_amount_absorbed = dict.get("amount_absorbed", 0);
+	_crit = dict.get("crit", false);
+
+	_spell_type = static_cast<SpellEnums::SpellType>(static_cast<int>(dict.get("spell_type", SpellEnums::SPELL_TYPE_NONE)));
+	_heal_source_type = static_cast<HealSourceType>(static_cast<int>(dict.get("heal_source_type", HEAL_SOURCE_UNKNOWN)));
+	_heal_source_id = dict.get("heal_source_id", 0);
 }
 
 SpellHealInfo::SpellHealInfo() {

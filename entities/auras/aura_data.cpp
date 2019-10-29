@@ -124,10 +124,10 @@ void AuraData::set_spell_scale(float value) {
 }
 
 Ref<Aura> AuraData::get_aura() {
-	if (_aura == NULL) {
+	//if (_aura == NULL) {
 		//TODO fix!
 		//_aura = Auras::getInstance()->GetData(get_aura_id());
-	}
+	//}
 
 	return _aura;
 }
@@ -228,6 +228,16 @@ void AuraData::set_slow(float value) {
 	_slow = value;
 }
 
+void AuraData::resolve_references(Node *owner) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
+	ERR_FAIL_COND(!owner->is_inside_tree());
+
+	_owner = Object::cast_to<Entity>(owner);
+
+	if (owner->is_inside_tree()) {
+		_caster = Object::cast_to<Entity>(owner->get_node_or_null(_caster_path));
+	}
+}
 Dictionary AuraData::to_dict() {
 	return call("_to_dict");
 }

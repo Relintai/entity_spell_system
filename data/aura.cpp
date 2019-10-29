@@ -912,7 +912,7 @@ void Aura::setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
 }
 
 void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
-	ERR_FAIL_COND(info->get_caster() == NULL);
+	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_caster()));
 
 	data->set_aura(Ref<Aura>(this));
 	data->set_aura_id(get_id());
@@ -975,7 +975,7 @@ void Aura::_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo>
 }
 
 void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> data) {
-	ERR_FAIL_COND(data->get_dealer() == NULL);
+	ERR_FAIL_COND(!ObjectDB::instance_validate(data->get_dealer()));
 
 	data->set_damage(aura_data->get_damage());
 
@@ -1035,8 +1035,6 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 
 	Ref<AuraData> ad(memnew(AuraData()));
 	setup_aura_data(ad, info);
-
-	
 }
 
 void Aura::_sdeapply(Ref<AuraData> info) {
@@ -1089,7 +1087,7 @@ void Aura::_supdate(Ref<AuraData> aura, float delta) {
 		if (aura->get_damage() != 0) {
 			Ref<SpellDamageInfo> dpd = Ref<SpellDamageInfo>(memnew(SpellDamageInfo()));
 
-			dpd->set_aura_damage_source(aura);
+			dpd->set_aura_damage_source(Ref<Aura>(this));
 			dpd->set_dealer(aura->get_caster());
 			dpd->set_receiver(aura->get_owner());
 
