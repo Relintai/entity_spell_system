@@ -88,7 +88,9 @@ void AuraData::set_caster(Entity *value) {
 		return;
 	}
 
-	_caster_path = _caster->get_path();
+	if (_caster->is_inside_tree()) {
+		_caster_path = _caster->get_path();
+	}
 }
 
 void AuraData::set_caster_bind(Node *value) {

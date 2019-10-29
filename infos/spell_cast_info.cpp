@@ -148,8 +148,10 @@ void SpellCastInfo::from_dict(Node *owner, const Dictionary &dict) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
 	ERR_FAIL_COND(dict.empty());
 
-	_caster = Object::cast_to<Entity>(owner->get_node_or_null(dict.get("caster", "")));
-	_target = Object::cast_to<Entity>(owner->get_node_or_null(dict.get("target", "")));
+	if (owner->is_inside_tree()) {
+		_caster = Object::cast_to<Entity>(owner->get_node_or_null(dict.get("caster", "")));
+		_target = Object::cast_to<Entity>(owner->get_node_or_null(dict.get("target", "")));
+	}
 
 	_has_cast_time = dict.get("has_cast_time", true);
 	_cast_time = dict.get("cast_time", 0);
