@@ -82,10 +82,18 @@ Entity *AuraData::get_caster() {
 
 void AuraData::set_caster(Entity *value) {
 	_caster = value;
+
+	if (!value) {
+		_caster_path = NodePath();
+		return;
+	}
+
+	_caster_path = _caster->get_path();
 }
 
 void AuraData::set_caster_bind(Node *value) {
 	if (!value) {
+		set_caster(NULL);
 		return;
 	}
 
@@ -95,15 +103,14 @@ void AuraData::set_caster_bind(Node *value) {
 		return;
 	}
 
-	_caster = e;
+	set_caster(e);
 }
 
-int AuraData::get_caster_guid() {
-	return _caster_guid;
+NodePath AuraData::get_caster_path() {
+	return _caster_path;
 }
-
-void AuraData::set_caster_guid(int value) {
-	_caster_guid = value;
+void AuraData::set_caster_path(NodePath value) {
+	_caster_path = value;
 }
 
 float AuraData::get_spell_scale() {
@@ -230,7 +237,7 @@ Dictionary AuraData::_to_dict() {
 
 	dict["aura_id"] = _aura_id;
 	dict["remaining_time"] = _remaining_time;
-	dict["caster_name"] = _caster->gets_entity_name();
+	dict["caster_path"] = _caster_path;
 
 	dict["spell_scale"] = _spell_scale;
 	dict["aura_group"] = _aura_group;
@@ -253,7 +260,7 @@ void AuraData::_from_dict(const Dictionary &dict) {
 
 	_aura_id = dict.get("aura_id", 0);
 	_remaining_time = dict.get("remaining_time", 0);
-	String caster_name = dict.get("caster_name", "");
+	_caster_path = dict.get("caster_path", NodePath());
 
 	_spell_scale = dict.get("spell_scale", 0);
 
@@ -306,7 +313,6 @@ AuraData::AuraData() {
 	_aura_id = 0;
 	_remaining_time = 0;
 	_caster = NULL;
-	_caster_guid = 0;
 	_spell_scale = 0;
 	_aura_group = 0;
 
@@ -342,9 +348,9 @@ void AuraData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_caster", "value"), &AuraData::set_caster_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_caster", "get_caster");
 
-	ClassDB::bind_method(D_METHOD("get_caster_guid"), &AuraData::get_caster_guid);
-	ClassDB::bind_method(D_METHOD("set_caster_guid", "value"), &AuraData::set_caster_guid);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "caster_guid"), "set_caster_guid", "get_caster_guid");
+	ClassDB::bind_method(D_METHOD("get_caster_path"), &AuraData::get_caster_path);
+	ClassDB::bind_method(D_METHOD("set_caster_path", "value"), &AuraData::set_caster_path);
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "caster_path"), "set_caster_path", "get_caster_path");
 
 	ClassDB::bind_method(D_METHOD("get_aura"), &AuraData::get_aura);
 	ClassDB::bind_method(D_METHOD("set_aura", "value"), &AuraData::set_aura);
@@ -403,7 +409,7 @@ void AuraData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("to_send_array"), &AuraData::to_send_array);
 	ClassDB::bind_method(D_METHOD("from_send_array", "arr"), &AuraData::from_send_array);
-	
+
 	ClassDB::bind_method(D_METHOD("_to_send_array"), &AuraData::_to_send_array);
 	ClassDB::bind_method(D_METHOD("_from_send_array", "arr"), &AuraData::_from_send_array);
 }

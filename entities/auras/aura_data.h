@@ -32,8 +32,8 @@ public:
 	void set_caster(Entity *value);
 	void set_caster_bind(Node *value);
 
-	int get_caster_guid();
-	void set_caster_guid(int value);
+	NodePath get_caster_path();
+	void set_caster_path(NodePath value);
 
 	float get_spell_scale();
 	void set_spell_scale(float value);
@@ -90,7 +90,7 @@ private:
 	int _aura_id;
 	float _remaining_time;
 	Entity *_caster;
-	int _caster_guid;
+	NodePath _caster_path;
 	float _spell_scale;
 	int _aura_group;
 	Ref<Aura> _aura;

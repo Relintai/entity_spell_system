@@ -2238,6 +2238,8 @@ void Entity::cadd_aura_rpc(String data) {
 	Ref<AuraData> aura;
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
+	aura->set_owner(this);
+	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
 
 	cadd_aura(aura);
 }
@@ -2246,6 +2248,8 @@ void Entity::cremove_aura_rpc(String data) {
 	Ref<AuraData> aura;
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
+	aura->set_owner(this);
+	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
 
 	cremove_aura(aura);
 }
@@ -2254,6 +2258,8 @@ void Entity::cremove_aura_exact_rpc(String data) {
 	Ref<AuraData> aura;
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
+	aura->set_owner(this);
+	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
 
 	cremove_aura_exact(aura);
 }
@@ -2262,6 +2268,8 @@ void Entity::cremove_aura_expired_rpc(String data) {
 	Ref<AuraData> aura;
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
+	aura->set_owner(this);
+	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
 
 	cremove_aura_expired(aura);
 }
@@ -2270,6 +2278,8 @@ void Entity::cremove_aura_dispelled_rpc(String data) {
 	Ref<AuraData> aura;
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
+	aura->set_owner(this);
+	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
 
 	cremove_aura_dispelled(aura);
 }
@@ -2278,6 +2288,8 @@ void Entity::caura_refreshed_rpc(String data) {
 	Ref<AuraData> aura;
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
+	aura->set_owner(this);
+	//aura->set_caster_bind(get_node_or_null(aura->get_caster_path()));
 
 	caura_refreshed(aura);
 }
@@ -4020,22 +4032,12 @@ void Entity::update(float delta) {
 		Ref<Cooldown> cd = _c_cooldowns.get(i);
 
 		cd->update(delta);
-
-		// 		if (cd->update(delta)) {
-		// 			removec_cooldown(cd->get_spell_id());
-		// 			--i;
-		// 		}
 	}
 
 	for (int i = 0; i < _c_category_cooldowns.size(); ++i) {
 		Ref<CategoryCooldown> cd = _c_category_cooldowns.get(i);
 
 		cd->update(delta);
-
-		// 		if (cd->update(delta)) {
-		// 			removec_category_cooldown(cd->get_category_id());
-		// 			--i;
-		// 		}
 	}
 
 	for (int i = 0; i < _s_cooldowns.size(); ++i) {
@@ -4066,9 +4068,17 @@ void Entity::update(float delta) {
 		}
 	}
 
-	if (_s_spell_cast_info.is_valid() && _s_spell_cast_info->get_is_casting()) {
-		if (_s_spell_cast_info->update_cast_time(delta)) {
-			sfinish_cast();
+	if (ISSERVER()) {
+		if (_s_spell_cast_info.is_valid() && _s_spell_cast_info->get_is_casting()) {
+			if (_s_spell_cast_info->update_cast_time(delta)) {
+				sfinish_cast();
+			}
+		}
+	}
+
+	if (ISCLIENT()) {
+		if (_c_spell_cast_info.is_valid() && _c_spell_cast_info->get_is_casting()) {
+			_c_spell_cast_info->update_cast_time(delta);
 		}
 	}
 
@@ -4099,35 +4109,49 @@ Entity *Entity::gets_sees(int index) {
 
 	return _s_sees.get(index);
 }
-
 void Entity::removes_sees_index(int index) {
+	Entity *e = _s_sees.get(index);
+
+	if (unlikely(!ObjectDB::instance_validate(e))) {
+		_s_sees.remove(index);
+		return;
+	}
+
+	e->removes_seen_by(this);
+
 	_s_sees.remove(index);
 }
-
 void Entity::removes_sees(Entity *entity) {
+	if (unlikely(!ObjectDB::instance_validate(entity))) {
+		_s_sees.erase(entity);
+		return;
+	}
+
+	entity->removes_seen_by(this);
+
 	_s_sees.erase(entity);
 }
 void Entity::removes_sees_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
-	if (!e)
-		return;
+	ERR_FAIL_COND(!e);
 
 	removes_sees(e);
 }
-
 void Entity::adds_sees(Entity *entity) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	entity->adds_seen_by(this);
+
 	_s_sees.push_back(entity);
 }
 void Entity::adds_sees_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
-	if (!e)
-		return;
+	ERR_FAIL_COND(!e);
 
 	adds_sees(e);
 }
-
 int Entity::gets_sees_count() {
 	return _s_sees.size();
 }
@@ -4137,31 +4161,28 @@ Entity *Entity::gets_seen_by(int index) {
 
 	return _s_seen_by.get(index);
 }
-
 void Entity::removes_seen_by_index(int index) {
 	_s_seen_by.remove(index);
 }
-
 void Entity::removes_seen_by(Entity *entity) {
 	_s_seen_by.erase(entity);
 }
 void Entity::removes_seen_by_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
-	if (!e)
-		return;
+	ERR_FAIL_COND(!e);
 
 	removes_seen_by(e);
 }
-
 void Entity::adds_seen_by(Entity *entity) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
 	_s_seen_by.push_back(entity);
 }
 void Entity::adds_seen_by_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
-	if (!e)
-		return;
+	ERR_FAIL_COND(!e);
 
 	adds_seen_by(e);
 }
@@ -4192,9 +4213,7 @@ void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
 
 		int netm = e->get_network_master();
 
-		print_error(String::num(netm));
-
-		if (netm != 0)
+		if (netm != 1)
 			rpcp(netm, false, p_method, argptr, argc);
 	}
 
@@ -4230,7 +4249,7 @@ Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::Call
 
 		int netm = e->get_network_master();
 
-		if (netm != 0)
+		if (netm != 1)
 			rpcp(netm, false, method, &p_args[1], p_argcount - 1);
 	}
 
@@ -4584,7 +4603,13 @@ void Entity::_notification(int p_what) {
 			son_physics_process();
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
+			for (int i = 0; i < _s_seen_by.size(); ++i) {
+				Entity *e = _s_seen_by.get(i);
 
+				if (ObjectDB::instance_validate(e)) {
+					e->removes_sees(this);
+				}
+			}
 		} break;
 	}
 }
