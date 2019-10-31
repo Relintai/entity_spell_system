@@ -18,6 +18,8 @@ public:
 	Ref<AIAction> get_action(const EntityEnums::AIStates index);
 	void set_action(const EntityEnums::AIStates index, Ref<AIAction> action);
 
+	void _on_set_owner();
+
 	AIFSMAction();
 	~AIFSMAction();
 

@@ -16,6 +16,8 @@ public:
 	Vector<Variant> get_ai_actions();
 	void set_ai_actions(const Vector<Variant> &auras);
 
+	void _on_set_owner();
+
 	AIActionContainer();
 	~AIActionContainer();
 

@@ -34,6 +34,16 @@ void AIActionContainer::set_ai_actions(const Vector<Variant> &ai_actions) {
 	}
 }
 
+void AIActionContainer::_on_set_owner() {
+	for (int i = 0; i < _ai_actions.size(); ++i) {
+		Ref<AIAction> action = _ai_actions.get(i);
+
+		if (action.is_valid()) {
+			action->set_owner(get_owner());
+		}
+	}
+}
+
 AIActionContainer::AIActionContainer() {
 }
 
@@ -51,4 +61,6 @@ void AIActionContainer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_ai_actions"), &AIActionContainer::get_ai_actions);
 	ClassDB::bind_method(D_METHOD("set_ai_actions", "auras"), &AIActionContainer::set_ai_actions);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ai_actions", PROPERTY_HINT_NONE, "17/17:AIAction", PROPERTY_USAGE_DEFAULT, "AIAction"), "set_ai_actions", "get_ai_actions");
+
+	ClassDB::bind_method(D_METHOD("_on_set_owner"), &AIActionContainer::_on_set_owner);
 }

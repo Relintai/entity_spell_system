@@ -21,6 +21,16 @@ void AIFSMAction::set_action(const EntityEnums::AIStates index, Ref<AIAction> ac
 	_states[index] = action;
 }
 
+void AIFSMAction::_on_set_owner() {
+	for (int i = 0; i < EntityEnums::AI_STATE_MAX; ++i) {
+		Ref<AIAction> action = _states[i];
+
+		if (action.is_valid()) {
+			action->set_owner(get_owner());
+		}
+	}
+}
+
 AIFSMAction::AIFSMAction() {
 	_state = EntityEnums::AI_STATE_OFF;
 	_force_state = EntityEnums::AI_STATE_OFF;
@@ -53,4 +63,6 @@ void AIFSMAction::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "action_pet_follow", PROPERTY_HINT_RESOURCE_TYPE, "AIAction"), "set_action", "get_action", EntityEnums::AI_STATE_PET_FOLLOW);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "action_pet_stop", PROPERTY_HINT_RESOURCE_TYPE, "AIAction"), "set_action", "get_action", EntityEnums::AI_STATE_PET_STOP);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "action_pet_attack", PROPERTY_HINT_RESOURCE_TYPE, "AIAction"), "set_action", "get_action", EntityEnums::AI_STATE_PET_ATTACK);
+
+	ClassDB::bind_method(D_METHOD("_on_set_owner"), &AIFSMAction::_on_set_owner);
 }

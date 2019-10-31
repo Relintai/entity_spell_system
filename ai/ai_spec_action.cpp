@@ -21,6 +21,12 @@ void AISpecAction::set_action(Ref<AIAction> action) {
 	_action = action;
 }
 
+void AISpecAction::_on_set_owner() {
+	if (_action.is_valid()) {
+		_action->set_owner(get_owner());
+	}
+}
+
 AISpecAction::AISpecAction() {
 	_variance = 0;
 }
@@ -42,4 +48,6 @@ void AISpecAction::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_action"), &AISpecAction::get_action);
 	ClassDB::bind_method(D_METHOD("set_action", "value"), &AISpecAction::set_action);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "action", PROPERTY_HINT_RESOURCE_TYPE, "AIAction"), "set_action", "get_action");
+
+	ClassDB::bind_method(D_METHOD("_on_set_owner"), &AISpecAction::_on_set_owner);
 }

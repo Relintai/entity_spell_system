@@ -18,6 +18,8 @@ public:
 	Ref<AIAction> get_action();
 	void set_action(Ref<AIAction> action);
 
+	void _on_set_owner();
+
 	AISpecAction();
 	~AISpecAction();
 
