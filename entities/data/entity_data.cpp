@@ -108,6 +108,20 @@ void EntityData::set_equipment_data(Ref<EquipmentData> data) {
 	_equipment_data = data;
 }
 
+Ref<AIFSMAction> EntityData::get_fsm() const {
+	return _fsm;
+}
+void EntityData::set_fsm(const Ref<AIFSMAction> fsm) {
+	_fsm = fsm;
+}
+
+Ref<AIFormation> EntityData::get_formation() const {
+	return _formation;
+}
+void EntityData::set_formation(const Ref<AIFormation> data) {
+	_formation = data;
+}
+
 Ref<LootDataBase> EntityData::get_loot_db() const {
 	return _lootdb;
 }
@@ -1197,6 +1211,15 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_equipment_data"), &EntityData::get_equipment_data);
 	ClassDB::bind_method(D_METHOD("set_equipment_data", "value"), &EntityData::set_equipment_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "equipment_data", PROPERTY_HINT_RESOURCE_TYPE, "EquipmentData"), "set_equipment_data", "get_equipment_data");
+
+	//AI
+	ClassDB::bind_method(D_METHOD("get_fsm"), &EntityData::get_fsm);
+	ClassDB::bind_method(D_METHOD("set_fsm", "value"), &EntityData::set_fsm);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fsm", PROPERTY_HINT_RESOURCE_TYPE, "AIFSMAction"), "set_fsm", "get_fsm");
+
+	ClassDB::bind_method(D_METHOD("get_formation"), &EntityData::get_formation);
+	ClassDB::bind_method(D_METHOD("set_formation", "value"), &EntityData::set_formation);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "formation", PROPERTY_HINT_RESOURCE_TYPE, "AIFormation"), "set_formation", "get_formation");
 
 	// Loot DB
 	ClassDB::bind_method(D_METHOD("get_loot_db"), &EntityData::get_loot_db);

@@ -102,6 +102,10 @@
 #include "ai/ai_spell_action.h"
 #include "ai/ai_action_container.h"
 #include "ai/ai_spell_action_container.h"
+#include "ai/ai_fsm_action.h"
+#include "ai/ai_spec_action.h"
+
+#include "formations/ai_formation.h"
 
 #include "profile_manager/input/input_profile_modifier.h"
 #include "profile_manager/input/input_profile_modifier_entry.h"
@@ -235,6 +239,10 @@ void register_entity_spell_system_types() {
     ClassDB::register_class<AISpellAction>();
     ClassDB::register_class<AIActionContainer>();
     ClassDB::register_class<AISpellActionContainer>();
+    ClassDB::register_class<AIFSMAction>();
+    ClassDB::register_class<AISpecAction>();
+
+    ClassDB::register_class<AIFormation>();
 
 	//meshes
 	ClassDB::register_class<MeshDataResource>();

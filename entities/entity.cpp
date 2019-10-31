@@ -339,6 +339,23 @@ void Entity::_setup() {
 		set_process(_s_entity_data.is_valid());
 }
 
+// AI
+
+int Entity::get_formation_index() {
+	return _formation_index;
+}
+void Entity::set_formation_index(int value) {
+	_formation_index = value;
+}
+
+Ref<AIFSMAction> Entity::get_ai() {
+	return _ai;
+}
+void Entity::set_ai(Ref<AIFSMAction> value) {
+	_ai = value;
+}
+
+
 ////    Serialization    ////
 
 bool Entity::is_deserialized() {
@@ -804,11 +821,11 @@ void Entity::initialize(Ref<EntityCreateInfo> info) {
 //////     Stat System      //////
 
 bool Entity::gets_is_dead() {
-	return sIsDead;
+	return _s_is_dead;
 }
 
 bool Entity::getc_is_dead() {
-	return sIsDead;
+	return _c_is_dead;
 }
 
 bool Entity::getc_has_global_cooldown() {
@@ -4343,11 +4360,11 @@ Entity::Entity() {
 	_s_state = PlayerStates::STATE_NORMAL;
 	_c_state = PlayerStates::STATE_NORMAL;
 
-	sIsDead = false;
-	cIsDead = false;
-
 	_s_gcd = 0;
 	_c_gcd = 0;
+
+	_s_is_dead = 0;
+	_c_is_dead = 0;
 
 	_s_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
 	_c_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
@@ -4358,9 +4375,6 @@ Entity::Entity() {
 
 	_s_state = 0;
 	_c_state = 0;
-
-	sRezTimer = 0;
-	cRezTimer = 0;
 
 	_s_active_category_cooldowns = 0;
 	_c_active_category_cooldowns = 0;
@@ -4392,6 +4406,8 @@ Entity::Entity() {
 
 		_stats[i] = s;
 	}
+
+	_formation_index = 0;
 
 	/*
 	get_stat_enum(Stat::STAT_ID_HEALTH)->set_base(10000);
@@ -4625,6 +4641,8 @@ Entity::~Entity() {
 
 	_s_sees.clear();
 	_s_seen_by.clear();
+
+	_ai.unref();
 }
 
 void Entity::_notification(int p_what) {
@@ -5440,6 +5458,16 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "actionbar_locked"), "set_actionbar_locked", "get_actionbar_locked");
 
 	ClassDB::bind_method(D_METHOD("get_action_bar_profile"), &Entity::get_action_bar_profile);
+
+	// AI
+
+	ClassDB::bind_method(D_METHOD("get_formation_index"), &Entity::get_formation_index);
+	ClassDB::bind_method(D_METHOD("set_formation_index", "value"), &Entity::set_formation_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "formation_index"), "set_formation_index", "get_formation_index");
+
+	ClassDB::bind_method(D_METHOD("get_ai"), &Entity::get_ai);
+	ClassDB::bind_method(D_METHOD("set_ai", "value"), &Entity::set_ai);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ai", PROPERTY_HINT_RESOURCE_TYPE, "AIFSMAction"), "set_ai", "get_ai");
 
 	//Serialization
 	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));

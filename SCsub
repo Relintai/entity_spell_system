@@ -111,7 +111,10 @@ module_env.add_source_files(env.modules_sources,"ai/ai_action.cpp")
 module_env.add_source_files(env.modules_sources,"ai/ai_spell_action.cpp")
 module_env.add_source_files(env.modules_sources,"ai/ai_action_container.cpp")
 module_env.add_source_files(env.modules_sources,"ai/ai_spell_action_container.cpp")
+module_env.add_source_files(env.modules_sources,"ai/ai_fsm_action.cpp")
+module_env.add_source_files(env.modules_sources,"ai/ai_spec_action.cpp")
 
+module_env.add_source_files(env.modules_sources,"formations/ai_formation.cpp")
 
 env.add_source_files(env.modules_sources,"profile_manager/input/input_profile_modifier.cpp")
 env.add_source_files(env.modules_sources,"profile_manager/input/input_profile_modifier_entry.cpp")

@@ -25,6 +25,9 @@
 
 #include "../../skeleton/entity_species_data.h"
 
+#include "../../ai/ai_fsm_action.h"
+#include "../../formations/ai_formation.h"
+
 class Aura;
 class Spell;
 class Entity;
@@ -81,6 +84,12 @@ public:
 	Ref<EquipmentData> get_equipment_data();
 	void set_equipment_data(Ref<EquipmentData> data);
 
+	Ref<AIFSMAction> get_fsm() const;
+	void set_fsm(const Ref<AIFSMAction> fsm);
+
+	Ref<AIFormation> get_formation() const;
+	void set_formation(const Ref<AIFormation> data);
+
 	Ref<LootDataBase> get_loot_db() const;
 	void set_loot_db(const Ref<LootDataBase> data);
 
@@ -98,19 +107,6 @@ public:
 
 	Vector<Variant> get_craft_recipes();
 	void set_craft_recipes(const Vector<Variant> &recipe);
-
-	/*
-	Vector<int> get_mob_party_ids();
-	void set_mob_party_ids(Vector<int> ids);
-
-	Vector<int> get_mob_dislike_ids();
-	void set_mob_dislike_ids(Vector<int> ids);
-	*/
-	//MobSpellData *getMobSpellData();
-	//void setMobSpellData(MobSpellData *value);
-
-	//int get_inspector_max_spells();
-	//void set_inspector_max_spells(int value);
 
 	String generate_name();
 
@@ -261,15 +257,13 @@ private:
 	Ref<EntitySpeciesData> _entity_species_data;
 	Ref<EquipmentData> _equipment_data;
 
+	Ref<AIFSMAction> _fsm;
+	Ref<AIFormation> _formation;
+
 	Ref<LootDataBase> _lootdb;
 	Ref<VendorItemData> _vendor_item_data;
 	Ref<ItemContainerData> _item_container_data;
 	Vector<Ref<CraftRecipe> > _craft_recipes;
-
-	//Vector<int> _mob_party_ids;
-	//Vector<int> _mob_dislike_ids;
-
-	//MobSpellData *_mob_spell_data;
 };
 
 #endif

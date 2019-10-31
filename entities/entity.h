@@ -36,6 +36,8 @@
 
 #include "../profile_manager/actionbar/action_bar_profile.h"
 
+#include "../ai/ai_fsm_action.h"
+
 class EntityData;
 class AuraData;
 class Spell;
@@ -725,6 +727,15 @@ public:
 	void setup();
 	virtual void _setup();
 
+	////    AI    ////
+
+	int get_formation_index();
+	void set_formation_index(int value);
+
+	Ref<AIFSMAction> get_ai();
+	void set_ai(Ref<AIFSMAction> value);
+
+
 	////    Serialization    ////
 
 	bool is_deserialized();
@@ -735,7 +746,7 @@ public:
 	virtual Dictionary _to_dict();
 	virtual void _from_dict(const Dictionary &dict);
 
-	//Networking
+	// Networking
 	Entity *gets_sees(int index);
 	void removes_sees_index(int index);
 	void removes_sees(Entity *entity);
@@ -808,6 +819,9 @@ private:
 	EntityEnums::EntityInteractionType _s_interaction_type;
 	EntityEnums::EntityInteractionType _c_interaction_type;
 
+	int _s_is_dead;
+	int _c_is_dead;
+
 	////     Stats    ////
 
 	Ref<Stat> _stats[Stat::STAT_ID_TOTAL_STATS];
@@ -821,16 +835,6 @@ private:
 
 	Vector<Ref<EntityResource> > _s_resources;
 	Vector<Ref<EntityResource> > _c_resources;
-
-	//old
-	bool sIsDead;
-	bool cIsDead;
-	bool localClient;
-
-	bool s;
-	bool c;
-	float sRezTimer;
-	float cRezTimer;
 
 	////    GCD    ////
 
@@ -932,7 +936,13 @@ private:
 	Ref<Bag> _s_target_bag;
 	Ref<Bag> _c_target_bag;
 
+	//AI
+
+	int _formation_index;
+	Ref<AIFSMAction> _ai;
+
 	//Networking
+
 	Vector<Entity *> _s_sees;
 	Vector<Entity *> _s_seen_by;
 };
