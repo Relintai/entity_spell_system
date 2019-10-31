@@ -348,11 +348,11 @@ void Entity::set_formation_index(int value) {
 	_formation_index = value;
 }
 
-Ref<AIFSMAction> Entity::get_ai() {
-	return _ai;
+Ref<AIFSMAction> Entity::gets_ai() {
+	return _s_ai;
 }
-void Entity::set_ai(Ref<AIFSMAction> value) {
-	_ai = value;
+void Entity::sets_ai(Ref<AIFSMAction> value) {
+	_s_ai = value;
 }
 
 
@@ -4642,7 +4642,7 @@ Entity::~Entity() {
 	_s_sees.clear();
 	_s_seen_by.clear();
 
-	_ai.unref();
+	_s_ai.unref();
 }
 
 void Entity::_notification(int p_what) {
@@ -5465,9 +5465,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_formation_index", "value"), &Entity::set_formation_index);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "formation_index"), "set_formation_index", "get_formation_index");
 
-	ClassDB::bind_method(D_METHOD("get_ai"), &Entity::get_ai);
-	ClassDB::bind_method(D_METHOD("set_ai", "value"), &Entity::set_ai);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ai", PROPERTY_HINT_RESOURCE_TYPE, "AIFSMAction"), "set_ai", "get_ai");
+	ClassDB::bind_method(D_METHOD("gets_ai"), &Entity::gets_ai);
+	ClassDB::bind_method(D_METHOD("sets_ai", "value"), &Entity::sets_ai);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sai", PROPERTY_HINT_RESOURCE_TYPE, "AIFSMAction"), "sets_ai", "gets_ai");
 
 	//Serialization
 	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));

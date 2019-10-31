@@ -732,8 +732,8 @@ public:
 	int get_formation_index();
 	void set_formation_index(int value);
 
-	Ref<AIFSMAction> get_ai();
-	void set_ai(Ref<AIFSMAction> value);
+	Ref<AIFSMAction> gets_ai();
+	void sets_ai(Ref<AIFSMAction> value);
 
 
 	////    Serialization    ////
@@ -939,7 +939,7 @@ private:
 	//AI
 
 	int _formation_index;
-	Ref<AIFSMAction> _ai;
+	Ref<AIFSMAction> _s_ai;
 
 	//Networking
 
