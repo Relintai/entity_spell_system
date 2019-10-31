@@ -35,11 +35,11 @@ AIFSMAction::~AIFSMAction() {
 void AIFSMAction::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_state"), &AIFSMAction::get_state);
 	ClassDB::bind_method(D_METHOD("set_state", "state"), &AIFSMAction::set_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "state", PROPERTY_HINT_ENUM, "SpellCastInfo"), "set_state", "get_state");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES), "set_state", "get_state");
 
 	ClassDB::bind_method(D_METHOD("get_force_state"), &AIFSMAction::get_force_state);
 	ClassDB::bind_method(D_METHOD("set_force_state", "state"), &AIFSMAction::set_force_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "force_state", PROPERTY_HINT_ENUM, "SpellCastInfo"), "set_force_state", "get_force_state");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "force_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES), "set_force_state", "get_force_state");
 
 	ClassDB::bind_method(D_METHOD("get_action", "index"), &AIFSMAction::get_action);
 	ClassDB::bind_method(D_METHOD("set_action", "index", "action"), &AIFSMAction::set_action);
