@@ -28,11 +28,11 @@ void Aura::set_tick(float value) {
 	_tick = value;
 }
 
-int Aura::get_aura_group() {
-	return aura_group;
+Ref<AuraGroup> Aura::get_aura_group() {
+	return _aura_group;
 }
-void Aura::set_aura_group(int value) {
-	aura_group = value;
+void Aura::set_aura_group(Ref<AuraGroup> value) {
+	_aura_group = value;
 }
 
 bool Aura::get_is_debuff() {
@@ -133,12 +133,6 @@ Ref<Spell> Aura::get_teaches_spell() const {
 }
 void Aura::set_teaches_spell(const Ref<Spell> spell) {
 	_teaches_spell = spell;
-}
-
-void Aura::set(int id, float time, int auraGroup) {
-	this->set_id(id);
-	this->set_time(time);
-	this->set_aura_group(auraGroup);
 }
 
 /*
@@ -270,7 +264,6 @@ Aura::Aura() {
 	_tick = 0;
 	_aura_type = SpellEnums::AURA_TYPE_NONE;
 	_is_debuff = false;
-	aura_group = 0;
 	_hide = false;
 	_rank = 0;
 
@@ -1385,7 +1378,7 @@ void Aura::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_aura_group"), &Aura::get_aura_group);
 	ClassDB::bind_method(D_METHOD("set_aura_group", "value"), &Aura::set_aura_group);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "aura_group"), "set_aura_group", "get_aura_group");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_group", PROPERTY_HINT_RESOURCE_TYPE, "AuraGroup"), "set_aura_group", "get_aura_group");
 
 	ClassDB::bind_method(D_METHOD("get_hide"), &Aura::get_hide);
 	ClassDB::bind_method(D_METHOD("set_hide", "value"), &Aura::set_hide);

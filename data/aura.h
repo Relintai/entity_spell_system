@@ -5,6 +5,8 @@
 #include "scene/resources/curve.h"
 #include "scene/resources/texture.h"
 
+#include "aura_group.h"
+
 #include "../entity_enums.h"
 #include "../spell_enums.h"
 
@@ -45,8 +47,8 @@ public:
 	float get_time();
 	void set_time(float value);
 
-	int get_aura_group();
-	void set_aura_group(int value);
+	Ref<AuraGroup> get_aura_group();
+	void set_aura_group(Ref<AuraGroup> value);
 
 	bool get_is_debuff();
 	void set_is_debuff(bool value);
@@ -84,8 +86,7 @@ public:
 	float get_damage_scale_for_level(int level);
 	float get_heal_scale_for_level(int level);
 	float get_absorb_scale_for_level(int level);
-	void set(int id, float time, int auraGroup);
-	
+
 	Ref<Spell> get_teaches_spell() const;
 	void set_teaches_spell(const Ref<Spell> spell);
 
@@ -405,7 +406,7 @@ private:
 	int id;
 	float time;
 	float _tick;
-	int aura_group;
+	Ref<AuraGroup> _aura_group;
 	Ref<Texture> _icon;
 	SpellEnums::AuraType _aura_type;
 	bool _is_debuff;

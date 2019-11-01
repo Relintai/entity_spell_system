@@ -38,6 +38,8 @@
 
 #include "../ai/ai_fsm_action.h"
 
+#include "../data/aura_group.h"
+
 class EntityData;
 class AuraData;
 class Spell;
@@ -500,13 +502,16 @@ public:
 	void cremove_aura_dispelled(Ref<AuraData> aura);
 	void caura_refreshed(Ref<AuraData> aura);
 
-	void sremove_auras_with_group(int aura_group);
+	void sremove_auras_with_group(Ref<AuraGroup> aura_group);
 
 	//NOTE: No reason for shas_aura_by, just query it, and check for null.
 	int sget_aura_count();
 	Ref<AuraData> sget_aura(int index);
 	Ref<AuraData> sget_aura_by(Entity *caster, int aura_id);
 	Ref<AuraData> sget_aura_by_bind(Node *caster, int aura_id);
+
+	Ref<AuraData> sget_aura_with_group_by(Entity *caster, Ref<AuraGroup> aura_group);
+	Ref<AuraData> sget_aura_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group);
 
 	int cget_aura_count();
 	Ref<AuraData> cget_aura(int index);

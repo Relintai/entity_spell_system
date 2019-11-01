@@ -2458,17 +2458,44 @@ Ref<AuraData> Entity::sget_aura_by(Entity *caster, int aura_id) {
 }
 Ref<AuraData> Entity::sget_aura_by_bind(Node *caster, int aura_id) {
 	if (!caster) {
-		return Ref<AuraData>(NULL);
+		return Ref<AuraData>();
 	}
 
 	Entity *e = cast_to<Entity>(caster);
 
 	if (!e) {
-		return Ref<AuraData>(NULL);
+		return Ref<AuraData>();
 	}
 
 	return sget_aura_by(e, aura_id);
 }
+
+
+Ref<AuraData> Entity::sget_aura_with_group_by(Entity *caster, Ref<AuraGroup> aura_group) {
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		if (ad->get_aura()->get_aura_group() == aura_group && ad->get_caster() == caster) {
+			return ad;
+		}
+	}
+
+	return Ref<AuraData>(NULL);
+}
+Ref<AuraData> Entity::sget_aura_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group) {
+	if (!caster) {
+		return Ref<AuraData>();
+	}
+
+	Entity *e = cast_to<Entity>(caster);
+
+	if (!e) {
+		return Ref<AuraData>();
+	}
+
+	return sget_aura_with_group_by(e, aura_group);
+}
+
 
 int Entity::cget_aura_count() {
 	return _s_auras.size();
@@ -3568,7 +3595,7 @@ void Entity::setc_spell_cast_info(Ref<SpellCastInfo> info) {
 	_c_spell_cast_info = Ref<SpellCastInfo>(info);
 }
 
-void Entity::sremove_auras_with_group(int aura_group) {
+void Entity::sremove_auras_with_group(Ref<AuraGroup> aura_group) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 

@@ -4,6 +4,7 @@
 #include "item_enums.h"
 
 #include "data/aura.h"
+#include "data/aura_group.h"
 #include "data/aura_stat_attribute.h"
 #include "entity_data_manager.h"
 #include "data/xp_data.h"
@@ -134,6 +135,7 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<Spell>();
 	ClassDB::register_class<Aura>();
+	ClassDB::register_class<AuraGroup>();
 	ClassDB::register_class<AuraStatAttribute>();
 
 	ClassDB::register_class<EntityData>();
