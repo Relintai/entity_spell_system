@@ -608,12 +608,14 @@ public:
 	void slearn_spell(int id);
 
 	bool hass_spell(Ref<Spell> spell);
+	bool hass_spell_id(int id);
 	void adds_spell(Ref<Spell> spell);
 	void removes_spell(Ref<Spell> spell);
 	Ref<Spell> gets_spell(int index);
 	int gets_spell_count();
 
 	bool hasc_spell(Ref<Spell> spell);
+	bool hasc_spell_id(int id);
 	void addc_spell(Ref<Spell> spell);
 	void removec_spell(Ref<Spell> spell);
 	Ref<Spell> getc_spell(int index);

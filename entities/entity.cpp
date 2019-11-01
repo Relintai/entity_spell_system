@@ -355,7 +355,6 @@ void Entity::sets_ai(Ref<AIFSMAction> value) {
 	_s_ai = value;
 }
 
-
 ////    Serialization    ////
 
 bool Entity::is_deserialized() {
@@ -3389,6 +3388,20 @@ bool Entity::hass_spell(Ref<Spell> spell) {
 
 	return false;
 }
+bool Entity::hass_spell_id(int id) {
+	for (int i = 0; i < _s_spells.size(); ++i) {
+		Ref<Spell> spell = _s_spells.get(i);
+
+		if (!spell.is_valid())
+			continue;
+
+		if (spell->get_id() == id) {
+			return true;
+		}
+	}
+
+	return false;
+}
 void Entity::adds_spell(Ref<Spell> spell) {
 	if (hass_spell(spell))
 		return;
@@ -3423,6 +3436,20 @@ int Entity::gets_spell_count() {
 bool Entity::hasc_spell(Ref<Spell> spell) {
 	for (int i = 0; i < _c_spells.size(); ++i) {
 		if (_c_spells.get(i) == spell) {
+			return true;
+		}
+	}
+
+	return false;
+}
+bool Entity::hasc_spell_id(int id) {
+	for (int i = 0; i < _c_spells.size(); ++i) {
+		Ref<Spell> spell = _c_spells.get(i);
+
+		if (!spell.is_valid())
+			continue;
+
+		if (spell->get_id() == id) {
 			return true;
 		}
 	}
@@ -5356,12 +5383,14 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("slearn_spell", "id"), &Entity::slearn_spell);
 
 	ClassDB::bind_method(D_METHOD("hass_spell", "spell"), &Entity::hass_spell);
+	ClassDB::bind_method(D_METHOD("hass_spell_id", "id"), &Entity::hass_spell_id);
 	ClassDB::bind_method(D_METHOD("adds_spell", "spell"), &Entity::adds_spell);
 	ClassDB::bind_method(D_METHOD("removes_spell", "spell"), &Entity::removes_spell);
 	ClassDB::bind_method(D_METHOD("gets_spell", "spell"), &Entity::gets_spell);
 	ClassDB::bind_method(D_METHOD("gets_spell_count"), &Entity::gets_spell_count);
 
 	ClassDB::bind_method(D_METHOD("hasc_spell", "spell"), &Entity::hasc_spell);
+	ClassDB::bind_method(D_METHOD("hasc_spell_id", "id"), &Entity::hasc_spell_id);
 	ClassDB::bind_method(D_METHOD("addc_spell", "spell"), &Entity::addc_spell);
 	ClassDB::bind_method(D_METHOD("removec_spell", "spell"), &Entity::removec_spell);
 	ClassDB::bind_method(D_METHOD("getc_spell", "spell"), &Entity::getc_spell);
