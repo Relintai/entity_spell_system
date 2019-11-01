@@ -2470,7 +2470,6 @@ Ref<AuraData> Entity::sget_aura_by_bind(Node *caster, int aura_id) {
 	return sget_aura_by(e, aura_id);
 }
 
-
 Ref<AuraData> Entity::sget_aura_with_group_by(Entity *caster, Ref<AuraGroup> aura_group) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
@@ -2495,7 +2494,6 @@ Ref<AuraData> Entity::sget_aura_with_group_by_bind(Node *caster, Ref<AuraGroup> 
 
 	return sget_aura_with_group_by(e, aura_group);
 }
-
 
 int Entity::cget_aura_count() {
 	return _s_auras.size();
@@ -3370,7 +3368,16 @@ void Entity::slearn_spell(int id) {
 	for (int i = 0; i < cd->get_num_spells(); ++i) {
 		Ref<Spell> sp = cd->get_spell(i);
 
+		if (!sp.is_valid())
+			continue;
+
 		if (sp->get_id() == id) {
+			Ref<Spell> req_spell = sp->get_training_required_spell();
+
+			if (req_spell.is_valid() && !hass_spell(req_spell)) {
+				return;
+			}
+
 			adds_spell(sp);
 			sets_free_spell_points(_s_free_spell_points - 1);
 			return;
