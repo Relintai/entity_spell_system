@@ -2480,10 +2480,10 @@ Ref<AuraData> Entity::sget_aura_with_group_by(Entity *caster, Ref<AuraGroup> aur
 		}
 	}
 
-	return Ref<AuraData>(NULL);
+	return Ref<AuraData>();
 }
 Ref<AuraData> Entity::sget_aura_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group) {
-	if (!caster) {
+	if (!ObjectDB::instance_validate(caster)) {
 		return Ref<AuraData>();
 	}
 
@@ -5053,6 +5053,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sget_aura_count"), &Entity::sget_aura_count);
 	ClassDB::bind_method(D_METHOD("sget_aura", "index"), &Entity::sget_aura);
 	ClassDB::bind_method(D_METHOD("sget_aura_by", "caster", "aura_id"), &Entity::sget_aura_by_bind);
+	ClassDB::bind_method(D_METHOD("sget_aura_with_group_by", "caster", "aura_group"), &Entity::sget_aura_with_group_by_bind);
 
 	ClassDB::bind_method(D_METHOD("cget_aura_count"), &Entity::cget_aura_count);
 	ClassDB::bind_method(D_METHOD("cget_aura", "index"), &Entity::cget_aura);

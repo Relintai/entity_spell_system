@@ -4,5 +4,5 @@ AuraGroup::AuraGroup() {
 }
 
 void AuraGroup::_bind_methods() {
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_description"), "set_text_description", "get_text_description");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_description"), "set_name", "get_name");
 }
