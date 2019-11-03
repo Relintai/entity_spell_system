@@ -19,6 +19,7 @@ public:
     static const String BINDING_STRING_ENTITY_IMMUNITY_FLAGS;
     static const String BINDING_STRING_ENTITY_INTERACTION_TYPE;
     static const String BINDING_STRING_ENTITY_PLAYSTYLE_TYPE;
+    static const String BINDING_STRING_ENTITY_GENDER;
 
 	static const int PLAYER_RESOURCE_TYPES_RAGE;
 	static const int PLAYER_RESOURCE_TYPES_MANA;
@@ -221,7 +222,13 @@ public:
 		ENTITY_CLASS_PLAYSTYLE_TYPE_NONE,
 	};
 
+	enum EntityGender {
+		GENDER_MALE = 0,
+		GENDER_FEMALE = 1,
+	};
+
 	enum {
+		GENDER_COUNT = 2,
 		MAX_LEVEL = 50,
 		BASE_XP = 50,
 	};
@@ -242,5 +249,6 @@ VARIANT_ENUM_CAST(EntityEnums::AIStates);
 VARIANT_ENUM_CAST(EntityEnums::EntityImmunityFlags);
 VARIANT_ENUM_CAST(EntityEnums::EntityInteractionType);
 VARIANT_ENUM_CAST(EntityEnums::EntityClassPlaystyleType);
+VARIANT_ENUM_CAST(EntityEnums::EntityGender);
 
 #endif

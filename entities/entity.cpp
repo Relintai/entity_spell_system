@@ -113,20 +113,24 @@ void Entity::setc_entity_name(String value) {
 	emit_signal("cname_changed", this);
 }
 
-int Entity::gets_gender() {
+EntityEnums::EntityGender Entity::gets_gender() {
 	return _s_gender;
 }
-void Entity::sets_gender(int value) {
+void Entity::sets_gender(EntityEnums::EntityGender value) {
 	_s_gender = value;
 
 	VRPC(setc_gender, value);
 }
 
-int Entity::getc_gender() {
+EntityEnums::EntityGender Entity::getc_gender() {
 	return _c_gender;
 }
-void Entity::setc_gender(int value) {
+void Entity::setc_gender(EntityEnums::EntityGender value) {
 	_c_gender = value;
+
+	if (ObjectDB::instance_validate(_character_skeleton)) {
+		_character_skeleton->set_gender(_c_gender);
+	}
 }
 
 int Entity::gets_level() {
@@ -549,7 +553,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	sets_entity_type((EntityEnums::EntityType)((int)dict.get("type", 0)));
 
-	sets_gender(dict.get("gender", 0));
+	sets_gender(static_cast<EntityEnums::EntityGender>(static_cast<int>(dict.get("gender", 0))));
 	sets_level(dict.get("level", 0));
 	sets_xp(dict.get("xp", 0));
 	sets_money(dict.get("money", 0));
@@ -4373,8 +4377,8 @@ Entity::Entity() {
 	_s_type = 0;
 	_c_type = 0;
 
-	_s_gender = 0;
-	_c_gender = 0;
+	_s_gender = EntityEnums::GENDER_MALE;
+	_c_gender = EntityEnums::GENDER_MALE;
 
 	_s_level = 1;
 	_c_level = 1;
@@ -4441,21 +4445,6 @@ Entity::Entity() {
 	}
 
 	_formation_index = 0;
-
-	/*
-	get_stat_enum(Stat::STAT_ID_HEALTH)->set_base(10000);
-	get_stat_enum(Stat::STAT_ID_MANA)->set_base(100);
-	get_stat_enum(Stat::STAT_ID_RAGE)->set_base(100);
-	get_stat_enum(Stat::STAT_ID_ENERGY)->set_base(100);
-	get_stat_enum(Stat::STAT_ID_SPEED)->set_base(4.2);
-	get_stat_enum(Stat::STAT_ID_GLOBAL_COOLDOWN)->set_base(1.5);
-	get_stat_enum(Stat::STAT_ID_MELEE_CRIT)->set_base(5);
-	get_stat_enum(Stat::STAT_ID_MELEE_CRIT_BONUS)->set_base(50);
-	get_stat_enum(Stat::STAT_ID_SPELL_CRIT)->set_base(5);
-	get_stat_enum(Stat::STAT_ID_SPELL_CRIT_BONUS)->set_base(50);
-	get_stat_enum(Stat::STAT_ID_BLOCK)->set_base(10);
-	get_stat_enum(Stat::STAT_ID_PARRY)->set_base(15);
-	get_stat_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION)->set_base(15);*/
 
 	SET_RPC_REMOTE("csend_request_rank_increase");
 	SET_RPC_REMOTE("csend_request_rank_decrease");
@@ -4688,6 +4677,8 @@ void Entity::_notification(int p_what) {
 
 			if (node != NULL) {
 				_character_skeleton = Object::cast_to<CharacterSkeleton>(node);
+
+				_character_skeleton->set_gender(_c_gender);
 			} else {
 				_character_skeleton = NULL;
 			}

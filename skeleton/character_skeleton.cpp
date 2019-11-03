@@ -15,13 +15,25 @@ int CharacterSkeleton::get_item_visual_count() {
 void CharacterSkeleton::clear_item_visuals() {
 }
 
+EntityEnums::EntityGender CharacterSkeleton::get_gender() {
+	return _gender;
+}
+void CharacterSkeleton::set_gender(EntityEnums::EntityGender value) {
+	_gender = value;
+}
+
 CharacterSkeleton::CharacterSkeleton() {
+	_gender = EntityEnums::GENDER_MALE;
 }
 
 CharacterSkeleton::~CharacterSkeleton() {
 }
 
 void CharacterSkeleton::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_gender"), &CharacterSkeleton::get_gender);
+	ClassDB::bind_method(D_METHOD("set_gender", "value"), &CharacterSkeleton::set_gender);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "gender", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_GENDER), "set_gender", "get_gender");
+
 	ClassDB::bind_method(D_METHOD("add_item_visual", "vis"), &CharacterSkeleton::add_item_visual);
 	ClassDB::bind_method(D_METHOD("remove_item_visual", "vis"), &CharacterSkeleton::remove_item_visual);
 	ClassDB::bind_method(D_METHOD("remove_item_visual_index", "index"), &CharacterSkeleton::remove_item_visual_index);

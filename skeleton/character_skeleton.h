@@ -31,13 +31,17 @@ public:
 	virtual int get_item_visual_count();
 	virtual void clear_item_visuals();
 
+	EntityEnums::EntityGender get_gender();
+	void set_gender(EntityEnums::EntityGender value);
+
 	CharacterSkeleton();
 	~CharacterSkeleton();
 
 protected:
 	static void _bind_methods();
 
-//private:
+private:
+	EntityEnums::EntityGender _gender;
 };
 
 
