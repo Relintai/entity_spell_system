@@ -20,6 +20,7 @@ public:
     static const String BINDING_STRING_ENTITY_INTERACTION_TYPE;
     static const String BINDING_STRING_ENTITY_PLAYSTYLE_TYPE;
     static const String BINDING_STRING_ENTITY_GENDER;
+	static const String BINDING_STRING_ENTITY_WINDOWS;
 
 	static const int PLAYER_RESOURCE_TYPES_RAGE;
 	static const int PLAYER_RESOURCE_TYPES_MANA;
@@ -227,6 +228,13 @@ public:
 		GENDER_FEMALE = 1,
 	};
 
+	enum EntityWindows {
+		ENTITY_WINDOW_LOOT = 0,
+		ENTITY_WINDOW_CONTAINER = 1,
+		ENTITY_WINDOW_VENDOR = 2,
+	};
+
+
 	enum {
 		GENDER_COUNT = 2,
 		MAX_LEVEL = 50,
@@ -250,5 +258,6 @@ VARIANT_ENUM_CAST(EntityEnums::EntityImmunityFlags);
 VARIANT_ENUM_CAST(EntityEnums::EntityInteractionType);
 VARIANT_ENUM_CAST(EntityEnums::EntityClassPlaystyleType);
 VARIANT_ENUM_CAST(EntityEnums::EntityGender);
+VARIANT_ENUM_CAST(EntityEnums::EntityWindows);
 
 #endif

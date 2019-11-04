@@ -1403,7 +1403,7 @@ bool Entity::can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> 
 bool Entity::_can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
 	//deequip
 	if (!item.is_valid())
-		return true; 
+		return true;
 
 	Ref<ItemTemplate> it = item->get_item_template();
 
@@ -1790,24 +1790,21 @@ void Entity::crequest_interact() {
 	sinteract();
 }
 
-void Entity::ssend_open_loot_window() {
-	copen_loot_window();
+void Entity::ssend_open_window(int window_id) {
+	ORPC(copen_window, window_id);
 }
-void Entity::ssend_open_container_window() {
-	copen_container_window();
-}
-void Entity::ssend_open_vendor_window() {
-	copen_vendor_window();
-}
-
-void Entity::copen_loot_window() {
-	emit_signal("onc_open_loot_winow_request");
-}
-void Entity::copen_container_window() {
-	emit_signal("onc_open_container_winow_request");
-}
-void Entity::copen_vendor_window() {
-	emit_signal("onc_open_vendor_winow_request");
+void Entity::copen_window(int window_id) {
+	switch (window_id) {
+		case EntityEnums::ENTITY_WINDOW_LOOT:
+			emit_signal("onc_open_loot_winow_request");
+			break;
+		case EntityEnums::ENTITY_WINDOW_CONTAINER:
+			emit_signal("onc_open_container_winow_request");
+			break;
+		case EntityEnums::ENTITY_WINDOW_VENDOR:
+			emit_signal("onc_open_vendor_winow_request");
+			break;
+	}
 }
 
 //XP Operations
@@ -4992,9 +4989,7 @@ Entity::Entity() {
 
 	SET_RPC_REMOTE("sinteract");
 
-	SET_RPC_REMOTE("copen_loot_window");
-	SET_RPC_REMOTE("copen_container_window");
-	SET_RPC_REMOTE("copen_vendor_window");
+	SET_RPC_REMOTE("copen_window");
 
 	//XP Operations
 
@@ -5479,13 +5474,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("canc_interact"), &Entity::canc_interact);
 	ClassDB::bind_method(D_METHOD("crequest_interact"), &Entity::crequest_interact);
 
-	ClassDB::bind_method(D_METHOD("ssend_open_loot_window"), &Entity::ssend_open_loot_window);
-	ClassDB::bind_method(D_METHOD("ssend_open_container_window"), &Entity::ssend_open_container_window);
-	ClassDB::bind_method(D_METHOD("ssend_open_vendor_window"), &Entity::ssend_open_vendor_window);
-
-	ClassDB::bind_method(D_METHOD("copen_loot_window"), &Entity::copen_loot_window);
-	ClassDB::bind_method(D_METHOD("copen_container_window"), &Entity::copen_container_window);
-	ClassDB::bind_method(D_METHOD("copen_vendor_window"), &Entity::copen_vendor_window);
+	ClassDB::bind_method(D_METHOD("ssend_open_window", "window_id"), &Entity::ssend_open_window);
+	ClassDB::bind_method(D_METHOD("copen_window", "window_id"), &Entity::copen_window);
 
 	//XP Operations
 	ADD_SIGNAL(MethodInfo("son_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));

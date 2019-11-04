@@ -501,13 +501,8 @@ public:
 	bool canc_interact();
 	void crequest_interact();
 
-	void ssend_open_loot_window();
-	void ssend_open_container_window();
-	void ssend_open_vendor_window();
-
-	void copen_loot_window();
-	void copen_container_window();
-	void copen_vendor_window();
+	void ssend_open_window(int window_id);
+	void copen_window(int window_id);
 
 	//XP Operations
 	void adds_xp(int value);

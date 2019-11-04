@@ -125,7 +125,6 @@ public:
 		ENTITY_TEXTURE_LAYER_OVERLAY = 12
 	};
 
-
 	static String get_equip_slot_string(int slot);
 	static String get_armor_type_string(int type);
 
