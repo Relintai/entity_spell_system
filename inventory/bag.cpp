@@ -215,6 +215,10 @@ void Bag::set_size(const int size) {
 
 	_bag_size = size;
 
+	if (_items.size() < _bag_size) {
+		_items.resize(_bag_size);
+	}
+
 	emit_signal("size_changed", Ref<Bag>(this));
 }
 
@@ -283,12 +287,10 @@ void Bag::_remove_items(Ref<ItemTemplate> item, int count) {
 					remove_item(i);
 					return;
 				}
-				
 			}
 		}
 	}
 }
-
 
 Dictionary Bag::to_dict() {
 	return call("_to_dict");
@@ -319,6 +321,8 @@ Dictionary Bag::_to_dict() {
 void Bag::_from_dict(const Dictionary &dict) {
 	_items.clear();
 
+	set_size(dict.get("bag_size", 0));
+
 	Dictionary items = dict.get("items", Dictionary());
 
 	Array keys = items.keys();
@@ -327,13 +331,18 @@ void Bag::_from_dict(const Dictionary &dict) {
 		Ref<ItemInstance> ii;
 		ii.instance();
 
-		ii->from_dict(items[String::num(i)]);
+		ii->from_dict(items[keys.get(i)]);
 
-		_items.push_back(ii);
+		int key = keys.get(i);
+
+		if (key >= _items.size()) {
+			_items.resize(key + 1);
+		}
+
+		_items.set(key, ii);
 	}
 
 	_allowed_item_types = dict.get("allowed_item_types", 0xFFFFFF);
-	set_size(dict.get("bag_size", 0));
 }
 
 Bag::Bag() {
@@ -347,7 +356,7 @@ Bag::~Bag() {
 
 void Bag::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "could_add"), "_add_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
-	BIND_VMETHOD(MethodInfo("_add_item_at", PropertyInfo(Variant::INT, "index") , PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	BIND_VMETHOD(MethodInfo("_add_item_at", PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_get_item", PropertyInfo(Variant::INT, "index")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_remove_item", PropertyInfo(Variant::INT, "index")));
 	BIND_VMETHOD(MethodInfo("_swap_items", PropertyInfo(Variant::INT, "item1_index"), PropertyInfo(Variant::INT, "item2_index")));

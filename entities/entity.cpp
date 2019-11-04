@@ -838,17 +838,6 @@ void Entity::_from_dict(const Dictionary &dict) {
 		} else {
 			_s_bag->from_dict(bagd);
 		}
-		/*
-		if (!_c_bag.is_valid()) {
-			Ref<Bag> bag;
-			bag.instance();
-
-			bag->from_dict(bagd);
-
-			setc_bag(bag);
-		} else {
-			_c_bag->from_dict(bagd);
-		}*/
 	}
 
 	////     Actionbars    ////
@@ -4297,7 +4286,7 @@ void Entity::sswap_items(int slot_id_1, int slot_id_2) {
 }
 void Entity::cswap_items(int slot_id_1, int slot_id_2) {
 	ERR_FAIL_COND(!_c_bag.is_valid());
-
+	
 	_c_bag->swap_items(slot_id_1, slot_id_2);
 }
 void Entity::cdeny_item_swap(int slot_id_1, int slot_id_2) {
@@ -4354,7 +4343,7 @@ void Entity::sremove_target_item(const int slot_id) {
 }
 void Entity::cremove_target_item(const int slot_id) {
 	ERR_FAIL_COND(!_c_target_bag.is_valid());
-	
+
 	_c_target_bag->remove_item(slot_id);
 }
 void Entity::cdenyremove_target_item(const int slot_id) {
