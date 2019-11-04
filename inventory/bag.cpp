@@ -76,8 +76,6 @@ bool Bag::add_item(Ref<ItemInstance> item) {
 }
 
 void Bag::add_item_at(int index, Ref<ItemInstance> item, bool signal) {
-	ERR_FAIL_COND(!item.is_valid());
-
 	if (has_method("_add_item_at")) {
 		call("_add_item_at", index, item, signal);
 		return;

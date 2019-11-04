@@ -86,6 +86,9 @@ void CharacterSkeleton3D::add_item_visual(Ref<ItemVisual> vis) {
 	}
 
 	_item_visuals.push_back(vis);
+
+	set_process(true);
+	_model_dirty = true;
 }
 void CharacterSkeleton3D::remove_item_visual(Ref<ItemVisual> vis) {
 	ERR_FAIL_COND(!vis.is_valid());
@@ -103,14 +106,23 @@ void CharacterSkeleton3D::remove_item_visual(Ref<ItemVisual> vis) {
 	}
 
 	_item_visuals.remove(index);
+
+	set_process(true);
+	_model_dirty = true;
 }
 void CharacterSkeleton3D::remove_item_visual_index(int index) {
 	ERR_FAIL_INDEX(index, _item_visuals.size());
+
+	set_process(true);
+	_model_dirty = true;
 
 	_item_visuals.remove(index);
 }
 Ref<ItemVisual> CharacterSkeleton3D::get_item_visual(int index) {
 	ERR_FAIL_INDEX_V(index, _item_visuals.size(), Ref<ItemVisual>());
+
+	set_process(true);
+	_model_dirty = true;
 
 	return _item_visuals.get(index);
 }

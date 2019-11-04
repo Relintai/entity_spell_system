@@ -74,7 +74,7 @@ protected:
 				return false;
 			}
 
-			return (a->get_priority() < b->get_priority());
+			return (a->get_priority() > b->get_priority());
 		}
 	};
 

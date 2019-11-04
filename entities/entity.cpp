@@ -1357,6 +1357,12 @@ void Entity::cequip_success(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 	_c_bag->add_item_at(bag_slot, old_equipped_item);
 	setc_equip_slot(equip_slot, old_bag_item);
 
+	if (old_equipped_item.is_valid())
+		cdeapply_item(old_equipped_item);
+
+	if (old_bag_item.is_valid())
+		capply_item(old_bag_item);
+
 	con_equip_success(equip_slot, old_bag_item, old_equipped_item, bag_slot);
 }
 void Entity::cequip_fail(ItemEnums::EquipSlots equip_slot, int bag_slot) {
@@ -1395,7 +1401,9 @@ bool Entity::can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> 
 	return call("_can_equip_item", equip_slot, item);
 }
 bool Entity::_can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
-	ERR_FAIL_COND_V(!item.is_valid(), false);
+	//deequip
+	if (!item.is_valid())
+		return true; 
 
 	Ref<ItemTemplate> it = item->get_item_template();
 
@@ -1413,6 +1421,10 @@ void Entity::sdeapply_item(Ref<ItemInstance> item) {
 
 void Entity::_sapply_item(Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!item.is_valid());
+
+	Ref<ItemTemplate> it = item->get_item_template();
+
+	ERR_FAIL_COND(!it.is_valid());
 
 	for (int i = 0; i < item->get_item_stat_modifier_count(); ++i) {
 		Ref<ItemStatModifier> mod = item->get_item_stat_modifier(i);
@@ -1436,6 +1448,10 @@ void Entity::_sapply_item(Ref<ItemInstance> item) {
 void Entity::_sdeapply_item(Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!item.is_valid());
 
+	Ref<ItemTemplate> it = item->get_item_template();
+
+	ERR_FAIL_COND(!it.is_valid());
+
 	for (int i = 0; i < item->get_item_stat_modifier_count(); ++i) {
 		Ref<ItemStatModifier> mod = item->get_item_stat_modifier(i);
 
@@ -1453,6 +1469,36 @@ void Entity::_sdeapply_item(Ref<ItemInstance> item) {
 		sm->set_base_mod(sm->get_base_mod() - mod->get_base_mod());
 		sm->set_bonus_mod(sm->get_bonus_mod() - mod->get_bonus_mod());
 		sm->set_percent_mod(sm->get_percent_mod() - mod->get_percent_mod());
+	}
+}
+
+void Entity::capply_item(Ref<ItemInstance> item) {
+	call("_capply_item", item);
+}
+void Entity::cdeapply_item(Ref<ItemInstance> item) {
+	call("_cdeapply_item", item);
+}
+
+void Entity::_capply_item(Ref<ItemInstance> item) {
+	ERR_FAIL_COND(!item.is_valid());
+
+	Ref<ItemTemplate> it = item->get_item_template();
+
+	ERR_FAIL_COND(!it.is_valid());
+
+	if (it->get_item_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
+		_character_skeleton->add_item_visual(it->get_item_visual());
+	}
+}
+void Entity::_cdeapply_item(Ref<ItemInstance> item) {
+	ERR_FAIL_COND(!item.is_valid());
+
+	Ref<ItemTemplate> it = item->get_item_template();
+
+	ERR_FAIL_COND(!it.is_valid());
+
+	if (it->get_item_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
+		_character_skeleton->remove_item_visual(it->get_item_visual());
 	}
 }
 
@@ -5694,6 +5740,15 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_sapply_item", "item"), &Entity::_sapply_item);
 	ClassDB::bind_method(D_METHOD("_sdeapply_item", "item"), &Entity::_sdeapply_item);
+
+	BIND_VMETHOD(MethodInfo("_capply_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	BIND_VMETHOD(MethodInfo("_cdeapply_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+
+	ClassDB::bind_method(D_METHOD("csapply_item", "item"), &Entity::capply_item);
+	ClassDB::bind_method(D_METHOD("cdeapply_item", "item"), &Entity::cdeapply_item);
+
+	ClassDB::bind_method(D_METHOD("_capply_item", "item"), &Entity::_capply_item);
+	ClassDB::bind_method(D_METHOD("_cdeapply_item", "item"), &Entity::_cdeapply_item);
 
 	//Resources
 	ClassDB::bind_method(D_METHOD("gets_resource", "index"), &Entity::gets_resource);

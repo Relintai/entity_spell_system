@@ -333,6 +333,12 @@ public:
 	void _sapply_item(Ref<ItemInstance> item);
 	void _sdeapply_item(Ref<ItemInstance> item);
 
+	void capply_item(Ref<ItemInstance> item);
+	void cdeapply_item(Ref<ItemInstance> item);
+
+	void _capply_item(Ref<ItemInstance> item);
+	void _cdeapply_item(Ref<ItemInstance> item);
+
 	////    Resources    ////
 
 	Ref<EntityResource> gets_resource(int index);
