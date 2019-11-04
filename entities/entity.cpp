@@ -4175,7 +4175,6 @@ void Entity::sets_target_bag(const Ref<Bag> bag) {
 		_s_target_bag->disconnect("item_added", this, "ons_target_item_added");
 		_s_target_bag->disconnect("item_removed", this, "ons_target_item_removed");
 		_s_target_bag->disconnect("item_swapped", this, "ons_target_items_swapped");
-		_s_target_bag->disconnect("item_swapped", this, "ons_target_items_swapped");
 		_s_target_bag->disconnect("item_count_changed", this, "ons_target_item_count_changed");
 	}
 
