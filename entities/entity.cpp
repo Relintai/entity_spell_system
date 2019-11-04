@@ -923,7 +923,22 @@ bool Entity::hass_craft_recipe(Ref<CraftRecipe> craft_recipe) {
 
 	return false;
 }
+bool Entity::hass_craft_recipe_id(int id) {
+	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
+		Ref<CraftRecipe> cr = _s_craft_recipes.get(i);
+
+		ERR_CONTINUE(!cr.is_valid());
+
+		if (cr->get_id() == id) {
+			return true;
+		}
+	}
+
+	return false;
+}
 void Entity::adds_craft_recipe(Ref<CraftRecipe> craft_recipe) {
+	ERR_FAIL_COND(!craft_recipe.is_valid());
+
 	if (hass_craft_recipe(craft_recipe))
 		return;
 
@@ -931,7 +946,23 @@ void Entity::adds_craft_recipe(Ref<CraftRecipe> craft_recipe) {
 
 	emit_signal("scraft_recipe_added", this, craft_recipe);
 
-	ORPC(addc_craft_recipe, craft_recipe);
+	ORPC(addc_craft_recipe_id, craft_recipe->get_id());
+}
+void Entity::adds_craft_recipe_id(int id) {
+	ERR_FAIL_COND(!EntityDataManager::get_instance());
+
+	if (hass_craft_recipe_id(id))
+		return;
+
+	Ref<CraftRecipe> craft_recipe = EntityDataManager::get_instance()->get_craft_data(id);
+
+	ERR_FAIL_COND(!craft_recipe.is_valid());
+
+	_s_craft_recipes.push_back(craft_recipe);
+
+	emit_signal("scraft_recipe_added", this, craft_recipe);
+
+	ORPC(addc_craft_recipe_id, id);
 }
 void Entity::removes_craft_recipe(Ref<CraftRecipe> craft_recipe) {
 	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
@@ -945,10 +976,37 @@ void Entity::removes_craft_recipe(Ref<CraftRecipe> craft_recipe) {
 
 	ORPC(removec_craft_recipe, craft_recipe);
 }
+void Entity::removes_craft_recipe_id(int id) {
+	Ref<CraftRecipe> craft_recipe;
+
+	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
+		craft_recipe = _s_craft_recipes.get(i);
+
+		if (craft_recipe->get_id() == id) {
+			_s_craft_recipes.remove(i);
+			break;
+		}
+	}
+
+	emit_signal("scraft_recipe_removed", this, craft_recipe);
+
+	ORPC(removec_craft_recipe_id, id);
+}
 Ref<CraftRecipe> Entity::gets_craft_recipe(int index) {
 	ERR_FAIL_INDEX_V(index, _s_craft_recipes.size(), Ref<CraftRecipe>());
 
 	return _s_craft_recipes.get(index);
+}
+Ref<CraftRecipe> Entity::gets_craft_recipe_id(int id) {
+	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
+		Ref<CraftRecipe> craft_recipe = _s_craft_recipes.get(i);
+
+		if (craft_recipe->get_id() == id) {
+			return craft_recipe;
+		}
+	}
+
+	return Ref<CraftRecipe>();
 }
 int Entity::gets_craft_recipe_count() {
 	return _s_craft_recipes.size();
@@ -963,6 +1021,19 @@ bool Entity::hasc_craft_recipe(Ref<CraftRecipe> craft_recipe) {
 
 	return false;
 }
+bool Entity::hasc_craft_recipe_id(int id) {
+	for (int i = 0; i < _c_craft_recipes.size(); ++i) {
+		Ref<CraftRecipe> cr = _c_craft_recipes.get(i);
+
+		ERR_CONTINUE(!cr.is_valid());
+
+		if (cr->get_id() == id) {
+			return true;
+		}
+	}
+
+	return false;
+}
 void Entity::addc_craft_recipe(Ref<CraftRecipe> craft_recipe) {
 	if (hasc_craft_recipe(craft_recipe))
 		return;
@@ -971,9 +1042,37 @@ void Entity::addc_craft_recipe(Ref<CraftRecipe> craft_recipe) {
 
 	emit_signal("ccraft_recipe_added", this, craft_recipe);
 }
+void Entity::addc_craft_recipe_id(int id) {
+	ERR_FAIL_COND(!EntityDataManager::get_instance());
+
+	if (hasc_craft_recipe_id(id))
+		return;
+
+	Ref<CraftRecipe> craft_recipe = EntityDataManager::get_instance()->get_craft_data(id);
+
+	ERR_FAIL_COND(!craft_recipe.is_valid());
+
+	_c_craft_recipes.push_back(craft_recipe);
+
+	emit_signal("ccraft_recipe_added", this, craft_recipe);
+}
 void Entity::removec_craft_recipe(Ref<CraftRecipe> craft_recipe) {
 	for (int i = 0; i < _c_craft_recipes.size(); ++i) {
 		if (_c_craft_recipes.get(i) == craft_recipe) {
+			_c_craft_recipes.remove(i);
+			break;
+		}
+	}
+
+	emit_signal("ccraft_recipe_removed", this, craft_recipe);
+}
+void Entity::removec_craft_recipe_id(int id) {
+	Ref<CraftRecipe> craft_recipe;
+
+	for (int i = 0; i < _c_craft_recipes.size(); ++i) {
+		craft_recipe = _c_craft_recipes.get(i);
+
+		if (craft_recipe->get_id() == id) {
 			_c_craft_recipes.remove(i);
 			break;
 		}
@@ -4503,8 +4602,8 @@ Entity::Entity() {
 
 	SET_RPC_REMOTE("scraft");
 
-	SET_RPC_REMOTE("addc_craft_recipe");
-	SET_RPC_REMOTE("removec_craft_recipe");
+	SET_RPC_REMOTE("addc_craft_recipe_id");
+	SET_RPC_REMOTE("removec_craft_recipe_id");
 
 	////    SpellSystem    ////
 
@@ -5410,14 +5509,21 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("scraft", "id"), &Entity::scraft);
 
 	ClassDB::bind_method(D_METHOD("hass_craft_recipe", "craft_recipe"), &Entity::hass_craft_recipe);
+	ClassDB::bind_method(D_METHOD("hass_craft_recipe_id", "id"), &Entity::hass_craft_recipe_id);
 	ClassDB::bind_method(D_METHOD("adds_craft_recipe", "craft_recipe"), &Entity::adds_craft_recipe);
+	ClassDB::bind_method(D_METHOD("adds_craft_recipe_id", "id"), &Entity::adds_craft_recipe_id);
 	ClassDB::bind_method(D_METHOD("removes_craft_recipe", "craft_recipe"), &Entity::removes_craft_recipe);
-	ClassDB::bind_method(D_METHOD("gets_craft_recipe", "craft_recipe"), &Entity::gets_craft_recipe);
+	ClassDB::bind_method(D_METHOD("removes_craft_recipe_id", "id"), &Entity::removes_craft_recipe_id);
+	ClassDB::bind_method(D_METHOD("gets_craft_recipe", "index"), &Entity::gets_craft_recipe);
+	ClassDB::bind_method(D_METHOD("gets_craft_recipe_id", "id"), &Entity::gets_craft_recipe_id);
 	ClassDB::bind_method(D_METHOD("gets_craft_recipe_count"), &Entity::gets_craft_recipe_count);
 
 	ClassDB::bind_method(D_METHOD("hasc_craft_recipe", "craft_recipe"), &Entity::hasc_craft_recipe);
+	ClassDB::bind_method(D_METHOD("hasc_craft_recipe_id", "id"), &Entity::hasc_craft_recipe_id);
 	ClassDB::bind_method(D_METHOD("addc_craft_recipe", "craft_recipe"), &Entity::addc_craft_recipe);
+	ClassDB::bind_method(D_METHOD("addc_craft_recipe_id", "id"), &Entity::addc_craft_recipe_id);
 	ClassDB::bind_method(D_METHOD("removec_craft_recipe", "craft_recipe"), &Entity::removec_craft_recipe);
+	ClassDB::bind_method(D_METHOD("removec_craft_recipe_id", "id"), &Entity::removec_craft_recipe_id);
 	ClassDB::bind_method(D_METHOD("getc_craft_recipe", "craft_recipe"), &Entity::getc_craft_recipe);
 	ClassDB::bind_method(D_METHOD("getc_craft_recipe_count"), &Entity::getc_craft_recipe_count);
 

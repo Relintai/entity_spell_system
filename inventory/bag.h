@@ -6,7 +6,7 @@
 
 #include "../item_enums.h"
 
-class itemTemplate;
+class ItemTemplate;
 class ItemInstance;
 
 class Bag : public Reference {
@@ -32,6 +32,12 @@ public:
     
     bool is_full();
     bool is_overburdened();
+
+    bool has_item(Ref<ItemTemplate> item, int count);
+	bool _has_item(Ref<ItemTemplate> item, int count);
+
+	void remove_items(Ref<ItemTemplate> item, int count);
+	void _remove_items(Ref<ItemTemplate> item, int count);
 	
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);

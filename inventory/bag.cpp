@@ -214,6 +214,62 @@ bool Bag::is_overburdened() {
 	return _bag_size < get_valid_item_count();
 }
 
+bool Bag::has_item(Ref<ItemTemplate> item, int count) {
+	return call("_has_item", item, count);
+}
+bool Bag::_has_item(Ref<ItemTemplate> item, int count) {
+	int c = 0;
+
+	for (int i = 0; i < _items.size(); ++i) {
+		Ref<ItemInstance> ii = _items.get(i);
+
+		if (ii.is_valid()) {
+			if (ii->get_item_template() == item) {
+				c += ii->get_stack_size();
+
+				if (c >= count) {
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+void Bag::remove_items(Ref<ItemTemplate> item, int count) {
+	call("_remove_items", item, count);
+}
+void Bag::_remove_items(Ref<ItemTemplate> item, int count) {
+	int c = count;
+
+	for (int i = 0; i < _items.size(); ++i) {
+		Ref<ItemInstance> ii = _items.get(i);
+
+		if (ii.is_valid()) {
+			if (ii->get_item_template() == item) {
+				int ss = ii->get_stack_size();
+
+				if (ss > c) {
+					ii->set_stack_size(ss - c);
+
+					emit_signal("item_count_changed", Ref<Bag>(this), ii, i);
+					return;
+				} else if (ss < c) {
+					c -= ii->get_stack_size();
+
+					remove_item(i);
+				} else if (ss == c) {
+					remove_item(i);
+					return;
+				}
+				
+			}
+		}
+	}
+}
+
+
 Dictionary Bag::to_dict() {
 	return call("_to_dict");
 }
@@ -282,6 +338,8 @@ void Bag::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_set_size", PropertyInfo(Variant::INT, "size")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "full"), "_is_full"));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "overburdened"), "_is_overburdened"));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "has"), "_has_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemTemplate"), PropertyInfo(Variant::INT, "count")));
+	BIND_VMETHOD(MethodInfo("_remove_items", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemTemplate"), PropertyInfo(Variant::INT, "count")));
 
 	ADD_SIGNAL(MethodInfo("item_added", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "slot_id")));
 	ADD_SIGNAL(MethodInfo("item_set", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "slot_id")));
@@ -312,6 +370,12 @@ void Bag::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("is_full"), &Bag::is_full);
 	ClassDB::bind_method(D_METHOD("is_overburdened"), &Bag::is_overburdened);
+
+	ClassDB::bind_method(D_METHOD("has_item", "item", "count"), &Bag::has_item);
+	ClassDB::bind_method(D_METHOD("_has_item", "item", "count"), &Bag::_has_item);
+
+	ClassDB::bind_method(D_METHOD("remove_items", "item", "count"), &Bag::remove_items);
+	ClassDB::bind_method(D_METHOD("_remove_items", "item", "count"), &Bag::_remove_items);
 
 	//Serialization
 	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));

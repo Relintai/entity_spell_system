@@ -352,14 +352,21 @@ public:
 	void scraft(int id);
 
 	bool hass_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	bool hass_craft_recipe_id(int id);
 	void adds_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	void adds_craft_recipe_id(int id);
 	void removes_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	void removes_craft_recipe_id(int id);
 	Ref<CraftRecipe> gets_craft_recipe(int index);
+	Ref<CraftRecipe> gets_craft_recipe_id(int id);
 	int gets_craft_recipe_count();
 
 	bool hasc_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	bool hasc_craft_recipe_id(int id);
 	void addc_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	void addc_craft_recipe_id(int id);
 	void removec_craft_recipe(Ref<CraftRecipe> craft_recipe);
+	void removec_craft_recipe_id(int id);
 	Ref<CraftRecipe> getc_craft_recipe(int index);
 	int getc_craft_recipe_count();
 
