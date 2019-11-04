@@ -75,11 +75,11 @@ bool Bag::add_item(Ref<ItemInstance> item) {
 	return true;
 }
 
-void Bag::add_item_at(int index, Ref<ItemInstance> item) {
+void Bag::add_item_at(int index, Ref<ItemInstance> item, bool signal) {
 	ERR_FAIL_COND(!item.is_valid());
 
 	if (has_method("_add_item_at")) {
-		call("_add_item_at", index, item);
+		call("_add_item_at", index, item, signal);
 		return;
 	}
 
@@ -89,7 +89,8 @@ void Bag::add_item_at(int index, Ref<ItemInstance> item) {
 
 	_items.set(index, item);
 
-	emit_signal("item_added", Ref<Bag>(this), item, index);
+	if (signal)
+		emit_signal("item_added", Ref<Bag>(this), item, index);
 }
 
 Ref<ItemInstance> Bag::get_item(const int index) {
@@ -356,7 +357,7 @@ Bag::~Bag() {
 
 void Bag::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "could_add"), "_add_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
-	BIND_VMETHOD(MethodInfo("_add_item_at", PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	BIND_VMETHOD(MethodInfo("_add_item_at", PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::BOOL, "signal")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_get_item", PropertyInfo(Variant::INT, "index")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_remove_item", PropertyInfo(Variant::INT, "index")));
 	BIND_VMETHOD(MethodInfo("_swap_items", PropertyInfo(Variant::INT, "item1_index"), PropertyInfo(Variant::INT, "item2_index")));
@@ -385,7 +386,7 @@ void Bag::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "allowed_item_types", PROPERTY_HINT_FLAGS, ItemEnums::BINDING_STRING_ITEM_TYPE_FLAGS), "set_allowed_item_types", "get_allowed_item_types");
 
 	ClassDB::bind_method(D_METHOD("add_item", "item"), &Bag::add_item);
-	ClassDB::bind_method(D_METHOD("add_item_at", "index", "item"), &Bag::add_item_at);
+	ClassDB::bind_method(D_METHOD("add_item_at", "index", "item", "signal"), &Bag::add_item_at, DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("get_item", "index"), &Bag::get_item);
 	ClassDB::bind_method(D_METHOD("remove_item", "index"), &Bag::remove_item);
 	ClassDB::bind_method(D_METHOD("swap_items", "item1_index", "item2_index"), &Bag::swap_items);

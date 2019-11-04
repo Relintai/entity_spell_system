@@ -1,6 +1,6 @@
 #include "es_drag_and_drop.h"
 
-const String ESDragAndDrop::BINDING_STRING_ES_DRAG_AND_DROP_TYPE = "None,Spell,Item,Inventory Item";
+const String ESDragAndDrop::BINDING_STRING_ES_DRAG_AND_DROP_TYPE = "None,Spell,Item,Inventory Item,Equipped Item";
 
 Node *ESDragAndDrop::get_origin() const {
 	return _origin;
@@ -46,4 +46,5 @@ void ESDragAndDrop::_bind_methods() {
 	BIND_ENUM_CONSTANT(ES_DRAG_AND_DROP_TYPE_SPELL);
 	BIND_ENUM_CONSTANT(ES_DRAG_AND_DROP_TYPE_ITEM);
 	BIND_ENUM_CONSTANT(ES_DRAG_AND_DROP_TYPE_INVENTORY_ITEM);
+	BIND_ENUM_CONSTANT(ES_DRAG_AND_DROP_TYPE_EQUIPPED_ITEM);
 }

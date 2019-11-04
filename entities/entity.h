@@ -324,11 +324,14 @@ public:
 	Ref<ItemInstance> getc_equip_slot(int index);
 	void setc_equip_slot(int index, Ref<ItemInstance> item);
 
-	void sapply_item_stats(Ref<ItemInstance> item);
-	void sdeapply_item_stats(Ref<ItemInstance> item);
+	bool can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);
+	bool _can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);
 
-	void _sapply_item_stats(Ref<ItemInstance> item);
-	void _sdeapply_item_stats(Ref<ItemInstance> item);
+	void sapply_item(Ref<ItemInstance> item);
+	void sdeapply_item(Ref<ItemInstance> item);
+
+	void _sapply_item(Ref<ItemInstance> item);
+	void _sdeapply_item(Ref<ItemInstance> item);
 
 	////    Resources    ////
 
