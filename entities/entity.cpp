@@ -263,7 +263,6 @@ void Entity::setc_seed(int value) {
 	_c_seed = value;
 }
 
-
 void Entity::setup() {
 	if (has_method("_setup")) {
 		call_multilevel("_setup");
@@ -4141,11 +4140,33 @@ Ref<Bag> Entity::gets_bag() const {
 	return _s_bag;
 }
 void Entity::sets_bag(const Ref<Bag> bag) {
+	if (_s_bag.is_valid()) {
+		_s_bag->disconnect("item_added", this, "ons_item_added");
+		_s_bag->disconnect("item_removed", this, "ons_item_removed");
+		_s_bag->disconnect("item_swapped", this, "ons_items_swapped");
+		_s_bag->disconnect("item_count_changed", this, "ons_item_count_changed");
+		_s_bag->disconnect("overburdened", this, "ons_overburdened");
+		_s_bag->disconnect("overburden_removed", this, "ons_overburden_removed");
+	}
+
 	_s_bag = bag;
+
+	if (_s_bag.is_valid()) {
+		_s_bag->connect("item_added", this, "ons_item_added");
+		_s_bag->connect("item_removed", this, "ons_item_removed");
+		_s_bag->connect("item_swapped", this, "ons_items_swapped");
+		_s_bag->connect("item_count_changed", this, "ons_item_count_changed");
+		_s_bag->connect("overburdened", this, "ons_overburdened");
+		_s_bag->connect("overburden_removed", this, "ons_overburden_removed");
+	}
 
 	emit_signal("sbag_changed", this, _s_bag);
 
-	ORPCOBJ(setc_bag_rpc, JSON::print(_s_bag->to_dict()), setc_bag, bag);
+	if (_s_bag.is_valid()) {
+		ORPC(setc_bag_rpc, JSON::print(_s_bag->to_dict()));
+	} else {
+		ORPC(setc_bag_rpc, "");
+	}
 }
 
 Ref<Bag> Entity::getc_bag() const {
@@ -4161,9 +4182,30 @@ Ref<Bag> Entity::gets_target_bag() const {
 	return _s_target_bag;
 }
 void Entity::sets_target_bag(const Ref<Bag> bag) {
+	if (_s_target_bag.is_valid()) {
+		_s_target_bag->disconnect("item_added", this, "ons_target_item_added");
+		_s_target_bag->disconnect("item_removed", this, "ons_target_item_removed");
+		_s_target_bag->disconnect("item_swapped", this, "ons_target_items_swapped");
+		_s_target_bag->disconnect("item_swapped", this, "ons_target_items_swapped");
+		_s_target_bag->disconnect("item_count_changed", this, "ons_target_item_count_changed");
+	}
+
 	_s_target_bag = bag;
 
-	ORPCOBJ(setc_target_bag_rpc, JSON::print(_s_target_bag->to_dict()), setc_target_bag, bag);
+	if (_s_target_bag.is_valid()) {
+		_s_target_bag->connect("item_added", this, "ons_target_item_added");
+		_s_target_bag->connect("item_removed", this, "ons_target_item_removed");
+		_s_target_bag->connect("item_swapped", this, "ons_target_items_swapped");
+		_s_target_bag->connect("item_count_changed", this, "ons_target_item_count_changed");
+	}
+
+	emit_signal("starget_bag_changed", this, _s_target_bag);
+
+	if (_s_target_bag.is_valid()) {
+		ORPC(setc_target_bag_rpc, JSON::print(_s_target_bag->to_dict()));
+	} else {
+		ORPC(setc_target_bag_rpc, "");
+	}
 }
 
 Ref<Bag> Entity::getc_target_bag() const {
@@ -4171,6 +4213,8 @@ Ref<Bag> Entity::getc_target_bag() const {
 }
 void Entity::setc_target_bag(const Ref<Bag> bag) {
 	_c_target_bag = bag;
+
+	emit_signal("ctarget_bag_changed", this, _s_target_bag);
 }
 
 void Entity::setc_bag_rpc(String data) {
@@ -4189,7 +4233,7 @@ void Entity::setc_target_bag_rpc(String data) {
 }
 
 void Entity::crequest_loot(int index) {
-	sloot(index);
+	RPCS(sloot, index);
 }
 void Entity::sloot(int index) {
 	ERR_FAIL_COND(!_s_bag.is_valid());
@@ -4201,6 +4245,156 @@ void Entity::sloot(int index) {
 		_s_target_bag->remove_item(index);
 		_s_bag->add_item(ii);
 	}
+}
+void Entity::cloot(int index) {
+	ERR_FAIL_COND(!_c_target_bag.is_valid());
+
+	_c_target_bag->remove_item(index);
+}
+
+void Entity::ons_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+	ORPCOBJP(cadd_item_rpc, slot_id, JSON::print(item->to_dict()), cadd_item, slot_id, item);
+}
+void Entity::cadd_item_rpc(int slot_id, String item_data) {
+	Ref<ItemInstance> ii;
+	ii.instance();
+	ii->from_dict(data_as_dict(item_data));
+
+	cadd_item(slot_id, ii);
+}
+void Entity::cadd_item(int slot_id, Ref<ItemInstance> item) {
+	ERR_FAIL_COND(!_c_bag.is_valid());
+
+	_c_bag->add_item_at(slot_id, item);
+}
+
+void Entity::ons_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+	ORPC(cremove_item, slot_id);
+}
+void Entity::sremove_item(const int slot_id) {
+	ERR_FAIL_COND(!_s_bag.is_valid());
+
+	_s_bag->remove_item(slot_id);
+}
+void Entity::cremove_item(const int slot_id) {
+	ERR_FAIL_COND(!_c_bag.is_valid());
+
+	_c_bag->remove_item(slot_id);
+}
+void Entity::cdenyremove_item(const int slot_id) {
+}
+void Entity::crequest_remove_item(const int slot_id) {
+	RPCS(sremove_item, slot_id);
+}
+
+void Entity::ons_items_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
+	ORPC(cswap_items, slot_id_1, slot_id_2);
+}
+void Entity::sswap_items(int slot_id_1, int slot_id_2) {
+	ERR_FAIL_COND(!_s_bag.is_valid());
+
+	_s_bag->swap_items(slot_id_1, slot_id_2);
+}
+void Entity::cswap_items(int slot_id_1, int slot_id_2) {
+	ERR_FAIL_COND(!_c_bag.is_valid());
+
+	_c_bag->swap_items(slot_id_1, slot_id_2);
+}
+void Entity::cdeny_item_swap(int slot_id_1, int slot_id_2) {
+}
+void Entity::crequest_item_swap(int slot_id_1, int slot_id_2) {
+	RPCS(sswap_items, slot_id_1, slot_id_2);
+}
+
+void Entity::ons_item_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+	ERR_FAIL_COND(!item.is_valid());
+
+	ORPC(cchange_item_count, slot_id, item->get_stack_size());
+}
+void Entity::cchange_item_count(int slot_id, int new_count) {
+	ERR_FAIL_COND(!_c_bag.is_valid());
+
+	Ref<ItemInstance> ii = _c_bag->get_item(slot_id);
+
+	ERR_FAIL_COND(!ii.is_valid());
+
+	ii->set_stack_size(new_count);
+}
+
+void Entity::ons_overburdened(Ref<Bag> bag) {
+}
+void Entity::ons_overburden_removed(Ref<Bag> bag) {
+}
+
+//Target Bag
+
+void Entity::ons_target_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+	ORPCOBJP(cadd_target_item_rpc, slot_id, JSON::print(item->to_dict()), cadd_target_item, slot_id, item);
+}
+void Entity::cadd_target_item_rpc(int slot_id, String item_data) {
+	Ref<ItemInstance> ii;
+	ii.instance();
+	ii->from_dict(data_as_dict(item_data));
+
+	cadd_target_item(slot_id, ii);
+}
+void Entity::cadd_target_item(int slot_id, Ref<ItemInstance> item) {
+	ERR_FAIL_COND(!_c_target_bag.is_valid());
+
+	_c_target_bag->add_item_at(slot_id, item);
+}
+
+void Entity::ons_target_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+	ORPC(cremove_target_item, slot_id);
+}
+void Entity::sremove_target_item(const int slot_id) {
+	ERR_FAIL_COND(!_s_target_bag.is_valid());
+
+	_s_target_bag->remove_item(slot_id);
+}
+void Entity::cremove_target_item(const int slot_id) {
+	ERR_FAIL_COND(!_c_target_bag.is_valid());
+	
+	_c_target_bag->remove_item(slot_id);
+}
+void Entity::cdenyremove_target_item(const int slot_id) {
+}
+void Entity::crequest_target_remove_item(const int slot_id) {
+	RPCS(sremove_target_item, slot_id);
+}
+
+void Entity::ons_target_items_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
+	ORPC(cswap_target_items, slot_id_1, slot_id_2);
+}
+void Entity::sswap_target_items(int slot_id_1, int slot_id_2) {
+	ERR_FAIL_COND(!_s_target_bag.is_valid());
+
+	_s_target_bag->swap_items(slot_id_1, slot_id_2);
+}
+void Entity::cswap_target_items(int slot_id_1, int slot_id_2) {
+	ERR_FAIL_COND(!_c_target_bag.is_valid());
+
+	_c_target_bag->swap_items(slot_id_1, slot_id_2);
+}
+void Entity::cdeny_target_item_swap(int slot_id_1, int slot_id_2) {
+}
+void Entity::crequest_target_item_swap(int slot_id_1, int slot_id_2) {
+	RPCS(sswap_target_items, slot_id_1, slot_id_2);
+}
+
+void Entity::ons_target_item_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+	ERR_FAIL_COND(!item.is_valid());
+
+	ORPC(cchange_target_item_count, slot_id, item->get_stack_size());
+}
+void Entity::cchange_target_item_count(int slot_id, int new_count) {
+	ERR_FAIL_COND(!_c_target_bag.is_valid());
+
+	Ref<ItemInstance> ii = _c_target_bag->get_item(slot_id);
+
+	ERR_FAIL_COND(!ii.is_valid());
+
+	ii->set_stack_size(new_count);
 }
 
 ////    DATA    ////
@@ -4774,6 +4968,25 @@ Entity::Entity() {
 	SET_RPC_REMOTE("setc_target_bag_rpc");
 
 	SET_RPC_REMOTE("sloot");
+	SET_RPC_REMOTE("cloot");
+
+	SET_RPC_REMOTE("cadd_item_rpc");
+	SET_RPC_REMOTE("sremove_item");
+	SET_RPC_REMOTE("cremove_item");
+	SET_RPC_REMOTE("cdenyremove_item");
+	SET_RPC_REMOTE("sswap_items");
+	SET_RPC_REMOTE("cswap_items");
+	SET_RPC_REMOTE("cdeny_item_swap");
+	SET_RPC_REMOTE("cchange_item_count");
+
+	SET_RPC_REMOTE("cadd_target_item_rpc");
+	SET_RPC_REMOTE("sremove_target_item");
+	SET_RPC_REMOTE("cremove_target_item");
+	SET_RPC_REMOTE("cdenyremove_target_item");
+	SET_RPC_REMOTE("sswap_target_items");
+	SET_RPC_REMOTE("cswap_target_items");
+	SET_RPC_REMOTE("cdeny_target_item_swap");
+	SET_RPC_REMOTE("cchange_target_item_count");
 
 	////    Data    ////
 
@@ -5652,6 +5865,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_bag", "bag"), &Entity::setc_bag);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cbag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "setc_bag", "getc_bag");
 
+	ADD_SIGNAL(MethodInfo("starget_bag_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
+	ADD_SIGNAL(MethodInfo("ctarget_bag_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
+
 	ClassDB::bind_method(D_METHOD("gets_target_bag"), &Entity::gets_target_bag);
 	ClassDB::bind_method(D_METHOD("sets_target_bag", "bag"), &Entity::sets_target_bag);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "starget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "sets_target_bag", "gets_target_bag");
@@ -5665,6 +5881,50 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("crequest_loot"), &Entity::crequest_loot);
 	ClassDB::bind_method(D_METHOD("sloot"), &Entity::sloot);
+	ClassDB::bind_method(D_METHOD("cloot"), &Entity::cloot);
+
+	//Bag
+	ClassDB::bind_method(D_METHOD("ons_item_added", "bag", "item", "slot_id"), &Entity::ons_item_added);
+	ClassDB::bind_method(D_METHOD("cadd_item_rpc", "slot_id", "item_data"), &Entity::cadd_item_rpc);
+	ClassDB::bind_method(D_METHOD("cadd_item", "slot_id", "item"), &Entity::cadd_item);
+
+	ClassDB::bind_method(D_METHOD("ons_item_removed", "bag", "item", "slot_id"), &Entity::ons_item_removed);
+	ClassDB::bind_method(D_METHOD("sremove_item", "slot_id"), &Entity::sremove_item);
+	ClassDB::bind_method(D_METHOD("cremove_item", "slot_id"), &Entity::cremove_item);
+	ClassDB::bind_method(D_METHOD("cdenyremove_item", "slot_id"), &Entity::cdenyremove_item);
+	ClassDB::bind_method(D_METHOD("crequest_remove_item", "slot_id"), &Entity::crequest_remove_item);
+
+	ClassDB::bind_method(D_METHOD("ons_items_swapped", "bag", "slot_id_1", "slot_id_2"), &Entity::ons_items_swapped);
+	ClassDB::bind_method(D_METHOD("sswap_items", "slot_id_1", "slot_id_2"), &Entity::sswap_items);
+	ClassDB::bind_method(D_METHOD("cswap_items", "slot_id_1", "slot_id_2"), &Entity::cswap_items);
+	ClassDB::bind_method(D_METHOD("cdeny_item_swap", "slot_id_1", "slot_id_2"), &Entity::cdeny_item_swap);
+	ClassDB::bind_method(D_METHOD("crequest_item_swap", "slot_id_1", "slot_id_2"), &Entity::crequest_item_swap);
+
+	ClassDB::bind_method(D_METHOD("ons_item_count_changed", "bag", "item", "slot_id"), &Entity::ons_item_count_changed);
+	ClassDB::bind_method(D_METHOD("cchange_item_count", "slot_id", "new_count"), &Entity::cchange_item_count);
+
+	ClassDB::bind_method(D_METHOD("ons_overburdened", "bag"), &Entity::ons_overburdened);
+	ClassDB::bind_method(D_METHOD("ons_overburden_removed", "bag"), &Entity::ons_overburden_removed);
+
+	//target Bag
+	ClassDB::bind_method(D_METHOD("ons_target_item_added", "bag", "item", "slot_id"), &Entity::ons_target_item_added);
+	ClassDB::bind_method(D_METHOD("cadd_target_item_rpc", "slot_id", "item_data"), &Entity::cadd_target_item_rpc);
+	ClassDB::bind_method(D_METHOD("cadd_target_item", "slot_id", "item"), &Entity::cadd_target_item);
+
+	ClassDB::bind_method(D_METHOD("ons_target_item_removed", "bag", "item", "slot_id"), &Entity::ons_target_item_removed);
+	ClassDB::bind_method(D_METHOD("sremove_target_item", "slot_id"), &Entity::sremove_target_item);
+	ClassDB::bind_method(D_METHOD("cremove_target_item", "slot_id"), &Entity::cremove_target_item);
+	ClassDB::bind_method(D_METHOD("cdenyremove_target_item", "slot_id"), &Entity::cdenyremove_target_item);
+	ClassDB::bind_method(D_METHOD("crequest_target_remove_item", "slot_id"), &Entity::crequest_target_remove_item);
+
+	ClassDB::bind_method(D_METHOD("ons_target_items_swapped", "bag", "slot_id_1", "slot_id_2"), &Entity::ons_target_items_swapped);
+	ClassDB::bind_method(D_METHOD("sswap_target_items", "slot_id_1", "slot_id_2"), &Entity::sswap_target_items);
+	ClassDB::bind_method(D_METHOD("cswap_target_items", "slot_id_1", "slot_id_2"), &Entity::cswap_target_items);
+	ClassDB::bind_method(D_METHOD("cdeny_target_item_swap", "slot_id_1", "slot_id_2"), &Entity::cdeny_target_item_swap);
+	ClassDB::bind_method(D_METHOD("crequest_target_item_swap", "slot_id_1", "slot_id_2"), &Entity::crequest_target_item_swap);
+
+	ClassDB::bind_method(D_METHOD("ons_target_item_count_changed", "bag", "item", "slot_id"), &Entity::ons_target_item_count_changed);
+	ClassDB::bind_method(D_METHOD("cchange_target_item_count", "slot_id", "new_count"), &Entity::cchange_target_item_count);
 
 	//Actionbars
 

@@ -17,10 +17,11 @@ public:
 	void set_allowed_item_types(const int value);
 
 	bool add_item(Ref<ItemInstance> item);
-	void set_item(int index, Ref<ItemInstance> item);
+	void add_item_at(int index, Ref<ItemInstance> item);
 	Ref<ItemInstance> get_item(const int index);
     Ref<ItemInstance> remove_item(const int index);
     void swap_items(const int item1_index, const int item2_index);
+	void change_item_equip(int slot_id, Ref<ItemInstance> item);
     
     bool can_add_item(Ref<ItemInstance> item);
 	

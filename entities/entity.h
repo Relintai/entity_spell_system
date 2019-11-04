@@ -150,6 +150,13 @@ enum PlayerSendFlags {
 		normalfunc(normal_var);                               \
 	}
 
+#define ORPCOBJP(rpcfunc, rpc_var1, rpc_var2, normalfunc, normal_var1, normal_var2) \
+	if (is_inside_tree() && get_tree()->has_network_peer()) {                       \
+		if (get_tree()->is_network_server() && get_network_master() != 1)           \
+			rpc_id(get_network_master(), #rpcfunc, rpc_var1, rpc_var2);             \
+	}                                                                               \
+	normalfunc(normal_var1, normal_var2);
+
 // f.e. RSET(rset("property", "value"), property, value)
 #define RSET(rset_func, variable, value)                      \
 	if (is_inside_tree() && get_tree()->has_network_peer()) { \
@@ -726,6 +733,50 @@ public:
 
 	void crequest_loot(int index);
 	void sloot(int index);
+	void cloot(int index);
+
+	void ons_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void cadd_item_rpc(int slot_id, String item_data);
+	void cadd_item(int slot_id, Ref<ItemInstance> item);
+
+	//Bag
+	void ons_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void sremove_item(const int slot_id);
+	void cremove_item(const int slot_id);
+	void cdenyremove_item(const int slot_id);
+	void crequest_remove_item(const int slot_id);
+
+	void ons_items_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2);
+	void sswap_items(int slot_id_1, int slot_id_2);
+	void cswap_items(int slot_id_1, int slot_id_2);
+	void cdeny_item_swap(int slot_id_1, int slot_id_2);
+	void crequest_item_swap(int slot_id_1, int slot_id_2);
+
+	void ons_item_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void cchange_item_count(int slot_id, int new_count);
+
+	void ons_overburdened(Ref<Bag> bag);
+	void ons_overburden_removed(Ref<Bag> bag);
+
+	//Target Bag
+	void ons_target_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void cadd_target_item_rpc(int slot_id, String item_data);
+	void cadd_target_item(int slot_id, Ref<ItemInstance> item);
+
+	void ons_target_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void sremove_target_item(const int slot_id);
+	void cremove_target_item(const int slot_id);
+	void cdenyremove_target_item(const int slot_id);
+	void crequest_target_remove_item(const int slot_id);
+
+	void ons_target_items_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2);
+	void sswap_target_items(int slot_id_1, int slot_id_2);
+	void cswap_target_items(int slot_id_1, int slot_id_2);
+	void cdeny_target_item_swap(int slot_id_1, int slot_id_2);
+	void crequest_target_item_swap(int slot_id_1, int slot_id_2);
+
+	void ons_target_item_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void cchange_target_item_count(int slot_id, int new_count);
 
 	////    Data    ////
 
@@ -761,7 +812,6 @@ public:
 
 	Ref<AIFSMAction> gets_ai();
 	void sets_ai(Ref<AIFSMAction> value);
-
 
 	////    Serialization    ////
 

@@ -75,14 +75,21 @@ bool Bag::add_item(Ref<ItemInstance> item) {
 	return true;
 }
 
-void Bag::set_item(int index, Ref<ItemInstance> item) {
-	if (has_method("_set_item")) {
-		call("_set_item", index, item);
+void Bag::add_item_at(int index, Ref<ItemInstance> item) {
+	ERR_FAIL_COND(!item.is_valid());
+
+	if (has_method("_add_item_at")) {
+		call("_add_item_at", index, item);
+		return;
 	}
 
-	ERR_FAIL_INDEX(index, _items.size());
+	if (_items.size() <= index) {
+		_items.resize(index + 1);
+	}
 
 	_items.set(index, item);
+
+	emit_signal("item_added", Ref<Bag>(this), item, index);
 }
 
 Ref<ItemInstance> Bag::get_item(const int index) {
@@ -136,6 +143,19 @@ void Bag::swap_items(const int item1_index, const int item2_index) {
 	_items.set(item2_index, ii);
 
 	emit_signal("item_swapped", Ref<Bag>(this), item1_index, item2_index);
+}
+
+void Bag::change_item_equip(int slot_id, Ref<ItemInstance> item) {
+	if (has_method("_change_item_equip")) {
+		call("_change_item_equip", slot_id, item);
+		return;
+	}
+
+	ERR_FAIL_INDEX(slot_id, _items.size());
+
+	_items.set(slot_id, item);
+
+	emit_signal("change_item_equip", Ref<Bag>(this), slot_id, item);
 }
 
 bool Bag::can_add_item(const Ref<ItemInstance> item) {
@@ -327,7 +347,7 @@ Bag::~Bag() {
 
 void Bag::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "could_add"), "_add_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
-	BIND_VMETHOD(MethodInfo("_set_item", PropertyInfo(Variant::INT, "index") , PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	BIND_VMETHOD(MethodInfo("_add_item_at", PropertyInfo(Variant::INT, "index") , PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_get_item", PropertyInfo(Variant::INT, "index")));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_remove_item", PropertyInfo(Variant::INT, "index")));
 	BIND_VMETHOD(MethodInfo("_swap_items", PropertyInfo(Variant::INT, "item1_index"), PropertyInfo(Variant::INT, "item2_index")));
@@ -340,25 +360,27 @@ void Bag::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "overburdened"), "_is_overburdened"));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "has"), "_has_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemTemplate"), PropertyInfo(Variant::INT, "count")));
 	BIND_VMETHOD(MethodInfo("_remove_items", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemTemplate"), PropertyInfo(Variant::INT, "count")));
+	BIND_VMETHOD(MethodInfo("_change_item_equip", PropertyInfo(Variant::INT, "slot_id"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 
 	ADD_SIGNAL(MethodInfo("item_added", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "slot_id")));
-	ADD_SIGNAL(MethodInfo("item_set", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "slot_id")));
 	ADD_SIGNAL(MethodInfo("item_removed", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "slot_id")));
 	ADD_SIGNAL(MethodInfo("item_swapped", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::INT, "slot_id_1"), PropertyInfo(Variant::INT, "slot_id_2")));
 	ADD_SIGNAL(MethodInfo("item_count_changed", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "slot_id")));
 	ADD_SIGNAL(MethodInfo("overburdened", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
 	ADD_SIGNAL(MethodInfo("overburden_removed", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
 	ADD_SIGNAL(MethodInfo("size_changed", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag")));
+	ADD_SIGNAL(MethodInfo("change_item_equip", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::INT, "slot_id"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 
 	ClassDB::bind_method(D_METHOD("get_allowed_item_types"), &Bag::get_allowed_item_types);
 	ClassDB::bind_method(D_METHOD("set_allowed_item_types", "count"), &Bag::set_allowed_item_types);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "allowed_item_types", PROPERTY_HINT_FLAGS, ItemEnums::BINDING_STRING_ITEM_TYPE_FLAGS), "set_allowed_item_types", "get_allowed_item_types");
 
 	ClassDB::bind_method(D_METHOD("add_item", "item"), &Bag::add_item);
-	ClassDB::bind_method(D_METHOD("set_item", "index", "item"), &Bag::set_item);
+	ClassDB::bind_method(D_METHOD("add_item_at", "index", "item"), &Bag::add_item_at);
 	ClassDB::bind_method(D_METHOD("get_item", "index"), &Bag::get_item);
 	ClassDB::bind_method(D_METHOD("remove_item", "index"), &Bag::remove_item);
 	ClassDB::bind_method(D_METHOD("swap_items", "item1_index", "item2_index"), &Bag::swap_items);
+	ClassDB::bind_method(D_METHOD("change_item_equip", "index", "item"), &Bag::change_item_equip);
 
 	ClassDB::bind_method(D_METHOD("can_add_item", "item"), &Bag::can_add_item);
 
