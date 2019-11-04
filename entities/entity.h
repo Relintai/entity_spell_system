@@ -40,6 +40,9 @@
 
 #include "../data/aura_group.h"
 
+#include "../profile_manager/input/input_profile.h"
+#include "../profile_manager/profile_manager.h"
+
 class EntityData;
 class AuraData;
 class Spell;
@@ -242,6 +245,15 @@ public:
 
 	int getc_entity_data_id();
 	void setc_entity_data_id(int value);
+
+	EntityEnums::AIStates gets_ai_state() const;
+	void sets_ai_state(EntityEnums::AIStates state);
+
+	int gets_seed();
+	void sets_seed(int value);
+
+	int getc_seed();
+	void setc_seed(int value);
 
 	////     Stats    ////
 
@@ -740,6 +752,7 @@ public:
 
 	void setup();
 	virtual void _setup();
+	void setup_actionbars();
 
 	////    AI    ////
 
@@ -835,6 +848,11 @@ private:
 
 	int _s_is_dead;
 	int _c_is_dead;
+
+	EntityEnums::AIStates _sai_state;
+
+	int _s_seed;
+	int _c_seed;
 
 	////     Stats    ////
 

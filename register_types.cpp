@@ -63,8 +63,6 @@
 #include "entities/entity_resource.h"
 #include "entities/auras/aura_data.h"
 #include "entities/entity.h"
-#include "entities/player.h"
-#include "entities/mob.h"
 
 #include "data/aura_trigger_data.h"
 #include "data/aura_stat_attribute.h"
@@ -199,8 +197,6 @@ void register_entity_spell_system_types() {
 	//entities
 	ClassDB::register_class<EntityCreateInfo>();
 	ClassDB::register_class<Entity>();
-	ClassDB::register_class<Player>();
-	ClassDB::register_class<Mob>();
 
 	//spellinfos
 	ClassDB::register_class<SpellCastInfo>();

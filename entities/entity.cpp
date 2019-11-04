@@ -240,6 +240,30 @@ void Entity::setc_entity_data(Ref<EntityData> value) {
 	emit_signal("centity_data_changed", value);
 }
 
+EntityEnums::AIStates Entity::gets_ai_state() const {
+	return _sai_state;
+}
+void Entity::sets_ai_state(EntityEnums::AIStates state) {
+	_sai_state = state;
+}
+
+int Entity::gets_seed() {
+	return _s_seed;
+}
+void Entity::sets_seed(int value) {
+	_s_seed = value;
+
+	ORPC(setc_seed, value);
+}
+
+int Entity::getc_seed() {
+	return _c_seed;
+}
+void Entity::setc_seed(int value) {
+	_c_seed = value;
+}
+
+
 void Entity::setup() {
 	if (has_method("_setup")) {
 		call_multilevel("_setup");
@@ -343,6 +367,42 @@ void Entity::_setup() {
 		set_process(_s_entity_data.is_valid());
 }
 
+void Entity::setup_actionbars() {
+	if (!gets_entity_data().is_valid())
+		return;
+
+	if (is_deserialized()) {
+
+		return;
+	}
+
+	ProfileManager *pm = ProfileManager::get_instance();
+
+	if (pm != NULL) {
+		Ref<ClassProfile> cp = pm->get_class_profile(gets_entity_data()->get_id());
+
+		if (cp.is_valid()) {
+			set_actionbar_locked(cp->get_actionbar_locked());
+
+			get_action_bar_profile()->clear_action_bars();
+
+			Ref<ActionBarProfile> abp = cp->get_action_bar_profile();
+
+			get_action_bar_profile()->from_actionbar_profile(abp);
+		}
+	}
+
+	if (!gets_bag().is_valid()) {
+
+		Ref<Bag> bag;
+		bag.instance();
+
+		bag->set_size(gets_entity_data()->get_bag_size());
+
+		sets_bag(bag);
+	}
+}
+
 // AI
 
 int Entity::get_formation_index() {
@@ -388,6 +448,7 @@ Dictionary Entity::_to_dict() {
 	dict["level"] = _s_level;
 	dict["xp"] = _s_xp;
 	dict["money"] = _s_money;
+	dict["seed"] = _s_seed;
 
 	if (_s_entity_data.is_valid())
 		dict["entity_data_id"] = _s_entity_data->get_id();
@@ -559,6 +620,8 @@ void Entity::_from_dict(const Dictionary &dict) {
 	sets_money(dict.get("money", 0));
 
 	sets_entity_name(dict.get("entity_name", ""));
+
+	sets_seed(dict.get("seed", _s_seed));
 
 	////     Stats    ////
 
@@ -4505,6 +4568,11 @@ Entity::Entity() {
 	_s_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
 	_c_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
 
+	_sai_state = EntityEnums::AI_STATE_OFF;
+
+	_s_seed = 0;
+	_c_seed = _s_seed;
+
 	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
 		_s_states[i] = 0;
 	}
@@ -4555,6 +4623,7 @@ Entity::Entity() {
 	SET_RPC_REMOTE("setc_gender");
 	SET_RPC_REMOTE("setc_level");
 	SET_RPC_REMOTE("setc_xp");
+	SET_RPC_REMOTE("setc_seed");
 
 	//EntityType
 
@@ -4876,6 +4945,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("setup"), &Entity::setup);
 	ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
+	ClassDB::bind_method(D_METHOD("setup_actionbars"), &Entity::setup_actionbars);
 
 	//binds
 
@@ -5197,6 +5267,18 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_entity_type"), &Entity::getc_entity_type);
 	ClassDB::bind_method(D_METHOD("setc_entity_type", "value"), &Entity::sets_entity_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "setc_entity_type", "getc_entity_type");
+
+	ClassDB::bind_method(D_METHOD("gets_ai_state"), &Entity::gets_ai_state);
+	ClassDB::bind_method(D_METHOD("sets_ai_state", "value"), &Entity::sets_ai_state);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES), "sets_ai_state", "gets_ai_state");
+
+	ClassDB::bind_method(D_METHOD("gets_seed"), &Entity::gets_seed);
+	ClassDB::bind_method(D_METHOD("sets_seed", "value"), &Entity::sets_seed);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sseed"), "sets_seed", "gets_seed");
+
+	ClassDB::bind_method(D_METHOD("getc_seed"), &Entity::getc_seed);
+	ClassDB::bind_method(D_METHOD("setc_seed", "value"), &Entity::setc_seed);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cseed"), "setc_seed", "getc_seed");
 
 	//Interaction type
 	ClassDB::bind_method(D_METHOD("gets_entity_interaction_type"), &Entity::gets_entity_interaction_type);
