@@ -12,13 +12,6 @@ void ItemTemplate::set_id(const int value) {
 	_id = value;
 }
 
-String ItemTemplate::get_text_name() const {
-	return _text_name;
-}
-void ItemTemplate::set_text_name(const String value) {
-	_text_name = value;
-}
-
 ItemEnums::ItemType ItemTemplate::get_item_type() const {
 	return _item_type;
 }
@@ -391,7 +384,6 @@ Ref<ItemInstance> ItemTemplate::create_item_instance() {
 
 ItemTemplate::ItemTemplate() {
 	_id = 0;
-	_text_name = "";
 	_item_type = ItemEnums::ITEM_TYPE_NONE;
 	_item_sub_type = ItemEnums::ITEM_SUB_TYPE_NONE;
 	_item_sub_sub_type = ItemEnums::ITEM_SUB_SUB_TYPE_NONE;
@@ -439,9 +431,7 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_id", "count"), &ItemTemplate::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
 
-	ClassDB::bind_method(D_METHOD("get_text_name"), &ItemTemplate::get_text_name);
-	ClassDB::bind_method(D_METHOD("set_text_name", "count"), &ItemTemplate::set_text_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
 	ClassDB::bind_method(D_METHOD("get_item_type"), &ItemTemplate::get_item_type);
 	ClassDB::bind_method(D_METHOD("set_item_type", "count"), &ItemTemplate::set_item_type);

@@ -45,9 +45,6 @@ public:
 	int get_id();
 	void set_id(int value);
 
-	String get_text_name();
-	void set_text_name(String value);
-
 	String get_text_description();
 	void set_text_description(String value);
 
@@ -247,7 +244,6 @@ private:
 	int _entity_flags;
 	EntityEnums::EntityController _entity_controller;
 
-	String _text_name;
 	String _text_description;
 
 	int _money;

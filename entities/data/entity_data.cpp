@@ -16,13 +16,6 @@ void EntityData::set_id(int value) {
 	_id = value;
 }
 
-String EntityData::get_text_name() {
-	return _text_name;
-}
-void EntityData::set_text_name(String value) {
-	_text_name = value;
-}
-
 String EntityData::get_text_description() {
 	return _text_description;
 }
@@ -217,7 +210,7 @@ String EntityData::generate_name() {
 		return call("_generate_name");
 	}
 
-	return _text_name;
+	return get_name();
 }
 
 ////    SETUP    ////
@@ -1184,9 +1177,7 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_entity_controller", "value"), &EntityData::set_entity_controller);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "set_entity_controller", "get_entity_controller");
 
-	ClassDB::bind_method(D_METHOD("get_text_name"), &EntityData::get_text_name);
-	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &EntityData::set_text_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
 	ClassDB::bind_method(D_METHOD("get_text_description"), &EntityData::get_text_description);
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &EntityData::set_text_description);

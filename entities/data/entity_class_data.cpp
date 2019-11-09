@@ -15,13 +15,6 @@ void EntityClassData::set_id(int value) {
 	_id = value;
 }
 
-String EntityClassData::get_text_name() {
-	return _text_name;
-}
-void EntityClassData::set_text_name(String value) {
-	_text_name = value;
-}
-
 String EntityClassData::get_text_description() {
 	return _text_description;
 }
@@ -1050,9 +1043,7 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityClassData::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
 
-	ClassDB::bind_method(D_METHOD("get_text_name"), &EntityClassData::get_text_name);
-	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &EntityClassData::set_text_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
 	ClassDB::bind_method(D_METHOD("get_text_description"), &EntityClassData::get_text_description);
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &EntityClassData::set_text_description);

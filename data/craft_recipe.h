@@ -34,9 +34,6 @@ public:
 	int get_id();
 	void set_id(int value);
 
-	String get_text_name();
-	void set_text_name(String name);
-
 	CraftCategories get_category();
 	void set_category(CraftCategories value);
 

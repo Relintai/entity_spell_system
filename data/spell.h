@@ -140,9 +140,6 @@ public:
 	Ref<Texture> get_icon();
 	void set_icon(Ref<Texture> value);
 
-	String get_text_name();
-	void set_text_name(String value);
-
 	String get_text_description();
 	void set_text_description(String value);
 
@@ -332,7 +329,6 @@ public:
 	virtual void _calculate_initial_damage(Ref<SpellDamageInfo> data);
 	virtual void _handle_spell_damage(Ref<SpellDamageInfo> data);
 
-	String get_name();
 	String get_description(int level);
 
 	Spell();
@@ -368,7 +364,6 @@ private:
 	bool _is_local_spell;
 	Ref<Texture> _icon;
 
-	String _text_name;
 	String _text_description;
 
 	Ref<SpellEffectVisual> _visual_spell_effects;

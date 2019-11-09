@@ -62,9 +62,6 @@ public:
 	int get_rank();
 	void set_rank(int value);
 
-	String get_text_name();
-	void set_text_name(String name);
-
 	String get_text_description();
 	void set_text_description(String description);
 
@@ -413,7 +410,6 @@ private:
 	bool _hide;
 	Ref<Spell> _teaches_spell;
 
-	String _text_name;
 	String _text_description;
 	int ability_scale_data_id;
 	int _rank;

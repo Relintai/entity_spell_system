@@ -17,13 +17,6 @@ void EntitySpeciesData::set_type(EntityEnums::EntityType value) {
 	_type = value;
 }
 
-String EntitySpeciesData::get_text_name() {
-	return _text_name;
-}
-void EntitySpeciesData::set_text_name(String value) {
-	_text_name = value;
-}
-
 String EntitySpeciesData::get_text_description() {
 	return _text_description;
 }
@@ -152,9 +145,7 @@ void EntitySpeciesData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_type", "value"), &EntitySpeciesData::set_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "set_type", "get_type");
 
-	ClassDB::bind_method(D_METHOD("get_text_name"), &EntitySpeciesData::get_text_name);
-	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &EntitySpeciesData::set_text_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
 	ClassDB::bind_method(D_METHOD("get_text_description"), &EntitySpeciesData::get_text_description);
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &EntitySpeciesData::set_text_description);

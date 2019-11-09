@@ -17,9 +17,6 @@ public:
 	int get_id();
 	void set_id(int value);
 
-	String get_text_name();
-	void set_text_name(String value);
-
 	int get_num_talent_rows();
 	void set_num_talent_rows(int value);
 
@@ -39,7 +36,6 @@ protected:
 
 private:
 	int _id;
-	String _text_name;
 	Vector<Ref<TalentRowData> > _rows;
 };
 

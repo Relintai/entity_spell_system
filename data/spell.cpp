@@ -136,13 +136,6 @@ void Spell::set_icon(Ref<Texture> value) {
 	_icon = Ref<Texture>(value);
 }
 
-String Spell::get_text_name() {
-	return _text_name;
-}
-void Spell::set_text_name(String value) {
-	_text_name = value;
-}
-
 String Spell::get_text_description() {
 	return _text_description;
 }
@@ -739,10 +732,6 @@ void Spell::_handle_spell_damage(Ref<SpellDamageInfo> data) {
 	data->get_dealer()->sdeal_damage_to(data);
 }
 
-String Spell::get_name() {
-	return _text_name;
-}
-
 String Spell::get_description(int level) {
 	return _text_description;
 }
@@ -933,9 +922,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_absorb_scale_for_level"), &Spell::get_absorb_scale_for_level);
 
 	ADD_GROUP("Texts", "text");
-	ClassDB::bind_method(D_METHOD("get_text_name"), &Spell::get_text_name);
-	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &Spell::set_text_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
 	ClassDB::bind_method(D_METHOD("get_text_description"), &Spell::get_text_description);
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &Spell::set_text_description);

@@ -22,9 +22,6 @@ public:
 	EntityEnums::EntityType get_type();
 	void set_type(EntityEnums::EntityType value);
 
-	String get_text_name();
-	void set_text_name(String value);
-
 	String get_text_description();
 	void set_text_description(String value);
 
@@ -65,7 +62,6 @@ protected:
 private:
 	int _id;
 	EntityEnums::EntityType _type;
-	String _text_name;
 	String _text_description;
 
 	Ref<SpeciesModelData> _model_data;

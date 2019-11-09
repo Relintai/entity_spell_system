@@ -7,13 +7,6 @@ void SpeciesModelData::set_id(int value) {
 	_id = value;
 }
 
-String SpeciesModelData::get_text_name() {
-	return _text_name;
-}
-void SpeciesModelData::set_text_name(String value) {
-	_text_name = value;
-}
-
 Ref<PackedScene> SpeciesModelData::get_skeleton() {
 	return _skeleton;
 }
@@ -258,9 +251,7 @@ void SpeciesModelData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &SpeciesModelData::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
 
-	ClassDB::bind_method(D_METHOD("get_text_name"), &SpeciesModelData::get_text_name);
-	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &SpeciesModelData::set_text_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
 	ClassDB::bind_method(D_METHOD("get_skeleton"), &SpeciesModelData::get_skeleton);
 	ClassDB::bind_method(D_METHOD("set_skeleton", "value"), &SpeciesModelData::set_skeleton);

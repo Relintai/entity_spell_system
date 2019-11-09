@@ -10,13 +10,6 @@ void CraftRecipe::set_id(int value) {
 	_id = value;
 }
 
-String CraftRecipe::get_text_name() {
-	return _text_name;
-}
-void CraftRecipe::set_text_name(String name) {
-	_text_name = name;
-}
-
 CraftRecipe::CraftCategories CraftRecipe::get_category() {
 	return _category;
 }
@@ -117,9 +110,7 @@ void CraftRecipe::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &CraftRecipe::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
 
-	ClassDB::bind_method(D_METHOD("get_text_name"), &CraftRecipe::get_text_name);
-	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &CraftRecipe::set_text_name);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
 	ClassDB::bind_method(D_METHOD("get_category"), &CraftRecipe::get_category);
 	ClassDB::bind_method(D_METHOD("set_category", "value"), &CraftRecipe::set_category);

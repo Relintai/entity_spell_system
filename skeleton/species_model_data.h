@@ -21,9 +21,6 @@ public:
 	int get_id();
 	void set_id(int value);
 
-	String get_text_name();
-	void set_text_name(String value);
-
 	Ref<PackedScene> get_skeleton();
 	void set_skeleton(Ref<PackedScene> value);
 
@@ -90,8 +87,6 @@ protected:
 
 private:
 	int _id;
-
-	String _text_name;
 
 	Ref<PackedScene> _skeleton;
 
