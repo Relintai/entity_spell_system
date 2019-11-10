@@ -83,6 +83,11 @@ Entity *AuraData::get_caster() {
 void AuraData::set_caster(Entity *value) {
 	_caster = value;
 
+	if (_caster == _owner) {
+		_caster_path = NodePath(".");
+		return;
+	}
+
 	if (!value) {
 		_caster_path = NodePath();
 		return;

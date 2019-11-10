@@ -902,6 +902,7 @@ void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
 
 	data->set_aura(Ref<Aura>(this));
 	data->set_aura_id(get_id());
+	data->set_owner(info->get_target());
 	data->set_caster(info->get_caster());
 	data->set_tick(info->get_aura()->get_tick());
 
