@@ -376,7 +376,7 @@ Ref<ItemInstance> ItemTemplate::create_item_instance() {
 	item.instance();
 
 	//todo setup
-	ERR_EXPLAIN("NOT YET IMPLEMENTED!");
+	//ERR_EXPLAIN("NOT YET IMPLEMENTED!");
 	ERR_FAIL_V(item);
 
 	return item;

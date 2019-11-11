@@ -2538,7 +2538,7 @@ void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
 }
 
 void Entity::saura_refreshed(Ref<AuraData> aura) {
-	ERR_EXPLAIN("NYI");
+	//ERR_EXPLAIN("NYI");
 	ERR_FAIL();
 
 	ERR_FAIL_COND(!aura.is_valid());
@@ -2675,7 +2675,7 @@ void Entity::cremove_aura_dispelled(Ref<AuraData> aura) {
 }
 
 void Entity::caura_refreshed(Ref<AuraData> aura) {
-	ERR_EXPLAIN("NYI");
+	//ERR_EXPLAIN("NYI");
 	ERR_FAIL();
 
 	ERR_FAIL_COND(!aura.is_valid());
