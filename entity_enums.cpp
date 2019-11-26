@@ -7,7 +7,8 @@ const String EntityEnums::BINDING_STRING_ENTITY_CONTOLLER = "None,Player,AI,Mob"
 const String EntityEnums::BINDING_STRING_ENTITY_FLAGS = "Untargetable,Hidden,Interactable,Hostile";
 const String EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES = "None,Stun,Root,Frozen,Silenced,Disoriented,Feared,Burning,Cold,Cursed,Pacified";
 const String EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS = "Root,Pelvis,Spine,Spine 1,Spine 2,Neck,Head,Left Clavicle,Left upper Arm,Left Forearm,Left Hand,Left Thumb Base,Left Thumb End,Left Fingers Base,Left Fingers End,Right Clavicle,Right upper Arm,Right Forearm,Right Hand,Right Thumb Base,Right Thumb End,Right Fingers Base,Right Fingers End,Left Thigh,Left Calf,Left Foot,Right Thigh,Right Calf,Right Foot";
-const String EntityEnums::BINDING_STRING_AI_STATES = "Off,Rest,Patrol,Follow Path,Regenerate,Attack,Pet Follow,Pet Stop,Pet Attack";
+const String EntityEnums::BINDING_STRING_AI_STATES = "Off,Rest,Patrol,Follow Path,Regenerate,Attack";
+const String EntityEnums::BINDING_STRING_PET_STATES = "Off,Follow,Stop,Attack";
 const String EntityEnums::BINDING_STRING_ENTITY_IMMUNITY_FLAGS = "Stun,Root,Freeze,Silence,Disorient,Fear,Burning,Cold,Pacify,Magic,Poison,Physical,Curse,Bleed,Melee,Holy,Shadow,Nature,Fire,Frost,Lightning,Chaos,Slow,Crit,AOE,Damage,Fall Damage,Projectile,Debuff,Attacks";
 const String EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE = "Normal,Speak,Loot,Use,None";
 const String EntityEnums::BINDING_STRING_ENTITY_PLAYSTYLE_TYPE = "Melee,Spell,Hybrid,None";
@@ -25,7 +26,6 @@ void EntityEnums::_bind_methods() {
 	BIND_CONSTANT(PLAYER_RESOURCE_TYPES_ENERGY);
 	BIND_CONSTANT(PLAYER_RESOURCE_TYPES_TIME_ANOMALY);
 
-
 	BIND_ENUM_CONSTANT(ENITIY_TYPE_NONE);
 	BIND_ENUM_CONSTANT(ENITIY_TYPE_CREATURE);
 	BIND_ENUM_CONSTANT(ENITIY_TYPE_TOTEM);
@@ -41,19 +41,16 @@ void EntityEnums::_bind_methods() {
 	BIND_ENUM_CONSTANT(ENITIY_TYPE_DEMON);
 	BIND_ENUM_CONSTANT(ENITIY_TYPE_OBJECT);
 
-
 	BIND_ENUM_CONSTANT(ENITIY_CONTROLLER_NONE);
 	BIND_ENUM_CONSTANT(ENITIY_CONTROLLER_PLAYER);
 	BIND_ENUM_CONSTANT(ENITIY_CONTROLLER_AI);
 	BIND_ENUM_CONSTANT(ENITIY_CONTROLLER_MOB);
-
 
 	BIND_ENUM_CONSTANT(ENITIY_FLAGS_NONE);
 	BIND_ENUM_CONSTANT(ENTITY_FLAGS_UNTARGETALBE);
 	BIND_ENUM_CONSTANT(ENTITY_FLAGS_HIDDEN);
 	BIND_ENUM_CONSTANT(ENTITY_FLAGS_INTERACTABLE);
 	BIND_ENUM_CONSTANT(ENTITY_FLAGS_HOSTILE);
-
 
 	BIND_ENUM_CONSTANT(ENTITY_STATE_TYPE_FLAG_NONE);
 	BIND_ENUM_CONSTANT(ENTITY_STATE_TYPE_FLAG_STUN);
@@ -114,8 +111,7 @@ void EntityEnums::_bind_methods() {
 	BIND_ENUM_CONSTANT(SKELETON_POINT_RIGHT_CALF);
 	BIND_ENUM_CONSTANT(SKELETON_POINT_RIGHT_FOOT);
 
-	BIND_ENUM_CONSTANT(SKELETON_POINTS_MAX);
-
+	BIND_CONSTANT(SKELETON_POINTS_MAX);
 
 	BIND_ENUM_CONSTANT(AI_STATE_OFF);
 	BIND_ENUM_CONSTANT(AI_STATE_REST);
@@ -123,8 +119,12 @@ void EntityEnums::_bind_methods() {
 	BIND_ENUM_CONSTANT(AI_STATE_FOLLOW_PATH);
 	BIND_ENUM_CONSTANT(AI_STATE_REGENERATE);
 	BIND_ENUM_CONSTANT(AI_STATE_ATTACK);
-	BIND_ENUM_CONSTANT(AI_STATE_MAX);
+	BIND_CONSTANT(AI_STATE_MAX);
 
+	BIND_ENUM_CONSTANT(PET_STATE_PET_FOLLOW);
+	BIND_ENUM_CONSTANT(PET_STATE_PET_STOP);
+	BIND_ENUM_CONSTANT(PET_STATE_PET_ATTACK);
+	BIND_CONSTANT(PET_STATE_MAX);
 
 	BIND_ENUM_CONSTANT(ENTITY_IMMUNITY_FLAG_NONE);
 

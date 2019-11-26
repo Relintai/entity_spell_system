@@ -60,9 +60,6 @@ void AIFSMAction::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "action_follow_path", PROPERTY_HINT_RESOURCE_TYPE, "AIAction"), "set_action", "get_action", EntityEnums::AI_STATE_FOLLOW_PATH);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "action_regenerate", PROPERTY_HINT_RESOURCE_TYPE, "AIAction"), "set_action", "get_action", EntityEnums::AI_STATE_REGENERATE);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "action_attack", PROPERTY_HINT_RESOURCE_TYPE, "AIAction"), "set_action", "get_action", EntityEnums::AI_STATE_ATTACK);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "action_pet_follow", PROPERTY_HINT_RESOURCE_TYPE, "AIAction"), "set_action", "get_action", EntityEnums::AI_STATE_PET_FOLLOW);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "action_pet_stop", PROPERTY_HINT_RESOURCE_TYPE, "AIAction"), "set_action", "get_action", EntityEnums::AI_STATE_PET_STOP);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "action_pet_attack", PROPERTY_HINT_RESOURCE_TYPE, "AIAction"), "set_action", "get_action", EntityEnums::AI_STATE_PET_ATTACK);
 
 	ClassDB::bind_method(D_METHOD("_on_set_owner"), &AIFSMAction::_on_set_owner);
 }

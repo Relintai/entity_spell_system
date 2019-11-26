@@ -16,6 +16,7 @@ public:
 	static const String BINDING_STRING_ENTITY_STATE_TYPES;
     static const String BINDING_STRING_CHARCATER_SKELETON_POINTS;
     static const String BINDING_STRING_AI_STATES;
+	static const String BINDING_STRING_PET_STATES;
     static const String BINDING_STRING_ENTITY_IMMUNITY_FLAGS;
     static const String BINDING_STRING_ENTITY_INTERACTION_TYPE;
     static const String BINDING_STRING_ENTITY_PLAYSTYLE_TYPE;
@@ -195,17 +196,22 @@ public:
 
 	enum AIStates {
 		AI_STATE_OFF = 0,
-		AI_STATE_REST = 1,
-        AI_STATE_PATROL = 2,
-        AI_STATE_FOLLOW_PATH = 3,
-		AI_STATE_REGENERATE = 4,
-		AI_STATE_ATTACK = 5,
+		AI_STATE_REST,
+        AI_STATE_PATROL,
+        AI_STATE_FOLLOW_PATH,
+		AI_STATE_REGENERATE,
+		AI_STATE_ATTACK,
 
-		AI_STATE_PET_FOLLOW = 6,
-		AI_STATE_PET_STOP = 7,
-		AI_STATE_PET_ATTACK = 8,
+		AI_STATE_MAX,
+	};
 
-		AI_STATE_MAX = 9,
+	enum PetStates {
+		PET_STATE_PET_OFF = 0,
+		PET_STATE_PET_FOLLOW,
+		PET_STATE_PET_STOP,
+		PET_STATE_PET_ATTACK,
+
+		PET_STATE_MAX,
 	};
 
 	enum EntityInteractionType {
@@ -259,5 +265,6 @@ VARIANT_ENUM_CAST(EntityEnums::EntityInteractionType);
 VARIANT_ENUM_CAST(EntityEnums::EntityClassPlaystyleType);
 VARIANT_ENUM_CAST(EntityEnums::EntityGender);
 VARIANT_ENUM_CAST(EntityEnums::EntityWindows);
+VARIANT_ENUM_CAST(EntityEnums::PetStates);
 
 #endif
