@@ -106,12 +106,7 @@ module_env.add_source_files(env.modules_sources,"loot/loot_data_base.cpp")
 module_env.add_source_files(env.modules_sources,"loot/loot_data_container.cpp")
 module_env.add_source_files(env.modules_sources,"loot/loot_data_item.cpp")
 
-module_env.add_source_files(env.modules_sources,"ai/ai_action.cpp")
-module_env.add_source_files(env.modules_sources,"ai/ai_spell_action.cpp")
-module_env.add_source_files(env.modules_sources,"ai/ai_action_container.cpp")
-module_env.add_source_files(env.modules_sources,"ai/ai_spell_action_container.cpp")
-module_env.add_source_files(env.modules_sources,"ai/ai_fsm_action.cpp")
-module_env.add_source_files(env.modules_sources,"ai/ai_spec_action.cpp")
+module_env.add_source_files(env.modules_sources,"entities/ai/entity_ai.cpp")
 
 module_env.add_source_files(env.modules_sources,"formations/ai_formation.cpp")
 

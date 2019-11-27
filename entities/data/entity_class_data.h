@@ -24,7 +24,7 @@ class ItemInstance;
 class CharacterSpec;
 class Entity;
 class SpellCastInfo;
-class AISpecAction;
+class EntityAI;
 
 class EntityClassData : public Resource {
 	GDCLASS(EntityClassData, Resource);
@@ -94,15 +94,18 @@ public:
 	Vector<Variant> get_auras();
 	void set_auras(const Vector<Variant> &auras);
 
-	//AI Actions
-	int get_num_ai_actions();
-	void set_num_ai_actions(int value);
+	//AI
+	int get_num_ais();
+	void set_num_ais(int value);
 
-	Ref<AISpecAction> get_ai_action(int index);
-	void set_ai_action(int index, Ref<AISpecAction> aura);
+	Ref<EntityAI> get_ai(int index);
+	void set_ai(int index, Ref<EntityAI> aura);
 
-	Vector<Variant> get_ai_actions();
-	void set_ai_actions(const Vector<Variant> &ai_actions);
+	Vector<Variant> get_ais();
+	void set_ais(const Vector<Variant> &ais);
+
+	Ref<EntityAI> get_ai_instance();
+	Ref<EntityAI> _get_ai_instance();
     
 	//Setup
 	void setup_resources(Entity *entity);
@@ -242,7 +245,7 @@ private:
 	Vector<Ref<Spell> > _start_spells;
 	Vector<Ref<CharacterSpec> > _specs;
 	Vector<Ref<Aura> > _auras;
-	Vector<Ref<AISpecAction> > _ai_actions;
+	Vector<Ref<EntityAI> > _ais;
 };
 
 #endif

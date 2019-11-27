@@ -86,13 +86,6 @@ void Entity::setc_entity_flags(int value) {
 	_c_entity_flags = value;
 }
 
-EntityEnums::EntityController Entity::gets_entity_controller() {
-	return _s_entity_controller;
-}
-void Entity::sets_entity_controller(EntityEnums::EntityController value) {
-	_s_entity_controller = value;
-}
-
 String Entity::gets_entity_name() {
 	return _s_entity_name;
 }
@@ -287,6 +280,8 @@ void Entity::_setup() {
 			_stats[i]->set_stat_data_entry(sde);
 		}
 
+		sets_ai(_s_entity_data->get_ai_instance());
+
 		for (int i = 0; i < _s_auras.size(); ++i) {
 			Ref<AuraData> ad = _s_auras.get(i);
 
@@ -362,6 +357,8 @@ void Entity::_setup() {
 		}
 	}
 
+	sets_ai(_s_entity_data->get_ai_instance());
+
 	if (!Engine::get_singleton()->is_editor_hint())
 		set_process(_s_entity_data.is_valid());
 }
@@ -404,18 +401,65 @@ void Entity::setup_actionbars() {
 
 // AI
 
-int Entity::get_formation_index() {
-	return _formation_index;
+int Entity::gets_is_pet() {
+	return _s_is_pet;
 }
-void Entity::set_formation_index(int value) {
-	_formation_index = value;
+void Entity::sets_is_pet(int value) {
+	_s_is_pet = value;
 }
 
-Ref<AIFSMAction> Entity::gets_ai() {
+Entity *Entity::gets_pet_owner() {
+	return _s_pet_owner;
+}
+void Entity::sets_pet_owner(Entity *entity) {
+	_s_pet_owner = entity;
+}
+void Entity::sets_pet_owner_bind(Node *entity) {
+	if (!entity) {
+		return;
+	}
+
+	Entity *e = cast_to<Entity>(entity);
+
+	if (!e) {
+		return;
+	}
+
+	return sets_pet_owner(e);
+}
+
+int Entity::gets_pet_formation_index() {
+	return _s_pet_formation_index;
+}
+void Entity::sets_pet_formation_index(int value) {
+	_s_pet_formation_index = value;
+}
+
+EntityEnums::PetStates Entity::gets_pet_state() {
+	return _s_pet_state;
+}
+void Entity::sets_pet_state(EntityEnums::PetStates value) {
+	_s_pet_state = value;
+}
+
+EntityEnums::EntityController Entity::gets_entity_controller() {
+	return _s_entity_controller;
+}
+void Entity::sets_entity_controller(EntityEnums::EntityController value) {
+	_s_entity_controller = value;
+}
+
+Ref<EntityAI> Entity::gets_ai() {
 	return _s_ai;
 }
-void Entity::sets_ai(Ref<AIFSMAction> value) {
+void Entity::sets_ai(Ref<EntityAI> value) {
+	if (_s_ai.is_valid()) {
+		_s_ai->set_owner(NULL);
+		_s_ai.unref();
+	}
+
 	_s_ai = value;
+	_s_ai->set_owner(this);
 }
 
 ////    Serialization    ////
@@ -4641,6 +4685,15 @@ void Entity::update(float delta) {
 			}
 		}
 	}
+
+	if (ISSERVER()) {
+		if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai->get_enabled()) {
+			if (_s_is_pet)
+				_s_ai->pet_update(delta);
+			else
+				_s_ai->update(delta);
+		}
+	}
 }
 
 String Entity::random_name() {
@@ -4882,8 +4935,6 @@ Entity::Entity() {
 	_s_entity_flags = 0;
 	_c_entity_flags = 0;
 
-	_s_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
-
 	_s_target = NULL;
 	_c_target = NULL;
 
@@ -4902,7 +4953,12 @@ Entity::Entity() {
 		_stats[i] = s;
 	}
 
-	_formation_index = 0;
+	_s_is_pet = false;
+	_s_pet_owner = NULL;
+	_s_pet_formation_index = 0;
+	_s_pet_state = EntityEnums::PET_STATE_PET_OFF;
+
+	_s_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
 
 	SET_RPC_REMOTE("csend_request_rank_increase");
 	SET_RPC_REMOTE("csend_request_rank_decrease");
@@ -5140,6 +5196,8 @@ Entity::~Entity() {
 	_s_seen_by.clear();
 
 	_s_ai.unref();
+
+	_s_pets.clear();
 }
 
 void Entity::_notification(int p_what) {
@@ -5603,10 +5661,6 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_entity_flags", "value"), &Entity::setc_entity_flags);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_FLAGS), "setc_entity_flags", "getc_entity_flags");
 
-	ClassDB::bind_method(D_METHOD("gets_entity_controller"), &Entity::gets_entity_controller);
-	ClassDB::bind_method(D_METHOD("sets_entity_controller", "value"), &Entity::sets_entity_controller);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "sets_entity_controller", "gets_entity_controller");
-
 	ClassDB::bind_method(D_METHOD("gets_entity_name"), &Entity::gets_entity_name);
 	ClassDB::bind_method(D_METHOD("sets_entity_name", "value"), &Entity::sets_entity_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "sentity_name"), "sets_entity_name", "gets_entity_name");
@@ -6039,13 +6093,29 @@ void Entity::_bind_methods() {
 
 	// AI
 
-	ClassDB::bind_method(D_METHOD("get_formation_index"), &Entity::get_formation_index);
-	ClassDB::bind_method(D_METHOD("set_formation_index", "value"), &Entity::set_formation_index);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "formation_index"), "set_formation_index", "get_formation_index");
+	ClassDB::bind_method(D_METHOD("gets_is_pet"), &Entity::gets_is_pet);
+	ClassDB::bind_method(D_METHOD("sets_is_pet", "value"), &Entity::sets_is_pet);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "sis_pet"), "sets_is_pet", "gets_is_pet");
+
+	ClassDB::bind_method(D_METHOD("gets_pet_owner"), &Entity::gets_pet_owner);
+	ClassDB::bind_method(D_METHOD("sets_pet_owner", "entity"), &Entity::sets_pet_owner_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spet_owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "sets_pet_owner", "gets_pet_owner");
+
+	ClassDB::bind_method(D_METHOD("gets_pet_formation_index"), &Entity::gets_pet_formation_index);
+	ClassDB::bind_method(D_METHOD("sets_pet_formation_index", "value"), &Entity::sets_pet_formation_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spet_formation_index"), "sets_pet_formation_index", "gets_pet_formation_index");
+
+	ClassDB::bind_method(D_METHOD("gets_pet_state"), &Entity::gets_pet_state);
+	ClassDB::bind_method(D_METHOD("sets_pet_state", "value"), &Entity::sets_pet_state);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spet_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_PET_STATES), "sets_pet_state", "gets_pet_state");
+
+	ClassDB::bind_method(D_METHOD("gets_entity_controller"), &Entity::gets_entity_controller);
+	ClassDB::bind_method(D_METHOD("sets_entity_controller", "value"), &Entity::sets_entity_controller);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "sets_entity_controller", "gets_entity_controller");
 
 	ClassDB::bind_method(D_METHOD("gets_ai"), &Entity::gets_ai);
 	ClassDB::bind_method(D_METHOD("sets_ai", "value"), &Entity::sets_ai);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sai", PROPERTY_HINT_RESOURCE_TYPE, "AIFSMAction"), "sets_ai", "gets_ai");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sai", PROPERTY_HINT_RESOURCE_TYPE, "EntityAI"), "sets_ai", "gets_ai");
 
 	//Serialization
 	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));

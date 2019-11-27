@@ -1,6 +1,6 @@
 #include "entity_class_data.h"
 
-#include "../../ai/ai_spec_action.h"
+#include "../ai/entity_ai.h"
 #include "../../data/aura.h"
 #include "../../data/spell.h"
 #include "../../data/item_instance.h"
@@ -251,46 +251,63 @@ void EntityClassData::set_auras(const Vector<Variant> &auras) {
 
 ////    AI ACTIONS    ////
 
-int EntityClassData::get_num_ai_actions() {
-	if (_ai_actions.size() == 0 && _inherits.is_valid()) {
-		return _inherits->get_num_ai_actions();
+int EntityClassData::get_num_ais() {
+	if (_ais.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_num_ais();
 	}
 
-	return _ai_actions.size();
+	return _ais.size();
 }
-void EntityClassData::set_num_ai_actions(int value) {
-	_ai_actions.resize(value);
+void EntityClassData::set_num_ais(int value) {
+	_ais.resize(value);
 }
 
-Ref<AISpecAction> EntityClassData::get_ai_action(int index) {
-	if (_ai_actions.size() == 0 && _inherits.is_valid()) {
-		return _inherits->get_ai_action(index);
+Ref<EntityAI> EntityClassData::get_ai(int index) {
+	if (_ais.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_ai(index);
 	}
 
-	ERR_FAIL_INDEX_V(index, _ai_actions.size(), Ref<AISpecAction>());
+	ERR_FAIL_INDEX_V(index, _ais.size(), Ref<EntityAI>());
 
-	return _ai_actions[index];
+	return _ais[index];
 }
-void EntityClassData::set_ai_action(int index, Ref<AISpecAction> ai_action) {
-	ERR_FAIL_INDEX(index, _ai_actions.size());
+void EntityClassData::set_ai(int index, Ref<EntityAI> ai) {
+	ERR_FAIL_INDEX(index, _ais.size());
 
-	_ai_actions.set(index, ai_action);
+	_ais.set(index, ai);
 }
 
-Vector<Variant> EntityClassData::get_ai_actions() {
+Vector<Variant> EntityClassData::get_ais() {
 	Vector<Variant> r;
-	for (int i = 0; i < _ai_actions.size(); i++) {
-		r.push_back(_ai_actions[i].get_ref_ptr());
+	for (int i = 0; i < _ais.size(); i++) {
+		r.push_back(_ais[i].get_ref_ptr());
 	}
 	return r;
 }
-void EntityClassData::set_ai_actions(const Vector<Variant> &ai_actions) {
-	_ai_actions.clear();
-	for (int i = 0; i < ai_actions.size(); i++) {
-		Ref<AISpecAction> ai_action = Ref<AISpecAction>(ai_actions[i]);
+void EntityClassData::set_ais(const Vector<Variant> &ais) {
+	_ais.clear();
+	for (int i = 0; i < ais.size(); i++) {
+		Ref<EntityAI> ai = Ref<EntityAI>(ais[i]);
 
-		_ai_actions.push_back(ai_action);
+		_ais.push_back(ai);
 	}
+}
+
+Ref<EntityAI> EntityClassData::get_ai_instance() {
+	return call("_get_ai_instance");
+}
+Ref<EntityAI> EntityClassData::_get_ai_instance() {
+	if (_ais.size() > 0) {
+		Ref<EntityAI> ai = _ais.get(rand() % _ais.size());
+
+		if (ai.is_valid()) {
+			return ai->duplicate();
+		}
+	}
+
+	Ref<EntityAI> ai;
+	ai.instance();
+	return ai;
 }
 
 ////    SETUP    ////
@@ -883,7 +900,7 @@ EntityClassData::~EntityClassData() {
 	_spells.clear();
 	_specs.clear();
 	_auras.clear();
-	_ai_actions.clear();
+	_ais.clear();
 }
 
 void EntityClassData::_bind_methods() {
@@ -1118,13 +1135,18 @@ void EntityClassData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
 
 	////    AI ACTIONS    ////
-	ClassDB::bind_method(D_METHOD("get_num_ai_actions"), &EntityClassData::get_num_ai_actions);
-	ClassDB::bind_method(D_METHOD("set_num_ai_actions", "value"), &EntityClassData::set_num_ai_actions);
+	ClassDB::bind_method(D_METHOD("get_num_ais"), &EntityClassData::get_num_ais);
+	ClassDB::bind_method(D_METHOD("set_num_ais", "value"), &EntityClassData::set_num_ais);
 
-	ClassDB::bind_method(D_METHOD("get_ai_action", "index"), &EntityClassData::get_ai_action);
-	ClassDB::bind_method(D_METHOD("set_ai_action", "index", "action"), &EntityClassData::set_ai_action);
+	ClassDB::bind_method(D_METHOD("get_ai", "index"), &EntityClassData::get_ai);
+	ClassDB::bind_method(D_METHOD("set_ai", "index", "action"), &EntityClassData::set_ai);
 
-	ClassDB::bind_method(D_METHOD("get_ai_actions"), &EntityClassData::get_ai_actions);
-	ClassDB::bind_method(D_METHOD("set_ai_actions", "auras"), &EntityClassData::set_ai_actions);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ai_actions", PROPERTY_HINT_NONE, "17/17:AISpecAction", PROPERTY_USAGE_DEFAULT, "AISpecAction"), "set_ai_actions", "get_ai_actions");
+	ClassDB::bind_method(D_METHOD("get_ais"), &EntityClassData::get_ais);
+	ClassDB::bind_method(D_METHOD("set_ais", "auras"), &EntityClassData::set_ais);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ais", PROPERTY_HINT_NONE, "17/17:EntityAI", PROPERTY_USAGE_DEFAULT, "EntityAI"), "set_ais", "get_ais");
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "EntityAI"), "_get_ai_instance"));
+
+	ClassDB::bind_method(D_METHOD("get_ai_instance"), &EntityClassData::get_ai_instance);
+	ClassDB::bind_method(D_METHOD("_get_ai_instance"), &EntityClassData::_get_ai_instance);
 }

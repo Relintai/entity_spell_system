@@ -36,7 +36,7 @@
 
 #include "../profile_manager/actionbar/action_bar_profile.h"
 
-#include "../ai/ai_fsm_action.h"
+#include "./ai/entity_ai.h"
 
 #include "../data/aura_group.h"
 
@@ -207,9 +207,6 @@ public:
 
 	int getc_entity_flags();
 	void setc_entity_flags(int value);
-
-	EntityEnums::EntityController gets_entity_controller();
-	void sets_entity_controller(EntityEnums::EntityController value);
 
 	String gets_entity_name();
 	void sets_entity_name(String value);
@@ -811,11 +808,28 @@ public:
 
 	////    AI    ////
 
-	int get_formation_index();
-	void set_formation_index(int value);
+	int gets_is_pet();
+	void sets_is_pet(int value);
 
-	Ref<AIFSMAction> gets_ai();
-	void sets_ai(Ref<AIFSMAction> value);
+	Entity *gets_pet_owner();
+	void sets_pet_owner(Entity *entity);
+	void sets_pet_owner_bind(Node *entity);
+
+	int gets_pet_formation_index();
+	void sets_pet_formation_index(int value);
+
+	EntityEnums::PetStates gets_pet_state();
+	void sets_pet_state(EntityEnums::PetStates value);
+
+	EntityEnums::EntityController gets_entity_controller();
+	void sets_entity_controller(EntityEnums::EntityController value);
+
+	Ref<EntityAI> gets_ai();
+	void sets_ai(Ref<EntityAI> value);
+
+	////    Pets    ////
+
+	//TODO
 
 	////    Serialization    ////
 
@@ -952,8 +966,6 @@ private:
 	int _s_entity_flags;
 	int _c_entity_flags;
 
-	EntityEnums::EntityController _s_entity_controller;
-
 	////    Cooldowns    ////
 	Vector<Ref<Cooldown> > _s_cooldowns;
 	Vector<Ref<Cooldown> > _c_cooldowns;
@@ -1023,9 +1035,22 @@ private:
 	Ref<Bag> _c_target_bag;
 
 	//AI
+	
+	bool _s_is_pet;
+	Entity *_s_pet_owner;
 
-	int _formation_index;
-	Ref<AIFSMAction> _s_ai;
+
+	int _s_pet_formation_index;
+	EntityEnums::PetStates _s_pet_state;
+
+	EntityEnums::EntityController _s_entity_controller;
+
+	Ref<EntityAI> _s_ai;
+
+	//Pets
+
+	Vector<Entity *> _s_pets;
+	Vector<Entity *> _c_pets;
 
 	//Networking
 

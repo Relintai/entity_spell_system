@@ -1,6 +1,5 @@
 #include "entity_data.h"
 
-#include "../../ai/ai_action.h"
 #include "../../data/aura.h"
 #include "../../data/craft_recipe.h"
 #include "../../data/spell.h"
@@ -101,11 +100,29 @@ void EntityData::set_equipment_data(Ref<EquipmentData> data) {
 	_equipment_data = data;
 }
 
-Ref<AIFSMAction> EntityData::get_fsm() const {
-	return _fsm;
+Ref<EntityAI> EntityData::get_ai() const {
+	return _ai;
 }
-void EntityData::set_fsm(const Ref<AIFSMAction> fsm) {
-	_fsm = fsm;
+void EntityData::set_ai(const Ref<EntityAI> ai) {
+	_ai = ai;
+}
+Ref<EntityAI> EntityData::get_ai_instance() {
+	return call("_get_ai_instance");
+}
+Ref<EntityAI> EntityData::_get_ai_instance() {
+	if (_ai.is_valid()) {
+		return _ai->duplicate();
+	}
+
+	Ref<EntityClassData> ecd = get_entity_class_data();
+
+	if (ecd.is_valid()) {
+		return ecd->get_ai_instance();
+	}
+
+	Ref<EntityAI> ai;
+	ai.instance();
+	return ai;
 }
 
 Ref<AIFormation> EntityData::get_formation() const {
@@ -997,6 +1014,19 @@ EntityData::EntityData() {
 	_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
 }
 EntityData::~EntityData() {
+	_inherits.unref();
+
+	_entity_class_data.unref();
+	_entity_species_data.unref();
+	_equipment_data.unref();
+
+	_ai.unref();
+	_formation.unref();
+
+	_lootdb.unref();
+	_vendor_item_data.unref();
+	_item_container_data.unref();
+
 	_craft_recipes.clear();
 }
 
@@ -1204,9 +1234,14 @@ void EntityData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "equipment_data", PROPERTY_HINT_RESOURCE_TYPE, "EquipmentData"), "set_equipment_data", "get_equipment_data");
 
 	//AI
-	ClassDB::bind_method(D_METHOD("get_fsm"), &EntityData::get_fsm);
-	ClassDB::bind_method(D_METHOD("set_fsm", "value"), &EntityData::set_fsm);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fsm", PROPERTY_HINT_RESOURCE_TYPE, "AIFSMAction"), "set_fsm", "get_fsm");
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "EntityAI"), "_get_ai_instance"));
+
+	ClassDB::bind_method(D_METHOD("get_ai"), &EntityData::get_ai);
+	ClassDB::bind_method(D_METHOD("set_ai", "value"), &EntityData::set_ai);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "ai", PROPERTY_HINT_RESOURCE_TYPE, "EntityAI"), "set_ai", "get_ai");
+
+	ClassDB::bind_method(D_METHOD("get_ai_instance"), &EntityData::get_ai_instance);
+	ClassDB::bind_method(D_METHOD("_get_ai_instance"), &EntityData::_get_ai_instance);
 
 	ClassDB::bind_method(D_METHOD("get_formation"), &EntityData::get_formation);
 	ClassDB::bind_method(D_METHOD("set_formation", "value"), &EntityData::set_formation);

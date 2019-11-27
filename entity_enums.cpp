@@ -3,7 +3,7 @@
 const String EntityEnums::BINDING_STRING_PLAYER_RESOURCE_TYPES = "None,Rage,Mana,Energy,Time Anomaly";
 
 const String EntityEnums::BINDING_STRING_ENTITY_TYPES = "None,Creature,Totem,Idol,Humanoid,Mechanical,Beast,Dragonkin,Elemental,Ghost,Energy,Anomaly,Demon,Object";
-const String EntityEnums::BINDING_STRING_ENTITY_CONTOLLER = "None,Player,AI,Mob";
+const String EntityEnums::BINDING_STRING_ENTITY_CONTOLLER = "None,Player,AI";
 const String EntityEnums::BINDING_STRING_ENTITY_FLAGS = "Untargetable,Hidden,Interactable,Hostile";
 const String EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES = "None,Stun,Root,Frozen,Silenced,Disoriented,Feared,Burning,Cold,Cursed,Pacified";
 const String EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS = "Root,Pelvis,Spine,Spine 1,Spine 2,Neck,Head,Left Clavicle,Left upper Arm,Left Forearm,Left Hand,Left Thumb Base,Left Thumb End,Left Fingers Base,Left Fingers End,Right Clavicle,Right upper Arm,Right Forearm,Right Hand,Right Thumb Base,Right Thumb End,Right Fingers Base,Right Fingers End,Left Thigh,Left Calf,Left Foot,Right Thigh,Right Calf,Right Foot";
@@ -44,7 +44,6 @@ void EntityEnums::_bind_methods() {
 	BIND_ENUM_CONSTANT(ENITIY_CONTROLLER_NONE);
 	BIND_ENUM_CONSTANT(ENITIY_CONTROLLER_PLAYER);
 	BIND_ENUM_CONSTANT(ENITIY_CONTROLLER_AI);
-	BIND_ENUM_CONSTANT(ENITIY_CONTROLLER_MOB);
 
 	BIND_ENUM_CONSTANT(ENITIY_FLAGS_NONE);
 	BIND_ENUM_CONSTANT(ENTITY_FLAGS_UNTARGETALBE);

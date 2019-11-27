@@ -25,7 +25,7 @@
 
 #include "../../skeleton/entity_species_data.h"
 
-#include "../../ai/ai_fsm_action.h"
+#include "../ai/entity_ai.h"
 #include "../../formations/ai_formation.h"
 
 class Aura;
@@ -81,8 +81,10 @@ public:
 	Ref<EquipmentData> get_equipment_data();
 	void set_equipment_data(Ref<EquipmentData> data);
 
-	Ref<AIFSMAction> get_fsm() const;
-	void set_fsm(const Ref<AIFSMAction> fsm);
+	Ref<EntityAI> get_ai() const;
+	void set_ai(const Ref<EntityAI> ai);
+	Ref<EntityAI> get_ai_instance();
+	Ref<EntityAI> _get_ai_instance();
 
 	Ref<AIFormation> get_formation() const;
 	void set_formation(const Ref<AIFormation> data);
@@ -253,7 +255,7 @@ private:
 	Ref<EntitySpeciesData> _entity_species_data;
 	Ref<EquipmentData> _equipment_data;
 
-	Ref<AIFSMAction> _fsm;
+	Ref<EntityAI> _ai;
 	Ref<AIFormation> _formation;
 
 	Ref<LootDataBase> _lootdb;
