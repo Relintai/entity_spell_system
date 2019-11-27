@@ -36,3 +36,14 @@ Right now everything wokrs authoritatively, except for movement. FYI Movement is
 Everything is called the remotesync way, but instead of remotesync, I have c++ macros, which sends the rpc, and then calls the given function directly aswell.
 
 For usage check the main game's repo.
+
+## 2D games
+
+#### At the moment I`m only focusing on 3D, it might not copile at all like this, if you run into any problems feel free to open an issue, or a pr.
+
+The modules uses 3D by default, however it can be compiled to work with 2D games, you need to add `entities_2d=yes` to your scons command.
+
+For example
+
+```scons -j2 platform=x11 target=release_debug entities_2d=yes```
+
