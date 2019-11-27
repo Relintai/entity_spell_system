@@ -207,17 +207,6 @@ public:
 	void con_equip_fail(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 	void con_equip_fail_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 
-    //    AI    //
-	void sai_follow(Entity *entity);
-	void sai_rest(Entity *entity);
-	void sai_regenerate(Entity *entity);
-	void sai_attack(Entity *entity);
-
-	void sai_follow_bind(Node *entity);
-	void sai_rest_bind(Node *entity);
-	void sai_regenerate_bind(Node *entity);
-	void sai_attack_bind(Node *entity);
-
 	EntityClassData();
 	~EntityClassData();
 

@@ -930,78 +930,6 @@ void EntityData::con_equip_fail_bind(Node *entity, ItemEnums::EquipSlots equip_s
 	con_equip_fail(e, equip_slot, item, old_item, bag_slot);
 }
 
-//AI
-
-void EntityData::sai_follow(Entity *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	if (has_method("_sai_follow"))
-		call("_sai_follow", entity);
-	else if (_entity_class_data.is_valid())
-		_entity_class_data->sai_follow(entity);
-}
-void EntityData::sai_rest(Entity *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	if (has_method("_sai_rest"))
-		call("_sai_rest", entity);
-	else if (_entity_class_data.is_valid())
-		_entity_class_data->sai_rest(entity);
-}
-void EntityData::sai_regenerate(Entity *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	if (has_method("_sai_regenerate"))
-		call("_sai_regenerate", entity);
-	else if (_entity_class_data.is_valid())
-		_entity_class_data->sai_regenerate(entity);
-}
-void EntityData::sai_attack(Entity *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	if (has_method("_sai_attack"))
-		call("_sai_attack", entity);
-	else if (_entity_class_data.is_valid())
-		_entity_class_data->sai_attack(entity);
-}
-
-void EntityData::sai_follow_bind(Node *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(e == NULL);
-
-	sai_follow(e);
-}
-void EntityData::sai_rest_bind(Node *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(e == NULL);
-
-	sai_rest(e);
-}
-void EntityData::sai_regenerate_bind(Node *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(e == NULL);
-
-	sai_regenerate(e);
-}
-void EntityData::sai_attack_bind(Node *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(e == NULL);
-
-	sai_attack(e);
-}
-
 EntityData::EntityData() {
 	_id = 0;
 	_money = 0;
@@ -1184,12 +1112,6 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_equip_fail", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityData::son_equip_fail_bind);
 	ClassDB::bind_method(D_METHOD("con_equip_success", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityData::con_equip_success_bind);
 	ClassDB::bind_method(D_METHOD("con_equip_fail", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityData::con_equip_fail_bind);
-
-	//AI
-	ClassDB::bind_method(D_METHOD("sai_follow", "entity"), &EntityData::sai_follow_bind);
-	ClassDB::bind_method(D_METHOD("sai_rest", "entity"), &EntityData::sai_rest_bind);
-	ClassDB::bind_method(D_METHOD("sai_regenerate", "entity"), &EntityData::sai_regenerate_bind);
-	ClassDB::bind_method(D_METHOD("sai_attack", "entity"), &EntityData::sai_attack_bind);
 
 	ClassDB::bind_method(D_METHOD("get_id"), &EntityData::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityData::set_id);

@@ -823,70 +823,6 @@ void EntityClassData::con_equip_fail_bind(Node *entity, ItemEnums::EquipSlots eq
 	con_equip_fail(e, equip_slot, item, old_item, bag_slot);
 }
 
-//AI
-
-void EntityClassData::sai_follow(Entity *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	if (has_method("_sai_follow"))
-		call("_sai_follow", entity);
-}
-void EntityClassData::sai_rest(Entity *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	if (has_method("_sai_rest"))
-		call("_sai_rest", entity);
-}
-void EntityClassData::sai_regenerate(Entity *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	if (has_method("_sai_regenerate"))
-		call("_sai_regenerate", entity);
-}
-void EntityClassData::sai_attack(Entity *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	if (has_method("_sai_attack"))
-		call("_sai_attack", entity);
-}
-
-void EntityClassData::sai_follow_bind(Node *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(e == NULL);
-
-	sai_follow(e);
-}
-void EntityClassData::sai_rest_bind(Node *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(e == NULL);
-
-	sai_rest(e);
-}
-void EntityClassData::sai_regenerate_bind(Node *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(e == NULL);
-
-	sai_regenerate(e);
-}
-void EntityClassData::sai_attack_bind(Node *entity) {
-	ERR_FAIL_COND(entity == NULL);
-
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(e == NULL);
-
-	sai_attack(e);
-}
-
 EntityClassData::EntityClassData() {
 	_id = 0;
 	_player_resource_type = 0;
@@ -969,11 +905,6 @@ void EntityClassData::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_son_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	BIND_VMETHOD(MethodInfo("_sai_follow", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	BIND_VMETHOD(MethodInfo("_sai_rest", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	BIND_VMETHOD(MethodInfo("_sai_regenerate", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	BIND_VMETHOD(MethodInfo("_sai_attack", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-
 	BIND_VMETHOD(MethodInfo("_son_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 	BIND_VMETHOD(MethodInfo("_son_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 
@@ -1050,11 +981,6 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_equip_fail", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityClassData::son_equip_fail_bind);
 	ClassDB::bind_method(D_METHOD("con_equip_success", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityClassData::con_equip_success_bind);
 	ClassDB::bind_method(D_METHOD("con_equip_fail", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityClassData::con_equip_fail_bind);
-
-	ClassDB::bind_method(D_METHOD("sai_follow", "entity"), &EntityClassData::sai_follow_bind);
-	ClassDB::bind_method(D_METHOD("sai_rest", "entity"), &EntityClassData::sai_rest_bind);
-	ClassDB::bind_method(D_METHOD("sai_regenerate", "entity"), &EntityClassData::sai_regenerate_bind);
-	ClassDB::bind_method(D_METHOD("sai_attack", "entity"), &EntityClassData::sai_attack_bind);
 
 	ClassDB::bind_method(D_METHOD("get_id"), &EntityClassData::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityClassData::set_id);
