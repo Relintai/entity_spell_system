@@ -157,6 +157,18 @@ void Bag::change_item_equip(int slot_id, Ref<ItemInstance> item) {
 	emit_signal("change_item_equip", Ref<Bag>(this), slot_id, item);
 }
 
+void Bag::set_item_count(int slot_id, int new_count) {
+	ERR_FAIL_INDEX(slot_id, _items.size());
+
+	Ref<ItemInstance> ii = _items.get(slot_id);
+
+	ERR_FAIL_COND(!ii.is_valid());
+
+	ii->set_stack_size(new_count);
+
+	emit_signal("item_count_changed", Ref<Bag>(this), ii, slot_id);
+}
+
 bool Bag::can_add_item(const Ref<ItemInstance> item) {
 	if (has_method("_can_add_item")) {
 		return call("_can_add_item", item);

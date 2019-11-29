@@ -4455,11 +4455,7 @@ void Entity::ons_item_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int sl
 void Entity::cchange_item_count(int slot_id, int new_count) {
 	ERR_FAIL_COND(!_c_bag.is_valid());
 
-	Ref<ItemInstance> ii = _c_bag->get_item(slot_id);
-
-	ERR_FAIL_COND(!ii.is_valid());
-
-	ii->set_stack_size(new_count);
+	_c_bag->set_item_count(slot_id, new_count);
 }
 
 void Entity::ons_overburdened(Ref<Bag> bag) {

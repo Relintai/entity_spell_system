@@ -22,6 +22,7 @@ public:
     Ref<ItemInstance> remove_item(const int index);
     void swap_items(const int item1_index, const int item2_index);
 	void change_item_equip(int slot_id, Ref<ItemInstance> item);
+	void set_item_count(int slot_id, int new_count);
     
     bool can_add_item(Ref<ItemInstance> item);
 	

@@ -41,6 +41,8 @@ int ItemInstance::get_stack_size() {
 }
 void ItemInstance::set_stack_size(int value) {
 	_stack_size = value;
+
+	emit_signal("stack_size_changed", Ref<ItemInstance>(this));
 }
 
 Dictionary ItemInstance::to_dict() {
@@ -100,6 +102,7 @@ ItemInstance::~ItemInstance() {
 
 
 void ItemInstance::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("stack_size_changed", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 
 	ClassDB::bind_method(D_METHOD("get_item_template"), &ItemInstance::get_item_template);
 	ClassDB::bind_method(D_METHOD("set_item_template", "value"), &ItemInstance::set_item_template);
