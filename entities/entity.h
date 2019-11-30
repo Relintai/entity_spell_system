@@ -20,7 +20,7 @@
 #include "core/vector.h"
 
 #include "../data/spell.h"
-#include "entity_resource.h"
+#include "./resources/entity_resource.h"
 #include "stats/stat.h"
 
 #include "../entity_data_manager.h"

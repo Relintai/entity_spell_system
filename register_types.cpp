@@ -60,7 +60,7 @@
 #include "pipelines/spell_damage_info.h"
 #include "pipelines/spell_heal_info.h"
 
-#include "entities/entity_resource.h"
+#include "entities/resources/entity_resource.h"
 #include "entities/auras/aura_data.h"
 #include "entities/entity.h"
 

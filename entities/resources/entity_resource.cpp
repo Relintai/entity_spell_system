@@ -1,7 +1,7 @@
 #include "entity_resource.h"
 
-#include "entity.h"
-#include "stats/stat.h"
+#include "../entity.h"
+#include "../stats/stat.h"
 
 bool EntityResource::get_dirty() {
 	return _dirty;
