@@ -61,7 +61,9 @@
 #include "pipelines/spell_heal_info.h"
 
 #include "entities/resources/entity_resource_data.h"
+#include "entities/resources/entity_resource_cost_data.h"
 #include "entities/resources/entity_resource.h"
+
 #include "entities/auras/aura_data.h"
 #include "entities/entity.h"
 
@@ -187,6 +189,7 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<AuraData>();
 
 	ClassDB::register_class<EntityResourceData>();
+	ClassDB::register_class<EntityResourceCostData>();
 	ClassDB::register_class<EntityResource>();
 
 	ClassDB::register_class<AuraTriggerData>();
