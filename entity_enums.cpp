@@ -1,7 +1,5 @@
 #include "entity_enums.h"
 
-const String EntityEnums::BINDING_STRING_PLAYER_RESOURCE_TYPES = "None,Rage,Mana,Energy,Time Anomaly";
-
 const String EntityEnums::BINDING_STRING_ENTITY_TYPES = "None,Creature,Totem,Idol,Humanoid,Mechanical,Beast,Dragonkin,Elemental,Ghost,Energy,Anomaly,Demon,Object";
 const String EntityEnums::BINDING_STRING_ENTITY_CONTOLLER = "None,Player,AI";
 const String EntityEnums::BINDING_STRING_ENTITY_FLAGS = "Untargetable,Hidden,Interactable,Hostile";
@@ -15,16 +13,11 @@ const String EntityEnums::BINDING_STRING_ENTITY_PLAYSTYLE_TYPE = "Melee,Spell,Hy
 const String EntityEnums::BINDING_STRING_ENTITY_GENDER = "Male,Female";
 const String EntityEnums::BINDING_STRING_ENTITY_WINDOWS = "Loot,Container,Vendor";
 
-const int EntityEnums::PLAYER_RESOURCE_TYPES_RAGE = 0;
-const int EntityEnums::PLAYER_RESOURCE_TYPES_MANA = 1;
-const int EntityEnums::PLAYER_RESOURCE_TYPES_ENERGY = 2;
-const int EntityEnums::PLAYER_RESOURCE_TYPES_TIME_ANOMALY = 3;
-
 void EntityEnums::_bind_methods() {
-	BIND_CONSTANT(PLAYER_RESOURCE_TYPES_RAGE);
-	BIND_CONSTANT(PLAYER_RESOURCE_TYPES_MANA);
-	BIND_CONSTANT(PLAYER_RESOURCE_TYPES_ENERGY);
-	BIND_CONSTANT(PLAYER_RESOURCE_TYPES_TIME_ANOMALY);
+	BIND_CONSTANT(ENTITY_RESOURCE_TYPES_MANA);
+	BIND_CONSTANT(ENTITY_RESOURCE_TYPES_RAGE);
+	BIND_CONSTANT(ENTITY_RESOURCE_TYPES_ENERGY);
+	BIND_CONSTANT(ENTITY_RESOURCE_TYPES_TIME_ANOMALY);
 
 	BIND_ENUM_CONSTANT(ENITIY_TYPE_NONE);
 	BIND_ENUM_CONSTANT(ENITIY_TYPE_CREATURE);

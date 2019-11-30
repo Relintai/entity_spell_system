@@ -72,6 +72,51 @@ void EntityClassData::set_stat_data(Ref<StatData> value) {
 	_stat_data = value;
 }
 
+////    Entity Resources    ////
+
+int EntityClassData::get_num_entity_resources() {
+	if (_entity_resources.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_num_entity_resources();
+	}
+
+	return _entity_resources.size();
+}
+void EntityClassData::set_num_entity_resources(int value) {
+	_entity_resources.resize(value);
+}
+
+Ref<EntityResourceData> EntityClassData::get_entity_resource(int index) const {
+	if (_entity_resources.size() == 0 && _inherits.is_valid()) {
+		return _inherits->get_entity_resource(index);
+	}
+
+	ERR_FAIL_INDEX_V(index, _entity_resources.size(), Ref<EntityResourceData>());
+
+	return _entity_resources[index];
+}
+void EntityClassData::set_entity_resource(int index, Ref<EntityResourceData> entity_resource) {
+	ERR_FAIL_INDEX(index, _entity_resources.size());
+
+	_entity_resources.set(index, Ref<EntityResourceData>(entity_resource));
+}
+
+Vector<Variant> EntityClassData::get_entity_resources() {
+	Vector<Variant> r;
+	for (int i = 0; i < _entity_resources.size(); i++) {
+		r.push_back(_entity_resources[i].get_ref_ptr());
+	}
+	return r;
+}
+void EntityClassData::set_entity_resources(const Vector<Variant> &entity_resources) {
+	_entity_resources.clear();
+	for (int i = 0; i < entity_resources.size(); i++) {
+		Ref<EntityResourceData> entity_resource = Ref<EntityResourceData>(entity_resources[i]);
+
+		_entity_resources.push_back(entity_resource);
+	}
+}
+
+
 ////    SPECS    ////
 
 int EntityClassData::get_num_specs() {
@@ -313,10 +358,23 @@ Ref<EntityAI> EntityClassData::_get_ai_instance() {
 ////    SETUP    ////
 
 void EntityClassData::setup_resources(Entity *entity) {
+	if (_inherits.is_valid())
+		_inherits->setup_resources(entity);
+
 	if (has_method("_setup_resources"))
 		call("_setup_resources", entity);
-	else if (_inherits.is_valid())
-		_inherits->setup_resources(entity);
+}
+
+void EntityClassData::_setup_resources(Node *entity) {
+	Entity *ent = Object::cast_to<Entity>(entity);
+
+	for (int i = 0; i < _entity_resources.size(); ++i) {
+		Ref<EntityResourceData> res = _entity_resources.get(i);
+
+		if (res.is_valid()) {
+			ent->adds_resource(res->get_entity_resource_instance());
+		}
+	}
 }
 
 void EntityClassData::start_casting(int spell_id, Entity *caster, float spellScale) {
@@ -1015,6 +1073,19 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_playstyle_type"), &EntityClassData::get_playstyle_type);
 	ClassDB::bind_method(D_METHOD("set_playstyle_type", "value"), &EntityClassData::set_playstyle_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "playstyle_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_PLAYSTYLE_TYPE), "set_playstyle_type", "get_playstyle_type");
+
+	////    Entity Resources    ////
+	ClassDB::bind_method(D_METHOD("get_num_entity_resources"), &EntityClassData::get_num_entity_resources);
+	ClassDB::bind_method(D_METHOD("set_num_entity_resources", "value"), &EntityClassData::set_num_entity_resources);
+
+	ClassDB::bind_method(D_METHOD("get_entity_resource", "index"), &EntityClassData::get_entity_resource);
+	ClassDB::bind_method(D_METHOD("set_entity_resource", "index", "entity_resource"), &EntityClassData::set_entity_resource);
+
+	ClassDB::bind_method(D_METHOD("get_entity_resources"), &EntityClassData::get_entity_resources);
+	ClassDB::bind_method(D_METHOD("set_entity_resources", "entity_resources"), &EntityClassData::set_entity_resources);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_resources", PROPERTY_HINT_NONE, "17/17:EntityResourceData", PROPERTY_USAGE_DEFAULT, "EntityResourceData"), "set_entity_resources", "get_entity_resources");
+
+	ClassDB::bind_method(D_METHOD("_setup_resources", "entity"), &EntityClassData::_setup_resources);
 
 	////    Specs    ////
 	ClassDB::bind_method(D_METHOD("get_num_specs"), &EntityClassData::get_num_specs);

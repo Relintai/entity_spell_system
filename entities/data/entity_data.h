@@ -111,7 +111,6 @@ public:
 
 	//Setup
 	void setup_resources(Entity *entity);
-	//void _setup_resources(Entity *entity);
 
 	////    Interactions    ////
 	bool cans_interact(Entity *entity);

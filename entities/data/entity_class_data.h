@@ -17,6 +17,8 @@
 #include "../../utility/category_cooldown.h"
 #include "../../item_enums.h"
 
+#include "../resources/entity_resource_data.h"
+
 class Aura;
 class Spell;
 class Entity;
@@ -53,6 +55,16 @@ public:
 
 	EntityEnums::EntityClassPlaystyleType get_playstyle_type();
 	void set_playstyle_type(EntityEnums::EntityClassPlaystyleType playstyle_type);
+
+	//Entity Resources
+	int get_num_entity_resources();
+	void set_num_entity_resources(int value);
+
+	Ref<EntityResourceData> get_entity_resource(int index) const;
+	void set_entity_resource(int index, Ref<EntityResourceData> entity_resources);
+
+	Vector<Variant> get_entity_resources();
+	void set_entity_resources(const Vector<Variant> &entity_resourcess);
 
     //Specs
 	int get_num_specs();
@@ -109,7 +121,7 @@ public:
     
 	//Setup
 	void setup_resources(Entity *entity);
-	//void _setup_resources(Entity *entity);
+	void _setup_resources(Node *entity);
 
 	////    Spell System    ////
 
@@ -230,9 +242,10 @@ private:
 
 	Ref<StatData> _stat_data;
 
+	Vector<Ref<EntityResource> > _entity_resources;
+	Vector<Ref<CharacterSpec> > _specs;
 	Vector<Ref<Spell> > _spells;
 	Vector<Ref<Spell> > _start_spells;
-	Vector<Ref<CharacterSpec> > _specs;
 	Vector<Ref<Aura> > _auras;
 	Vector<Ref<EntityAI> > _ais;
 };

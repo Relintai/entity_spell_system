@@ -8,8 +8,6 @@ class EntityEnums : public Object {
 	GDCLASS(EntityEnums, Object);
 
 public:
-	static const String BINDING_STRING_PLAYER_RESOURCE_TYPES;
-
 	static const String BINDING_STRING_ENTITY_TYPES;
 	static const String BINDING_STRING_ENTITY_CONTOLLER;
 	static const String BINDING_STRING_ENTITY_FLAGS;
@@ -22,11 +20,6 @@ public:
     static const String BINDING_STRING_ENTITY_PLAYSTYLE_TYPE;
     static const String BINDING_STRING_ENTITY_GENDER;
 	static const String BINDING_STRING_ENTITY_WINDOWS;
-
-	static const int PLAYER_RESOURCE_TYPES_RAGE;
-	static const int PLAYER_RESOURCE_TYPES_MANA;
-	static const int PLAYER_RESOURCE_TYPES_ENERGY;
-	static const int PLAYER_RESOURCE_TYPES_TIME_ANOMALY;
 
 	enum EntityType {
 		ENITIY_TYPE_NONE,
@@ -49,6 +42,13 @@ public:
 		ENITIY_CONTROLLER_NONE,
 		ENITIY_CONTROLLER_PLAYER,
 		ENITIY_CONTROLLER_AI
+	};
+
+	enum {
+		ENTITY_RESOURCE_TYPES_MANA = 0,
+		ENTITY_RESOURCE_TYPES_RAGE,
+		ENTITY_RESOURCE_TYPES_ENERGY,
+		ENTITY_RESOURCE_TYPES_TIME_ANOMALY,
 	};
 
 	enum EntityFlags {
