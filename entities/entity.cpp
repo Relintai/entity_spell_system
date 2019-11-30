@@ -1553,16 +1553,16 @@ Ref<EntityResource> Entity::gets_resource(int index) {
 
 	return _s_resources.get(index);
 }
-Ref<EntityResource> Entity::gets_resource_type(int type) {
+Ref<EntityResource> Entity::gets_resource_type(int id) {
 	for (int i = 0; i < _s_resources.size(); ++i) {
 		Ref<EntityResource> r = _s_resources.get(i);
 
-		if (r->get_resource_type() == type) {
+		if (r->get_data_id() == id) {
 			return r;
 		}
 	}
 
-	return Ref<EntityResource>(NULL);
+	return Ref<EntityResource>();
 }
 void Entity::adds_resource(Ref<EntityResource> resource) {
 	ERR_FAIL_COND(!resource.is_valid());
@@ -1595,7 +1595,7 @@ Ref<EntityResource> Entity::getc_resource_type(int type) {
 	for (int i = 0; i < _c_resources.size(); ++i) {
 		Ref<EntityResource> r = _c_resources.get(i);
 
-		if (r->get_resource_type() == type) {
+		if (r->get_data_id() == type) {
 			return r;
 		}
 	}

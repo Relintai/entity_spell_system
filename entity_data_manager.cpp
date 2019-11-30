@@ -47,35 +47,59 @@ Ref<XPData> EntityDataManager::get_xp_data() {
 	return _xp_data;
 }
 
+String EntityDataManager::get_entity_resources_folder() {
+	return _entity_resources_folder;
+}
+void EntityDataManager::set_entity_resources_folder(String folder) {
+	_entity_resources_folder = folder;
+}
+Vector<Ref<EntityResourceData> > *EntityDataManager::get_entity_resources() {
+	return &_entity_resources;
+}
+Ref<EntityResourceData> EntityDataManager::get_entity_resource(int class_id) {
+	if (!_entity_resource_map.has(class_id))
+		return Ref<EntityResourceData>(NULL);
+
+	return _entity_resource_map.get(class_id);
+}
+Ref<EntityResourceData> EntityDataManager::get_entity_resource_index(int index) {
+	ERR_FAIL_INDEX_V(index, _entity_resources.size(), Ref<EntityResourceData>(NULL));
+
+	return _entity_resources.get(index);
+}
+int EntityDataManager::get_entity_resource_count() {
+	return _entity_resources.size();
+}
+void EntityDataManager::add_entity_resource(Ref<EntityResourceData> cls) {
+	ERR_FAIL_COND(!cls.is_valid());
+
+	_entity_resources.push_back(cls);
+	_entity_resource_map.set(cls->get_id(), cls);
+}
+
 String EntityDataManager::get_entity_datas_folder() {
 	return _entity_datas_folder;
 }
-
 void EntityDataManager::set_entity_datas_folder(String folder) {
 	_entity_datas_folder = folder;
 }
-
 Vector<Ref<EntityData> > *EntityDataManager::get_entity_datas() {
 	return &_entity_datas;
 }
-
 Ref<EntityData> EntityDataManager::get_entity_data(int class_id) {
 	if (!_entity_data_map.has(class_id))
 		return Ref<EntityData>(NULL);
 
 	return _entity_data_map.get(class_id);
 }
-
 Ref<EntityData> EntityDataManager::get_entity_data_index(int index) {
 	ERR_FAIL_INDEX_V(index, _entity_datas.size(), Ref<EntityData>(NULL));
 
 	return _entity_datas.get(index);
 }
-
 int EntityDataManager::get_entity_data_count() {
 	return _entity_datas.size();
 }
-
 void EntityDataManager::add_entity_data(Ref<EntityData> cls) {
 	ERR_FAIL_COND(!cls.is_valid());
 
@@ -649,6 +673,16 @@ void EntityDataManager::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_xp_data"), &EntityDataManager::get_xp_data);
 
+	//EntityResourceData
+	ClassDB::bind_method(D_METHOD("get_entity_resources_folder"), &EntityDataManager::get_entity_resources_folder);
+	ClassDB::bind_method(D_METHOD("set_entity_resources_folder", "folder"), &EntityDataManager::set_entity_resources_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_resources_folder"), "set_entity_resources_folder", "get_entity_resources_folder");
+
+	ClassDB::bind_method(D_METHOD("add_entity_resource", "cls"), &EntityDataManager::add_entity_resource);
+	ClassDB::bind_method(D_METHOD("get_entity_resource", "class_id"), &EntityDataManager::get_entity_resource);
+	ClassDB::bind_method(D_METHOD("get_entity_resource_index", "index"), &EntityDataManager::get_entity_resource_index);
+	ClassDB::bind_method(D_METHOD("get_entity_resource_count"), &EntityDataManager::get_entity_resource_count);
+
 	//EntityData
 	ClassDB::bind_method(D_METHOD("get_entity_datas_folder"), &EntityDataManager::get_entity_datas_folder);
 	ClassDB::bind_method(D_METHOD("set_entity_datas_folder", "folder"), &EntityDataManager::set_entity_datas_folder);
@@ -748,6 +782,9 @@ EntityDataManager::EntityDataManager() {
 
 EntityDataManager::~EntityDataManager() {
 	instance = NULL;
+
+	_entity_resources.clear();
+	_entity_resource_map.clear();
 
 	_entity_datas.clear();
 	_entity_data_map.clear();

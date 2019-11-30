@@ -22,6 +22,7 @@ class Spell;
 class EntityData;
 class CraftRecipe;
 class ItemTemplate;
+class EntityResourceData;
 
 class EntityDataManager : public Node {
 	GDCLASS(EntityDataManager, Node);
@@ -35,6 +36,14 @@ public:
 	String get_xp_data_path();
 	void set_xp_data_path(String path);
 	Ref<XPData> get_xp_data();
+
+	String get_entity_resources_folder();
+	void set_entity_resources_folder(String folder);
+	Vector<Ref<EntityResourceData> > *get_entity_resources();
+	Ref<EntityResourceData> get_entity_resource(int class_id);
+	Ref<EntityResourceData> get_entity_resource_index(int index);
+	int get_entity_resource_count();
+	void add_entity_resource(Ref<EntityResourceData> cls);
 
 	String get_entity_datas_folder();
 	void set_entity_datas_folder(String folder);
@@ -123,6 +132,10 @@ protected:
 private:
 	String _xp_data_path;
 	Ref<XPData> _xp_data;
+
+	String _entity_resources_folder;
+	Vector<Ref<EntityResourceData> > _entity_resources;
+	HashMap<int, Ref<EntityResourceData> > _entity_resource_map;
 
 	String _entity_datas_folder;
 	Vector<Ref<EntityData> > _entity_datas;

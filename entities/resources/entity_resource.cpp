@@ -2,6 +2,7 @@
 
 #include "../entity.h"
 #include "../stats/stat.h"
+#include "entity_resource_data.h"
 
 bool EntityResource::get_dirty() {
 	return _dirty;
@@ -17,13 +18,25 @@ void EntityResource::set_should_process(bool value) {
 	_should_process = value;
 }
 
-int EntityResource::get_resource_type() {
-	return _type;
+Ref<EntityResourceData>  EntityResource::get_resource_data() {
+	return _data;
 }
-void EntityResource::set_resource_type(int value) {
-	_type = value;
+void EntityResource::set_resource_data(Ref<EntityResourceData>  value) {
+	_data = value;
+
+	if (_data.is_valid())
+		_data_id = _data->get_id();
+	else
+		_data_id = 0;
 
 	emit_signal("changed", Ref<EntityResource>(this));
+}
+
+int EntityResource::get_data_id() {
+	return _data_id;
+}
+void EntityResource::set_data_id(int value) {
+	_data_id = value;
 }
 
 int EntityResource::get_current() {
@@ -113,6 +126,12 @@ void EntityResource::receivec_update_string(String str) {
 		call("_receivec_update_string", str);
 }
 
+void EntityResource::resolve_references() {
+	if (EntityDataManager::get_instance() != NULL) {
+		_data = EntityDataManager::get_instance()->get_entity_resource(_data_id);
+	}
+}
+
 Dictionary EntityResource::to_dict() {
 	return call("_to_dict");
 }
@@ -126,7 +145,7 @@ Dictionary EntityResource::_to_dict() {
 	dict["dirty"] = _dirty;
 	dict["should_process"] = _should_process;
 
-	dict["type"] = _type;
+	dict["data_id"] = _data_id;
 	dict["current"] = _current;
 
 	dict["max"] = _max;
@@ -138,7 +157,7 @@ void EntityResource::_from_dict(const Dictionary &dict) {
 
 	_dirty = dict.get("dirty", false);
 	_should_process = dict.get("should_process", false);
-	_type = dict.get("type", 0);
+	_data_id = dict.get("data_id", 0);
 	_current = dict.get("current", 0);
 	_max = dict.get("max", 0);
 }
@@ -148,7 +167,7 @@ EntityResource::EntityResource() {
 
 	_should_process = has_method("_process");
 
-	_type = 0;
+	_data_id = 0;
 	_current = 0;
 	_max = 0;
 }
@@ -162,9 +181,13 @@ void EntityResource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_should_process", "value"), &EntityResource::set_should_process);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "should_process"), "set_should_process", "get_should_process");
 
-	ClassDB::bind_method(D_METHOD("get_resource_type"), &EntityResource::get_resource_type);
-	ClassDB::bind_method(D_METHOD("set_resource_type", "value"), &EntityResource::set_resource_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "resource_type"), "set_resource_type", "get_resource_type");
+	ClassDB::bind_method(D_METHOD("get_resource_data"), &EntityResource::get_resource_data);
+	ClassDB::bind_method(D_METHOD("set_resource_data", "value"), &EntityResource::set_resource_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityResourceData"), "set_resource_data", "get_resource_data");
+
+	ClassDB::bind_method(D_METHOD("get_data_id"), &EntityResource::get_data_id);
+	ClassDB::bind_method(D_METHOD("set_data_id", "value"), &EntityResource::set_data_id);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "data_id"), "set_data_id", "get_data_id");
 
 	ClassDB::bind_method(D_METHOD("get_current"), &EntityResource::get_current);
 	ClassDB::bind_method(D_METHOD("set_current", "value"), &EntityResource::set_current);

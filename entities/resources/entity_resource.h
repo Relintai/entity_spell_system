@@ -5,6 +5,7 @@
 
 class Stat;
 class Entity;
+class EntityResourceData;
 
 class EntityResource : public Reference {
 	GDCLASS(EntityResource, Reference);
@@ -16,8 +17,11 @@ public:
 	bool get_should_process();
 	void set_should_process(bool value);
 
-	int get_resource_type();
-	void set_resource_type(int value);
+	Ref<EntityResourceData> get_resource_data();
+	void set_resource_data(Ref<EntityResourceData> value);
+
+	int get_data_id();
+	void set_data_id(int value);
 
 	int get_current();
 	void set_current(int value);
@@ -44,6 +48,8 @@ public:
 	String gets_update_string();
 	void receivec_update_string(String str);
 
+	void resolve_references();
+
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
 
@@ -59,7 +65,10 @@ private:
 	Entity *_owner;
 	bool _dirty;
 	bool _should_process;
-	int _type;
+
+	Ref<EntityResourceData> _data;
+	int _data_id;
+
 	int _current;
 	int _max;
 };
