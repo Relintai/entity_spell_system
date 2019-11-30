@@ -108,18 +108,24 @@ void EntityResource::onc_target_changed(Entity *entity, Entity *old_target) {
 		call("_ons_target_changed", entity, old_target);
 }
 
-void EntityResource::process(float delta) {
-	call("_process", delta);
+void EntityResource::process_server(float delta) {
+	call("_process_server", delta);
+}
+void EntityResource::_process_server(float delta) {
 }
 
-void EntityResource::_process(float delta) {
+void EntityResource::process_client(float delta) {
+	call("_process_client", delta);
+}
+void EntityResource::_process_client(float delta) {
 }
 
-String EntityResource::gets_update_string() {
-	if (has_method("_gets_update_string"))
-		return call("_gets_update_string");
-
-	return "";
+void EntityResource::receivec_update(int current) {
+	_current = current;
+}
+void EntityResource::receivec_update_full(int current, int max) {
+	_current = current;
+	_max = max;
 }
 void EntityResource::receivec_update_string(String str) {
 	if (has_method("_receivec_update_string"))
@@ -163,6 +169,7 @@ void EntityResource::_from_dict(const Dictionary &dict) {
 }
 
 EntityResource::EntityResource() {
+	_server_side = false;
 	_dirty = false;
 
 	_should_process = has_method("_process");
@@ -170,6 +177,10 @@ EntityResource::EntityResource() {
 	_data_id = 0;
 	_current = 0;
 	_max = 0;
+}
+
+EntityResource::~EntityResource() {
+	_data.unref();
 }
 
 void EntityResource::_bind_methods() {
@@ -210,7 +221,14 @@ void EntityResource::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_ons_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_onc_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	BIND_VMETHOD(MethodInfo("_process", PropertyInfo(Variant::REAL, "delta")));
+	BIND_VMETHOD(MethodInfo("_process_server", PropertyInfo(Variant::REAL, "delta")));
+	BIND_VMETHOD(MethodInfo("_process_client", PropertyInfo(Variant::REAL, "delta")));
+
+	ClassDB::bind_method(D_METHOD("process_server", "delta"), &EntityResource::process_server);
+	ClassDB::bind_method(D_METHOD("_process_server", "delta"), &EntityResource::_process_server);
+
+	ClassDB::bind_method(D_METHOD("process_client", "delta"), &EntityResource::process_client);
+	ClassDB::bind_method(D_METHOD("_process_client", "delta"), &EntityResource::_process_client);
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "str"), "_gets_update_string"));
 	BIND_VMETHOD(MethodInfo("_receivec_update_string", PropertyInfo(Variant::STRING, "str")));

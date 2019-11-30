@@ -42,10 +42,14 @@ public:
 	void ons_target_changed(Entity *entity, Entity *old_target);
 	void onc_target_changed(Entity *entity, Entity *old_target);
 
-	void process(float delta);
-	void _process(float delta);
+	void process_server(float delta);
+	void _process_server(float delta);
 
-	String gets_update_string();
+	void process_client(float delta);
+	void _process_client(float delta);
+
+	void receivec_update(int current);
+	void receivec_update_full(int current, int max);
 	void receivec_update_string(String str);
 
 	void resolve_references();
@@ -57,11 +61,14 @@ public:
 	void _from_dict(const Dictionary &dict);
 
 	EntityResource();
+	~EntityResource();
 
 protected:
 	static void _bind_methods();
 
 private:
+	bool _server_side;
+
 	Entity *_owner;
 	bool _dirty;
 	bool _should_process;

@@ -1,5 +1,7 @@
 #include "aura.h"
 
+#include "../entities/resources/entity_resource_cost_data.h"
+
 int Aura::get_id() {
 	return id;
 }
@@ -248,6 +250,20 @@ void Aura::set_heal(int min, int max, bool can_crit) {
 	set_heal_min(min);
 	set_heal_max(max);
 	set_heal_can_crit(can_crit);
+}
+
+Ref<EntityResourceCostData> Aura::get_resource_cost() {
+	return _resource_cost;
+}
+void Aura::set_resource_cost(Ref<EntityResourceCostData> value) {
+	_resource_cost = value;
+}
+
+Ref<EntityResourceCostData> Aura::get_resource_give() {
+	return _resource_give;
+}
+void Aura::set_resource_give(Ref<EntityResourceCostData> value) {
+	_resource_give = value;
 }
 
 Aura::Aura() {
@@ -1478,6 +1494,16 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_heal_scaling_curve"), &Aura::get_heal_scaling_curve);
 	ClassDB::bind_method(D_METHOD("set_heal_scaling_curve", "curve"), &Aura::set_heal_scaling_curve);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "heal_scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_heal_scaling_curve", "get_heal_scaling_curve");
+
+	//Resources
+	ADD_GROUP("Resources", "resource");
+	ClassDB::bind_method(D_METHOD("get_resource_cost"), &Aura::get_resource_cost);
+	ClassDB::bind_method(D_METHOD("set_resource_cost", "value"), &Aura::set_resource_cost);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_cost", PROPERTY_HINT_RESOURCE_TYPE, "EntityResourceCostData"), "set_resource_cost", "get_resource_cost");
+
+	ClassDB::bind_method(D_METHOD("get_resource_give"), &Aura::get_resource_give);
+	ClassDB::bind_method(D_METHOD("set_resource_give", "value"), &Aura::set_resource_give);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_give", PROPERTY_HINT_RESOURCE_TYPE, "EntityResourceCostData"), "set_resource_give", "get_resource_give");
 
 	ADD_GROUP("States", "states");
 	ClassDB::bind_method(D_METHOD("get_add_states"), &Aura::get_add_states);

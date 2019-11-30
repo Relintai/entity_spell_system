@@ -2,6 +2,7 @@
 
 #include "aura.h"
 #include "craft_recipe.h"
+#include "../entities/resources/entity_resource_cost_data.h"
 
 int Spell::get_id() {
 	return _id;
@@ -87,32 +88,18 @@ void Spell::set_required_item(int value) {
 	_required_item = value;
 }
 
-int Spell::get_cost_type() {
-	return _cost_type;
+Ref<EntityResourceCostData> Spell::get_resource_cost() {
+	return _resource_cost;
 }
-void Spell::set_cost_type(int value) {
-	_cost_type = value;
-}
-
-int Spell::get_cost_resource() {
-	return _cost_resource;
-}
-void Spell::set_cost_resource(int value) {
-	_cost_resource = value;
+void Spell::set_resource_cost(Ref<EntityResourceCostData> value) {
+	_resource_cost = value;
 }
 
-int Spell::get_give_resource_type() {
-	return _give_resource_type;
+Ref<EntityResourceCostData> Spell::get_resource_give() {
+	return _resource_give;
 }
-void Spell::set_give_resource_type(int value) {
-	_give_resource_type = value;
-}
-
-int Spell::get_give_resource() {
-	return _give_resource;
-}
-void Spell::set_give_resource(int value) {
-	_give_resource = value;
+void Spell::set_resource_give(Ref<EntityResourceCostData> value) {
+	_resource_give = value;
 }
 
 bool Spell::has_global_cooldown() {
@@ -757,10 +744,7 @@ Spell::Spell() {
 	_item_cost = 0;
 	_craft_material_cost = 0;
 	_required_item = 0;
-	_cost_type = 0;
-	_cost_resource = 0;
-	_give_resource_type = 0;
-	_give_resource = 0;
+
 	_has_global_cooldown = true;
 	_is_local_spell = false;
 
@@ -808,6 +792,21 @@ Spell::~Spell() {
 	_caster_aura_applys.clear();
 	_target_aura_applys.clear();
 	_on_learn_auras.clear();
+
+	_resource_cost.unref();
+	_resource_give.unref();
+
+	_icon.unref();
+
+	_visual_spell_effects.unref();
+	_spell_projectile_data.unref();
+	_world_effect_data.unref();
+	_teaches_craft_recipe.unref();
+	_damage_scaling_curve.unref();
+	_heal_scaling_curve.unref();
+	_projectile.unref();
+	_training_required_spell.unref();
+	_training_required_skill.unref();
 }
 
 void Spell::_bind_methods() {
@@ -921,6 +920,39 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_heal_scale_for_level"), &Spell::get_heal_scale_for_level);
 	ClassDB::bind_method(D_METHOD("get_absorb_scale_for_level"), &Spell::get_absorb_scale_for_level);
 
+	//ADD_GROUP("Caster Aura Applys", "caster_aura_applys");
+	ClassDB::bind_method(D_METHOD("get_num_caster_aura_applys"), &Spell::get_num_caster_aura_applys);
+	ClassDB::bind_method(D_METHOD("set_num_caster_aura_applys", "value"), &Spell::set_num_caster_aura_applys);
+
+	ClassDB::bind_method(D_METHOD("get_caster_aura_apply", "index"), &Spell::get_caster_aura_apply);
+	ClassDB::bind_method(D_METHOD("set_caster_aura_apply", "index", "aura"), &Spell::set_caster_aura_apply);
+
+	ClassDB::bind_method(D_METHOD("get_caster_aura_applys"), &Spell::get_caster_aura_applys);
+	ClassDB::bind_method(D_METHOD("set_caster_aura_applys", "caster_aura_applys"), &Spell::set_caster_aura_applys);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "caster_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_caster_aura_applys", "get_caster_aura_applys");
+
+	//ADD_GROUP("Target Aura Apply", "target_aura_applys");
+	ClassDB::bind_method(D_METHOD("get_num_target_aura_applys"), &Spell::get_num_target_aura_applys);
+	ClassDB::bind_method(D_METHOD("set_num_target_aura_applys", "value"), &Spell::set_num_target_aura_applys);
+
+	ClassDB::bind_method(D_METHOD("get_target_aura_apply", "index"), &Spell::get_target_aura_apply);
+	ClassDB::bind_method(D_METHOD("set_target_aura_apply", "index", "aura"), &Spell::set_target_aura_apply);
+
+	ClassDB::bind_method(D_METHOD("get_target_aura_applys"), &Spell::get_target_aura_applys);
+	ClassDB::bind_method(D_METHOD("set_target_aura_applys", "target_aura_applys"), &Spell::set_target_aura_applys);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "target_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_target_aura_applys", "get_target_aura_applys");
+
+	//ADD_GROUP("Apply Auras On Learn", "on_learn_auras");
+	ClassDB::bind_method(D_METHOD("get_num_on_learn_auras"), &Spell::get_num_on_learn_auras);
+	ClassDB::bind_method(D_METHOD("set_num_on_learn_auras", "value"), &Spell::set_num_on_learn_auras);
+
+	ClassDB::bind_method(D_METHOD("get_on_learn_aura", "index"), &Spell::get_on_learn_aura);
+	ClassDB::bind_method(D_METHOD("set_on_learn_aura", "index", "aura"), &Spell::set_on_learn_aura);
+
+	ClassDB::bind_method(D_METHOD("get_on_learn_auras"), &Spell::get_on_learn_auras);
+	ClassDB::bind_method(D_METHOD("set_on_learn_auras", "spells"), &Spell::set_on_learn_auras);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "on_learn_auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_on_learn_auras", "get_on_learn_auras");
+
 	ADD_GROUP("Texts", "text");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
@@ -936,39 +968,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("has_global_cooldown"), &Spell::has_global_cooldown);
 	ClassDB::bind_method(D_METHOD("set_has_global_cooldown", "value"), &Spell::set_has_global_cooldown);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cooldown_global_cooldown"), "set_has_global_cooldown", "has_global_cooldown");
-
-	ADD_GROUP("Caster Aura Applys", "caster_aura_applys");
-	ClassDB::bind_method(D_METHOD("get_num_caster_aura_applys"), &Spell::get_num_caster_aura_applys);
-	ClassDB::bind_method(D_METHOD("set_num_caster_aura_applys", "value"), &Spell::set_num_caster_aura_applys);
-
-	ClassDB::bind_method(D_METHOD("get_caster_aura_apply", "index"), &Spell::get_caster_aura_apply);
-	ClassDB::bind_method(D_METHOD("set_caster_aura_apply", "index", "aura"), &Spell::set_caster_aura_apply);
-
-	ClassDB::bind_method(D_METHOD("get_caster_aura_applys"), &Spell::get_caster_aura_applys);
-	ClassDB::bind_method(D_METHOD("set_caster_aura_applys", "caster_aura_applys"), &Spell::set_caster_aura_applys);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "caster_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_caster_aura_applys", "get_caster_aura_applys");
-
-	ADD_GROUP("Target Aura Apply", "target_aura_applys");
-	ClassDB::bind_method(D_METHOD("get_num_target_aura_applys"), &Spell::get_num_target_aura_applys);
-	ClassDB::bind_method(D_METHOD("set_num_target_aura_applys", "value"), &Spell::set_num_target_aura_applys);
-
-	ClassDB::bind_method(D_METHOD("get_target_aura_apply", "index"), &Spell::get_target_aura_apply);
-	ClassDB::bind_method(D_METHOD("set_target_aura_apply", "index", "aura"), &Spell::set_target_aura_apply);
-
-	ClassDB::bind_method(D_METHOD("get_target_aura_applys"), &Spell::get_target_aura_applys);
-	ClassDB::bind_method(D_METHOD("set_target_aura_applys", "target_aura_applys"), &Spell::set_target_aura_applys);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "target_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_target_aura_applys", "get_target_aura_applys");
-
-	ADD_GROUP("Apply Auras On Learn", "on_learn_auras");
-	ClassDB::bind_method(D_METHOD("get_num_on_learn_auras"), &Spell::get_num_on_learn_auras);
-	ClassDB::bind_method(D_METHOD("set_num_on_learn_auras", "value"), &Spell::set_num_on_learn_auras);
-
-	ClassDB::bind_method(D_METHOD("get_on_learn_aura", "index"), &Spell::get_on_learn_aura);
-	ClassDB::bind_method(D_METHOD("set_on_learn_aura", "index", "aura"), &Spell::set_on_learn_aura);
-
-	ClassDB::bind_method(D_METHOD("get_on_learn_auras"), &Spell::get_on_learn_auras);
-	ClassDB::bind_method(D_METHOD("set_on_learn_auras", "spells"), &Spell::set_on_learn_auras);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "on_learn_auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_on_learn_auras", "get_on_learn_auras");
 
 	ADD_GROUP("Range", "range");
 	ClassDB::bind_method(D_METHOD("get_has_range"), &Spell::get_has_range);
@@ -1052,22 +1051,14 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_required_item", "value"), &Spell::set_required_item);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cost_required_item"), "set_required_item", "get_required_item");
 
-	ClassDB::bind_method(D_METHOD("get_cost_type"), &Spell::get_cost_type);
-	ClassDB::bind_method(D_METHOD("set_cost_type", "value"), &Spell::set_cost_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cost_type"), "set_cost_type", "get_cost_type");
-
-	ClassDB::bind_method(D_METHOD("get_cost_resource"), &Spell::get_cost_resource);
-	ClassDB::bind_method(D_METHOD("set_cost_resource", "value"), &Spell::set_cost_resource);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cost_resource"), "set_cost_resource", "get_cost_resource");
-
-	ADD_GROUP("Gives", "give");
-	ClassDB::bind_method(D_METHOD("get_give_resource_type"), &Spell::get_give_resource_type);
-	ClassDB::bind_method(D_METHOD("set_give_resource_type", "value"), &Spell::set_give_resource_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "give_resource_type"), "set_give_resource_type", "get_give_resource_type");
-
-	ClassDB::bind_method(D_METHOD("get_give_resource"), &Spell::get_give_resource);
-	ClassDB::bind_method(D_METHOD("set_give_resource", "value"), &Spell::set_give_resource);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "give_resource"), "set_give_resource", "get_give_resource");
+	ADD_GROUP("Resources", "resource");
+	ClassDB::bind_method(D_METHOD("get_resource_cost"), &Spell::get_resource_cost);
+	ClassDB::bind_method(D_METHOD("set_resource_cost", "value"), &Spell::set_resource_cost);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_cost", PROPERTY_HINT_RESOURCE_TYPE, "EntityResourceCostData"), "set_resource_cost", "get_resource_cost");
+	
+	ClassDB::bind_method(D_METHOD("get_resource_give"), &Spell::get_resource_give);
+	ClassDB::bind_method(D_METHOD("set_resource_give", "value"), &Spell::set_resource_give);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_give", PROPERTY_HINT_RESOURCE_TYPE, "EntityResourceCostData"), "set_resource_give", "get_resource_give");
 
 	ADD_GROUP("AOE", "aoe");
 	ClassDB::bind_method(D_METHOD("get_is_aoe"), &Spell::get_is_aoe);

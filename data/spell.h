@@ -24,6 +24,7 @@ class Aura;
 class SpellCastInfo;
 class Spell;
 class CraftRecipe;
+class EntityResourceCostData;
 
 enum TargetRelationType {
 	TARGET_SELF = 1 << 0,
@@ -119,17 +120,11 @@ public:
 	int get_required_item();
 	void set_required_item(int value);
 
-	int get_cost_type();
-	void set_cost_type(int value);
+	Ref<EntityResourceCostData> get_resource_cost();
+	void set_resource_cost(Ref<EntityResourceCostData> value);
 
-	int get_cost_resource();
-	void set_cost_resource(int value);
-
-	int get_give_resource_type();
-	void set_give_resource_type(int value);
-
-	int get_give_resource();
-	void set_give_resource(int value);
+	Ref<EntityResourceCostData> get_resource_give();
+	void set_resource_give(Ref<EntityResourceCostData> value);
 
 	bool has_global_cooldown();
 	void set_has_global_cooldown(bool value);
@@ -356,10 +351,10 @@ private:
 	int _item_cost;
 	int _craft_material_cost;
 	int _required_item;
-	int _cost_type;
-	int _cost_resource;
-	int _give_resource_type;
-	int _give_resource;
+
+	Ref<EntityResourceCostData> _resource_cost;
+	Ref<EntityResourceCostData> _resource_give;
+
 	bool _has_global_cooldown;
 	bool _is_local_spell;
 	Ref<Texture> _icon;

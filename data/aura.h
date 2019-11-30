@@ -33,6 +33,7 @@ class AuraApplyInfo;
 class AuraScript;
 class Entity;
 class SpellCastInfo;
+class EntityResourceCostData;
 
 class Aura : public Resource {
 	GDCLASS(Aura, Resource);
@@ -138,6 +139,13 @@ public:
 	void set_heal_can_crit(bool value);
 
 	void set_heal(int min, int max, bool can_crit);
+
+	//Resources
+	Ref<EntityResourceCostData> get_resource_cost();
+	void set_resource_cost(Ref<EntityResourceCostData> value);
+
+	Ref<EntityResourceCostData> get_resource_give();
+	void set_resource_give(Ref<EntityResourceCostData> value);
 
 	Ref<Curve> get_damage_scaling_curve() { return _damage_scaling_curve; }
 	void set_damage_scaling_curve(Ref<Curve> curve) { _damage_scaling_curve = curve; }
@@ -335,61 +343,6 @@ public:
 	Aura();
 	~Aura();
 
-		/*
-	void RemoveAura(WorldEntity *caster);
-	bool ShouldApplyModifiers(WorldEntity *target);
-	bool BasicAuraUpdate(WorldEntity *target, AuraData *data);
-	bool ShouldApplyModifiers(WorldEntity *target, float refreshTo);
-	bool ShouldApplyModifiers(WorldEntity *target, float refreshTo, WorldEntity *caster, float spellScale);
-	bool ShouldRemoveModifiers(WorldEntity *target);
-	void RefreshDamageCountAuraDiminished(WorldEntity *target, float refreshTo, WorldEntity *caster, DiminishingReturnAuraData::DiminishingReturnCategory diminsihingType, DamageCountAuraData *aura);
-	void AddAuraDataToTarget(WorldEntity *target, AuraData *data);
-	void AddAuraDataToTarget(WorldEntity *target, WorldEntity *caster, float duration, float spellScale);
-	void AddOrRefreshDamageAuraDataToTarget(WorldEntity *target, WorldEntity *caster, float spellScale, float duration, float tick, int damage);
-	void AddOrRefreshHealAuraDataToTarget(WorldEntity *target, WorldEntity *caster, float spellScale, float duration, float tick, int heal);
-	void AddOrRefreshShieldAuraDataToTarget(WorldEntity *target, WorldEntity *caster, float spellScale, float duration, int absorb);
-	void AddOrRefreshDiminishingReturnAura(WorldEntity *target, DiminishingReturnAuraData::DiminishingReturnCategory diminishingCategory);
-	void AddStatModifier(WorldEntity *target, int stat, float maxMod, float percentMod);
-	void RemoveStatModifier(WorldEntity *target, int stat);
-	void AddState(WorldEntity *target, StateData::StateType state);
-	void RemoveState(WorldEntity *target, StateData::StateType state);
-	void RemovethisAura(WorldEntity *target);
-	AuraData *TargetHasCastersAura(WorldEntity *target, WorldEntity *caster);
-	AuraData *TargetHasAura(WorldEntity *target);
-	int CalculateDamage(WorldEntity *caster, WorldEntity *target, float spellScale);
-	int CalculateHeal(WorldEntity *caster, WorldEntity *target, float spellScale);
-	int CalculateAbsorb(WorldEntity *caster, WorldEntity *target, float spellScale);
-	void UpdateDamageCountAura(WorldEntity *target, AuraData *aura, int damage, float breakHealthPercent);
-	bool UpdateDamageAura(WorldEntity *target, AuraData *data);
-	bool UpdateDamageAuraTickBool(WorldEntity *target, AuraData *data);
-	bool UpdateHealAura(WorldEntity *target, AuraData *data);
-	void AbsorbPOnBeforeDamage(SpellDamageInfo *data, AuraData *aura);
-	void DealDamage(WorldEntity *target, DamageAuraData *data);
-	void DealDamage(WorldEntity *target, DamageAuraData *data, int damage);
-	void DealDamage(WorldEntity *target, WorldEntity *caster, int damage);
-	void DealDamageWithoutOnHit(WorldEntity *target, WorldEntity *caster, int damage);
-	void Heal(WorldEntity *target, HealAuraData *data);
-	void Heal(WorldEntity *target, HealAuraData *data, int heal);
-	void Heal(WorldEntity *target, AuraData *data, int heal);
-	DiminishingReturnAuraData *GetDiminishingReturnAuraDataFor(WorldEntity *target, DiminishingReturnAuraData::DiminishingReturnCategory type);
-	float GetDiminishedTime(WorldEntity *target, DiminishingReturnAuraData::DiminishingReturnCategory diminsihingType, float time);
-	void AddEffect(WorldEntity *player, EffectPoints bodyPart, Quaternion *rotation =);
-	void AddEffect(WorldEntity *player, GameObject *effectPrefab, EffectPoints bodyPart, Quaternion *rotation =);
-	void RemoveEffect(WorldEntity *player, EffectPoints bodyPart);
-	void RemoveActiveGroupAuras(WorldEntity *target);
-	float GetDiminishedTime(WorldEntity *target, DiminishingReturnAuraData *aura, float time);
-	int GetAuraIdForDiminishingReturn(DiminishingReturnAuraData::DiminishingReturnCategory type);
-	AuraData *getAuraData(WorldEntity *target, int pAuraId);
-	void ApplyAura(int auraId, WorldEntity *caster, WorldEntity *target, float spellScale);
-	bool IsZero(float x);*/
-
-	//generic
-	// void ApplyEffect(Entity* target);
-	// void RemoveEffect(Entity* target);
-	// void ApplyModifiers(Entity* target);
-	// void RemoveModifiers(Entity* target);
-	// bool hasModifiers;
-
 protected:
 	static void _bind_methods();
 	void _validate_property(PropertyInfo &property) const;
@@ -436,6 +389,9 @@ private:
 	int _heal_max;
 	bool _heal_can_crit;
 	Ref<Curve> _heal_scaling_curve;
+
+	Ref<EntityResourceCostData> _resource_cost;
+	Ref<EntityResourceCostData> _resource_give;
 
 	int _add_states;
 	int _remove_effects_with_states;

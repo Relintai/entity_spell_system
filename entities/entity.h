@@ -132,6 +132,12 @@ enum PlayerSendFlags {
 	}                                                         \
 	normalfunc(normal_var);
 
+#define VRPCOBJP(rpcfunc, rpc_var1, rpc_var2, normalfunc, normal_var1, normal_var2)  \
+	if (is_inside_tree() && get_tree()->has_network_peer()) {                        \
+		vrpc(#rpcfunc, rpc_var1, rpc_var2);                                          \
+	}                                                                                \
+	normalfunc(normal_var1, normal_var2);
+
 #define ORPCOBJ(rpcfunc, rpc_var, normalfunc, normal_var)                 \
 	if (is_inside_tree() && get_tree()->has_network_peer()) {             \
 		if (get_tree()->is_network_server() && get_network_master() != 1) \
@@ -338,19 +344,29 @@ public:
 
 	////    Resources    ////
 
-	Ref<EntityResource> gets_resource(int index);
-	Ref<EntityResource> gets_resource_type(int type);
+	Ref<EntityResource> gets_resource_index(int index);
+	Ref<EntityResource> gets_resource_id(int id);
 	void adds_resource(Ref<EntityResource> resource);
 	int gets_resource_count();
 	void removes_resource(int index);
 	void clears_resource();
 
-	Ref<EntityResource> getc_resource(int index);
-	Ref<EntityResource> getc_resource_type(int type);
-	void addc_resource(Ref<EntityResource> resource);
+	void addc_resource_rpc(int index, String data);
+
+	Ref<EntityResource> getc_resource_index(int index);
+	Ref<EntityResource> getc_resource_id(int id);
+	void addc_resource(int index, Ref<EntityResource> resource);
 	int getc_resource_count();
 	void removec_resource(int index);
 	void clearc_resource();
+
+	void sends_resource_current(int index, int current);
+	void sends_resource_curr_max(int index, int current, int max);
+	void sends_resource_data(int index, String data);
+
+	void creceive_resource_current(int index, int current);
+	void creceive_resource_curr_max(int index, int current, int max);
+	void creceive_resource_data(int index, String data);
 
 	////    Global Cooldown    ////
 
