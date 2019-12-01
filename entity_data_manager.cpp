@@ -4,6 +4,8 @@
 #include "./data/aura.h"
 #include "./data/craft_recipe.h"
 #include "./data/spell.h"
+#include "./entities/resources/entity_resource_data.h"
+#include "./entities/skills/entity_skill_data.h"
 
 EntityDataManager *EntityDataManager::instance;
 
@@ -75,6 +77,36 @@ void EntityDataManager::add_entity_resource(Ref<EntityResourceData> cls) {
 
 	_entity_resources.push_back(cls);
 	_entity_resource_map.set(cls->get_id(), cls);
+}
+
+String EntityDataManager::get_entity_skills_folder() {
+	return _entity_skills_folder;
+}
+void EntityDataManager::set_entity_skills_folder(String folder) {
+	_entity_skills_folder = folder;
+}
+Vector<Ref<EntitySkillData> > *EntityDataManager::get_entity_skills() {
+	return &_entity_skills;
+}
+Ref<EntitySkillData> EntityDataManager::get_entity_skill(int class_id) {
+	if (!_entity_skill_map.has(class_id))
+		return Ref<EntitySkillData>(NULL);
+
+	return _entity_skill_map.get(class_id);
+}
+Ref<EntitySkillData> EntityDataManager::get_entity_skill_index(int index) {
+	ERR_FAIL_INDEX_V(index, _entity_skills.size(), Ref<EntitySkillData>(NULL));
+
+	return _entity_skills.get(index);
+}
+int EntityDataManager::get_entity_skill_count() {
+	return _entity_skills.size();
+}
+void EntityDataManager::add_entity_skill(Ref<EntitySkillData> cls) {
+	ERR_FAIL_COND(!cls.is_valid());
+
+	_entity_skills.push_back(cls);
+	_entity_skill_map.set(cls->get_id(), cls);
 }
 
 String EntityDataManager::get_entity_datas_folder() {
@@ -683,6 +715,16 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_resource_index", "index"), &EntityDataManager::get_entity_resource_index);
 	ClassDB::bind_method(D_METHOD("get_entity_resource_count"), &EntityDataManager::get_entity_resource_count);
 
+	//EntitySkills
+	ClassDB::bind_method(D_METHOD("get_entity_skills_folder"), &EntityDataManager::get_entity_skills_folder);
+	ClassDB::bind_method(D_METHOD("set_entity_skills_folder", "folder"), &EntityDataManager::set_entity_skills_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_skills_folder"), "set_entity_skills_folder", "get_entity_skills_folder");
+
+	ClassDB::bind_method(D_METHOD("add_entity_skill", "cls"), &EntityDataManager::add_entity_skill);
+	ClassDB::bind_method(D_METHOD("get_entity_skill", "class_id"), &EntityDataManager::get_entity_skill);
+	ClassDB::bind_method(D_METHOD("get_entity_skill_index", "index"), &EntityDataManager::get_entity_skill_index);
+	ClassDB::bind_method(D_METHOD("get_entity_skill_count"), &EntityDataManager::get_entity_skill_count);
+
 	//EntityData
 	ClassDB::bind_method(D_METHOD("get_entity_datas_folder"), &EntityDataManager::get_entity_datas_folder);
 	ClassDB::bind_method(D_METHOD("set_entity_datas_folder", "folder"), &EntityDataManager::set_entity_datas_folder);
@@ -785,6 +827,9 @@ EntityDataManager::~EntityDataManager() {
 
 	_entity_resources.clear();
 	_entity_resource_map.clear();
+
+	_entity_skills.clear();
+	_entity_skill_map.clear();
 
 	_entity_datas.clear();
 	_entity_data_map.clear();

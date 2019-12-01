@@ -4,7 +4,7 @@
 #include "core/resource.h"
 #include "scene/main/node.h"
 
-#include "entity_resource.h"
+class EntityResource;
 
 class EntityResourceData : public Resource {
 	GDCLASS(EntityResourceData, Resource);

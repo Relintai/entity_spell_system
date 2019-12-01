@@ -1,10 +1,31 @@
 #include "entity_skill.h"
 
+#include "../../entity_data_manager.h"
+
+Ref<EntitySkillData> EntitySkill::get_skill() {
+	return _skill;
+}
+void EntitySkill::set_skill(Ref<EntitySkillData> value) {
+	_skill = value;
+
+	if (_skill.is_valid()) 
+		_skill_id = _skill->get_id();
+	else
+		_skill_id = 0;
+	
+
+	emit_signal("skill_changed", Ref<EntitySkill>(this));
+}
+
 int EntitySkill::get_skill_id() {
 	return _skill_id;
 }
 void EntitySkill::set_skill_id(int value) {
 	_skill_id = value;
+
+	if (EntityDataManager::get_instance() != NULL) {
+		_skill = EntityDataManager::get_instance()->get_entity_skill(_skill_id);
+	}
 
 	emit_signal("skill_changed", Ref<EntitySkill>(this));
 }
@@ -69,8 +90,16 @@ EntitySkill::EntitySkill() {
 	_disabled = false;
 }
 
+EntitySkill::~EntitySkill() {
+	_skill.unref();
+}
+
 void EntitySkill::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("skill_changed", PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
+
+	ClassDB::bind_method(D_METHOD("get_skill"), &EntitySkill::get_skill);
+	ClassDB::bind_method(D_METHOD("set_skill", "value"), &EntitySkill::set_skill);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkillData"), "set_skill", "get_skill");
 
 	ClassDB::bind_method(D_METHOD("get_skill_id"), &EntitySkill::get_skill_id);
 	ClassDB::bind_method(D_METHOD("set_skill_id", "value"), &EntitySkill::set_skill_id);

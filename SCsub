@@ -35,6 +35,7 @@ module_env.add_source_files(env.modules_sources,"entities/data/item_container_da
 module_env.add_source_files(env.modules_sources,"entities/data/item_container_data_entry.cpp")
 
 module_env.add_source_files(env.modules_sources,"entities/skills/entity_skill.cpp")
+module_env.add_source_files(env.modules_sources,"entities/skills/entity_skill_data.cpp")
 
 module_env.add_source_files(env.modules_sources,"entities/data/character_spec.cpp")
 module_env.add_source_files(env.modules_sources,"entities/data/talent_row_data.cpp")

@@ -1,5 +1,7 @@
 #include "entity_resource_data.h"
 
+#include "entity_resource.h"
+
 int EntityResourceData::get_id() {
 	return _id;
 }

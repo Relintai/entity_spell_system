@@ -23,6 +23,7 @@ class EntityData;
 class CraftRecipe;
 class ItemTemplate;
 class EntityResourceData;
+class EntitySkillData;
 
 class EntityDataManager : public Node {
 	GDCLASS(EntityDataManager, Node);
@@ -44,6 +45,14 @@ public:
 	Ref<EntityResourceData> get_entity_resource_index(int index);
 	int get_entity_resource_count();
 	void add_entity_resource(Ref<EntityResourceData> cls);
+
+	String get_entity_skills_folder();
+	void set_entity_skills_folder(String folder);
+	Vector<Ref<EntitySkillData> > *get_entity_skills();
+	Ref<EntitySkillData> get_entity_skill(int class_id);
+	Ref<EntitySkillData> get_entity_skill_index(int index);
+	int get_entity_skill_count();
+	void add_entity_skill(Ref<EntitySkillData> cls);
 
 	String get_entity_datas_folder();
 	void set_entity_datas_folder(String folder);
@@ -136,6 +145,10 @@ private:
 	String _entity_resources_folder;
 	Vector<Ref<EntityResourceData> > _entity_resources;
 	HashMap<int, Ref<EntityResourceData> > _entity_resource_map;
+
+	String _entity_skills_folder;
+	Vector<Ref<EntitySkillData> > _entity_skills;
+	HashMap<int, Ref<EntitySkillData> > _entity_skill_map;
 
 	String _entity_datas_folder;
 	Vector<Ref<EntityData> > _entity_datas;

@@ -9,6 +9,7 @@
 #include "../pipelines/spell_heal_info.h"
 #include "./data/character_spec.h"
 #include "./data/talent_row_data.h"
+#include "./skills/entity_skill.h"
 
 NodePath Entity::get_character_skeleton_path() {
 	return _character_skeleton_path;

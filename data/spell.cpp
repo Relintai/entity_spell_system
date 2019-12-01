@@ -3,6 +3,7 @@
 #include "aura.h"
 #include "craft_recipe.h"
 #include "../entities/resources/entity_resource_cost_data.h"
+#include "../entities/skills/entity_skill_data.h"
 
 int Spell::get_id() {
 	return _id;
@@ -510,10 +511,10 @@ void Spell::set_training_required_spell(Ref<Spell> spell) {
 	_training_required_spell = spell;
 }
 
-Ref<Aura> Spell::get_training_required_skill() {
+Ref<EntitySkillData> Spell::get_training_required_skill() {
 	return _training_required_skill;
 }
-void Spell::set_training_required_skill(Ref<Aura> skill) {
+void Spell::set_training_required_skill(Ref<EntitySkillData> skill) {
 	_training_required_skill = skill;
 }
 
@@ -1127,7 +1128,7 @@ void Spell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_training_required_skill"), &Spell::get_training_required_skill);
 	ClassDB::bind_method(D_METHOD("set_training_required_skill", "curve"), &Spell::set_training_required_skill);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "training_required_skill", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_training_required_skill", "get_training_required_skill");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "training_required_skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkillData"), "set_training_required_skill", "get_training_required_skill");
 
 	ClassDB::bind_method(D_METHOD("get_training_required_skill_level"), &Spell::get_training_required_skill_level);
 	ClassDB::bind_method(D_METHOD("set_training_required_skill_level", "value"), &Spell::set_training_required_skill_level);

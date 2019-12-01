@@ -32,7 +32,6 @@
 #include "../utility/category_cooldown.h"
 #include "../utility/cooldown.h"
 #include "./data/entity_data_container.h"
-#include "./skills/entity_skill.h"
 
 #include "../profile_manager/actionbar/action_bar_profile.h"
 
@@ -52,6 +51,7 @@ class SpellCastInfo;
 class EntityCreateInfo;
 class TalentRowData;
 class CharacterSpec;
+class EntitySkill;
 
 enum SpellCastDataSignals {
 	CastFailed,

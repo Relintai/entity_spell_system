@@ -23,6 +23,7 @@
 #include "entities/data/entity_data_container.h"
 
 #include "entities/skills/entity_skill.h"
+#include "entities/skills/entity_skill_data.h"
 
 #include "entities/data/talent_row_data.h"
 #include "entities/data/character_spec.h"
@@ -157,6 +158,7 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<EquipmentDataEntry>();
 
 	ClassDB::register_class<EntitySkill>();
+	ClassDB::register_class<EntitySkillData>();
 
 	ClassDB::register_class<EntityDataManager>();
 
