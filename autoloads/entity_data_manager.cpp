@@ -340,6 +340,8 @@ int EntityDataManager::get_player_character_data_count() {
 
 void EntityDataManager::load_all() {
 	load_xp_data();
+	load_entity_resources();
+	load_entity_skills();
 	load_spells();
 	load_auras();
 	load_characters();
@@ -370,6 +372,85 @@ void EntityDataManager::load_xp_data() {
 
 	_xp_data = d;
 }
+
+void EntityDataManager::load_entity_resources() {
+	_Directory dir;
+
+	ERR_FAIL_COND(_entity_resources_folder.ends_with("/"));
+
+	if (dir.open(_entity_resources_folder) == OK) {
+
+		dir.list_dir_begin();
+
+		String filename = dir.get_next();
+
+		while (filename != "") {
+			if (!dir.current_is_dir()) {
+				String path = _entity_resources_folder + "/" + filename;
+
+				_ResourceLoader *rl = _ResourceLoader::get_singleton();
+
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityResourceData");
+
+				resl->wait();
+
+				Ref<Resource> s = resl->get_resource();
+
+				ERR_CONTINUE(!s.is_valid());
+
+				Ref<EntityResourceData> eresd = s;
+
+				ERR_CONTINUE(!eresd.is_valid());
+
+				add_entity_resource(eresd);
+			}
+
+			filename = dir.get_next();
+		}
+	} else {
+		print_error("An error occurred when trying to access the path.");
+	}
+}
+
+void EntityDataManager::load_entity_skills() {
+	_Directory dir;
+
+	ERR_FAIL_COND(_entity_skills_folder.ends_with("/"));
+
+	if (dir.open(_entity_skills_folder) == OK) {
+
+		dir.list_dir_begin();
+
+		String filename = dir.get_next();
+
+		while (filename != "") {
+			if (!dir.current_is_dir()) {
+				String path = _entity_skills_folder + "/" + filename;
+
+				_ResourceLoader *rl = _ResourceLoader::get_singleton();
+
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntitySkillData");
+
+				resl->wait();
+
+				Ref<Resource> s = resl->get_resource();
+
+				ERR_CONTINUE(!s.is_valid());
+
+				Ref<EntitySkillData> eskilld = s;
+
+				ERR_CONTINUE(!eskilld.is_valid());
+
+				add_entity_skill(eskilld);
+			}
+
+			filename = dir.get_next();
+		}
+	} else {
+		print_error("An error occurred when trying to access the path.");
+	}
+}
+
 
 void EntityDataManager::load_spells() {
 	_Directory dir;
@@ -644,48 +725,6 @@ void EntityDataManager::load_player_character_datas() {
 	}
 }
 
-void EntityDataManager::list_characters() {
-	for (int i = 0; i < _entity_datas.size(); ++i) {
-		print_error(itos(i) + ": " + _entity_datas.get(i)->get_name());
-	}
-}
-
-void EntityDataManager::list_spells() {
-	for (int i = 0; i < _spells.size(); ++i) {
-		print_error(itos(i) + ": " + _spells.get(i)->get_name());
-	}
-}
-
-void EntityDataManager::list_auras() {
-	for (int i = 0; i < _auras.size(); ++i) {
-		print_error(itos(i) + ": " + _auras.get(i)->get_name());
-	}
-}
-
-void EntityDataManager::list_craft_data() {
-	for (int i = 0; i < _craft_datas.size(); ++i) {
-		print_error(itos(i) + ": " + _craft_datas.get(i)->get_name());
-	}
-}
-
-void EntityDataManager::list_item_templates() {
-	for (int i = 0; i < _item_templates.size(); ++i) {
-		print_error(itos(i) + ": " + _item_templates.get(i)->get_name());
-	}
-}
-
-void EntityDataManager::list_mob_datas() {
-	for (int i = 0; i < _mob_datas.size(); ++i) {
-		print_error(itos(i) + ": " + _mob_datas.get(i)->get_name());
-	}
-}
-
-void EntityDataManager::list_player_character_datas() {
-	for (int i = 0; i < _player_character_datas.size(); ++i) {
-		print_error(itos(i) + ": " + _player_character_datas.get(i)->get_name());
-	}
-}
-
 void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_skill_for_armor_type", "index"), &EntityDataManager::get_skill_for_armor_type);
 	ClassDB::bind_method(D_METHOD("set_skill_for_armor_type", "index", "aura"), &EntityDataManager::set_skill_for_armor_type);
@@ -797,6 +836,8 @@ void EntityDataManager::_bind_methods() {
 
 	//load
 	ClassDB::bind_method(D_METHOD("load_all"), &EntityDataManager::load_all);
+	ClassDB::bind_method(D_METHOD("load_entity_resources"), &EntityDataManager::load_entity_resources);
+	ClassDB::bind_method(D_METHOD("load_entity_skills"), &EntityDataManager::load_entity_skills);
 	ClassDB::bind_method(D_METHOD("load_xp_data"), &EntityDataManager::load_xp_data);
 	ClassDB::bind_method(D_METHOD("load_spells"), &EntityDataManager::load_spells);
 	ClassDB::bind_method(D_METHOD("load_auras"), &EntityDataManager::load_auras);
@@ -805,15 +846,6 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("load_item_templates"), &EntityDataManager::load_item_templates);
 	ClassDB::bind_method(D_METHOD("load_mob_datas"), &EntityDataManager::load_mob_datas);
 	ClassDB::bind_method(D_METHOD("load_player_character_datas"), &EntityDataManager::load_player_character_datas);
-
-	//tests
-	ClassDB::bind_method(D_METHOD("list_characters"), &EntityDataManager::list_characters);
-	ClassDB::bind_method(D_METHOD("list_spells"), &EntityDataManager::list_spells);
-	ClassDB::bind_method(D_METHOD("list_auras"), &EntityDataManager::list_auras);
-	ClassDB::bind_method(D_METHOD("list_craft_data"), &EntityDataManager::list_craft_data);
-	ClassDB::bind_method(D_METHOD("list_item_templates"), &EntityDataManager::list_item_templates);
-	ClassDB::bind_method(D_METHOD("list_mob_datas"), &EntityDataManager::list_mob_datas);
-	ClassDB::bind_method(D_METHOD("list_player_character_datas"), &EntityDataManager::list_player_character_datas);
 }
 
 EntityDataManager::EntityDataManager() {

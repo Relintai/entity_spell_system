@@ -111,6 +111,8 @@ public:
 	int get_player_character_data_count();
 
 	void load_all();
+	void load_entity_resources();
+	void load_entity_skills();
 	void load_xp_data();
 	void load_spells();
 	void load_auras();
@@ -120,14 +122,6 @@ public:
     void load_mob_datas();
     void load_player_character_datas();
     
-	void list_characters();
-	void list_spells();
-	void list_auras();
-	void list_craft_data();
-	void list_item_templates();
-    void list_mob_datas();
-    void list_player_character_datas();
-
 	bool get_automatic_load() { return _automatic_load; }
 	void set_automatic_load(bool load) { _automatic_load = load; }
 
