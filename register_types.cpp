@@ -3,10 +3,12 @@
 #include "entity_enums.h"
 #include "item_enums.h"
 
+#include "autoloads/entity_data_manager.h"
+#include "autoloads/ess_physics_query.h"
+
 #include "data/aura.h"
 #include "data/aura_group.h"
 #include "data/aura_stat_attribute.h"
-#include "autoloads/entity_data_manager.h"
 #include "data/xp_data.h"
 #include "data/item_stat_modifier.h"
 #include "data/item_template_stat_modifier.h"
@@ -126,6 +128,9 @@
 void register_entity_spell_system_types() {
 	ClassDB::register_class<SpellEnums>();
 
+	ClassDB::register_class<EntityDataManager>();
+	ClassDB::register_class<ESSPhysicsQuery>();
+
 	//data
 	ClassDB::register_class<CraftRecipeHelper>();
 	ClassDB::register_class<CraftRecipe>();
@@ -159,8 +164,6 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<EntitySkill>();
 	ClassDB::register_class<EntitySkillData>();
-
-	ClassDB::register_class<EntityDataManager>();
 
 	ClassDB::register_class<ItemVisual>();
 	ClassDB::register_class<ItemVisualEntry>();
