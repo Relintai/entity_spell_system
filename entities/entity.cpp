@@ -4749,7 +4749,8 @@ void Entity::update(float delta) {
 
 			ERR_CONTINUE(!res.is_valid());
 
-			res->process_server(delta);
+			if (res->get_should_process())
+				res->process_server(delta);
 		}
 	}
 
@@ -4763,7 +4764,8 @@ void Entity::update(float delta) {
 
 			ERR_CONTINUE(!res.is_valid());
 
-			res->process_client(delta);
+			if (res->get_should_process())
+				res->process_client(delta);
 		}
 	}
 }

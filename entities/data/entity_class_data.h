@@ -242,7 +242,7 @@ private:
 
 	Ref<StatData> _stat_data;
 
-	Vector<Ref<EntityResource> > _entity_resources;
+	Vector<Ref<EntityResourceData> > _entity_resources;
 	Vector<Ref<CharacterSpec> > _specs;
 	Vector<Ref<Spell> > _spells;
 	Vector<Ref<Spell> > _start_spells;
