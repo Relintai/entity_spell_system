@@ -95,11 +95,11 @@
 
 #include "data/spell_effect_visual.h"
 #include "data/spell_effect_visual_simple.h"
-#include "data/spell_projectile_data.h"
-#include "data/world_effect_data.h"
 
-#include "spells/spell_projectile.h"
-#include "spells/world_spell_effect.h"
+#include "world_spells/spell_projectile_data.h"
+#include "world_spells/world_effect_data.h"
+#include "world_spells/spell_projectile.h"
+#include "world_spells/world_spell_effect.h"
 
 #include "entities/ai/entity_ai.h"
 
@@ -224,13 +224,12 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<LootDataBase>();
 	ClassDB::register_class<LootDataItem>();
 	ClassDB::register_class<LootDataContainter>();
-   
 
     ClassDB::register_class<SpellEffectVisual>();
     ClassDB::register_class<SpellEffectVisualSimple>();
+
     ClassDB::register_class<SpellProjectileData>();
     ClassDB::register_class<WorldEffectData>();
-
     ClassDB::register_class<SpellProjectile>();
     ClassDB::register_class<WorldSpellEffect>();
 

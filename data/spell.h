@@ -16,8 +16,8 @@
 #include "../infos/aura_infos.h"
 
 #include "spell_effect_visual.h"
-#include "spell_projectile_data.h"
-#include "world_effect_data.h"
+#include "../world_spells/spell_projectile_data.h"
+#include "../world_spells/world_effect_data.h"
 
 class Entity;
 class Aura;

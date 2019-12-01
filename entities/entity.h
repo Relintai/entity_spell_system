@@ -173,12 +173,9 @@ enum PlayerSendFlags {
 #ifdef ENTITIES_2D
 class Entity : public KinematicBody2D {
 	GDCLASS(Entity, KinematicBody2D);
-
 #else
-
 class Entity : public KinematicBody {
 	GDCLASS(Entity, KinematicBody);
-
 #endif
 
 public:
