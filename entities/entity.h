@@ -674,17 +674,27 @@ public:
 
 	//Skills
 
+	bool hass_skill_id(int id);
 	bool hass_skill(Ref<EntitySkill> skill);
 	void adds_skill(Ref<EntitySkill> skill);
 	void removes_skill(Ref<EntitySkill> skill);
 	Ref<EntitySkill> gets_skill(int skill);
 	int gets_skill_count();
 
+	bool hasc_skill_id(int id);
 	bool hasc_skill(Ref<EntitySkill> skill);
 	void addc_skill(Ref<EntitySkill> skill);
 	void removec_skill(Ref<EntitySkill> skill);
 	Ref<EntitySkill> getc_skill(int index);
 	int getc_skill_count();
+
+	void sskill_current_changed(Ref<EntitySkill> skill);
+	void sskill_max_changed(Ref<EntitySkill> skill);
+
+	void addc_skill_id(int skill_id, int value, int max_value);
+	void removec_skill_id(int skill_id);
+	void changec_skill(int skill_id, int value);
+	void changec_skill_max(int skill_id, int value);
 
 	////    Target    ////
 

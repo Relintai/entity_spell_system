@@ -3881,6 +3881,19 @@ void Entity::removec_spell_rpc(int id) {
 }
 
 //Skills
+bool Entity::hass_skill_id(int id) {
+	for (int i = 0; i < _s_skills.size(); ++i) {
+		Ref<EntitySkill> skill = _s_skills.get(i);
+
+		ERR_CONTINUE(!skill.is_valid());
+
+		if (skill->get_skill_id() == id) {
+			return true;
+		}
+	}
+
+	return false;
+}
 bool Entity::hass_skill(Ref<EntitySkill> skill) {
 	for (int i = 0; i < _s_skills.size(); ++i) {
 		if (_s_skills.get(i) == skill) {
@@ -3894,11 +3907,14 @@ void Entity::adds_skill(Ref<EntitySkill> skill) {
 	if (hass_skill(skill))
 		return;
 
+	skill->connect("current_changed", this, "sskill_current_changed");
+	skill->connect("max_changed", this, "sskill_max_changed");
+
 	_s_skills.push_back(skill);
 
 	emit_signal("sskill_added", this, skill);
 
-	ORPC(addc_skill, skill);
+	ORPC(addc_skill_id, skill->get_skill_id(), skill->get_current(), skill->get_max());
 }
 void Entity::removes_skill(Ref<EntitySkill> skill) {
 	for (int i = 0; i < _s_skills.size(); ++i) {
@@ -3910,7 +3926,7 @@ void Entity::removes_skill(Ref<EntitySkill> skill) {
 
 	emit_signal("sskill_removed", this, skill);
 
-	ORPC(removec_skill, skill);
+	ORPC(removec_skill_id, skill->get_skill_id());
 }
 Ref<EntitySkill> Entity::gets_skill(int index) {
 	ERR_FAIL_INDEX_V(index, _s_skills.size(), Ref<EntitySkill>());
@@ -3921,6 +3937,19 @@ int Entity::gets_skill_count() {
 	return _s_skills.size();
 }
 
+bool Entity::hasc_skill_id(int id) {
+	for (int i = 0; i < _c_skills.size(); ++i) {
+		Ref<EntitySkill> skill = _c_skills.get(i);
+
+		ERR_CONTINUE(!skill.is_valid());
+
+		if (skill->get_skill_id() == id) {
+			return true;
+		}
+	}
+
+	return false;
+}
 bool Entity::hasc_skill(Ref<EntitySkill> skill) {
 	for (int i = 0; i < _c_skills.size(); ++i) {
 		if (_c_skills.get(i) == skill) {
@@ -3955,6 +3984,75 @@ Ref<EntitySkill> Entity::getc_skill(int index) {
 }
 int Entity::getc_skill_count() {
 	return _c_skills.size();
+}
+
+void Entity::sskill_current_changed(Ref<EntitySkill> skill) {
+	//todo events
+
+	ORPC(changec_skill, skill->get_skill_id(), skill->get_current());
+}
+void Entity::sskill_max_changed(Ref<EntitySkill> skill) {
+	//todo events
+
+	ORPC(changec_skill_max, skill->get_skill_id(), skill->get_max());
+}
+
+void Entity::addc_skill_id(int skill_id, int value, int max_value) {
+	ERR_FAIL_COND(hasc_skill_id(skill_id));
+
+	Ref<EntitySkill> skill;
+	skill.instance();
+
+	skill->set_skill_id(skill_id);
+	skill->set_current(value);
+	skill->set_max(max_value);
+
+	addc_skill(skill);
+}
+void Entity::removec_skill_id(int skill_id) {
+	for (int i = 0; i < _c_skills.size(); ++i) {
+		Ref<EntitySkill> skill = _c_skills.get(i);
+
+		ERR_CONTINUE(!skill.is_valid());
+
+		if (skill->get_skill_id() == skill_id) {
+			_c_skills.remove(i);
+
+			emit_signal("cskill_removed", this, skill);
+
+			return;
+		}
+	}
+}
+void Entity::changec_skill(int skill_id, int value) {
+	for (int i = 0; i < _c_skills.size(); ++i) {
+		Ref<EntitySkill> skill = _c_skills.get(i);
+
+		ERR_CONTINUE(!skill.is_valid());
+
+		if (skill->get_skill_id() == skill_id) {
+			skill->set_current(value);
+
+			emit_signal("cskill_changed", this, skill);
+
+			return;
+		}
+	}
+}
+void Entity::changec_skill_max(int skill_id, int value) {
+	for (int i = 0; i < _c_skills.size(); ++i) {
+		Ref<EntitySkill> skill = _c_skills.get(i);
+
+		ERR_CONTINUE(!skill.is_valid());
+
+		if (skill->get_skill_id() == skill_id) {
+			skill->set_max(value);
+
+			emit_signal("cskill_changed", this, skill);
+
+			return;
+		}
+	}
 }
 
 ////    Casting System    ////
@@ -5174,8 +5272,10 @@ Entity::Entity() {
 
 	//Skills
 
-	SET_RPC_REMOTE("addc_skill");
-	SET_RPC_REMOTE("removec_skill");
+	SET_RPC_REMOTE("addc_skill_id");
+	SET_RPC_REMOTE("removec_skill_id");
+	SET_RPC_REMOTE("changec_skill");
+	SET_RPC_REMOTE("changec_skill_max");
 
 	////    Target    ////
 
@@ -5380,6 +5480,7 @@ void Entity::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("cskill_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
 	ADD_SIGNAL(MethodInfo("cskill_removed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
+	ADD_SIGNAL(MethodInfo("cskill_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
 
 	//setup
 	BIND_VMETHOD(MethodInfo("_setup"));
@@ -6071,17 +6172,24 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_craft_recipe_count"), &Entity::getc_craft_recipe_count);
 
 	//Skills
+	ClassDB::bind_method(D_METHOD("hass_skill_id", "id"), &Entity::hass_skill_id);
 	ClassDB::bind_method(D_METHOD("hass_skill", "skill"), &Entity::hass_skill);
 	ClassDB::bind_method(D_METHOD("adds_skill", "skill"), &Entity::adds_skill);
 	ClassDB::bind_method(D_METHOD("removes_skill", "skill"), &Entity::removes_skill);
 	ClassDB::bind_method(D_METHOD("gets_skill", "skill"), &Entity::gets_skill);
 	ClassDB::bind_method(D_METHOD("gets_skill_count"), &Entity::gets_skill_count);
 
+	ClassDB::bind_method(D_METHOD("hasc_skill_id", "id"), &Entity::hasc_skill_id);
 	ClassDB::bind_method(D_METHOD("hasc_skill", "skill"), &Entity::hasc_skill);
 	ClassDB::bind_method(D_METHOD("addc_skill", "skill"), &Entity::addc_skill);
 	ClassDB::bind_method(D_METHOD("removec_skill", "skill"), &Entity::removec_skill);
 	ClassDB::bind_method(D_METHOD("getc_skill", "skill"), &Entity::getc_skill);
 	ClassDB::bind_method(D_METHOD("getc_skill_count"), &Entity::getc_skill_count);
+
+	ClassDB::bind_method(D_METHOD("addc_skill_id", "skill_id", "value", "max_value"), &Entity::addc_skill_id);
+	ClassDB::bind_method(D_METHOD("removec_skill_id", "skill_id"), &Entity::removec_skill_id);
+	ClassDB::bind_method(D_METHOD("changec_skill", "skill_id", "value"), &Entity::changec_skill);
+	ClassDB::bind_method(D_METHOD("changec_skill_max", "skill_id", "value"), &Entity::changec_skill_max);
 
 	//skeleton
 	ClassDB::bind_method(D_METHOD("get_character_skeleton"), &Entity::get_character_skeleton);
