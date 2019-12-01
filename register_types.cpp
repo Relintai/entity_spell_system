@@ -6,7 +6,7 @@
 #include "data/aura.h"
 #include "data/aura_group.h"
 #include "data/aura_stat_attribute.h"
-#include "entity_data_manager.h"
+#include "autoloads/entity_data_manager.h"
 #include "data/xp_data.h"
 #include "data/item_stat_modifier.h"
 #include "data/item_template_stat_modifier.h"

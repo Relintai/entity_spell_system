@@ -8,7 +8,7 @@
 #include "../entities/stats/stat.h"
 #include "../item_enums.h"
 
-#include "../entity_data_manager.h"
+#include "../autoloads/entity_data_manager.h"
 
 class ItemTemplate;
 

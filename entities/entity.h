@@ -23,7 +23,7 @@
 #include "./resources/entity_resource.h"
 #include "stats/stat.h"
 
-#include "../entity_data_manager.h"
+#include "../autoloads/entity_data_manager.h"
 #include "../entity_enums.h"
 #include "../skeleton/character_skeleton.h"
 #include "../utility/entity_create_info.h"

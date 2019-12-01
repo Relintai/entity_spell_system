@@ -1,11 +1,11 @@
 #include "entity_data_manager.h"
 
-#include "./entities/data/entity_data.h"
-#include "./data/aura.h"
-#include "./data/craft_recipe.h"
-#include "./data/spell.h"
-#include "./entities/resources/entity_resource_data.h"
-#include "./entities/skills/entity_skill_data.h"
+#include "../entities/data/entity_data.h"
+#include "../data/aura.h"
+#include "../data/craft_recipe.h"
+#include "../data/spell.h"
+#include "../entities/resources/entity_resource_data.h"
+#include "../entities/skills/entity_skill_data.h"
 
 EntityDataManager *EntityDataManager::instance;
 

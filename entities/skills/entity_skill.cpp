@@ -1,6 +1,6 @@
 #include "entity_skill.h"
 
-#include "../../entity_data_manager.h"
+#include "../../autoloads/entity_data_manager.h"
 
 Ref<EntitySkillData> EntitySkill::get_skill() {
 	return _skill;

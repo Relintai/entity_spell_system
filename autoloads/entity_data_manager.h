@@ -13,9 +13,9 @@
 
 #include "core/bind/core_bind.h"
 
-#include "item_enums.h"
+#include "../item_enums.h"
 
-#include "./data/xp_data.h"
+#include "../data/xp_data.h"
 
 class Aura;
 class Spell;
