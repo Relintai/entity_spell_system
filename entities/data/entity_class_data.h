@@ -4,6 +4,7 @@
 #include "core/resource.h"
 #include "core/vector.h"
 #include "core/ustring.h"
+#include "core/math/math_funcs.h"
 #include "scene/resources/texture.h"
 
 #include "../../entities/stats/stat_data.h"

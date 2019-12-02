@@ -343,7 +343,7 @@ Ref<EntityAI> EntityClassData::get_ai_instance() {
 }
 Ref<EntityAI> EntityClassData::_get_ai_instance() {
 	if (_ais.size() > 0) {
-		Ref<EntityAI> ai = _ais.get(rand() % _ais.size());
+		Ref<EntityAI> ai = _ais.get(Math::rand() % _ais.size());
 
 		if (ai.is_valid()) {
 			return ai->duplicate();
