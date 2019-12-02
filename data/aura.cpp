@@ -1100,7 +1100,7 @@ void Aura::_supdate(Ref<AuraData> aura, float delta) {
 		if (aura->get_heal() != 0) {
 			Ref<SpellHealInfo> shi = Ref<SpellHealInfo>(memnew(SpellHealInfo()));
 
-			shi->set_aura_heal_source(aura);
+			shi->set_aura_heal_source(Ref<Aura>(this));
 			shi->set_dealer(aura->get_caster());
 			shi->set_receiver(aura->get_owner());
 

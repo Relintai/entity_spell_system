@@ -7,15 +7,15 @@ int XPData::get_max_level() {
 }
 
 int XPData::get_xp(int level) {
-	ERR_FAIL_INDEX_V(level, EntityEnums::MAX_LEVEL, 9999999);
+	ERR_FAIL_INDEX_V(level - 1, EntityEnums::MAX_LEVEL, 9999999);
 
-	return _xps.get(level);
+	return _xps.get(level - 1);
 }
 
 void XPData::set_xp(int level, int value) {
-	ERR_FAIL_INDEX(level, EntityEnums::MAX_LEVEL);
+	ERR_FAIL_INDEX(level - 1, EntityEnums::MAX_LEVEL);
 
-	_xps.set(level, value);
+	_xps.set(level - 1, value);
 }
 
 bool XPData::can_level_up(int level) {
@@ -40,7 +40,7 @@ void XPData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("can_level_up", "level"), &XPData::can_level_up);
 
 	ADD_GROUP("Level", "level_");
-	for (int i = 0; i < EntityEnums::MAX_LEVEL; ++i) {
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1)), "set_xp", "get_xp", i);
+	for (int i = 1; i <= EntityEnums::MAX_LEVEL; ++i) {
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i)), "set_xp", "get_xp", i);
 	}
 }
