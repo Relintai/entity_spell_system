@@ -16,8 +16,8 @@
 #include "../infos/aura_infos.h"
 
 #include "spell_effect_visual.h"
-#include "../world_spells/spell_projectile_data.h"
-#include "../world_spells/world_effect_data.h"
+
+#include "../world_spells/world_spell_data.h"
 
 class Entity;
 class Aura;
@@ -142,11 +142,8 @@ public:
 	Ref<SpellEffectVisual> get_visual_spell_effects();
 	void set_visual_spell_effects(Ref<SpellEffectVisual> value);
 
-	Ref<SpellProjectileData> get_spell_projectile_data();
-	void set_spell_projectile_data(Ref<SpellProjectileData> value);
-
-	Ref<WorldEffectData> get_world_effect_data();
-	void set_world_effect_data(Ref<WorldEffectData> value);
+	Ref<WorldSpellData> get_world_spell_data();
+	void set_world_spell_data(Ref<WorldSpellData> value);
 
 	Ref<CraftRecipe> get_teaches_craft_recipe();
 	void set_teaches_craft_recipe(Ref<CraftRecipe> value);
@@ -363,8 +360,8 @@ private:
 	String _text_description;
 
 	Ref<SpellEffectVisual> _visual_spell_effects;
-	Ref<SpellProjectileData> _spell_projectile_data;
-	Ref<WorldEffectData> _world_effect_data;
+
+	Ref<WorldSpellData> _world_spell_data;
 	Ref<CraftRecipe> _teaches_craft_recipe;
 
 	bool _has_range;

@@ -65,10 +65,8 @@ module_env.add_source_files(env.modules_sources,"entities/stats/complex_level_st
 module_env.add_source_files(env.modules_sources,"data/spell_effect_visual.cpp")
 module_env.add_source_files(env.modules_sources,"data/spell_effect_visual_simple.cpp")
 
-module_env.add_source_files(env.modules_sources,"world_spells/spell_projectile_data.cpp")
-module_env.add_source_files(env.modules_sources,"world_spells/world_effect_data.cpp")
-module_env.add_source_files(env.modules_sources,"world_spells/spell_projectile.cpp")
-module_env.add_source_files(env.modules_sources,"world_spells/world_spell_effect.cpp")
+module_env.add_source_files(env.modules_sources,"world_spells/world_spell_data.cpp")
+module_env.add_source_files(env.modules_sources,"world_spells/world_spell.cpp")
 
 module_env.add_source_files(env.modules_sources,"entities/player_talent.cpp")
 module_env.add_source_files(env.modules_sources,"inventory/bag.cpp")

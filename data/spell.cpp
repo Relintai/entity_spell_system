@@ -138,18 +138,11 @@ void Spell::set_visual_spell_effects(Ref<SpellEffectVisual> value) {
 	_visual_spell_effects = value;
 }
 
-Ref<SpellProjectileData> Spell::get_spell_projectile_data() {
-	return _spell_projectile_data;
+Ref<WorldSpellData> Spell::get_world_spell_data() {
+	return _world_spell_data;
 }
-void Spell::set_spell_projectile_data(Ref<SpellProjectileData> value) {
-	_spell_projectile_data = value;
-}
-
-Ref<WorldEffectData> Spell::get_world_effect_data() {
-	return _world_effect_data;
-}
-void Spell::set_world_effect_data(Ref<WorldEffectData> value) {
-	_world_effect_data = value;
+void Spell::set_world_spell_data(Ref<WorldSpellData> value) {
+	_world_spell_data = value;
 }
 
 Ref<CraftRecipe> Spell::get_teaches_craft_recipe() {
@@ -800,8 +793,9 @@ Spell::~Spell() {
 	_icon.unref();
 
 	_visual_spell_effects.unref();
-	_spell_projectile_data.unref();
-	_world_effect_data.unref();
+
+	_world_spell_data.unref();
+
 	_teaches_craft_recipe.unref();
 	_damage_scaling_curve.unref();
 	_heal_scaling_curve.unref();
@@ -905,13 +899,9 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_visual_spell_effects", "value"), &Spell::set_visual_spell_effects);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "visual_spell_effects", PROPERTY_HINT_RESOURCE_TYPE, "SpellEffectVisual"), "set_visual_spell_effects", "get_visual_spell_effects");
 
-	ClassDB::bind_method(D_METHOD("get_spell_projectile_data"), &Spell::get_spell_projectile_data);
-	ClassDB::bind_method(D_METHOD("set_spell_projectile_data", "value"), &Spell::set_spell_projectile_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell_projectile_data", PROPERTY_HINT_RESOURCE_TYPE, "SpellProjectileData"), "set_spell_projectile_data", "get_spell_projectile_data");
-
-	ClassDB::bind_method(D_METHOD("get_world_effect_data"), &Spell::get_world_effect_data);
-	ClassDB::bind_method(D_METHOD("set_world_effect_data", "value"), &Spell::set_world_effect_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_effect_data", PROPERTY_HINT_RESOURCE_TYPE, "WorldEffectData"), "set_world_effect_data", "get_world_effect_data");
+	ClassDB::bind_method(D_METHOD("get_world_spell_data"), &Spell::get_world_spell_data);
+	ClassDB::bind_method(D_METHOD("set_world_spell_data", "value"), &Spell::set_world_spell_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_spell_data", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), "set_world_spell_data", "get_world_spell_data");
 
 	ClassDB::bind_method(D_METHOD("get_teaches_craft_recipe"), &Spell::get_teaches_craft_recipe);
 	ClassDB::bind_method(D_METHOD("set_teaches_craft_recipe", "value"), &Spell::set_teaches_craft_recipe);
