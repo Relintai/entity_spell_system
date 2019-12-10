@@ -6,6 +6,7 @@
 #include "core/io/json.h"
 #include "core/variant.h"
 #include "core/vector.h"
+#include "core/engine.h"
 
 #include "core/resource.h"
 #include "core/ustring.h"
@@ -17,6 +18,8 @@
 
 #include "../data/xp_data.h"
 
+#include "../world_spells/world_spell_data.h"
+
 class Aura;
 class Spell;
 class EntityData;
@@ -24,6 +27,7 @@ class CraftRecipe;
 class ItemTemplate;
 class EntityResourceData;
 class EntitySkillData;
+
 
 class EntityDataManager : public Node {
 	GDCLASS(EntityDataManager, Node);
@@ -78,6 +82,14 @@ public:
 	int get_aura_count();
 	void add_aura(Ref<Aura> aura);
 
+	String get_world_spell_datas_folder();
+	void set_world_spell_datas_folder(String folder);
+	Vector<Ref<WorldSpellData> > *get_world_spell_datas();
+	Ref<WorldSpellData> get_world_spell_data(int class_id);
+	Ref<WorldSpellData> get_world_spell_data_index(int index);
+	int get_world_spell_data_count();
+	void add_world_spell_data(Ref<WorldSpellData> cls);
+
 	String get_craft_data_folder();
 	void set_craft_data_folder(String folder);
 	Vector<Ref<CraftRecipe> > *get_craft_datas();
@@ -116,6 +128,7 @@ public:
 	void load_xp_data();
 	void load_spells();
 	void load_auras();
+	void load_world_spell_datas();
 	void load_characters();
 	void load_craft_datas();
 	void load_item_templates();
@@ -155,6 +168,10 @@ private:
 	String _auras_folder;
 	Vector<Ref<Aura> > _auras;
 	HashMap<int, Ref<Aura> > _aura_map;
+
+	String _world_spell_datas_folder;
+	Vector<Ref<WorldSpellData> > _world_spell_datas;
+	HashMap<int, Ref<WorldSpellData> > _world_spell_data_map;
 
 	String _craft_data_folder;
 	Vector<Ref<CraftRecipe> > _craft_datas;

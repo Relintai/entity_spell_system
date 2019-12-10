@@ -19,7 +19,8 @@ void EntityDataManager::_notification(int p_what) {
 
 		case NOTIFICATION_ENTER_TREE: {
 			if (get_automatic_load()) {
-				load_all();
+				if (!Engine::get_singleton()->is_editor_hint())
+					load_all();
 			}
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
@@ -205,6 +206,37 @@ int EntityDataManager::get_aura_count() {
 	return _auras.size();
 }
 
+//WorldSpellsDatas
+String EntityDataManager::get_world_spell_datas_folder() {
+	return _world_spell_datas_folder;
+}
+void EntityDataManager::set_world_spell_datas_folder(String folder) {
+	_world_spell_datas_folder = folder;
+}
+Vector<Ref<WorldSpellData> > *EntityDataManager::get_world_spell_datas() {
+	return &_world_spell_datas;
+}
+Ref<WorldSpellData> EntityDataManager::get_world_spell_data(int class_id) {
+	if (!_world_spell_data_map.has(class_id))
+		return Ref<WorldSpellData>(NULL);
+
+	return _world_spell_data_map.get(class_id);
+}
+Ref<WorldSpellData> EntityDataManager::get_world_spell_data_index(int index) {
+	ERR_FAIL_INDEX_V(index, _world_spell_datas.size(), Ref<WorldSpellData>(NULL));
+
+	return _world_spell_datas.get(index);
+}
+int EntityDataManager::get_world_spell_data_count() {
+	return _world_spell_datas.size();
+}
+void EntityDataManager::add_world_spell_data(Ref<WorldSpellData> cls) {
+	ERR_FAIL_COND(!cls.is_valid());
+
+	_world_spell_datas.push_back(cls);
+	_world_spell_data_map.set(cls->get_id(), cls);
+}
+
 //Craft Data
 void EntityDataManager::add_craft_data(Ref<CraftRecipe> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
@@ -344,6 +376,7 @@ void EntityDataManager::load_all() {
 	load_entity_skills();
 	load_spells();
 	load_auras();
+	load_world_spell_datas();
 	load_characters();
 	load_craft_datas();
 	load_item_templates();
@@ -359,6 +392,8 @@ void EntityDataManager::load_xp_data() {
 	_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
 	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(_xp_data_path, "XPData");
+
+	ERR_FAIL_COND(!resl.is_valid());
 
 	resl->wait();
 
@@ -382,15 +417,22 @@ void EntityDataManager::load_entity_resources() {
 
 		dir.list_dir_begin();
 
-		String filename = dir.get_next();
+		String filename;
 
-		while (filename != "") {
+		while (true) {
+			filename = dir.get_next();
+
+			if (filename == "")
+				break;
+
 			if (!dir.current_is_dir()) {
 				String path = _entity_resources_folder + "/" + filename;
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityResourceData");
+
+				ERR_CONTINUE(!resl.is_valid());
 
 				resl->wait();
 
@@ -404,8 +446,6 @@ void EntityDataManager::load_entity_resources() {
 
 				add_entity_resource(eresd);
 			}
-
-			filename = dir.get_next();
 		}
 	} else {
 		print_error("An error occurred when trying to access the path.");
@@ -421,15 +461,22 @@ void EntityDataManager::load_entity_skills() {
 
 		dir.list_dir_begin();
 
-		String filename = dir.get_next();
+		String filename;
 
-		while (filename != "") {
+		while (true) {
+			filename = dir.get_next();
+
+			if (filename == "")
+				break;
+
 			if (!dir.current_is_dir()) {
 				String path = _entity_skills_folder + "/" + filename;
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntitySkillData");
+
+				ERR_CONTINUE(!resl.is_valid());
 
 				resl->wait();
 
@@ -443,8 +490,6 @@ void EntityDataManager::load_entity_skills() {
 
 				add_entity_skill(eskilld);
 			}
-
-			filename = dir.get_next();
 		}
 	} else {
 		print_error("An error occurred when trying to access the path.");
@@ -461,15 +506,22 @@ void EntityDataManager::load_spells() {
 
 		dir.list_dir_begin();
 
-		String filename = dir.get_next();
+		String filename;
 
-		while (filename != "") {
+		while (true) {
+			filename = dir.get_next();
+
+			if (filename == "")
+				break;
+
 			if (!dir.current_is_dir()) {
 				String path = _spells_folder + "/" + filename;
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "Spell");
+
+				ERR_CONTINUE(!resl.is_valid());
 
 				resl->wait();
 
@@ -483,8 +535,6 @@ void EntityDataManager::load_spells() {
 
 				add_spell(spell);
 			}
-
-			filename = dir.get_next();
 		}
 	} else {
 		print_error("An error occurred when trying to access the path.");
@@ -500,15 +550,22 @@ void EntityDataManager::load_auras() {
 
 		dir.list_dir_begin();
 
-		String filename = dir.get_next();
+		String filename;
 
-		while (filename != "") {
+		while (true) {
+			filename = dir.get_next();
+
+			if (filename == "")
+				break;
+
 			if (!dir.current_is_dir()) {
 				String path = _auras_folder + "/" + filename;
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "Aura");
+
+				ERR_CONTINUE(!resl.is_valid());
 
 				resl->wait();
 
@@ -522,8 +579,50 @@ void EntityDataManager::load_auras() {
 
 				add_aura(aura);
 			}
+		}
+	} else {
+		print_error("An error occurred when trying to access the path.");
+	}
+}
 
+void EntityDataManager::load_world_spell_datas() {
+	_Directory dir;
+
+	ERR_FAIL_COND(_world_spell_datas_folder.ends_with("/"));
+
+	if (dir.open(_world_spell_datas_folder) == OK) {
+
+		dir.list_dir_begin();
+
+		String filename;
+
+		while (true) {
 			filename = dir.get_next();
+
+			if (filename == "")
+				break;
+
+			if (!dir.current_is_dir()) {
+				String path = _world_spell_datas_folder + "/" + filename;
+
+				_ResourceLoader *rl = _ResourceLoader::get_singleton();
+
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "WorldSpellData");
+
+				ERR_CONTINUE(!resl.is_valid());
+
+				resl->wait();
+
+				Ref<Resource> s = resl->get_resource();
+
+				ERR_CONTINUE(!s.is_valid());
+
+				Ref<WorldSpellData> wsp = s;
+
+				ERR_CONTINUE(!wsp.is_valid());
+
+				add_world_spell_data(wsp);
+			}
 		}
 	} else {
 		print_error("An error occurred when trying to access the path.");
@@ -539,15 +638,22 @@ void EntityDataManager::load_characters() {
 
 		dir.list_dir_begin();
 
-		String filename = dir.get_next();
+		String filename;
 
-		while (filename != "") {
+		while (true) {
+			filename = dir.get_next();
+
+			if (filename == "")
+				break;
+
 			if (!dir.current_is_dir()) {
 				String path = _entity_datas_folder + "/" + filename;
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityData");
+
+				ERR_CONTINUE(!resl.is_valid());
 
 				resl->wait();
 
@@ -561,8 +667,6 @@ void EntityDataManager::load_characters() {
 
 				add_entity_data(cls);
 			}
-
-			filename = dir.get_next();
 		}
 	} else {
 		print_error("An error occurred when trying to access the path.");
@@ -578,15 +682,22 @@ void EntityDataManager::load_craft_datas() {
 
 		dir.list_dir_begin();
 
-		String filename = dir.get_next();
+		String filename;
 
-		while (filename != "") {
+		while (true) {
+			filename = dir.get_next();
+
+			if (filename == "")
+				break;
+
 			if (!dir.current_is_dir()) {
 				String path = _craft_data_folder + "/" + filename;
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "CraftRecipe");
+
+				ERR_CONTINUE(!resl.is_valid());
 
 				resl->wait();
 
@@ -600,8 +711,6 @@ void EntityDataManager::load_craft_datas() {
 
 				add_craft_data(cda);
 			}
-
-			filename = dir.get_next();
 		}
 	} else {
 		print_error("An error occurred when trying to access the path.");
@@ -617,15 +726,22 @@ void EntityDataManager::load_item_templates() {
 
 		dir.list_dir_begin();
 
-		String filename = dir.get_next();
+		String filename;
 
-		while (filename != "") {
+		while (true) {
+			filename = dir.get_next();
+
+			if (filename == "")
+				break;
+
 			if (!dir.current_is_dir()) {
 				String path = _item_template_folder + "/" + filename;
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "ItemTemplate");
+
+				ERR_CONTINUE(!resl.is_valid());
 
 				resl->wait();
 
@@ -639,8 +755,6 @@ void EntityDataManager::load_item_templates() {
 
 				add_item_template(it);
 			}
-
-			filename = dir.get_next();
 		}
 	} else {
 		print_error("An error occurred when trying to access the path.");
@@ -656,15 +770,22 @@ void EntityDataManager::load_mob_datas() {
 
 		dir.list_dir_begin();
 
-		String filename = dir.get_next();
+		String filename;
 
-		while (filename != "") {
+		while (true) {
+			filename = dir.get_next();
+
+			if (filename == "")
+				break;
+
 			if (!dir.current_is_dir()) {
 				String path = _mob_data_folder + "/" + filename;
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityData");
+
+				ERR_CONTINUE(!resl.is_valid());
 
 				resl->wait();
 
@@ -678,8 +799,6 @@ void EntityDataManager::load_mob_datas() {
 
 				add_mob_data(mob_data);
 			}
-
-			filename = dir.get_next();
 		}
 	} else {
 		print_error("An error occurred when trying to access the path.");
@@ -695,15 +814,22 @@ void EntityDataManager::load_player_character_datas() {
 
 		dir.list_dir_begin();
 
-		String filename = dir.get_next();
+		String filename;
 
-		while (filename != "") {
+		while (true) {
+			filename = dir.get_next();
+
+			if (filename == "")
+				break;
+
 			if (!dir.current_is_dir()) {
 				String path = _player_character_data_folder + "/" + filename;
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityData");
+
+				ERR_CONTINUE(!resl.is_valid());
 
 				resl->wait();
 
@@ -717,8 +843,6 @@ void EntityDataManager::load_player_character_datas() {
 
 				add_player_character_data(pcd);
 			}
-
-			filename = dir.get_next();
 		}
 	} else {
 		print_error("An error occurred when trying to access the path.");
@@ -794,6 +918,16 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_aura_index", "index"), &EntityDataManager::get_aura_index);
 	ClassDB::bind_method(D_METHOD("get_aura_count"), &EntityDataManager::get_aura_count);
 
+	//WorldSpellData
+	ClassDB::bind_method(D_METHOD("get_world_spell_datas_folder"), &EntityDataManager::get_world_spell_datas_folder);
+	ClassDB::bind_method(D_METHOD("set_world_spell_datas_folder", "folder"), &EntityDataManager::set_world_spell_datas_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "world_spell_datas_folder"), "set_world_spell_datas_folder", "get_world_spell_datas_folder");
+
+	ClassDB::bind_method(D_METHOD("add_world_spell_data", "cls"), &EntityDataManager::add_world_spell_data);
+	ClassDB::bind_method(D_METHOD("get_world_spell_data", "class_id"), &EntityDataManager::get_world_spell_data);
+	ClassDB::bind_method(D_METHOD("get_world_spell_data_index", "index"), &EntityDataManager::get_world_spell_data_index);
+	ClassDB::bind_method(D_METHOD("get_world_spell_data_count"), &EntityDataManager::get_world_spell_data_count);
+
 	//Craft Data
 	ClassDB::bind_method(D_METHOD("get_craft_data_folder"), &EntityDataManager::get_craft_data_folder);
 	ClassDB::bind_method(D_METHOD("set_craft_data_folder", "folder"), &EntityDataManager::set_craft_data_folder);
@@ -841,6 +975,7 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("load_xp_data"), &EntityDataManager::load_xp_data);
 	ClassDB::bind_method(D_METHOD("load_spells"), &EntityDataManager::load_spells);
 	ClassDB::bind_method(D_METHOD("load_auras"), &EntityDataManager::load_auras);
+	ClassDB::bind_method(D_METHOD("load_world_spell_datas"), &EntityDataManager::load_world_spell_datas);
 	ClassDB::bind_method(D_METHOD("load_characters"), &EntityDataManager::load_characters);
 	ClassDB::bind_method(D_METHOD("load_craft_datas"), &EntityDataManager::load_craft_datas);
 	ClassDB::bind_method(D_METHOD("load_item_templates"), &EntityDataManager::load_item_templates);
@@ -871,6 +1006,9 @@ EntityDataManager::~EntityDataManager() {
 
 	_auras.clear();
 	_aura_map.clear();
+
+	_world_spell_datas.clear();
+	_world_spell_data_map.clear();
 
 	_craft_datas.clear();
 	_craft_data_map.clear();
