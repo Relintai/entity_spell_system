@@ -448,7 +448,7 @@ public:
 	void con_gcd_started();
 	void con_gcd_finished();
 
-	void son_physics_process();
+	void son_physics_process(float delta);
 
 	void son_xp_gained(int value);
 	void son_level_up(int value);
@@ -886,6 +886,8 @@ public:
 
 	Dictionary data_as_dict(String &data);
 
+	void register_for_physics_process(Ref<SpellCastInfo> info);
+
 	Entity();
 	~Entity();
 
@@ -1057,11 +1059,10 @@ private:
 	Ref<Bag> _s_target_bag;
 	Ref<Bag> _c_target_bag;
 
-	//AI
+	// AI
 	
 	bool _s_is_pet;
 	Entity *_s_pet_owner;
-
 
 	int _s_pet_formation_index;
 	EntityEnums::PetStates _s_pet_state;
@@ -1070,15 +1071,19 @@ private:
 
 	Ref<EntityAI> _s_ai;
 
-	//Pets
+	// Pets
 
 	Vector<Entity *> _s_pets;
 	Vector<Entity *> _c_pets;
 
-	//Networking
+	// Networking
 
 	Vector<Entity *> _s_sees;
 	Vector<Entity *> _s_seen_by;
+
+	// Callbacks
+
+	Vector<Ref<SpellCastInfo> > _physics_process_scis;
 };
 
 #endif

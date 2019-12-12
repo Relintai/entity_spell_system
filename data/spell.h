@@ -307,6 +307,7 @@ public:
 	void son_cast_player_moved(Ref<SpellCastInfo> info);
 	void son_cast_damage_received(Ref<SpellCastInfo> info);
 	void son_spell_hit(Ref<SpellCastInfo> info);
+	void son_physics_process(Ref<SpellCastInfo> info, float delta);
 
 	//Clientside Event Handlers
 	void con_spell_cast_started(Ref<SpellCastInfo> info);

@@ -42,6 +42,8 @@ public:
 
 	bool update_cast_time(float delta);
 
+	void physics_process(float delta);
+
 	void resolve_references(Node *owner);
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);

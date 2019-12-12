@@ -2503,14 +2503,23 @@ void Entity::con_gcd_finished() {
 	}
 }
 
-void Entity::son_physics_process() {
-	//if (has_method("_son_category_cooldown_removed"))
-	//	call("_son_category_cooldown_removed", category_cooldown);
-
+void Entity::son_physics_process(float delta) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
 		ad->get_aura()->son_physics_process(ad);
+	}
+
+	if (_physics_process_scis.size() > 0) {
+		for (int i = 0; i < _physics_process_scis.size(); ++i) {
+			Ref<SpellCastInfo> sci = _physics_process_scis.get(i);
+
+			ERR_CONTINUE(!sci.is_valid());
+
+			sci->physics_process(delta);
+		}
+
+		_physics_process_scis.clear();
 	}
 }
 
@@ -5044,6 +5053,10 @@ Dictionary Entity::data_as_dict(String &data) {
 	return d;
 }
 
+void Entity::register_for_physics_process(Ref<SpellCastInfo> info) {
+	_physics_process_scis.push_back(info);
+}
+
 Entity::Entity() {
 	_deserialized = false;
 
@@ -5379,6 +5392,8 @@ Entity::~Entity() {
 	_s_ai.unref();
 
 	_s_pets.clear();
+
+	_physics_process_scis.clear();
 }
 
 void Entity::_notification(int p_what) {
@@ -5401,7 +5416,7 @@ void Entity::_notification(int p_what) {
 			update(get_process_delta_time());
 		} break;
 		case NOTIFICATION_PHYSICS_PROCESS: {
-			son_physics_process();
+			son_physics_process(get_physics_process_delta_time());
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			for (int i = 0; i < _s_seen_by.size(); ++i) {
@@ -6347,4 +6362,6 @@ void Entity::_bind_methods() {
 
 	mi.name = "vrpc";
 	ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "vrpc", &Entity::_vrpc_bind, mi);
+
+	ClassDB::bind_method(D_METHOD("register_for_physics_process", "info"), &Entity::register_for_physics_process);
 }

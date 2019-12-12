@@ -616,6 +616,14 @@ void Spell::son_spell_hit(Ref<SpellCastInfo> info) {
 	}
 }
 
+void Spell::son_physics_process(Ref<SpellCastInfo> info, float delta) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_son_physics_process")) {
+		call("_son_physics_process", info, delta);
+	}
+}
+
 void Spell::con_spell_cast_started(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
@@ -822,10 +830,12 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_cast_player_moved", "info"), &Spell::son_cast_player_moved);
 	ClassDB::bind_method(D_METHOD("son_cast_damage_received", "info"), &Spell::son_cast_damage_received);
 	ClassDB::bind_method(D_METHOD("son_spell_hit", "info"), &Spell::son_spell_hit);
+	ClassDB::bind_method(D_METHOD("son_physics_process", "info", "delta"), &Spell::son_physics_process);
 
 	BIND_VMETHOD(MethodInfo("_son_cast_player_moved", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_damage_received", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_spell_hit", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_son_physics_process", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo"), PropertyInfo(Variant::REAL, "delta")));
 
 	//Clientside Event Handlers
 	ClassDB::bind_method(D_METHOD("con_spell_cast_started", "info"), &Spell::con_spell_cast_started);

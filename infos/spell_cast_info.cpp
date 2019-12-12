@@ -124,6 +124,12 @@ bool SpellCastInfo::update_cast_time(float delta) {
 	return false;
 }
 
+void SpellCastInfo::physics_process(float delta) {
+	ERR_FAIL_COND(!_spell.is_valid());
+
+	_spell->son_physics_process(Ref<SpellCastInfo>(this), delta);
+}
+
 void SpellCastInfo::resolve_references(Node *owner) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
 	ERR_FAIL_COND(!owner->is_inside_tree());
