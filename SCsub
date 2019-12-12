@@ -124,4 +124,3 @@ env.add_source_files(env.modules_sources,"profile_manager/class_profile.cpp")
 env.add_source_files(env.modules_sources,"profile_manager/profile_manager.cpp")
 
 module_env.add_source_files(env.modules_sources,"autoloads/entity_data_manager.cpp")
-module_env.add_source_files(env.modules_sources,"autoloads/ess_physics_query.cpp")

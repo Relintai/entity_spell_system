@@ -4,7 +4,6 @@
 #include "item_enums.h"
 
 #include "autoloads/entity_data_manager.h"
-#include "autoloads/ess_physics_query.h"
 
 #include "data/aura.h"
 #include "data/aura_group.h"
@@ -127,7 +126,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<SpellEnums>();
 
 	ClassDB::register_class<EntityDataManager>();
-	ClassDB::register_class<ESSPhysicsQuery>();
 
 	//data
 	ClassDB::register_class<CraftRecipeHelper>();
