@@ -45,25 +45,6 @@ enum SpellTargetType {
 
 VARIANT_ENUM_CAST(SpellTargetType);
 
-enum SpellAOEColliderType {
-	SPELL_AOE_COLLIDER_TYPE_SPHERE,
-	SPELL_AOE_COLLIDER_TYPE_BOX,
-	SPELL_AOE_COLLIDER_TYPE_BOX_NON_UNIFORM
-};
-
-VARIANT_ENUM_CAST(SpellAOEColliderType);
-
-enum SpellAOEMovementType {
-	SPELL_AOE_MOVEMENT_TYPE_STATIC,
-	SPELL_AOE_MOVEMENT_TYPE_MOVING_TO_TARGET,
-	SPELL_AOE_MOVEMENT_TYPE_MOVING_RANDOM_DIRECTION,
-	SPELL_AOE_MOVEMENT_TYPE_MOVING_RANDOMLY,
-	SPELL_AOE_MOVEMENT_TYPE_MOVING_CASTER_FACING,
-	SPELL_AOE_MOVEMENT_TYPE_MOVING
-};
-
-VARIANT_ENUM_CAST(SpellAOEMovementType);
-
 enum SpellAOETargetType {
 	SPELL_AOE_TARGET_TYPE_CASTER,
 	SPELL_AOE_TARGET_TYPE_TARGET,
@@ -72,14 +53,6 @@ enum SpellAOETargetType {
 };
 
 VARIANT_ENUM_CAST(SpellAOETargetType);
-
-enum SpellProjectileType {
-	SPELL_PROJECTILE_TYPE_FOLLOW,
-	SPELL_PROJECTILE_TYPE_STRAIGHT,
-	SPELL_PROJECTILE_TYPE_STATIONARY
-};
-
-VARIANT_ENUM_CAST(SpellProjectileType);
 
 class Spell : public Resource {
 	GDCLASS(Spell, Resource);
@@ -182,6 +155,10 @@ public:
 	Vector<Variant> get_on_learn_auras();
 	void set_on_learn_auras(const Vector<Variant> &on_learn_auras);
 
+	//Projectile
+	Ref<WorldSpellData> get_projectile();
+	void set_projectile(Ref<WorldSpellData> value);
+
 	//Range
 	bool get_has_range();
 	void set_has_range(bool value);
@@ -234,42 +211,21 @@ public:
 	float get_interrupt_time();
 	void set_interrupt_time(float value);
 
+	//AOE
 	bool get_is_aoe();
 	void set_is_aoe(bool value);
 
 	SpellAOETargetType get_aoe_target_type();
 	void set_aoe_target_type(SpellAOETargetType value);
 
-	SpellAOEMovementType get_aoe_movement_type();
-	void set_aoe_movement_type(SpellAOEMovementType value);
+	SpellEnums::ColliderType get_aoe_collider_type();
+	void set_aoe_collider_type(SpellEnums::ColliderType value);
 
-	SpellAOEColliderType get_aoe_collider_type();
-	void set_aoe_collider_type(SpellAOEColliderType value);
+	float get_aoe_radius();
+	void set_aoe_radius(float value);
 
-	Vector3 get_aoe_half_extents();
-	void set_aoe_half_extents(Vector3 value);
-
-	Ref<PackedScene> get_projectile();
-	void set_projectile(Ref<PackedScene> value);
-
-	bool has_projectile();
-	float get_projectile_speed();
-	void set_projectile_speed(float value);
-
-	float get_projectile_time();
-	void set_projectile_time(float value);
-
-	float get_projectile_range();
-	void set_projectile_range(float value);
-
-	bool get_has_projectile_collision();
-	void set_has_projectile_collision(bool value);
-
-	SpellProjectileType get_projectile_type();
-	void set_projectile_type(SpellProjectileType value);
-
-	bool get_has_projectile_destroy_on_impact();
-	void set_has_projectile_destroy_on_impact(bool value);
+	Vector3 get_aoe_box_extents();
+	void set_aoe_box_extents(Vector3 value);
 
 	int get_spell_cooldown_mainpulation_data_count();
 	void set_spell_cooldown_mainpulation_data_count(int value);
@@ -390,17 +346,11 @@ private:
 
 	bool _is_aoe;
 	SpellAOETargetType _aoe_targetType;
-	SpellAOEMovementType _aoe_movementType;
-	SpellAOEColliderType _aoe_colliderType;
-	Vector3 _aoe_half_extents;
+	SpellEnums::ColliderType _aoe_colliderType;
+	float _aoe_radius;
+	Vector3 _aoe_box_extents;
 
-	Ref<PackedScene> _projectile;
-	float _projectile_speed;
-	float _projectile_time;
-	float _projectile_range;
-	SpellProjectileType _projectile_type;
-	bool _projectile_destroy_on_impact;
-	bool _projectile_collision;
+	Ref<WorldSpellData> _projectile;
 
 	int _spell_cooldown_mainpulation_data_count;
 

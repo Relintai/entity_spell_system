@@ -275,6 +275,15 @@ void Spell::set_on_learn_auras(const Vector<Variant> &on_learn_aura_applys) {
 	}
 }
 
+////    Projectile    ////
+
+Ref<WorldSpellData> Spell::get_projectile() {
+	return _projectile;
+}
+void Spell::set_projectile(Ref<WorldSpellData> value) {
+	_projectile = value;
+}
+
 ////    Range    ////
 
 bool Spell::get_has_range() {
@@ -410,77 +419,25 @@ void Spell::set_aoe_target_type(SpellAOETargetType value) {
 	_aoe_targetType = value;
 }
 
-SpellAOEMovementType Spell::get_aoe_movement_type() {
-	return _aoe_movementType;
-}
-void Spell::set_aoe_movement_type(SpellAOEMovementType value) {
-	_aoe_movementType = value;
-}
-
-SpellAOEColliderType Spell::get_aoe_collider_type() {
+SpellEnums::ColliderType Spell::get_aoe_collider_type() {
 	return _aoe_colliderType;
 }
-void Spell::set_aoe_collider_type(SpellAOEColliderType value) {
+void Spell::set_aoe_collider_type(SpellEnums::ColliderType value) {
 	_aoe_colliderType = value;
 }
 
-Vector3 Spell::get_aoe_half_extents() {
-	return _aoe_half_extents;
+float Spell::get_aoe_radius() {
+	return _aoe_radius;
 }
-void Spell::set_aoe_half_extents(Vector3 value) {
-	_aoe_half_extents = value;
-}
-
-Ref<PackedScene> Spell::get_projectile() {
-	return _projectile;
-}
-void Spell::set_projectile(Ref<PackedScene> value) {
-	_projectile = value;
+void Spell::set_aoe_radius(float value) {
+	_aoe_radius = value;
 }
 
-bool Spell::has_projectile() {
-	return _projectile.is_valid();
+Vector3 Spell::get_aoe_box_extents() {
+	return _aoe_box_extents;
 }
-float Spell::get_projectile_speed() {
-	return _projectile_speed;
-}
-void Spell::set_projectile_speed(float value) {
-	_projectile_speed = value;
-}
-
-float Spell::get_projectile_time() {
-	return _projectile_time;
-}
-void Spell::set_projectile_time(float value) {
-	_projectile_time = value;
-}
-
-float Spell::get_projectile_range() {
-	return _projectile_range;
-}
-void Spell::set_projectile_range(float value) {
-	_projectile_range = value;
-}
-
-bool Spell::get_has_projectile_collision() {
-	return _projectile_collision;
-}
-void Spell::set_has_projectile_collision(bool value) {
-	_projectile_collision = value;
-}
-
-SpellProjectileType Spell::get_projectile_type() {
-	return _projectile_type;
-}
-void Spell::set_projectile_type(SpellProjectileType value) {
-	_projectile_type = value;
-}
-
-bool Spell::get_has_projectile_destroy_on_impact() {
-	return _projectile_destroy_on_impact;
-}
-void Spell::set_has_projectile_destroy_on_impact(bool value) {
-	_projectile_destroy_on_impact = value;
+void Spell::set_aoe_box_extents(Vector3 value) {
+	_aoe_box_extents = value;
 }
 
 int Spell::get_spell_cooldown_mainpulation_data_count() {
@@ -773,16 +730,8 @@ Spell::Spell() {
 
 	_is_aoe = false;
 	_aoe_targetType = SpellAOETargetType::SPELL_AOE_TARGET_TYPE_CASTER;
-	_aoe_movementType = SpellAOEMovementType::SPELL_AOE_MOVEMENT_TYPE_STATIC;
-	_aoe_colliderType = SpellAOEColliderType::SPELL_AOE_COLLIDER_TYPE_BOX;
-	//Vector3 _aoe_half_extents;
-
-	_projectile_speed = 0;
-	_projectile_time = 0;
-	_projectile_range = 0;
-	_projectile_type = SpellProjectileType::SPELL_PROJECTILE_TYPE_FOLLOW;
-	_projectile_destroy_on_impact = false;
-	_projectile_collision = false;
+	_aoe_colliderType = SpellEnums::COLLIDER_TYPE_NONE;
+	_aoe_radius = 0;
 
 	_spell_cooldown_mainpulation_data_count = 0;
 
@@ -954,6 +903,10 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_on_learn_auras", "spells"), &Spell::set_on_learn_auras);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "on_learn_auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_on_learn_auras", "get_on_learn_auras");
 
+	ClassDB::bind_method(D_METHOD("get_projectile"), &Spell::get_projectile);
+	ClassDB::bind_method(D_METHOD("set_projectile", "value"), &Spell::set_projectile);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "projectile", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), "set_projectile", "get_projectile");
+
 	ADD_GROUP("Texts", "text");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
@@ -1070,47 +1023,17 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_aoe_target_type", "value"), &Spell::set_aoe_target_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "aoe_targetType", PROPERTY_HINT_ENUM, "Caster, Target, Ground Target Selection, Random"), "set_aoe_target_type", "get_aoe_target_type");
 
-	ClassDB::bind_method(D_METHOD("get_aoe_movement_type"), &Spell::get_aoe_movement_type);
-	ClassDB::bind_method(D_METHOD("set_aoe_movement_type", "value"), &Spell::set_aoe_movement_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "aoe_movement_type", PROPERTY_HINT_ENUM, "Static, Moving To Target, Random Direction, Randomly, Caster Facing, Moving"), "set_aoe_movement_type", "get_aoe_movement_type");
-
 	ClassDB::bind_method(D_METHOD("get_aoe_collider_type"), &Spell::get_aoe_collider_type);
 	ClassDB::bind_method(D_METHOD("set_aoe_collider_type", "value"), &Spell::set_aoe_collider_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "aoe_colliderType", PROPERTY_HINT_ENUM, "Sphere, Box, Box Non Uniform"), "set_aoe_collider_type", "get_aoe_collider_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "aoe_colliderType", PROPERTY_HINT_ENUM, SpellEnums::BINDING_STRING_COLLIDER_TYPE), "set_aoe_collider_type", "get_aoe_collider_type");
 
-	ClassDB::bind_method(D_METHOD("get_aoe_half_extents"), &Spell::get_aoe_half_extents);
-	ClassDB::bind_method(D_METHOD("set_aoe_half_extents", "value"), &Spell::set_aoe_half_extents);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "aoe_half_extents"), "set_aoe_half_extents", "get_aoe_half_extents");
+	ClassDB::bind_method(D_METHOD("get_aoe_radius"), &Spell::get_aoe_radius);
+	ClassDB::bind_method(D_METHOD("set_aoe_radius", "value"), &Spell::set_aoe_radius);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "aoe_radius"), "set_aoe_radius", "get_aoe_radius");
 
-	ADD_GROUP("Projectile", "projectile");
-	ClassDB::bind_method(D_METHOD("has_projectile"), &Spell::has_projectile);
-	ClassDB::bind_method(D_METHOD("get_projectile"), &Spell::get_projectile);
-	ClassDB::bind_method(D_METHOD("set_projectile", "value"), &Spell::set_projectile);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "projectile", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_projectile", "get_projectile");
-
-	ClassDB::bind_method(D_METHOD("get_projectile_speed"), &Spell::get_projectile_speed);
-	ClassDB::bind_method(D_METHOD("set_projectile_speed", "value"), &Spell::set_projectile_speed);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "projectile_speed"), "set_projectile_speed", "get_projectile_speed");
-
-	ClassDB::bind_method(D_METHOD("get_projectile_time"), &Spell::get_projectile_time);
-	ClassDB::bind_method(D_METHOD("set_projectile_time", "value"), &Spell::set_projectile_time);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "projectile_time"), "set_projectile_time", "get_projectile_time");
-
-	ClassDB::bind_method(D_METHOD("get_projectile_range"), &Spell::get_projectile_range);
-	ClassDB::bind_method(D_METHOD("set_projectile_range", "value"), &Spell::set_projectile_range);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "projectile_range"), "set_projectile_range", "get_projectile_range");
-
-	ClassDB::bind_method(D_METHOD("get_has_projectile_collision"), &Spell::get_has_projectile_collision);
-	ClassDB::bind_method(D_METHOD("set_has_projectile_collision", "value"), &Spell::set_has_projectile_collision);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "projectile_has_projectile_collision"), "set_has_projectile_collision", "get_has_projectile_collision");
-
-	ClassDB::bind_method(D_METHOD("get_projectile_type"), &Spell::get_projectile_type);
-	ClassDB::bind_method(D_METHOD("set_projectile_type", "value"), &Spell::set_projectile_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "projectile_type", PROPERTY_HINT_ENUM, "Follow, Straight, Stationary"), "set_projectile_type", "get_projectile_type");
-
-	ClassDB::bind_method(D_METHOD("get_has_projectile_destroy_on_impact"), &Spell::get_has_projectile_destroy_on_impact);
-	ClassDB::bind_method(D_METHOD("set_has_projectile_destroy_on_impact", "value"), &Spell::set_has_projectile_destroy_on_impact);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "projectile_has_projectile_destroy_on_impact"), "set_has_projectile_destroy_on_impact", "get_has_projectile_destroy_on_impact");
+	ClassDB::bind_method(D_METHOD("get_aoe_box_extents"), &Spell::get_aoe_box_extents);
+	ClassDB::bind_method(D_METHOD("set_aoe_box_extents", "value"), &Spell::set_aoe_box_extents);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "aoe_box_extents"), "set_aoe_box_extents", "get_aoe_box_extents");
 
 	ADD_GROUP("Spell Cooldown Mainpulation", "spell_cooldown_mainpulation");
 	ClassDB::bind_method(D_METHOD("get_spell_cooldown_mainpulation_data_count"), &Spell::get_spell_cooldown_mainpulation_data_count);
@@ -1145,22 +1068,8 @@ void Spell::_bind_methods() {
 	BIND_ENUM_CONSTANT(SPELL_TARGET_TYPE_FRONT);
 	BIND_ENUM_CONSTANT(SPELL_TARGET_TYPE_AROUND_TARGET);
 
-	BIND_ENUM_CONSTANT(SPELL_AOE_COLLIDER_TYPE_SPHERE);
-	BIND_ENUM_CONSTANT(SPELL_AOE_COLLIDER_TYPE_BOX);
-	BIND_ENUM_CONSTANT(SPELL_AOE_COLLIDER_TYPE_BOX_NON_UNIFORM);
-
-	BIND_ENUM_CONSTANT(SPELL_AOE_MOVEMENT_TYPE_STATIC);
-	BIND_ENUM_CONSTANT(SPELL_AOE_MOVEMENT_TYPE_MOVING_TO_TARGET);
-	BIND_ENUM_CONSTANT(SPELL_AOE_MOVEMENT_TYPE_MOVING_RANDOM_DIRECTION);
-	BIND_ENUM_CONSTANT(SPELL_AOE_MOVEMENT_TYPE_MOVING_RANDOMLY);
-	BIND_ENUM_CONSTANT(SPELL_AOE_MOVEMENT_TYPE_MOVING_CASTER_FACING);
-	BIND_ENUM_CONSTANT(SPELL_AOE_MOVEMENT_TYPE_MOVING);
 	BIND_ENUM_CONSTANT(SPELL_AOE_TARGET_TYPE_CASTER);
 	BIND_ENUM_CONSTANT(SPELL_AOE_TARGET_TYPE_TARGET);
 	BIND_ENUM_CONSTANT(SPELL_AOE_TARGET_TYPE_GOUND_TARGET_SELECTION);
 	BIND_ENUM_CONSTANT(SPELL_AOE_TARGET_TYPE_RANDOM);
-
-	BIND_ENUM_CONSTANT(SPELL_PROJECTILE_TYPE_FOLLOW);
-	BIND_ENUM_CONSTANT(SPELL_PROJECTILE_TYPE_STRAIGHT);
-	BIND_ENUM_CONSTANT(SPELL_PROJECTILE_TYPE_STATIONARY);
 }
