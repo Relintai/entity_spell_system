@@ -1,7 +1,12 @@
+import os
+
 Import('env')
 
 if ARGUMENTS.get('entities_2d', 'no') == 'yes':
     env.Append(CPPDEFINES=['ENTITIES_2D'])
+
+if os.path.isdir('../mesh_data_resource'):
+    env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
 
 module_env = env.Clone()
 

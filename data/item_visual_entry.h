@@ -11,7 +11,10 @@
 
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/mesh.h"
-#include "../meshes/mesh_data_resource.h"
+
+#ifdef MESH_DATA_RESOURCE_PRESENT
+#include "../../mesh_data_resource/mesh_data_resource.h"
+#endif
 
 class ItemVisualEntry : public Resource {
 	GDCLASS(ItemVisualEntry, Resource);
@@ -20,8 +23,10 @@ public:
 	ItemEnums::EntityTextureLayers get_override_layer();
 	void set_override_layer(ItemEnums::EntityTextureLayers layer);
 
+	#ifdef MESH_DATA_RESOURCE_PRESENT
 	Ref<MeshDataResource> get_mesh(int index);
 	void set_mesh(int index, Ref<MeshDataResource> mesh);
+	#endif
 
 	Ref<Texture> get_texture(int index);
 	void set_texture(int index, Ref<Texture> texture);
@@ -44,7 +49,9 @@ protected:
 private:
 	ItemEnums::EntityTextureLayers _override_layer;
 
+	#ifdef MESH_DATA_RESOURCE_PRESENT
 	Ref<MeshDataResource> _mesh[EntityEnums::GENDER_COUNT];
+	#endif
 
 	Ref<Texture> _texture[EntityEnums::GENDER_COUNT];
 	Color _color;

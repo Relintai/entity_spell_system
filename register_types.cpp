@@ -88,8 +88,6 @@
 #include "utility/cooldown.h"
 #include "utility/category_cooldown.h"
 
-#include "meshes/mesh_data_resource.h"
-
 #include "loot/loot_data_base.h"
 #include "loot/loot_data_item.h"
 #include "loot/loot_data_container.h"
@@ -114,13 +112,6 @@
 
 #include "profile_manager/class_profile.h"
 #include "profile_manager/profile_manager.h"
-
-#ifdef TOOLS_ENABLED
-#include "editor/editor_plugin.h"
-
-#include "meshes/editor_plugin_collada_mdr.h"
-#endif
-
 
 void register_entity_spell_system_types() {
 	ClassDB::register_class<SpellEnums>();
@@ -235,9 +226,6 @@ void register_entity_spell_system_types() {
 
     ClassDB::register_class<AIFormation>();
 
-	//meshes
-	ClassDB::register_class<MeshDataResource>();
-
 	//ProfileManager
 	ClassDB::register_class<InputProfileModifier>();
 	ClassDB::register_class<InputProfileModifierEntry>();
@@ -249,10 +237,6 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<ClassProfile>();
 	ClassDB::register_class<ProfileManager>();
-
-	#ifdef TOOLS_ENABLED
-	EditorPlugins::add_by_type<EditorPluginColladaMdr>();
-	#endif
 }
 
 void unregister_entity_spell_system_types() {
