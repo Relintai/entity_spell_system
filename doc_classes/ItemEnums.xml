@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ItemEnums" inherits="Object" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<constants>
+		<constant name="ITEM_RARITY_NONE" value="0" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_COMMON" value="1" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_UNCOMMON" value="2" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_SUPERIOR" value="3" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_HEROIC" value="4" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_MYTHIC" value="5" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_ARTIFACT" value="6" enum="ItemRarity">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_NONE" value="0" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_COMMON" value="1" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_UNCOMMON" value="2" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_SUPERIOR" value="4" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_HEROIC" value="8" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_MYTHIC" value="16" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_RARITY_FLAG_ARTIFACT" value="32" enum="ItemRarityFlag">
+		</constant>
+		<constant name="ITEM_TYPE_NONE" value="0" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_EQUIPMENT" value="1" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_WEAPON" value="2" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_POTION" value="4" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_HERB" value="8" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_ORE" value="16" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_GEMSTONE" value="32" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_FOOD" value="64" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_ALCHEMY" value="128" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_ENGINEERING" value="256" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_ENCHANTING" value="512" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_TAILORING" value="1024" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_RECIPE" value="2048" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_CURRENCY" value="4096" enum="ItemType">
+		</constant>
+		<constant name="ITEM_TYPE_BAG" value="8192" enum="ItemType">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_NONE" value="0" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_SWORD" value="1" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_AXE" value="2" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_MACE" value="3" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_DAGGER" value="4" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_BOW" value="5" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_CROSSBOW" value="6" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_GUN" value="7" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_WAND" value="8" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_TYPE_QUEST_ITEM" value="9" enum="ItemSubtype">
+		</constant>
+		<constant name="ITEM_SUB_SUB_TYPE_NONE" value="0" enum="ItemSubSubtype">
+		</constant>
+		<constant name="ITEM_SUB_SUB_TYPE_TWO_HAND" value="1" enum="ItemSubSubtype">
+		</constant>
+		<constant name="ITEM_SUB_SUB_TYPE_ONE_HAND" value="2" enum="ItemSubSubtype">
+		</constant>
+		<constant name="ITEM_SUB_SUB_TYPE_LEFT_HAND" value="3" enum="ItemSubSubtype">
+		</constant>
+		<constant name="ITEM_SUB_SUB_TYPE_RIGHT_HAND" value="4" enum="ItemSubSubtype">
+		</constant>
+		<constant name="EQUIP_SLOT_HEAD" value="0" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_NECK" value="1" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_SHOULDERS" value="2" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_CHEST" value="3" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_GLOVES" value="4" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_BELT" value="5" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_LEGS" value="6" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_FEET" value="7" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_RING_1" value="8" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_RING_2" value="9" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_TRINKET_1" value="10" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_TRINKET_2" value="11" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_MAIN_HAND" value="12" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_OFF_HAND" value="13" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_NONE" value="14" enum="EquipSlots">
+		</constant>
+		<constant name="EQUIP_SLOT_EQUIP_SLOT_MAX" value="14" enum="EquipSlots">
+		</constant>
+		<constant name="ARMOR_TYPE_NONE" value="0" enum="ArmorType">
+		</constant>
+		<constant name="ARMOR_TYPE_CLOTH" value="1" enum="ArmorType">
+		</constant>
+		<constant name="ARMOR_TYPE_LEATHER" value="2" enum="ArmorType">
+		</constant>
+		<constant name="ARMOR_TYPE_MAIL" value="3" enum="ArmorType">
+		</constant>
+		<constant name="ARMOR_TYPE_PLATE" value="4" enum="ArmorType">
+		</constant>
+		<constant name="ARMOR_TYPE_MAX" value="5" enum="ArmorType">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_NONE" value="0" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_SKIN" value="1" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_UNDERWEAR" value="2" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_SHIRT" value="3" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_BASE" value="4" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_1" value="5" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_2" value="6" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_3" value="7" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_4" value="8" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_5" value="9" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_BELT" value="10" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_TABARD" value="11" enum="EntityTextureLayers">
+		</constant>
+		<constant name="ENTITY_TEXTURE_LAYER_OVERLAY" value="12" enum="EntityTextureLayers">
+		</constant>
+	</constants>
+</class>

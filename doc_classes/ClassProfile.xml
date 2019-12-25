@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ClassProfile" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="from_dict">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_action_bar_profile">
+			<return type="ActionBarProfile">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_input_profile">
+			<return type="InputProfile">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="set_level">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="to_dict" qualifiers="const">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="actionbar_locked" type="bool" setter="set_actionbar_locked" getter="get_actionbar_locked" default="false">
+		</member>
+		<member name="character_class_name" type="String" setter="set_character_class_name" getter="get_character_class_name" default="&quot;&quot;">
+		</member>
+		<member name="class_id" type="int" setter="set_class_id" getter="get_class_id" default="0">
+		</member>
+		<member name="level" type="int" setter="set_class_id" getter="get_level" default="0">
+		</member>
+		<member name="xp" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

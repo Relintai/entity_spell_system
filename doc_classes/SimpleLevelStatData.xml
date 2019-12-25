@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SimpleLevelStatData" inherits="LevelStatData" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="agility_per_level" type="int" setter="set_agility_per_level" getter="get_agility_per_level" default="0">
+		</member>
+		<member name="intellect_per_level" type="int" setter="set_intellect_per_level" getter="get_intellect_per_level" default="0">
+		</member>
+		<member name="spirit_per_level" type="int" setter="set_spirit_per_level" getter="get_spirit_per_level" default="0">
+		</member>
+		<member name="stamina_per_level" type="int" setter="set_stamina_per_level" getter="get_stamina_per_level" default="0">
+		</member>
+		<member name="strength_per_level" type="int" setter="set_strength_per_level" getter="get_strength_per_level" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

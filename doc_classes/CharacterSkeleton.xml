@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CharacterSkeleton" inherits="Spatial" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_item_visual">
+			<return type="void">
+			</return>
+			<argument index="0" name="vis" type="ItemVisual">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="clear_item_visuals">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_item_visual">
+			<return type="ItemVisual">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_item_visual_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="remove_item_visual">
+			<return type="void">
+			</return>
+			<argument index="0" name="vis" type="ItemVisual">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_item_visual_index">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="gender" type="int" setter="set_gender" getter="get_gender" enum="EntityEnums.EntityGender" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

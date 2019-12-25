@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="AuraData" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_from_dict" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_from_send_array" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="arr" type="Array">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_to_dict" qualifiers="virtual">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_to_send_array" qualifiers="virtual">
+			<return type="Array">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="from_send_array">
+			<return type="void">
+			</return>
+			<argument index="0" name="arr" type="Array">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="refresh">
+			<return type="void">
+			</return>
+			<argument index="0" name="remaining" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_remaining_absorb">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="to_dict">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="to_send_array">
+			<return type="Array">
+			</return>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="aura" type="Aura" setter="set_aura" getter="get_aura">
+		</member>
+		<member name="aura_id" type="int" setter="set_aura_id" getter="get_aura_id" default="0">
+		</member>
+		<member name="caster" type="Entity" setter="set_caster" getter="get_caster">
+		</member>
+		<member name="caster_path" type="NodePath" setter="set_caster_path" getter="get_caster_path" default="NodePath(&quot;&quot;)">
+		</member>
+		<member name="damage" type="int" setter="set_damage" getter="get_damage" default="0">
+		</member>
+		<member name="damage_count" type="float" setter="set_damage_count" getter="get_damage_count" default="0.0">
+		</member>
+		<member name="damage_taken" type="int" setter="set_damage_taken" getter="get_damage_taken" default="0">
+		</member>
+		<member name="heal" type="int" setter="set_heal" getter="get_heal" default="0">
+		</member>
+		<member name="is_timed" type="bool" setter="set_is_timed" getter="get_is_timed" default="false">
+		</member>
+		<member name="owner" type="Entity" setter="set_owner" getter="get_owner">
+		</member>
+		<member name="remaining_absorb" type="int" setter="set_heal" getter="get_remaining_absorb" default="0">
+		</member>
+		<member name="remaining_time" type="float" setter="set_remaining_time" getter="get_remaining_time" default="0.0">
+		</member>
+		<member name="slow" type="float" setter="set_slow" getter="get_slow" default="0.0">
+		</member>
+		<member name="tick" type="float" setter="set_tick" getter="get_tick" default="0.0">
+		</member>
+		<member name="time_since_last_tick" type="float" setter="set_time_since_last_tick" getter="get_time_since_last_tick" default="0.0">
+		</member>
+		<member name="unhandled_ticks" type="int" setter="set_unhandled_ticks" getter="get_unhandled_ticks" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

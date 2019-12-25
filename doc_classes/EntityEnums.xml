@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EntityEnums" inherits="Object" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<constants>
+		<constant name="ENITIY_TYPE_NONE" value="0" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_CREATURE" value="1" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_TOTEM" value="2" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_IDOL" value="3" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_HUMANOID" value="4" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_MECHANICAL" value="5" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_BEAST" value="6" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_DRAGONKIN" value="7" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_ELEMENTAL" value="8" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_GHOST" value="9" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_ENERGY" value="10" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_ANOMALY" value="11" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_DEMON" value="12" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_TYPE_OBJECT" value="13" enum="EntityType">
+		</constant>
+		<constant name="ENITIY_CONTROLLER_NONE" value="0" enum="EntityController">
+		</constant>
+		<constant name="ENITIY_CONTROLLER_PLAYER" value="1" enum="EntityController">
+		</constant>
+		<constant name="ENITIY_CONTROLLER_AI" value="2" enum="EntityController">
+		</constant>
+		<constant name="ENITIY_FLAGS_NONE" value="0" enum="EntityFlags">
+		</constant>
+		<constant name="ENTITY_FLAGS_UNTARGETALBE" value="1" enum="EntityFlags">
+		</constant>
+		<constant name="ENTITY_FLAGS_HIDDEN" value="2" enum="EntityFlags">
+		</constant>
+		<constant name="ENTITY_FLAGS_INTERACTABLE" value="4" enum="EntityFlags">
+		</constant>
+		<constant name="ENTITY_FLAGS_HOSTILE" value="8" enum="EntityFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_FLAG_NONE" value="0" enum="EntityStateTypeFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_FLAG_STUN" value="1" enum="EntityStateTypeFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_FLAG_ROOT" value="2" enum="EntityStateTypeFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_FLAG_FROZEN" value="4" enum="EntityStateTypeFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_FLAG_SILENCED" value="8" enum="EntityStateTypeFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_FLAG_DISORIENTED" value="16" enum="EntityStateTypeFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_FLAG_FEARED" value="32" enum="EntityStateTypeFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_FLAG_BURNING" value="64" enum="EntityStateTypeFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_FLAG_COLD" value="128" enum="EntityStateTypeFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_FLAG_CURSED" value="256" enum="EntityStateTypeFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_FLAG_PACIFIED" value="512" enum="EntityStateTypeFlags">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_NONE" value="0" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_STUN" value="1" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_ROOT" value="2" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_FROZEN" value="3" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_SILENCED" value="4" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_DISORIENTED" value="5" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_FEARED" value="6" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_BURNING" value="7" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_COLD" value="8" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_CURSED" value="9" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_PACIFIED" value="10" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="ENTITY_STATE_TYPE_INDEX_MAX" value="11" enum="EntityStateTypeIndexes">
+		</constant>
+		<constant name="SKELETON_POINT_ROOT" value="0" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_PELVIS" value="1" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_SPINE" value="2" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_SPINE_1" value="3" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_SPINE_2" value="4" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_NECK" value="5" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_HEAD" value="6" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_LEFT_CLAVICLE" value="7" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_LEFT_UPPER_ARM" value="8" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_LEFT_FOREARM" value="9" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_LEFT_HAND" value="10" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_LEFT_THUMB_BASE" value="11" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_LEFT_THUMB_END" value="12" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_LEFT_FINGERS_BASE" value="13" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_LEFT_FINGERS_END" value="14" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_RIGHT_CLAVICLE" value="15" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_RIGHT_UPPER_ARM" value="16" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_RIGHT_FOREARM" value="17" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_RIGHT_HAND" value="18" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_RIGHT_THUMB_BASE" value="19" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_RIGHT_THUMB_END" value="20" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_RIGHT_FINGERS_BASE" value="21" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_RIGHT_FINGERS_END" value="22" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_LEFT_THIGH" value="23" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_LEFT_CALF" value="24" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_LEFT_FOOT" value="25" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_RIGHT_THIGH" value="26" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_RIGHT_CALF" value="27" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINT_RIGHT_FOOT" value="28" enum="CharacterSkeletonPoints">
+		</constant>
+		<constant name="SKELETON_POINTS_MAX" value="29">
+		</constant>
+		<constant name="AI_STATE_OFF" value="0" enum="AIStates">
+		</constant>
+		<constant name="AI_STATE_REST" value="1" enum="AIStates">
+		</constant>
+		<constant name="AI_STATE_PATROL" value="2" enum="AIStates">
+		</constant>
+		<constant name="AI_STATE_FOLLOW_PATH" value="3" enum="AIStates">
+		</constant>
+		<constant name="AI_STATE_REGENERATE" value="4" enum="AIStates">
+		</constant>
+		<constant name="AI_STATE_ATTACK" value="5" enum="AIStates">
+		</constant>
+		<constant name="AI_STATE_MAX" value="6">
+		</constant>
+		<constant name="PET_STATE_PET_FOLLOW" value="1" enum="PetStates">
+		</constant>
+		<constant name="PET_STATE_PET_STOP" value="2" enum="PetStates">
+		</constant>
+		<constant name="PET_STATE_PET_ATTACK" value="3" enum="PetStates">
+		</constant>
+		<constant name="PET_STATE_MAX" value="4">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_NONE" value="0" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_STUN" value="1" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_ROOT" value="2" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_FREEZE" value="4" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_SILENCE" value="8" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_DISORIENT" value="16" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_FEAR" value="32" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_BURNING" value="64" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_COLD" value="128" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_PACIFY" value="256" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_MAGIC" value="512" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_POISON" value="1024" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_PHYSICAL" value="2048" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_CURSE" value="4096" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_BLEED" value="8192" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_MELEE" value="16384" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_HOLY" value="32768" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_SHADOW" value="65536" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_NATURE" value="131072" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_FIRE" value="262144" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_FROST" value="524288" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_LIGHTNING" value="1048576" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_CHAOS" value="2097152" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_SLOW" value="4194304" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_CRIT" value="8388608" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_AOE" value="16777216" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_DAMAGE" value="33554432" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_FALL_DAMAGE" value="67108864" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_PROJECTILE" value="134217728" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_DEBUFF" value="268435456" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENTITY_IMMUNITY_FLAG_ATTACKS" value="536870912" enum="EntityImmunityFlags">
+		</constant>
+		<constant name="ENITIY_INTERACTION_TYPE_NORMAL" value="0" enum="EntityInteractionType">
+		</constant>
+		<constant name="ENITIY_INTERACTION_TYPE_SPEAK" value="1" enum="EntityInteractionType">
+		</constant>
+		<constant name="ENITIY_INTERACTION_TYPE_LOOT" value="2" enum="EntityInteractionType">
+		</constant>
+		<constant name="ENITIY_INTERACTION_TYPE_USE" value="3" enum="EntityInteractionType">
+		</constant>
+		<constant name="ENITIY_INTERACTION_TYPE_NONE" value="4" enum="EntityInteractionType">
+		</constant>
+		<constant name="ENTITY_CLASS_PLAYSTYLE_TYPE_MELEE" value="0" enum="EntityClassPlaystyleType">
+		</constant>
+		<constant name="ENTITY_CLASS_PLAYSTYLE_TYPE_SPELL" value="1" enum="EntityClassPlaystyleType">
+		</constant>
+		<constant name="ENTITY_CLASS_PLAYSTYLE_TYPE_HYBRID" value="2" enum="EntityClassPlaystyleType">
+		</constant>
+		<constant name="ENTITY_CLASS_PLAYSTYLE_TYPE_NONE" value="3" enum="EntityClassPlaystyleType">
+		</constant>
+		<constant name="GENDER_MALE" value="0" enum="EntityGender">
+		</constant>
+		<constant name="GENDER_FEMALE" value="1" enum="EntityGender">
+		</constant>
+		<constant name="ENTITY_WINDOW_LOOT" value="0" enum="EntityWindows">
+		</constant>
+		<constant name="ENTITY_WINDOW_CONTAINER" value="1" enum="EntityWindows">
+		</constant>
+		<constant name="ENTITY_WINDOW_VENDOR" value="2" enum="EntityWindows">
+		</constant>
+		<constant name="GENDER_COUNT" value="2">
+		</constant>
+		<constant name="MAX_LEVEL" value="50">
+		</constant>
+		<constant name="BASE_XP" value="50">
+		</constant>
+	</constants>
+</class>

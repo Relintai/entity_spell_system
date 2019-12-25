@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EntityResource" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_from_dict" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_gets_update_string" qualifiers="virtual">
+			<return type="String">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_onc_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_onc_stat_changed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat" type="Stat">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_onc_target_changed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="old_target" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_ons_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_ons_stat_changed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat" type="Stat">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_ons_target_changed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="old_target" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_process_client" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_process_server" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_receivec_update_string" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="str" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_to_dict" qualifiers="virtual">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="process_client">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="process_server">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="to_dict">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="current" type="int" setter="set_current" getter="get_current" default="0">
+		</member>
+		<member name="data_id" type="int" setter="set_data_id" getter="get_data_id" default="0">
+		</member>
+		<member name="dirty" type="bool" setter="set_dirty" getter="get_dirty" default="false">
+		</member>
+		<member name="max" type="int" setter="set_max" getter="get_max" default="0">
+		</member>
+		<member name="owner" type="Entity" setter="set_owner" getter="get_owner">
+		</member>
+		<member name="resource_data" type="EntityResourceData" setter="set_resource_data" getter="get_resource_data">
+		</member>
+		<member name="should_process" type="bool" setter="set_should_process" getter="get_should_process" default="false">
+		</member>
+	</members>
+	<signals>
+		<signal name="changed">
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

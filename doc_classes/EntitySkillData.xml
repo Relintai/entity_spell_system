@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EntitySkillData" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="default_value" type="int" setter="set_default_value" getter="get_default_value" default="0">
+		</member>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="max_value" type="int" setter="set_max_value" getter="get_max_value" default="0">
+		</member>
+		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
+		</member>
+		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

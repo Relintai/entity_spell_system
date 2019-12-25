@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ItemVisual" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_visual">
+			<return type="ItemVisualEntry">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_visual">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="entry" type="ItemVisualEntry">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="layer" type="int" setter="set_layer" getter="get_layer" enum="ItemEnums.EntityTextureLayers" default="0">
+		</member>
+		<member name="visual_head" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_left_calf" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_left_clavicle" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_left_fingers_base" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_left_fingers_end" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_left_foot" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_left_forearm" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_left_hand" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_left_thigh" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_left_thumb_base" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_left_thumb_end" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_left_upper_arm" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_neck" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_pelvis" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_right_calf" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_right_clavicle" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_right_fingers_base" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_right_fingers_end" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_right_foot" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_right_forearm" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_right_hand" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_right_thigh" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_right_thumb_base" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_right_thumb_end" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_right_upper_arm" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_root" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_spine" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_spine_1" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+		<member name="visual_spine_2" type="ItemVisualEntry" setter="set_visual" getter="get_visual">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

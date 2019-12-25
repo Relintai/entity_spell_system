@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ESDragAndDrop" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="item_id" type="int" setter="set_item_id" getter="get_item_id" default="0">
+		</member>
+		<member name="origin" type="Node" setter="set_origin" getter="get_origin">
+		</member>
+		<member name="type" type="int" setter="set_type" getter="get_type" enum="ESDragAndDrop.ESDragAndDropType" default="0">
+		</member>
+	</members>
+	<constants>
+		<constant name="ES_DRAG_AND_DROP_TYPE_NONE" value="0" enum="ESDragAndDropType">
+		</constant>
+		<constant name="ES_DRAG_AND_DROP_TYPE_SPELL" value="1" enum="ESDragAndDropType">
+		</constant>
+		<constant name="ES_DRAG_AND_DROP_TYPE_ITEM" value="2" enum="ESDragAndDropType">
+		</constant>
+		<constant name="ES_DRAG_AND_DROP_TYPE_INVENTORY_ITEM" value="3" enum="ESDragAndDropType">
+		</constant>
+		<constant name="ES_DRAG_AND_DROP_TYPE_EQUIPPED_ITEM" value="4" enum="ESDragAndDropType">
+		</constant>
+	</constants>
+</class>

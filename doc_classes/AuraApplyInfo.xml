@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="AuraApplyInfo" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="aura" type="Aura" setter="set_aura" getter="get_aura">
+		</member>
+		<member name="caster" type="Entity" setter="set_caster" getter="get_caster">
+		</member>
+		<member name="spell_scale" type="float" setter="set_spell_scale" getter="get_spell_scale" default="0.0">
+		</member>
+		<member name="target" type="Entity" setter="set_target" getter="get_target">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Spell" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_calculate_initial_damage" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_spell_cast_ended" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_spell_cast_failed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_spell_cast_interrupted" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_spell_cast_started" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_spell_cast_success" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_handle_spell_damage" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_sfinish_cast" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_sinterrupt_cast" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_cast_damage_received" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_cast_player_moved" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_physics_process" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<argument index="1" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_spell_hit" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_sstart_casting" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_sstart_casting_triggered" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="calculate_initial_damage">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_spell_cast_ended">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_spell_cast_failed">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_spell_cast_interrupted">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_spell_cast_started">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_spell_cast_success">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_absorb_scale_for_level">
+			<return type="float">
+			</return>
+			<argument index="0" name="arg0" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_caster_aura_apply" qualifiers="const">
+			<return type="Aura">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_damage_scale_for_level">
+			<return type="float">
+			</return>
+			<argument index="0" name="arg0" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_heal_scale_for_level">
+			<return type="float">
+			</return>
+			<argument index="0" name="arg0" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_num_caster_aura_applys">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_num_on_learn_auras">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_num_target_aura_applys">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_on_learn_aura" qualifiers="const">
+			<return type="Aura">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_target_aura_apply" qualifiers="const">
+			<return type="Aura">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="handle_spell_damage">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_caster_aura_apply">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="aura" type="Aura">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_num_caster_aura_applys">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_num_on_learn_auras">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_num_target_aura_applys">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_on_learn_aura">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="aura" type="Aura">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_target_aura_apply">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="aura" type="Aura">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sfinish_cast">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sinterrupt_cast">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_cast_damage_received">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_cast_player_moved">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_physics_process">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<argument index="1" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_spell_hit">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sstart_casting">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sstart_casting_triggered">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="aoe" type="bool" setter="set_is_aoe" getter="get_is_aoe" default="false">
+		</member>
+		<member name="aoe_box_extents" type="Vector3" setter="set_aoe_box_extents" getter="get_aoe_box_extents" default="Vector3( 0, 0, 0 )">
+		</member>
+		<member name="aoe_colliderType" type="int" setter="set_aoe_collider_type" getter="get_aoe_collider_type" enum="SpellEnums.ColliderType" default="0">
+		</member>
+		<member name="aoe_radius" type="float" setter="set_aoe_radius" getter="get_aoe_radius" default="0.0">
+		</member>
+		<member name="aoe_targetType" type="int" setter="set_aoe_target_type" getter="get_aoe_target_type" enum="SpellAOETargetType" default="0">
+		</member>
+		<member name="cast" type="bool" setter="set_has_cast_time" getter="get_has_cast_time" default="false">
+		</member>
+		<member name="cast_can_move_while_casting" type="bool" setter="set_can_move_while_casting" getter="get_can_move_while_casting" default="false">
+		</member>
+		<member name="cast_cast_time" type="float" setter="set_cast_time" getter="get_cast_time" default="0.0">
+		</member>
+		<member name="caster_aura_applys" type="Array" setter="set_caster_aura_applys" getter="get_caster_aura_applys" default="[  ]">
+		</member>
+		<member name="cooldown_cooldown" type="float" setter="set_cooldown" getter="get_cooldown" default="0.0">
+		</member>
+		<member name="cooldown_global_cooldown" type="bool" setter="set_has_global_cooldown" getter="has_global_cooldown" default="true">
+		</member>
+		<member name="cost_craft_material" type="int" setter="set_craft_material_cost" getter="get_craft_material_cost" default="0">
+		</member>
+		<member name="cost_item" type="int" setter="set_item_cost" getter="get_item_cost" default="0">
+		</member>
+		<member name="cost_required_item" type="int" setter="set_required_item" getter="get_required_item" default="0">
+		</member>
+		<member name="damage" type="bool" setter="set_has_damage" getter="get_has_damage" default="false">
+		</member>
+		<member name="damage_max" type="int" setter="set_damage_max" getter="get_damage_max" default="0">
+		</member>
+		<member name="damage_min" type="int" setter="set_damage_min" getter="get_damage_min" default="0">
+		</member>
+		<member name="damage_scaling_curve" type="Curve" setter="set_damage_scaling_curve" getter="get_damage_scaling_curve">
+		</member>
+		<member name="damage_type" type="int" setter="set_damage_type" getter="get_damage_type" default="0">
+		</member>
+		<member name="heal" type="bool" setter="set_has_heal" getter="get_has_heal" default="false">
+		</member>
+		<member name="heal_max" type="int" setter="set_heal_max" getter="get_heal_max" default="0">
+		</member>
+		<member name="heal_min" type="int" setter="set_heal_min" getter="get_heal_min" default="0">
+		</member>
+		<member name="heal_scaling_curve" type="Curve" setter="set_heal_scaling_curve" getter="get_heal_scaling_curve">
+		</member>
+		<member name="hide_from_actionbar" type="bool" setter="set_hide_from_actionbar" getter="get_hide_from_actionbar" default="false">
+		</member>
+		<member name="icon" type="Texture" setter="set_icon" getter="get_icon">
+		</member>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="1">
+		</member>
+		<member name="interrupt" type="bool" setter="set_is_interrupt" getter="get_is_interrupt" default="false">
+		</member>
+		<member name="interrupt_time" type="float" setter="set_interrupt_time" getter="get_interrupt_time" default="0.0">
+		</member>
+		<member name="is_local_spell" type="bool" setter="set_is_local_spell" getter="get_is_local_spell" default="false">
+		</member>
+		<member name="level" type="int" setter="set_level" getter="get_level" default="1">
+		</member>
+		<member name="needs_target" type="bool" setter="set_needs_target" getter="get_needs_target" default="false">
+		</member>
+		<member name="on_learn_auras" type="Array" setter="set_on_learn_auras" getter="get_on_learn_auras" default="[  ]">
+		</member>
+		<member name="projectile" type="WorldSpellData" setter="set_projectile" getter="get_projectile">
+		</member>
+		<member name="range" type="bool" setter="set_has_range" getter="get_has_range" default="false">
+		</member>
+		<member name="range_range" type="float" setter="set_range" getter="get_range" default="0.0">
+		</member>
+		<member name="rank" type="int" setter="set_rank" getter="get_rank" default="0">
+		</member>
+		<member name="resource_cost" type="EntityResourceCostData" setter="set_resource_cost" getter="get_resource_cost">
+		</member>
+		<member name="resource_give" type="EntityResourceCostData" setter="set_resource_give" getter="get_resource_give">
+		</member>
+		<member name="spell_category" type="int" setter="set_spell_category" getter="get_spell_category" enum="SpellEnums.SpellCategory" default="0">
+		</member>
+		<member name="spell_cooldown_mainpulation_data_count" type="int" setter="set_spell_cooldown_mainpulation_data_count" getter="get_spell_cooldown_mainpulation_data_count" default="0">
+		</member>
+		<member name="spell_type" type="int" setter="set_spell_type" getter="get_spell_type" default="0">
+		</member>
+		<member name="target_aura_applys" type="Array" setter="set_target_aura_applys" getter="get_target_aura_applys" default="[  ]">
+		</member>
+		<member name="target_relation_type" type="int" setter="set_target_relation_type" getter="get_target_relation_type" enum="TargetRelationType" default="2">
+		</member>
+		<member name="target_type" type="int" setter="set_target_type" getter="get_target_type" enum="SpellTargetType" default="1">
+		</member>
+		<member name="teaches_craft_recipe" type="CraftRecipe" setter="set_teaches_craft_recipe" getter="get_teaches_craft_recipe">
+		</member>
+		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
+		</member>
+		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+		<member name="training_cost" type="int" setter="set_training_cost" getter="get_training_cost" default="0">
+		</member>
+		<member name="training_required_skill" type="EntitySkillData" setter="set_training_required_skill" getter="get_training_required_skill">
+		</member>
+		<member name="training_required_skill_level" type="int" setter="set_training_required_skill_level" getter="get_training_required_skill_level" default="0">
+		</member>
+		<member name="training_required_spell" type="Spell" setter="set_training_required_spell" getter="get_training_required_spell">
+		</member>
+		<member name="visual_spell_effects" type="SpellEffectVisual" setter="set_visual_spell_effects" getter="get_visual_spell_effects">
+		</member>
+		<member name="world_spell_data" type="WorldSpellData" setter="set_world_spell_data" getter="get_world_spell_data">
+		</member>
+	</members>
+	<constants>
+		<constant name="TARGET_SELF" value="1" enum="TargetRelationType">
+		</constant>
+		<constant name="TARGET_ENEMY" value="2" enum="TargetRelationType">
+		</constant>
+		<constant name="TARGET_FRIENDLY" value="4" enum="TargetRelationType">
+		</constant>
+		<constant name="SPELL_TARGET_TYPE_SELF" value="0" enum="SpellTargetType">
+		</constant>
+		<constant name="SPELL_TARGET_TYPE_TARGET" value="1" enum="SpellTargetType">
+		</constant>
+		<constant name="SPELL_TARGET_TYPE_AROUND" value="2" enum="SpellTargetType">
+		</constant>
+		<constant name="SPELL_TARGET_TYPE_FRONT" value="3" enum="SpellTargetType">
+		</constant>
+		<constant name="SPELL_TARGET_TYPE_AROUND_TARGET" value="4" enum="SpellTargetType">
+		</constant>
+		<constant name="SPELL_AOE_TARGET_TYPE_CASTER" value="0" enum="SpellAOETargetType">
+		</constant>
+		<constant name="SPELL_AOE_TARGET_TYPE_TARGET" value="1" enum="SpellAOETargetType">
+		</constant>
+		<constant name="SPELL_AOE_TARGET_TYPE_GOUND_TARGET_SELECTION" value="2" enum="SpellAOETargetType">
+		</constant>
+		<constant name="SPELL_AOE_TARGET_TYPE_RANDOM" value="3" enum="SpellAOETargetType">
+		</constant>
+	</constants>
+</class>

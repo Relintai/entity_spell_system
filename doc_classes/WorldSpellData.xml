@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="WorldSpellData" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="collider_box_extents" type="Vector3" setter="set_collider_box_extents" getter="get_collider_box_extents" default="Vector3( 0, 0, 0 )">
+		</member>
+		<member name="collider_sphere_radius" type="float" setter="set_collider_sphere_radius" getter="get_collider_sphere_radius" default="1.0">
+		</member>
+		<member name="collider_type" type="int" setter="set_collider_type" getter="get_collider_type" enum="SpellEnums.ColliderType" default="0">
+		</member>
+		<member name="effect" type="PackedScene" setter="set_effect" getter="get_effect">
+		</member>
+		<member name="effect_offset" type="Vector3" setter="set_effect_offset" getter="get_effect_offset" default="Vector3( 0, 0, 0 )">
+		</member>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="max_dist" type="float" setter="set_max_dist" getter="get_max_dist" default="400.0">
+		</member>
+		<member name="move" type="bool" setter="set_move" getter="get_move" default="true">
+		</member>
+		<member name="movement_dir" type="Vector3" setter="set_movement_dir" getter="get_movement_dir" default="Vector3( 0, 0, 0 )">
+		</member>
+		<member name="movement_speed" type="float" setter="set_movement_speed" getter="get_movement_speed" default="10.0">
+		</member>
+		<member name="target_bone_id" type="int" setter="set_target_bone_id" getter="get_target_bone_id" default="0">
+		</member>
+		<member name="target_type" type="int" setter="set_target_type" getter="get_target_type" enum="SpellEnums.TargetType" default="0">
+		</member>
+		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

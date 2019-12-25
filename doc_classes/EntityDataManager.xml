@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EntityDataManager" inherits="Node" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_aura">
+			<return type="void">
+			</return>
+			<argument index="0" name="spell" type="Aura">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_craft_data">
+			<return type="void">
+			</return>
+			<argument index="0" name="craft_data" type="CraftRecipe">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_entity_data">
+			<return type="void">
+			</return>
+			<argument index="0" name="cls" type="EntityData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_entity_resource">
+			<return type="void">
+			</return>
+			<argument index="0" name="cls" type="EntityResourceData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_entity_skill">
+			<return type="void">
+			</return>
+			<argument index="0" name="cls" type="EntitySkillData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_item_template">
+			<return type="void">
+			</return>
+			<argument index="0" name="item_template" type="ItemTemplate">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_mob_data">
+			<return type="void">
+			</return>
+			<argument index="0" name="mob_data" type="EntityData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_player_character_data">
+			<return type="void">
+			</return>
+			<argument index="0" name="pcd" type="EntityData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_spell">
+			<return type="void">
+			</return>
+			<argument index="0" name="spell" type="Spell">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_world_spell_data">
+			<return type="void">
+			</return>
+			<argument index="0" name="cls" type="WorldSpellData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_aura">
+			<return type="Aura">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_aura_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_aura_index">
+			<return type="Aura">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_craft_data">
+			<return type="CraftRecipe">
+			</return>
+			<argument index="0" name="craft_data_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_craft_data_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_craft_data_index">
+			<return type="CraftRecipe">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_data">
+			<return type="EntityData">
+			</return>
+			<argument index="0" name="class_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_data_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_data_index">
+			<return type="EntityData">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_resource">
+			<return type="EntityResourceData">
+			</return>
+			<argument index="0" name="class_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_resource_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_resource_index">
+			<return type="EntityResourceData">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_skill">
+			<return type="EntitySkillData">
+			</return>
+			<argument index="0" name="class_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_skill_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_skill_index">
+			<return type="EntitySkillData">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_item_template">
+			<return type="ItemTemplate">
+			</return>
+			<argument index="0" name="item_template_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_item_template_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_item_template_index">
+			<return type="ItemTemplate">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_mob_data">
+			<return type="EntityData">
+			</return>
+			<argument index="0" name="mob_data_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_mob_data_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_mob_data_index">
+			<return type="EntityData">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_player_character_data">
+			<return type="EntityData">
+			</return>
+			<argument index="0" name="pcd_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_player_character_data_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_player_character_data_index">
+			<return type="EntityData">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_skill_for_armor_type">
+			<return type="Aura">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_spell">
+			<return type="Spell">
+			</return>
+			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_spell_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_spell_index">
+			<return type="Spell">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_world_spell_data">
+			<return type="WorldSpellData">
+			</return>
+			<argument index="0" name="class_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_world_spell_data_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_world_spell_data_index">
+			<return type="WorldSpellData">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_xp_data">
+			<return type="XPData">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_all">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_auras">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_characters">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_craft_datas">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_entity_resources">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_entity_skills">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_item_templates">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_mob_datas">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_player_character_datas">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_spells">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_world_spell_datas">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_xp_data">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="set_skill_for_armor_type">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="aura" type="Aura">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="auras_folder" type="String" setter="set_auras_folder" getter="get_auras_folder" default="&quot;&quot;">
+		</member>
+		<member name="automatic_load" type="bool" setter="set_automatic_load" getter="get_automatic_load" default="true">
+		</member>
+		<member name="craft_data_folder" type="String" setter="set_craft_data_folder" getter="get_craft_data_folder" default="&quot;&quot;">
+		</member>
+		<member name="entity_datas_folder" type="String" setter="set_entity_datas_folder" getter="get_entity_datas_folder" default="&quot;&quot;">
+		</member>
+		<member name="entity_resources_folder" type="String" setter="set_entity_resources_folder" getter="get_entity_resources_folder" default="&quot;&quot;">
+		</member>
+		<member name="entity_skills_folder" type="String" setter="set_entity_skills_folder" getter="get_entity_skills_folder" default="&quot;&quot;">
+		</member>
+		<member name="item_template_folder" type="String" setter="set_item_template_folder" getter="get_item_template_folder" default="&quot;&quot;">
+		</member>
+		<member name="mob_data_folder" type="String" setter="set_mob_data_folder" getter="get_mob_data_folder" default="&quot;&quot;">
+		</member>
+		<member name="player_character_data_folder" type="String" setter="set_player_character_data_folder" getter="get_player_character_data_folder" default="&quot;&quot;">
+		</member>
+		<member name="skill_for_armor_type_0" type="Aura" setter="set_skill_for_armor_type" getter="get_skill_for_armor_type">
+		</member>
+		<member name="skill_for_armor_type_1" type="Aura" setter="set_skill_for_armor_type" getter="get_skill_for_armor_type">
+		</member>
+		<member name="skill_for_armor_type_2" type="Aura" setter="set_skill_for_armor_type" getter="get_skill_for_armor_type">
+		</member>
+		<member name="skill_for_armor_type_3" type="Aura" setter="set_skill_for_armor_type" getter="get_skill_for_armor_type">
+		</member>
+		<member name="skill_for_armor_type_4" type="Aura" setter="set_skill_for_armor_type" getter="get_skill_for_armor_type">
+		</member>
+		<member name="spells_folder" type="String" setter="set_spells_folder" getter="get_spells_folder" default="&quot;&quot;">
+		</member>
+		<member name="world_spell_datas_folder" type="String" setter="set_world_spell_datas_folder" getter="get_world_spell_datas_folder" default="&quot;&quot;">
+		</member>
+		<member name="xp_data_path" type="String" setter="set_xp_data_path" getter="get_xp_data_path" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

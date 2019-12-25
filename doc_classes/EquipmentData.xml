@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EquipmentData" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_slot">
+			<return type="EquipmentDataEntry">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_slot">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="entry" type="EquipmentDataEntry">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="slot_belt" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_chest" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_feet" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_gloves" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_head" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_legs" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_main_hand" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_neck" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_off_hand" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_ring_1" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_ring_2" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_shoulders" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_trinket_1" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+		<member name="slot_trinket_2" type="EquipmentDataEntry" setter="set_slot" getter="get_slot">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

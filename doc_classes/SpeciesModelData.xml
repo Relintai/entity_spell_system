@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SpeciesModelData" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_hair_color">
+			<return type="void">
+			</return>
+			<argument index="0" name="hair_color" type="Color">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_hair_style">
+			<return type="void">
+			</return>
+			<argument index="0" name="hair_style" type="ItemVisualEntry">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_head">
+			<return type="void">
+			</return>
+			<argument index="0" name="head" type="ItemVisualEntry">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_skin_color">
+			<return type="void">
+			</return>
+			<argument index="0" name="skin_color" type="Color">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_visual">
+			<return type="void">
+			</return>
+			<argument index="0" name="bone_index" type="int">
+			</argument>
+			<argument index="1" name="visual" type="ItemVisualEntry">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_hair_color" qualifiers="const">
+			<return type="Color">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_hair_color_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_hair_style" qualifiers="const">
+			<return type="ItemVisualEntry">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_hair_style_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_head" qualifiers="const">
+			<return type="ItemVisualEntry">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_head_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_skin_color" qualifiers="const">
+			<return type="Color">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_skin_color_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_visual" qualifiers="const">
+			<return type="ItemVisualEntry">
+			</return>
+			<argument index="0" name="bone_index" type="int">
+			</argument>
+			<argument index="1" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_visual_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="bone_index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_visuals">
+			<return type="Array">
+			</return>
+			<argument index="0" name="bone_index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_hair_color">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_hair_style">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_head">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_skin_color">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_visual">
+			<return type="void">
+			</return>
+			<argument index="0" name="bone_index" type="int">
+			</argument>
+			<argument index="1" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_hair_color">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="data" type="Color">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_hair_style">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="data" type="ItemVisualEntry">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_head">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="data" type="ItemVisualEntry">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_skin_color">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="data" type="Color">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_visual">
+			<return type="void">
+			</return>
+			<argument index="0" name="bone_index" type="int">
+			</argument>
+			<argument index="1" name="index" type="int">
+			</argument>
+			<argument index="2" name="data" type="ItemVisualEntry">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_visuals">
+			<return type="void">
+			</return>
+			<argument index="0" name="bone_index" type="int">
+			</argument>
+			<argument index="1" name="visuals" type="Array">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="hair_colors" type="Array" setter="set_hair_colors" getter="get_hair_colors" default="[  ]">
+		</member>
+		<member name="hair_styles" type="Array" setter="set_hair_styles" getter="get_hair_styles" default="[  ]">
+		</member>
+		<member name="heads" type="Array" setter="set_heads" getter="get_heads" default="[  ]">
+		</member>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="skeleton" type="PackedScene" setter="set_skeleton" getter="get_skeleton">
+		</member>
+		<member name="skin_colors" type="Array" setter="set_skin_colors" getter="get_skin_colors" default="[  ]">
+		</member>
+		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+		<member name="visual_head" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_left_calf" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_left_clavicle" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_left_fingers_base" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_left_fingers_end" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_left_foot" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_left_forearm" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_left_hand" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_left_thigh" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_left_thumb_base" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_left_thumb_end" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_left_upper_arm" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_neck" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_pelvis" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_right_calf" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_right_clavicle" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_right_fingers_base" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_right_fingers_end" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_right_foot" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_right_forearm" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_right_hand" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_right_thigh" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_right_thumb_base" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_right_thumb_end" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_right_upper_arm" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_root" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_spine" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_spine_1" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+		<member name="visual_spine_2" type="Array" setter="set_visuals" getter="get_visuals" default="[  ]">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

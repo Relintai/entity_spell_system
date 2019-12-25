@@ -1,0 +1,1085 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EntityData" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_cans_interact" qualifiers="virtual">
+			<return type="bool">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_aura_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_aura_refresh" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_aura_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_cast_failed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_cast_finished" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_cast_started" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_cast_state_changed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_category_cooldown_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_cooldown" type="CategoryCooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_category_cooldown_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_cooldown" type="CategoryCooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_cooldown_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="Cooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_cooldown_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="Cooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_death" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_equip_fail" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_equip_success" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_gcd_finished" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_gcd_started" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="gcd" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_spell_cast_success" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_xp_gained" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_generate_name" qualifiers="virtual">
+			<return type="String">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_get_ai_instance" qualifiers="virtual">
+			<return type="EntityAI">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_sai_attack" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_sai_follow" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_sai_regenerate" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_sai_rest" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_setup_resources" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_should_deny_equip" qualifiers="virtual">
+			<return type="bool">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_sinteract" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_after_aura_applied" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_before_aura_applied" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_before_cast" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_before_cast_target" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_before_damage" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_before_damage_hit" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_before_heal" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_before_heal_hit" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_cast_failed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_cast_finished" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_cast_finished_target" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_cast_started" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_category_cooldown_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_cooldown" type="CategoryCooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_category_cooldown_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_cooldown" type="CategoryCooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_cooldown_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="Cooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_cooldown_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="Cooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_damage_dealt" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_damage_receive" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_dealt_damage" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_dealt_heal" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_death" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_equip_fail" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_equip_success" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_gcd_finished" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_gcd_started" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="gcd" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_heal_dealt" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_heal_receive" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_hit" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_spell_cast_success" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_xp_gained" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cans_interact">
+			<return type="bool">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_aura_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_aura_refresh">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_aura_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_cast_failed">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_cast_finished">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_cast_started">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_cast_state_changed">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_category_cooldown_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="CategoryCooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_category_cooldown_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="CategoryCooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_cooldown_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="Cooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_cooldown_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="Cooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_death">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_equip_fail">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_equip_success">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_gcd_finished">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_gcd_started">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="gcd" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_spell_cast_success">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_xp_gained">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="generate_name">
+			<return type="String">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_ai_instance">
+			<return type="EntityAI">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_craft_recipe">
+			<return type="CraftRecipe">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_num_craft_recipes">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="set_craft_recipe">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="recipe" type="CraftRecipe">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="should_deny_equip">
+			<return type="bool">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sinteract">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_after_aura_applied">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_before_aura_applied">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_before_cast">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_before_cast_target">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_before_damage">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_before_damage_hit">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_before_heal">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_before_heal_hit">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_cast_failed">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_cast_finished">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_cast_finished_target">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_cast_started">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_category_cooldown_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_cooldown" type="CategoryCooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_category_cooldown_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_cooldown" type="CategoryCooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_cooldown_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="Cooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_cooldown_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="Cooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_damage_dealt">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_damage_receive">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_dealt_damage">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_dealt_heal">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_death">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_equip_fail">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_equip_success">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_gcd_finished">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_gcd_started">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="gcd" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_heal_dealt">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_heal_receive">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_hit">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_spell_cast_success">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_xp_gained">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="ai" type="EntityAI" setter="set_ai" getter="get_ai">
+		</member>
+		<member name="bag_size" type="int" setter="set_bag_size" getter="get_bag_size" default="0">
+		</member>
+		<member name="craft_recipes" type="Array" setter="set_craft_recipes" getter="get_craft_recipes" default="[  ]">
+		</member>
+		<member name="entity_class_data" type="EntityClassData" setter="set_entity_class_data" getter="get_entity_class_data">
+		</member>
+		<member name="entity_controller" type="int" setter="set_entity_controller" getter="get_entity_controller" enum="EntityEnums.EntityController" default="0">
+		</member>
+		<member name="entity_flags" type="int" setter="set_entity_flags" getter="get_entity_flags" default="0">
+		</member>
+		<member name="entity_interaction_type" type="int" setter="set_entity_interaction_type" getter="get_entity_interaction_type" enum="EntityEnums.EntityInteractionType" default="0">
+		</member>
+		<member name="entity_species_data" type="EntitySpeciesData" setter="set_entity_species_data" getter="get_entity_species_data">
+		</member>
+		<member name="entity_type" type="int" setter="set_entity_type" getter="get_entity_type" enum="EntityEnums.EntityType" default="0">
+		</member>
+		<member name="equipment_data" type="EquipmentData" setter="set_equipment_data" getter="get_equipment_data">
+		</member>
+		<member name="formation" type="AIFormation" setter="set_formation" getter="get_formation">
+		</member>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="immunity_flags" type="int" setter="set_immunity_flags" getter="get_immunity_flags" default="0">
+		</member>
+		<member name="item_container_data" type="ItemContainerData" setter="set_item_container_data" getter="get_item_container_data">
+		</member>
+		<member name="loot_db" type="LootDataBase" setter="set_loot_db" getter="get_loot_db">
+		</member>
+		<member name="money" type="int" setter="set_money" getter="get_money" default="0">
+		</member>
+		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
+		</member>
+		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+		<member name="vendor_item_data" type="VendorItemData" setter="set_vendor_item_data" getter="get_vendor_item_data">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

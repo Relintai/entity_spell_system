@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EntitySkill" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_from_dict" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_to_dict" qualifiers="virtual">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="to_dict">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="current" type="int" setter="set_current" getter="get_current" default="0">
+		</member>
+		<member name="disabled" type="bool" setter="set_disabled" getter="get_disabled" default="false">
+		</member>
+		<member name="max" type="int" setter="set_max" getter="get_max" default="0">
+		</member>
+		<member name="skill" type="EntitySkillData" setter="set_skill" getter="get_skill">
+		</member>
+		<member name="skill_id" type="int" setter="set_skill_id" getter="get_skill_id" default="0">
+		</member>
+	</members>
+	<signals>
+		<signal name="current_changed">
+			<argument index="0" name="skill" type="EntitySkill">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="max_changed">
+			<argument index="0" name="skill" type="EntitySkill">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="skill_changed">
+			<argument index="0" name="skill" type="EntitySkill">
+			</argument>
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

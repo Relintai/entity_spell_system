@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CharacterSpec" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_num_talent_rows">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_talent" qualifiers="const">
+			<return type="Aura">
+			</return>
+			<argument index="0" name="row_index" type="int">
+			</argument>
+			<argument index="1" name="culomn" type="int">
+			</argument>
+			<argument index="2" name="rank" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_talent_row" qualifiers="const">
+			<return type="TalentRowData">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_num_talent_rows">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_talent_row">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="row" type="TalentRowData">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="talent_rows" type="Array" setter="set_talent_rows" getter="get_talent_rows" default="[  ]">
+		</member>
+		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

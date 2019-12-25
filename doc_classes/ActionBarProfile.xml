@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ActionBarProfile" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_action_bar">
+			<return type="void">
+			</return>
+			<argument index="0" name="actionbar" type="ActionBarEntry">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="clear_action_bars">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="from_actionbar_profile">
+			<return type="void">
+			</return>
+			<argument index="0" name="other" type="ActionBarProfile">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_action_bar">
+			<return type="ActionBarEntry">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_action_bar_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_defaults">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="remove_action_bar">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="to_dict" qualifiers="const">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="action_bar_profile_name" type="String" setter="set_action_bar_profile_name" getter="get_action_bar_profile_name" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

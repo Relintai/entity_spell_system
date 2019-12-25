@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="VendorItemDataEntry" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="item" type="ItemTemplate" setter="set_item" getter="get_item">
+		</member>
+		<member name="item_count" type="int" setter="set_item_count" getter="get_item_count" default="0">
+		</member>
+		<member name="item_price" type="int" setter="set_item_price" getter="get_item_price" default="0">
+		</member>
+		<member name="item_spawn_time" type="int" setter="set_item_spawn_time" getter="get_item_spawn_time" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="XPData" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="can_level_up">
+			<return type="bool">
+			</return>
+			<argument index="0" name="level" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_max_level">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_xp">
+			<return type="int">
+			</return>
+			<argument index="0" name="level" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_xp">
+			<return type="void">
+			</return>
+			<argument index="0" name="level" type="int">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="level_1" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_10" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_11" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_12" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_13" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_14" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_15" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_16" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_17" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_18" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_19" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_2" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_20" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_21" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_22" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_23" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_24" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_25" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_26" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_27" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_28" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_29" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_3" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_30" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_31" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_32" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_33" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_34" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_35" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_36" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_37" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_38" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_39" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_4" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_40" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_41" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_42" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_43" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_44" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_45" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_46" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_47" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_48" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_49" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_5" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_50" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_6" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_7" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_8" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+		<member name="level_9" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

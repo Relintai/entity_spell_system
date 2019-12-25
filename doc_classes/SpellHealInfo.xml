@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SpellHealInfo" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="reset">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="amount_absorbed" type="int" setter="set_amount_absorbed" getter="get_amount_absorbed" default="0">
+		</member>
+		<member name="crit" type="bool" setter="set_crit" getter="get_crit" default="false">
+		</member>
+		<member name="dealer" type="Entity" setter="set_dealer" getter="get_dealer">
+		</member>
+		<member name="heal" type="int" setter="set_heal" getter="get_heal" default="0">
+		</member>
+		<member name="heal_source" type="Reference" setter="set_heal_source" getter="get_heal_source">
+		</member>
+		<member name="heal_source_id" type="int" setter="set_heal_source_id" getter="get_heal_source_id" default="0">
+		</member>
+		<member name="heal_source_type" type="int" setter="set_heal_source_type" getter="get_heal_source_type" enum="SpellHealInfo.HealSourceType" default="0">
+		</member>
+		<member name="immune" type="bool" setter="set_immune" getter="get_immune" default="false">
+		</member>
+		<member name="receiver" type="Entity" setter="set_receiver" getter="get_receiver">
+		</member>
+		<member name="spell_type" type="int" setter="set_spell_type" getter="get_spell_type" enum="SpellEnums.SpellType" default="0">
+		</member>
+	</members>
+	<constants>
+		<constant name="HEAL_SOURCE_UNKNOWN" value="0" enum="HealSourceType">
+		</constant>
+		<constant name="HEAL_SOURCE_SPELL" value="1" enum="HealSourceType">
+		</constant>
+		<constant name="HEAL_SOURCE_AURA" value="2" enum="HealSourceType">
+		</constant>
+	</constants>
+</class>

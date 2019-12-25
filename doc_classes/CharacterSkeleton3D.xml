@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CharacterSkeleton3D" inherits="CharacterSkeleton" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_build_model" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="add_item_visual_entry">
+			<return type="void">
+			</return>
+			<argument index="0" name="vis" type="ItemVisual">
+			</argument>
+			<argument index="1" name="ive" type="ItemVisualEntry">
+			</argument>
+			<argument index="2" name="arg2" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="build_model">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_animation_player">
+			<return type="AnimationPlayer">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_animation_tree">
+			<return type="AnimationTree">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_bone_node">
+			<return type="Node">
+			</return>
+			<argument index="0" name="bone_idx" type="int" enum="EntityEnums.CharacterSkeletonPoints">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_bone_path">
+			<return type="NodePath">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_model_entry">
+			<return type="SkeletonModelEntry">
+			</return>
+			<argument index="0" name="bone_index" type="int">
+			</argument>
+			<argument index="1" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_model_entry_count">
+			<return type="int">
+			</return>
+			<argument index="0" name="bone_index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_item_visual_entry">
+			<return type="void">
+			</return>
+			<argument index="0" name="vis" type="ItemVisual">
+			</argument>
+			<argument index="1" name="ive" type="ItemVisualEntry">
+			</argument>
+			<argument index="2" name="arg2" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_bone_path">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="path" type="NodePath">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sort_layers">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="update_nodes">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="animation_player_path" type="NodePath" setter="set_animation_player_path" getter="get_animation_player_path" default="NodePath(&quot;&quot;)">
+		</member>
+		<member name="animation_tree_path" type="NodePath" setter="set_animation_tree_path" getter="get_animation_tree_path" default="NodePath(&quot;&quot;)">
+		</member>
+		<member name="bone_path_root" type="NodePath" setter="set_bone_path" getter="get_bone_path" default="NodePath(&quot;&quot;)">
+		</member>
+		<member name="model_dirty" type="bool" setter="set_model_dirty" getter="get_model_dirty" default="false">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EntityAI" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_move" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_on_set_owner" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_pet_move" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_pet_update" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_update" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="move">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="pet_move">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="pet_update">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="update">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="force_state" type="int" setter="set_force_state" getter="get_force_state" enum="EntityEnums.AIStates" default="0">
+		</member>
+		<member name="get_enabled" type="bool" setter="set_enabled" getter="get_enabled" default="true">
+		</member>
+		<member name="owner" type="Entity" setter="set_owner" getter="get_owner">
+		</member>
+		<member name="spec_distribution" type="PoolIntArray" setter="set_spec_distribution" getter="get_spec_distribution" default="PoolIntArray(  )">
+		</member>
+		<member name="spec_variance" type="int" setter="set_spec_variance" getter="get_spec_variance" default="0">
+		</member>
+		<member name="state" type="int" setter="set_state" getter="get_state" enum="EntityEnums.AIStates" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

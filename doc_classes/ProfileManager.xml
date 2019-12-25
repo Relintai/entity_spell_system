@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ProfileManager" inherits="Node" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_load" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_save" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="add_class_profile">
+			<return type="void">
+			</return>
+			<argument index="0" name="profile" type="ClassProfile">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="clear_class_profiles">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_class_profile">
+			<return type="ClassProfile">
+			</return>
+			<argument index="0" name="class_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_class_profile_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_class_profile_index">
+			<return type="ClassProfile">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="load">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_defaults">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_profile">
+			<return type="void">
+			</return>
+			<argument index="0" name="name" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_class_profile">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="save">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="save_profile">
+			<return type="void">
+			</return>
+			<argument index="0" name="name" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="to_dict" qualifiers="const">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="last_used_class" type="int" setter="set_last_used_class" getter="get_last_used_class" default="0">
+		</member>
+	</members>
+	<signals>
+		<signal name="changed">
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

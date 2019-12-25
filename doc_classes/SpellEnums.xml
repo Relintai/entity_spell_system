@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SpellEnums" inherits="Object" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<constants>
+		<constant name="DAMAGE_TYPE_NONE" value="0" enum="DamageType">
+		</constant>
+		<constant name="DAMAGE_TYPE_MELEE" value="1" enum="DamageType">
+		</constant>
+		<constant name="DAMAGE_TYPE_HOLY" value="2" enum="DamageType">
+		</constant>
+		<constant name="DAMAGE_TYPE_SHADOW" value="4" enum="DamageType">
+		</constant>
+		<constant name="DAMAGE_TYPE_NATURE" value="8" enum="DamageType">
+		</constant>
+		<constant name="DAMAGE_TYPE_FIRE" value="16" enum="DamageType">
+		</constant>
+		<constant name="DAMAGE_TYPE_FROST" value="32" enum="DamageType">
+		</constant>
+		<constant name="DAMAGE_TYPE_LIGHTNING" value="64" enum="DamageType">
+		</constant>
+		<constant name="DAMAGE_TYPE_CHAOS" value="128" enum="DamageType">
+		</constant>
+		<constant name="SPELL_CATEGORY_NORMAL" value="0" enum="SpellCategory">
+		</constant>
+		<constant name="SPELL_CATEGORY_ALCHEMY" value="1" enum="SpellCategory">
+		</constant>
+		<constant name="SPELL_CATEGORY_COOKING" value="2" enum="SpellCategory">
+		</constant>
+		<constant name="SPELL_CATEGORY_ENGINEERING" value="3" enum="SpellCategory">
+		</constant>
+		<constant name="SPELL_CATEGORY_CRAFTING" value="4" enum="SpellCategory">
+		</constant>
+		<constant name="SPELL_CATEGORY_HIDDEN" value="5" enum="SpellCategory">
+		</constant>
+		<constant name="SPELL_CATEGORY_DEVELOPMENT" value="6" enum="SpellCategory">
+		</constant>
+		<constant name="SPELL_TYPE_NONE" value="0" enum="SpellType">
+		</constant>
+		<constant name="SPELL_TYPE_MELEE" value="1" enum="SpellType">
+		</constant>
+		<constant name="SPELL_TYPE_HOLY" value="2" enum="SpellType">
+		</constant>
+		<constant name="SPELL_TYPE_SHADOW" value="4" enum="SpellType">
+		</constant>
+		<constant name="SPELL_TYPE_NATURE" value="8" enum="SpellType">
+		</constant>
+		<constant name="SPELL_TYPE_FIRE" value="16" enum="SpellType">
+		</constant>
+		<constant name="SPELL_TYPE_FROST" value="32" enum="SpellType">
+		</constant>
+		<constant name="SPELL_TYPE_LIGHTNING" value="64" enum="SpellType">
+		</constant>
+		<constant name="SPELL_TYPE_CHAOS" value="128" enum="SpellType">
+		</constant>
+		<constant name="DIMINISHING_RETURN_CATEGORY_NONE" value="0" enum="DiminishingReturnCategory">
+		</constant>
+		<constant name="DIMINISHING_RETURN_CATEGORY_ROOT" value="1" enum="DiminishingReturnCategory">
+		</constant>
+		<constant name="DIMINISHING_RETURN_CATEGORY_STUN" value="2" enum="DiminishingReturnCategory">
+		</constant>
+		<constant name="TRIGGER_NONE" value="0" enum="TriggerEvents">
+		</constant>
+		<constant name="TRIGGER_AURA_EVENT_S_ON_BEFORE_DAMAGE" value="1" enum="TriggerEvents">
+		</constant>
+		<constant name="TRIGGER_AURA_EVENT_S_ON_DAMAGE_RECEIVE" value="2" enum="TriggerEvents">
+		</constant>
+		<constant name="TRIGGER_AURA_EVENT_S_ON_HIT" value="3" enum="TriggerEvents">
+		</constant>
+		<constant name="TRIGGER_AURA_EVENT_S_ON_DAMAGE_DEALT" value="4" enum="TriggerEvents">
+		</constant>
+		<constant name="TRIGGER_AURA_EVENT_S_ON_AURA_REMOVE" value="5" enum="TriggerEvents">
+		</constant>
+		<constant name="TRIGGER_AURA_EVENT_S_ON_AURA_DISPELL" value="6" enum="TriggerEvents">
+		</constant>
+		<constant name="TRIGGER_AURA_EVENT_S_ON_BEFORE_AURA_APPLIED" value="7" enum="TriggerEvents">
+		</constant>
+		<constant name="TRIGGER_AURA_EVENT_S_ON_AFTER_AURA_APPLIED" value="8" enum="TriggerEvents">
+		</constant>
+		<constant name="TRIGGER_AURA_EVENT_C_ON_AURA_ADDED" value="9" enum="TriggerEvents">
+		</constant>
+		<constant name="TRIGGER_AURA_EVENT_C_ON_AURA_REMOVED" value="10" enum="TriggerEvents">
+		</constant>
+		<constant name="TRIGGER_AURA_EVENT_C_ON_AURA_REFRESHED" value="11" enum="TriggerEvents">
+		</constant>
+		<constant name="AURA_TYPE_NONE" value="0" enum="AuraType">
+		</constant>
+		<constant name="AURA_TYPE_MAGIC" value="1" enum="AuraType">
+		</constant>
+		<constant name="AURA_TYPE_POISON" value="2" enum="AuraType">
+		</constant>
+		<constant name="AURA_TYPE_PHYSICAL" value="3" enum="AuraType">
+		</constant>
+		<constant name="AURA_TYPE_CURSE" value="4" enum="AuraType">
+		</constant>
+		<constant name="AURA_TYPE_BLEED" value="5" enum="AuraType">
+		</constant>
+		<constant name="AURA_TYPE_TALENT" value="6" enum="AuraType">
+		</constant>
+		<constant name="AURA_TYPE_SKILL" value="7" enum="AuraType">
+		</constant>
+		<constant name="COLLIDER_TYPE_NONE" value="0" enum="ColliderType">
+		</constant>
+		<constant name="COLLIDER_TYPE_SPHERE" value="1" enum="ColliderType">
+		</constant>
+		<constant name="COLLIDER_TYPE_BOX" value="2" enum="ColliderType">
+		</constant>
+		<constant name="TARGET_TYPE_NONE" value="0" enum="TargetType">
+		</constant>
+		<constant name="TARGET_TYPE_NODE" value="1" enum="TargetType">
+		</constant>
+		<constant name="TARGET_TYPE_BONE_ID" value="2" enum="TargetType">
+		</constant>
+		<constant name="TARGET_TYPE_COORDS" value="3" enum="TargetType">
+		</constant>
+	</constants>
+</class>

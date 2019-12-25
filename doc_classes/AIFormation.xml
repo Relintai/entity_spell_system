@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="AIFormation" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_get_position" qualifiers="virtual">
+			<return type="Vector3">
+			</return>
+			<argument index="0" name="slot_index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_on_set_owner" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_position">
+			<return type="Vector3">
+			</return>
+			<argument index="0" name="slot_index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="owner" type="Entity" setter="set_owner" getter="get_owner">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

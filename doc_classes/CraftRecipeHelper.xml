@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CraftRecipeHelper" inherits="Resource" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="count" type="int" setter="set_count" getter="get_count" default="0">
+		</member>
+		<member name="item" type="ItemTemplate" setter="set_item" getter="get_item">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

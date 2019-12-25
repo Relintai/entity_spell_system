@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ItemInstance" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_from_dict" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_to_dict" qualifiers="virtual">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="add_item_stat_modifier">
+			<return type="void">
+			</return>
+			<argument index="0" name="modifier" type="ItemStatModifier">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="clear_item_stat_modifiers">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_item_stat_modifier">
+			<return type="ItemStatModifier">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_item_stat_modifier_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="remove_item_stat_modifier">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="to_dict">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="item_template" type="ItemTemplate" setter="set_item_template" getter="get_item_template">
+		</member>
+		<member name="stack_size" type="int" setter="set_stack_size" getter="get_stack_size" default="1">
+		</member>
+	</members>
+	<signals>
+		<signal name="stack_size_changed">
+			<argument index="0" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Stat" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_from_dict" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_to_dict" qualifiers="virtual">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="add_modifier">
+			<return type="StatModifier">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="base_mod" type="float">
+			</argument>
+			<argument index="2" name="bonus_mod" type="float">
+			</argument>
+			<argument index="3" name="percent_mod" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="apply_modifiers">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="clear_modifiers">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_base">
+			<return type="float">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_bonus">
+			<return type="float">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_modifier">
+			<return type="StatModifier">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_modifier_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_or_add_modifier">
+			<return type="StatModifier">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_percent">
+			<return type="float">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="isc_current_zero">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="iss_current_zero">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="modifier_changed">
+			<return type="void">
+			</return>
+			<argument index="0" name="modifier" type="StatModifier">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="refresh_currmax">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="remove_modifier">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="remove_modifier_index">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="reset_values">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="set_to_max">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="setc_values">
+			<return type="void">
+			</return>
+			<argument index="0" name="ccurrent" type="int">
+			</argument>
+			<argument index="1" name="cmax" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="to_dict">
+			<return type="Dictionary">
+			</return>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="ccurrent" type="float" setter="setc_current" getter="getc_current" default="0.0">
+		</member>
+		<member name="cmax" type="float" setter="setc_max" getter="getc_max" default="0.0">
+		</member>
+		<member name="dirty_mods" type="bool" setter="set_dirty_mods" getter="get_dirty_mods" default="false">
+		</member>
+		<member name="id" type="int" setter="set_id" getter="get_id" enum="Stat.StatId" default="41">
+		</member>
+		<member name="is_dirty" type="bool" setter="set_dirty" getter="get_dirty" default="true">
+		</member>
+		<member name="locked" type="bool" setter="set_locked" getter="get_locked" default="false">
+		</member>
+		<member name="owner" type="Entity" setter="set_owner" getter="get_owner">
+		</member>
+		<member name="public" type="bool" setter="set_public" getter="get_public" default="false">
+		</member>
+		<member name="scurrent" type="float" setter="sets_current" getter="gets_current" default="0.0">
+		</member>
+		<member name="smax" type="float" setter="sets_max" getter="gets_max" default="0.0">
+		</member>
+		<member name="stat_data_entry" type="StatDataEntry" setter="set_stat_data_entry" getter="get_stat_data_entry">
+		</member>
+		<member name="stat_type" type="int" setter="set_stat_modifier_type" getter="get_stat_modifier_type" enum="Stat.StatModifierApplyType" default="0">
+		</member>
+	</members>
+	<signals>
+		<signal name="c_changed">
+			<argument index="0" name="stat" type="Stat">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="s_changed">
+			<argument index="0" name="stat" type="Stat">
+			</argument>
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+		<constant name="STAT_ID_HEALTH" value="0" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_SPEED" value="1" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_MANA" value="2" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_GLOBAL_COOLDOWN" value="3" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_HASTE" value="4" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_AGILITY" value="5" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_STRENGTH" value="6" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_STAMINA" value="7" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_INTELLECT" value="8" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_SPIRIT" value="9" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_HASTE_RATING" value="10" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_RESLILIENCE" value="11" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_ARMOR" value="12" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_ATTACK_POWER" value="13" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_SPELL_POWER" value="14" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_MELEE_CRIT" value="15" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_MELEE_CRIT_BONUS" value="16" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_SPELL_CRIT" value="17" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_SPELL_CRIT_BONUS" value="18" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_BLOCK" value="19" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_PARRY" value="20" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_DAMAGE_REDUCTION" value="21" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_MELEE_DAMAGE_REDUCTION" value="22" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_SPELL_DAMAGE_REDUCTION" value="23" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_DAMAGE_TAKEN" value="24" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_MELEE_DAMAGE" value="26" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_SPELL_DAMAGE" value="27" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_HOLY_RESIST" value="28" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_SHADOW_RESIST" value="29" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_NATURE_RESIST" value="30" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_FIRE_RESIST" value="31" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_FROST_RESIST" value="32" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_LIGHTNING_RESIST" value="33" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_CHAOS_RESIST" value="34" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_SILENCE_RESIST" value="35" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_FEAR_RESIST" value="36" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_TOTAL_STATS" value="41" enum="StatId">
+		</constant>
+		<constant name="STAT_ID_NONE" value="41" enum="StatId">
+		</constant>
+		<constant name="MODIFIER_APPLY_TYPE_STANDARD" value="0" enum="StatModifierApplyType">
+		</constant>
+		<constant name="MODIFIER_APPLY_TYPE_ONLY_MIN_MODIFIER" value="1" enum="StatModifierApplyType">
+		</constant>
+		<constant name="MODIFIER_APPLY_TYPE_ONLY_MAX_MODIFIER" value="2" enum="StatModifierApplyType">
+		</constant>
+		<constant name="MAIN_STAT_AGILITY" value="0" enum="MainStats">
+		</constant>
+		<constant name="MAIN_STAT_STRENGTH" value="1" enum="MainStats">
+		</constant>
+		<constant name="MAIN_STAT_STAMINA" value="2" enum="MainStats">
+		</constant>
+		<constant name="MAIN_STAT_INTELLECT" value="3" enum="MainStats">
+		</constant>
+		<constant name="MAIN_STAT_SPIRIT" value="4" enum="MainStats">
+		</constant>
+		<constant name="MAIN_STAT_ID_COUNT" value="5" enum="MainStats">
+		</constant>
+		<constant name="MAIN_STAT_ID_START" value="5" enum="MainStats">
+		</constant>
+	</constants>
+</class>

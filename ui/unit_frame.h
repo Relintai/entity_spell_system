@@ -4,6 +4,7 @@
 #include "scene/gui/panel.h"
 #include "scene/resources/texture.h"
 
+//remove this
 class UnitFrame : public Panel {
 	GDCLASS(UnitFrame, Panel);
 

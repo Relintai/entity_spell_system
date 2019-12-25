@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="InputProfileModifierEntry" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="action" type="String" setter="set_action" getter="get_action" default="&quot;&quot;">
+		</member>
+		<member name="translate_to" type="String" setter="set_translate_to" getter="get_translate_to" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

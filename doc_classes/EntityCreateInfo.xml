@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="EntityCreateInfo" inherits="Reference" category="Core" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="entity_controller" type="int" setter="set_entity_controller" getter="get_entity_controller" enum="EntityEnums.EntityController" default="0">
+		</member>
+		<member name="entity_data" type="EntityData" setter="set_entity_data" getter="get_entity_data">
+		</member>
+		<member name="level" type="int" setter="set_level" getter="get_level" default="0">
+		</member>
+		<member name="player_name" type="String" setter="set_entity_name" getter="get_entity_name" default="&quot;&quot;">
+		</member>
+		<member name="xp" type="int" setter="set_xp" getter="get_xp" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>
