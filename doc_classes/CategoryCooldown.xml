@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="CategoryCooldown" inherits="Reference" category="Core" version="3.2">
 	<brief_description>
+		Stores [Spell] category cooldown information during runtime.
 	</brief_description>
 	<description>
+		These are interrupts in MMORPGS.
 	</description>
 	<tutorials>
 	</tutorials>

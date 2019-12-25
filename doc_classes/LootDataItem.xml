@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="LootDataItem" inherits="LootDataBase" category="Core" version="3.2">
 	<brief_description>
+		Contains one item's loot information for entities.
 	</brief_description>
 	<description>
 	</description>

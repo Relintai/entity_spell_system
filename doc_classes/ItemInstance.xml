@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ItemInstance" inherits="Reference" category="Core" version="3.2">
 	<brief_description>
+		Runtime information for an item.
 	</brief_description>
 	<description>
 	</description>

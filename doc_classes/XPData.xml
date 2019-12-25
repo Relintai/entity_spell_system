@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="XPData" inherits="Resource" category="Core" version="3.2">
 	<brief_description>
+		Contains the XP values required to level up for entities.
 	</brief_description>
 	<description>
 	</description>

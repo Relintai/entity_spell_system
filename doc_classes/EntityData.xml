@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="EntityData" inherits="Resource" category="Core" version="3.2">
 	<brief_description>
+		Contains all data for a given [Entity]. Think of this as all the data for a mob, or a player.
 	</brief_description>
 	<description>
 	</description>

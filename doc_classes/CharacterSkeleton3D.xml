@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="CharacterSkeleton3D" inherits="CharacterSkeleton" category="Core" version="3.2">
 	<brief_description>
+		3d implementation for [CharacterSkeleton].
+		
+		Note: Most of the logic implementation for this is still in gdscript. It will be ported.
 	</brief_description>
 	<description>
 	</description>

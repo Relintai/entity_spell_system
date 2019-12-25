@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="AuraApplyInfo" inherits="Reference" category="Core" version="3.2">
 	<brief_description>
+		Helper class, which is used to apply an [Aura] to an [Entity].
 	</brief_description>
 	<description>
 	</description>

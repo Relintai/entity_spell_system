@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ProfileManager" inherits="Node" category="Core" version="3.2">
 	<brief_description>
+		Stores, saves, loads per class profile data.
+
+		Should be added as an autoload, or at least is should be in the scene before spawning entities.
 	</brief_description>
 	<description>
 	</description>

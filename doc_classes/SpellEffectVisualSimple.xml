@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="SpellEffectVisualSimple" inherits="SpellEffectVisual" category="Core" version="3.2">
 	<brief_description>
+		Simple implementation od [SpellEfectVisual].
 	</brief_description>
 	<description>
 	</description>

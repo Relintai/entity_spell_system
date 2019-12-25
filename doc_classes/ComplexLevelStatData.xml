@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ComplexLevelStatData" inherits="LevelStatData" category="Core" version="3.2">
 	<brief_description>
+		Per level stat information for an [Entity].
 	</brief_description>
 	<description>
 	</description>

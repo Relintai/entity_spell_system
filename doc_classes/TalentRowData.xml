@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TalentRowData" inherits="Resource" category="Core" version="3.2">
 	<brief_description>
+		Contains one row of for a talent specialization.
 	</brief_description>
 	<description>
 	</description>

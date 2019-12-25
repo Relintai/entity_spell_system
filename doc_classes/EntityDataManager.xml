@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="EntityDataManager" inherits="Node" category="Core" version="3.2">
 	<brief_description>
+		This class should be added as an autoload. (Or be present in the scene when you want to spawn entities).
+
+		This loads in and stores all information required.
 	</brief_description>
 	<description>
+		The main reason for this class is networking, when the server sends the client an aura, you need to be able to look it up by an id.
 	</description>
 	<tutorials>
 	</tutorials>

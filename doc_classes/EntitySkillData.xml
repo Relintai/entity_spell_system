@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="EntitySkillData" inherits="Resource" category="Core" version="3.2">
 	<brief_description>
+		Contains skill data for an [Entity].
 	</brief_description>
 	<description>
+		Skills can be things like axes.
 	</description>
 	<tutorials>
 	</tutorials>

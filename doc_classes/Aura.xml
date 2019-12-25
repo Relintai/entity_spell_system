@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="Aura" inherits="Resource" category="Core" version="3.2">
 	<brief_description>
+		Base Aura class. Contains data, and callbacks for aura scripts. Inherit from this to create auras with different functionality.
+		Future: Standard funtionality will be implemented by default, you will only need to inherit for unique spell effects.
 	</brief_description>
 	<description>
 	</description>
@@ -15,6 +17,7 @@
 			<argument index="1" name="data" type="AuraApplyInfo">
 			</argument>
 			<description>
+				Override to change the default damage calculation formula. Serverside only.
 			</description>
 		</method>
 		<method name="_calculate_initial_heal" qualifiers="virtual">
@@ -25,6 +28,7 @@
 			<argument index="1" name="info" type="AuraApplyInfo">
 			</argument>
 			<description>
+				Override to change the default heal calculation formula. Serverside Only.
 			</description>
 		</method>
 		<method name="_con_aura_added" qualifiers="virtual">
@@ -33,6 +37,7 @@
 			<argument index="0" name="data" type="AuraData">
 			</argument>
 			<description>
+				Called clientside when this aura is applied to an [Entity]. You can apply visual effects here.
 			</description>
 		</method>
 		<method name="_con_aura_refresh" qualifiers="virtual">
@@ -41,6 +46,7 @@
 			<argument index="0" name="data" type="AuraData">
 			</argument>
 			<description>
+				Called clientside when this aura's duration is refreshed on an [Entity].
 			</description>
 		</method>
 		<method name="_con_aura_removed" qualifiers="virtual">
@@ -49,6 +55,7 @@
 			<argument index="0" name="data" type="AuraData">
 			</argument>
 			<description>
+				Called clientside when this aura's is removed from an [Entity].
 			</description>
 		</method>
 		<method name="_con_cast_failed" qualifiers="virtual">
@@ -59,6 +66,7 @@
 			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
+				Called clientside when an [Entity]'s cast fails.
 			</description>
 		</method>
 		<method name="_con_cast_finished" qualifiers="virtual">
@@ -69,6 +77,7 @@
 			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
+				Called clientside when an [Entity]'s cast finsihes.
 			</description>
 		</method>
 		<method name="_con_cast_started" qualifiers="virtual">
@@ -79,6 +88,7 @@
 			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
+				Called clientside when an [Entity]'s cast starts.
 			</description>
 		</method>
 		<method name="_con_cast_state_changed" qualifiers="virtual">
@@ -89,6 +99,7 @@
 			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
+				Called clientside when an [Entity]'s cast state changes. Not yet used.
 			</description>
 		</method>
 		<method name="_con_category_cooldown_added" qualifiers="virtual">
@@ -99,6 +110,7 @@
 			<argument index="1" name="category_cooldown" type="CategoryCooldown">
 			</argument>
 			<description>
+				Called clientside when an [Entity] receives a [CategoryCooldown].
 			</description>
 		</method>
 		<method name="_con_category_cooldown_removed" qualifiers="virtual">
@@ -109,6 +121,7 @@
 			<argument index="1" name="category_cooldown" type="CategoryCooldown">
 			</argument>
 			<description>
+				Called clientside when an [Entity]'s [CategoryCooldown] is removed / expires.
 			</description>
 		</method>
 		<method name="_con_cooldown_added" qualifiers="virtual">
@@ -119,6 +132,7 @@
 			<argument index="1" name="cooldown" type="Cooldown">
 			</argument>
 			<description>
+				Called clientside when an [Entity] receives a [Cooldown].
 			</description>
 		</method>
 		<method name="_con_cooldown_removed" qualifiers="virtual">
@@ -129,6 +143,7 @@
 			<argument index="1" name="cooldown" type="Cooldown">
 			</argument>
 			<description>
+				Called clientside when an [Entity]'s [Cooldown] is removed / expires.
 			</description>
 		</method>
 		<method name="_con_damage_dealt" qualifiers="virtual">
@@ -139,6 +154,7 @@
 			<argument index="1" name="info" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called clientside for an [Entity] receives damage.
 			</description>
 		</method>
 		<method name="_con_dealt_damage" qualifiers="virtual">
@@ -149,6 +165,7 @@
 			<argument index="1" name="info" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called clientside for an [Entity] who deals damage.
 			</description>
 		</method>
 		<method name="_con_dealt_heal" qualifiers="virtual">
@@ -159,6 +176,7 @@
 			<argument index="1" name="info" type="SpellHealInfo">
 			</argument>
 			<description>
+				Called clientside for an [Entity] who deals heal.
 			</description>
 		</method>
 		<method name="_con_death" qualifiers="virtual">
@@ -167,6 +185,7 @@
 			<argument index="0" name="data" type="AuraData">
 			</argument>
 			<description>
+				Called clientside for an [Entity] who dies.
 			</description>
 		</method>
 		<method name="_con_equip_fail" qualifiers="virtual">
@@ -183,6 +202,7 @@
 			<argument index="4" name="bag_slot" type="int">
 			</argument>
 			<description>
+				Called clientside for an [Entity] when equipping an item fails.
 			</description>
 		</method>
 		<method name="_con_equip_success" qualifiers="virtual">
@@ -199,6 +219,7 @@
 			<argument index="4" name="bag_slot" type="int">
 			</argument>
 			<description>
+				Called clientside for an [Entity] when equipping an item succeeds.
 			</description>
 		</method>
 		<method name="_con_gcd_finished" qualifiers="virtual">
@@ -207,6 +228,7 @@
 			<argument index="0" name="data" type="AuraData">
 			</argument>
 			<description>
+				Called clientside for an [Entity] when a global cooldown finishes.
 			</description>
 		</method>
 		<method name="_con_gcd_started" qualifiers="virtual">
@@ -217,6 +239,7 @@
 			<argument index="1" name="gcd" type="float">
 			</argument>
 			<description>
+				Called clientside for an [Entity] when a global cooldown starts.
 			</description>
 		</method>
 		<method name="_con_heal_dealt" qualifiers="virtual">
@@ -227,6 +250,7 @@
 			<argument index="1" name="info" type="SpellHealInfo">
 			</argument>
 			<description>
+				Called clientside for an [Entity] who receives heal.
 			</description>
 		</method>
 		<method name="_con_level_up" qualifiers="virtual">
@@ -237,6 +261,7 @@
 			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
+				Called clientside for an [Entity] who levels up.
 			</description>
 		</method>
 		<method name="_con_spell_cast_success" qualifiers="virtual">
@@ -247,6 +272,7 @@
 			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
+				Called clientside for an [Entity] whos spell cast succeeds.
 			</description>
 		</method>
 		<method name="_con_xp_gained" qualifiers="virtual">
@@ -257,6 +283,7 @@
 			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
+				Called clientside for an [Entity] who gains xp.
 			</description>
 		</method>
 		<method name="_handle_aura_damage" qualifiers="virtual">
@@ -267,6 +294,7 @@
 			<argument index="1" name="data" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called when this aura wants to deal damage. Serverside only.
 			</description>
 		</method>
 		<method name="_handle_aura_heal" qualifiers="virtual">
@@ -277,6 +305,7 @@
 			<argument index="1" name="spell_heal_info" type="SpellHealInfo">
 			</argument>
 			<description>
+				Called when this aura wants to deal damage. Serverside only.
 			</description>
 		</method>
 		<method name="_sadd" qualifiers="virtual">
@@ -285,6 +314,7 @@
 			<argument index="0" name="aura" type="AuraData">
 			</argument>
 			<description>
+				Called serverside when this aura gets added to an [Entity].
 			</description>
 		</method>
 		<method name="_sapply" qualifiers="virtual">
@@ -293,6 +323,7 @@
 			<argument index="0" name="info" type="AuraApplyInfo">
 			</argument>
 			<description>
+				Called serverside when this aura gets applied to an [Entity].
 			</description>
 		</method>
 		<method name="_sapply_passives_damage_deal" qualifiers="virtual">
@@ -301,6 +332,7 @@
 			<argument index="0" name="data" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called serverside, apply damage passives of the caster [Entity] into the [SpellDamageInfo] in this method.
 			</description>
 		</method>
 		<method name="_sapply_passives_damage_receive" qualifiers="virtual">
@@ -309,6 +341,7 @@
 			<argument index="0" name="data" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called serverside, apply damage passives of the target [Entity] into the [SpellDamageInfo] in this method.
 			</description>
 		</method>
 		<method name="_sapply_passives_heal_deal" qualifiers="virtual">
@@ -317,6 +350,7 @@
 			<argument index="0" name="info" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called serverside, apply heal passives of the caster [Entity] into the [SpellHealInfo] in this method.
 			</description>
 		</method>
 		<method name="_sapply_passives_heal_receive" qualifiers="virtual">
@@ -325,6 +359,7 @@
 			<argument index="0" name="info" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called serverside, apply heal passives of the target [Entity] into the [SpellHealInfo] in this method.
 			</description>
 		</method>
 		<method name="_sdeapply" qualifiers="virtual">
@@ -333,6 +368,7 @@
 			<argument index="0" name="info" type="AuraData">
 			</argument>
 			<description>
+				Called when this aura is getting removed from an [Entity].
 			</description>
 		</method>
 		<method name="_setup_aura_data" qualifiers="virtual">
@@ -343,6 +379,7 @@
 			<argument index="1" name="data" type="AuraApplyInfo">
 			</argument>
 			<description>
+				This method sets up the given [AuraData] based on the given [AuraApplyInfo]. Override it, if you need to do something special. Serverside.
 			</description>
 		</method>
 		<method name="_should_deny_equip" qualifiers="virtual">
@@ -355,6 +392,7 @@
 			<argument index="2" name="item" type="ItemInstance">
 			</argument>
 			<description>
+				Gets called if an [Entity] wants to equip an [ItemInstance]. Return true, if tou want this [Aura] to prevent the equip. Serverside. 
 			</description>
 		</method>
 		<method name="_son_after_aura_applied" qualifiers="virtual">
@@ -371,6 +409,7 @@
 			<argument index="0" name="data" type="AuraData">
 			</argument>
 			<description>
+				Called before an [Aura] gets applied to the [Entity] this [Aura] is on.
 			</description>
 		</method>
 		<method name="_son_before_cast" qualifiers="virtual">
@@ -381,6 +420,7 @@
 			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
+				Called serverside before a cast starts by [Entity] this is on.
 			</description>
 		</method>
 		<method name="_son_before_cast_target" qualifiers="virtual">
@@ -391,6 +431,7 @@
 			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
+				Called serverside before an [Entity]'s cast starts targeting the [Entity] this is on.
 			</description>
 		</method>
 		<method name="_son_before_damage" qualifiers="virtual">
@@ -401,6 +442,7 @@
 			<argument index="1" name="data" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called serverside before the [Entity] this [Aura] is on receives damage.
 			</description>
 		</method>
 		<method name="_son_before_damage_hit" qualifiers="virtual">
@@ -411,6 +453,7 @@
 			<argument index="1" name="data" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called serverside before the [Entity] this [Aura] is on getting hit by a spell that deals damage.
 			</description>
 		</method>
 		<method name="_son_before_heal" qualifiers="virtual">
@@ -421,6 +464,7 @@
 			<argument index="1" name="data" type="SpellHealInfo">
 			</argument>
 			<description>
+				Called serverside before the [Entity] this [Aura] is on receives heal.
 			</description>
 		</method>
 		<method name="_son_before_heal_hit" qualifiers="virtual">
@@ -431,6 +475,7 @@
 			<argument index="1" name="data" type="SpellHealInfo">
 			</argument>
 			<description>
+				Called serverside before the [Entity] this [Aura] is on getting hit by a spell that deals heal.
 			</description>
 		</method>
 		<method name="_son_cast_failed" qualifiers="virtual">
@@ -441,6 +486,7 @@
 			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
+				Called serverside when the [Entity]'s cast this [Aura] is on fails. (It moved for example, and the [Spell] did not allow it.)
 			</description>
 		</method>
 		<method name="_son_cast_finished" qualifiers="virtual">
@@ -451,6 +497,7 @@
 			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
+				Called serverside when the [Entity]'s cast this [Aura] is on finishes.
 			</description>
 		</method>
 		<method name="_son_cast_finished_target" qualifiers="virtual">
@@ -461,6 +508,7 @@
 			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
+				Called serverside when an [Entity] finishes a cast targeting the [Entity] this [Aura] is on finishes.
 			</description>
 		</method>
 		<method name="_son_cast_started" qualifiers="virtual">
@@ -471,6 +519,7 @@
 			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
+				Called serverside when the [Entity]'s cast this [Aura] is on starts.
 			</description>
 		</method>
 		<method name="_son_category_cooldown_added" qualifiers="virtual">
@@ -481,6 +530,7 @@
 			<argument index="1" name="category_cooldown" type="CategoryCooldown">
 			</argument>
 			<description>
+				Called serverside when the [Entity] this [Aura] is on receives a [CategoryCooldown].
 			</description>
 		</method>
 		<method name="_son_category_cooldown_removed" qualifiers="virtual">
@@ -491,6 +541,7 @@
 			<argument index="1" name="category_cooldown" type="CategoryCooldown">
 			</argument>
 			<description>
+				Called serverside when a [CategoryCooldown] of the [Entity] this [Aura] is on gets removed.
 			</description>
 		</method>
 		<method name="_son_cooldown_added" qualifiers="virtual">
@@ -501,6 +552,7 @@
 			<argument index="1" name="cooldown" type="Cooldown">
 			</argument>
 			<description>
+				Called serverside when the [Entity] this [Aura] is on receives a [Cooldown].
 			</description>
 		</method>
 		<method name="_son_cooldown_removed" qualifiers="virtual">
@@ -511,6 +563,7 @@
 			<argument index="1" name="cooldown" type="Cooldown">
 			</argument>
 			<description>
+				Called serverside when a [Cooldown] of the [Entity] this [Aura] is on gets removed.
 			</description>
 		</method>
 		<method name="_son_damage_dealt" qualifiers="virtual">
@@ -521,6 +574,7 @@
 			<argument index="1" name="data" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called serverside when an [Entity] this [Aura] is dealt damage.
 			</description>
 		</method>
 		<method name="_son_damage_receive" qualifiers="virtual">
@@ -531,6 +585,7 @@
 			<argument index="1" name="data" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called serverside when an [Entity] this [Aura] is on receives damage.
 			</description>
 		</method>
 		<method name="_son_dealt_damage" qualifiers="virtual">
@@ -541,6 +596,7 @@
 			<argument index="1" name="data" type="SpellDamageInfo">
 			</argument>
 			<description>
+				Called serverside when an [Entity] deals damage to the [Entity] this [Aura] is on.
 			</description>
 		</method>
 		<method name="_son_dealt_heal" qualifiers="virtual">
@@ -551,6 +607,7 @@
 			<argument index="1" name="data" type="SpellHealInfo">
 			</argument>
 			<description>
+				
 			</description>
 		</method>
 		<method name="_son_death" qualifiers="virtual">

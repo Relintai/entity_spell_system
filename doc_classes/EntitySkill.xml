@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="EntitySkill" inherits="Reference" category="Core" version="3.2">
 	<brief_description>
+		Contains runtime skill data for an [Entity].
 	</brief_description>
 	<description>
+		Skills can be things like axes. You can change values for these using scripts.
 	</description>
 	<tutorials>
 	</tutorials>

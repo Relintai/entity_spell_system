@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="Spell" inherits="Resource" category="Core" version="3.2">
 	<brief_description>
+		Base Spell class. Contains data, and callbacks for spell scripts. Inherit from this to create spells with different functionality.
+		
+		Future: Standard funtionality will be implemented by default, you will only need to inherit for unique spell effects.
 	</brief_description>
 	<description>
 	</description>

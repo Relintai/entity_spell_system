@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="UnitFrame" inherits="Panel" category="Core" version="3.2">
 	<brief_description>
+		Unitframe's base class. Will probably be removed.
 	</brief_description>
 	<description>
 	</description>
