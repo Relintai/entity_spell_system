@@ -30,8 +30,8 @@ Indices and tables
    :caption: General
    :name: sec-general
 
-   general/globals
-   general/enums
+   general/globals/globals
+   general/enums/index
 
 .. toctree::
    :maxdepth: 1
@@ -52,6 +52,8 @@ Indices and tables
    entities/crafting
    entities/skeleton
    entities/ai
+   entities/pets
+   entities/networking
    entities/other
 
 .. toctree::
