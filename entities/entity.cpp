@@ -4768,6 +4768,13 @@ void Entity::loaded() {
 
 ////    PlayerData    ////
 
+bool Entity::get_maunal_process() const {
+	return _maunal_process;
+}
+void Entity::set_maunal_process(const bool value) {
+	_maunal_process = value;
+}
+
 void Entity::update(float delta) {
 	if (_s_gcd > 0.0000001) {
 		_s_gcd -= delta;
@@ -5058,6 +5065,7 @@ void Entity::register_for_physics_process(Ref<SpellCastInfo> info) {
 }
 
 Entity::Entity() {
+	_maunal_process = false;
 	_deserialized = false;
 
 	_s_guid = 0;
@@ -5413,7 +5421,8 @@ void Entity::_notification(int p_what) {
 			}
 		} break;
 		case NOTIFICATION_PROCESS: {
-			update(get_process_delta_time());
+			if (!_maunal_process)
+				update(get_process_delta_time());
 		} break;
 		case NOTIFICATION_PHYSICS_PROCESS: {
 			son_physics_process(get_physics_process_delta_time());
@@ -6364,4 +6373,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "vrpc", &Entity::_vrpc_bind, mi);
 
 	ClassDB::bind_method(D_METHOD("register_for_physics_process", "info"), &Entity::register_for_physics_process);
+
+	ClassDB::bind_method(D_METHOD("get_maunal_process"), &Entity::get_maunal_process);
+	ClassDB::bind_method(D_METHOD("set_maunal_process", "value"), &Entity::set_maunal_process);
+
+	ClassDB::bind_method(D_METHOD("update", "delta"), &Entity::update);
 }

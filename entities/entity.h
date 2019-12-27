@@ -888,15 +888,21 @@ public:
 
 	void register_for_physics_process(Ref<SpellCastInfo> info);
 
+	bool get_maunal_process() const;
+	void set_maunal_process(bool value);
+
+	void update(float delta);
+
 	Entity();
 	~Entity();
 
 protected:
 	static void _bind_methods();
 	virtual void _notification(int p_what);
-	virtual void update(float delta);
 
 private:
+	bool _maunal_process;
+
 	const float SAVE_BASE_SECONDS = 10.0;
 	bool _deserialized;
 
