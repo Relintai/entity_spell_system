@@ -1,28 +1,30 @@
 .. _doc_general_spell_enums:
 
-Spell Enums
-===========
+:ref:`Spell Enums <class_SpellEnums>`
+=====================================
 
-DamageType
-----------
+Contains Spell-related enums.
 
-SpellCategory
--------------
+:ref:`DamageType <enum_SpellEnums_DamageType>`
+----------------------------------------------
 
-SpellType
----------
+:ref:`SpellCategory <enum_SpellEnums_SpellCategory>`
+----------------------------------------------------
 
-DiminishingReturnCategory
--------------------------
+:ref:`SpellType <enum_SpellEnums_SpellType>`
+--------------------------------------------
 
-TriggerEvents
--------------
+:ref:`DiminishingReturnCategory <enum_SpellEnums_DiminishingReturnCategory>`
+----------------------------------------------------------------------------
 
-AuraType
---------
+:ref:`TriggerEvents <enum_SpellEnums_TriggerEvents>`
+----------------------------------------------------
 
-ColliderType
-------------
+:ref:`AuraType <enum_SpellEnums_AuraType>`
+------------------------------------------
 
-TargetType
-----------
+:ref:`ColliderType <enum_SpellEnums_ColliderType>`
+--------------------------------------------------
+
+:ref:`TargetType <enum_SpellEnums_TargetType>`
+----------------------------------------------
