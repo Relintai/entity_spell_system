@@ -43,6 +43,8 @@ Type of an aura. Like None, Magic, Poison etc.
 
 You can make these show up in the ui, also some spell can operate on different types.
 
+They can also be used as flags.
+
 :ref:`ColliderType <enum_SpellEnums_ColliderType>`
 --------------------------------------------------
 

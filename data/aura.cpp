@@ -136,7 +136,7 @@ void Aura::OnAuraAbilityScalingDataLoaded(AbilityScalingDataLoaderHelper *h) {
 */
 
 //Damage
-bool Aura::is_damage_enabled() {
+bool Aura::get_damage_enabled() {
 	return _damage_enabled;
 }
 void Aura::set_damage_enabled(bool value) {
@@ -180,7 +180,7 @@ void Aura::set_damage(int min, int max, bool can_crit) {
 }
 
 //Absorb
-bool Aura::is_absorb_enabled() {
+bool Aura::get_absorb_enabled() {
 	return _absorb_enabled;
 }
 void Aura::set_absorb_enabled(bool value) {
@@ -210,7 +210,7 @@ void Aura::set_absorb_max(int value) {
 }
 
 //Heal
-bool Aura::is_heal_enabled() {
+bool Aura::get_heal_enabled() {
 	return _heal_enabled;
 }
 void Aura::set_heal_enabled(bool value) {
@@ -243,6 +243,35 @@ void Aura::set_heal(int min, int max, bool can_crit) {
 	set_heal_min(min);
 	set_heal_max(max);
 	set_heal_can_crit(can_crit);
+}
+
+//Dispell
+bool Aura::get_dispell_enabled() {
+	return _dispell_enabled;
+}
+void Aura::set_dispell_enabled(bool value) {
+	_dispell_enabled = value;
+}
+
+int Aura::get_dispell_count_min() {
+	return _dispell_count_min;
+}
+void Aura::set_dispell_count_min(int value) {
+	_dispell_count_min = value;
+}
+
+int Aura::get_dispell_count_max() {
+	return _dispell_count_max;
+}
+void Aura::set_dispell_count_max(int value) {
+	_dispell_count_max = value;
+}
+
+int Aura::get_dispell_aura_types() {
+	return _dispell_aura_types;
+}
+void Aura::set_dispell_aura_types(int value) {
+	_dispell_aura_types = value;
 }
 
 Ref<EntityResourceCostData> Aura::get_resource_cost() {
@@ -285,6 +314,11 @@ Aura::Aura() {
 	_heal_max = 0;
 
 	_heal_can_crit = false;
+
+	_dispell_enabled = false;
+	_dispell_count_min = 0;
+	_dispell_count_max = 0;
+	_dispell_aura_types = 0;
 
 	_add_states = 0;
 	_remove_effects_with_states = 0;
@@ -923,11 +957,11 @@ void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
 		data->set_is_timed(false);
 	}
 
-	if (is_damage_enabled()) {
+	if (get_damage_enabled()) {
 		calculate_initial_damage(data, info);
 	}
 
-	if (is_heal_enabled()) {
+	if (get_heal_enabled()) {
 		calculate_initial_heal(data, info);
 	}
 }
@@ -1412,9 +1446,9 @@ void Aura::_bind_methods() {
 
 	ADD_GROUP("Damage", "damage");
 	//Damage
-	ClassDB::bind_method(D_METHOD("is_damage_enabled"), &Aura::is_damage_enabled);
+	ClassDB::bind_method(D_METHOD("get_damage_enabled"), &Aura::get_damage_enabled);
 	ClassDB::bind_method(D_METHOD("set_damage_enabled", "value"), &Aura::set_damage_enabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "damage_enabled"), "set_damage_enabled", "is_damage_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "damage_enabled"), "set_damage_enabled", "get_damage_enabled");
 
 	ClassDB::bind_method(D_METHOD("get_damage_type"), &Aura::get_damage_type);
 	ClassDB::bind_method(D_METHOD("set_damage_type", "value"), &Aura::set_damage_type);
@@ -1440,9 +1474,9 @@ void Aura::_bind_methods() {
 
 	ADD_GROUP("Absorb", "absorb");
 	//Absorb
-	ClassDB::bind_method(D_METHOD("is_absorb_enabled"), &Aura::is_absorb_enabled);
+	ClassDB::bind_method(D_METHOD("get_absorb_enabled"), &Aura::get_absorb_enabled);
 	ClassDB::bind_method(D_METHOD("set_absorb_enabled", "value"), &Aura::set_absorb_enabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "absorb_enabled"), "set_absorb_enabled", "is_absorb_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "absorb_enabled"), "set_absorb_enabled", "get_absorb_enabled");
 
 	ClassDB::bind_method(D_METHOD("get_absorb_damage_type"), &Aura::get_absorb_damage_type);
 	ClassDB::bind_method(D_METHOD("set_absorb_damage_type", "value"), &Aura::set_absorb_damage_type);
@@ -1462,9 +1496,9 @@ void Aura::_bind_methods() {
 
 	ADD_GROUP("Heal", "heal");
 	//Heal
-	ClassDB::bind_method(D_METHOD("is_heal_enabled"), &Aura::is_heal_enabled);
+	ClassDB::bind_method(D_METHOD("get_heal_enabled"), &Aura::get_heal_enabled);
 	ClassDB::bind_method(D_METHOD("set_heal_enabled", "value"), &Aura::set_heal_enabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "heal_enabled"), "set_heal_enabled", "is_heal_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "heal_enabled"), "set_heal_enabled", "get_heal_enabled");
 
 	ClassDB::bind_method(D_METHOD("get_heal_min"), &Aura::get_heal_min);
 	ClassDB::bind_method(D_METHOD("set_heal_min", "value"), &Aura::set_heal_min);
@@ -1483,6 +1517,23 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_heal_scaling_curve"), &Aura::get_heal_scaling_curve);
 	ClassDB::bind_method(D_METHOD("set_heal_scaling_curve", "curve"), &Aura::set_heal_scaling_curve);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "heal_scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_heal_scaling_curve", "get_heal_scaling_curve");
+
+	ADD_GROUP("Dispell", "dispell");
+	ClassDB::bind_method(D_METHOD("get_dispell_enabled"), &Aura::get_dispell_enabled);
+	ClassDB::bind_method(D_METHOD("set_dispell_enabled", "value"), &Aura::set_dispell_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dispell_enabled"), "set_dispell_enabled", "get_dispell_enabled");
+
+	ClassDB::bind_method(D_METHOD("get_dispell_count_min"), &Aura::get_dispell_count_min);
+	ClassDB::bind_method(D_METHOD("set_dispell_count_min", "value"), &Aura::set_dispell_count_min);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_count_min"), "set_dispell_count_min", "get_dispell_count_min");
+
+	ClassDB::bind_method(D_METHOD("get_dispell_count_max"), &Aura::get_dispell_count_max);
+	ClassDB::bind_method(D_METHOD("set_dispell_count_max", "value"), &Aura::set_dispell_count_max);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_count_max"), "set_dispell_count_max", "get_dispell_count_max");
+
+	ClassDB::bind_method(D_METHOD("get_dispell_aura_types"), &Aura::get_dispell_aura_types);
+	ClassDB::bind_method(D_METHOD("set_dispell_aura_types", "value"), &Aura::set_dispell_aura_types);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_aura_types", PROPERTY_HINT_FLAGS, SpellEnums::BINDING_STRING_AURA_FLAG_TYPES), "set_dispell_aura_types", "get_dispell_aura_types");
 
 	//Resources
 	ADD_GROUP("Resources", "resource");

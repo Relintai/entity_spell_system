@@ -68,6 +68,13 @@ void Spell::set_rank(int value) {
 	_rank = value;
 }
 
+bool Spell::get_scale_with_level() {
+	return _scale_with_level;
+}
+void Spell::set_scale_with_level(bool value) {
+	_scale_with_level = value;
+}
+
 int Spell::get_item_cost() {
 	return _item_cost;
 }
@@ -103,11 +110,11 @@ void Spell::set_resource_give(Ref<EntityResourceCostData> value) {
 	_resource_give = value;
 }
 
-bool Spell::has_global_cooldown() {
-	return _has_global_cooldown;
+bool Spell::get_global_cooldown_enabled() {
+	return _global_cooldown_enabled;
 }
-void Spell::set_has_global_cooldown(bool value) {
-	_has_global_cooldown = value;
+void Spell::set_global_cooldown_enabled(bool value) {
+	_global_cooldown_enabled = value;
 }
 
 bool Spell::get_is_local_spell() {
@@ -138,33 +145,19 @@ void Spell::set_visual_spell_effects(Ref<SpellEffectVisual> value) {
 	_visual_spell_effects = value;
 }
 
-Ref<WorldSpellData> Spell::get_world_spell_data() {
-	return _world_spell_data;
+Ref<WorldSpellData> Spell::get_projectile() {
+	return _projectile;
 }
-void Spell::set_world_spell_data(Ref<WorldSpellData> value) {
-	_world_spell_data = value;
+void Spell::set_projectile(Ref<WorldSpellData> value) {
+	_projectile = value;
 }
+
 
 Ref<CraftRecipe> Spell::get_teaches_craft_recipe() {
 	return _teaches_craft_recipe;
 }
 void Spell::set_teaches_craft_recipe(Ref<CraftRecipe> value) {
 	_teaches_craft_recipe = value;
-}
-
-float Spell::get_damage_scale_for_level(int level) {
-	//return getDamageLevelScaling()->Evaluate((float)(level));
-	return 1;
-}
-
-float Spell::get_heal_scale_for_level(int level) {
-	//return getHealLevelScaling()->Evaluate((float)(level));
-	return 1;
-}
-
-float Spell::get_absorb_scale_for_level(int level) {
-	//return getAbsorbLevelScaling()->Evaluate((float)(level));
-	return 1;
 }
 
 ////    Caster Aura Apply    ////
@@ -275,22 +268,13 @@ void Spell::set_on_learn_auras(const Vector<Variant> &on_learn_aura_applys) {
 	}
 }
 
-////    Projectile    ////
-
-Ref<WorldSpellData> Spell::get_projectile() {
-	return _projectile;
-}
-void Spell::set_projectile(Ref<WorldSpellData> value) {
-	_projectile = value;
-}
-
 ////    Range    ////
 
-bool Spell::get_has_range() {
-	return _has_range;
+bool Spell::get_range_enabled() {
+	return _range_enabled;
 }
-void Spell::set_has_range(bool value) {
-	_has_range = value;
+void Spell::set_range_enabled(bool value) {
+	_range_enabled = value;
 }
 
 float Spell::get_range() {
@@ -300,11 +284,11 @@ void Spell::set_range(float value) {
 	_range = value;
 }
 
-bool Spell::get_has_cast_time() {
-	return _has_cast_time;
+bool Spell::get_cast_time_enabled() {
+	return _cast_time_enabled;
 }
-void Spell::set_has_cast_time(bool value) {
-	_has_cast_time = value;
+void Spell::set_cast_time_enabled(bool value) {
+	_cast_time_enabled = value;
 }
 
 float Spell::get_cast_time() {
@@ -314,11 +298,11 @@ void Spell::set_cast_time(float value) {
 	_cast_time = value;
 }
 
-bool Spell::get_has_damage() {
-	return _has_damage;
+bool Spell::get_damage_enabled() {
+	return _damage_enabled;
 }
-void Spell::set_has_damage(bool value) {
-	_has_damage = value;
+void Spell::set_damage_enabled(bool value) {
+	_damage_enabled = value;
 }
 
 int Spell::get_damage_type() {
@@ -342,18 +326,25 @@ void Spell::set_damage_max(int value) {
 	_damage_max = value;
 }
 
-Ref<Curve> Spell::get_damage_scaling_curve() {
-	return _damage_scaling_curve;
+Stat::StatId Spell::get_damage_scale_stat() {
+	return _damage_scale_stat;
 }
-void Spell::set_damage_scaling_curve(Ref<Curve> curve) {
-	_damage_scaling_curve = curve;
+void Spell::set_damage_scale_stat(Stat::StatId value) {
+	_damage_scale_stat = value;
 }
 
-bool Spell::get_has_heal() {
-	return _has_heal;
+float Spell::get_damage_scale_coeff() {
+	return _damage_scale_coeff;
 }
-void Spell::set_has_heal(bool value) {
-	_has_heal = value;
+void Spell::set_damage_scale_coeff(float value) {
+	_damage_scale_coeff = value;
+}
+
+bool Spell::get_heal_enabled() {
+	return _heal_enabled;
+}
+void Spell::set_heal_enabled(bool value) {
+	_heal_enabled = value;
 }
 
 int Spell::get_heal_min() {
@@ -370,11 +361,46 @@ void Spell::set_heal_max(int value) {
 	_heal_max = value;
 }
 
-Ref<Curve> Spell::get_heal_scaling_curve() {
-	return _heal_scaling_curve;
+Stat::StatId Spell::get_heal_scale_stat() {
+	return _heal_scale_stat;
 }
-void Spell::set_heal_scaling_curve(Ref<Curve> curve) {
-	_heal_scaling_curve = curve;
+void Spell::set_heal_scale_stat(Stat::StatId value) {
+	_heal_scale_stat = value;
+}
+
+float Spell::get_heal_scale_coeff() {
+	return _heal_scale_coeff;
+}
+void Spell::set_heal_scale_coeff(float value) {
+	_heal_scale_coeff = value;
+}
+
+bool Spell::get_dispell_enabled() {
+	return _dispell_enabled;
+}
+void Spell::set_dispell_enabled(bool value) {
+	_dispell_enabled = value;
+}
+
+int Spell::get_dispell_count_min() {
+	return _dispell_count_min;
+}
+void Spell::set_dispell_count_min(int value) {
+	_dispell_count_min = value;
+}
+
+int Spell::get_dispell_count_max() {
+	return _dispell_count_max;
+}
+void Spell::set_dispell_count_max(int value) {
+	_dispell_count_max = value;
+}
+
+int Spell::get_dispell_aura_types() {
+	return _dispell_aura_types;
+}
+void Spell::set_dispell_aura_types(int value) {
+	_dispell_aura_types = value;
 }
 
 bool Spell::get_needs_target() {
@@ -391,11 +417,11 @@ void Spell::set_can_move_while_casting(bool value) {
 	_can_move_while_casting = value;
 }
 
-bool Spell::get_is_interrupt() {
-	return _is_interrupt;
+bool Spell::get_interrupt_enabled() {
+	return _interrupt_enabled;
 }
-void Spell::set_is_interrupt(bool value) {
-	_is_interrupt = value;
+void Spell::set_interrupt_enabled(bool value) {
+	_interrupt_enabled = value;
 }
 
 float Spell::get_interrupt_time() {
@@ -485,7 +511,7 @@ void Spell::sstart_casting_simple(Entity *caster, float spell_scale) {
 
 	info->set_caster(caster);
 	info->set_target(caster->gets_target());
-	info->set_has_cast_time(get_has_cast_time());
+	info->set_has_cast_time(get_cast_time_enabled());
 	info->set_cast_time(get_cast_time());
 	info->set_spell_scale(spell_scale);
 	info->set_spell(Ref<Spell>(this));
@@ -638,7 +664,7 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 
 	//Ref<Spell> spell = info->get_spell();
 
-	if (get_needs_target() || get_has_damage()) {
+	if (get_needs_target() || get_damage_enabled()) {
 		if (!info->get_target()) {
 			//print_error("no target, return");
 
@@ -646,7 +672,7 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 		}
 	}
 
-	if (get_has_cast_time()) {
+	if (get_cast_time_enabled()) {
 		//can cast
 		info->get_caster()->son_before_cast(info);
 
@@ -656,7 +682,7 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 
 		info->get_caster()->sstart_casting(info);
 	} else {
-		if (get_has_damage()) {
+		if (get_damage_enabled()) {
 			Ref<SpellDamageInfo> dpd = Ref<SpellDamageInfo>(memnew(SpellDamageInfo()));
 
 			dpd->set_spell_damage_source(Ref<Spell>(this));
@@ -699,33 +725,43 @@ Spell::Spell() {
 
 	_level = 1;
 	_rank = 0;
+	_scale_with_level = true;
 
 	_item_cost = 0;
 	_craft_material_cost = 0;
 	_required_item = 0;
 
-	_has_global_cooldown = true;
+	_global_cooldown_enabled = true;
 	_is_local_spell = false;
 
-	_has_range = false;
+	_range_enabled = false;
 	_range = 0;
 
-	_has_damage = false;
+	_damage_enabled = false;
 	_damage_type = 0;
 	_damage_min = 0;
 	_damage_max = 0;
+	_damage_scale_stat = Stat::STAT_ID_NONE;
+	_damage_scale_coeff = 0;
 
-	_has_heal = false;
+	_heal_enabled = false;
 	_heal_min = 0;
 	_heal_max = 0;
+	_heal_scale_stat = Stat::STAT_ID_NONE;
+	_heal_scale_coeff = 0;
 
-	_has_cast_time = false;
+	_dispell_enabled = false;
+	_dispell_count_min = 0;
+	_dispell_count_max = 0;
+	_dispell_aura_types = 0;
+
+	_cast_time_enabled = false;
 	_cast_time = 0;
 
 	_needs_target = false;
 	_can_move_while_casting = false;
 
-	_is_interrupt = false;
+	_interrupt_enabled = false;
 	_interrupt_time = 0;
 
 	_is_aoe = false;
@@ -754,8 +790,6 @@ Spell::~Spell() {
 	_world_spell_data.unref();
 
 	_teaches_craft_recipe.unref();
-	_damage_scaling_curve.unref();
-	_heal_scaling_curve.unref();
 	_projectile.unref();
 	_training_required_spell.unref();
 	_training_required_skill.unref();
@@ -842,6 +876,10 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_rank", "value"), &Spell::set_rank);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rank"), "set_rank", "get_rank");
 
+	ClassDB::bind_method(D_METHOD("get_scale_with_level"), &Spell::get_scale_with_level);
+	ClassDB::bind_method(D_METHOD("set_scale_with_level", "value"), &Spell::set_scale_with_level);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scale_with_level"), "set_scale_with_level", "get_scale_with_level");
+
 	ClassDB::bind_method(D_METHOD("get_is_local_spell"), &Spell::get_is_local_spell);
 	ClassDB::bind_method(D_METHOD("set_is_local_spell", "value"), &Spell::set_is_local_spell);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_local_spell"), "set_is_local_spell", "get_is_local_spell");
@@ -858,17 +896,13 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_visual_spell_effects", "value"), &Spell::set_visual_spell_effects);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "visual_spell_effects", PROPERTY_HINT_RESOURCE_TYPE, "SpellEffectVisual"), "set_visual_spell_effects", "get_visual_spell_effects");
 
-	ClassDB::bind_method(D_METHOD("get_world_spell_data"), &Spell::get_world_spell_data);
-	ClassDB::bind_method(D_METHOD("set_world_spell_data", "value"), &Spell::set_world_spell_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_spell_data", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), "set_world_spell_data", "get_world_spell_data");
+	ClassDB::bind_method(D_METHOD("get_projectile"), &Spell::get_projectile);
+	ClassDB::bind_method(D_METHOD("set_projectile", "value"), &Spell::set_projectile);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "projectile", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), "set_projectile", "get_projectile");
 
 	ClassDB::bind_method(D_METHOD("get_teaches_craft_recipe"), &Spell::get_teaches_craft_recipe);
 	ClassDB::bind_method(D_METHOD("set_teaches_craft_recipe", "value"), &Spell::set_teaches_craft_recipe);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "teaches_craft_recipe", PROPERTY_HINT_RESOURCE_TYPE, "CraftRecipe"), "set_teaches_craft_recipe", "get_teaches_craft_recipe");
-
-	ClassDB::bind_method(D_METHOD("get_damage_scale_for_level"), &Spell::get_damage_scale_for_level);
-	ClassDB::bind_method(D_METHOD("get_heal_scale_for_level"), &Spell::get_heal_scale_for_level);
-	ClassDB::bind_method(D_METHOD("get_absorb_scale_for_level"), &Spell::get_absorb_scale_for_level);
 
 	//ADD_GROUP("Caster Aura Applys", "caster_aura_applys");
 	ClassDB::bind_method(D_METHOD("get_num_caster_aura_applys"), &Spell::get_num_caster_aura_applys);
@@ -903,10 +937,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_on_learn_auras", "spells"), &Spell::set_on_learn_auras);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "on_learn_auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_on_learn_auras", "get_on_learn_auras");
 
-	ClassDB::bind_method(D_METHOD("get_projectile"), &Spell::get_projectile);
-	ClassDB::bind_method(D_METHOD("set_projectile", "value"), &Spell::set_projectile);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "projectile", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), "set_projectile", "get_projectile");
-
 	ADD_GROUP("Texts", "text");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
@@ -919,23 +949,23 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_cooldown", "value"), &Spell::set_cooldown);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cooldown_cooldown"), "set_cooldown", "get_cooldown");
 
-	ClassDB::bind_method(D_METHOD("has_global_cooldown"), &Spell::has_global_cooldown);
-	ClassDB::bind_method(D_METHOD("set_has_global_cooldown", "value"), &Spell::set_has_global_cooldown);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cooldown_global_cooldown"), "set_has_global_cooldown", "has_global_cooldown");
+	ClassDB::bind_method(D_METHOD("set_global_cooldown_enabled"), &Spell::set_global_cooldown_enabled);
+	ClassDB::bind_method(D_METHOD("set_global_cooldown_enabled", "value"), &Spell::set_global_cooldown_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cooldown_global_cooldown_enabled"), "set_global_cooldown_enabled", "set_global_cooldown_enabled");
 
 	ADD_GROUP("Range", "range");
-	ClassDB::bind_method(D_METHOD("get_has_range"), &Spell::get_has_range);
-	ClassDB::bind_method(D_METHOD("set_has_range", "value"), &Spell::set_has_range);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "range"), "set_has_range", "get_has_range");
+	ClassDB::bind_method(D_METHOD("get_range_enabled"), &Spell::get_range_enabled);
+	ClassDB::bind_method(D_METHOD("set_range_enabled", "value"), &Spell::set_range_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "range_enabled"), "set_range_enabled", "get_range_enabled");
 
 	ClassDB::bind_method(D_METHOD("get_range"), &Spell::get_range);
 	ClassDB::bind_method(D_METHOD("set_range", "value"), &Spell::set_range);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "range_range"), "set_range", "get_range");
 
 	ADD_GROUP("Cast", "cast");
-	ClassDB::bind_method(D_METHOD("get_has_cast_time"), &Spell::get_has_cast_time);
-	ClassDB::bind_method(D_METHOD("set_has_cast_time", "value"), &Spell::set_has_cast_time);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cast"), "set_has_cast_time", "get_has_cast_time");
+	ClassDB::bind_method(D_METHOD("get_cast_time_enabled"), &Spell::get_cast_time_enabled);
+	ClassDB::bind_method(D_METHOD("set_cast_time_enabled", "value"), &Spell::set_cast_time_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cast_enabled"), "set_cast_time_enabled", "get_cast_time_enabled");
 
 	ClassDB::bind_method(D_METHOD("get_cast_time"), &Spell::get_cast_time);
 	ClassDB::bind_method(D_METHOD("set_cast_time", "value"), &Spell::set_cast_time);
@@ -946,9 +976,9 @@ void Spell::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cast_can_move_while_casting"), "set_can_move_while_casting", "get_can_move_while_casting");
 
 	ADD_GROUP("Damage", "damage");
-	ClassDB::bind_method(D_METHOD("get_has_damage"), &Spell::get_has_damage);
-	ClassDB::bind_method(D_METHOD("set_has_damage", "value"), &Spell::set_has_damage);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "damage"), "set_has_damage", "get_has_damage");
+	ClassDB::bind_method(D_METHOD("get_damage_enabled"), &Spell::get_damage_enabled);
+	ClassDB::bind_method(D_METHOD("set_damage", "value"), &Spell::set_damage_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "damage_enabled"), "set_damage_enabled", "get_damage_enabled");
 
 	ClassDB::bind_method(D_METHOD("get_damage_type"), &Spell::get_damage_type);
 	ClassDB::bind_method(D_METHOD("set_damage_type", "value"), &Spell::set_damage_type);
@@ -962,14 +992,18 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_damage_max", "value"), &Spell::set_damage_max);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_max"), "set_damage_max", "get_damage_max");
 
-	ClassDB::bind_method(D_METHOD("get_damage_scaling_curve"), &Spell::get_damage_scaling_curve);
-	ClassDB::bind_method(D_METHOD("set_damage_scaling_curve", "curve"), &Spell::set_damage_scaling_curve);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "damage_scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_damage_scaling_curve", "get_damage_scaling_curve");
+	ClassDB::bind_method(D_METHOD("get_damage_scale_stat"), &Spell::get_damage_scale_stat);
+	ClassDB::bind_method(D_METHOD("set_damage_scale_stat", "value"), &Spell::set_damage_scale_stat);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_scale_stat", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING), "set_damage_scale_stat", "get_damage_scale_stat");
+
+	ClassDB::bind_method(D_METHOD("get_damage_scale_coeff"), &Spell::get_damage_scale_coeff);
+	ClassDB::bind_method(D_METHOD("set_damage_scale_coeff", "value"), &Spell::set_damage_scale_coeff);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "damage_scale_coeff"), "set_damage_scale_coeff", "get_damage_scale_coeff");
 
 	ADD_GROUP("Heal", "heal");
-	ClassDB::bind_method(D_METHOD("get_has_heal"), &Spell::get_has_heal);
-	ClassDB::bind_method(D_METHOD("set_has_heal", "value"), &Spell::set_has_heal);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "heal"), "set_has_heal", "get_has_heal");
+	ClassDB::bind_method(D_METHOD("get_heal_enabled"), &Spell::get_heal_enabled);
+	ClassDB::bind_method(D_METHOD("set_heal_enabled", "value"), &Spell::set_heal_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "heal_enabled"), "set_heal_enabled", "get_heal_enabled");
 
 	ClassDB::bind_method(D_METHOD("get_heal_min"), &Spell::get_heal_min);
 	ClassDB::bind_method(D_METHOD("set_heal_min", "value"), &Spell::set_heal_min);
@@ -979,14 +1013,35 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_heal_max", "value"), &Spell::set_heal_max);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_max"), "set_heal_max", "get_heal_max");
 
-	ClassDB::bind_method(D_METHOD("get_heal_scaling_curve"), &Spell::get_heal_scaling_curve);
-	ClassDB::bind_method(D_METHOD("set_heal_scaling_curve", "curve"), &Spell::set_heal_scaling_curve);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "heal_scaling_curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve"), "set_heal_scaling_curve", "get_heal_scaling_curve");
+	ClassDB::bind_method(D_METHOD("get_heal_scale_stat"), &Spell::get_heal_scale_stat);
+	ClassDB::bind_method(D_METHOD("set_heal_scale_stat", "value"), &Spell::set_heal_scale_stat);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_scale_stat", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING), "set_heal_scale_stat", "get_heal_scale_stat");
+
+	ClassDB::bind_method(D_METHOD("get_heal_scale_coeff"), &Spell::get_heal_scale_coeff);
+	ClassDB::bind_method(D_METHOD("set_heal_scale_coeff", "value"), &Spell::set_heal_scale_coeff);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "heal_scale_coeff"), "set_heal_scale_coeff", "get_heal_scale_coeff");
+
+	ADD_GROUP("Dispell", "dispell");
+	ClassDB::bind_method(D_METHOD("get_dispell_enabled"), &Spell::get_dispell_enabled);
+	ClassDB::bind_method(D_METHOD("set_dispell_enabled", "value"), &Spell::set_dispell_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dispell_enabled"), "set_dispell_enabled", "get_dispell_enabled");
+
+	ClassDB::bind_method(D_METHOD("get_dispell_count_min"), &Spell::get_dispell_count_min);
+	ClassDB::bind_method(D_METHOD("set_dispell_count_min", "value"), &Spell::set_dispell_count_min);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_count_min"), "set_dispell_count_min", "get_dispell_count_min");
+
+	ClassDB::bind_method(D_METHOD("get_dispell_count_max"), &Spell::get_dispell_count_max);
+	ClassDB::bind_method(D_METHOD("set_dispell_count_max", "value"), &Spell::set_dispell_count_max);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_count_max"), "set_dispell_count_max", "get_dispell_count_max");
+
+	ClassDB::bind_method(D_METHOD("get_dispell_aura_types"), &Spell::get_dispell_aura_types);
+	ClassDB::bind_method(D_METHOD("set_dispell_aura_types", "value"), &Spell::set_dispell_aura_types);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_aura_types", PROPERTY_HINT_FLAGS, SpellEnums::BINDING_STRING_AURA_FLAG_TYPES), "set_dispell_aura_types", "get_dispell_aura_types");
 
 	ADD_GROUP("Interrupt", "interrupt");
-	ClassDB::bind_method(D_METHOD("get_is_interrupt"), &Spell::get_is_interrupt);
-	ClassDB::bind_method(D_METHOD("set_is_interrupt", "value"), &Spell::set_is_interrupt);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "interrupt"), "set_is_interrupt", "get_is_interrupt");
+	ClassDB::bind_method(D_METHOD("get_interrupt_enabled"), &Spell::get_interrupt_enabled);
+	ClassDB::bind_method(D_METHOD("set_interrupt_enabled", "value"), &Spell::set_interrupt_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "interrupt_enabled"), "set_interrupt_enabled", "get_interrupt_enabled");
 
 	ClassDB::bind_method(D_METHOD("get_interrupt_time"), &Spell::get_interrupt_time);
 	ClassDB::bind_method(D_METHOD("set_interrupt_time", "value"), &Spell::set_interrupt_time);

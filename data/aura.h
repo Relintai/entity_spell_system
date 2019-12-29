@@ -85,12 +85,8 @@ public:
 	Ref<Spell> get_teaches_spell() const;
 	void set_teaches_spell(const Ref<Spell> spell);
 
-	//   AnimationCurve* getDamageLevelScaling();
-	//  AnimationCurve* getAbsorbLevelScaling();
-	//   AnimationCurve* getHealLevelScaling();
-
 	//Damage
-	bool is_damage_enabled();
+	bool get_damage_enabled();
 	void set_damage_enabled(bool value);
 
 	int get_damage_type();
@@ -109,7 +105,7 @@ public:
 	void set_damage(int min, int max, bool can_crit);
 
 	//Absorb
-	bool is_absorb_enabled();
+	bool get_absorb_enabled();
 	void set_absorb_enabled(bool value);
 
 	int get_absorb_damage_type();
@@ -123,7 +119,7 @@ public:
 	void set_absorb_max(int value);
 
 	//Heal
-	bool is_heal_enabled();
+	bool get_heal_enabled();
 	void set_heal_enabled(bool value);
 
 	int get_heal_min();
@@ -136,6 +132,19 @@ public:
 	void set_heal_can_crit(bool value);
 
 	void set_heal(int min, int max, bool can_crit);
+
+	//Dispells
+	bool get_dispell_enabled();
+	void set_dispell_enabled(bool value);
+
+	int get_dispell_count_min();
+	void set_dispell_count_min(int value);
+
+	int get_dispell_count_max();
+	void set_dispell_count_max(int value);
+
+	int get_dispell_aura_types();
+	void set_dispell_aura_types(int value);
 
 	//Resources
 	Ref<EntityResourceCostData> get_resource_cost();
@@ -386,6 +395,11 @@ private:
 	int _heal_max;
 	bool _heal_can_crit;
 	Ref<Curve> _heal_scaling_curve;
+
+	bool _dispell_enabled;
+	int _dispell_count_min;
+	int _dispell_count_max;
+	int _dispell_aura_types;
 
 	Ref<EntityResourceCostData> _resource_cost;
 	Ref<EntityResourceCostData> _resource_give;

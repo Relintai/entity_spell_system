@@ -13,6 +13,7 @@ public:
 	static const String BINDING_STRING_TRIGGER_EVENTS;
 	static const String BINDING_STRING_DAMAGE_TYPES;
 	static const String BINDING_STRING_AURA_TYPES;
+	static const String BINDING_STRING_AURA_FLAG_TYPES;
 	static const String BINDING_STRING_COLLIDER_TYPE;
 	static const String BINDING_STRING_TARGET_TYPE;
 
@@ -73,13 +74,13 @@ public:
 
 	enum AuraType {
 		AURA_TYPE_NONE = 0,
-		AURA_TYPE_MAGIC = 1,
-		AURA_TYPE_POISON = 2,
-		AURA_TYPE_PHYSICAL = 3,
-		AURA_TYPE_CURSE = 4,
-		AURA_TYPE_BLEED = 5,
-		AURA_TYPE_TALENT = 6,
-		AURA_TYPE_SKILL = 7,
+		AURA_TYPE_MAGIC = 1 << 0,
+		AURA_TYPE_POISON = 1 << 1,
+		AURA_TYPE_PHYSICAL = 1 << 2,
+		AURA_TYPE_CURSE = 1 << 3,
+		AURA_TYPE_BLEED = 1 << 4,
+		AURA_TYPE_TALENT = 1 << 5,
+		AURA_TYPE_SKILL = 1 << 6,
 	};
 
 	enum ColliderType {
@@ -172,6 +173,5 @@ VARIANT_ENUM_CAST(SpellEnums::DamageType);
 VARIANT_ENUM_CAST(SpellEnums::AuraType);
 VARIANT_ENUM_CAST(SpellEnums::ColliderType);
 VARIANT_ENUM_CAST(SpellEnums::TargetType);
-
 
 #endif

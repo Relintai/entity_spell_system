@@ -2,7 +2,6 @@
 #define SPELL_H
 
 #include "core/resource.h"
-#include "scene/resources/curve.h"
 #include "scene/resources/texture.h"
 
 #include "../entity_enums.h"
@@ -11,6 +10,7 @@
 #include "../infos/spell_cast_info.h"
 
 #include "../entities/entity.h"
+#include "../entities/stats/stat.h"
 
 #include "../pipelines/spell_damage_info.h"
 #include "../infos/aura_infos.h"
@@ -85,6 +85,9 @@ public:
 	int get_rank();
 	void set_rank(int value);
 
+	bool get_scale_with_level();
+	void set_scale_with_level(bool value);
+
 	int get_item_cost();
 	void set_item_cost(int value);
 
@@ -100,8 +103,8 @@ public:
 	Ref<EntityResourceCostData> get_resource_give();
 	void set_resource_give(Ref<EntityResourceCostData> value);
 
-	bool has_global_cooldown();
-	void set_has_global_cooldown(bool value);
+	bool get_global_cooldown_enabled();
+	void set_global_cooldown_enabled(bool value);
 
 	bool get_is_local_spell();
 	void set_is_local_spell(bool value);
@@ -115,15 +118,11 @@ public:
 	Ref<SpellEffectVisual> get_visual_spell_effects();
 	void set_visual_spell_effects(Ref<SpellEffectVisual> value);
 
-	Ref<WorldSpellData> get_world_spell_data();
-	void set_world_spell_data(Ref<WorldSpellData> value);
+	Ref<WorldSpellData> get_projectile();
+	void set_projectile(Ref<WorldSpellData> value);
 
 	Ref<CraftRecipe> get_teaches_craft_recipe();
 	void set_teaches_craft_recipe(Ref<CraftRecipe> value);
-
-	float get_damage_scale_for_level(int level);
-	float get_heal_scale_for_level(int level);
-	float get_absorb_scale_for_level(int level);
 
 	//Caster Aura Apply
 	int get_num_caster_aura_applys();
@@ -155,25 +154,21 @@ public:
 	Vector<Variant> get_on_learn_auras();
 	void set_on_learn_auras(const Vector<Variant> &on_learn_auras);
 
-	//Projectile
-	Ref<WorldSpellData> get_projectile();
-	void set_projectile(Ref<WorldSpellData> value);
-
 	//Range
-	bool get_has_range();
-	void set_has_range(bool value);
+	bool get_range_enabled();
+	void set_range_enabled(bool value);
 
 	float get_range();
 	void set_range(float value);
 
-	bool get_has_cast_time();
-	void set_has_cast_time(bool value);
+	bool get_cast_time_enabled();
+	void set_cast_time_enabled(bool value);
 
 	float get_cast_time();
 	void set_cast_time(float value);
 
-	bool get_has_damage();
-	void set_has_damage(bool value);
+	bool get_damage_enabled();
+	void set_damage_enabled(bool value);
 
 	int get_damage_type();
 	void set_damage_type(int value);
@@ -184,11 +179,14 @@ public:
 	int get_damage_max();
 	void set_damage_max(int value);
 
-	Ref<Curve> get_damage_scaling_curve();
-	void set_damage_scaling_curve(Ref<Curve> curve);
+	Stat::StatId get_damage_scale_stat();
+	void set_damage_scale_stat(Stat::StatId value);
 
-	bool get_has_heal();
-	void set_has_heal(bool value);
+	float get_damage_scale_coeff();
+	void set_damage_scale_coeff(float value);
+
+	bool get_heal_enabled();
+	void set_heal_enabled(bool value);
 
 	int get_heal_min();
 	void set_heal_min(int value);
@@ -196,17 +194,34 @@ public:
 	int get_heal_max();
 	void set_heal_max(int value);
 
-	Ref<Curve> get_heal_scaling_curve();
-	void set_heal_scaling_curve(Ref<Curve> curve);
+	Stat::StatId get_heal_scale_stat();
+	void set_heal_scale_stat(Stat::StatId value);
 
+	float get_heal_scale_coeff();
+	void set_heal_scale_coeff(float value);
+
+	//Dispells
+	bool get_dispell_enabled();
+	void set_dispell_enabled(bool value);
+
+	int get_dispell_count_min();
+	void set_dispell_count_min(int value);
+
+	int get_dispell_count_max();
+	void set_dispell_count_max(int value);
+
+	int get_dispell_aura_types();
+	void set_dispell_aura_types(int value);
+
+	//Target
 	bool get_needs_target();
 	void set_needs_target(bool value);
 
 	bool get_can_move_while_casting();
 	void set_can_move_while_casting(bool value);
 
-	bool get_is_interrupt();
-	void set_is_interrupt(bool value);
+	bool get_interrupt_enabled();
+	void set_interrupt_enabled(bool value);
 
 	float get_interrupt_time();
 	void set_interrupt_time(float value);
@@ -303,6 +318,7 @@ private:
 
 	int _level;
 	int _rank;
+	bool _scale_with_level;
 	int _item_cost;
 	int _craft_material_cost;
 	int _required_item;
@@ -310,7 +326,7 @@ private:
 	Ref<EntityResourceCostData> _resource_cost;
 	Ref<EntityResourceCostData> _resource_give;
 
-	bool _has_global_cooldown;
+	bool _global_cooldown_enabled;
 	bool _is_local_spell;
 	Ref<Texture> _icon;
 
@@ -321,27 +337,34 @@ private:
 	Ref<WorldSpellData> _world_spell_data;
 	Ref<CraftRecipe> _teaches_craft_recipe;
 
-	bool _has_range;
+	bool _range_enabled;
 	float _range;
 
-	bool _has_damage;
+	bool _damage_enabled;
 	int _damage_type;
 	int _damage_min;
 	int _damage_max;
-	Ref<Curve> _damage_scaling_curve;
+	Stat::StatId _damage_scale_stat;
+	float _damage_scale_coeff;
 
-	bool _has_heal;
+	bool _heal_enabled;
 	int _heal_min;
 	int _heal_max;
-	Ref<Curve> _heal_scaling_curve;
+	Stat::StatId _heal_scale_stat;
+	float _heal_scale_coeff;
 
-	bool _has_cast_time;
+	bool _dispell_enabled;
+	int _dispell_count_min;
+	int _dispell_count_max;
+	int _dispell_aura_types;
+
+	bool _cast_time_enabled;
 	float _cast_time;
 
 	bool _needs_target;
 	bool _can_move_while_casting;
 
-	bool _is_interrupt;
+	bool _interrupt_enabled;
 	float _interrupt_time;
 
 	bool _is_aoe;
