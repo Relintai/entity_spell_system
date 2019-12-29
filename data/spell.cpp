@@ -949,9 +949,9 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_cooldown", "value"), &Spell::set_cooldown);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cooldown_cooldown"), "set_cooldown", "get_cooldown");
 
-	ClassDB::bind_method(D_METHOD("set_global_cooldown_enabled"), &Spell::set_global_cooldown_enabled);
+	ClassDB::bind_method(D_METHOD("get_global_cooldown_enabled"), &Spell::get_global_cooldown_enabled);
 	ClassDB::bind_method(D_METHOD("set_global_cooldown_enabled", "value"), &Spell::set_global_cooldown_enabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cooldown_global_cooldown_enabled"), "set_global_cooldown_enabled", "set_global_cooldown_enabled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cooldown_global_cooldown_enabled"), "set_global_cooldown_enabled", "get_global_cooldown_enabled");
 
 	ADD_GROUP("Range", "range");
 	ClassDB::bind_method(D_METHOD("get_range_enabled"), &Spell::get_range_enabled);
@@ -977,7 +977,7 @@ void Spell::_bind_methods() {
 
 	ADD_GROUP("Damage", "damage");
 	ClassDB::bind_method(D_METHOD("get_damage_enabled"), &Spell::get_damage_enabled);
-	ClassDB::bind_method(D_METHOD("set_damage", "value"), &Spell::set_damage_enabled);
+	ClassDB::bind_method(D_METHOD("set_damage_enabled", "value"), &Spell::set_damage_enabled);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "damage_enabled"), "set_damage_enabled", "get_damage_enabled");
 
 	ClassDB::bind_method(D_METHOD("get_damage_type"), &Spell::get_damage_type);
