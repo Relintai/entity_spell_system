@@ -29,7 +29,7 @@ By default Entities won't actually create their own bags, because for example mo
           allocation will probably be pushed into a virtual function, like setup_bags() -> _setup_bags() (virtual).
 
 Target Bags
-===========
+-----------
 
 See :ref:`starget_bag<class_Entity_property_starget_bag>`, and :ref:`ctarget_bag<class_Entity_property_ctarget_bag>`.
 
