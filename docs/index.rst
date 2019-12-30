@@ -20,6 +20,7 @@ Indices and tables
    :name: sec-about
 
    introduction/introduction
+   introduction/compiling
    introduction/design
    introduction/optional_dependencies
    introduction/companion_addon
@@ -78,15 +79,6 @@ Indices and tables
    items/equipment
    items/item_visuals
    items/loot
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Profiles
-   :name: sec-profiles
-
-   profiles/introduction
-   profiles/profile_manager
-   profiles/classes
 
 .. toctree::
    :maxdepth: 1
