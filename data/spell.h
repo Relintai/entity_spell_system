@@ -272,8 +272,6 @@ public:
 	void sinterrupt_cast(Ref<SpellCastInfo> info);
 	void sfinish_cast(Ref<SpellCastInfo> info);
 
-	virtual void _sstart_casting(Ref<SpellCastInfo> info);
-
 	//eventhandlers
 	void son_cast_player_moved(Ref<SpellCastInfo> info);
 	void son_cast_damage_received(Ref<SpellCastInfo> info);
@@ -291,8 +289,20 @@ public:
 	void calculate_initial_damage(Ref<SpellDamageInfo> data);
 	void handle_spell_damage(Ref<SpellDamageInfo> data);
 
+	void fire_projectile(Ref<SpellCastInfo> info);
+	void handle_effect(Ref<SpellCastInfo> info);
+
+	virtual void _sstart_casting(Ref<SpellCastInfo> info);
+	virtual void _sfinish_cast(Ref<SpellCastInfo> info);
+
+	virtual void _son_cast_player_moved(Ref<SpellCastInfo> info);
+	virtual void _son_spell_hit(Ref<SpellCastInfo> info);
+
 	virtual void _calculate_initial_damage(Ref<SpellDamageInfo> data);
 	virtual void _handle_spell_damage(Ref<SpellDamageInfo> data);
+
+	virtual void _fire_projectile(Ref<SpellCastInfo> info);
+	virtual void _handle_effect(Ref<SpellCastInfo> info);
 
 	String get_description(int level);
 

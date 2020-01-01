@@ -546,6 +546,11 @@ void Spell::sstart_casting_triggered_simple(Entity *caster) {
 void Spell::sstart_casting(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
+	//Auto self cast. Note: Remove needs_target, and skip this if spell should only target enemies.
+	if (info->get_target() == NULL) {
+		info->set_target(info->get_caster());
+	}
+
 	if (has_method("_sstart_casting")) {
 		call("_sstart_casting", info);
 	}
@@ -659,39 +664,81 @@ void Spell::handle_spell_damage(Ref<SpellDamageInfo> data) {
 	call("_handle_spell_damage", data);
 }
 
+void Spell::fire_projectile(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	call("_fire_projectile", info);
+}
+
+void Spell::handle_effect(Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	call("_handle_effect", info);
+}
+
 void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!info.is_valid() || info->get_spell() == NULL);
+	//add ignore casting bool
+	if (info->get_caster()->sis_casting()) {
+		return;
+	}
 
-	//Ref<Spell> spell = info->get_spell();
+	if ((get_global_cooldown_enabled() && info->get_caster()->gets_has_global_cooldown()) || 
+			info->get_caster()->hass_category_cooldown(get_spell_type()) ||
+			info->get_caster()->hass_cooldown(get_id())) {
+		return;
+	}
 
-	if (get_needs_target() || get_damage_enabled()) {
-		if (!info->get_target()) {
-			//print_error("no target, return");
-
-			return;
-		}
+	if (!info->get_caster()->hass_spell_id(get_id())) {
+		return;
 	}
 
 	if (get_cast_time_enabled()) {
-		//can cast
-		info->get_caster()->son_before_cast(info);
-
-		if (info->get_target()) {
-			info->get_target()->son_before_cast_target(info);
-		}
-
 		info->get_caster()->sstart_casting(info);
-	} else {
-		if (get_damage_enabled()) {
-			Ref<SpellDamageInfo> dpd = Ref<SpellDamageInfo>(memnew(SpellDamageInfo()));
-
-			dpd->set_spell_damage_source(Ref<Spell>(this));
-			dpd->set_dealer(info->get_caster());
-			dpd->set_receiver(info->get_target());
-
-			handle_spell_damage(dpd);
-		}
+		return;
 	}
+
+	info->get_caster()->sspell_cast_success(info);
+
+	info->get_target()->son_cast_finished_target(info);
+
+	
+
+	if (get_projectile().is_valid()) {
+		//fire_projectile(info);
+	} else {
+		//handle_effect(info);
+	}
+
+	//handle_cooldown(info);
+
+	//handle_gcd(info);
+}
+
+void Spell::_sfinish_cast(Ref<SpellCastInfo> info) {
+	info->get_caster()->son_cast_finished(info);
+	info->get_caster()->sspell_cast_success(info);
+
+	if (ObjectDB::instance_validate(info->get_target())) {
+		info->get_target()->son_cast_finished_target(info);
+	}
+
+	if (get_projectile().is_valid()) {
+		//fire_projectile(info);
+	} else {
+		//handle_effect(info);
+	}
+
+	//handle_cooldown(info);
+}
+
+void Spell::_son_cast_player_moved(Ref<SpellCastInfo> info) {
+	if (get_can_move_while_casting()) {
+		info->get_caster()->sfail_cast();
+	}
+}
+
+void Spell::_son_spell_hit(Ref<SpellCastInfo> info) {
+	//handle_effect(info);
 }
 
 void Spell::_calculate_initial_damage(Ref<SpellDamageInfo> data) {
@@ -702,6 +749,92 @@ void Spell::_handle_spell_damage(Ref<SpellDamageInfo> data) {
 	calculate_initial_damage(data);
 
 	data->get_dealer()->sdeal_damage_to(data);
+}
+
+void Spell::_fire_projectile(Ref<SpellCastInfo> info) {
+
+	/*
+
+pass
+#	if projectile_type == SPELL_PROJECTILE_TYPE_FOLLOW:
+#		var sp : WorldSpellGD = WorldSpellGD.new()
+#
+#		info.get_caster().get_parent().add_child(sp)
+#		sp.owner = info.get_caster().get_parent()
+#
+#		sp.launch(info, projectile, projectile_speed)
+
+	*/
+
+}
+
+void Spell::_handle_effect(Ref<SpellCastInfo> info) {
+
+
+/*
+
+	if target_type == SPELL_TARGET_TYPE_TARGET:
+		if info.target == null:
+			return
+			
+#		var ok : bool = false
+		
+#		if (target_relation_type & TARGET_SELF):
+#			ok = true
+			
+#		if not ok and (target_relation_type & TARGET_ENEMY and info.target is Entity):
+#			ok = true
+#
+#		if not ok and (target_relation_type & TARGET_FRIENDLY and info.target is Player):
+#			ok = true
+			
+#		if not ok:
+#			return
+			
+	elif target_type == SPELL_TARGET_TYPE_SELF:
+		info.target = info.caster
+		
+	if damage_enabled and info.target:
+		var sdi : SpellDamageInfo = SpellDamageInfo.new()
+		
+		sdi.damage_source = self
+		sdi.dealer = info.caster
+		sdi.receiver = info.target
+		
+		handle_spell_damage(sdi)
+		
+	for aura in caster_aura_applys:
+		var ainfo : AuraApplyInfo = AuraApplyInfo.new()
+		
+		ainfo.caster = info.caster
+		ainfo.target = info.caster
+		ainfo.spell_scale = 1
+		ainfo.aura = aura
+
+		aura.sapply(ainfo)
+		
+	if info.target != null:
+		for aura in target_aura_applys:
+			var ad : AuraData = null
+			
+			if aura.aura_group != null:
+				ad = info.target.sget_aura_with_group_by(info.caster, aura.aura_group)
+			else:
+				ad = info.target.sget_aura_by(info.caster, aura.get_id())
+			
+			if ad != null:
+				info.target.sremove_aura_exact(ad)
+			
+			var ainfo : AuraApplyInfo = AuraApplyInfo.new()
+		
+			ainfo.caster = info.caster
+			ainfo.target = info.target
+			ainfo.spell_scale = 1
+			ainfo.aura = aura
+
+			aura.sapply(ainfo)
+
+*/
 }
 
 String Spell::get_description(int level) {
@@ -808,6 +941,7 @@ void Spell::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_sfinish_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
 	ClassDB::bind_method(D_METHOD("_sstart_casting", "info"), &Spell::_sstart_casting);
+	ClassDB::bind_method(D_METHOD("_sfinish_cast", "info"), &Spell::_sfinish_cast);
 
 	//Eventhandlers
 	ClassDB::bind_method(D_METHOD("son_cast_player_moved", "info"), &Spell::son_cast_player_moved);
