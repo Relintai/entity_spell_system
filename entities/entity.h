@@ -3,11 +3,7 @@
 
 #include "core/io/networked_multiplayer_peer.h"
 
-#ifdef ENTITIES_2D
-#include "scene/2d/physics_body_2d.h"
-#else
-#include "scene/3d/physics_body.h"
-#endif
+#include "scene/main/node.h"
 
 #include "../data/craft_recipe.h"
 #include "../data/item_instance.h"
@@ -25,7 +21,6 @@
 
 #include "../autoloads/entity_data_manager.h"
 #include "../entity_enums.h"
-#include "../skeleton/character_skeleton.h"
 #include "../utility/entity_create_info.h"
 
 #include "../inventory/bag.h"
@@ -170,23 +165,21 @@ enum PlayerSendFlags {
 	}                                                         \
 	variable = value;
 
-#ifdef ENTITIES_2D
-class Entity : public KinematicBody2D {
-	GDCLASS(Entity, KinematicBody2D);
-#else
-class Entity : public KinematicBody {
-	GDCLASS(Entity, KinematicBody);
-#endif
+class Entity : public Node {
+	GDCLASS(Entity, Node);
 
 public:
 	void initialize(Ref<EntityCreateInfo> info);
 
 	////    Base    ////
 
+	NodePath get_body_path();
+	void set_body_path(NodePath value);
+	Node *get_body();
+
 	NodePath get_character_skeleton_path();
 	void set_character_skeleton_path(NodePath value);
-
-	CharacterSkeleton *get_character_skeleton();
+	Node *get_character_skeleton();
 
 	//EntityType
 	EntityEnums::EntityType gets_entity_type();
@@ -908,8 +901,11 @@ private:
 
 	////    Paths    ////
 
+	NodePath _body_path;
+	Node *_body;
+
 	NodePath _character_skeleton_path;
-	CharacterSkeleton *_character_skeleton;
+	Node *_character_skeleton;
 
 	////    PlayerData    ////
 

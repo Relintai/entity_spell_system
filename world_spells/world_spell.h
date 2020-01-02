@@ -1,11 +1,7 @@
 #ifndef WORLD_SPELL_H
 #define WORLD_SPELL_H
 
-#ifdef ENTITIES_2D
-#include "scene/2d/node_2d.h"
-#else
-#include "scene/3d/spatial.h"
-#endif
+#include "scene/main/node.h"
 
 #include "core/vector.h"
 #include "scene/resources/packed_scene.h"
@@ -15,15 +11,14 @@
 #include "world_spell_data.h"
 
 
-#ifdef ENTITIES_2D
-class WorldSpell : public Node2D {
-	GDCLASS(WorldSpell, Node2D);
-#else
-class WorldSpell : public Spatial {
-	GDCLASS(WorldSpell, Spatial);
-#endif
+class WorldSpell : public Node {
+	GDCLASS(WorldSpell, Node);
 
 public:
+	NodePath get_body_path();
+	void set_body_path(NodePath value);
+	Node *get_body();
+
 	int get_data_id();
 	void set_data_id(int value);
 
@@ -70,6 +65,9 @@ protected:
 	static void _bind_methods();
 
 private:
+	NodePath _body_path;
+	Node *_body;
+
 	int _data_id;
 	Ref<WorldSpellData> _data;
 

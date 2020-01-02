@@ -76,7 +76,7 @@
 
 #include "drag_and_drop/es_drag_and_drop.h"
 
-#include "skeleton/character_skeleton.h"
+#include "skeleton/character_skeleton_2d.h"
 #include "skeleton/character_skeleton_3d.h"
 
 #include "skeleton/species_model_data.h"
@@ -201,7 +201,7 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<ESDragAndDrop>();
 
-	ClassDB::register_class<CharacterSkeleton>();
+	ClassDB::register_class<CharacterSkeleton2D>();
 	ClassDB::register_class<CharacterSkeleton3D>();
 
 	ClassDB::register_class<EntitySpeciesData>();

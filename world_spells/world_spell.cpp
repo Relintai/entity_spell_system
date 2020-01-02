@@ -1,5 +1,19 @@
 #include "world_spell.h"
 
+NodePath WorldSpell::get_body_path() {
+	return _body_path;
+}
+void WorldSpell::set_body_path(NodePath value) {
+	_body_path = value;
+
+	_body = get_node_or_null(_body_path);
+
+	if (ObjectDB::instance_validate(_body))
+		_body->set_owner(this);
+}
+Node *WorldSpell::get_body() {
+	return _body;
+}
 
 int WorldSpell::get_data_id() {
 	return _data_id;
@@ -114,6 +128,12 @@ WorldSpell::~WorldSpell() {
 }
 
 void WorldSpell::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_body_path"), &WorldSpell::get_body_path);
+	ClassDB::bind_method(D_METHOD("set_body_path", "value"), &WorldSpell::set_body_path);
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "body_path"), "set_body_path", "get_body_path");
+
+	ClassDB::bind_method(D_METHOD("get_body"), &WorldSpell::get_body);
+
     ClassDB::bind_method(D_METHOD("get_data_id"), &WorldSpell::get_data_id);
 	ClassDB::bind_method(D_METHOD("set_data_id", "value"), &WorldSpell::set_data_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "data_id"), "set_data_id", "get_data_id");

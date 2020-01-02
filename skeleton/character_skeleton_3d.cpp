@@ -2,6 +2,13 @@
 
 #include "../data/item_visual.h"
 
+EntityEnums::EntityGender CharacterSkeleton3D::get_gender() {
+	return _gender;
+}
+void CharacterSkeleton3D::set_gender(EntityEnums::EntityGender value) {
+	_gender = value;
+}
+
 bool CharacterSkeleton3D::get_model_dirty() const {
 	return _model_dirty;
 }
@@ -224,6 +231,7 @@ void CharacterSkeleton3D::_build_model() {
 
 CharacterSkeleton3D::CharacterSkeleton3D() {
 	_model_dirty = false;
+	_gender = EntityEnums::GENDER_MALE;
 
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
 		_bone_nodes[i] = NULL;
@@ -256,6 +264,17 @@ void CharacterSkeleton3D::_notification(int p_what) {
 }
 
 void CharacterSkeleton3D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_gender"), &CharacterSkeleton3D::get_gender);
+	ClassDB::bind_method(D_METHOD("set_gender", "value"), &CharacterSkeleton3D::set_gender);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "gender", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_GENDER), "set_gender", "get_gender");
+
+	ClassDB::bind_method(D_METHOD("add_item_visual", "vis"), &CharacterSkeleton3D::add_item_visual);
+	ClassDB::bind_method(D_METHOD("remove_item_visual", "vis"), &CharacterSkeleton3D::remove_item_visual);
+	ClassDB::bind_method(D_METHOD("remove_item_visual_index", "index"), &CharacterSkeleton3D::remove_item_visual_index);
+	ClassDB::bind_method(D_METHOD("get_item_visual", "index"), &CharacterSkeleton3D::get_item_visual);
+	ClassDB::bind_method(D_METHOD("get_item_visual_count"), &CharacterSkeleton3D::get_item_visual_count);
+	ClassDB::bind_method(D_METHOD("clear_item_visuals"), &CharacterSkeleton3D::clear_item_visuals);
+
 	BIND_VMETHOD(MethodInfo("_build_model"));
 
 	ClassDB::bind_method(D_METHOD("get_model_dirty"), &CharacterSkeleton3D::get_model_dirty);

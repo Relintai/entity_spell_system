@@ -11,23 +11,30 @@
 #include "./data/talent_row_data.h"
 #include "./skills/entity_skill.h"
 
+NodePath Entity::get_body_path() {
+	return _body_path;
+}
+void Entity::set_body_path(NodePath value) {
+	_body_path = value;
+
+	_body = get_node_or_null(_body_path);
+
+	if (ObjectDB::instance_validate(_body))
+		_body->set_owner(this);
+}
+Node *Entity::get_body() {
+	return _body;
+}
+
 NodePath Entity::get_character_skeleton_path() {
 	return _character_skeleton_path;
 }
-
 void Entity::set_character_skeleton_path(NodePath value) {
 	_character_skeleton_path = value;
 
-	Node *node = get_node_or_null(_character_skeleton_path);
-
-	if (node != NULL) {
-		_character_skeleton = Object::cast_to<CharacterSkeleton>(node);
-	} else {
-		_character_skeleton = NULL;
-	}
+	_character_skeleton = get_node_or_null(_character_skeleton_path);
 }
-
-CharacterSkeleton *Entity::get_character_skeleton() {
+Node *Entity::get_character_skeleton() {
 	return _character_skeleton;
 }
 
@@ -123,7 +130,8 @@ void Entity::setc_gender(EntityEnums::EntityGender value) {
 	_c_gender = value;
 
 	if (ObjectDB::instance_validate(_character_skeleton)) {
-		_character_skeleton->set_gender(_c_gender);
+		if (_character_skeleton->has_method("set_gender"))
+			_character_skeleton->call("set_gender", _c_gender);
 	}
 }
 
@@ -1550,7 +1558,8 @@ void Entity::_capply_item(Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!it.is_valid());
 
 	if (it->get_item_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
-		_character_skeleton->add_item_visual(it->get_item_visual());
+		if (_character_skeleton->has_method("add_item_visual"))
+			_character_skeleton->call("add_item_visual", it->get_item_visual());
 	}
 }
 void Entity::_cdeapply_item(Ref<ItemInstance> item) {
@@ -1561,7 +1570,8 @@ void Entity::_cdeapply_item(Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!it.is_valid());
 
 	if (it->get_item_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
-		_character_skeleton->remove_item_visual(it->get_item_visual());
+		if (_character_skeleton->has_method("remove_item_visual"))
+			_character_skeleton->call("remove_item_visual", it->get_item_visual());
 	}
 }
 
@@ -5406,18 +5416,37 @@ Entity::~Entity() {
 
 void Entity::_notification(int p_what) {
 	switch (p_what) {
+		case NOTIFICATION_INSTANCED: {
+			_body = get_node_or_null(_body_path);
+
+			if (ObjectDB::instance_validate(_body))
+				_body->set_owner(this);
+
+			_character_skeleton = get_node_or_null(_character_skeleton_path);
+
+			if (_character_skeleton != NULL) {
+				if (_character_skeleton->has_method("set_gender"))
+					_character_skeleton->call("set_gender", _c_gender);
+			}
+		}
 		case NOTIFICATION_ENTER_TREE: {
 			if (!Engine::get_singleton()->is_editor_hint())
 				set_process(true);
 
-			Node *node = get_node_or_null(_character_skeleton_path);
+			if (!_body) {
+				_body = get_node_or_null(_body_path);
 
-			if (node != NULL) {
-				_character_skeleton = Object::cast_to<CharacterSkeleton>(node);
+				if (ObjectDB::instance_validate(_body))
+					_body->set_owner(this);
+			}
 
-				_character_skeleton->set_gender(_c_gender);
-			} else {
-				_character_skeleton = NULL;
+			if (!_character_skeleton) {
+				_character_skeleton = get_node_or_null(_character_skeleton_path);
+
+				if (_character_skeleton != NULL) {
+					if (_character_skeleton->has_method("set_gender"))
+						_character_skeleton->call("set_gender", _c_gender);
+				}
 			}
 		} break;
 		case NOTIFICATION_PROCESS: {
@@ -5814,6 +5843,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("onc_untargeted"), &Entity::onc_untargeted);
 
 	//Properties
+	ClassDB::bind_method(D_METHOD("get_body_path"), &Entity::get_body_path);
+	ClassDB::bind_method(D_METHOD("set_body_path", "value"), &Entity::set_body_path);
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "body_path"), "set_body_path", "get_body_path");
+
 	ClassDB::bind_method(D_METHOD("get_character_skeleton_path"), &Entity::get_character_skeleton_path);
 	ClassDB::bind_method(D_METHOD("set_character_skeleton_path", "value"), &Entity::set_character_skeleton_path);
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "character_skeleton_path"), "set_character_skeleton_path", "get_character_skeleton_path");
@@ -6216,6 +6249,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("changec_skill_max", "skill_id", "value"), &Entity::changec_skill_max);
 
 	//skeleton
+	ClassDB::bind_method(D_METHOD("get_body"), &Entity::get_body);
 	ClassDB::bind_method(D_METHOD("get_character_skeleton"), &Entity::get_character_skeleton);
 
 	////    Targeting System    ////

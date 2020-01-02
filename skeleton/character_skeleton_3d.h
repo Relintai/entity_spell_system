@@ -1,7 +1,7 @@
 #ifndef CHARACTER_SKELETON_3D_H
 #define CHARACTER_SKELETON_3D_H
 
-#include "character_skeleton.h"
+#include "scene/main/node.h"
 
 #include "core/vector.h"
 
@@ -17,11 +17,14 @@
 
 class ItemVisual;
 
-//Rename to HumanoidCharSkeleton
-class CharacterSkeleton3D : public CharacterSkeleton {
-	GDCLASS(CharacterSkeleton3D, CharacterSkeleton);
+//Rename to HumanoidCharSkeleton -> maybe make that a subclass?
+class CharacterSkeleton3D : public Spatial {
+	GDCLASS(CharacterSkeleton3D, Spatial);
 
 public:
+	EntityEnums::EntityGender get_gender();
+	void set_gender(EntityEnums::EntityGender value);
+
 	bool get_model_dirty() const;
 	void set_model_dirty(bool value);
 
@@ -79,6 +82,7 @@ protected:
 	};
 
 private:
+	EntityEnums::EntityGender _gender;
 	NodePath _animation_player_path;
 	NodePath _animation_tree_path;
 

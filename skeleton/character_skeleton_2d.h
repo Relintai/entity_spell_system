@@ -1,11 +1,7 @@
-#ifndef CHARACTER_SKELETON_H
-#define CHARACTER_SKELETON_H
+#ifndef CHARACTER_SKELETON_2D_H
+#define CHARACTER_SKELETON_2D_H
 
-#ifdef ENTITIES_2D
 #include "scene/2d/node_2d.h"
-#else
-#include "scene/3d/spatial.h"
-#endif
 
 #include "core/node_path.h"
 #include "core/ustring.h"
@@ -15,13 +11,8 @@
 
 #include "../data/item_visual.h"
 
-#ifdef ENTITIES_2D
-class CharacterSkeleton : public Node2D {
-	GDCLASS(CharacterSkeleton, Node2D);
-#else
-class CharacterSkeleton : public Spatial {
-	GDCLASS(CharacterSkeleton, Spatial);
-#endif
+class CharacterSkeleton2D : public Node2D {
+	GDCLASS(CharacterSkeleton2D, Node2D);
 
 public:
 	virtual void add_item_visual(Ref<ItemVisual> vis);
@@ -34,8 +25,8 @@ public:
 	EntityEnums::EntityGender get_gender();
 	void set_gender(EntityEnums::EntityGender value);
 
-	CharacterSkeleton();
-	~CharacterSkeleton();
+	CharacterSkeleton2D();
+	~CharacterSkeleton2D();
 
 protected:
 	static void _bind_methods();
