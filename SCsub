@@ -2,127 +2,135 @@ import os
 
 Import('env')
 
-if os.path.isdir('../mesh_data_resource'):
-    env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
-
 module_env = env.Clone()
 
-module_env.add_source_files(env.modules_sources,"register_types.cpp")
+if os.path.isdir('../mesh_data_resource'):
+    module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
 
-module_env.add_source_files(env.modules_sources,"entity_enums.cpp")
-module_env.add_source_files(env.modules_sources,"spell_enums.cpp")
-module_env.add_source_files(env.modules_sources,"item_enums.cpp")
 
-module_env.add_source_files(env.modules_sources,"data/aura.cpp")
-module_env.add_source_files(env.modules_sources,"data/aura_group.cpp")
-module_env.add_source_files(env.modules_sources,"data/talent_rank_data.cpp")
-module_env.add_source_files(env.modules_sources,"data/xp_data.cpp")
-module_env.add_source_files(env.modules_sources,"data/item_stat_modifier.cpp")
-module_env.add_source_files(env.modules_sources,"data/item_template_stat_modifier.cpp")
-module_env.add_source_files(env.modules_sources,"data/item_instance.cpp")
-module_env.add_source_files(env.modules_sources,"data/item_template.cpp")
-module_env.add_source_files(env.modules_sources,"data/spell_cooldown_manipulation_data.cpp")
-module_env.add_source_files(env.modules_sources,"data/equipment_data.cpp")
-module_env.add_source_files(env.modules_sources,"data/equipment_data_entry.cpp")
+sources = [
+    "register_types.cpp",
 
-module_env.add_source_files(env.modules_sources,"entities/data/entity_data.cpp")
-module_env.add_source_files(env.modules_sources,"entities/data/entity_class_data.cpp")
+    "entity_enums.cpp",
+    "spell_enums.cpp",
+    "item_enums.cpp",
 
-module_env.add_source_files(env.modules_sources,"entities/data/vendor_item_data.cpp")
-module_env.add_source_files(env.modules_sources,"entities/data/vendor_item_data_entry.cpp")
+    "data/aura.cpp",
+    "data/aura_group.cpp",
+    "data/xp_data.cpp",
+    "data/item_stat_modifier.cpp",
+    "data/item_template_stat_modifier.cpp",
+    "data/item_instance.cpp",
+    "data/item_template.cpp",
+    "data/spell_cooldown_manipulation_data.cpp",
+    "data/equipment_data.cpp",
+    "data/equipment_data_entry.cpp",
 
-module_env.add_source_files(env.modules_sources,"entities/data/entity_data_container.cpp")
+    "entities/data/entity_data.cpp",
+    "entities/data/entity_class_data.cpp",
 
-module_env.add_source_files(env.modules_sources,"entities/data/item_container_data.cpp")
-module_env.add_source_files(env.modules_sources,"entities/data/item_container_data_entry.cpp")
+    "entities/data/vendor_item_data.cpp",
+    "entities/data/vendor_item_data_entry.cpp",
 
-module_env.add_source_files(env.modules_sources,"entities/skills/entity_skill.cpp")
-module_env.add_source_files(env.modules_sources,"entities/skills/entity_skill_data.cpp")
+    "entities/data/entity_data_container.cpp",
 
-module_env.add_source_files(env.modules_sources,"entities/data/character_spec.cpp")
-module_env.add_source_files(env.modules_sources,"entities/data/talent_row_data.cpp")
+    "entities/data/item_container_data.cpp",
+    "entities/data/item_container_data_entry.cpp",
 
-module_env.add_source_files(env.modules_sources,"data/item_visual.cpp")
-module_env.add_source_files(env.modules_sources,"data/item_visual_entry.cpp")
+    "entities/skills/entity_skill.cpp",
+    "entities/skills/entity_skill_data.cpp",
 
-module_env.add_source_files(env.modules_sources,"atlases/character_atlas.cpp")
-module_env.add_source_files(env.modules_sources,"atlases/character_atlas_entry.cpp")
+    "entities/data/character_spec.cpp",
+    "entities/data/talent_row_data.cpp",
 
-module_env.add_source_files(env.modules_sources,"skeleton/character_bones.cpp")
+    "data/item_visual.cpp",
+    "data/item_visual_entry.cpp",
 
-module_env.add_source_files(env.modules_sources,"data/craft_recipe_helper.cpp")
-module_env.add_source_files(env.modules_sources,"data/craft_recipe.cpp")
+    "atlases/character_atlas.cpp",
+    "atlases/character_atlas_entry.cpp",
 
-module_env.add_source_files(env.modules_sources,"data/spell.cpp")
-module_env.add_source_files(env.modules_sources,"data/spell/spell_data_constants.cpp")
+    "skeleton/character_bones.cpp",
 
-module_env.add_source_files(env.modules_sources,"entities/stats/stat.cpp")
-module_env.add_source_files(env.modules_sources,"entities/stats/stat_modifier.cpp")
-module_env.add_source_files(env.modules_sources,"entities/stats/stat_data.cpp")
-module_env.add_source_files(env.modules_sources,"entities/stats/stat_data_entry.cpp")
-module_env.add_source_files(env.modules_sources,"entities/stats/level_stat_data.cpp")
-module_env.add_source_files(env.modules_sources,"entities/stats/simple_level_stat_data.cpp")
-module_env.add_source_files(env.modules_sources,"entities/stats/complex_level_stat_data.cpp")
+    "data/craft_recipe_helper.cpp",
+    "data/craft_recipe.cpp",
 
-module_env.add_source_files(env.modules_sources,"data/spell_effect_visual.cpp")
-module_env.add_source_files(env.modules_sources,"data/spell_effect_visual_simple.cpp")
+    "data/spell.cpp",
 
-module_env.add_source_files(env.modules_sources,"world_spells/world_spell_data.cpp")
-module_env.add_source_files(env.modules_sources,"world_spells/world_spell.cpp")
+    "entities/stats/stat.cpp",
+    "entities/stats/stat_modifier.cpp",
+    "entities/stats/stat_data.cpp",
+    "entities/stats/stat_data_entry.cpp",
+    "entities/stats/level_stat_data.cpp",
+    "entities/stats/simple_level_stat_data.cpp",
+    "entities/stats/complex_level_stat_data.cpp",
 
-module_env.add_source_files(env.modules_sources,"entities/player_talent.cpp")
-module_env.add_source_files(env.modules_sources,"inventory/bag.cpp")
-#module_env.add_source_files(env.modules_sources,"inventory/inventory.cpp")
+    "data/spell_effect_visual.cpp",
+    "data/spell_effect_visual_simple.cpp",
 
-module_env.add_source_files(env.modules_sources,"infos/aura_infos.cpp")
-module_env.add_source_files(env.modules_sources,"infos/spell_cast_info.cpp")
+    "world_spells/world_spell_data.cpp",
+    "world_spells/world_spell.cpp",
 
-module_env.add_source_files(env.modules_sources,"pipelines/spell_damage_info.cpp")
-module_env.add_source_files(env.modules_sources,"pipelines/spell_heal_info.cpp")
-module_env.add_source_files(env.modules_sources,"entities/auras/aura_data.cpp")
-module_env.add_source_files(env.modules_sources,"entities/entity.cpp")
+    "inventory/bag.cpp",
+    #"inventory/inventory.cpp",
 
-module_env.add_source_files(env.modules_sources,"entities/resources/entity_resource_data.cpp")
-module_env.add_source_files(env.modules_sources,"entities/resources/entity_resource_cost_data.cpp")
-module_env.add_source_files(env.modules_sources,"entities/resources/entity_resource.cpp")
+    "infos/aura_infos.cpp",
+    "infos/spell_cast_info.cpp",
 
-module_env.add_source_files(env.modules_sources,"ui/unit_frame.cpp")
+    "pipelines/spell_damage_info.cpp",
+    "pipelines/spell_heal_info.cpp",
+    "entities/auras/aura_data.cpp",
+    "entities/entity.cpp",
 
-module_env.add_source_files(env.modules_sources,"drag_and_drop/es_drag_and_drop.cpp")
+    "entities/resources/entity_resource_data.cpp",
+    "entities/resources/entity_resource_cost_data.cpp",
+    "entities/resources/entity_resource.cpp",
 
-module_env.add_source_files(env.modules_sources,"skeleton/character_skeleton_2d.cpp")
-module_env.add_source_files(env.modules_sources,"skeleton/character_skeleton_3d.cpp")
+    "ui/unit_frame.cpp",
 
-module_env.add_source_files(env.modules_sources,"skeleton/entity_species_data.cpp")
-module_env.add_source_files(env.modules_sources,"skeleton/species_model_data.cpp")
-module_env.add_source_files(env.modules_sources,"skeleton/skeleton_model_entry.cpp")
+    "drag_and_drop/es_drag_and_drop.cpp",
 
-module_env.add_source_files(env.modules_sources,"utility/entity_create_info.cpp")
+    "skeleton/character_skeleton_2d.cpp",
+    "skeleton/character_skeleton_3d.cpp",
 
-module_env.add_source_files(env.modules_sources,"utility/cooldown.cpp")
-module_env.add_source_files(env.modules_sources,"utility/category_cooldown.cpp")
+    "skeleton/entity_species_data.cpp",
+    "skeleton/species_model_data.cpp",
+    "skeleton/skeleton_model_entry.cpp",
 
-module_env.add_source_files(env.modules_sources,"meshes/mesh_data_resource.cpp")
-module_env.add_source_files(env.modules_sources,"meshes/editor_import_collada_mdr.cpp")
-module_env.add_source_files(env.modules_sources,"meshes/editor_plugin_collada_mdr.cpp")
+    "utility/entity_create_info.cpp",
 
-module_env.add_source_files(env.modules_sources,"loot/loot_data_base.cpp")
-module_env.add_source_files(env.modules_sources,"loot/loot_data_container.cpp")
-module_env.add_source_files(env.modules_sources,"loot/loot_data_item.cpp")
+    "utility/cooldown.cpp",
+    "utility/category_cooldown.cpp",
 
-module_env.add_source_files(env.modules_sources,"entities/ai/entity_ai.cpp")
+    "loot/loot_data_base.cpp",
+    "loot/loot_data_container.cpp",
+    "loot/loot_data_item.cpp",
 
-module_env.add_source_files(env.modules_sources,"formations/ai_formation.cpp")
+    "entities/ai/entity_ai.cpp",
 
-env.add_source_files(env.modules_sources,"profile_manager/input/input_profile_modifier.cpp")
-env.add_source_files(env.modules_sources,"profile_manager/input/input_profile_modifier_entry.cpp")
-env.add_source_files(env.modules_sources,"profile_manager/input/input_profile.cpp")
+    "formations/ai_formation.cpp",
 
-env.add_source_files(env.modules_sources,"profile_manager/actionbar/action_bar_button_entry.cpp")
-env.add_source_files(env.modules_sources,"profile_manager/actionbar/action_bar_entry.cpp")
-env.add_source_files(env.modules_sources,"profile_manager/actionbar/action_bar_profile.cpp")
+    "profile_manager/input/input_profile_modifier.cpp",
+    "profile_manager/input/input_profile_modifier_entry.cpp",
+    "profile_manager/input/input_profile.cpp",
 
-env.add_source_files(env.modules_sources,"profile_manager/class_profile.cpp")
-env.add_source_files(env.modules_sources,"profile_manager/profile_manager.cpp")
+    "profile_manager/actionbar/action_bar_button_entry.cpp",
+    "profile_manager/actionbar/action_bar_entry.cpp",
+    "profile_manager/actionbar/action_bar_profile.cpp",
 
-module_env.add_source_files(env.modules_sources,"autoloads/entity_data_manager.cpp")
+    "profile_manager/class_profile.cpp",
+    "profile_manager/profile_manager.cpp",
+
+    "autoloads/entity_data_manager.cpp",
+]
+
+if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
+    # Shared lib compilation
+    module_env.Append(CCFLAGS=['-fPIC'])
+    module_env['LIBS'] = []
+    shared_lib = module_env.SharedLibrary(target='#bin/ess', source=sources)
+    shared_lib_shim = shared_lib[0].name.rsplit('.', 1)[0]
+    env.Append(LIBS=[shared_lib_shim])
+    env.Append(LIBPATH=['#bin'])
+else:
+    # Static compilation
+    module_env.add_source_files(env.modules_sources, sources)
