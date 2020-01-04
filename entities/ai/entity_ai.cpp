@@ -10,6 +10,9 @@ void EntityAI::set_enabled(bool value) {
 }
 
 void EntityAI::set_owner(Entity *entity) {
+	if (entity == _owner)
+		return;
+
 	_owner = entity;
 
 	call("_on_set_owner");
