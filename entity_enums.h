@@ -195,16 +195,12 @@ public:
 		AI_STATE_REGENERATE,
 		AI_STATE_ATTACK,
 
+		AI_STATE_PET_OFF,
+		AI_STATE_PET_FOLLOW,
+		AI_STATE_PET_STOP,
+		AI_STATE_PET_ATTACK,
+
 		AI_STATE_MAX,
-	};
-
-	enum PetStates {
-		PET_STATE_PET_OFF = 0,
-		PET_STATE_PET_FOLLOW,
-		PET_STATE_PET_STOP,
-		PET_STATE_PET_ATTACK,
-
-		PET_STATE_MAX,
 	};
 
 	enum EntityInteractionType {
@@ -258,6 +254,5 @@ VARIANT_ENUM_CAST(EntityEnums::EntityInteractionType);
 VARIANT_ENUM_CAST(EntityEnums::EntityClassPlaystyleType);
 VARIANT_ENUM_CAST(EntityEnums::EntityGender);
 VARIANT_ENUM_CAST(EntityEnums::EntityWindows);
-VARIANT_ENUM_CAST(EntityEnums::PetStates);
 
 #endif

@@ -249,6 +249,9 @@ public:
 	EntityEnums::AIStates gets_ai_state() const;
 	void sets_ai_state(EntityEnums::AIStates state);
 
+	EntityEnums::AIStates gets_ai_state_stored() const;
+	void sets_ai_state_stored(EntityEnums::AIStates state);
+
 	int gets_seed();
 	void sets_seed(int value);
 
@@ -824,8 +827,8 @@ public:
 
 	////    AI    ////
 
-	int gets_is_pet();
-	void sets_is_pet(int value);
+	bool gets_is_pet();
+	bool getc_is_pet();
 
 	Entity *gets_pet_owner();
 	void sets_pet_owner(Entity *entity);
@@ -834,8 +837,11 @@ public:
 	int gets_pet_formation_index();
 	void sets_pet_formation_index(int value);
 
-	EntityEnums::PetStates gets_pet_state();
-	void sets_pet_state(EntityEnums::PetStates value);
+	EntityEnums::AIStates gets_pet_ai_state();
+	void sets_pet_ai_state(EntityEnums::AIStates value);
+
+	EntityEnums::EntityController gets_original_entity_controller();
+	void sets_original_entity_controller(EntityEnums::EntityController value);
 
 	EntityEnums::EntityController gets_entity_controller();
 	void sets_entity_controller(EntityEnums::EntityController value);
@@ -845,7 +851,27 @@ public:
 
 	////    Pets    ////
 
-	//TODO
+	void adds_pet(Entity *entity);
+	void adds_pet_bind(Node *entity);
+	Entity *gets_pet(int index);
+	void removes_pet_index(int index);
+	void removes_pet(Entity *entity);
+	void removes_pet_bind(Node *entity);
+	int gets_pet_count();
+
+	void addc_pet_path(NodePath path);
+
+	void addc_pet(Entity *entity);
+	void addc_pet_bind(Node *entity);
+	Entity *getc_pet(int index);
+	void removec_pet_index(int index);
+	void removec_pet(Entity *entity);
+	void removec_pet_bind(Node *entity);
+	int getc_pet_count();
+
+	//void pets_attack();
+	//void pets_follow();
+	//void pets_stop();
 
 	////    Serialization    ////
 
@@ -943,8 +969,6 @@ private:
 
 	int _s_is_dead;
 	int _c_is_dead;
-
-	EntityEnums::AIStates _sai_state;
 
 	int _s_seed;
 	int _c_seed;
@@ -1063,17 +1087,21 @@ private:
 
 	// AI
 	
-	bool _s_is_pet;
-	Entity *_s_pet_owner;
+	EntityEnums::AIStates _sai_state;
+	EntityEnums::AIStates _sai_state_stored;
 
-	int _s_pet_formation_index;
-	EntityEnums::PetStates _s_pet_state;
-
+	EntityEnums::EntityController _s_original_entity_controller;
 	EntityEnums::EntityController _s_entity_controller;
-
 	Ref<EntityAI> _s_ai;
 
-	// Pets
+	//Pets
+
+	Entity *_s_pet_owner;
+	Entity *_c_pet_owner;
+
+	int _s_pet_formation_index;
+
+	EntityEnums::AIStates _s_pet_ai_state;
 
 	Vector<Entity *> _s_pets;
 	Vector<Entity *> _c_pets;

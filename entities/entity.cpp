@@ -249,6 +249,13 @@ void Entity::sets_ai_state(EntityEnums::AIStates state) {
 	_sai_state = state;
 }
 
+EntityEnums::AIStates Entity::gets_ai_state_stored() const {
+	return _sai_state_stored;
+}
+void Entity::sets_ai_state_stored(EntityEnums::AIStates state) {
+	_sai_state_stored = state;
+}
+
 int Entity::gets_seed() {
 	return _s_seed;
 }
@@ -347,8 +354,10 @@ void Entity::_setup() {
 	sets_immunity_flags(_s_entity_data->get_immunity_flags());
 	sets_entity_flags(_s_entity_data->get_entity_flags());
 
-	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_NONE)
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_NONE) {
+		sets_original_entity_controller(_s_entity_data->get_entity_controller());
 		sets_entity_controller(_s_entity_data->get_entity_controller());
+	}
 
 	//sets_entity_name(_s_entity_data->get_entity_name());
 	sets_money(_s_entity_data->get_money());
@@ -428,11 +437,12 @@ void Entity::setup_actionbars() {
 
 // AI
 
-int Entity::gets_is_pet() {
-	return _s_is_pet;
+bool Entity::gets_is_pet() {
+	return _s_pet_owner;
 }
-void Entity::sets_is_pet(int value) {
-	_s_is_pet = value;
+
+bool Entity::getc_is_pet() {
+	return _c_pet_owner;
 }
 
 Entity *Entity::gets_pet_owner() {
@@ -462,11 +472,18 @@ void Entity::sets_pet_formation_index(int value) {
 	_s_pet_formation_index = value;
 }
 
-EntityEnums::PetStates Entity::gets_pet_state() {
-	return _s_pet_state;
+EntityEnums::AIStates Entity::gets_pet_ai_state() {
+	return _s_pet_ai_state;
 }
-void Entity::sets_pet_state(EntityEnums::PetStates value) {
-	_s_pet_state = value;
+void Entity::sets_pet_ai_state(EntityEnums::AIStates value) {
+	_s_pet_ai_state = value;
+}
+
+EntityEnums::EntityController Entity::gets_original_entity_controller() {
+	return _s_entity_controller;
+}
+void Entity::sets_original_entity_controller(EntityEnums::EntityController value) {
+	_s_entity_controller = value;
 }
 
 EntityEnums::EntityController Entity::gets_entity_controller() {
@@ -487,6 +504,144 @@ void Entity::sets_ai(Ref<EntityAI> value) {
 
 	_s_ai = value;
 	_s_ai->set_owner(this);
+}
+
+
+////    Pets    ////
+
+void Entity::adds_pet(Entity *entity) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	//the owner always want to see his pet, and you pet will always want to see the owner
+	adds_sees(entity);
+	entity->adds_sees(this);
+
+	entity->sets_pet_owner(this);
+
+	_s_pets.push_back(entity);
+
+	entity->sets_ai_state_stored(entity->gets_ai_state());
+	entity->sets_ai_state(_s_pet_ai_state);
+	entity->sets_entity_controller(EntityEnums::ENITIY_CONTROLLER_AI);
+
+	entity->sets_pet_formation_index(_s_pets.size());
+
+	//full callback stack spet_added
+}
+void Entity::adds_pet_bind(Node *entity) {
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(!e);
+
+	adds_pet(e);
+}
+Entity *Entity::gets_pet(int index) {
+	ERR_FAIL_INDEX_V(index, _s_pets.size(), NULL);
+
+	return _s_pets.get(index);
+}
+void Entity::removes_pet_index(int index) {
+	ERR_FAIL_INDEX(index, _s_pets.size());
+
+	Entity *entity = _s_pets.get(index);
+
+	_s_pets.remove(index);
+
+	removes_sees(entity);
+
+	for (int i = 0; i < _s_pets.size(); ++i) {
+		Entity *pet = _s_pets.get(index);
+
+		ERR_CONTINUE(!ObjectDB::instance_validate(entity));
+		
+		_s_pets.get(i)->sets_pet_formation_index(i);
+	}
+
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	entity->sets_pet_owner(NULL);
+
+	entity->sets_ai_state(entity->gets_ai_state_stored());
+	entity->sets_entity_controller(entity->gets_original_entity_controller());
+
+	//full callback stack spet_added
+}
+void Entity::removes_pet(Entity *entity) {
+	for (int i = 0; i < _s_pets.size(); ++i) {
+		if (_s_pets.get(i) == entity) {
+			removes_pet_index(i);
+			return;
+		}
+	}
+}
+void Entity::removes_pet_bind(Node *entity) {
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(!e);
+
+	removes_pet(e);
+}
+int Entity::gets_pet_count() {
+	return _s_pets.size();
+}
+
+void Entity::addc_pet_path(NodePath path) {
+	Node *n = get_node_or_null(path);
+
+	Entity *entity = Object::cast_to<Entity>(n);
+
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	addc_pet(entity);
+}
+
+void Entity::addc_pet(Entity *entity) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	_c_pets.push_back(entity);
+
+	//full callback stack spet_added
+}
+void Entity::addc_pet_bind(Node *entity) {
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(!e);
+
+	addc_pet(e);
+}
+Entity *Entity::getc_pet(int index) {
+	ERR_FAIL_INDEX_V(index, _c_pets.size(), NULL);
+
+	return _c_pets.get(index);
+}
+void Entity::removec_pet_index(int index) {
+	ERR_FAIL_INDEX(index, _c_pets.size());
+
+	Entity *entity = _c_pets.get(index);
+
+	_c_pets.remove(index);
+
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	//full callback stack spet_added
+}
+void Entity::removec_pet(Entity *entity) {
+	for (int i = 0; i < _c_pets.size(); ++i) {
+		if (_c_pets.get(i) == entity) {
+			removec_pet_index(i);
+			return;
+		}
+	}
+}
+void Entity::removec_pet_bind(Node *entity) {
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(!e);
+
+	removec_pet(e);
+}
+int Entity::getc_pet_count() {
+	return _s_pets.size();
 }
 
 ////    Serialization    ////
@@ -776,7 +931,10 @@ void Entity::_from_dict(const Dictionary &dict) {
 	sets_entity_type((EntityEnums::EntityType)((int)dict.get("entity_type", 0)));
 	sets_immunity_flags(dict.get("immunity_flags", 0));
 	sets_entity_flags(dict.get("entity_flags", 0));
-	sets_entity_controller((EntityEnums::EntityController)((int)dict.get("entity_controller", 0)));
+	EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
+
+	sets_original_entity_controller(contr);
+	sets_entity_controller(contr);
 
 	////    Cooldowns    ////
 
@@ -931,6 +1089,7 @@ void Entity::initialize(Ref<EntityCreateInfo> info) {
 	_s_entity_name = info->get_entity_name();
 	_c_entity_name = info->get_entity_name();
 
+	sets_original_entity_controller(info->get_entity_controller());
 	sets_entity_controller(info->get_entity_controller());
 	//setc_entity_controller(info->get_entity_type());
 
@@ -4863,7 +5022,7 @@ void Entity::update(float delta) {
 		}
 
 		if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai->get_enabled()) {
-			if (_s_is_pet)
+			if (_s_pet_owner)
 				_s_ai->pet_update(delta);
 			else
 				_s_ai->update(delta);
@@ -4940,6 +5099,11 @@ void Entity::adds_sees(Entity *entity) {
 
 	entity->adds_seen_by(this);
 
+	for (int i = 0; i < _s_sees.size(); ++i) {
+		if (_s_sees.get(i) == entity)
+			return;
+	}
+
 	_s_sees.push_back(entity);
 }
 void Entity::adds_sees_bind(Node *entity) {
@@ -4973,6 +5137,11 @@ void Entity::removes_seen_by_bind(Node *entity) {
 }
 void Entity::adds_seen_by(Entity *entity) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	for (int i = 0; i < _s_seen_by.size(); ++i) {
+		if (_s_seen_by.get(i) == entity)
+			return;
+	}
 
 	_s_seen_by.push_back(entity);
 }
@@ -5116,8 +5285,6 @@ Entity::Entity() {
 	_s_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
 	_c_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
 
-	_sai_state = EntityEnums::AI_STATE_OFF;
-
 	_s_seed = 0;
 	_c_seed = _s_seed;
 
@@ -5157,12 +5324,16 @@ Entity::Entity() {
 		_stats[i] = s;
 	}
 
-	_s_is_pet = false;
-	_s_pet_owner = NULL;
-	_s_pet_formation_index = 0;
-	_s_pet_state = EntityEnums::PET_STATE_PET_OFF;
+	_sai_state = EntityEnums::AI_STATE_OFF;
+	_sai_state_stored = EntityEnums::AI_STATE_OFF;
 
+	_s_original_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
 	_s_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
+
+	_s_pet_owner = NULL;
+	_c_pet_owner = NULL;
+	_s_pet_formation_index = 0;
+	_s_pet_ai_state = EntityEnums::AI_STATE_OFF;
 
 	SET_RPC_REMOTE("csend_request_rank_increase");
 	SET_RPC_REMOTE("csend_request_rank_decrease");
@@ -6348,11 +6519,33 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_action_bar_profile"), &Entity::get_action_bar_profile);
 
+	//Pets
+
+	ClassDB::bind_method(D_METHOD("adds_pet", "entity"), &Entity::adds_pet_bind);
+	ClassDB::bind_method(D_METHOD("gets_pet", "index"), &Entity::gets_pet);
+	ClassDB::bind_method(D_METHOD("removes_pet_index", "index"), &Entity::removes_pet_index);
+	ClassDB::bind_method(D_METHOD("removes_pet", "entity"), &Entity::removes_pet_bind);
+	ClassDB::bind_method(D_METHOD("gets_pet_count"), &Entity::gets_pet_count);
+
+	ClassDB::bind_method(D_METHOD("addc_pet_path"), &Entity::addc_pet_path);
+	
+	ClassDB::bind_method(D_METHOD("addc_pet", "entity"), &Entity::addc_pet_bind);
+	ClassDB::bind_method(D_METHOD("getc_pet", "index"), &Entity::getc_pet);
+	ClassDB::bind_method(D_METHOD("removec_pet_index", "index"), &Entity::removec_pet_index);
+	ClassDB::bind_method(D_METHOD("removec_pet", "entity"), &Entity::removec_pet_bind);
+	ClassDB::bind_method(D_METHOD("getc_pet_count"), &Entity::getc_pet_count);
+
+	//ClassDB::bind_method(D_METHOD("pets_attack"), &Entity::pets_attack);
+	//ClassDB::bind_method(D_METHOD("pets_follow"), &Entity::pets_follow);
+	//ClassDB::bind_method(D_METHOD("pets_stop"), &Entity::pets_stop);
+
 	// AI
 
 	ClassDB::bind_method(D_METHOD("gets_is_pet"), &Entity::gets_is_pet);
-	ClassDB::bind_method(D_METHOD("sets_is_pet", "value"), &Entity::sets_is_pet);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "sis_pet"), "sets_is_pet", "gets_is_pet");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "sis_pet"), "", "gets_is_pet");
+
+	ClassDB::bind_method(D_METHOD("getc_is_pet"), &Entity::getc_is_pet);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cis_pet"), "", "getc_is_pet");
 
 	ClassDB::bind_method(D_METHOD("gets_pet_owner"), &Entity::gets_pet_owner);
 	ClassDB::bind_method(D_METHOD("sets_pet_owner", "entity"), &Entity::sets_pet_owner_bind);
@@ -6362,9 +6555,13 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sets_pet_formation_index", "value"), &Entity::sets_pet_formation_index);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "spet_formation_index"), "sets_pet_formation_index", "gets_pet_formation_index");
 
-	ClassDB::bind_method(D_METHOD("gets_pet_state"), &Entity::gets_pet_state);
-	ClassDB::bind_method(D_METHOD("sets_pet_state", "value"), &Entity::sets_pet_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spet_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_PET_STATES), "sets_pet_state", "gets_pet_state");
+	ClassDB::bind_method(D_METHOD("gets_pet_ai_state"), &Entity::gets_pet_ai_state);
+	ClassDB::bind_method(D_METHOD("sets_pet_ai_state", "value"), &Entity::sets_pet_ai_state);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "gets_pet_ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES), "sets_pet_ai_state", "gets_pet_ai_state");
+
+	ClassDB::bind_method(D_METHOD("gets_original_entity_controller"), &Entity::gets_original_entity_controller);
+	ClassDB::bind_method(D_METHOD("sets_original_entity_controller", "value"), &Entity::sets_original_entity_controller);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "soriginal_entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "sets_original_entity_controller", "gets_original_entity_controller");
 
 	ClassDB::bind_method(D_METHOD("gets_entity_controller"), &Entity::gets_entity_controller);
 	ClassDB::bind_method(D_METHOD("sets_entity_controller", "value"), &Entity::sets_entity_controller);
