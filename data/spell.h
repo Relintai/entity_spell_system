@@ -88,14 +88,11 @@ public:
 	bool get_scale_with_level();
 	void set_scale_with_level(bool value);
 
-	int get_item_cost();
-	void set_item_cost(int value);
+	Ref<ItemTemplate> get_item_cost();
+	void set_item_cost(Ref<ItemTemplate> value);
 
-	int get_craft_material_cost();
-	void set_craft_material_cost(int value);
-
-	int get_required_item();
-	void set_required_item(int value);
+	Ref<ItemTemplate> get_required_item();
+	void set_required_item(Ref<ItemTemplate> value);
 
 	Ref<EntityResourceCostData> get_resource_cost();
 	void set_resource_cost(Ref<EntityResourceCostData> value);
@@ -328,10 +325,11 @@ private:
 
 	int _level;
 	int _rank;
+	
 	bool _scale_with_level;
-	int _item_cost;
-	int _craft_material_cost;
-	int _required_item;
+
+	Ref<ItemTemplate> _item_cost;
+	Ref<ItemTemplate> _required_item;
 
 	Ref<EntityResourceCostData> _resource_cost;
 	Ref<EntityResourceCostData> _resource_give;

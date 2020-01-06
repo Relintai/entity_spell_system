@@ -75,24 +75,17 @@ void Spell::set_scale_with_level(bool value) {
 	_scale_with_level = value;
 }
 
-int Spell::get_item_cost() {
+Ref<ItemTemplate> Spell::get_item_cost() {
 	return _item_cost;
 }
-void Spell::set_item_cost(int value) {
+void Spell::set_item_cost(Ref<ItemTemplate> value) {
 	_item_cost = value;
 }
 
-int Spell::get_craft_material_cost() {
-	return _craft_material_cost;
-}
-void Spell::set_craft_material_cost(int value) {
-	_craft_material_cost = value;
-}
-
-int Spell::get_required_item() {
+Ref<ItemTemplate> Spell::get_required_item() {
 	return _required_item;
 }
-void Spell::set_required_item(int value) {
+void Spell::set_required_item(Ref<ItemTemplate> value) {
 	_required_item = value;
 }
 
@@ -860,10 +853,6 @@ Spell::Spell() {
 	_rank = 0;
 	_scale_with_level = true;
 
-	_item_cost = 0;
-	_craft_material_cost = 0;
-	_required_item = 0;
-
 	_global_cooldown_enabled = true;
 	_is_local_spell = false;
 
@@ -912,6 +901,9 @@ Spell::~Spell() {
 	_caster_aura_applys.clear();
 	_target_aura_applys.clear();
 	_on_learn_auras.clear();
+
+	_item_cost.unref();
+	_required_item.unref();
 
 	_resource_cost.unref();
 	_resource_give.unref();
@@ -1010,10 +1002,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_rank", "value"), &Spell::set_rank);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rank"), "set_rank", "get_rank");
 
-	ClassDB::bind_method(D_METHOD("get_scale_with_level"), &Spell::get_scale_with_level);
-	ClassDB::bind_method(D_METHOD("set_scale_with_level", "value"), &Spell::set_scale_with_level);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scale_with_level"), "set_scale_with_level", "get_scale_with_level");
-
 	ClassDB::bind_method(D_METHOD("get_is_local_spell"), &Spell::get_is_local_spell);
 	ClassDB::bind_method(D_METHOD("set_is_local_spell", "value"), &Spell::set_is_local_spell);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_local_spell"), "set_is_local_spell", "get_is_local_spell");
@@ -1077,6 +1065,11 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_text_description"), &Spell::get_text_description);
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &Spell::set_text_description);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description");
+
+	ADD_GROUP("Scaling", "scale");
+	ClassDB::bind_method(D_METHOD("get_scale_with_level"), &Spell::get_scale_with_level);
+	ClassDB::bind_method(D_METHOD("set_scale_with_level", "value"), &Spell::set_scale_with_level);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scale_with_level"), "set_scale_with_level", "get_scale_with_level");
 
 	ADD_GROUP("Cooldown", "cooldown");
 	ClassDB::bind_method(D_METHOD("get_cooldown"), &Spell::get_cooldown);
@@ -1184,15 +1177,11 @@ void Spell::_bind_methods() {
 	ADD_GROUP("Cost", "cost");
 	ClassDB::bind_method(D_METHOD("get_item_cost"), &Spell::get_item_cost);
 	ClassDB::bind_method(D_METHOD("set_item_cost", "value"), &Spell::set_item_cost);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cost_item"), "set_item_cost", "get_item_cost");
-
-	ClassDB::bind_method(D_METHOD("get_craft_material_cost"), &Spell::get_craft_material_cost);
-	ClassDB::bind_method(D_METHOD("set_craft_material_cost", "value"), &Spell::set_craft_material_cost);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cost_craft_material"), "set_craft_material_cost", "get_craft_material_cost");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cost_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemTemplate"), "set_item_cost", "get_item_cost");
 
 	ClassDB::bind_method(D_METHOD("get_required_item"), &Spell::get_required_item);
 	ClassDB::bind_method(D_METHOD("set_required_item", "value"), &Spell::set_required_item);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cost_required_item"), "set_required_item", "get_required_item");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cost_required_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemTemplate"), "set_required_item", "get_required_item");
 
 	ADD_GROUP("Resources", "resource");
 	ClassDB::bind_method(D_METHOD("get_resource_cost"), &Spell::get_resource_cost);
