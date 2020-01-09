@@ -506,7 +506,6 @@ void Entity::sets_ai(Ref<EntityAI> value) {
 	_s_ai->set_owner(this);
 }
 
-
 ////    Pets    ////
 
 void Entity::adds_pet(Entity *entity) {
@@ -553,7 +552,7 @@ void Entity::removes_pet_index(int index) {
 		Entity *pet = _s_pets.get(index);
 
 		ERR_CONTINUE(!ObjectDB::instance_validate(entity));
-		
+
 		_s_pets.get(i)->sets_pet_formation_index(i);
 	}
 
@@ -6528,7 +6527,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gets_pet_count"), &Entity::gets_pet_count);
 
 	ClassDB::bind_method(D_METHOD("addc_pet_path"), &Entity::addc_pet_path);
-	
+
 	ClassDB::bind_method(D_METHOD("addc_pet", "entity"), &Entity::addc_pet_bind);
 	ClassDB::bind_method(D_METHOD("getc_pet", "index"), &Entity::getc_pet);
 	ClassDB::bind_method(D_METHOD("removec_pet_index", "index"), &Entity::removec_pet_index);

@@ -1,7 +1,7 @@
 #include "entity_species_data.h"
 
-#include "../data/spell.h"
 #include "../data/aura.h"
+#include "../data/spell.h"
 
 int EntitySpeciesData::get_id() {
 	return _id;
@@ -178,4 +178,4 @@ void EntitySpeciesData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_auras"), &EntitySpeciesData::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &EntitySpeciesData::set_auras);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
- }
+}

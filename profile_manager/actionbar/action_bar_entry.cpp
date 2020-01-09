@@ -52,7 +52,7 @@ Ref<ActionBarButtonEntry> ActionBarEntry::get_button(int index) {
 	return _button_entries.get(index);
 }
 
-Dictionary ActionBarEntry::to_dict() const  {
+Dictionary ActionBarEntry::to_dict() const {
 	Dictionary dict;
 
 	dict["action_bar_id"] = _action_bar_id;
@@ -77,13 +77,13 @@ void ActionBarEntry::from_dict(const Dictionary &dict) {
 
 	_action_bar_id = dict.get("action_bar_id", 0);
 	_slot_num = dict.get("slot_num", 0);
-	
+
 	Array arr = dict.get("button_entries", Array());
 
 	for (int i = 0; i < arr.size(); ++i) {
 		Ref<ActionBarButtonEntry> e;
 		e.instance();
-		
+
 		e->from_dict(arr.get(i));
 
 		_button_entries.push_back(e);

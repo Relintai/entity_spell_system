@@ -1,8 +1,8 @@
 #ifndef LOOT_DATA_CONTAINER_H
 #define LOOT_DATA_CONTAINER_H
 
-#include "loot_data_base.h"
 #include "core/vector.h"
+#include "loot_data_base.h"
 
 class LootDataContainter : public LootDataBase {
 	GDCLASS(LootDataContainter, LootDataBase);

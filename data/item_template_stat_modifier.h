@@ -1,8 +1,8 @@
 #ifndef ITEM_TEMPLATE_STAT_MODIFIER_H
 #define ITEM_TEMPLATE_STAT_MODIFIER_H
 
-#include "core/reference.h"
 #include "../entities/stats/stat.h"
+#include "core/reference.h"
 
 class ItemTemplateStatModifier : public Reference {
 	GDCLASS(ItemTemplateStatModifier, Reference);

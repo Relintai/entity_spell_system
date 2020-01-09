@@ -1,8 +1,8 @@
 #ifndef AURA_STAT_ATTRIBUTE_H
 #define AURA_STAT_ATTRIBUTE_H
 
-#include "core/reference.h"
 #include "../entities/stats/stat.h"
+#include "core/reference.h"
 
 class AuraStatAttribute : public Reference {
 	GDCLASS(AuraStatAttribute, Reference);
@@ -53,4 +53,4 @@ private:
 	float _percent_mod;
 };
 
- #endif
+#endif

@@ -63,5 +63,4 @@ void AIFormation::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_set_editor_description", "editor_description"), &AIFormation::set_editor_description);
 	ClassDB::bind_method(D_METHOD("_get_editor_description"), &AIFormation::get_editor_description);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "editor_description", PROPERTY_HINT_MULTILINE_TEXT, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_INTERNAL), "_set_editor_description", "_get_editor_description");
-
 }

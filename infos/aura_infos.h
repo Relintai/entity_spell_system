@@ -1,8 +1,8 @@
 #ifndef AURA_INFOS_H
 #define AURA_INFOS_H
 
-#include "core/reference.h"
 #include "../entities/entity.h"
+#include "core/reference.h"
 
 class Entity;
 class Aura;
@@ -38,6 +38,5 @@ private:
 	float _spell_scale;
 	Aura *_aura;
 };
-
 
 #endif

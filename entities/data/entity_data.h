@@ -25,8 +25,8 @@
 
 #include "../../skeleton/entity_species_data.h"
 
-#include "../ai/entity_ai.h"
 #include "../../formations/ai_formation.h"
+#include "../ai/entity_ai.h"
 
 class Aura;
 class Spell;

@@ -50,7 +50,6 @@ public:
 	Vector<Variant> get_auras();
 	void set_auras(const Vector<Variant> &auras);
 
-
 	String generate_name(int seed);
 
 	EntitySpeciesData();

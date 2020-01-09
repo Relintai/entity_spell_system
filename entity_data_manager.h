@@ -75,16 +75,16 @@ public:
 	Ref<ItemTemplate> get_item_template(int item_id);
 	Ref<ItemTemplate> get_item_template_index(int index);
 	int get_item_template_count();
-    
-    String get_mob_data_folder();
+
+	String get_mob_data_folder();
 	void set_mob_data_folder(String folder);
 	Vector<Ref<EntityData> > *get_mob_datas();
 	void add_mob_data(Ref<EntityData> aura);
 	Ref<EntityData> get_mob_data(int item_id);
 	Ref<EntityData> get_mob_data_index(int index);
 	int get_mob_data_count();
-    
-    String get_player_character_data_folder();
+
+	String get_player_character_data_folder();
 	void set_player_character_data_folder(String folder);
 	Vector<Ref<EntityData> > *get_player_character_datas();
 	void add_player_character_data(Ref<EntityData> aura);
@@ -99,16 +99,16 @@ public:
 	void load_characters();
 	void load_craft_datas();
 	void load_item_templates();
-    void load_mob_datas();
-    void load_player_character_datas();
-    
+	void load_mob_datas();
+	void load_player_character_datas();
+
 	void list_characters();
 	void list_spells();
 	void list_auras();
 	void list_craft_data();
 	void list_item_templates();
-    void list_mob_datas();
-    void list_player_character_datas();
+	void list_mob_datas();
+	void list_player_character_datas();
 
 	bool get_automatic_load() { return _automatic_load; }
 	void set_automatic_load(bool load) { _automatic_load = load; }
@@ -143,12 +143,12 @@ private:
 	String _item_template_folder;
 	Vector<Ref<ItemTemplate> > _item_templates;
 	HashMap<int, Ref<ItemTemplate> > _item_template_map;
-    
-    String _mob_data_folder;
+
+	String _mob_data_folder;
 	Vector<Ref<EntityData> > _mob_datas;
 	HashMap<int, Ref<EntityData> > _mob_data_map;
-    
-    String _player_character_data_folder;
+
+	String _player_character_data_folder;
 	Vector<Ref<EntityData> > _player_character_datas;
 	HashMap<int, Ref<EntityData> > _player_character_data_map;
 

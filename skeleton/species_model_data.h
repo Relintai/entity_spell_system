@@ -3,9 +3,9 @@
 
 #include "core/resource.h"
 
-#include "core/vector.h"
-#include "core/ustring.h"
 #include "core/color.h"
+#include "core/ustring.h"
+#include "core/vector.h"
 #include "scene/resources/packed_scene.h"
 
 #include "../data/item_visual_entry.h"
@@ -95,8 +95,6 @@ private:
 	Vector<Ref<ItemVisualEntry> > _hair_styles;
 	Vector<Color> _hair_colors;
 	Vector<Ref<ItemVisualEntry> > _heads;
-	
 };
-
 
 #endif

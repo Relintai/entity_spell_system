@@ -4,7 +4,7 @@
 
 ////    SpellCastInfo    ////
 
-Entity *SpellCastInfo::get_caster()  {
+Entity *SpellCastInfo::get_caster() {
 	if (_caster && !ObjectDB::instance_validate(_caster)) {
 		_caster = NULL;
 	}
@@ -171,7 +171,6 @@ Dictionary SpellCastInfo::to_dict() {
 }
 void SpellCastInfo::from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
-
 
 	_has_cast_time = dict.get("has_cast_time", true);
 	_cast_time = dict.get("cast_time", 0);

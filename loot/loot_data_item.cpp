@@ -20,7 +20,6 @@ void LootDataItem::_get_loot(Array into) {
 }
 
 LootDataItem::LootDataItem() {
-
 }
 
 void LootDataItem::_bind_methods() {

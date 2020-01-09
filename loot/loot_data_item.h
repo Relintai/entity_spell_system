@@ -5,7 +5,6 @@
 
 #include "loot_data_base.h"
 
-
 class LootDataItem : public LootDataBase {
 	GDCLASS(LootDataItem, LootDataBase);
 

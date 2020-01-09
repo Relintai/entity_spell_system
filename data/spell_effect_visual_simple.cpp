@@ -1,6 +1,5 @@
 #include "spell_effect_visual_simple.h"
 
-
 bool SpellEffectVisualSimple::has_spell_effect_visual() {
 	return _effect_visual.is_valid();
 }
@@ -47,7 +46,6 @@ void SpellEffectVisualSimple::set_spell_cast_effect(Ref<PackedScene> value) {
 	_spell_cast_effect = value;
 }
 
-
 //Visual Effect
 
 bool SpellEffectVisualSimple::has_aura_effect_visual() {
@@ -67,7 +65,6 @@ Ref<PackedScene> SpellEffectVisualSimple::get_aura_effect_visual() {
 void SpellEffectVisualSimple::set_aura_effect_visual(Ref<PackedScene> value) {
 	_aura_effect_visual = value;
 }
-
 
 SpellEffectVisualSimple::SpellEffectVisualSimple() {
 }
@@ -103,7 +100,7 @@ void SpellEffectVisualSimple::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_spell_cast_effect", "value"), &SpellEffectVisualSimple::set_spell_cast_effect);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_spell_cast_effect_id", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_spell_cast_effect", "get_spell_cast_effect");
 
-		//Visual Effect
+	//Visual Effect
 	ADD_GROUP("Aura Effect", "aura_effect");
 	ClassDB::bind_method(D_METHOD("has_aura_effect_visual"), &SpellEffectVisualSimple::has_aura_effect_visual);
 

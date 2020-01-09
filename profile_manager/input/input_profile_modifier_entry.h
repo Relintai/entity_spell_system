@@ -20,9 +20,8 @@ protected:
 	static void _bind_methods();
 
 private:
-    String _action;
-    String _translate_to;
+	String _action;
+	String _translate_to;
 };
-
 
 #endif

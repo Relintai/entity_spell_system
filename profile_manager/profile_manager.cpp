@@ -68,7 +68,7 @@ void ProfileManager::load() {
 	if (has_method("_load")) {
 		call("_load");
 	} //else {
-		//load_defaults();
+	//load_defaults();
 	//}
 }
 
@@ -79,7 +79,7 @@ void ProfileManager::load_profile(String name) {
 	load_defaults();
 }
 
-	int _last_used_class;
+int _last_used_class;
 
 String _profile_name;
 

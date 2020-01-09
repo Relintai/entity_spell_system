@@ -127,10 +127,10 @@ enum PlayerSendFlags {
 	}                                                         \
 	normalfunc(normal_var);
 
-#define VRPCOBJP(rpcfunc, rpc_var1, rpc_var2, normalfunc, normal_var1, normal_var2)  \
-	if (is_inside_tree() && get_tree()->has_network_peer()) {                        \
-		vrpc(#rpcfunc, rpc_var1, rpc_var2);                                          \
-	}                                                                                \
+#define VRPCOBJP(rpcfunc, rpc_var1, rpc_var2, normalfunc, normal_var1, normal_var2) \
+	if (is_inside_tree() && get_tree()->has_network_peer()) {                       \
+		vrpc(#rpcfunc, rpc_var1, rpc_var2);                                         \
+	}                                                                               \
 	normalfunc(normal_var1, normal_var2);
 
 #define ORPCOBJ(rpcfunc, rpc_var, normalfunc, normal_var)                 \
@@ -1086,7 +1086,7 @@ private:
 	Ref<Bag> _c_target_bag;
 
 	// AI
-	
+
 	EntityEnums::AIStates _sai_state;
 	EntityEnums::AIStates _sai_state_stored;
 

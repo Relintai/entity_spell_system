@@ -107,7 +107,7 @@ void WorldSpell::set_effect_offset(Vector3 value) {
 }
 
 WorldSpell::WorldSpell() {
-    _data_id = 0;
+	_data_id = 0;
 
 	_collider_type = SpellEnums::COLLIDER_TYPE_NONE;
 
@@ -123,8 +123,8 @@ WorldSpell::WorldSpell() {
 }
 
 WorldSpell::~WorldSpell() {
-    _data.unref();
-    _effect.unref();
+	_data.unref();
+	_effect.unref();
 }
 
 void WorldSpell::_bind_methods() {
@@ -134,11 +134,11 @@ void WorldSpell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_body"), &WorldSpell::get_body);
 
-    ClassDB::bind_method(D_METHOD("get_data_id"), &WorldSpell::get_data_id);
+	ClassDB::bind_method(D_METHOD("get_data_id"), &WorldSpell::get_data_id);
 	ClassDB::bind_method(D_METHOD("set_data_id", "value"), &WorldSpell::set_data_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "data_id"), "set_data_id", "get_data_id");
 
-    ClassDB::bind_method(D_METHOD("get_data"), &WorldSpell::get_data);
+	ClassDB::bind_method(D_METHOD("get_data"), &WorldSpell::get_data);
 	ClassDB::bind_method(D_METHOD("set_data", "value"), &WorldSpell::set_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), "set_data", "get_data");
 

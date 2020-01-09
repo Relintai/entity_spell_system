@@ -52,10 +52,10 @@ ItemVisualEntry::ItemVisualEntry() {
 
 ItemVisualEntry::~ItemVisualEntry() {
 	for (int i = 0; i < EntityEnums::GENDER_COUNT; ++i) {
-		#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MESH_DATA_RESOURCE_PRESENT
 		_mesh[i].unref();
-		#endif
-		
+#endif
+
 		_texture[i].unref();
 	}
 
@@ -67,12 +67,12 @@ void ItemVisualEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_override_layer", "value"), &ItemVisualEntry::set_override_layer);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "override_layer", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_ENTITY_TEXTURE_LAYERS), "set_override_layer", "get_override_layer");
 
-	#ifdef MESH_DATA_RESOURCE_PRESENT
+#ifdef MESH_DATA_RESOURCE_PRESENT
 	ClassDB::bind_method(D_METHOD("get_mesh", "index"), &ItemVisualEntry::get_mesh);
 	ClassDB::bind_method(D_METHOD("set_mesh", "index", "value"), &ItemVisualEntry::set_mesh);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "mesh_male", PROPERTY_HINT_RESOURCE_TYPE, "MeshDataResource"), "set_mesh", "get_mesh", EntityEnums::GENDER_MALE);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "mesh_female", PROPERTY_HINT_RESOURCE_TYPE, "MeshDataResource"), "set_mesh", "get_mesh", EntityEnums::GENDER_FEMALE);
-	#endif
+#endif
 
 	ClassDB::bind_method(D_METHOD("get_texture", "index"), &ItemVisualEntry::get_texture);
 	ClassDB::bind_method(D_METHOD("set_texture", "index", "value"), &ItemVisualEntry::set_texture);
@@ -92,4 +92,3 @@ void ItemVisualEntry::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::VECTOR3, "effect_offset_male"), "set_effect_offset", "get_effect_offset", EntityEnums::GENDER_MALE);
 	ADD_PROPERTYI(PropertyInfo(Variant::VECTOR3, "effect_offset_female"), "set_effect_offset", "get_effect_offset", EntityEnums::GENDER_FEMALE);
 }
-

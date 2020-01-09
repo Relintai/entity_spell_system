@@ -1,11 +1,11 @@
 #ifndef ACTION_BAR_PROFILE_H
 #define ACTION_BAR_PROFILE_H
 
+#include "core/array.h"
+#include "core/dictionary.h"
 #include "core/reference.h"
 #include "core/ustring.h"
 #include "core/vector.h"
-#include "core/dictionary.h"
-#include "core/array.h"
 
 #include "action_bar_entry.h"
 

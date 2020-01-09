@@ -16,7 +16,6 @@ Dictionary EntityDataContainer::_to_dict() {
 }
 void EntityDataContainer::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
-
 }
 
 EntityDataContainer::EntityDataContainer() {

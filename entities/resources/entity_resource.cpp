@@ -18,10 +18,10 @@ void EntityResource::set_should_process(bool value) {
 	_should_process = value;
 }
 
-Ref<EntityResourceData>  EntityResource::get_resource_data() {
+Ref<EntityResourceData> EntityResource::get_resource_data() {
 	return _data;
 }
-void EntityResource::set_resource_data(Ref<EntityResourceData>  value) {
+void EntityResource::set_resource_data(Ref<EntityResourceData> value) {
 	_data = value;
 
 	if (_data.is_valid())

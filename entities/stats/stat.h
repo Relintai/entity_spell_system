@@ -163,7 +163,7 @@ public:
 	void _from_dict(const Dictionary &dict);
 
 	Stat();
-	Stat(Stat::StatId id, Entity* owner);
+	Stat(Stat::StatId id, Entity *owner);
 	Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, Entity *owner);
 	~Stat();
 

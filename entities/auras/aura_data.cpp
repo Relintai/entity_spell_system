@@ -130,8 +130,8 @@ void AuraData::set_spell_scale(float value) {
 
 Ref<Aura> AuraData::get_aura() {
 	//if (_aura == NULL) {
-		//TODO fix!
-		//_aura = Auras::getInstance()->GetData(get_aura_id());
+	//TODO fix!
+	//_aura = Auras::getInstance()->GetData(get_aura_id());
 	//}
 
 	return _aura;

@@ -8,7 +8,6 @@ void ItemStatModifier::set_stat_id(Stat::StatId value) {
 	_stat_id = value;
 }
 
-
 float ItemStatModifier::get_base_mod() {
 	return _base_mod;
 }
@@ -24,7 +23,6 @@ float ItemStatModifier::get_bonus_mod() {
 void ItemStatModifier::set_bonus_mod(float value) {
 	_bonus_mod = value;
 }
-
 
 float ItemStatModifier::get_percent_mod() {
 	return _percent_mod;
@@ -54,7 +52,6 @@ Dictionary ItemStatModifier::_to_dict() {
 }
 void ItemStatModifier::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
-
 
 	_stat_id = static_cast<Stat::StatId>(static_cast<int>(dict.get("stat_id", 0)));
 	_base_mod = dict.get("base_mod", 0);

@@ -86,8 +86,8 @@ private:
 	NodePath _animation_player_path;
 	NodePath _animation_tree_path;
 
-    NodePath _bone_paths[EntityEnums::SKELETON_POINTS_MAX];
-    
+	NodePath _bone_paths[EntityEnums::SKELETON_POINTS_MAX];
+
 	AnimationPlayer *_animation_player;
 	AnimationTree *_animation_tree;
 
@@ -97,6 +97,5 @@ private:
 	Vector<Ref<ItemVisual> > _item_visuals;
 	Vector<Ref<SkeletonModelEntry> > _entries[EntityEnums::SKELETON_POINTS_MAX];
 };
-
 
 #endif

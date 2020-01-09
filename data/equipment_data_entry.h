@@ -19,7 +19,7 @@ public:
 protected:
 	static void _bind_methods();
 
-//private:
+	//private:
 };
 
 #endif

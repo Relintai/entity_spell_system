@@ -47,12 +47,11 @@ void SkeletonModelEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_priority", "value"), &SkeletonModelEntry::set_priority);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "priority"), "set_priority", "get_priority");
 
-    ClassDB::bind_method(D_METHOD("get_color"), &SkeletonModelEntry::get_color);
+	ClassDB::bind_method(D_METHOD("get_color"), &SkeletonModelEntry::get_color);
 	ClassDB::bind_method(D_METHOD("set_color", "value"), &SkeletonModelEntry::set_color);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "color"), "set_color", "get_color");
-    
-    ClassDB::bind_method(D_METHOD("get_entry"), &SkeletonModelEntry::get_entry);
+
+	ClassDB::bind_method(D_METHOD("get_entry"), &SkeletonModelEntry::get_entry);
 	ClassDB::bind_method(D_METHOD("set_entry", "path"), &SkeletonModelEntry::set_entry);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entry", PROPERTY_HINT_RESOURCE_TYPE, "ItemVisualEntry"), "set_entry", "get_entry");
 }
-

@@ -1,15 +1,15 @@
 #ifndef STAT_DATA_H
 #define STAT_DATA_H
 
-#include "scene/resources/curve.h"
 #include "core/resource.h"
+#include "scene/resources/curve.h"
 
-#include "stat_data_entry.h"
-#include "stat.h"
 #include "level_stat_data.h"
+#include "stat.h"
+#include "stat_data_entry.h"
 
 class StatData : public Resource {
-    GDCLASS(StatData, Resource);
+	GDCLASS(StatData, Resource);
 
 public:
 	Ref<StatDataEntry> get_stat_data_int(int index);
@@ -18,21 +18,20 @@ public:
 	Ref<StatDataEntry> get_stat_data_enum(Stat::StatId stat_id);
 	void set_stat_data_enum(Stat::StatId stat_id, Ref<StatDataEntry> entry);
 
-    Ref<LevelStatData> get_level_stat_data();
+	Ref<LevelStatData> get_level_stat_data();
 	void set_level_stat_data(Ref<LevelStatData> value);
 
-    void get_stat_for_stat(Ref<Stat> stat);
+	void get_stat_for_stat(Ref<Stat> stat);
 
-    StatData();
+	StatData();
 
 protected:
-    static void _bind_methods();
+	static void _bind_methods();
 
 private:
 	Ref<StatDataEntry> _entries[Stat::STAT_ID_TOTAL_STATS];
 
-    Ref<LevelStatData> _level_stat_data;
-
+	Ref<LevelStatData> _level_stat_data;
 };
 
 #endif

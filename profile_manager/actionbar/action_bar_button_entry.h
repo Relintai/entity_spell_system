@@ -1,8 +1,8 @@
 #ifndef ACTION_BAR_BUTTON_ENTRY_H
 #define ACTION_BAR_BUTTON_ENTRY_H
 
-#include "core/reference.h"
 #include "core/dictionary.h"
+#include "core/reference.h"
 
 class ActionBarButtonEntry : public Reference {
 	GDCLASS(ActionBarButtonEntry, Reference);

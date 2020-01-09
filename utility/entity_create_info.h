@@ -1,10 +1,10 @@
 #ifndef ENTITY_CREATE_INFO_H
 #define ENTITY_CREATE_INFO_H
 
+#include "../entities/data/entity_data.h"
+#include "../entity_enums.h"
 #include "core/reference.h"
 #include "core/ustring.h"
-#include "../entity_enums.h"
-#include "../entities/data/entity_data.h"
 
 class EntityCreateInfo : public Reference {
 	GDCLASS(EntityCreateInfo, Reference);
@@ -45,7 +45,7 @@ protected:
 		ClassDB::bind_method(D_METHOD("get_xp"), &EntityCreateInfo::get_xp);
 		ClassDB::bind_method(D_METHOD("set_xp", "value"), &EntityCreateInfo::set_xp);
 		ADD_PROPERTY(PropertyInfo(Variant::STRING, "xp"), "set_xp", "get_xp");
-		
+
 		ClassDB::bind_method(D_METHOD("get_entity_data"), &EntityCreateInfo::get_entity_data);
 		ClassDB::bind_method(D_METHOD("set_entity_data", "value"), &EntityCreateInfo::set_entity_data);
 		ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "set_entity_data", "get_entity_data");

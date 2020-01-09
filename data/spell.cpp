@@ -1,9 +1,9 @@
 #include "spell.h"
 
-#include "aura.h"
-#include "craft_recipe.h"
 #include "../entities/resources/entity_resource_cost_data.h"
 #include "../entities/skills/entity_skill_data.h"
+#include "aura.h"
+#include "craft_recipe.h"
 
 int Spell::get_id() {
 	return _id;
@@ -144,7 +144,6 @@ Ref<WorldSpellData> Spell::get_projectile() {
 void Spell::set_projectile(Ref<WorldSpellData> value) {
 	_projectile = value;
 }
-
 
 Ref<CraftRecipe> Spell::get_teaches_craft_recipe() {
 	return _teaches_craft_recipe;
@@ -492,7 +491,6 @@ int Spell::get_training_required_skill_level() {
 }
 void Spell::set_training_required_skill_level(int value) {
 	_training_required_skill_level = value;
-
 }
 
 ////    Spell System    ////
@@ -675,7 +673,7 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 		return;
 	}
 
-	if ((get_global_cooldown_enabled() && info->get_caster()->gets_has_global_cooldown()) || 
+	if ((get_global_cooldown_enabled() && info->get_caster()->gets_has_global_cooldown()) ||
 			info->get_caster()->hass_category_cooldown(get_spell_type()) ||
 			info->get_caster()->hass_cooldown(get_id())) {
 		return;
@@ -693,8 +691,6 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 	info->get_caster()->sspell_cast_success(info);
 
 	info->get_target()->son_cast_finished_target(info);
-
-	
 
 	if (get_projectile().is_valid()) {
 		//fire_projectile(info);
@@ -758,13 +754,11 @@ pass
 #		sp.launch(info, projectile, projectile_speed)
 
 	*/
-
 }
 
 void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 
-
-/*
+	/*
 
 	if target_type == SPELL_TARGET_TYPE_TARGET:
 		if info.target == null:
@@ -1187,7 +1181,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_resource_cost"), &Spell::get_resource_cost);
 	ClassDB::bind_method(D_METHOD("set_resource_cost", "value"), &Spell::set_resource_cost);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_cost", PROPERTY_HINT_RESOURCE_TYPE, "EntityResourceCostData"), "set_resource_cost", "get_resource_cost");
-	
+
 	ClassDB::bind_method(D_METHOD("get_resource_give"), &Spell::get_resource_give);
 	ClassDB::bind_method(D_METHOD("set_resource_give", "value"), &Spell::set_resource_give);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_give", PROPERTY_HINT_RESOURCE_TYPE, "EntityResourceCostData"), "set_resource_give", "get_resource_give");
@@ -1234,7 +1228,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_training_required_skill_level"), &Spell::get_training_required_skill_level);
 	ClassDB::bind_method(D_METHOD("set_training_required_skill_level", "value"), &Spell::set_training_required_skill_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "training_required_skill_level"), "set_training_required_skill_level", "get_training_required_skill_level");
-
 
 	BIND_ENUM_CONSTANT(TARGET_SELF);
 	BIND_ENUM_CONSTANT(TARGET_ENEMY);

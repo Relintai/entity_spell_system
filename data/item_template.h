@@ -2,13 +2,13 @@
 #define ITEM_TEMPLATE_H
 
 #include "core/resource.h"
-#include "scene/resources/texture.h"
 #include "core/vector.h"
+#include "scene/resources/texture.h"
 
-#include "item_visual.h"
-#include "item_template_stat_modifier.h"
 #include "../entities/stats/stat.h"
 #include "../item_enums.h"
+#include "item_template_stat_modifier.h"
+#include "item_visual.h"
 
 class ItemInstance;
 class Aura;
@@ -19,7 +19,6 @@ class ItemTemplate : public Resource {
 	GDCLASS(ItemTemplate, Resource);
 
 public:
-
 	int get_id() const;
 	void set_id(const int value);
 
@@ -52,7 +51,7 @@ public:
 
 	int get_stack_size() const;
 	void set_stack_size(const int value);
-	
+
 	Ref<Texture> get_icon() const;
 	void set_icon(const Ref<Texture> value);
 
@@ -67,7 +66,7 @@ public:
 
 	int get_bag_size() const;
 	void set_bag_size(const int size);
-	
+
 	//Teaches
 	int get_num_teaches_spells();
 	void set_num_teaches_spells(int value);
@@ -172,13 +171,13 @@ private:
 	Ref<ItemVisual> _item_visual;
 
 	int _stack_size;
-	
+
 	Ref<Texture> _icon;
 
 	float _scale_x;
 	float _scale_y;
 	float _scale_z;
-	
+
 	int _bag_size;
 
 	Vector<Ref<Spell> > _teaches_spells;

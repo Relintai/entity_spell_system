@@ -12,8 +12,8 @@
 #include "../entities/entity.h"
 #include "../entities/stats/stat.h"
 
-#include "../pipelines/spell_damage_info.h"
 #include "../infos/aura_infos.h"
+#include "../pipelines/spell_damage_info.h"
 
 #include "spell_effect_visual.h"
 
@@ -325,7 +325,7 @@ private:
 
 	int _level;
 	int _rank;
-	
+
 	bool _scale_with_level;
 
 	Ref<ItemTemplate> _item_cost;

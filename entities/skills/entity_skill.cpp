@@ -8,11 +8,10 @@ Ref<EntitySkillData> EntitySkill::get_skill() {
 void EntitySkill::set_skill(Ref<EntitySkillData> value) {
 	_skill = value;
 
-	if (_skill.is_valid()) 
+	if (_skill.is_valid())
 		_skill_id = _skill->get_id();
 	else
 		_skill_id = 0;
-	
 
 	emit_signal("skill_changed", Ref<EntitySkill>(this));
 }

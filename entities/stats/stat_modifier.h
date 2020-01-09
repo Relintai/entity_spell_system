@@ -18,13 +18,13 @@ public:
 
 	int get_id();
 	void set_id(int value);
-	
+
 	float get_base_mod();
 	void set_base_mod(float value);
-	
+
 	float get_bonus_mod();
 	void set_bonus_mod(float value);
-	
+
 	float get_percent_mod();
 	void set_percent_mod(float value);
 

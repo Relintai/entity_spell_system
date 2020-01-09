@@ -10,7 +10,6 @@
 
 #include "world_spell_data.h"
 
-
 class WorldSpell : public Node {
 	GDCLASS(WorldSpell, Node);
 

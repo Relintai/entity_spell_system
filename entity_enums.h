@@ -12,13 +12,13 @@ public:
 	static const String BINDING_STRING_ENTITY_CONTOLLER;
 	static const String BINDING_STRING_ENTITY_FLAGS;
 	static const String BINDING_STRING_ENTITY_STATE_TYPES;
-    static const String BINDING_STRING_CHARCATER_SKELETON_POINTS;
-    static const String BINDING_STRING_AI_STATES;
+	static const String BINDING_STRING_CHARCATER_SKELETON_POINTS;
+	static const String BINDING_STRING_AI_STATES;
 	static const String BINDING_STRING_PET_STATES;
-    static const String BINDING_STRING_ENTITY_IMMUNITY_FLAGS;
-    static const String BINDING_STRING_ENTITY_INTERACTION_TYPE;
-    static const String BINDING_STRING_ENTITY_PLAYSTYLE_TYPE;
-    static const String BINDING_STRING_ENTITY_GENDER;
+	static const String BINDING_STRING_ENTITY_IMMUNITY_FLAGS;
+	static const String BINDING_STRING_ENTITY_INTERACTION_TYPE;
+	static const String BINDING_STRING_ENTITY_PLAYSTYLE_TYPE;
+	static const String BINDING_STRING_ENTITY_GENDER;
 	static const String BINDING_STRING_ENTITY_WINDOWS;
 
 	enum EntityType {
@@ -149,7 +149,7 @@ public:
 		ENTITY_IMMUNITY_FLAG_DISPELL = 1 << 30,
 	};
 
-    enum CharacterSkeletonPoints {
+	enum CharacterSkeletonPoints {
 		SKELETON_POINT_ROOT = 0,
 		SKELETON_POINT_PELVIS = 1,
 		SKELETON_POINT_SPINE = 2,
@@ -190,8 +190,8 @@ public:
 	enum AIStates {
 		AI_STATE_OFF = 0,
 		AI_STATE_REST,
-        AI_STATE_PATROL,
-        AI_STATE_FOLLOW_PATH,
+		AI_STATE_PATROL,
+		AI_STATE_FOLLOW_PATH,
 		AI_STATE_REGENERATE,
 		AI_STATE_ATTACK,
 
@@ -228,7 +228,6 @@ public:
 		ENTITY_WINDOW_CONTAINER = 1,
 		ENTITY_WINDOW_VENDOR = 2,
 	};
-
 
 	enum {
 		GENDER_COUNT = 2,

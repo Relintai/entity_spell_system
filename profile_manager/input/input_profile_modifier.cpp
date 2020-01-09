@@ -75,5 +75,4 @@ void InputProfileModifier::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entry", "index"), &InputProfileModifier::get_entry);
 	ClassDB::bind_method(D_METHOD("set_entry", "index", "value"), &InputProfileModifier::set_entry);
 	ClassDB::bind_method(D_METHOD("remove_entry", "index"), &InputProfileModifier::remove_entry);
-
 }

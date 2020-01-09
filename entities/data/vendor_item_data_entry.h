@@ -9,18 +9,18 @@ class VendorItemDataEntry : public Resource {
 	GDCLASS(VendorItemDataEntry, Resource);
 
 public:
-    Ref<ItemTemplate> get_item();
+	Ref<ItemTemplate> get_item();
 	void set_item(Ref<ItemTemplate> item);
-    
-    int get_item_price() const;
+
+	int get_item_price() const;
 	void set_item_price(int value);
-    
-    int get_item_count() const;
+
+	int get_item_count() const;
 	void set_item_count(int value);
-    
-    int get_item_spawn_time() const;
+
+	int get_item_spawn_time() const;
 	void set_item_spawn_time(int time);
-	
+
 	VendorItemDataEntry();
 	~VendorItemDataEntry();
 
@@ -29,9 +29,9 @@ protected:
 
 private:
 	Ref<ItemTemplate> _item;
-    int _item_price;
-    int _item_count;
-    int _item_spawn_time;
+	int _item_price;
+	int _item_count;
+	int _item_spawn_time;
 };
 
 #endif

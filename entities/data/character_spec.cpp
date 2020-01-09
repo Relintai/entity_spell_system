@@ -53,7 +53,6 @@ Ref<Aura> CharacterSpec::get_talent(const int row_index, const int culomn, const
 	return Ref<Aura>(NULL);
 }
 
-
 CharacterSpec::CharacterSpec() {
 	_id = 0;
 }

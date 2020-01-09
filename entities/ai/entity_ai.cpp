@@ -88,7 +88,6 @@ void EntityAI::pet_update(float delta) {
 		call("_pet_update", delta);
 }
 
-
 void EntityAI::move(float delta) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
 

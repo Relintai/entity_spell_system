@@ -43,5 +43,4 @@ private:
 	Ref<Spell> _spell;
 };
 
-
 #endif

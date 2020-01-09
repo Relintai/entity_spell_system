@@ -14,7 +14,7 @@ void StatData::set_stat_data_int(int index, Ref<StatDataEntry> entry) {
 
 Ref<StatDataEntry> StatData::get_stat_data_enum(Stat::StatId stat_id) {
 	ERR_FAIL_INDEX_V(stat_id, Stat::STAT_ID_TOTAL_STATS, Ref<StatDataEntry>(NULL));
-	
+
 	return Ref<StatDataEntry>(_entries[stat_id]);
 }
 
@@ -39,7 +39,6 @@ void StatData::get_stat_for_stat(Ref<Stat> stat) {
 	sd->get_stats_for_stat(stat);
 }
 
-
 StatData::StatData() {
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
 		Ref<StatDataEntry> entry(memnew(StatDataEntry()));
@@ -48,7 +47,7 @@ StatData::StatData() {
 
 		_entries[i] = Ref<StatDataEntry>(entry);
 	}
-	
+
 	get_stat_data_enum(Stat::STAT_ID_HEALTH)->set_base(100);
 	get_stat_data_enum(Stat::STAT_ID_MANA)->set_base(100);
 	get_stat_data_enum(Stat::STAT_ID_SPEED)->set_base(4.2);
@@ -75,10 +74,9 @@ void StatData::_bind_methods() {
 	ADD_GROUP("Base Stats", "base_stat");
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
 		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "base_stat_" + Stat::stat_id_name(i), PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry"), "set_stat_data_enum", "get_stat_data_enum", i);
-    }
+	}
 
 	ClassDB::bind_method(D_METHOD("get_level_stat_data"), &StatData::get_level_stat_data);
 	ClassDB::bind_method(D_METHOD("set_level_stat_data", "value"), &StatData::set_level_stat_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "level_stat_data", PROPERTY_HINT_RESOURCE_TYPE, "LevelStatData"), "set_level_stat_data", "get_level_stat_data");
 }
-

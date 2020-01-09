@@ -313,7 +313,7 @@ void Stat::apply_modifiers() {
 	if (_modifier_apply_type == MODIFIER_APPLY_TYPE_STANDARD) {
 		for (int i = 0; i < _modifiers.size(); ++i) {
 			Ref<StatModifier> mod = _modifiers.get(i);
-			
+
 			_base += mod->get_base_mod();
 			_bonus += mod->get_bonus_mod();
 			_percent += mod->get_percent_mod();

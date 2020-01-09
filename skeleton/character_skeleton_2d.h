@@ -35,5 +35,4 @@ private:
 	EntityEnums::EntityGender _gender;
 };
 
-
 #endif

@@ -7,7 +7,6 @@
 
 #include "input_profile_modifier_entry.h"
 
-
 class InputProfileModifier : public Reference {
 	GDCLASS(InputProfileModifier, Reference);
 
@@ -33,8 +32,8 @@ protected:
 	static void _bind_methods();
 
 private:
-    Vector<String> *_modifier_actions;
-    Vector<Ref<InputProfileModifierEntry> > *_entries;
+	Vector<String> *_modifier_actions;
+	Vector<Ref<InputProfileModifierEntry> > *_entries;
 };
 
 #endif

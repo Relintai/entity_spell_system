@@ -18,12 +18,12 @@
 #include "aura_trigger_data.h"
 
 #include "../entities/auras/aura_data.h"
+#include "../infos/spell_cast_info.h"
 #include "../pipelines/spell_damage_info.h"
 #include "../pipelines/spell_heal_info.h"
-#include "../infos/spell_cast_info.h"
 
-#include "../utility/cooldown.h"
 #include "../utility/category_cooldown.h"
+#include "../utility/cooldown.h"
 
 #include "spell_effect_visual.h"
 
@@ -245,14 +245,14 @@ public:
 	void son_cast_finished_target(Ref<AuraData> aura, Ref<SpellCastInfo> info);
 	void son_spell_cast_success(Ref<AuraData> aura, Ref<SpellCastInfo> info);
 
-    void son_before_damage_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
+	void son_before_damage_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 	void son_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 	void son_before_damage(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 	void son_damage_receive(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 	void son_dealt_damage(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 	void son_damage_dealt(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 
-    void son_before_heal_hit(Ref<AuraData> aura, Ref<SpellHealInfo> data);
+	void son_before_heal_hit(Ref<AuraData> aura, Ref<SpellHealInfo> data);
 	void son_before_heal(Ref<AuraData> aura, Ref<SpellHealInfo> data);
 	void son_heal_receive(Ref<AuraData> aura, Ref<SpellHealInfo> data);
 	void son_dealt_heal(Ref<AuraData> aura, Ref<SpellHealInfo> data);
@@ -264,46 +264,46 @@ public:
 
 	void son_before_aura_applied(Ref<AuraData> data);
 	void son_after_aura_applied(Ref<AuraData> data);
-    
-    void son_death(Ref<AuraData> data);
-	
+
+	void son_death(Ref<AuraData> data);
+
 	void son_cooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown);
 	void son_cooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown);
-	
+
 	void son_category_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
 	void son_category_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
 
 	void son_gcd_started(Ref<AuraData> data, float gcd);
 	void son_gcd_finished(Ref<AuraData> data);
-    
-    void son_physics_process(Ref<AuraData> data);
+
+	void son_physics_process(Ref<AuraData> data);
 
 	void son_xp_gained(Ref<AuraData> data, int value);
 	void son_level_up(Ref<AuraData> data, int value);
-	
+
 	//Clientside Event Handlers
 	void con_cast_failed(Ref<AuraData> data, Ref<SpellCastInfo> info);
 	void con_cast_started(Ref<AuraData> data, Ref<SpellCastInfo> info);
 	void con_cast_state_changed(Ref<AuraData> data, Ref<SpellCastInfo> info);
 	void con_cast_finished(Ref<AuraData> data, Ref<SpellCastInfo> info);
 	void con_spell_cast_success(Ref<AuraData> data, Ref<SpellCastInfo> info);
-	
-    void con_death(Ref<AuraData> data);
-	
+
+	void con_death(Ref<AuraData> data);
+
 	void con_cooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown);
 	void con_cooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown);
 	void con_category_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
 	void con_category_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
-    
+
 	void con_aura_added(Ref<AuraData> data);
 	void con_aura_removed(Ref<AuraData> data);
 	void con_aura_refresh(Ref<AuraData> data);
-	
+
 	void con_damage_dealt(Ref<AuraData> data, Ref<SpellDamageInfo> info);
 	void con_dealt_damage(Ref<AuraData> data, Ref<SpellDamageInfo> info);
 	void con_heal_dealt(Ref<AuraData> data, Ref<SpellHealInfo> info);
 	void con_dealt_heal(Ref<AuraData> data, Ref<SpellHealInfo> info);
-	
+
 	void con_gcd_started(Ref<AuraData> data, float gcd);
 	void con_gcd_finished(Ref<AuraData> data);
 
@@ -376,7 +376,7 @@ private:
 	Ref<SpellEffectVisual> _visual_spell_effects;
 
 	Ref<WorldSpellData> _world_spell_data;
-	
+
 	bool _damage_enabled;
 	int _damage_type;
 	int _damage_min;

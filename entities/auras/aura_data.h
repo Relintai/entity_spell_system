@@ -1,9 +1,9 @@
 #ifndef AURA_DATA_H
 #define AURA_DATA_H
 
-#include "core/reference.h"
 #include "core/array.h"
 #include "core/dictionary.h"
+#include "core/reference.h"
 
 #include "../../spell_enums.h"
 

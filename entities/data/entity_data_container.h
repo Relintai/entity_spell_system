@@ -1,8 +1,8 @@
 #ifndef ENTITY_DATA_CONTAINER_H
 #define ENTITY_DATA_CONTAINER_H
 
-#include "core/reference.h"
 #include "core/dictionary.h"
+#include "core/reference.h"
 
 class EntityDataContainer : public Reference {
 	GDCLASS(EntityDataContainer, Reference);

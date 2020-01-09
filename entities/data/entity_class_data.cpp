@@ -1,10 +1,10 @@
 #include "entity_class_data.h"
 
-#include "../ai/entity_ai.h"
 #include "../../data/aura.h"
-#include "../../data/spell.h"
 #include "../../data/item_instance.h"
+#include "../../data/spell.h"
 #include "../../infos/spell_cast_info.h"
+#include "../ai/entity_ai.h"
 #include "../entity.h"
 #include "character_spec.h"
 
@@ -116,7 +116,6 @@ void EntityClassData::set_entity_resources(const Vector<Variant> &entity_resourc
 	}
 }
 
-
 ////    SPECS    ////
 
 int EntityClassData::get_num_specs() {
@@ -160,7 +159,6 @@ void EntityClassData::set_specs(const Vector<Variant> &specs) {
 		_specs.push_back(spec);
 	}
 }
-
 
 ////    SPELLS    ////
 

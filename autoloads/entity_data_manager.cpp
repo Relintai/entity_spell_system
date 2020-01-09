@@ -1,9 +1,9 @@
 #include "entity_data_manager.h"
 
-#include "../entities/data/entity_data.h"
 #include "../data/aura.h"
 #include "../data/craft_recipe.h"
 #include "../data/spell.h"
+#include "../entities/data/entity_data.h"
 #include "../entities/resources/entity_resource_data.h"
 #include "../entities/skills/entity_skill_data.h"
 
@@ -495,7 +495,6 @@ void EntityDataManager::load_entity_skills() {
 		print_error("An error occurred when trying to access the path.");
 	}
 }
-
 
 void EntityDataManager::load_spells() {
 	_Directory dir;

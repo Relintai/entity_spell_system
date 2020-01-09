@@ -130,4 +130,3 @@ void ActionBarProfile::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("from_actionbar_profile", "other"), &ActionBarProfile::from_actionbar_profile);
 }
-

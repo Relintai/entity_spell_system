@@ -1,9 +1,9 @@
 #ifndef CRAFT_RECIPE_H
 #define CRAFT_RECIPE_H
 
-#include "core/vector.h"
 #include "core/resource.h"
 #include "core/ustring.h"
+#include "core/vector.h"
 
 #include "item_template.h"
 

@@ -19,40 +19,40 @@ public:
 	bool add_item(Ref<ItemInstance> item);
 	void add_item_at(int index, Ref<ItemInstance> item, bool signal = true);
 	Ref<ItemInstance> get_item(const int index);
-    Ref<ItemInstance> remove_item(const int index);
-    void swap_items(const int item1_index, const int item2_index);
+	Ref<ItemInstance> remove_item(const int index);
+	void swap_items(const int item1_index, const int item2_index);
 	void change_item_equip(int slot_id, Ref<ItemInstance> item);
 	void set_item_count(int slot_id, int new_count);
-    
-    bool can_add_item(Ref<ItemInstance> item);
-	
+
+	bool can_add_item(Ref<ItemInstance> item);
+
 	int get_item_count();
 	int get_valid_item_count();
 
 	int get_size();
-    void set_size(const int size);
-    
-    bool is_full();
-    bool is_overburdened();
+	void set_size(const int size);
 
-    bool has_item(Ref<ItemTemplate> item, int count);
+	bool is_full();
+	bool is_overburdened();
+
+	bool has_item(Ref<ItemTemplate> item, int count);
 	bool _has_item(Ref<ItemTemplate> item, int count);
 
 	void remove_items(Ref<ItemTemplate> item, int count);
 	void _remove_items(Ref<ItemTemplate> item, int count);
-	
+
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
 
 	Dictionary _to_dict();
 	void _from_dict(const Dictionary &dict);
-	
+
 	Bag();
-    ~Bag();
+	~Bag();
 
 protected:
 	static void _bind_methods();
-    
+
 private:
 	int _allowed_item_types;
 	int _bag_size;

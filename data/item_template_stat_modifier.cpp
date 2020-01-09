@@ -106,4 +106,3 @@ void ItemTemplateStatModifier::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_scaling_factor", "value"), &ItemTemplateStatModifier::set_scaling_factor);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "scaling_factor"), "set_scaling_factor", "get_scaling_factor");
 }
-

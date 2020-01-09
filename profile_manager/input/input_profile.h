@@ -8,16 +8,13 @@ class InputProfile : public Reference {
 	GDCLASS(InputProfile, Reference);
 
 public:
-
 	InputProfile() {}
 
 protected:
 	static void _bind_methods() {}
 
 private:
-    int placeholder;
+	int placeholder;
 };
-
-
 
 #endif

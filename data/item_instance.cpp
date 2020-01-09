@@ -2,7 +2,6 @@
 
 #include "item_template.h"
 
-
 Ref<ItemTemplate> ItemInstance::get_item_template() const {
 	return _item_template;
 }
@@ -13,7 +12,6 @@ void ItemInstance::set_item_template(const Ref<ItemTemplate> value) {
 
 	if (value.is_valid())
 		_item_template_id = value->get_id();
-	 
 }
 
 Ref<ItemStatModifier> ItemInstance::get_item_stat_modifier(int index) {
@@ -99,7 +97,6 @@ ItemInstance::ItemInstance() {
 ItemInstance::~ItemInstance() {
 	_modifiers.clear();
 }
-
 
 void ItemInstance::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("stack_size_changed", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));

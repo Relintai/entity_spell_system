@@ -13,4 +13,3 @@ void LevelStatData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_stat_diff", "stat", "old_level", "new_level"), &LevelStatData::get_stat_diff);
 }
-

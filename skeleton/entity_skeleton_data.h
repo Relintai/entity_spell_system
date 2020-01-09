@@ -8,7 +8,6 @@ class EntitySkeletonData : public Resource {
 	GDCLASS(EntitySkeletonData, Resource);
 
 public:
-
 protected:
 	static void _bind_methods();
 

@@ -4,9 +4,9 @@
 #include "core/reference.h"
 #include "core/vector.h"
 
-#include "item_stat_modifier.h"
 #include "../entities/stats/stat.h"
 #include "../item_enums.h"
+#include "item_stat_modifier.h"
 
 #include "../autoloads/entity_data_manager.h"
 
@@ -25,7 +25,7 @@ public:
 	void clear_item_stat_modifiers();
 
 	int get_item_stat_modifier_count();
-	
+
 	int get_stack_size();
 	void set_stack_size(int value);
 
@@ -34,7 +34,7 @@ public:
 
 	virtual Dictionary _to_dict();
 	virtual void _from_dict(const Dictionary &dict);
-	
+
 	ItemInstance();
 	~ItemInstance();
 
@@ -44,7 +44,7 @@ protected:
 private:
 	Ref<ItemTemplate> _item_template;
 	int _item_template_id;
-	
+
 	int _stack_size;
 
 	Vector<Ref<ItemStatModifier> > _modifiers;

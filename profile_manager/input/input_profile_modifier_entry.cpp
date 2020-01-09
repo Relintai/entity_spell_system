@@ -17,7 +17,6 @@ void InputProfileModifierEntry::set_translate_to(String value) {
 }
 
 InputProfileModifierEntry::InputProfileModifierEntry() {
-
 }
 
 void InputProfileModifierEntry::_bind_methods() {
@@ -29,4 +28,3 @@ void InputProfileModifierEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_translate_to", "value"), &InputProfileModifierEntry::set_translate_to);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "translate_to"), "set_translate_to", "get_translate_to");
 }
-

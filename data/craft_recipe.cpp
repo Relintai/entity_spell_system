@@ -41,7 +41,6 @@ void CraftRecipe::set_required_tools_count(int value) {
 	_required_tools_count = value;
 }
 
-
 void CraftRecipe::set_required_material(int index, const Ref<CraftRecipeHelper> value) {
 	_required_materials[index] = value;
 }
@@ -49,7 +48,6 @@ void CraftRecipe::set_required_material(int index, const Ref<CraftRecipeHelper> 
 Ref<CraftRecipeHelper> CraftRecipe::get_required_material(int index) {
 	return _required_materials[index];
 }
-
 
 int CraftRecipe::get_required_materials_count() {
 	return _required_materials_count;

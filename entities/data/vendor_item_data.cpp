@@ -34,7 +34,6 @@ void VendorItemData::set_vendor_datas(const Vector<Variant> &vendor_datas) {
 	}
 }
 
-    
 VendorItemData::VendorItemData() {
 }
 VendorItemData::~VendorItemData() {
