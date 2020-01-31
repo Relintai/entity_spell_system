@@ -12,41 +12,41 @@ class WorldSpellData : public Resource {
 	GDCLASS(WorldSpellData, Resource);
 
 public:
-	int get_id();
-	void set_id(int value);
+	int get_id() const;
+	void set_id(const int value);
 
-	SpellEnums::ColliderType get_collider_type();
-	void set_collider_type(SpellEnums::ColliderType value);
+	SpellEnums::ColliderType get_collider_type() const;
+	void set_collider_type(const SpellEnums::ColliderType value);
 
-	Vector3 get_collider_box_extents();
-	void set_collider_box_extents(Vector3 value);
+	Vector3 get_collider_box_extents() const;
+	void set_collider_box_extents(const Vector3 &value);
 
-	float get_collider_sphere_radius();
-	void set_collider_sphere_radius(float value);
+	float get_collider_sphere_radius() const;
+	void set_collider_sphere_radius(const float value);
 
-	SpellEnums::TargetType get_target_type();
-	void set_target_type(SpellEnums::TargetType value);
+	SpellEnums::TargetType get_target_type() const;
+	void set_target_type(const SpellEnums::TargetType value);
 
-	int get_target_bone_id();
-	void set_target_bone_id(int value);
+	int get_target_bone_id() const;
+	void set_target_bone_id(const int value);
 
-	bool get_move();
-	void set_move(bool value);
+	bool get_move() const;
+	void set_move(const bool value);
 
-	float get_movement_speed();
-	void set_movement_speed(float value);
+	float get_movement_speed() const;
+	void set_movement_speed(const float value);
 
-	Vector3 get_movement_dir();
-	void set_movement_dir(Vector3 value);
+	Vector3 get_movement_dir() const;
+	void set_movement_dir(const Vector3 &value);
 
-	float get_max_dist();
-	void set_max_dist(float value);
+	float get_max_dist() const;
+	void set_max_dist(const float value);
 
 	Ref<PackedScene> get_effect();
-	void set_effect(Ref<PackedScene> value);
+	void set_effect(const Ref<PackedScene> &value);
 
-	Vector3 get_effect_offset();
-	void set_effect_offset(Vector3 value);
+	Vector3 get_effect_offset() const;
+	void set_effect_offset(const Vector3 &value);
 
 	WorldSpellData();
 	~WorldSpellData();

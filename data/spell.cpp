@@ -5,168 +5,168 @@
 #include "aura.h"
 #include "craft_recipe.h"
 
-int Spell::get_id() {
+int Spell::get_id() const {
 	return _id;
 }
-void Spell::set_id(int value) {
+void Spell::set_id(const int value) {
 	_id = value;
 }
 
-int Spell::get_spell_type() {
+int Spell::get_spell_type() const {
 	return _spell_type;
 }
 void Spell::set_spell_type(int value) {
 	_spell_type = value;
 }
 
-SpellEnums::SpellCategory Spell::get_spell_category() {
+SpellEnums::SpellCategory Spell::get_spell_category() const {
 	return _spell_category;
 }
 void Spell::set_spell_category(SpellEnums::SpellCategory value) {
 	_spell_category = value;
 }
 
-bool Spell::get_hide_from_actionbar() {
+bool Spell::get_hide_from_actionbar() const {
 	return _hide_from_actionbar;
 }
-void Spell::set_hide_from_actionbar(bool value) {
+void Spell::set_hide_from_actionbar(const bool value) {
 	_hide_from_actionbar = value;
 }
 
-float Spell::get_cooldown() {
+float Spell::get_cooldown() const {
 	return _cooldown;
 }
-void Spell::set_cooldown(float value) {
+void Spell::set_cooldown(const float value) {
 	_cooldown = value;
 }
 
-SpellTargetType Spell::get_target_type() {
+SpellTargetType Spell::get_target_type() const {
 	return _target_type;
 }
-void Spell::set_target_type(SpellTargetType value) {
+void Spell::set_target_type(const SpellTargetType value) {
 	_target_type = value;
 }
 
-TargetRelationType Spell::get_target_relation_type() {
+TargetRelationType Spell::get_target_relation_type() const {
 	return _target_relation_type;
 }
-void Spell::set_target_relation_type(TargetRelationType value) {
+void Spell::set_target_relation_type(const TargetRelationType value) {
 	_target_relation_type = value;
 }
 
-int Spell::get_level() {
+int Spell::get_level() const {
 	return _level;
 }
-void Spell::set_level(int value) {
+void Spell::set_level(const int value) {
 	_level = value;
 }
 
-int Spell::get_rank() {
+int Spell::get_rank() const {
 	return _rank;
 }
-void Spell::set_rank(int value) {
+void Spell::set_rank(const int value) {
 	_rank = value;
 }
 
-bool Spell::get_scale_with_level() {
+bool Spell::get_scale_with_level() const {
 	return _scale_with_level;
 }
-void Spell::set_scale_with_level(bool value) {
+void Spell::set_scale_with_level(const bool value) {
 	_scale_with_level = value;
 }
 
 Ref<ItemTemplate> Spell::get_item_cost() {
 	return _item_cost;
 }
-void Spell::set_item_cost(Ref<ItemTemplate> value) {
+void Spell::set_item_cost(const Ref<ItemTemplate> &value) {
 	_item_cost = value;
 }
 
 Ref<ItemTemplate> Spell::get_required_item() {
 	return _required_item;
 }
-void Spell::set_required_item(Ref<ItemTemplate> value) {
+void Spell::set_required_item(const Ref<ItemTemplate> &value) {
 	_required_item = value;
 }
 
 Ref<EntityResourceCostData> Spell::get_resource_cost() {
 	return _resource_cost;
 }
-void Spell::set_resource_cost(Ref<EntityResourceCostData> value) {
+void Spell::set_resource_cost(const Ref<EntityResourceCostData> &value) {
 	_resource_cost = value;
 }
 
 Ref<EntityResourceCostData> Spell::get_resource_give() {
 	return _resource_give;
 }
-void Spell::set_resource_give(Ref<EntityResourceCostData> value) {
+void Spell::set_resource_give(const Ref<EntityResourceCostData> &value) {
 	_resource_give = value;
 }
 
-bool Spell::get_global_cooldown_enabled() {
+bool Spell::get_global_cooldown_enabled() const {
 	return _global_cooldown_enabled;
 }
-void Spell::set_global_cooldown_enabled(bool value) {
+void Spell::set_global_cooldown_enabled(const bool value) {
 	_global_cooldown_enabled = value;
 }
 
-bool Spell::get_is_local_spell() {
+bool Spell::get_is_local_spell() const {
 	return _is_local_spell;
 }
-void Spell::set_is_local_spell(bool value) {
+void Spell::set_is_local_spell(const bool value) {
 	_is_local_spell = value;
 }
 
 Ref<Texture> Spell::get_icon() {
 	return _icon;
 }
-void Spell::set_icon(Ref<Texture> value) {
+void Spell::set_icon(const Ref<Texture> &value) {
 	_icon = Ref<Texture>(value);
 }
 
-String Spell::get_text_description() {
+String Spell::get_text_description() const {
 	return _text_description;
 }
-void Spell::set_text_description(String value) {
+void Spell::set_text_description(const String value) {
 	_text_description = value;
 }
 
 Ref<SpellEffectVisual> Spell::get_visual_spell_effects() {
 	return _visual_spell_effects;
 }
-void Spell::set_visual_spell_effects(Ref<SpellEffectVisual> value) {
+void Spell::set_visual_spell_effects(const Ref<SpellEffectVisual> &value) {
 	_visual_spell_effects = value;
 }
 
 Ref<WorldSpellData> Spell::get_projectile() {
 	return _projectile;
 }
-void Spell::set_projectile(Ref<WorldSpellData> value) {
+void Spell::set_projectile(const Ref<WorldSpellData> &value) {
 	_projectile = value;
 }
 
 Ref<CraftRecipe> Spell::get_teaches_craft_recipe() {
 	return _teaches_craft_recipe;
 }
-void Spell::set_teaches_craft_recipe(Ref<CraftRecipe> value) {
+void Spell::set_teaches_craft_recipe(const Ref<CraftRecipe> &value) {
 	_teaches_craft_recipe = value;
 }
 
 ////    Caster Aura Apply    ////
 
-int Spell::get_num_caster_aura_applys() {
+int Spell::get_num_caster_aura_applys() const {
 	return _caster_aura_applys.size();
 }
-void Spell::set_num_caster_aura_applys(int value) {
+void Spell::set_num_caster_aura_applys(const int value) {
 	_caster_aura_applys.resize(value);
 }
 
-Ref<Aura> Spell::get_caster_aura_apply(int index) const {
+Ref<Aura> Spell::get_caster_aura_apply(const int index) {
 	ERR_FAIL_INDEX_V(index, _caster_aura_applys.size(), Ref<Aura>());
 
 	return _caster_aura_applys[index];
 }
-void Spell::set_caster_aura_apply(int index, Ref<Aura> caster_aura_apply) {
+void Spell::set_caster_aura_apply(const int index, const Ref<Aura> &caster_aura_apply) {
 	ERR_FAIL_INDEX(index, _caster_aura_applys.size());
 
 	_caster_aura_applys.set(index, Ref<Aura>(caster_aura_apply));
@@ -190,19 +190,19 @@ void Spell::set_caster_aura_applys(const Vector<Variant> &caster_aura_applys) {
 
 ////    Target Aura Apply    ////
 
-int Spell::get_num_target_aura_applys() {
+int Spell::get_num_target_aura_applys() const {
 	return _target_aura_applys.size();
 }
-void Spell::set_num_target_aura_applys(int value) {
+void Spell::set_num_target_aura_applys(const int value) {
 	_target_aura_applys.resize(value);
 }
 
-Ref<Aura> Spell::get_target_aura_apply(int index) const {
+Ref<Aura> Spell::get_target_aura_apply(const int index) {
 	ERR_FAIL_INDEX_V(index, _target_aura_applys.size(), Ref<Aura>());
 
 	return _target_aura_applys[index];
 }
-void Spell::set_target_aura_apply(int index, Ref<Aura> target_aura_apply) {
+void Spell::set_target_aura_apply(const int index, const Ref<Aura> &target_aura_apply) {
 	ERR_FAIL_INDEX(index, _target_aura_applys.size());
 
 	_target_aura_applys.set(index, Ref<Aura>(target_aura_apply));
@@ -226,19 +226,19 @@ void Spell::set_target_aura_applys(const Vector<Variant> &target_aura_applys) {
 
 ////    Apply Auras On Learn    ////
 
-int Spell::get_num_on_learn_auras() {
+int Spell::get_num_on_learn_auras() const {
 	return _on_learn_auras.size();
 }
-void Spell::set_num_on_learn_auras(int value) {
+void Spell::set_num_on_learn_auras(const int value) {
 	_on_learn_auras.resize(value);
 }
 
-Ref<Aura> Spell::get_on_learn_aura(int index) const {
+Ref<Aura> Spell::get_on_learn_aura(int index) {
 	ERR_FAIL_INDEX_V(index, _on_learn_auras.size(), Ref<Aura>());
 
 	return _on_learn_auras[index];
 }
-void Spell::set_on_learn_aura(int index, Ref<Aura> on_learn_aura_apply) {
+void Spell::set_on_learn_aura(const int index, const Ref<Aura> &on_learn_aura_apply) {
 	ERR_FAIL_INDEX(index, _on_learn_auras.size());
 
 	_on_learn_auras.set(index, Ref<Aura>(on_learn_aura_apply));
@@ -262,234 +262,234 @@ void Spell::set_on_learn_auras(const Vector<Variant> &on_learn_aura_applys) {
 
 ////    Range    ////
 
-bool Spell::get_range_enabled() {
+bool Spell::get_range_enabled() const {
 	return _range_enabled;
 }
-void Spell::set_range_enabled(bool value) {
+void Spell::set_range_enabled(const bool value) {
 	_range_enabled = value;
 }
 
-float Spell::get_range() {
+float Spell::get_range() const {
 	return _range;
 }
-void Spell::set_range(float value) {
+void Spell::set_range(const float value) {
 	_range = value;
 }
 
-bool Spell::get_cast_time_enabled() {
+bool Spell::get_cast_time_enabled() const {
 	return _cast_time_enabled;
 }
-void Spell::set_cast_time_enabled(bool value) {
+void Spell::set_cast_time_enabled(const bool value) {
 	_cast_time_enabled = value;
 }
 
-float Spell::get_cast_time() {
+float Spell::get_cast_time() const {
 	return _cast_time;
 }
-void Spell::set_cast_time(float value) {
+void Spell::set_cast_time(const float value) {
 	_cast_time = value;
 }
 
-bool Spell::get_damage_enabled() {
+bool Spell::get_damage_enabled() const {
 	return _damage_enabled;
 }
-void Spell::set_damage_enabled(bool value) {
+void Spell::set_damage_enabled(const bool value) {
 	_damage_enabled = value;
 }
 
-int Spell::get_damage_type() {
+int Spell::get_damage_type() const {
 	return _damage_type;
 }
-void Spell::set_damage_type(int value) {
+void Spell::set_damage_type(const int value) {
 	_damage_type = value;
 }
 
-int Spell::get_damage_min() {
+int Spell::get_damage_min() const {
 	return _damage_min;
 }
-void Spell::set_damage_min(int value) {
+void Spell::set_damage_min(const int value) {
 	_damage_min = value;
 }
 
-int Spell::get_damage_max() {
+int Spell::get_damage_max() const {
 	return _damage_max;
 }
-void Spell::set_damage_max(int value) {
+void Spell::set_damage_max(const int value) {
 	_damage_max = value;
 }
 
-Stat::StatId Spell::get_damage_scale_stat() {
+Stat::StatId Spell::get_damage_scale_stat() const {
 	return _damage_scale_stat;
 }
-void Spell::set_damage_scale_stat(Stat::StatId value) {
+void Spell::set_damage_scale_stat(const Stat::StatId value) {
 	_damage_scale_stat = value;
 }
 
-float Spell::get_damage_scale_coeff() {
+float Spell::get_damage_scale_coeff() const {
 	return _damage_scale_coeff;
 }
-void Spell::set_damage_scale_coeff(float value) {
+void Spell::set_damage_scale_coeff(const float value) {
 	_damage_scale_coeff = value;
 }
 
-bool Spell::get_heal_enabled() {
+bool Spell::get_heal_enabled() const {
 	return _heal_enabled;
 }
-void Spell::set_heal_enabled(bool value) {
+void Spell::set_heal_enabled(const bool value) {
 	_heal_enabled = value;
 }
 
-int Spell::get_heal_min() {
+int Spell::get_heal_min() const {
 	return _heal_min;
 }
-void Spell::set_heal_min(int value) {
+void Spell::set_heal_min(const int value) {
 	_heal_min = value;
 }
 
-int Spell::get_heal_max() {
+int Spell::get_heal_max() const {
 	return _heal_max;
 }
-void Spell::set_heal_max(int value) {
+void Spell::set_heal_max(const int value) {
 	_heal_max = value;
 }
 
-Stat::StatId Spell::get_heal_scale_stat() {
+Stat::StatId Spell::get_heal_scale_stat() const {
 	return _heal_scale_stat;
 }
-void Spell::set_heal_scale_stat(Stat::StatId value) {
+void Spell::set_heal_scale_stat(const Stat::StatId value) {
 	_heal_scale_stat = value;
 }
 
-float Spell::get_heal_scale_coeff() {
+float Spell::get_heal_scale_coeff() const {
 	return _heal_scale_coeff;
 }
-void Spell::set_heal_scale_coeff(float value) {
+void Spell::set_heal_scale_coeff(const float value) {
 	_heal_scale_coeff = value;
 }
 
-bool Spell::get_dispell_enabled() {
+bool Spell::get_dispell_enabled() const {
 	return _dispell_enabled;
 }
-void Spell::set_dispell_enabled(bool value) {
+void Spell::set_dispell_enabled(const bool value) {
 	_dispell_enabled = value;
 }
 
-int Spell::get_dispell_count_min() {
+int Spell::get_dispell_count_min() const {
 	return _dispell_count_min;
 }
-void Spell::set_dispell_count_min(int value) {
+void Spell::set_dispell_count_min(const int value) {
 	_dispell_count_min = value;
 }
 
-int Spell::get_dispell_count_max() {
+int Spell::get_dispell_count_max() const {
 	return _dispell_count_max;
 }
-void Spell::set_dispell_count_max(int value) {
+void Spell::set_dispell_count_max(const int value) {
 	_dispell_count_max = value;
 }
 
-int Spell::get_dispell_aura_types() {
+int Spell::get_dispell_aura_types() const {
 	return _dispell_aura_types;
 }
-void Spell::set_dispell_aura_types(int value) {
+void Spell::set_dispell_aura_types(const int value) {
 	_dispell_aura_types = value;
 }
 
-bool Spell::get_needs_target() {
+bool Spell::get_needs_target() const {
 	return _needs_target;
 }
-void Spell::set_needs_target(bool value) {
+void Spell::set_needs_target(const bool value) {
 	_needs_target = value;
 }
 
-bool Spell::get_can_move_while_casting() {
+bool Spell::get_can_move_while_casting() const {
 	return _can_move_while_casting;
 }
-void Spell::set_can_move_while_casting(bool value) {
+void Spell::set_can_move_while_casting(const bool value) {
 	_can_move_while_casting = value;
 }
 
-bool Spell::get_interrupt_enabled() {
+bool Spell::get_interrupt_enabled() const {
 	return _interrupt_enabled;
 }
-void Spell::set_interrupt_enabled(bool value) {
+void Spell::set_interrupt_enabled(const bool value) {
 	_interrupt_enabled = value;
 }
 
-float Spell::get_interrupt_time() {
+float Spell::get_interrupt_time() const {
 	return _interrupt_time;
 }
-void Spell::set_interrupt_time(float value) {
+void Spell::set_interrupt_time(const float value) {
 	_interrupt_time = value;
 }
 
-bool Spell::get_is_aoe() {
+bool Spell::get_is_aoe() const {
 	return _is_aoe;
 }
-void Spell::set_is_aoe(bool value) {
+void Spell::set_is_aoe(const bool value) {
 	_is_aoe = value;
 }
 
-SpellAOETargetType Spell::get_aoe_target_type() {
+SpellAOETargetType Spell::get_aoe_target_type() const {
 	return _aoe_targetType;
 }
-void Spell::set_aoe_target_type(SpellAOETargetType value) {
+void Spell::set_aoe_target_type(const SpellAOETargetType value) {
 	_aoe_targetType = value;
 }
 
-SpellEnums::ColliderType Spell::get_aoe_collider_type() {
+SpellEnums::ColliderType Spell::get_aoe_collider_type() const {
 	return _aoe_colliderType;
 }
-void Spell::set_aoe_collider_type(SpellEnums::ColliderType value) {
+void Spell::set_aoe_collider_type(const SpellEnums::ColliderType value) {
 	_aoe_colliderType = value;
 }
 
-float Spell::get_aoe_radius() {
+float Spell::get_aoe_radius() const {
 	return _aoe_radius;
 }
 void Spell::set_aoe_radius(float value) {
 	_aoe_radius = value;
 }
 
-Vector3 Spell::get_aoe_box_extents() {
+Vector3 Spell::get_aoe_box_extents() const {
 	return _aoe_box_extents;
 }
 void Spell::set_aoe_box_extents(Vector3 value) {
 	_aoe_box_extents = value;
 }
 
-int Spell::get_spell_cooldown_mainpulation_data_count() {
+int Spell::get_spell_cooldown_mainpulation_data_count() const {
 	return _spell_cooldown_mainpulation_data_count;
 }
 void Spell::set_spell_cooldown_mainpulation_data_count(int value) {
 	_spell_cooldown_mainpulation_data_count = value;
 }
 
-int Spell::get_training_cost() {
+int Spell::get_training_cost() const {
 	return _training_cost;
 }
-void Spell::set_training_cost(int value) {
+void Spell::set_training_cost(const int value) {
 	_training_cost = value;
 }
 
 Ref<Spell> Spell::get_training_required_spell() {
 	return _training_required_spell;
 }
-void Spell::set_training_required_spell(Ref<Spell> spell) {
+void Spell::set_training_required_spell(const Ref<Spell> &spell) {
 	_training_required_spell = spell;
 }
 
 Ref<EntitySkillData> Spell::get_training_required_skill() {
 	return _training_required_skill;
 }
-void Spell::set_training_required_skill(Ref<EntitySkillData> skill) {
+void Spell::set_training_required_skill(const Ref<EntitySkillData> &skill) {
 	_training_required_skill = skill;
 }
 
-int Spell::get_training_required_skill_level() {
+int Spell::get_training_required_skill_level() const {
 	return _training_required_skill_level;
 }
-void Spell::set_training_required_skill_level(int value) {
+void Spell::set_training_required_skill_level(const int value) {
 	_training_required_skill_level = value;
 }
 

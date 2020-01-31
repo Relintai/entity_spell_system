@@ -2,17 +2,17 @@
 
 #include "entity_resource.h"
 
-int EntityResourceData::get_id() {
+int EntityResourceData::get_id() const {
 	return _id;
 }
-void EntityResourceData::set_id(int value) {
+void EntityResourceData::set_id(const int value) {
 	_id = value;
 }
 
-String EntityResourceData::get_text_description() {
+String EntityResourceData::get_text_description() const {
 	return _text_description;
 }
-void EntityResourceData::set_text_description(String value) {
+void EntityResourceData::set_text_description(const String value) {
 	_text_description = value;
 }
 

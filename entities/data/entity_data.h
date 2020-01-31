@@ -42,47 +42,47 @@ class EntityData : public Resource {
 	GDCLASS(EntityData, Resource);
 
 public:
-	int get_id();
-	void set_id(int value);
+	int get_id() const;
+	void set_id(const int value);
 
-	String get_text_description();
-	void set_text_description(String value);
+	String get_text_description() const;
+	void set_text_description(const String value);
 
-	Ref<EntityData> get_inherits();
-	void set_inherits(Ref<EntityData> value);
+	Ref<EntityData> get_inherits() const;
+	void set_inherits(const Ref<EntityData> &value);
 
-	EntityEnums::EntityType get_entity_type();
-	void set_entity_type(EntityEnums::EntityType value);
+	EntityEnums::EntityType get_entity_type() const;
+	void set_entity_type(const EntityEnums::EntityType value);
 
-	EntityEnums::EntityInteractionType get_entity_interaction_type();
-	void set_entity_interaction_type(EntityEnums::EntityInteractionType value);
+	EntityEnums::EntityInteractionType get_entity_interaction_type() const;
+	void set_entity_interaction_type(const EntityEnums::EntityInteractionType value);
 
-	int get_immunity_flags();
-	void set_immunity_flags(int value);
+	int get_immunity_flags() const;
+	void set_immunity_flags(const int value);
 
-	int get_entity_flags();
-	void set_entity_flags(int value);
+	int get_entity_flags() const;
+	void set_entity_flags(const int value);
 
-	EntityEnums::EntityController get_entity_controller();
-	void set_entity_controller(EntityEnums::EntityController value);
+	EntityEnums::EntityController get_entity_controller() const;
+	void set_entity_controller(const EntityEnums::EntityController value);
 
-	int get_money();
+	int get_money() const;
 	void set_money(int value);
 
-	int get_bag_size();
+	int get_bag_size() const;
 	void set_bag_size(int value);
 
-	Ref<EntitySpeciesData> get_entity_species_data();
-	void set_entity_species_data(Ref<EntitySpeciesData> value);
+	Ref<EntitySpeciesData> get_entity_species_data() const;
+	void set_entity_species_data(const Ref<EntitySpeciesData> &value);
 
-	Ref<EntityClassData> get_entity_class_data();
-	void set_entity_class_data(Ref<EntityClassData> data);
+	Ref<EntityClassData> get_entity_class_data() const;
+	void set_entity_class_data(const Ref<EntityClassData> &data);
 
-	Ref<EquipmentData> get_equipment_data();
-	void set_equipment_data(Ref<EquipmentData> data);
+	Ref<EquipmentData> get_equipment_data() const;
+	void set_equipment_data(const Ref<EquipmentData> &data);
 
 	Ref<EntityAI> get_ai() const;
-	void set_ai(const Ref<EntityAI> ai);
+	void set_ai(const Ref<EntityAI> &ai);
 	Ref<EntityAI> get_ai_instance();
 	Ref<EntityAI> _get_ai_instance();
 
@@ -99,12 +99,12 @@ public:
 	void set_item_container_data(const Ref<ItemContainerData> data);
 
 	//Craft Recipes
-	int get_num_craft_recipes();
+	int get_num_craft_recipes() const;
 
 	Ref<CraftRecipe> get_craft_recipe(int index);
 	void set_craft_recipe(int index, Ref<CraftRecipe> recipe);
 
-	Vector<Variant> get_craft_recipes();
+	Vector<Variant> get_craft_recipes() const;
 	void set_craft_recipes(const Vector<Variant> &recipe);
 
 	String generate_name();

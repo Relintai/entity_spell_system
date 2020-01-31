@@ -8,35 +8,35 @@
 #include "character_spec.h"
 #include "vendor_item_data.h"
 
-int EntityData::get_id() {
+int EntityData::get_id() const {
 	return _id;
 }
 void EntityData::set_id(int value) {
 	_id = value;
 }
 
-String EntityData::get_text_description() {
+String EntityData::get_text_description() const {
 	return _text_description;
 }
 void EntityData::set_text_description(String value) {
 	_text_description = value;
 }
 
-Ref<EntityData> EntityData::get_inherits() {
+Ref<EntityData> EntityData::get_inherits() const {
 	return _inherits;
 }
-void EntityData::set_inherits(Ref<EntityData> value) {
+void EntityData::set_inherits(const Ref<EntityData> &value) {
 	_inherits = value;
 }
 
-EntityEnums::EntityType EntityData::get_entity_type() {
+EntityEnums::EntityType EntityData::get_entity_type() const {
 	return _entity_type;
 }
-void EntityData::set_entity_type(EntityEnums::EntityType value) {
+void EntityData::set_entity_type(const EntityEnums::EntityType value) {
 	_entity_type = value;
 }
 
-EntityEnums::EntityInteractionType EntityData::get_entity_interaction_type() {
+EntityEnums::EntityInteractionType EntityData::get_entity_interaction_type() const {
 	return _interaction_type;
 }
 
@@ -44,66 +44,66 @@ void EntityData::set_entity_interaction_type(EntityEnums::EntityInteractionType 
 	_interaction_type = value;
 }
 
-int EntityData::get_immunity_flags() {
+int EntityData::get_immunity_flags() const {
 	return _immunity_flags;
 }
 void EntityData::set_immunity_flags(int value) {
 	_immunity_flags = value;
 }
 
-int EntityData::get_entity_flags() {
+int EntityData::get_entity_flags() const {
 	return _entity_flags;
 }
 void EntityData::set_entity_flags(int value) {
 	_entity_flags = value;
 }
 
-EntityEnums::EntityController EntityData::get_entity_controller() {
+EntityEnums::EntityController EntityData::get_entity_controller() const {
 	return _entity_controller;
 }
 void EntityData::set_entity_controller(EntityEnums::EntityController value) {
 	_entity_controller = value;
 }
 
-int EntityData::get_money() {
+int EntityData::get_money() const {
 	return _money;
 }
 void EntityData::set_money(int value) {
 	_money = value;
 }
 
-int EntityData::get_bag_size() {
+int EntityData::get_bag_size() const {
 	return _bag_size;
 }
 void EntityData::set_bag_size(int value) {
 	_bag_size = value;
 }
 
-Ref<EntitySpeciesData> EntityData::get_entity_species_data() {
+Ref<EntitySpeciesData> EntityData::get_entity_species_data() const {
 	return _entity_species_data;
 }
-void EntityData::set_entity_species_data(Ref<EntitySpeciesData> value) {
+void EntityData::set_entity_species_data(const Ref<EntitySpeciesData> &value) {
 	_entity_species_data = value;
 }
 
-Ref<EntityClassData> EntityData::get_entity_class_data() {
+Ref<EntityClassData> EntityData::get_entity_class_data() const {
 	return _entity_class_data;
 }
-void EntityData::set_entity_class_data(Ref<EntityClassData> data) {
+void EntityData::set_entity_class_data(const Ref<EntityClassData> &data) {
 	_entity_class_data = data;
 }
 
-Ref<EquipmentData> EntityData::get_equipment_data() {
+Ref<EquipmentData> EntityData::get_equipment_data() const {
 	return _equipment_data;
 }
-void EntityData::set_equipment_data(Ref<EquipmentData> data) {
+void EntityData::set_equipment_data(const Ref<EquipmentData> &data) {
 	_equipment_data = data;
 }
 
 Ref<EntityAI> EntityData::get_ai() const {
 	return _ai;
 }
-void EntityData::set_ai(const Ref<EntityAI> ai) {
+void EntityData::set_ai(const Ref<EntityAI> &ai) {
 	_ai = ai;
 }
 Ref<EntityAI> EntityData::get_ai_instance() {
@@ -162,7 +162,7 @@ void EntityData::set_item_container_data(const Ref<ItemContainerData> data) {
 }
 
 //Craft Recipes
-int EntityData::get_num_craft_recipes() {
+int EntityData::get_num_craft_recipes() const {
 	return _craft_recipes.size();
 }
 
@@ -177,7 +177,7 @@ void EntityData::set_craft_recipe(int index, Ref<CraftRecipe> craft_data) {
 	_craft_recipes.set(index, craft_data);
 }
 
-Vector<Variant> EntityData::get_craft_recipes() {
+Vector<Variant> EntityData::get_craft_recipes() const {
 	Vector<Variant> r;
 	for (int i = 0; i < _craft_recipes.size(); i++) {
 		r.push_back(_craft_recipes[i].get_ref_ptr());

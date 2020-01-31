@@ -1,86 +1,86 @@
 #include "world_spell_data.h"
 
-int WorldSpellData::get_id() {
+int WorldSpellData::get_id() const {
 	return _id;
 }
-void WorldSpellData::set_id(int value) {
+void WorldSpellData::set_id(const int value) {
 	_id = value;
 }
 
-SpellEnums::ColliderType WorldSpellData::get_collider_type() {
+SpellEnums::ColliderType WorldSpellData::get_collider_type() const {
 	return _collider_type;
 }
-void WorldSpellData::set_collider_type(SpellEnums::ColliderType value) {
+void WorldSpellData::set_collider_type(const SpellEnums::ColliderType value) {
 	_collider_type = value;
 }
 
-Vector3 WorldSpellData::get_collider_box_extents() {
+Vector3 WorldSpellData::get_collider_box_extents() const {
 	return _collider_box_extents;
 }
-void WorldSpellData::set_collider_box_extents(Vector3 value) {
+void WorldSpellData::set_collider_box_extents(const Vector3 &value) {
 	_collider_box_extents = value;
 }
 
-float WorldSpellData::get_collider_sphere_radius() {
+float WorldSpellData::get_collider_sphere_radius() const {
 	return _collider_sphere_radius;
 }
-void WorldSpellData::set_collider_sphere_radius(float value) {
+void WorldSpellData::set_collider_sphere_radius(const float value) {
 	_collider_sphere_radius = value;
 }
 
-SpellEnums::TargetType WorldSpellData::get_target_type() {
+SpellEnums::TargetType WorldSpellData::get_target_type() const {
 	return _target_type;
 }
-void WorldSpellData::set_target_type(SpellEnums::TargetType value) {
+void WorldSpellData::set_target_type(const SpellEnums::TargetType value) {
 	_target_type = value;
 }
 
-int WorldSpellData::get_target_bone_id() {
+int WorldSpellData::get_target_bone_id() const {
 	return _target_bone_id;
 }
-void WorldSpellData::set_target_bone_id(int value) {
+void WorldSpellData::set_target_bone_id(const int value) {
 	_target_bone_id = value;
 }
 
-bool WorldSpellData::get_move() {
+bool WorldSpellData::get_move() const {
 	return _move;
 }
-void WorldSpellData::set_move(bool value) {
+void WorldSpellData::set_move(const bool value) {
 	_move = value;
 }
 
-float WorldSpellData::get_movement_speed() {
+float WorldSpellData::get_movement_speed() const {
 	return _movement_speed;
 }
-void WorldSpellData::set_movement_speed(float value) {
+void WorldSpellData::set_movement_speed(const float value) {
 	_movement_speed = value;
 }
 
-Vector3 WorldSpellData::get_movement_dir() {
+Vector3 WorldSpellData::get_movement_dir() const {
 	return _movement_dir;
 }
-void WorldSpellData::set_movement_dir(Vector3 value) {
+void WorldSpellData::set_movement_dir(const Vector3 &value) {
 	_movement_dir = value;
 }
 
-float WorldSpellData::get_max_dist() {
+float WorldSpellData::get_max_dist() const {
 	return _max_dist;
 }
-void WorldSpellData::set_max_dist(float value) {
+void WorldSpellData::set_max_dist(const float value) {
 	_max_dist = value;
 }
 
 Ref<PackedScene> WorldSpellData::get_effect() {
 	return _effect;
 }
-void WorldSpellData::set_effect(Ref<PackedScene> value) {
+void WorldSpellData::set_effect(const Ref<PackedScene> &value) {
 	_effect = value;
 }
 
-Vector3 WorldSpellData::get_effect_offset() {
+Vector3 WorldSpellData::get_effect_offset() const {
 	return _effect_offset;
 }
-void WorldSpellData::set_effect_offset(Vector3 value) {
+void WorldSpellData::set_effect_offset(const Vector3 &value) {
 	_effect_offset = value;
 }
 

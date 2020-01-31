@@ -58,201 +58,201 @@ class Spell : public Resource {
 	GDCLASS(Spell, Resource);
 
 public:
-	int get_id();
-	void set_id(int value);
+	int get_id() const;
+	void set_id(const int value);
 
-	int get_spell_type();
-	void set_spell_type(int value);
+	int get_spell_type() const;
+	void set_spell_type(const int value);
 
-	SpellEnums::SpellCategory get_spell_category();
-	void set_spell_category(SpellEnums::SpellCategory value);
+	SpellEnums::SpellCategory get_spell_category() const;
+	void set_spell_category(const SpellEnums::SpellCategory value);
 
-	bool get_hide_from_actionbar();
-	void set_hide_from_actionbar(bool value);
+	bool get_hide_from_actionbar() const;
+	void set_hide_from_actionbar(const bool value);
 
-	float get_cooldown();
-	void set_cooldown(float value);
+	float get_cooldown() const;
+	void set_cooldown(const float value);
 
-	SpellTargetType get_target_type();
-	void set_target_type(SpellTargetType value);
+	SpellTargetType get_target_type() const;
+	void set_target_type(const SpellTargetType value);
 
-	TargetRelationType get_target_relation_type();
-	void set_target_relation_type(TargetRelationType value);
+	TargetRelationType get_target_relation_type() const;
+	void set_target_relation_type(const TargetRelationType value);
 
-	int get_level();
-	void set_level(int value);
+	int get_level() const;
+	void set_level(const int value);
 
-	int get_rank();
-	void set_rank(int value);
+	int get_rank() const;
+	void set_rank(const int value);
 
-	bool get_scale_with_level();
-	void set_scale_with_level(bool value);
+	bool get_scale_with_level() const;
+	void set_scale_with_level(const bool value);
 
 	Ref<ItemTemplate> get_item_cost();
-	void set_item_cost(Ref<ItemTemplate> value);
+	void set_item_cost(const Ref<ItemTemplate> &value);
 
 	Ref<ItemTemplate> get_required_item();
-	void set_required_item(Ref<ItemTemplate> value);
+	void set_required_item(const Ref<ItemTemplate> &value);
 
 	Ref<EntityResourceCostData> get_resource_cost();
-	void set_resource_cost(Ref<EntityResourceCostData> value);
+	void set_resource_cost(const Ref<EntityResourceCostData> &value);
 
 	Ref<EntityResourceCostData> get_resource_give();
-	void set_resource_give(Ref<EntityResourceCostData> value);
+	void set_resource_give(const Ref<EntityResourceCostData> &value);
 
-	bool get_global_cooldown_enabled();
-	void set_global_cooldown_enabled(bool value);
+	bool get_global_cooldown_enabled() const;
+	void set_global_cooldown_enabled(const bool value);
 
-	bool get_is_local_spell();
-	void set_is_local_spell(bool value);
+	bool get_is_local_spell() const;
+	void set_is_local_spell(const bool value);
 
 	Ref<Texture> get_icon();
-	void set_icon(Ref<Texture> value);
+	void set_icon(const Ref<Texture> &value);
 
-	String get_text_description();
-	void set_text_description(String value);
+	String get_text_description() const;
+	void set_text_description(const String value);
 
 	Ref<SpellEffectVisual> get_visual_spell_effects();
-	void set_visual_spell_effects(Ref<SpellEffectVisual> value);
+	void set_visual_spell_effects(const Ref<SpellEffectVisual> &value);
 
 	Ref<WorldSpellData> get_projectile();
-	void set_projectile(Ref<WorldSpellData> value);
+	void set_projectile(const Ref<WorldSpellData> &value);
 
 	Ref<CraftRecipe> get_teaches_craft_recipe();
-	void set_teaches_craft_recipe(Ref<CraftRecipe> value);
+	void set_teaches_craft_recipe(const Ref<CraftRecipe> &value);
 
 	//Caster Aura Apply
-	int get_num_caster_aura_applys();
-	void set_num_caster_aura_applys(int value);
+	int get_num_caster_aura_applys() const;
+	void set_num_caster_aura_applys(const int value);
 
-	Ref<Aura> get_caster_aura_apply(int index) const;
-	void set_caster_aura_apply(int index, Ref<Aura> caster_aura_apply);
+	Ref<Aura> get_caster_aura_apply(const int index);
+	void set_caster_aura_apply(const int index, const Ref<Aura> &caster_aura_apply);
 
 	Vector<Variant> get_caster_aura_applys();
 	void set_caster_aura_applys(const Vector<Variant> &caster_aura_applys);
 
 	//Target Aura Apply
-	int get_num_target_aura_applys();
-	void set_num_target_aura_applys(int value);
+	int get_num_target_aura_applys() const;
+	void set_num_target_aura_applys(const int value);
 
-	Ref<Aura> get_target_aura_apply(int index) const;
-	void set_target_aura_apply(int index, Ref<Aura> target_aura_apply);
+	Ref<Aura> get_target_aura_apply(const int index);
+	void set_target_aura_apply(const int index, const Ref<Aura> &target_aura_apply);
 
 	Vector<Variant> get_target_aura_applys();
 	void set_target_aura_applys(const Vector<Variant> &target_aura_applys);
 
 	//Apply Auras On Learn
-	int get_num_on_learn_auras();
-	void set_num_on_learn_auras(int value);
+	int get_num_on_learn_auras() const;
+	void set_num_on_learn_auras(const int value);
 
-	Ref<Aura> get_on_learn_aura(int index) const;
-	void set_on_learn_aura(int index, Ref<Aura> on_learn_aura);
+	Ref<Aura> get_on_learn_aura(const int index);
+	void set_on_learn_aura(const int index, const Ref<Aura> &on_learn_aura);
 
 	Vector<Variant> get_on_learn_auras();
 	void set_on_learn_auras(const Vector<Variant> &on_learn_auras);
 
 	//Range
-	bool get_range_enabled();
-	void set_range_enabled(bool value);
+	bool get_range_enabled() const;
+	void set_range_enabled(const bool value);
 
-	float get_range();
-	void set_range(float value);
+	float get_range() const;
+	void set_range(const float value);
 
-	bool get_cast_time_enabled();
-	void set_cast_time_enabled(bool value);
+	bool get_cast_time_enabled() const;
+	void set_cast_time_enabled(const bool value);
 
-	float get_cast_time();
-	void set_cast_time(float value);
+	float get_cast_time() const;
+	void set_cast_time(const float value);
 
-	bool get_damage_enabled();
-	void set_damage_enabled(bool value);
+	bool get_damage_enabled() const;
+	void set_damage_enabled(const bool value);
 
-	int get_damage_type();
-	void set_damage_type(int value);
+	int get_damage_type() const;
+	void set_damage_type(const int value);
 
-	int get_damage_min();
-	void set_damage_min(int value);
+	int get_damage_min() const;
+	void set_damage_min(const int value);
 
-	int get_damage_max();
-	void set_damage_max(int value);
+	int get_damage_max() const;
+	void set_damage_max(const int value);
 
-	Stat::StatId get_damage_scale_stat();
-	void set_damage_scale_stat(Stat::StatId value);
+	Stat::StatId get_damage_scale_stat() const;
+	void set_damage_scale_stat(const Stat::StatId value);
 
-	float get_damage_scale_coeff();
-	void set_damage_scale_coeff(float value);
+	float get_damage_scale_coeff() const;
+	void set_damage_scale_coeff(const float value);
 
-	bool get_heal_enabled();
-	void set_heal_enabled(bool value);
+	bool get_heal_enabled() const;
+	void set_heal_enabled(const bool value);
 
-	int get_heal_min();
-	void set_heal_min(int value);
+	int get_heal_min() const;
+	void set_heal_min(const int value);
 
-	int get_heal_max();
-	void set_heal_max(int value);
+	int get_heal_max() const;
+	void set_heal_max(const int value);
 
-	Stat::StatId get_heal_scale_stat();
-	void set_heal_scale_stat(Stat::StatId value);
+	Stat::StatId get_heal_scale_stat() const;
+	void set_heal_scale_stat(const Stat::StatId value);
 
-	float get_heal_scale_coeff();
-	void set_heal_scale_coeff(float value);
+	float get_heal_scale_coeff() const;
+	void set_heal_scale_coeff(const float value);
 
 	//Dispells
-	bool get_dispell_enabled();
-	void set_dispell_enabled(bool value);
+	bool get_dispell_enabled() const;
+	void set_dispell_enabled(const bool value);
 
-	int get_dispell_count_min();
-	void set_dispell_count_min(int value);
+	int get_dispell_count_min() const;
+	void set_dispell_count_min(const int value);
 
-	int get_dispell_count_max();
-	void set_dispell_count_max(int value);
+	int get_dispell_count_max() const;
+	void set_dispell_count_max(const int value);
 
-	int get_dispell_aura_types();
-	void set_dispell_aura_types(int value);
+	int get_dispell_aura_types() const;
+	void set_dispell_aura_types(const int value);
 
 	//Target
-	bool get_needs_target();
-	void set_needs_target(bool value);
+	bool get_needs_target() const;
+	void set_needs_target(const bool value);
 
-	bool get_can_move_while_casting();
-	void set_can_move_while_casting(bool value);
+	bool get_can_move_while_casting() const;
+	void set_can_move_while_casting(const bool value);
 
-	bool get_interrupt_enabled();
-	void set_interrupt_enabled(bool value);
+	bool get_interrupt_enabled() const;
+	void set_interrupt_enabled(const bool value);
 
-	float get_interrupt_time();
-	void set_interrupt_time(float value);
+	float get_interrupt_time() const;
+	void set_interrupt_time(const float value);
 
 	//AOE
-	bool get_is_aoe();
-	void set_is_aoe(bool value);
+	bool get_is_aoe() const;
+	void set_is_aoe(const bool value);
 
-	SpellAOETargetType get_aoe_target_type();
-	void set_aoe_target_type(SpellAOETargetType value);
+	SpellAOETargetType get_aoe_target_type() const;
+	void set_aoe_target_type(const SpellAOETargetType value);
 
-	SpellEnums::ColliderType get_aoe_collider_type();
-	void set_aoe_collider_type(SpellEnums::ColliderType value);
+	SpellEnums::ColliderType get_aoe_collider_type() const;
+	void set_aoe_collider_type(const SpellEnums::ColliderType value);
 
-	float get_aoe_radius();
-	void set_aoe_radius(float value);
+	float get_aoe_radius() const;
+	void set_aoe_radius(const float value);
 
-	Vector3 get_aoe_box_extents();
-	void set_aoe_box_extents(Vector3 value);
+	Vector3 get_aoe_box_extents() const;
+	void set_aoe_box_extents(const Vector3 value);
 
-	int get_spell_cooldown_mainpulation_data_count();
-	void set_spell_cooldown_mainpulation_data_count(int value);
+	int get_spell_cooldown_mainpulation_data_count() const;
+	void set_spell_cooldown_mainpulation_data_count(const int value);
 
-	int get_training_cost();
+	int get_training_cost() const;
 	void set_training_cost(int value);
 
 	Ref<Spell> get_training_required_spell();
-	void set_training_required_spell(Ref<Spell> spell);
+	void set_training_required_spell(const Ref<Spell> &spell);
 
 	Ref<EntitySkillData> get_training_required_skill();
-	void set_training_required_skill(Ref<EntitySkillData> skill);
+	void set_training_required_skill(const Ref<EntitySkillData> &skill);
 
-	int get_training_required_skill_level();
-	void set_training_required_skill_level(int value);
+	int get_training_required_skill_level() const;
+	void set_training_required_skill_level(const int value);
 
 	////    Spell Script    ////
 

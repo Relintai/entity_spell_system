@@ -1,30 +1,30 @@
 #include "entity_skill_data.h"
 
-int EntitySkillData::get_id() {
+int EntitySkillData::get_id() const {
 	return _id;
 }
-void EntitySkillData::set_id(int value) {
+void EntitySkillData::set_id(const int value) {
 	_id = value;
 }
 
-int EntitySkillData::get_default_value() {
+int EntitySkillData::get_default_value() const {
 	return _default_value;
 }
-void EntitySkillData::set_default_value(int value) {
+void EntitySkillData::set_default_value(const int value) {
 	_default_value = value;
 }
 
-int EntitySkillData::get_max_value() {
+int EntitySkillData::get_max_value() const {
 	return _max_value;
 }
-void EntitySkillData::set_max_value(int value) {
+void EntitySkillData::set_max_value(const int value) {
 	_max_value = value;
 }
 
-String EntitySkillData::get_text_description() {
+String EntitySkillData::get_text_description() const {
 	return _text_description;
 }
-void EntitySkillData::set_text_description(String value) {
+void EntitySkillData::set_text_description(const String value) {
 	_text_description = value;
 }
 

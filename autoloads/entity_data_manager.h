@@ -35,7 +35,7 @@ public:
 	static EntityDataManager *get_instance();
 
 	Ref<Aura> get_skill_for_armor_type(int index);
-	void set_skill_for_armor_type(int index, Ref<Aura> aura);
+	void set_skill_for_armor_type(int index, const Ref<Aura> &aura);
 
 	String get_xp_data_path();
 	void set_xp_data_path(String path);
@@ -47,7 +47,7 @@ public:
 	Ref<EntityResourceData> get_entity_resource(int class_id);
 	Ref<EntityResourceData> get_entity_resource_index(int index);
 	int get_entity_resource_count();
-	void add_entity_resource(Ref<EntityResourceData> cls);
+	void add_entity_resource(const Ref<EntityResourceData> &cls);
 
 	String get_entity_skills_folder();
 	void set_entity_skills_folder(String folder);
@@ -55,7 +55,7 @@ public:
 	Ref<EntitySkillData> get_entity_skill(int class_id);
 	Ref<EntitySkillData> get_entity_skill_index(int index);
 	int get_entity_skill_count();
-	void add_entity_skill(Ref<EntitySkillData> cls);
+	void add_entity_skill(const Ref<EntitySkillData> &cls);
 
 	String get_entity_datas_folder();
 	void set_entity_datas_folder(String folder);
@@ -63,7 +63,7 @@ public:
 	Ref<EntityData> get_entity_data(int class_id);
 	Ref<EntityData> get_entity_data_index(int index);
 	int get_entity_data_count();
-	void add_entity_data(Ref<EntityData> cls);
+	void add_entity_data(const Ref<EntityData> &cls);
 
 	String get_spells_folder();
 	void set_spells_folder(String folder);
@@ -71,7 +71,7 @@ public:
 	Ref<Spell> get_spell(int spell_id);
 	Ref<Spell> get_spell_index(int index);
 	int get_spell_count();
-	void add_spell(Ref<Spell> spell);
+	void add_spell(const Ref<Spell> &spell);
 
 	String get_auras_folder();
 	void set_auras_folder(String folder);
@@ -79,7 +79,7 @@ public:
 	Ref<Aura> get_aura(int aura_id);
 	Ref<Aura> get_aura_index(int index);
 	int get_aura_count();
-	void add_aura(Ref<Aura> aura);
+	void add_aura(const Ref<Aura> &aura);
 
 	String get_world_spell_datas_folder();
 	void set_world_spell_datas_folder(String folder);
@@ -87,7 +87,7 @@ public:
 	Ref<WorldSpellData> get_world_spell_data(int class_id);
 	Ref<WorldSpellData> get_world_spell_data_index(int index);
 	int get_world_spell_data_count();
-	void add_world_spell_data(Ref<WorldSpellData> cls);
+	void add_world_spell_data(const Ref<WorldSpellData> &cls);
 
 	String get_craft_data_folder();
 	void set_craft_data_folder(String folder);
@@ -95,12 +95,12 @@ public:
 	Ref<CraftRecipe> get_craft_data(int craft_id);
 	Ref<CraftRecipe> get_craft_data_index(int index);
 	int get_craft_data_count();
-	void add_craft_data(Ref<CraftRecipe> aura);
+	void add_craft_data(const Ref<CraftRecipe> &aura);
 
 	String get_item_template_folder();
 	void set_item_template_folder(String folder);
 	Vector<Ref<ItemTemplate> > *get_item_templates();
-	void add_item_template(Ref<ItemTemplate> aura);
+	void add_item_template(const Ref<ItemTemplate> &aura);
 	Ref<ItemTemplate> get_item_template(int item_id);
 	Ref<ItemTemplate> get_item_template_index(int index);
 	int get_item_template_count();
@@ -108,7 +108,7 @@ public:
 	String get_mob_data_folder();
 	void set_mob_data_folder(String folder);
 	Vector<Ref<EntityData> > *get_mob_datas();
-	void add_mob_data(Ref<EntityData> aura);
+	void add_mob_data(const Ref<EntityData> &aura);
 	Ref<EntityData> get_mob_data(int item_id);
 	Ref<EntityData> get_mob_data_index(int index);
 	int get_mob_data_count();
@@ -116,7 +116,7 @@ public:
 	String get_player_character_data_folder();
 	void set_player_character_data_folder(String folder);
 	Vector<Ref<EntityData> > *get_player_character_datas();
-	void add_player_character_data(Ref<EntityData> aura);
+	void add_player_character_data(const Ref<EntityData> &aura);
 	Ref<EntityData> get_player_character_data(int item_id);
 	Ref<EntityData> get_player_character_data_index(int index);
 	int get_player_character_data_count();

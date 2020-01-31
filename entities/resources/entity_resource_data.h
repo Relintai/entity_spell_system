@@ -11,11 +11,11 @@ class EntityResourceData : public Resource {
 	GDCLASS(EntityResourceData, Resource);
 
 public:
-	int get_id();
-	void set_id(int value);
+	int get_id() const;
+	void set_id(const int value);
 
-	String get_text_description();
-	void set_text_description(String value);
+	String get_text_description() const;
+	void set_text_description(const String value);
 
 	Ref<EntityResource> get_entity_resource_instance();
 

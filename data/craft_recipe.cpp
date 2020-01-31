@@ -3,45 +3,45 @@
 const String CraftRecipe::BINDING_STRING_CRAFT_CATEGORIES = "None,Alchemy,Smithing,Tailoring,Enchanting,Engineering";
 const String CraftRecipe::BINDING_STRING_CRAFT_SUB_CATEGORIES = "None,Potions";
 
-int CraftRecipe::get_id() {
+int CraftRecipe::get_id() const {
 	return _id;
 }
-void CraftRecipe::set_id(int value) {
+void CraftRecipe::set_id(const int value) {
 	_id = value;
 }
 
-CraftRecipe::CraftCategories CraftRecipe::get_category() {
+CraftRecipe::CraftCategories CraftRecipe::get_category() const {
 	return _category;
 }
-void CraftRecipe::set_category(CraftCategories value) {
+void CraftRecipe::set_category(const CraftCategories value) {
 	_category = value;
 }
 
-CraftRecipe::CraftSubCategories CraftRecipe::get_sub_category() {
+CraftRecipe::CraftSubCategories CraftRecipe::get_sub_category() const {
 	return _sub_category;
 }
 
-void CraftRecipe::set_sub_category(CraftSubCategories value) {
+void CraftRecipe::set_sub_category(const CraftSubCategories value) {
 	_sub_category = value;
 }
 
-Ref<CraftRecipeHelper> CraftRecipe::get_required_tool(int index) {
+Ref<CraftRecipeHelper> CraftRecipe::get_required_tool(const int index) {
 	return _required_tools[index];
 }
 
-void CraftRecipe::set_required_tool(int index, const Ref<CraftRecipeHelper> value) {
+void CraftRecipe::set_required_tool(const int index, const Ref<CraftRecipeHelper> &value) {
 	_required_tools[index] = value;
 }
 
-int CraftRecipe::get_required_tools_count() {
+int CraftRecipe::get_required_tools_count() const {
 	return _required_tools_count;
 }
 
-void CraftRecipe::set_required_tools_count(int value) {
+void CraftRecipe::set_required_tools_count(const int value) {
 	_required_tools_count = value;
 }
 
-void CraftRecipe::set_required_material(int index, const Ref<CraftRecipeHelper> value) {
+void CraftRecipe::set_required_material(const int index, const Ref<CraftRecipeHelper> &value) {
 	_required_materials[index] = value;
 }
 
@@ -49,11 +49,11 @@ Ref<CraftRecipeHelper> CraftRecipe::get_required_material(int index) {
 	return _required_materials[index];
 }
 
-int CraftRecipe::get_required_materials_count() {
+int CraftRecipe::get_required_materials_count() const {
 	return _required_materials_count;
 }
 
-void CraftRecipe::set_required_materials_count(int value) {
+void CraftRecipe::set_required_materials_count(const int value) {
 	_required_materials_count = value;
 }
 
@@ -61,7 +61,7 @@ Ref<CraftRecipeHelper> CraftRecipe::get_item() {
 	return _item;
 }
 
-void CraftRecipe::set_item(Ref<CraftRecipeHelper> value) {
+void CraftRecipe::set_item(const Ref<CraftRecipeHelper> &value) {
 	_item = value;
 }
 

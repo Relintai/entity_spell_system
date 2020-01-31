@@ -2,112 +2,112 @@
 
 #include "../entities/resources/entity_resource_cost_data.h"
 
-int Aura::get_id() {
+int Aura::get_id() const {
 	return id;
 }
-void Aura::set_id(int value) {
+void Aura::set_id(const int value) {
 	id = value;
 }
 
 Ref<Texture> Aura::get_icon() {
 	return _icon;
 }
-void Aura::set_icon(Ref<Texture> value) {
-	_icon = Ref<Texture>(value);
+void Aura::set_icon(const Ref<Texture> &value) {
+	_icon = value;
 }
 
-float Aura::get_time() {
+float Aura::get_time() const {
 	return time;
 }
-void Aura::set_time(float value) {
+void Aura::set_time(const float value) {
 	time = value;
 }
 
-float Aura::get_tick() {
+float Aura::get_tick() const {
 	return _tick;
 }
-void Aura::set_tick(float value) {
+void Aura::set_tick(const float value) {
 	_tick = value;
 }
 
 Ref<AuraGroup> Aura::get_aura_group() {
 	return _aura_group;
 }
-void Aura::set_aura_group(Ref<AuraGroup> value) {
+void Aura::set_aura_group(const Ref<AuraGroup> &value) {
 	_aura_group = value;
 }
 
-bool Aura::get_is_debuff() {
+bool Aura::get_is_debuff() const {
 	return _is_debuff;
 }
-void Aura::set_is_debuff(bool value) {
+void Aura::set_is_debuff(const bool value) {
 	_is_debuff = value;
 }
 
-SpellEnums::AuraType Aura::get_aura_type() {
+SpellEnums::AuraType Aura::get_aura_type() const {
 	return _aura_type;
 }
 void Aura::set_aura_type(SpellEnums::AuraType value) {
 	_aura_type = value;
 }
 
-int Aura::get_rank() {
+int Aura::get_rank() const {
 	return _rank;
 }
-void Aura::set_rank(int value) {
+void Aura::set_rank(const int value) {
 	_rank = value;
 }
 
-String Aura::get_text_description() {
+String Aura::get_text_description() const {
 	return _text_description;
 }
-void Aura::set_text_description(String description) {
+void Aura::set_text_description(const String description) {
 	_text_description = description;
 }
 
-bool Aura::get_hide() {
+bool Aura::get_hide() const {
 	return _hide;
 }
-void Aura::set_hide(bool value) {
+void Aura::set_hide(const bool value) {
 	_hide = value;
 }
 
 Ref<SpellEffectVisual> Aura::get_visual_spell_effects() {
 	return _visual_spell_effects;
 }
-void Aura::set_visual_spell_effects(Ref<SpellEffectVisual> value) {
+void Aura::set_visual_spell_effects(const Ref<SpellEffectVisual> &value) {
 	_visual_spell_effects = value;
 }
 
 Ref<WorldSpellData> Aura::get_world_spell_data() {
 	return _world_spell_data;
 }
-void Aura::set_world_spell_data(Ref<WorldSpellData> value) {
+void Aura::set_world_spell_data(const Ref<WorldSpellData> &value) {
 	_world_spell_data = value;
 }
 
-int Aura::get_ability_scale_data_id() {
+int Aura::get_ability_scale_data_id() const {
 	return ability_scale_data_id;
 }
-void Aura::set_ability_scale_data_id(int value) {
+void Aura::set_ability_scale_data_id(const int value) {
 	ability_scale_data_id = value;
 }
 
-float Aura::get_damage_scale_for_level(int level) {
+float Aura::get_damage_scale_for_level(const int level) const {
 	//return this->getDamageLevelScaling()->Evaluate((float)(level));
 	return 1;
 }
-float Aura::get_heal_scale_for_level(int level) {
+float Aura::get_heal_scale_for_level(const int level) const {
 	//return this->getHealLevelScaling()->Evaluate((float)(level));
 	return 1;
 }
 
-float Aura::get_absorb_scale_for_level(int level) {
+float Aura::get_absorb_scale_for_level(const int level) const {
 	//return this->getAbsorbLevelScaling()->Evaluate((float)(level));
 	return 1;
 }
 
-SpellEnums::DiminishingReturnCategory Aura::get_diminishing_category() {
+SpellEnums::DiminishingReturnCategory Aura::get_diminishing_category() const {
 	return _diminishing_category;
 }
 
@@ -115,10 +115,10 @@ void Aura::set_diminishing_category(SpellEnums::DiminishingReturnCategory dimini
 	_diminishing_category = diminishingCategory;
 }
 
-Ref<Spell> Aura::get_teaches_spell() const {
+Ref<Spell> Aura::get_teaches_spell() {
 	return _teaches_spell;
 }
-void Aura::set_teaches_spell(const Ref<Spell> spell) {
+void Aura::set_teaches_spell(const Ref<Spell> &spell) {
 	_teaches_spell = spell;
 }
 
@@ -135,43 +135,43 @@ void Aura::OnAuraAbilityScalingDataLoaded(AbilityScalingDataLoaderHelper *h) {
 */
 
 //Damage
-bool Aura::get_damage_enabled() {
+bool Aura::get_damage_enabled() const {
 	return _damage_enabled;
 }
-void Aura::set_damage_enabled(bool value) {
+void Aura::set_damage_enabled(const bool value) {
 	_damage_enabled = value;
 }
 
-int Aura::get_damage_type() {
+int Aura::get_damage_type() const {
 	return _damage_type;
 }
 
-void Aura::set_damage_type(int value) {
+void Aura::set_damage_type(const int value) {
 	_damage_type = value;
 }
 
-int Aura::get_damage_min() {
+int Aura::get_damage_min() const {
 	return _damage_min;
 }
-void Aura::set_damage_min(int value) {
+void Aura::set_damage_min(const int value) {
 	_damage_min = value;
 }
 
-int Aura::get_damage_max() {
+int Aura::get_damage_max() const {
 	return _damage_max;
 }
-void Aura::set_damage_max(int value) {
+void Aura::set_damage_max(const int value) {
 	_damage_max = value;
 }
 
-bool Aura::get_damage_can_crit() {
+bool Aura::get_damage_can_crit() const {
 	return _damage_can_crit;
 }
-void Aura::set_damage_can_crit(bool value) {
+void Aura::set_damage_can_crit(const bool value) {
 	_damage_can_crit = value;
 }
 
-void Aura::set_damage(int min, int max, bool can_crit) {
+void Aura::set_damage(const int min, const int max, const bool can_crit) {
 	set_damage_enabled(true);
 	set_damage_min(min);
 	set_damage_max(max);
@@ -179,65 +179,65 @@ void Aura::set_damage(int min, int max, bool can_crit) {
 }
 
 //Absorb
-bool Aura::get_absorb_enabled() {
+bool Aura::get_absorb_enabled() const {
 	return _absorb_enabled;
 }
-void Aura::set_absorb_enabled(bool value) {
+void Aura::set_absorb_enabled(const bool value) {
 	_absorb_enabled = value;
 }
 
-int Aura::get_absorb_damage_type() {
+int Aura::get_absorb_damage_type() const {
 	return _absorb_damage_type;
 }
 
-void Aura::set_absorb_damage_type(int value) {
+void Aura::set_absorb_damage_type(const int value) {
 	_absorb_damage_type = value;
 }
 
-int Aura::get_absorb_min() {
+int Aura::get_absorb_min() const {
 	return _absorb_min;
 }
-void Aura::set_absorb_min(int value) {
+void Aura::set_absorb_min(const int value) {
 	_absorb_min = value;
 }
 
-int Aura::get_absorb_max() {
+int Aura::get_absorb_max() const {
 	return _absorb_max;
 }
-void Aura::set_absorb_max(int value) {
+void Aura::set_absorb_max(const int value) {
 	_absorb_max = value;
 }
 
 //Heal
-bool Aura::get_heal_enabled() {
+bool Aura::get_heal_enabled() const {
 	return _heal_enabled;
 }
-void Aura::set_heal_enabled(bool value) {
+void Aura::set_heal_enabled(const bool value) {
 	_heal_enabled = value;
 }
 
-int Aura::get_heal_min() {
+int Aura::get_heal_min() const {
 	return _heal_min;
 }
-void Aura::set_heal_min(int value) {
+void Aura::set_heal_min(const int value) {
 	_heal_min = value;
 }
 
-int Aura::get_heal_max() {
+int Aura::get_heal_max() const {
 	return _heal_max;
 }
-void Aura::set_heal_max(int value) {
+void Aura::set_heal_max(const int value) {
 	_heal_max = value;
 }
 
-bool Aura::get_heal_can_crit() {
+bool Aura::get_heal_can_crit() const {
 	return _heal_can_crit;
 }
-void Aura::set_heal_can_crit(bool value) {
+void Aura::set_heal_can_crit(const bool value) {
 	_heal_can_crit = value;
 }
 
-void Aura::set_heal(int min, int max, bool can_crit) {
+void Aura::set_heal(const int min, const int max, const bool can_crit) {
 	set_heal_enabled(true);
 	set_heal_min(min);
 	set_heal_max(max);
@@ -245,45 +245,45 @@ void Aura::set_heal(int min, int max, bool can_crit) {
 }
 
 //Dispell
-bool Aura::get_dispell_enabled() {
+bool Aura::get_dispell_enabled() const {
 	return _dispell_enabled;
 }
-void Aura::set_dispell_enabled(bool value) {
+void Aura::set_dispell_enabled(const bool value) {
 	_dispell_enabled = value;
 }
 
-int Aura::get_dispell_count_min() {
+int Aura::get_dispell_count_min() const {
 	return _dispell_count_min;
 }
-void Aura::set_dispell_count_min(int value) {
+void Aura::set_dispell_count_min(const int value) {
 	_dispell_count_min = value;
 }
 
-int Aura::get_dispell_count_max() {
+int Aura::get_dispell_count_max() const {
 	return _dispell_count_max;
 }
-void Aura::set_dispell_count_max(int value) {
+void Aura::set_dispell_count_max(const int value) {
 	_dispell_count_max = value;
 }
 
-int Aura::get_dispell_aura_types() {
+int Aura::get_dispell_aura_types() const {
 	return _dispell_aura_types;
 }
-void Aura::set_dispell_aura_types(int value) {
+void Aura::set_dispell_aura_types(const int value) {
 	_dispell_aura_types = value;
 }
 
 Ref<EntityResourceCostData> Aura::get_resource_cost() {
 	return _resource_cost;
 }
-void Aura::set_resource_cost(Ref<EntityResourceCostData> value) {
+void Aura::set_resource_cost(const Ref<EntityResourceCostData> &value) {
 	_resource_cost = value;
 }
 
 Ref<EntityResourceCostData> Aura::get_resource_give() {
 	return _resource_give;
 }
-void Aura::set_resource_give(Ref<EntityResourceCostData> value) {
+void Aura::set_resource_give(const Ref<EntityResourceCostData> &value) {
 	_resource_give = value;
 }
 

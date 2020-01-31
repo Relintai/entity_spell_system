@@ -31,32 +31,32 @@ public:
 	};
 
 public:
-	int get_id();
-	void set_id(int value);
+	int get_id() const;
+	void set_id(const int value);
 
-	CraftCategories get_category();
-	void set_category(CraftCategories value);
+	CraftCategories get_category() const;
+	void set_category(const CraftCategories value);
 
-	CraftSubCategories get_sub_category();
-	void set_sub_category(CraftSubCategories value);
+	CraftSubCategories get_sub_category() const;
+	void set_sub_category(const CraftSubCategories value);
 
 	//Tools
 	Ref<CraftRecipeHelper> get_required_tool(int index);
-	void set_required_tool(int index, const Ref<CraftRecipeHelper> value);
+	void set_required_tool(const int index, const Ref<CraftRecipeHelper> &value);
 
-	int get_required_tools_count();
-	void set_required_tools_count(int value);
+	int get_required_tools_count() const;
+	void set_required_tools_count(const int value);
 
 	//Materials
-	Ref<CraftRecipeHelper> get_required_material(int index);
-	void set_required_material(int index, const Ref<CraftRecipeHelper> value);
+	Ref<CraftRecipeHelper> get_required_material(const int index);
+	void set_required_material(const int index, const Ref<CraftRecipeHelper> &value);
 
-	int get_required_materials_count();
-	void set_required_materials_count(int value);
+	int get_required_materials_count() const;
+	void set_required_materials_count(const int value);
 
 	//Item
 	Ref<CraftRecipeHelper> get_item();
-	void set_item(Ref<CraftRecipeHelper> value);
+	void set_item(const Ref<CraftRecipeHelper> &value);
 
 	CraftRecipe();
 	~CraftRecipe();

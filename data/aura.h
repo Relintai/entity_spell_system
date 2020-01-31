@@ -39,142 +39,142 @@ class Aura : public Resource {
 	GDCLASS(Aura, Resource);
 
 public:
-	int get_id();
-	void set_id(int value);
+	int get_id() const;
+	void set_id(const int value);
 
 	Ref<Texture> get_icon();
-	void set_icon(Ref<Texture> value);
+	void set_icon(const Ref<Texture> &value);
 
-	float get_time();
-	void set_time(float value);
+	float get_time() const;
+	void set_time(const float value);
 
 	Ref<AuraGroup> get_aura_group();
-	void set_aura_group(Ref<AuraGroup> value);
+	void set_aura_group(const Ref<AuraGroup> &value);
 
-	bool get_is_debuff();
-	void set_is_debuff(bool value);
+	bool get_is_debuff() const;
+	void set_is_debuff(const bool value);
 
-	float get_tick();
-	void set_tick(float value);
+	float get_tick() const;
+	void set_tick(const float value);
 
-	SpellEnums::AuraType get_aura_type();
-	void set_aura_type(SpellEnums::AuraType value);
+	SpellEnums::AuraType get_aura_type() const;
+	void set_aura_type(const SpellEnums::AuraType value);
 
-	int get_rank();
-	void set_rank(int value);
+	int get_rank() const;
+	void set_rank(const int value);
 
-	String get_text_description();
-	void set_text_description(String description);
+	String get_text_description() const;
+	void set_text_description(const String description);
 
-	bool get_hide();
-	void set_hide(bool value);
+	bool get_hide() const;
+	void set_hide(const bool value);
 
 	Ref<SpellEffectVisual> get_visual_spell_effects();
-	void set_visual_spell_effects(Ref<SpellEffectVisual> value);
+	void set_visual_spell_effects(const Ref<SpellEffectVisual> &value);
 
 	Ref<WorldSpellData> get_world_spell_data();
-	void set_world_spell_data(Ref<WorldSpellData> value);
+	void set_world_spell_data(const Ref<WorldSpellData> &value);
 
-	int get_ability_scale_data_id();
-	void set_ability_scale_data_id(int value);
+	int get_ability_scale_data_id() const;
+	void set_ability_scale_data_id(const int value);
 
-	float get_damage_scale_for_level(int level);
-	float get_heal_scale_for_level(int level);
-	float get_absorb_scale_for_level(int level);
+	float get_damage_scale_for_level(int level) const;
+	float get_heal_scale_for_level(int level) const;
+	float get_absorb_scale_for_level(int level) const;
 
-	Ref<Spell> get_teaches_spell() const;
-	void set_teaches_spell(const Ref<Spell> spell);
+	Ref<Spell> get_teaches_spell();
+	void set_teaches_spell(const Ref<Spell> &spell);
 
 	//Damage
-	bool get_damage_enabled();
-	void set_damage_enabled(bool value);
+	bool get_damage_enabled() const;
+	void set_damage_enabled(const bool value);
 
-	int get_damage_type();
+	int get_damage_type() const;
 
-	void set_damage_type(int value);
+	void set_damage_type(const int value);
 
-	int get_damage_min();
-	void set_damage_min(int value);
+	int get_damage_min() const;
+	void set_damage_min(const int value);
 
-	int get_damage_max();
-	void set_damage_max(int value);
+	int get_damage_max() const;
+	void set_damage_max(const int value);
 
-	bool get_damage_can_crit();
-	void set_damage_can_crit(bool value);
+	bool get_damage_can_crit() const;
+	void set_damage_can_crit(const bool value);
 
-	void set_damage(int min, int max, bool can_crit);
+	void set_damage(const int min, const int max, const bool can_crit);
 
 	//Absorb
-	bool get_absorb_enabled();
-	void set_absorb_enabled(bool value);
+	bool get_absorb_enabled() const;
+	void set_absorb_enabled(const bool value);
 
-	int get_absorb_damage_type();
+	int get_absorb_damage_type() const;
 
-	void set_absorb_damage_type(int value);
+	void set_absorb_damage_type(const int value);
 
-	int get_absorb_min();
-	void set_absorb_min(int value);
+	int get_absorb_min() const;
+	void set_absorb_min(const int value);
 
-	int get_absorb_max();
-	void set_absorb_max(int value);
+	int get_absorb_max() const;
+	void set_absorb_max(const int value);
 
 	//Heal
-	bool get_heal_enabled();
-	void set_heal_enabled(bool value);
+	bool get_heal_enabled() const;
+	void set_heal_enabled(const bool value);
 
-	int get_heal_min();
-	void set_heal_min(int value);
+	int get_heal_min() const;
+	void set_heal_min(const int value);
 
-	int get_heal_max();
-	void set_heal_max(int value);
+	int get_heal_max() const;
+	void set_heal_max(const int value);
 
-	bool get_heal_can_crit();
-	void set_heal_can_crit(bool value);
+	bool get_heal_can_crit() const;
+	void set_heal_can_crit(const bool value);
 
-	void set_heal(int min, int max, bool can_crit);
+	void set_heal(const int min, const int max, const bool can_crit);
 
 	//Dispells
-	bool get_dispell_enabled();
-	void set_dispell_enabled(bool value);
+	bool get_dispell_enabled() const;
+	void set_dispell_enabled(const bool value);
 
-	int get_dispell_count_min();
-	void set_dispell_count_min(int value);
+	int get_dispell_count_min() const;
+	void set_dispell_count_min(const int value);
 
-	int get_dispell_count_max();
-	void set_dispell_count_max(int value);
+	int get_dispell_count_max() const;
+	void set_dispell_count_max(const int value);
 
-	int get_dispell_aura_types();
-	void set_dispell_aura_types(int value);
+	int get_dispell_aura_types() const;
+	void set_dispell_aura_types(const int value);
 
 	//Resources
 	Ref<EntityResourceCostData> get_resource_cost();
-	void set_resource_cost(Ref<EntityResourceCostData> value);
+	void set_resource_cost(const Ref<EntityResourceCostData> &value);
 
 	Ref<EntityResourceCostData> get_resource_give();
-	void set_resource_give(Ref<EntityResourceCostData> value);
+	void set_resource_give(const Ref<EntityResourceCostData> &value);
 
 	Ref<Curve> get_damage_scaling_curve() { return _damage_scaling_curve; }
-	void set_damage_scaling_curve(Ref<Curve> curve) { _damage_scaling_curve = curve; }
+	void set_damage_scaling_curve(const Ref<Curve> &curve) { _damage_scaling_curve = curve; }
 
 	Ref<Curve> get_heal_scaling_curve() { return _heal_scaling_curve; }
-	void set_heal_scaling_curve(Ref<Curve> curve) { _heal_scaling_curve = curve; }
+	void set_heal_scaling_curve(const Ref<Curve> &curve) { _heal_scaling_curve = curve; }
 
 	Ref<Curve> get_absorb_scaling_curve() { return _absorb_scaling_curve; }
-	void set_absorb_scaling_curve(Ref<Curve> curve) { _absorb_scaling_curve = curve; }
+	void set_absorb_scaling_curve(const Ref<Curve> &curve) { _absorb_scaling_curve = curve; }
 
 	//states
-	int get_add_states() { return _add_states; }
-	void set_add_states(int value) { _add_states = value; }
+	int get_add_states() const { return _add_states; }
+	void set_add_states(const int value) { _add_states = value; }
 
-	int get_remove_effects_with_states() { return _remove_effects_with_states; }
-	void set_remove_effects_with_states(int value) { _remove_effects_with_states = value; }
+	int get_remove_effects_with_states() const { return _remove_effects_with_states; }
+	void set_remove_effects_with_states(const int value) { _remove_effects_with_states = value; }
 
-	int get_supress_states() { return _supress_states; }
-	void set_supress_states(int value) { _supress_states = value; }
+	int get_supress_states() const { return _supress_states; }
+	void set_supress_states(const int value) { _supress_states = value; }
 
 	//DiminishingReturns
-	SpellEnums::DiminishingReturnCategory get_diminishing_category();
-	void set_diminishing_category(SpellEnums::DiminishingReturnCategory diminishingCategory);
+	SpellEnums::DiminishingReturnCategory get_diminishing_category() const;
+	void set_diminishing_category(const SpellEnums::DiminishingReturnCategory diminishingCategory);
 
 	//Triggers
 	int get_trigger_count() const;

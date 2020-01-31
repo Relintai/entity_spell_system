@@ -34,7 +34,7 @@ Ref<Aura> EntityDataManager::get_skill_for_armor_type(int index) {
 
 	return _armor_type_skills[index];
 }
-void EntityDataManager::set_skill_for_armor_type(int index, Ref<Aura> aura) {
+void EntityDataManager::set_skill_for_armor_type(int index, const Ref<Aura> &aura) {
 	ERR_FAIL_INDEX(index, ItemEnums::ARMOR_TYPE_MAX);
 
 	_armor_type_skills[index] = aura;
@@ -73,7 +73,7 @@ Ref<EntityResourceData> EntityDataManager::get_entity_resource_index(int index) 
 int EntityDataManager::get_entity_resource_count() {
 	return _entity_resources.size();
 }
-void EntityDataManager::add_entity_resource(Ref<EntityResourceData> cls) {
+void EntityDataManager::add_entity_resource(const Ref<EntityResourceData> &cls) {
 	ERR_FAIL_COND(!cls.is_valid());
 
 	_entity_resources.push_back(cls);
@@ -103,7 +103,7 @@ Ref<EntitySkillData> EntityDataManager::get_entity_skill_index(int index) {
 int EntityDataManager::get_entity_skill_count() {
 	return _entity_skills.size();
 }
-void EntityDataManager::add_entity_skill(Ref<EntitySkillData> cls) {
+void EntityDataManager::add_entity_skill(const Ref<EntitySkillData> &cls) {
 	ERR_FAIL_COND(!cls.is_valid());
 
 	_entity_skills.push_back(cls);
@@ -133,7 +133,7 @@ Ref<EntityData> EntityDataManager::get_entity_data_index(int index) {
 int EntityDataManager::get_entity_data_count() {
 	return _entity_datas.size();
 }
-void EntityDataManager::add_entity_data(Ref<EntityData> cls) {
+void EntityDataManager::add_entity_data(const Ref<EntityData> &cls) {
 	ERR_FAIL_COND(!cls.is_valid());
 
 	_entity_datas.push_back(cls);
@@ -166,14 +166,14 @@ int EntityDataManager::get_spell_count() {
 	return _spells.size();
 }
 
-void EntityDataManager::add_spell(Ref<Spell> spell) {
+void EntityDataManager::add_spell(const Ref<Spell> &spell) {
 	ERR_FAIL_COND(!spell.is_valid());
 
 	_spells.push_back(spell);
 	_spell_map.set(spell->get_id(), spell);
 }
 
-void EntityDataManager::add_aura(Ref<Aura> aura) {
+void EntityDataManager::add_aura(const Ref<Aura> &aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	_auras.push_back(aura);
@@ -230,7 +230,7 @@ Ref<WorldSpellData> EntityDataManager::get_world_spell_data_index(int index) {
 int EntityDataManager::get_world_spell_data_count() {
 	return _world_spell_datas.size();
 }
-void EntityDataManager::add_world_spell_data(Ref<WorldSpellData> cls) {
+void EntityDataManager::add_world_spell_data(const Ref<WorldSpellData> &cls) {
 	ERR_FAIL_COND(!cls.is_valid());
 
 	_world_spell_datas.push_back(cls);
@@ -238,7 +238,7 @@ void EntityDataManager::add_world_spell_data(Ref<WorldSpellData> cls) {
 }
 
 //Craft Data
-void EntityDataManager::add_craft_data(Ref<CraftRecipe> cda) {
+void EntityDataManager::add_craft_data(const Ref<CraftRecipe> &cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_craft_datas.push_back(cda);
@@ -281,7 +281,7 @@ Vector<Ref<ItemTemplate> > *EntityDataManager::get_item_templates() {
 	return &_item_templates;
 }
 
-void EntityDataManager::add_item_template(Ref<ItemTemplate> cda) {
+void EntityDataManager::add_item_template(const Ref<ItemTemplate> &cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_item_templates.push_back(cda);
@@ -314,7 +314,7 @@ Vector<Ref<EntityData> > *EntityDataManager::get_mob_datas() {
 	return &_mob_datas;
 }
 
-void EntityDataManager::add_mob_data(Ref<EntityData> cda) {
+void EntityDataManager::add_mob_data(const Ref<EntityData> &cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_mob_datas.push_back(cda);
@@ -347,7 +347,7 @@ Vector<Ref<EntityData> > *EntityDataManager::get_player_character_datas() {
 	return &_player_character_datas;
 }
 
-void EntityDataManager::add_player_character_data(Ref<EntityData> cda) {
+void EntityDataManager::add_player_character_data(const Ref<EntityData> &cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_player_character_datas.push_back(cda);
