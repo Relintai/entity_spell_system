@@ -21,7 +21,7 @@ needs_sphinx = '1.3'
 # -- Project information -----------------------------------------------------
 
 project = 'Entity Spell System for GODOT'
-copyright = '2019, Péter Magyar (Relintai)'
+copyright = '2019-2020, Péter Magyar (Relintai)'
 author = 'Péter Magyar (Relintai)'
 
 version = 'latest'
