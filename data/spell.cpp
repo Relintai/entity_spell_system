@@ -1016,9 +1016,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("handle_cooldown", "info"), &Spell::handle_cooldown);
 
 	//Implementations
-	ClassDB::bind_method(D_METHOD("_handle_projectile", "info"), &Spell::_handle_projectile);
-	ClassDB::bind_method(D_METHOD("_handle_effect", "info"), &Spell::_handle_effect);
-
 	ClassDB::bind_method(D_METHOD("_sstart_casting", "info"), &Spell::_sstart_casting);
 	ClassDB::bind_method(D_METHOD("_sfinish_cast", "info"), &Spell::_sfinish_cast);
 
