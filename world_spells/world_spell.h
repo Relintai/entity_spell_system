@@ -32,6 +32,8 @@ SOFTWARE.
 
 #include "world_spell_data.h"
 
+class SpellCastInfo;
+
 class WorldSpell : public Node {
 	GDCLASS(WorldSpell, Node);
 
@@ -79,6 +81,8 @@ public:
 	Vector3 get_effect_offset();
 	void set_effect_offset(Vector3 value);
 
+	void send(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info);
+
 	WorldSpell();
 	~WorldSpell();
 
@@ -91,6 +95,7 @@ private:
 
 	int _data_id;
 	Ref<WorldSpellData> _data;
+	Ref<SpellCastInfo> _spell_cast_info;
 
 	SpellEnums::ColliderType _collider_type;
 	Vector3 _collider_box_extents;

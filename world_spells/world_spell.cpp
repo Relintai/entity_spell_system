@@ -22,6 +22,9 @@ SOFTWARE.
 
 #include "world_spell.h"
 
+#include "../infos/spell_cast_info.h"
+#include "../entities/entity.h"
+
 NodePath WorldSpell::get_body_path() {
 	return _body_path;
 }
@@ -128,6 +131,15 @@ void WorldSpell::set_effect_offset(Vector3 value) {
 	_effect_offset = value;
 }
 
+void WorldSpell::send(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info) {
+	ERR_FAIL_COND(!data.is_valid());
+	ERR_FAIL_COND(!info.is_valid());
+
+	_data = data;
+	_spell_cast_info = info;
+
+}
+
 WorldSpell::WorldSpell() {
 	_data_id = 0;
 
@@ -207,4 +219,6 @@ void WorldSpell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_effect_offset"), &WorldSpell::get_effect_offset);
 	ClassDB::bind_method(D_METHOD("set_effect_offset", "value"), &WorldSpell::set_effect_offset);
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "effect_offset"), "set_effect_offset", "get_effect_offset");
+
+	ClassDB::bind_method(D_METHOD("send", "data", "info"), &WorldSpell::send);
 }

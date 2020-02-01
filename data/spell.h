@@ -308,9 +308,18 @@ public:
 	void calculate_initial_damage(Ref<SpellDamageInfo> data);
 	void handle_spell_damage(Ref<SpellDamageInfo> data);
 
-	void fire_projectile(Ref<SpellCastInfo> info);
+	void handle_projectile(Ref<SpellCastInfo> info);
 	void handle_effect(Ref<SpellCastInfo> info);
 
+	void handle_gcd(Ref<SpellCastInfo> info);
+	void handle_cooldown(Ref<SpellCastInfo> info);
+
+	String get_description(int level);
+
+	Spell();
+	~Spell();
+
+protected:
 	virtual void _sstart_casting(Ref<SpellCastInfo> info);
 	virtual void _sfinish_cast(Ref<SpellCastInfo> info);
 
@@ -320,15 +329,9 @@ public:
 	virtual void _calculate_initial_damage(Ref<SpellDamageInfo> data);
 	virtual void _handle_spell_damage(Ref<SpellDamageInfo> data);
 
-	virtual void _fire_projectile(Ref<SpellCastInfo> info);
+	virtual void _handle_projectile(Ref<SpellCastInfo> info);
 	virtual void _handle_effect(Ref<SpellCastInfo> info);
 
-	String get_description(int level);
-
-	Spell();
-	~Spell();
-
-protected:
 	static void _bind_methods();
 
 private:
