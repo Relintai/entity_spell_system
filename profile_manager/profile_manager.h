@@ -23,18 +23,25 @@ SOFTWARE.
 #ifndef PROFILE_MANAGER_H
 #define PROFILE_MANAGER_H
 
+#include "core/object.h"
+
 #include "core/vector.h"
-#include "scene/main/node.h"
 
 #include "class_profile.h"
 
-class ProfileManager : public Node {
-	GDCLASS(ProfileManager, Node);
+class ProfileManager : public Object {
+	GDCLASS(ProfileManager, Object);
 
 public:
 	static const String DEFAULT_PROFILE_FILE_NAME;
 
 	static ProfileManager *get_instance();
+
+	bool get_automatic_load() { return _automatic_load; }
+	void set_automatic_load(bool load) { _automatic_load = load; }
+
+	String get_save_file() const;
+	void set_save_file(const String &file);
 
 	int get_last_used_class();
 	void set_last_used_class(int value);
@@ -50,6 +57,9 @@ public:
 
 	void save();
 	void load();
+
+	void _save();
+	void _load();
 
 	void save_profile(String name);
 	void load_profile(String name);
@@ -68,9 +78,12 @@ protected:
 private:
 	static ProfileManager *_instance;
 
+	bool _automatic_load;
+
 	int _last_used_class;
 
 	String _profile_name;
+	String _save_file;
 
 	Vector<Ref<ClassProfile> > _class_profiles;
 };

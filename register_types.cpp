@@ -134,6 +134,7 @@ SOFTWARE.
 #include "profile_manager/profile_manager.h"
 
 static EntityDataManager *entity_data_manager = NULL;
+static ProfileManager *profile_manager = NULL;
 
 void register_entity_spell_system_types() {
 	ClassDB::register_class<SpellEnums>();
@@ -262,10 +263,17 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<EntityDataManager>();
 	Engine::get_singleton()->add_singleton(Engine::Singleton("EntityDataManager", EntityDataManager::get_instance()));
 
+	profile_manager = memnew(ProfileManager);
+	ClassDB::register_class<ProfileManager>();
+	Engine::get_singleton()->add_singleton(Engine::Singleton("ProfileManager", ProfileManager::get_instance()));
 }
 
 void unregister_entity_spell_system_types() {
 	if (entity_data_manager) {
 		memdelete(entity_data_manager);
+	}
+
+	if (profile_manager) {
+		memdelete(profile_manager);
 	}
 }

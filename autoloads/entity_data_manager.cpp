@@ -213,7 +213,7 @@ Vector<Ref<Aura> > *EntityDataManager::get_auras() {
 }
 
 Ref<Aura> EntityDataManager::get_aura(int aura_id) {
-	ERR_FAIL_COND_V(!_aura_map.has(aura_id), Ref<Aura>(NULL));
+	ERR_FAIL_COND_V_MSG(!_aura_map.has(aura_id), Ref<Aura>(NULL), "Could not find aura! Id:" + String::num(aura_id));
 
 	return _aura_map.get(aura_id);
 }
@@ -1007,7 +1007,7 @@ void EntityDataManager::_bind_methods() {
 EntityDataManager::EntityDataManager() {
 	instance = this;
 
-	//_automatic_load = GLOBAL_DEF("ess/data/automatic_load", false);
+	_automatic_load = GLOBAL_DEF("ess/data/automatic_load", false);
 
 	_xp_data_path = GLOBAL_DEF("ess/data/xp_data_path", "");
 	_entity_resources_folder = GLOBAL_DEF("ess/data/entity_resources_folder", "");
@@ -1021,9 +1021,9 @@ EntityDataManager::EntityDataManager() {
 	_mob_data_folder = GLOBAL_DEF("ess/data/mob_data_folder", "");
 	_player_character_data_folder = GLOBAL_DEF("ess/data/player_character_data_folder", "");
 
-	//if (_automatic_load) {
-	//	load_all();
-	//}
+	if (_automatic_load) {
+		call_deferred("load_all");
+	}
 }
 
 EntityDataManager::~EntityDataManager() {

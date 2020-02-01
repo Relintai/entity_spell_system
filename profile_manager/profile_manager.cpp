@@ -21,6 +21,9 @@ SOFTWARE.
 */
 
 #include "profile_manager.h"
+#include "core/os/file_access.h"
+#include "core/io/json.h"
+#include "core/project_settings.h"
 
 const String ProfileManager::DEFAULT_PROFILE_FILE_NAME = "default.profile";
 
@@ -28,6 +31,13 @@ ProfileManager *ProfileManager::_instance;
 
 ProfileManager *ProfileManager::get_instance() {
 	return _instance;
+}
+
+String ProfileManager::get_save_file() const {
+	return _save_file;
+}
+void ProfileManager::set_save_file(const String &file) {
+	_save_file = file;
 }
 
 int ProfileManager::get_last_used_class() {
@@ -81,17 +91,53 @@ Ref<ClassProfile> ProfileManager::get_class_profile(int class_id) {
 }
 
 void ProfileManager::save() {
-	if (has_method("_save")) {
-		call("_save");
-	}
+	call("_save");
 }
 
 void ProfileManager::load() {
-	if (has_method("_load")) {
-		call("_load");
-	} //else {
-	//load_defaults();
-	//}
+	call("_load");
+}
+
+void ProfileManager::_save() {
+	Error err;
+	FileAccess *f = FileAccess::open(_save_file, FileAccess::WRITE, &err);
+
+	if (!f) {
+		ERR_FAIL_MSG("Couldn't open file: " + err);
+	}
+		
+	f->store_line(JSON::print(to_dict()));
+	f->close();	
+}
+
+void ProfileManager::_load() {
+	if (FileAccess::exists(_save_file)) {
+		clear_class_profiles();
+
+		Error err;
+		String text = FileAccess::get_file_as_string(_save_file, &err);
+
+		if (err) {
+			load_defaults();
+			ERR_FAIL_MSG("Couldn't open file: " + err);
+		}
+
+		String err_txt;
+		int err_line;
+		Variant v;
+		err = JSON::parse(text, v, err_txt, err_line);
+
+		if (err) {
+			load_defaults();
+			ERR_FAIL_MSG("Error parsing profile: " + err);
+		}
+
+		Dictionary d = v;
+
+		from_dict(d);
+	} else {
+		load_defaults();
+	}
 }
 
 void ProfileManager::save_profile(String name) {
@@ -163,6 +209,13 @@ ProfileManager::ProfileManager() {
 	_last_used_class = 0;
 
 	_profile_name = ProfileManager::DEFAULT_PROFILE_FILE_NAME;
+
+	_automatic_load = GLOBAL_DEF("ess/profiles/automatic_load", false);
+	_save_file = GLOBAL_DEF("ess/profiles/save_file", "user://profile.save");
+
+	if (_automatic_load) {
+		call_deferred("load");
+	}
 }
 
 ProfileManager::~ProfileManager() {
@@ -176,6 +229,17 @@ void ProfileManager::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_save"));
 	BIND_VMETHOD(MethodInfo("_load"));
+
+	ClassDB::bind_method(D_METHOD("_save"), &ProfileManager::_save);
+	ClassDB::bind_method(D_METHOD("_load"), &ProfileManager::_load);
+
+	ClassDB::bind_method(D_METHOD("get_automatic_load"), &ProfileManager::get_automatic_load);
+	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &ProfileManager::set_automatic_load);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
+
+	ClassDB::bind_method(D_METHOD("get_save_file"), &ProfileManager::get_save_file);
+	ClassDB::bind_method(D_METHOD("set_save_file", "path"), &ProfileManager::set_save_file);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "set_save_file"), "set_save_file", "get_save_file");
 
 	ClassDB::bind_method(D_METHOD("get_last_used_class"), &ProfileManager::get_last_used_class);
 	ClassDB::bind_method(D_METHOD("set_last_used_class", "value"), &ProfileManager::set_last_used_class);
