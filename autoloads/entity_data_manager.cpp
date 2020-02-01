@@ -36,7 +36,7 @@ EntityDataManager *EntityDataManager::get_instance() {
 }
 
 void EntityDataManager::_notification(int p_what) {
-
+/*
 	switch (p_what) {
 
 		case NOTIFICATION_ENTER_TREE: {
@@ -48,7 +48,7 @@ void EntityDataManager::_notification(int p_what) {
 		case NOTIFICATION_EXIT_TREE: {
 
 		} break;
-	}
+	}*/
 }
 
 Ref<Aura> EntityDataManager::get_skill_for_armor_type(int index) {
@@ -1007,7 +1007,23 @@ void EntityDataManager::_bind_methods() {
 EntityDataManager::EntityDataManager() {
 	instance = this;
 
-	_automatic_load = true;
+	//_automatic_load = GLOBAL_DEF("ess/data/automatic_load", false);
+
+	_xp_data_path = GLOBAL_DEF("ess/data/xp_data_path", "");
+	_entity_resources_folder = GLOBAL_DEF("ess/data/entity_resources_folder", "");
+	_entity_skills_folder = GLOBAL_DEF("ess/data/entity_skills_folder", "");
+	_entity_datas_folder = GLOBAL_DEF("ess/data/entity_datas_folder", "");
+	_spells_folder = GLOBAL_DEF("ess/data/spells_folder", "");
+	_auras_folder = GLOBAL_DEF("ess/data/auras_folder", "");
+	_world_spell_datas_folder = GLOBAL_DEF("ess/data/world_spell_datas_folder", "");
+	_craft_data_folder = GLOBAL_DEF("ess/data/craft_data_folder", "");
+	_item_template_folder = GLOBAL_DEF("ess/data/item_template_folder", "");
+	_mob_data_folder = GLOBAL_DEF("ess/data/mob_data_folder", "");
+	_player_character_data_folder = GLOBAL_DEF("ess/data/player_character_data_folder", "");
+
+	//if (_automatic_load) {
+	//	load_all();
+	//}
 }
 
 EntityDataManager::~EntityDataManager() {

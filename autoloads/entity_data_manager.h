@@ -23,6 +23,8 @@ SOFTWARE.
 #ifndef ENTITY_DATA_MANAGER_H
 #define ENTITY_DATA_MANAGER_H
 
+#include "core/object.h"
+
 #include "core/array.h"
 #include "core/engine.h"
 #include "core/hash_map.h"
@@ -50,8 +52,8 @@ class ItemTemplate;
 class EntityResourceData;
 class EntitySkillData;
 
-class EntityDataManager : public Node {
-	GDCLASS(EntityDataManager, Node);
+class EntityDataManager : public Object {
+	GDCLASS(EntityDataManager, Object);
 
 public:
 	static EntityDataManager *get_instance();

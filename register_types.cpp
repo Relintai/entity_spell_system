@@ -133,10 +133,10 @@ SOFTWARE.
 #include "profile_manager/class_profile.h"
 #include "profile_manager/profile_manager.h"
 
+static EntityDataManager *entity_data_manager = NULL;
+
 void register_entity_spell_system_types() {
 	ClassDB::register_class<SpellEnums>();
-
-	ClassDB::register_class<EntityDataManager>();
 
 	//data
 	ClassDB::register_class<CraftRecipeHelper>();
@@ -257,7 +257,15 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<ClassProfile>();
 	ClassDB::register_class<ProfileManager>();
+
+	entity_data_manager = memnew(EntityDataManager);
+	ClassDB::register_class<EntityDataManager>();
+	Engine::get_singleton()->add_singleton(Engine::Singleton("EntityDataManager", EntityDataManager::get_instance()));
+
 }
 
 void unregister_entity_spell_system_types() {
+	if (entity_data_manager) {
+		memdelete(entity_data_manager);
+	}
 }
