@@ -35,20 +35,11 @@ EntityDataManager *EntityDataManager::get_instance() {
 	return instance;
 }
 
-void EntityDataManager::_notification(int p_what) {
-/*
-	switch (p_what) {
-
-		case NOTIFICATION_ENTER_TREE: {
-			if (get_automatic_load()) {
-				if (!Engine::get_singleton()->is_editor_hint())
-					load_all();
-			}
-		} break;
-		case NOTIFICATION_EXIT_TREE: {
-
-		} break;
-	}*/
+bool EntityDataManager::get_automatic_load() { 
+	return _automatic_load; 
+}
+void EntityDataManager::set_automatic_load(bool load) { 
+	_automatic_load = load; 
 }
 
 Ref<Aura> EntityDataManager::get_skill_for_armor_type(int index) {
@@ -82,8 +73,11 @@ Vector<Ref<EntityResourceData> > *EntityDataManager::get_entity_resources() {
 	return &_entity_resources;
 }
 Ref<EntityResourceData> EntityDataManager::get_entity_resource(int class_id) {
-	if (!_entity_resource_map.has(class_id))
-		return Ref<EntityResourceData>(NULL);
+	//ERR_FAIL_COND_V_MSG(!_entity_resource_map.has(class_id), Ref<EntityResourceData>(), "Could not find EntityResourceData! Id:" + String::num(class_id));
+
+	if (!_entity_resource_map.has(class_id)) {
+		return Ref<EntityResourceData>();
+	}
 
 	return _entity_resource_map.get(class_id);
 }
@@ -112,8 +106,7 @@ Vector<Ref<EntitySkillData> > *EntityDataManager::get_entity_skills() {
 	return &_entity_skills;
 }
 Ref<EntitySkillData> EntityDataManager::get_entity_skill(int class_id) {
-	if (!_entity_skill_map.has(class_id))
-		return Ref<EntitySkillData>(NULL);
+	ERR_FAIL_COND_V_MSG(!_entity_skill_map.has(class_id), Ref<EntitySkillData>(), "Could not find EntitySkillData! Id:" + String::num(class_id));
 
 	return _entity_skill_map.get(class_id);
 }
@@ -142,8 +135,7 @@ Vector<Ref<EntityData> > *EntityDataManager::get_entity_datas() {
 	return &_entity_datas;
 }
 Ref<EntityData> EntityDataManager::get_entity_data(int class_id) {
-	if (!_entity_data_map.has(class_id))
-		return Ref<EntityData>(NULL);
+	ERR_FAIL_COND_V_MSG(!_entity_data_map.has(class_id), Ref<EntityData>(), "Could not find EntityData! Id:" + String::num(class_id));
 
 	return _entity_data_map.get(class_id);
 }
@@ -173,7 +165,7 @@ Vector<Ref<Spell> > *EntityDataManager::get_spells() {
 }
 
 Ref<Spell> EntityDataManager::get_spell(int spell_id) {
-	ERR_FAIL_COND_V(!_spell_map.has(spell_id), Ref<Spell>(NULL));
+	ERR_FAIL_COND_V_MSG(!_spell_map.has(spell_id), Ref<Spell>(), "Could not find Spell! Id:" + String::num(spell_id));
 
 	return _spell_map.get(spell_id);
 }
@@ -213,13 +205,13 @@ Vector<Ref<Aura> > *EntityDataManager::get_auras() {
 }
 
 Ref<Aura> EntityDataManager::get_aura(int aura_id) {
-	ERR_FAIL_COND_V_MSG(!_aura_map.has(aura_id), Ref<Aura>(NULL), "Could not find aura! Id:" + String::num(aura_id));
+	ERR_FAIL_COND_V_MSG(!_aura_map.has(aura_id), Ref<Aura>(), "Could not find Aura! Id:" + String::num(aura_id));
 
 	return _aura_map.get(aura_id);
 }
 
 Ref<Aura> EntityDataManager::get_aura_index(int index) {
-	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>(NULL));
+	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>());
 
 	return _auras.get(index);
 }
@@ -239,13 +231,12 @@ Vector<Ref<WorldSpellData> > *EntityDataManager::get_world_spell_datas() {
 	return &_world_spell_datas;
 }
 Ref<WorldSpellData> EntityDataManager::get_world_spell_data(int class_id) {
-	if (!_world_spell_data_map.has(class_id))
-		return Ref<WorldSpellData>(NULL);
+	ERR_FAIL_COND_V_MSG(!_world_spell_data_map.has(class_id), Ref<WorldSpellData>(), "Could not find WorldSpellData! Id:" + String::num(class_id));
 
 	return _world_spell_data_map.get(class_id);
 }
 Ref<WorldSpellData> EntityDataManager::get_world_spell_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _world_spell_datas.size(), Ref<WorldSpellData>(NULL));
+	ERR_FAIL_INDEX_V(index, _world_spell_datas.size(), Ref<WorldSpellData>());
 
 	return _world_spell_datas.get(index);
 }
@@ -278,13 +269,13 @@ Vector<Ref<CraftRecipe> > *EntityDataManager::get_craft_datas() {
 }
 
 Ref<CraftRecipe> EntityDataManager::get_craft_data(int craft_id) {
-	ERR_FAIL_COND_V(!_craft_data_map.has(craft_id), Ref<CraftRecipe>(NULL));
+	ERR_FAIL_COND_V_MSG(!_craft_data_map.has(craft_id), Ref<CraftRecipe>(), "Could not find CraftRecipe! Id:" + String::num(craft_id));
 
 	return _craft_data_map.get(craft_id);
 }
 
 Ref<CraftRecipe> EntityDataManager::get_craft_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _craft_datas.size(), Ref<CraftRecipe>(NULL));
+	ERR_FAIL_INDEX_V(index, _craft_datas.size(), Ref<CraftRecipe>());
 
 	return _craft_datas.get(index);
 }
@@ -311,13 +302,13 @@ void EntityDataManager::add_item_template(const Ref<ItemTemplate> &cda) {
 }
 
 Ref<ItemTemplate> EntityDataManager::get_item_template(int item_id) {
-	ERR_FAIL_COND_V(!_item_template_map.has(item_id), Ref<ItemTemplate>(NULL));
+	ERR_FAIL_COND_V_MSG(!_item_template_map.has(item_id), Ref<ItemTemplate>(), "Could not find ItemTemplate! Id:" + String::num(item_id));
 
 	return _item_template_map.get(item_id);
 }
 
 Ref<ItemTemplate> EntityDataManager::get_item_template_index(int index) {
-	ERR_FAIL_INDEX_V(index, _item_templates.size(), Ref<ItemTemplate>(NULL));
+	ERR_FAIL_INDEX_V(index, _item_templates.size(), Ref<ItemTemplate>());
 
 	return _item_templates.get(index);
 }
@@ -344,13 +335,13 @@ void EntityDataManager::add_mob_data(const Ref<EntityData> &cda) {
 }
 
 Ref<EntityData> EntityDataManager::get_mob_data(int item_id) {
-	ERR_FAIL_COND_V(!_mob_data_map.has(item_id), Ref<EntityData>(NULL));
+	ERR_FAIL_COND_V_MSG(!_mob_data_map.has(item_id), Ref<EntityData>(), "Could not find EntityData! Id:" + String::num(item_id));
 
 	return _mob_data_map.get(item_id);
 }
 
 Ref<EntityData> EntityDataManager::get_mob_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _mob_datas.size(), Ref<EntityData>(NULL));
+	ERR_FAIL_INDEX_V(index, _mob_datas.size(), Ref<EntityData>());
 
 	return _mob_datas.get(index);
 }
@@ -377,13 +368,13 @@ void EntityDataManager::add_player_character_data(const Ref<EntityData> &cda) {
 }
 
 Ref<EntityData> EntityDataManager::get_player_character_data(int item_id) {
-	ERR_FAIL_COND_V(!_player_character_data_map.has(item_id), Ref<EntityData>(NULL));
+	ERR_FAIL_COND_V_MSG(!_player_character_data_map.has(item_id), Ref<EntityData>(), "Could not find EntityData! Id:" + String::num(item_id));
 
 	return _player_character_data_map.get(item_id);
 }
 
 Ref<EntityData> EntityDataManager::get_player_character_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _player_character_datas.size(), Ref<EntityData>(NULL));
+	ERR_FAIL_INDEX_V(index, _player_character_datas.size(), Ref<EntityData>());
 
 	return _player_character_datas.get(index);
 }
@@ -870,6 +861,13 @@ void EntityDataManager::load_player_character_datas() {
 	}
 }
 
+void EntityDataManager::request_entity_spawn(const Ref<EntityCreateInfo> &info) {
+	emit_signal("on_entity_spawn_requested", info);
+}
+void EntityDataManager::request_world_spell_spawn(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info) {
+	emit_signal("on_world_spell_spawn_requested", data, info);
+}
+
 void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_skill_for_armor_type", "index"), &EntityDataManager::get_skill_for_armor_type);
 	ClassDB::bind_method(D_METHOD("set_skill_for_armor_type", "index", "aura"), &EntityDataManager::set_skill_for_armor_type);
@@ -1002,6 +1000,12 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("load_item_templates"), &EntityDataManager::load_item_templates);
 	ClassDB::bind_method(D_METHOD("load_mob_datas"), &EntityDataManager::load_mob_datas);
 	ClassDB::bind_method(D_METHOD("load_player_character_datas"), &EntityDataManager::load_player_character_datas);
+
+	ADD_SIGNAL(MethodInfo("on_entity_spawn_requested", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
+	ADD_SIGNAL(MethodInfo("on_world_spell_spawn_requested", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+
+	ClassDB::bind_method(D_METHOD("request_entity_spawn", "info"), &EntityDataManager::request_entity_spawn);
+	ClassDB::bind_method(D_METHOD("request_world_spell_spawn", "data", "info"), &EntityDataManager::request_world_spell_spawn);
 }
 
 EntityDataManager::EntityDataManager() {

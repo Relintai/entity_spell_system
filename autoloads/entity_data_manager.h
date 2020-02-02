@@ -51,12 +51,18 @@ class CraftRecipe;
 class ItemTemplate;
 class EntityResourceData;
 class EntitySkillData;
+class EntityCreateInfo;
+class WorldSpellData;
+class SpellCastInfo;
 
 class EntityDataManager : public Object {
 	GDCLASS(EntityDataManager, Object);
 
 public:
 	static EntityDataManager *get_instance();
+
+	bool get_automatic_load();
+	void set_automatic_load(bool load);
 
 	Ref<Aura> get_skill_for_armor_type(int index);
 	void set_skill_for_armor_type(int index, const Ref<Aura> &aura);
@@ -158,15 +164,14 @@ public:
 	void load_mob_datas();
 	void load_player_character_datas();
 
-	bool get_automatic_load() { return _automatic_load; }
-	void set_automatic_load(bool load) { _automatic_load = load; }
+	void request_entity_spawn(const Ref<EntityCreateInfo> &info);
+	void request_world_spell_spawn(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info);
 
 	EntityDataManager();
 	~EntityDataManager();
 
 protected:
 	static void _bind_methods();
-	void _notification(int p_what);
 
 private:
 	String _xp_data_path;
