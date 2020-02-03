@@ -41,7 +41,6 @@ SOFTWARE.
 #include "./resources/entity_resource.h"
 #include "stats/stat.h"
 
-#include "../autoloads/entity_data_manager.h"
 #include "../entity_enums.h"
 #include "../utility/entity_create_info.h"
 
@@ -50,14 +49,12 @@ SOFTWARE.
 #include "../utility/cooldown.h"
 #include "./data/entity_data_container.h"
 
-#include "../profile_manager/actionbar/action_bar_profile.h"
+#include "../profiles/actionbar/action_bar_profile.h"
+#include "../profiles/input/input_profile.h"
 
 #include "./ai/entity_ai.h"
 
 #include "../data/aura_group.h"
-
-#include "../profile_manager/input/input_profile.h"
-#include "../profile_manager/profile_manager.h"
 
 class EntityData;
 class AuraData;
@@ -191,8 +188,6 @@ class Entity : public Node {
 	GDCLASS(Entity, Node);
 
 public:
-	void initialize(Ref<EntityCreateInfo> info);
-
 	////    Base    ////
 
 	NodePath get_body_path();
@@ -202,6 +197,20 @@ public:
 	NodePath get_character_skeleton_path();
 	void set_character_skeleton_path(NodePath value);
 	Node *get_character_skeleton();
+
+	//GUID
+	int gets_guid();
+	void sets_guid(int value);
+
+	int getc_guid();
+	void setc_guid(int value);
+
+	//EntityPlayerType
+	int gets_entity_player_type();
+	void sets_entity_player_type(int value);
+
+	int getc_entity_player_type();
+	void setc_entity_player_type(int value);
 
 	//EntityType
 	EntityEnums::EntityType gets_entity_type();
@@ -843,8 +852,8 @@ public:
 
 	String random_name();
 
-	void setup();
-	virtual void _setup();
+	void setup(Ref<EntityCreateInfo> info);
+	virtual void _setup(Ref<EntityCreateInfo> info);
 	void setup_actionbars();
 
 	////    AI    ////
@@ -938,6 +947,13 @@ public:
 	~Entity();
 
 protected:
+	void _scraft(int id);
+	void _son_xp_gained(int value);
+	void _son_level_up(int level);
+	void _moved();
+	void _con_target_changed(Entity *entity, Entity *old_target);
+	void _son_death();
+
 	static void _bind_methods();
 	virtual void _notification(int p_what);
 
@@ -962,6 +978,9 @@ private:
 
 	int _s_class_id;
 	int _c_class_id;
+
+	int _s_entity_player_type;
+	int _c_entity_player_type;
 
 	int _s_type;
 	int _c_type;
@@ -1054,7 +1073,6 @@ private:
 
 	////    Targeting    ////
 
-	int _s_target_guid;
 	Entity *_s_target;
 	Entity *_c_target;
 

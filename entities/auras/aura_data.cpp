@@ -23,6 +23,7 @@ SOFTWARE.
 #include "aura_data.h"
 
 #include "../../data/aura.h"
+#include "../../singletons/entity_data_manager.h"
 #include "../entity.h"
 
 float AuraData::get_damage_count() {
@@ -306,12 +307,10 @@ void AuraData::_from_dict(const Dictionary &dict) {
 	_aura_group = dict.get("aura_group", 0);
 	int aura_id = dict.get("aura_id", 0);
 
-	if (EntityDataManager::get_instance() != NULL) {
-		Ref<Aura> aura = EntityDataManager::get_instance()->get_aura(aura_id);
+	Ref<Aura> aura = EntityDataManager::get_instance()->get_aura(aura_id);
 
-		if (aura.is_valid()) {
-			_aura = aura;
-		}
+	if (aura.is_valid()) {
+		_aura = aura;
 	}
 
 	_is_timed = dict.get("is_timed", true);

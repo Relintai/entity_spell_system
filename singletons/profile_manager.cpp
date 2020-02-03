@@ -21,8 +21,8 @@ SOFTWARE.
 */
 
 #include "profile_manager.h"
-#include "core/os/file_access.h"
 #include "core/io/json.h"
+#include "core/os/file_access.h"
 #include "core/project_settings.h"
 
 const String ProfileManager::DEFAULT_PROFILE_FILE_NAME = "default.profile";
@@ -105,9 +105,9 @@ void ProfileManager::_save() {
 	if (!f) {
 		ERR_FAIL_MSG("Couldn't open file: " + err);
 	}
-		
+
 	f->store_line(JSON::print(to_dict()));
-	f->close();	
+	f->close();
 }
 
 void ProfileManager::_load() {

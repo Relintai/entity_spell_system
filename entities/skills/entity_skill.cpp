@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "entity_skill.h"
 
-#include "../../autoloads/entity_data_manager.h"
+#include "../../singletons/entity_data_manager.h"
 
 Ref<EntitySkillData> EntitySkill::get_skill() {
 	return _skill;

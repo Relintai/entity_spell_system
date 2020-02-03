@@ -30,8 +30,6 @@ SOFTWARE.
 #include "../item_enums.h"
 #include "item_stat_modifier.h"
 
-#include "../autoloads/entity_data_manager.h"
-
 class ItemTemplate;
 
 class ItemInstance : public Reference {

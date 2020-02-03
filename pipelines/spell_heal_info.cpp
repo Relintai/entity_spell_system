@@ -25,6 +25,7 @@ SOFTWARE.
 #include "../data/aura.h"
 #include "../data/spell.h"
 #include "../entities/entity.h"
+#include "../singletons/entity_data_manager.h"
 
 bool SpellHealInfo::get_immune() {
 	return _immune;
@@ -163,12 +164,10 @@ void SpellHealInfo::resolve_references(Node *owner) {
 	_dealer = Object::cast_to<Entity>(owner->get_node_or_null(_dealer_path));
 	_receiver = Object::cast_to<Entity>(owner->get_node_or_null(_receiver_path));
 
-	if (EntityDataManager::get_instance() != NULL) {
-		if (_heal_source_type == HEAL_SOURCE_SPELL) {
-			_heal_source = EntityDataManager::get_instance()->get_spell(_heal_source_id);
-		} else if (_heal_source_type == HEAL_SOURCE_AURA) {
-			_heal_source = EntityDataManager::get_instance()->get_aura(_heal_source_id);
-		}
+	if (_heal_source_type == HEAL_SOURCE_SPELL) {
+		_heal_source = EntityDataManager::get_instance()->get_spell(_heal_source_id);
+	} else if (_heal_source_type == HEAL_SOURCE_AURA) {
+		_heal_source = EntityDataManager::get_instance()->get_aura(_heal_source_id);
 	}
 }
 

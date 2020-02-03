@@ -25,6 +25,7 @@ SOFTWARE.
 #include "../data/aura.h"
 #include "../data/spell.h"
 #include "../entities/entity.h"
+#include "../singletons/entity_data_manager.h"
 
 bool SpellDamageInfo::get_immune() {
 	return _crit;
@@ -167,12 +168,10 @@ void SpellDamageInfo::resolve_references(Node *owner) {
 	_dealer = Object::cast_to<Entity>(owner->get_node_or_null(_dealer_path));
 	_receiver = Object::cast_to<Entity>(owner->get_node_or_null(_receiver_path));
 
-	if (EntityDataManager::get_instance() != NULL) {
-		if (_damage_source_type == DAMAGE_SOURCE_SPELL) {
-			_damage_source = EntityDataManager::get_instance()->get_spell(_damage_source_id);
-		} else if (_damage_source_type == DAMAGE_SOURCE_AURA) {
-			_damage_source = EntityDataManager::get_instance()->get_aura(_damage_source_id);
-		}
+	if (_damage_source_type == DAMAGE_SOURCE_SPELL) {
+		_damage_source = EntityDataManager::get_instance()->get_spell(_damage_source_id);
+	} else if (_damage_source_type == DAMAGE_SOURCE_AURA) {
+		_damage_source = EntityDataManager::get_instance()->get_aura(_damage_source_id);
 	}
 }
 

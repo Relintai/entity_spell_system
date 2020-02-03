@@ -35,8 +35,14 @@ public:
 	int get_guid() const;
 	void set_guid(const int value);
 
+	bool get_networked() const;
+	void set_networked(const bool value);
+
 	int get_class_id() const;
 	void set_class_id(const int value);
+
+	int get_entity_player_type();
+	void set_entity_player_type(int value);
 
 	int get_network_owner() const;
 	void set_network_owner(const int value);
@@ -46,9 +52,6 @@ public:
 
 	String get_entity_name() const;
 	void set_entity_name(const String &value);
-
-	String get_node_name() const;
-	void set_node_name(const String &value);
 
 	int get_level() const;
 	void set_level(const int value);
@@ -65,6 +68,12 @@ public:
 	Ref<EntityData> get_entity_data() const;
 	void set_entity_data(const Ref<EntityData> &value);
 
+	Dictionary get_serialized_data();
+	void set_serialized_data(const Dictionary &value);
+
+	NodePath get_parent_path() const;
+	void set_parent_path(const NodePath &value);
+
 	EntityCreateInfo();
 	~EntityCreateInfo();
 
@@ -73,7 +82,9 @@ protected:
 
 private:
 	int _guid;
+	bool _networked;
 	int _class_id;
+	int _entity_player_type;
 	int _network_owner;
 	EntityEnums::EntityController _entity_controller;
 	String _entity_name;
@@ -84,6 +95,8 @@ private:
 	Transform2D _transform2d;
 
 	Ref<EntityData> _entity_data;
+	Dictionary _serialized_data;
+	NodePath _parent_path;
 };
 
 #endif

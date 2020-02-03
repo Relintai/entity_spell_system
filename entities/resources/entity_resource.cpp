@@ -22,6 +22,7 @@ SOFTWARE.
 
 #include "entity_resource.h"
 
+#include "../../singletons/entity_data_manager.h"
 #include "../entity.h"
 #include "../stats/stat.h"
 #include "entity_resource_data.h"
@@ -155,9 +156,7 @@ void EntityResource::receivec_update_string(String str) {
 }
 
 void EntityResource::resolve_references() {
-	if (EntityDataManager::get_instance() != NULL) {
-		_data = EntityDataManager::get_instance()->get_entity_resource(_data_id);
-	}
+	_data = EntityDataManager::get_instance()->get_entity_resource(_data_id);
 }
 
 Dictionary EntityResource::to_dict() {

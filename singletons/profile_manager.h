@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "core/vector.h"
 
-#include "class_profile.h"
+#include "../profiles/class_profile.h"
 
 class ProfileManager : public Object {
 	GDCLASS(ProfileManager, Object);

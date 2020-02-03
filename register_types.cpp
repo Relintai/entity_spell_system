@@ -25,7 +25,7 @@ SOFTWARE.
 #include "entity_enums.h"
 #include "item_enums.h"
 
-#include "autoloads/entity_data_manager.h"
+#include "singletons/entity_data_manager.h"
 
 #include "data/aura.h"
 #include "data/aura_group.h"
@@ -122,16 +122,17 @@ SOFTWARE.
 
 #include "formations/ai_formation.h"
 
-#include "profile_manager/input/input_profile.h"
-#include "profile_manager/input/input_profile_modifier.h"
-#include "profile_manager/input/input_profile_modifier_entry.h"
+#include "profiles/input/input_profile.h"
+#include "profiles/input/input_profile_modifier.h"
+#include "profiles/input/input_profile_modifier_entry.h"
 
-#include "profile_manager/actionbar/action_bar_button_entry.h"
-#include "profile_manager/actionbar/action_bar_entry.h"
-#include "profile_manager/actionbar/action_bar_profile.h"
+#include "profiles/actionbar/action_bar_button_entry.h"
+#include "profiles/actionbar/action_bar_entry.h"
+#include "profiles/actionbar/action_bar_profile.h"
 
-#include "profile_manager/class_profile.h"
-#include "profile_manager/profile_manager.h"
+#include "profiles/class_profile.h"
+
+#include "singletons/profile_manager.h"
 
 static EntityDataManager *entity_data_manager = NULL;
 static ProfileManager *profile_manager = NULL;

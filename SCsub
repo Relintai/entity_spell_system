@@ -109,18 +109,18 @@ sources = [
 
     "formations/ai_formation.cpp",
 
-    "profile_manager/input/input_profile_modifier.cpp",
-    "profile_manager/input/input_profile_modifier_entry.cpp",
-    "profile_manager/input/input_profile.cpp",
+    "profiles/input/input_profile_modifier.cpp",
+    "profiles/input/input_profile_modifier_entry.cpp",
+    "profiles/input/input_profile.cpp",
 
-    "profile_manager/actionbar/action_bar_button_entry.cpp",
-    "profile_manager/actionbar/action_bar_entry.cpp",
-    "profile_manager/actionbar/action_bar_profile.cpp",
+    "profiles/actionbar/action_bar_button_entry.cpp",
+    "profiles/actionbar/action_bar_entry.cpp",
+    "profiles/actionbar/action_bar_profile.cpp",
 
-    "profile_manager/class_profile.cpp",
-    "profile_manager/profile_manager.cpp",
+    "profiles/class_profile.cpp",
 
-    "autoloads/entity_data_manager.cpp",
+    "singletons/profile_manager.cpp",
+    "singletons/entity_data_manager.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

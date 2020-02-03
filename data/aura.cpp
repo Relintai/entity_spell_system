@@ -1061,7 +1061,6 @@ void Aura::_sdeapply(Ref<AuraData> data) {
 		stat->remove_modifier(_id);
 	}
 
-
 	if (_add_states != 0) {
 		for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
 			int t = 1 << i;

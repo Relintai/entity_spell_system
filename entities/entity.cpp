@@ -22,6 +22,9 @@ SOFTWARE.
 
 #include "entity.h"
 
+#include "../singletons/entity_data_manager.h"
+#include "../singletons/profile_manager.h"
+
 #include "../data/aura.h"
 #include "../data/spell.h"
 #include "../entities/auras/aura_data.h"
@@ -60,6 +63,43 @@ Node *Entity::get_character_skeleton() {
 	return _character_skeleton;
 }
 
+//GUID
+int Entity::gets_guid() {
+	return _s_guid;
+}
+void Entity::sets_guid(int value) {
+	_s_guid = value;
+
+	VRPC(setc_guid, value);
+}
+
+int Entity::getc_guid() {
+	return _c_guid;
+}
+void Entity::setc_guid(int value) {
+	_c_guid = value;
+
+	set_name(String::num(_c_guid));
+}
+
+//EntityPlayerType
+int Entity::gets_entity_player_type() {
+	return _s_entity_player_type;
+}
+void Entity::sets_entity_player_type(int value) {
+	_s_entity_player_type = value;
+
+	VRPC(setc_entity_player_type, value);
+}
+
+int Entity::getc_entity_player_type() {
+	return _c_entity_player_type;
+}
+void Entity::setc_entity_player_type(int value) {
+	_c_entity_player_type = value;
+}
+
+//EntityType
 EntityEnums::EntityType Entity::gets_entity_type() {
 	return _s_entity_type;
 }
@@ -247,7 +287,7 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 
 	_s_entity_data = value;
 
-	setup();
+	//setup();
 
 	emit_signal("sentity_data_changed", value);
 
@@ -294,13 +334,35 @@ void Entity::setc_seed(int value) {
 	_c_seed = value;
 }
 
-void Entity::setup() {
+void Entity::setup(Ref<EntityCreateInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	sets_guid(info->get_guid());
+
+	sets_entity_player_type(info->get_entity_player_type());
+
+	if (info->get_network_owner() != 0 && get_tree()->is_network_server())
+		set_network_master(info->get_network_owner());
+
+	sets_original_entity_controller(info->get_entity_controller());
+	sets_entity_controller(info->get_entity_controller());
+
+	sets_entity_name(info->get_entity_name());
+
+	sets_entity_data(info->get_entity_data());
+
+	sets_entity_data(info->get_entity_data());
+
+	if (!info->get_serialized_data().empty()) {
+		from_dict(info->get_serialized_data());
+	}
+
 	if (has_method("_setup")) {
-		call_multilevel("_setup");
+		call_multilevel("_setup", info);
 	}
 }
 
-void Entity::_setup() {
+void Entity::_setup(Ref<EntityCreateInfo> info) {
 	if (!_s_entity_data.is_valid())
 		return;
 
@@ -335,6 +397,14 @@ void Entity::_setup() {
 			res->resolve_references();
 
 			//SEND
+		}
+
+		if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY) {
+			setup_actionbars();
+		}
+
+		if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_AI) {
+			sets_entity_name(_s_entity_data->get_name());
 		}
 
 		return;
@@ -419,6 +489,17 @@ void Entity::_setup() {
 
 	if (!Engine::get_singleton()->is_editor_hint())
 		set_process(_s_entity_data.is_valid());
+
+	if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY) {
+		setup_actionbars();
+	}
+
+	if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_AI) {
+		sets_entity_name(_s_entity_data->get_name());
+	}
+
+	slevelup(info->get_level() - 1);
+	sets_xp(info->get_xp());
 }
 
 void Entity::setup_actionbars() {
@@ -1102,25 +1183,6 @@ void Entity::_from_dict(const Dictionary &dict) {
 	}
 
 	sets_entity_data_id(edi);
-}
-
-void Entity::initialize(Ref<EntityCreateInfo> info) {
-	ERR_FAIL_COND(!info.is_valid());
-
-	_s_entity_name = info->get_entity_name();
-	_c_entity_name = info->get_entity_name();
-
-	sets_original_entity_controller(info->get_entity_controller());
-	sets_entity_controller(info->get_entity_controller());
-	//setc_entity_controller(info->get_entity_type());
-
-	sets_level(info->get_level());
-	setc_level(info->get_level());
-
-	sets_xp(info->get_xp());
-	setc_xp(info->get_xp());
-
-	sets_entity_data(info->get_entity_data());
 }
 
 //////     Stat System      //////
@@ -2129,6 +2191,9 @@ void Entity::addc_xp(int value) {
 }
 
 void Entity::slevelup(int value) {
+	if (value <= 0)
+		return;
+
 	if (_s_level == EntityEnums::MAX_LEVEL)
 		return;
 
@@ -5277,6 +5342,9 @@ Entity::Entity() {
 	_s_type = 0;
 	_c_type = 0;
 
+	_s_entity_player_type = 0;
+	_c_entity_player_type = 0;
+
 	_s_gender = EntityEnums::GENDER_MALE;
 	_c_gender = EntityEnums::GENDER_MALE;
 
@@ -5606,6 +5674,146 @@ Entity::~Entity() {
 	_physics_process_scis.clear();
 }
 
+void Entity::_scraft(int id) {
+	if (!hass_craft_recipe_id(id))
+		return;
+
+	Ref<CraftRecipe> recipe = gets_craft_recipe_id(id);
+
+	if (!recipe.is_valid())
+		return;
+
+	for (int i = 0; i < recipe->get_required_tools_count(); ++i) {
+		Ref<CraftRecipeHelper> mat = recipe->get_required_tool(i);
+
+		if (!mat.is_valid())
+			continue;
+
+		if (!gets_bag()->has_item(mat->get_item(), mat->get_count()))
+			return;
+	}
+
+	for (int i = 0; i < recipe->get_required_materials_count(); ++i) {
+		Ref<CraftRecipeHelper> mat = recipe->get_required_material(i);
+
+		if (!mat.is_valid())
+			continue;
+
+		if (!gets_bag()->has_item(mat->get_item(), mat->get_count()))
+			return;
+	}
+
+	//ok, player has everything
+
+	for (int i = 0; i < recipe->get_required_materials_count(); ++i) {
+		Ref<CraftRecipeHelper> mat = recipe->get_required_material(i);
+
+		if (!mat.is_valid())
+			continue;
+
+		gets_bag()->remove_items(mat->get_item(), mat->get_count());
+	}
+
+	Ref<ItemInstance> item = recipe->get_item()->get_item()->create_item_instance();
+
+	gets_bag()->add_item(item);
+}
+
+void Entity::_son_xp_gained(int value) {
+	if (EntityDataManager::get_instance()->get_xp_data()->can_level_up(gets_level())) {
+		return;
+	}
+
+	int xpr = EntityDataManager::get_instance()->get_xp_data()->get_xp(gets_level());
+
+	if (xpr <= gets_xp()) {
+		slevelup(1);
+		sets_xp(0);
+	}
+}
+
+void Entity::_son_level_up(int level) {
+	if (!gets_entity_data().is_valid())
+		return;
+
+	Ref<EntityClassData> ecd = gets_entity_data()->get_entity_class_data();
+
+	if (!ecd.is_valid())
+		return;
+
+	sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
+	sets_free_talent_points(gets_free_talent_points() + level);
+
+	for (int i = 0; i < Stat::MAIN_STAT_ID_COUNT; ++i) {
+		int st = gets_entity_data()->get_entity_class_data()->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_level() - level, gets_level());
+
+		int statid = i + Stat::MAIN_STAT_ID_START;
+
+		Ref<Stat> stat = get_stat_int(statid);
+
+		Ref<StatModifier> sm = stat->get_modifier(0);
+		sm->set_base_mod(sm->get_base_mod() + st);
+	}
+}
+
+void Entity::_moved() {
+	if (sis_casting())
+		sfail_cast();
+}
+
+void Entity::_con_target_changed(Entity *entity, Entity *old_target) {
+	if (ObjectDB::instance_validate(old_target))
+		old_target->onc_untargeted();
+
+	if (ObjectDB::instance_validate(getc_target())) {
+		getc_target()->onc_targeted();
+
+		if (canc_interact())
+			crequest_interact();
+	}
+}
+
+void Entity::_son_death() {
+
+	//only if mob
+	/*
+	if dead:
+		return
+	
+	if starget == null:
+		queue_free()
+		return
+		
+	#warning-ignore:unused_variable
+	for i in range(sget_aura_count()):
+		sremove_aura(sget_aura(0))
+	
+	dead = true
+	
+	var ldiff : float = slevel - starget.slevel + 10.0
+	
+	if ldiff < 0:
+		ldiff = 0
+		
+	if ldiff > 15:
+		ldiff = 15
+		
+	ldiff /= 10.0
+	
+	starget.adds_xp(int(5.0 * slevel * ldiff))
+		
+	starget = null
+	
+	sentity_interaction_type = EntityEnums.ENITIY_INTERACTION_TYPE_LOOT
+	ai_state = EntityEnums.AI_STATE_OFF
+	
+	anim_node_state_machine.travel("dead")
+	
+#	set_process(false)
+	set_physics_process(false)
+	*/
+}
+
 void Entity::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_INSTANCED: {
@@ -5728,15 +5936,15 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("cskill_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
 
 	//setup
-	BIND_VMETHOD(MethodInfo("_setup"));
+	BIND_VMETHOD(MethodInfo("_setup", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
 
 	//Windows
 	ADD_SIGNAL(MethodInfo("onc_open_loot_winow_request"));
 	ADD_SIGNAL(MethodInfo("onc_open_container_winow_request"));
 	ADD_SIGNAL(MethodInfo("onc_open_vendor_winow_request"));
 
-	ClassDB::bind_method(D_METHOD("setup"), &Entity::setup);
-	ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
+	ClassDB::bind_method(D_METHOD("setup", "info"), &Entity::setup);
+	ClassDB::bind_method(D_METHOD("_setup", "info"), &Entity::_setup);
 	ClassDB::bind_method(D_METHOD("setup_actionbars"), &Entity::setup_actionbars);
 
 	//binds
@@ -6051,6 +6259,22 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_entity_data_id", "value"), &Entity::setc_entity_data_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_data_id"), "setc_entity_data_id", "getc_entity_data_id");
 
+	ClassDB::bind_method(D_METHOD("gets_entity_player_type"), &Entity::gets_entity_player_type);
+	ClassDB::bind_method(D_METHOD("sets_entity_player_type", "value"), &Entity::sets_entity_player_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_player_type"), "sets_entity_player_type", "gets_entity_player_type");
+
+	ClassDB::bind_method(D_METHOD("getc_entity_player_type"), &Entity::getc_entity_player_type);
+	ClassDB::bind_method(D_METHOD("setc_entity_player_type", "value"), &Entity::setc_entity_player_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_player_type"), "setc_entity_player_type", "getc_entity_player_type");
+
+	ClassDB::bind_method(D_METHOD("gets_guid"), &Entity::gets_guid);
+	ClassDB::bind_method(D_METHOD("sets_guid", "value"), &Entity::sets_guid);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sguid"), "sets_guid", "gets_guid");
+
+	ClassDB::bind_method(D_METHOD("getc_guid"), &Entity::getc_guid);
+	ClassDB::bind_method(D_METHOD("setc_guid", "value"), &Entity::setc_guid);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cguid"), "setc_guid", "getc_guid");
+
 	ClassDB::bind_method(D_METHOD("gets_entity_type"), &Entity::gets_entity_type);
 	ClassDB::bind_method(D_METHOD("sets_entity_type", "value"), &Entity::sets_entity_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "sets_entity_type", "gets_entity_type");
@@ -6139,8 +6363,6 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_entity_data"), &Entity::getc_entity_data);
 	ClassDB::bind_method(D_METHOD("setc_entity_data", "value"), &Entity::setc_entity_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "centity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "setc_entity_data", "getc_entity_data");
-
-	ClassDB::bind_method(D_METHOD("initialize", "entity_create_info"), &Entity::initialize);
 
 	ClassDB::bind_method(D_METHOD("get_health"), &Entity::get_health);
 	ClassDB::bind_method(D_METHOD("get_mana"), &Entity::get_mana);

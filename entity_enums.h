@@ -30,6 +30,7 @@ class EntityEnums : public Object {
 	GDCLASS(EntityEnums, Object);
 
 public:
+	static const String BINDING_STRING_ENTITY_PLAYER_TYPES;
 	static const String BINDING_STRING_ENTITY_TYPES;
 	static const String BINDING_STRING_ENTITY_CONTOLLER;
 	static const String BINDING_STRING_ENTITY_FLAGS;
@@ -42,6 +43,14 @@ public:
 	static const String BINDING_STRING_ENTITY_PLAYSTYLE_TYPE;
 	static const String BINDING_STRING_ENTITY_GENDER;
 	static const String BINDING_STRING_ENTITY_WINDOWS;
+
+	enum EntityPlayerType {
+		ENTITY_PLAYER_TYPE_NONE,
+		ENTITY_PLAYER_TYPE_PLAYER,
+		ENTITY_PLAYER_TYPE_NETWORKED,
+		ENTITY_PLAYER_TYPE_AI,
+		ENTITY_PLAYER_TYPE_DISPLAY,
+	};
 
 	enum EntityType {
 		ENITIY_TYPE_NONE,
@@ -263,6 +272,7 @@ protected:
 	static void _bind_methods();
 };
 
+VARIANT_ENUM_CAST(EntityEnums::EntityPlayerType);
 VARIANT_ENUM_CAST(EntityEnums::EntityType);
 VARIANT_ENUM_CAST(EntityEnums::EntityController);
 VARIANT_ENUM_CAST(EntityEnums::EntityFlags);

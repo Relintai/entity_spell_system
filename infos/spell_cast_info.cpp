@@ -24,6 +24,8 @@ SOFTWARE.
 
 #include "../data/spell.h"
 
+#include "../singletons/entity_data_manager.h"
+
 ////    SpellCastInfo    ////
 
 Entity *SpellCastInfo::get_caster() {
@@ -162,12 +164,10 @@ void SpellCastInfo::resolve_references(Node *owner) {
 		_target = Object::cast_to<Entity>(owner->get_node_or_null(_target_path));
 	}
 
-	if (EntityDataManager::get_instance() != NULL) {
-		Ref<Spell> spell = EntityDataManager::get_instance()->get_spell(_spell_id);
+	Ref<Spell> spell = EntityDataManager::get_instance()->get_spell(_spell_id);
 
-		if (spell.is_valid()) {
-			_spell = spell;
-		}
+	if (spell.is_valid()) {
+		_spell = spell;
 	}
 }
 

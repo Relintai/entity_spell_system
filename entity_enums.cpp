@@ -22,6 +22,7 @@ SOFTWARE.
 
 #include "entity_enums.h"
 
+const String EntityEnums::BINDING_STRING_ENTITY_PLAYER_TYPES = "None,Player,Networked,AI,Display";
 const String EntityEnums::BINDING_STRING_ENTITY_TYPES = "None,Creature,Totem,Idol,Humanoid,Mechanical,Beast,Dragonkin,Elemental,Ghost,Energy,Anomaly,Demon,Object";
 const String EntityEnums::BINDING_STRING_ENTITY_CONTOLLER = "None,Player,AI";
 const String EntityEnums::BINDING_STRING_ENTITY_FLAGS = "Untargetable,Hidden,Interactable,Hostile";
@@ -35,6 +36,12 @@ const String EntityEnums::BINDING_STRING_ENTITY_GENDER = "Male,Female";
 const String EntityEnums::BINDING_STRING_ENTITY_WINDOWS = "Loot,Container,Vendor";
 
 void EntityEnums::_bind_methods() {
+	BIND_ENUM_CONSTANT(ENTITY_PLAYER_TYPE_NONE);
+	BIND_ENUM_CONSTANT(ENTITY_PLAYER_TYPE_PLAYER);
+	BIND_ENUM_CONSTANT(ENTITY_PLAYER_TYPE_NETWORKED);
+	BIND_ENUM_CONSTANT(ENTITY_PLAYER_TYPE_AI);
+	BIND_ENUM_CONSTANT(ENTITY_PLAYER_TYPE_DISPLAY);
+
 	BIND_ENUM_CONSTANT(ENITIY_TYPE_NONE);
 	BIND_ENUM_CONSTANT(ENITIY_TYPE_CREATURE);
 	BIND_ENUM_CONSTANT(ENITIY_TYPE_TOTEM);
