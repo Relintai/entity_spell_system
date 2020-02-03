@@ -38,6 +38,9 @@ sources = [
     "data/spells/spell_effect_visual.cpp",
     "data/spells/spell_effect_visual_simple.cpp",
 
+    "data/atlases/character_atlas.cpp",
+    "data/atlases/character_atlas_entry.cpp",
+
     "entities/data/entity_data.cpp",
     "entities/data/entity_class_data.cpp",
 
@@ -54,9 +57,6 @@ sources = [
 
     "entities/data/character_spec.cpp",
     "entities/data/talent_row_data.cpp",
-
-    "atlases/character_atlas.cpp",
-    "atlases/character_atlas_entry.cpp",
 
     "skeleton/character_bones.cpp",
 

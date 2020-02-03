@@ -55,8 +55,8 @@ SOFTWARE.
 #include "data/items/item_visual.h"
 #include "data/items/item_visual_entry.h"
 
-#include "atlases/character_atlas.h"
-#include "atlases/character_atlas_entry.h"
+#include "data/atlases/character_atlas.h"
+#include "data/atlases/character_atlas_entry.h"
 
 #include "skeleton/character_bones.h"
 
