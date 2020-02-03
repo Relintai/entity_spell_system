@@ -5761,7 +5761,10 @@ void Entity::_moved() {
 		sfail_cast();
 }
 
-void Entity::_con_target_changed(Entity *entity, Entity *old_target) {
+void Entity::_con_target_changed(Node *p_entity, Node *p_old_target) {
+	Entity *entity = Object::cast_to<Entity>(p_entity);
+	Entity *old_target = Object::cast_to<Entity>(p_old_target);
+
 	if (ObjectDB::instance_validate(old_target))
 		old_target->onc_untargeted();
 
@@ -6852,4 +6855,11 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_maunal_process", "value"), &Entity::set_maunal_process);
 
 	ClassDB::bind_method(D_METHOD("update", "delta"), &Entity::update);
+
+	ClassDB::bind_method(D_METHOD("_scraft", "id"), &Entity::_scraft);
+	ClassDB::bind_method(D_METHOD("_son_xp_gained", "value"), &Entity::_son_xp_gained);
+	ClassDB::bind_method(D_METHOD("_son_level_up", "level"), &Entity::_son_level_up);
+	ClassDB::bind_method(D_METHOD("_moved"), &Entity::_moved);
+	ClassDB::bind_method(D_METHOD("_con_target_changed", "entity", "old_target"), &Entity::_con_target_changed);
+	ClassDB::bind_method(D_METHOD("_son_death"), &Entity::_son_death);
 }

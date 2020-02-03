@@ -951,7 +951,7 @@ protected:
 	void _son_xp_gained(int value);
 	void _son_level_up(int level);
 	void _moved();
-	void _con_target_changed(Entity *entity, Entity *old_target);
+	void _con_target_changed(Node *p_entity, Node *p_old_target);
 	void _son_death();
 
 	static void _bind_methods();
