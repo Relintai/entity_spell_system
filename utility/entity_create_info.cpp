@@ -22,6 +22,10 @@ SOFTWARE.
 
 #include "entity_create_info.h"
 
+#include "../data/species/species_instance.h"
+#include "../entities/data/entity_data.h"
+#include "../entities/entity.h"
+
 int EntityCreateInfo::get_guid() const {
 	return _guid;
 }
@@ -106,6 +110,13 @@ void EntityCreateInfo::set_entity_data(const Ref<EntityData> &value) {
 	_entity_data = value;
 }
 
+Ref<SpeciesInstance> EntityCreateInfo::get_species_instance() {
+	return _species_instance;
+}
+void EntityCreateInfo::set_species_instance(const Ref<SpeciesInstance> &value) {
+	_species_instance = value;
+}
+
 Dictionary EntityCreateInfo::get_serialized_data() {
 	return _serialized_data;
 }
@@ -120,6 +131,73 @@ void EntityCreateInfo::set_parent_path(const NodePath &value) {
 	_parent_path = value;
 }
 
+Entity *EntityCreateInfo::get_created_entity() {
+	return _created_entity;
+}
+
+void EntityCreateInfo::set_created_entity(Node *value) {
+	if (!value) {
+		return;
+	}
+
+	Entity *e = cast_to<Entity>(value);
+
+	if (!e) {
+		return;
+	}
+
+	_created_entity = e;
+}
+
+Dictionary EntityCreateInfo::to_dict() {
+	return call("_to_dict");
+}
+void EntityCreateInfo::from_dict(const Dictionary &dict) {
+	call("_from_dict", dict);
+}
+
+Dictionary EntityCreateInfo::_to_dict() {
+	Dictionary dict;
+
+	dict["guid"] = _guid;
+	dict["networked"] = _networked;
+	dict["class_id"] = _class_id;
+	dict["entity_player_type"] = _entity_player_type;
+	dict["network_owner"] = _network_owner;
+	dict["entity_controller"] = _entity_controller;
+	dict["entity_name"] = _entity_name;
+	dict["level"] = _level;
+	dict["xp"] = _xp;
+	dict["transform"] = _transform;
+	dict["transform2d"] = _transform2d;
+
+	if (_species_instance.is_valid())
+		dict["species_instance"] = _species_instance->to_dict();
+
+	dict["serialized_data"] = _serialized_data;
+	dict["parent_path"] = _parent_path;
+
+	return dict;
+}
+void EntityCreateInfo::_from_dict(const Dictionary &dict) {
+	ERR_FAIL_COND(dict.empty());
+
+	_guid = dict.get("guid", 0);
+	_networked = dict.get("networked", false);
+	_class_id = dict.get("class_id", 0);
+	_entity_player_type = dict.get("entity_player_type", 0);
+	_network_owner = dict.get("network_owner", 0);
+	_entity_controller = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
+	_entity_name = dict.get("entity_name", "");
+	_level = dict.get("level", 0);
+	_xp = dict.get("xp", 0);
+	_transform = dict.get("transform", Transform());
+	_transform2d = dict.get("transform2d", Transform2D());
+	_species_instance = dict.get("species_instance", Ref<SpeciesInstance>());
+	_serialized_data = dict.get("serialized_data", Dictionary());
+	_parent_path = dict.get("parent_path", "");
+}
+
 EntityCreateInfo::EntityCreateInfo() {
 	_guid = 0;
 	_class_id = 0;
@@ -128,10 +206,12 @@ EntityCreateInfo::EntityCreateInfo() {
 	_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
 	_level = 0;
 	_xp = 0;
+	_created_entity = NULL;
 }
 
 EntityCreateInfo::~EntityCreateInfo() {
 	_entity_data.unref();
+	_species_instance.unref();
 }
 
 void EntityCreateInfo::_bind_methods() {
@@ -183,6 +263,10 @@ void EntityCreateInfo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_entity_data", "value"), &EntityCreateInfo::set_entity_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "set_entity_data", "get_entity_data");
 
+	ClassDB::bind_method(D_METHOD("get_species_instance"), &EntityCreateInfo::get_species_instance);
+	ClassDB::bind_method(D_METHOD("set_species_instance", "value"), &EntityCreateInfo::set_species_instance);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "species_instance", PROPERTY_HINT_RESOURCE_TYPE, "SpeciesInstance"), "set_species_instance", "get_species_instance");
+
 	ClassDB::bind_method(D_METHOD("get_serialized_data"), &EntityCreateInfo::get_serialized_data);
 	ClassDB::bind_method(D_METHOD("set_serialized_data", "value"), &EntityCreateInfo::set_serialized_data);
 	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "serialized_data"), "set_serialized_data", "get_serialized_data");
@@ -190,4 +274,18 @@ void EntityCreateInfo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_parent_path"), &EntityCreateInfo::get_parent_path);
 	ClassDB::bind_method(D_METHOD("set_parent_path", "value"), &EntityCreateInfo::set_parent_path);
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "parent_path"), "set_parent_path", "get_parent_path");
+
+	ClassDB::bind_method(D_METHOD("get_created_entity"), &EntityCreateInfo::get_created_entity);
+	ClassDB::bind_method(D_METHOD("set_created_entity", "value"), &EntityCreateInfo::set_created_entity);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "created_entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_created_entity", "get_created_entity");
+
+	//Serialization
+	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+
+	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntityCreateInfo::from_dict);
+	ClassDB::bind_method(D_METHOD("to_dict"), &EntityCreateInfo::to_dict);
+
+	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &EntityCreateInfo::_from_dict);
+	ClassDB::bind_method(D_METHOD("_to_dict"), &EntityCreateInfo::_to_dict);
 }

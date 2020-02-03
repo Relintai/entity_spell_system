@@ -23,10 +23,13 @@ SOFTWARE.
 #ifndef ENTITY_CREATE_INFO_H
 #define ENTITY_CREATE_INFO_H
 
-#include "../entities/data/entity_data.h"
 #include "../entity_enums.h"
 #include "core/reference.h"
 #include "core/ustring.h"
+
+class EntityData;
+class SpeciesInstance;
+class Entity;
 
 class EntityCreateInfo : public Reference {
 	GDCLASS(EntityCreateInfo, Reference);
@@ -68,11 +71,23 @@ public:
 	Ref<EntityData> get_entity_data() const;
 	void set_entity_data(const Ref<EntityData> &value);
 
+	Ref<SpeciesInstance> get_species_instance();
+	void set_species_instance(const Ref<SpeciesInstance> &value);
+
 	Dictionary get_serialized_data();
 	void set_serialized_data(const Dictionary &value);
 
 	NodePath get_parent_path() const;
 	void set_parent_path(const NodePath &value);
+
+	Entity *get_created_entity();
+	void set_created_entity(Node *value);
+
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	Dictionary _to_dict();
+	void _from_dict(const Dictionary &dict);
 
 	EntityCreateInfo();
 	~EntityCreateInfo();
@@ -95,8 +110,11 @@ private:
 	Transform2D _transform2d;
 
 	Ref<EntityData> _entity_data;
+	Ref<SpeciesInstance> _species_instance;
 	Dictionary _serialized_data;
 	NodePath _parent_path;
+
+	Entity *_created_entity;
 };
 
 #endif
