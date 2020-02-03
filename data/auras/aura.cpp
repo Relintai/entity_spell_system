@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "aura.h"
 
-#include "../entities/resources/entity_resource_cost_data.h"
+#include "../../entities/resources/entity_resource_cost_data.h"
 
 int Aura::get_id() const {
 	return _id;

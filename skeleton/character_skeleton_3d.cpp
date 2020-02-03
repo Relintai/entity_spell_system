@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "character_skeleton_3d.h"
 
-#include "../data/item_visual.h"
+#include "../data/items/item_visual.h"
 
 EntityEnums::EntityGender CharacterSkeleton3D::get_gender() {
 	return _gender;

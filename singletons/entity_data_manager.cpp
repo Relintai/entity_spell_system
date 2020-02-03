@@ -22,9 +22,9 @@ SOFTWARE.
 
 #include "entity_data_manager.h"
 
-#include "../data/aura.h"
-#include "../data/craft_recipe.h"
-#include "../data/spell.h"
+#include "../data/auras/aura.h"
+#include "../data/items/craft_recipe.h"
+#include "../data/spells/spell.h"
 #include "../entities/data/entity_data.h"
 #include "../entities/resources/entity_resource_data.h"
 #include "../entities/skills/entity_skill_data.h"
@@ -35,11 +35,11 @@ EntityDataManager *EntityDataManager::get_instance() {
 	return instance;
 }
 
-bool EntityDataManager::get_automatic_load() { 
-	return _automatic_load; 
+bool EntityDataManager::get_automatic_load() {
+	return _automatic_load;
 }
-void EntityDataManager::set_automatic_load(bool load) { 
-	_automatic_load = load; 
+void EntityDataManager::set_automatic_load(bool load) {
+	_automatic_load = load;
 }
 
 Ref<Aura> EntityDataManager::get_skill_for_armor_type(int index) {

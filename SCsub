@@ -15,16 +15,28 @@ sources = [
     "spell_enums.cpp",
     "item_enums.cpp",
 
-    "data/aura.cpp",
-    "data/aura_group.cpp",
-    "data/xp_data.cpp",
-    "data/item_stat_modifier.cpp",
-    "data/item_template_stat_modifier.cpp",
-    "data/item_instance.cpp",
-    "data/item_template.cpp",
-    "data/spell_cooldown_manipulation_data.cpp",
-    "data/equipment_data.cpp",
-    "data/equipment_data_entry.cpp",
+    "data/auras/aura.cpp",
+    "data/auras/aura_group.cpp",
+
+    "data/entities/xp_data.cpp",
+
+    "data/items/item_stat_modifier.cpp",
+    "data/items/item_template_stat_modifier.cpp",
+    "data/items/item_instance.cpp",
+    "data/items/item_template.cpp",
+    "data/items/equipment_data.cpp",
+    "data/items/equipment_data_entry.cpp",
+    "data/items/craft_recipe_helper.cpp",
+    "data/items/craft_recipe.cpp",
+    "data/items/item_visual.cpp",
+    "data/items/item_visual_entry.cpp",
+    "data/species/entity_species_data.cpp",
+    "data/species/species_model_data.cpp",
+
+    "data/spells/spell_cooldown_manipulation_data.cpp",
+    "data/spells/spell.cpp",
+    "data/spells/spell_effect_visual.cpp",
+    "data/spells/spell_effect_visual_simple.cpp",
 
     "entities/data/entity_data.cpp",
     "entities/data/entity_class_data.cpp",
@@ -43,18 +55,10 @@ sources = [
     "entities/data/character_spec.cpp",
     "entities/data/talent_row_data.cpp",
 
-    "data/item_visual.cpp",
-    "data/item_visual_entry.cpp",
-
     "atlases/character_atlas.cpp",
     "atlases/character_atlas_entry.cpp",
 
     "skeleton/character_bones.cpp",
-
-    "data/craft_recipe_helper.cpp",
-    "data/craft_recipe.cpp",
-
-    "data/spell.cpp",
 
     "entities/stats/stat.cpp",
     "entities/stats/stat_modifier.cpp",
@@ -63,9 +67,6 @@ sources = [
     "entities/stats/level_stat_data.cpp",
     "entities/stats/simple_level_stat_data.cpp",
     "entities/stats/complex_level_stat_data.cpp",
-
-    "data/spell_effect_visual.cpp",
-    "data/spell_effect_visual_simple.cpp",
 
     "world_spells/world_spell_data.cpp",
     "world_spells/world_spell.cpp",
@@ -92,8 +93,6 @@ sources = [
     "skeleton/character_skeleton_2d.cpp",
     "skeleton/character_skeleton_3d.cpp",
 
-    "skeleton/entity_species_data.cpp",
-    "skeleton/species_model_data.cpp",
     "skeleton/skeleton_model_entry.cpp",
 
     "utility/entity_create_info.cpp",
@@ -101,9 +100,9 @@ sources = [
     "utility/cooldown.cpp",
     "utility/category_cooldown.cpp",
 
-    "loot/loot_data_base.cpp",
-    "loot/loot_data_container.cpp",
-    "loot/loot_data_item.cpp",
+    "data/loot/loot_data_base.cpp",
+    "data/loot/loot_data_container.cpp",
+    "data/loot/loot_data_item.cpp",
 
     "entities/ai/entity_ai.cpp",
 

@@ -35,7 +35,7 @@ SOFTWARE.
 #include "../entity_enums.h"
 #include "skeleton_model_entry.h"
 
-#include "../data/item_visual_entry.h"
+#include "../data/items/item_visual_entry.h"
 
 class ItemVisual;
 

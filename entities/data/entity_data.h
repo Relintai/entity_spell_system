@@ -38,14 +38,14 @@ SOFTWARE.
 #include "../../utility/category_cooldown.h"
 #include "../../utility/cooldown.h"
 
-#include "../../loot/loot_data_base.h"
+#include "../../data/loot/loot_data_base.h"
 
 #include "entity_class_data.h"
 #include "item_container_data.h"
 
-#include "../../data/equipment_data.h"
+#include "../../data/items/equipment_data.h"
 
-#include "../../skeleton/entity_species_data.h"
+#include "../../data/species/entity_species_data.h"
 
 #include "../../formations/ai_formation.h"
 #include "../ai/entity_ai.h"

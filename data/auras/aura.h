@@ -29,27 +29,27 @@ SOFTWARE.
 
 #include "aura_group.h"
 
-#include "../entity_enums.h"
-#include "../spell_enums.h"
+#include "../../entity_enums.h"
+#include "../../spell_enums.h"
 
-#include "../entities/entity.h"
-#include "../entities/stats/stat.h"
-#include "../infos/aura_infos.h"
+#include "../../entities/entity.h"
+#include "../../entities/stats/stat.h"
+#include "../../infos/aura_infos.h"
 
 #include "aura_stat_attribute.h"
 #include "aura_trigger_data.h"
 
-#include "../entities/auras/aura_data.h"
-#include "../infos/spell_cast_info.h"
-#include "../pipelines/spell_damage_info.h"
-#include "../pipelines/spell_heal_info.h"
+#include "../../entities/auras/aura_data.h"
+#include "../../infos/spell_cast_info.h"
+#include "../../pipelines/spell_damage_info.h"
+#include "../../pipelines/spell_heal_info.h"
 
-#include "../utility/category_cooldown.h"
-#include "../utility/cooldown.h"
+#include "../../utility/category_cooldown.h"
+#include "../../utility/cooldown.h"
 
-#include "spell_effect_visual.h"
+#include "../spells/spell_effect_visual.h"
 
-#include "../world_spells/world_spell_data.h"
+#include "../../world_spells/world_spell_data.h"
 
 class AuraApplyInfo;
 class AuraScript;
@@ -359,7 +359,7 @@ protected:
 	virtual void _sremove_expired(Ref<AuraData> aura);
 	virtual void _sremove_dispell(Ref<AuraData> aura);
 	virtual void _supdate(Ref<AuraData> aura, float delta);
-	
+
 	virtual void _setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
 
 	virtual void _sapply_passives_damage_receive(Ref<SpellDamageInfo> info);

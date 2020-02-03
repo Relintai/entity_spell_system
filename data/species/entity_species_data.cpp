@@ -22,8 +22,8 @@ SOFTWARE.
 
 #include "entity_species_data.h"
 
-#include "../data/aura.h"
-#include "../data/spell.h"
+#include "../auras/aura.h"
+#include "../spells/spell.h"
 
 int EntitySpeciesData::get_id() {
 	return _id;

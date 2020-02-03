@@ -22,8 +22,8 @@ SOFTWARE.
 
 #include "inventory.h"
 
-#include "../data/item_instance.h"
-#include "../data/item_template.h"
+#include "../data/items/item_instance.h"
+#include "../data/items/item_template.h"
 
 #include "../entities/player.h"
 

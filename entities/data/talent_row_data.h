@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/reference.h"
 #include "core/ustring.h"
 
-#include "../../data/aura.h"
+#include "../../data/auras/aura.h"
 
 class Aura;
 

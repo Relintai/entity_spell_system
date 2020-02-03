@@ -27,17 +27,17 @@ SOFTWARE.
 
 #include "scene/main/node.h"
 
-#include "../data/craft_recipe.h"
-#include "../data/item_instance.h"
-#include "../data/spell.h"
-#include "../data/xp_data.h"
+#include "../data/entities/xp_data.h"
+#include "../data/items/craft_recipe.h"
+#include "../data/items/item_instance.h"
+#include "../data/spells/spell.h"
 #include "./data/entity_data.h"
 #include "core/hash_map.h"
 #include "core/object.h"
 #include "core/ustring.h"
 #include "core/vector.h"
 
-#include "../data/spell.h"
+#include "../data/spells/spell.h"
 #include "./resources/entity_resource.h"
 #include "stats/stat.h"
 
@@ -54,7 +54,7 @@ SOFTWARE.
 
 #include "./ai/entity_ai.h"
 
-#include "../data/aura_group.h"
+#include "../data/auras/aura_group.h"
 
 class EntityData;
 class AuraData;

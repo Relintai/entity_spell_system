@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "spell_cast_info.h"
 
-#include "../data/spell.h"
+#include "../data/spells/spell.h"
 
 #include "../singletons/entity_data_manager.h"
 

@@ -22,13 +22,13 @@ SOFTWARE.
 
 #include "spell.h"
 
-#include "../entities/resources/entity_resource_cost_data.h"
-#include "../entities/skills/entity_skill_data.h"
-#include "aura.h"
-#include "craft_recipe.h"
-#include "../world_spells/world_spell.h"
+#include "../../entities/resources/entity_resource_cost_data.h"
+#include "../../entities/skills/entity_skill_data.h"
+#include "../../world_spells/world_spell.h"
+#include "../auras/aura.h"
+#include "../items/craft_recipe.h"
 
-#include "../entities/auras/aura_data.h"
+#include "../../entities/auras/aura_data.h"
 
 int Spell::get_id() const {
 	return _id;
@@ -884,7 +884,7 @@ void Spell::_handle_projectile(Ref<SpellCastInfo> info) {
 
 void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 
-		/*
+	/*
 #		var ok : bool = false
 		
 #		if (target_relation_type & TARGET_SELF):
@@ -931,7 +931,7 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 
 		_caster_aura_applys.get(i)->sapply(aai);
 	}
-		
+
 	if (has_target) {
 		for (int i = 0; i < _target_aura_applys.size(); ++i) {
 			Ref<Aura> aura = _target_aura_applys.get(i);
@@ -948,7 +948,6 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 				info->get_target()->sremove_aura_exact(ad);
 			}
 
-
 			Ref<AuraApplyInfo> aai;
 			aai.instance();
 
@@ -961,7 +960,6 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 		}
 	}
 }
-
 
 void Spell::_bind_methods() {
 	//Commands

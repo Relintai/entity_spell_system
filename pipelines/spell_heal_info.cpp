@@ -22,8 +22,8 @@ SOFTWARE.
 
 #include "spell_heal_info.h"
 
-#include "../data/aura.h"
-#include "../data/spell.h"
+#include "../data/auras/aura.h"
+#include "../data/spells/spell.h"
 #include "../entities/entity.h"
 #include "../singletons/entity_data_manager.h"
 

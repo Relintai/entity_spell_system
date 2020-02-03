@@ -22,8 +22,8 @@ SOFTWARE.
 
 #include "bag.h"
 
-#include "../data/item_instance.h"
-#include "../data/item_template.h"
+#include "../data/items/item_instance.h"
+#include "../data/items/item_template.h"
 
 int Bag::get_allowed_item_types() const {
 	return _allowed_item_types;

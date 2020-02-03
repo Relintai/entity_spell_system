@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "character_spec.h"
 
-#include "../../data/aura.h"
+#include "../../data/auras/aura.h"
 
 int CharacterSpec::get_id() {
 	return _id;

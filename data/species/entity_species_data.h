@@ -27,7 +27,7 @@ SOFTWARE.
 #include "core/ustring.h"
 #include "core/vector.h"
 
-#include "../entity_enums.h"
+#include "../../entity_enums.h"
 
 #include "species_model_data.h"
 

@@ -20,55 +20,54 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef ITEM_TEMPLATE_STAT_MODIFIER_H
-#define ITEM_TEMPLATE_STAT_MODIFIER_H
+#ifndef ITEM_INSTANCE_H
+#define ITEM_INSTANCE_H
 
-#include "../entities/stats/stat.h"
 #include "core/reference.h"
+#include "core/vector.h"
 
-class ItemTemplateStatModifier : public Reference {
-	GDCLASS(ItemTemplateStatModifier, Reference);
+#include "../../entities/stats/stat.h"
+#include "../../item_enums.h"
+#include "item_stat_modifier.h"
+
+class ItemTemplate;
+
+class ItemInstance : public Reference {
+	GDCLASS(ItemInstance, Reference);
 
 public:
-	Stat::StatId get_stat_id();
-	void set_stat_id(Stat::StatId value);
+	Ref<ItemTemplate> get_item_template() const;
+	void set_item_template(const Ref<ItemTemplate> value);
 
-	float get_min_base_mod();
-	void set_min_base_mod(float value);
+	Ref<ItemStatModifier> get_item_stat_modifier(int index);
+	void add_item_stat_modifier(Ref<ItemStatModifier> modifier);
+	void remove_item_stat_modifier(int index);
+	void clear_item_stat_modifiers();
 
-	float get_max_base_mod();
-	void set_max_base_mod(float value);
+	int get_item_stat_modifier_count();
 
-	float get_min_bonus_mod();
-	void set_min_bonus_mod(float value);
+	int get_stack_size();
+	void set_stack_size(int value);
 
-	float get_max_bonus_mod();
-	void set_max_bonus_mod(float value);
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
 
-	float get_min_percent_mod();
-	void set_min_percent_mod(float value);
+	virtual Dictionary _to_dict();
+	virtual void _from_dict(const Dictionary &dict);
 
-	float get_max_percent_mod();
-	void set_max_percent_mod(float value);
-
-	float get_scaling_factor();
-	void set_scaling_factor(float value);
-
-	ItemTemplateStatModifier();
+	ItemInstance();
+	~ItemInstance();
 
 protected:
 	static void _bind_methods();
 
 private:
-	Stat::StatId _stat_id;
+	Ref<ItemTemplate> _item_template;
+	int _item_template_id;
 
-	float _min_mod_max;
-	float _max_mod_max;
+	int _stack_size;
 
-	float _min_mod_precent;
-	float _max_mod_precent;
-
-	float _scaling_factor;
+	Vector<Ref<ItemStatModifier> > _modifiers;
 };
 
 #endif

@@ -26,20 +26,20 @@ SOFTWARE.
 #include "core/resource.h"
 #include "scene/resources/texture.h"
 
-#include "../entity_enums.h"
-#include "../spell_enums.h"
+#include "../../entity_enums.h"
+#include "../../spell_enums.h"
 
-#include "../infos/spell_cast_info.h"
+#include "../../infos/spell_cast_info.h"
 
-#include "../entities/entity.h"
-#include "../entities/stats/stat.h"
+#include "../../entities/entity.h"
+#include "../../entities/stats/stat.h"
 
-#include "../infos/aura_infos.h"
-#include "../pipelines/spell_damage_info.h"
+#include "../../infos/aura_infos.h"
+#include "../../pipelines/spell_damage_info.h"
 
 #include "spell_effect_visual.h"
 
-#include "../world_spells/world_spell_data.h"
+#include "../../world_spells/world_spell_data.h"
 
 class Entity;
 class Aura;

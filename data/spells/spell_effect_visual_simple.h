@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "scene/resources/packed_scene.h"
 
-#include "../entity_enums.h"
+#include "../../entity_enums.h"
 
 class SpellEffectVisualSimple : public SpellEffectVisual {
 	GDCLASS(SpellEffectVisualSimple, SpellEffectVisual);

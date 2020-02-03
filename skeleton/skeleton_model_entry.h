@@ -23,7 +23,7 @@ SOFTWARE.
 #ifndef SKELETON_MODEL_ENTRY_H
 #define SKELETON_MODEL_ENTRY_H
 
-#include "../data/item_visual_entry.h"
+#include "../data/items/item_visual_entry.h"
 #include "core/reference.h"
 
 class SkeletonModelEntry : public Reference {

@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "item_template.h"
 
-#include "../singletons/entity_data_manager.h"
+#include "../../singletons/entity_data_manager.h"
 
 Ref<ItemTemplate> ItemInstance::get_item_template() const {
 	return _item_template;

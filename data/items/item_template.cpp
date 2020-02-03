@@ -22,10 +22,10 @@ SOFTWARE.
 
 #include "item_template.h"
 
-#include "../entities/data/entity_class_data.h"
-#include "aura.h"
+#include "../../entities/data/entity_class_data.h"
+#include "../auras/aura.h"
+#include "../spells/spell.h"
 #include "item_instance.h"
-#include "spell.h"
 
 int ItemTemplate::get_id() const {
 	return _id;

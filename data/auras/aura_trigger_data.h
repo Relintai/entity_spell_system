@@ -25,9 +25,9 @@ SOFTWARE.
 
 #include "core/reference.h"
 
-#include "../spell_enums.h"
+#include "../../spell_enums.h"
+#include "../spells/spell.h"
 #include "aura.h"
-#include "spell.h"
 
 class Spell;
 

@@ -25,8 +25,8 @@ SOFTWARE.
 #include "../singletons/entity_data_manager.h"
 #include "../singletons/profile_manager.h"
 
-#include "../data/aura.h"
-#include "../data/spell.h"
+#include "../data/auras/aura.h"
+#include "../data/spells/spell.h"
 #include "../entities/auras/aura_data.h"
 #include "../infos/spell_cast_info.h"
 #include "../inventory/bag.h"

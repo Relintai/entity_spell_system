@@ -25,7 +25,7 @@ SOFTWARE.
 
 #include "core/array.h"
 
-#include "../data/item_template.h"
+#include "../items/item_template.h"
 
 class LootDataBase : public Resource {
 	GDCLASS(LootDataBase, Resource);

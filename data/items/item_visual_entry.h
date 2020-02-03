@@ -28,14 +28,14 @@ SOFTWARE.
 #include "core/ustring.h"
 #include "scene/resources/texture.h"
 
-#include "../entity_enums.h"
-#include "../item_enums.h"
+#include "../../entity_enums.h"
+#include "../../item_enums.h"
 
 #include "scene/resources/mesh.h"
 #include "scene/resources/packed_scene.h"
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
-#include "../../mesh_data_resource/mesh_data_resource.h"
+#include "../../../mesh_data_resource/mesh_data_resource.h"
 #endif
 
 class ItemVisualEntry : public Resource {

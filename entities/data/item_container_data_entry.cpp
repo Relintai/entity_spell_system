@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "item_container_data_entry.h"
 
-#include "../../data/item_template.h"
+#include "../../data/items/item_template.h"
 
 Ref<ItemTemplate> ItemContainerDataEntry::get_item() {
 	return _item;

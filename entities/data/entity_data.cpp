@@ -22,9 +22,9 @@ SOFTWARE.
 
 #include "entity_data.h"
 
-#include "../../data/aura.h"
-#include "../../data/craft_recipe.h"
-#include "../../data/spell.h"
+#include "../../data/auras/aura.h"
+#include "../../data/items/craft_recipe.h"
+#include "../../data/spells/spell.h"
 #include "../../infos/spell_cast_info.h"
 #include "../entity.h"
 #include "character_spec.h"

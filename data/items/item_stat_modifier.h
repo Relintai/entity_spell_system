@@ -20,33 +20,44 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef ITEM_VISUAL_H
-#define ITEM_VISUAL_H
+#ifndef ITEM_STAT_MODIFIER_H
+#define ITEM_STAT_MODIFIER_H
 
-#include "core/resource.h"
+#include "../../entities/stats/stat.h"
+#include "core/reference.h"
 
-#include "../item_enums.h"
-#include "item_visual_entry.h"
-
-class ItemVisual : public Resource {
-	GDCLASS(ItemVisual, Resource);
+class ItemStatModifier : public Reference {
+	GDCLASS(ItemStatModifier, Reference);
 
 public:
-	ItemEnums::EntityTextureLayers get_layer();
-	void set_layer(ItemEnums::EntityTextureLayers layer);
+	Stat::StatId get_stat_id();
+	void set_stat_id(Stat::StatId value);
 
-	Ref<ItemVisualEntry> get_visual(int index);
-	void set_visual(int index, Ref<ItemVisualEntry> entry);
+	float get_base_mod();
+	void set_base_mod(float value);
 
-	ItemVisual();
-	~ItemVisual();
+	float get_bonus_mod();
+	void set_bonus_mod(float value);
+
+	float get_percent_mod();
+	void set_percent_mod(float value);
+
+	Dictionary to_dict();
+	void from_dict(const Dictionary &dict);
+
+	virtual Dictionary _to_dict();
+	virtual void _from_dict(const Dictionary &dict);
+
+	ItemStatModifier();
 
 protected:
 	static void _bind_methods();
 
 private:
-	ItemEnums::EntityTextureLayers _layer;
-	Ref<ItemVisualEntry> _entries[EntityEnums::SKELETON_POINTS_MAX];
+	Stat::StatId _stat_id;
+	float _base_mod;
+	float _bonus_mod;
+	float _percent_mod;
 };
 
 #endif

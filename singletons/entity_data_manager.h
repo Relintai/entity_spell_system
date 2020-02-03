@@ -40,7 +40,7 @@ SOFTWARE.
 
 #include "../item_enums.h"
 
-#include "../data/xp_data.h"
+#include "../data/entities/xp_data.h"
 
 #include "../world_spells/world_spell_data.h"
 

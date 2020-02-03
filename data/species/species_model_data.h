@@ -30,9 +30,9 @@ SOFTWARE.
 #include "core/vector.h"
 #include "scene/resources/packed_scene.h"
 
-#include "../data/item_visual_entry.h"
+#include "../items/item_visual_entry.h"
 
-#include "../entity_enums.h"
+#include "../../entity_enums.h"
 
 class ItemVisual;
 

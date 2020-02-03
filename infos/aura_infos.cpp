@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "aura_infos.h"
 
-#include "../data/aura.h"
+#include "../data/auras/aura.h"
 
 Entity *AuraApplyInfo::get_caster() const {
 	return _caster;

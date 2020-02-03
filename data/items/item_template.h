@@ -27,8 +27,8 @@ SOFTWARE.
 #include "core/vector.h"
 #include "scene/resources/texture.h"
 
-#include "../entities/stats/stat.h"
-#include "../item_enums.h"
+#include "../../entities/stats/stat.h"
+#include "../../item_enums.h"
 #include "item_template_stat_modifier.h"
 #include "item_visual.h"
 

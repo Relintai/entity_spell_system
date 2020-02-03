@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "xp_data.h"
 
-#include "../entity_enums.h"
+#include "../../entity_enums.h"
 
 int XPData::get_max_level() {
 	return EntityEnums::MAX_LEVEL;

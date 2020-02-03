@@ -31,7 +31,7 @@ SOFTWARE.
 
 #include "../entity_enums.h"
 
-#include "../data/item_visual.h"
+#include "../data/items/item_visual.h"
 
 class CharacterSkeleton2D : public Node2D {
 	GDCLASS(CharacterSkeleton2D, Node2D);

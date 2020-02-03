@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "vendor_item_data.h"
 
-#include "../../data/item_template.h"
+#include "../../data/items/item_template.h"
 
 Ref<ItemTemplate> VendorItemDataEntry::get_item() {
 	return _item;

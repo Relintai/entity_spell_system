@@ -27,15 +27,16 @@ SOFTWARE.
 
 #include "singletons/entity_data_manager.h"
 
-#include "data/aura.h"
-#include "data/aura_group.h"
-#include "data/aura_stat_attribute.h"
-#include "data/equipment_data.h"
-#include "data/equipment_data_entry.h"
-#include "data/item_stat_modifier.h"
-#include "data/item_template_stat_modifier.h"
-#include "data/spell_cooldown_manipulation_data.h"
-#include "data/xp_data.h"
+#include "data/auras/aura.h"
+#include "data/auras/aura_group.h"
+#include "data/auras/aura_stat_attribute.h"
+
+#include "data/entities/xp_data.h"
+#include "data/items/equipment_data.h"
+#include "data/items/equipment_data_entry.h"
+#include "data/items/item_stat_modifier.h"
+#include "data/items/item_template_stat_modifier.h"
+#include "data/spells/spell_cooldown_manipulation_data.h"
 
 #include "entities/data/entity_class_data.h"
 #include "entities/data/entity_data.h"
@@ -51,18 +52,18 @@ SOFTWARE.
 #include "entities/data/character_spec.h"
 #include "entities/data/talent_row_data.h"
 
-#include "data/item_visual.h"
-#include "data/item_visual_entry.h"
+#include "data/items/item_visual.h"
+#include "data/items/item_visual_entry.h"
 
 #include "atlases/character_atlas.h"
 #include "atlases/character_atlas_entry.h"
 
 #include "skeleton/character_bones.h"
 
-#include "data/item_instance.h"
-#include "data/item_template.h"
+#include "data/items/item_instance.h"
+#include "data/items/item_template.h"
 
-#include "data/spell.h"
+#include "data/spells/spell.h"
 #include "entities/stats/complex_level_stat_data.h"
 #include "entities/stats/level_stat_data.h"
 #include "entities/stats/simple_level_stat_data.h"
@@ -74,8 +75,8 @@ SOFTWARE.
 #include "inventory/bag.h"
 //#include "inventory/inventory.h"
 
-#include "data/craft_recipe.h"
-#include "data/craft_recipe_helper.h"
+#include "data/items/craft_recipe.h"
+#include "data/items/craft_recipe_helper.h"
 
 #include "infos/aura_infos.h"
 #include "infos/spell_cast_info.h"
@@ -90,8 +91,8 @@ SOFTWARE.
 #include "entities/auras/aura_data.h"
 #include "entities/entity.h"
 
-#include "data/aura_stat_attribute.h"
-#include "data/aura_trigger_data.h"
+#include "data/auras/aura_stat_attribute.h"
+#include "data/auras/aura_trigger_data.h"
 
 #include "ui/unit_frame.h"
 
@@ -100,20 +101,20 @@ SOFTWARE.
 #include "skeleton/character_skeleton_2d.h"
 #include "skeleton/character_skeleton_3d.h"
 
-#include "skeleton/entity_species_data.h"
+#include "data/species/entity_species_data.h"
+#include "data/species/species_model_data.h"
 #include "skeleton/skeleton_model_entry.h"
-#include "skeleton/species_model_data.h"
 
 #include "utility/category_cooldown.h"
 #include "utility/cooldown.h"
 #include "utility/entity_create_info.h"
 
-#include "loot/loot_data_base.h"
-#include "loot/loot_data_container.h"
-#include "loot/loot_data_item.h"
+#include "data/loot/loot_data_base.h"
+#include "data/loot/loot_data_container.h"
+#include "data/loot/loot_data_item.h"
 
-#include "data/spell_effect_visual.h"
-#include "data/spell_effect_visual_simple.h"
+#include "data/spells/spell_effect_visual.h"
+#include "data/spells/spell_effect_visual_simple.h"
 
 #include "world_spells/world_spell.h"
 #include "world_spells/world_spell_data.h"

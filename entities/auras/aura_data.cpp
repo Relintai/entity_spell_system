@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "aura_data.h"
 
-#include "../../data/aura.h"
+#include "../../data/auras/aura.h"
 #include "../../singletons/entity_data_manager.h"
 #include "../entity.h"
 
