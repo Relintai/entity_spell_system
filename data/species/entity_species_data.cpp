@@ -25,31 +25,31 @@ SOFTWARE.
 #include "../auras/aura.h"
 #include "../spells/spell.h"
 
-int EntitySpeciesData::get_id() {
+int EntitySpeciesData::get_id() const {
 	return _id;
 }
-void EntitySpeciesData::set_id(int value) {
+void EntitySpeciesData::set_id(const int value) {
 	_id = value;
 }
 
-EntityEnums::EntityType EntitySpeciesData::get_type() {
+EntityEnums::EntityType EntitySpeciesData::get_type() const {
 	return _type;
 }
-void EntitySpeciesData::set_type(EntityEnums::EntityType value) {
+void EntitySpeciesData::set_type(const EntityEnums::EntityType value) {
 	_type = value;
 }
 
-String EntitySpeciesData::get_text_description() {
+String EntitySpeciesData::get_text_description() const {
 	return _text_description;
 }
-void EntitySpeciesData::set_text_description(String value) {
+void EntitySpeciesData::set_text_description(const String &value) {
 	_text_description = value;
 }
 
 Ref<SpeciesModelData> EntitySpeciesData::get_model_data() {
 	return _model_data;
 }
-void EntitySpeciesData::set_model_data(Ref<SpeciesModelData> data) {
+void EntitySpeciesData::set_model_data(const Ref<SpeciesModelData> &data) {
 	_model_data = data;
 }
 
@@ -60,12 +60,12 @@ Ref<Spell> EntitySpeciesData::get_spell(const int index) const {
 
 	return _spells.get(index);
 }
-void EntitySpeciesData::set_spell(const int index, const Ref<Spell> spell) {
+void EntitySpeciesData::set_spell(const int index, const Ref<Spell> &spell) {
 	ERR_FAIL_INDEX(index, _spells.size());
 
 	_spells.set(index, spell);
 }
-void EntitySpeciesData::add_spell(const Ref<Spell> spell) {
+void EntitySpeciesData::add_spell(const Ref<Spell> &spell) {
 	_spells.push_back(spell);
 }
 void EntitySpeciesData::remove_spell(const int index) {
@@ -101,12 +101,12 @@ Ref<Aura> EntitySpeciesData::get_aura(const int index) const {
 
 	return _auras.get(index);
 }
-void EntitySpeciesData::set_aura(const int index, const Ref<Aura> aura) {
+void EntitySpeciesData::set_aura(const int index, const Ref<Aura> &aura) {
 	ERR_FAIL_INDEX(index, _auras.size());
 
 	_auras.set(index, aura);
 }
-void EntitySpeciesData::add_aura(const Ref<Aura> aura) {
+void EntitySpeciesData::add_aura(const Ref<Aura> &aura) {
 	_auras.push_back(aura);
 }
 void EntitySpeciesData::remove_aura(const int index) {

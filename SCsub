@@ -32,6 +32,7 @@ sources = [
     "data/items/item_visual_entry.cpp",
     "data/species/entity_species_data.cpp",
     "data/species/species_model_data.cpp",
+    "data/species/species_instance.cpp",
 
     "data/spells/spell_cooldown_manipulation_data.cpp",
     "data/spells/spell.cpp",

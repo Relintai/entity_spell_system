@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include "../data/auras/aura.h"
 #include "../data/items/craft_recipe.h"
+#include "../data/species/entity_species_data.h"
 #include "../data/spells/spell.h"
 #include "../entities/data/entity_data.h"
 #include "../entities/resources/entity_resource_data.h"
@@ -359,28 +360,54 @@ void EntityDataManager::set_player_character_data_folder(String folder) {
 Vector<Ref<EntityData> > *EntityDataManager::get_player_character_datas() {
 	return &_player_character_datas;
 }
-
 void EntityDataManager::add_player_character_data(const Ref<EntityData> &cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_player_character_datas.push_back(cda);
 	_player_character_data_map.set(cda->get_id(), cda);
 }
-
 Ref<EntityData> EntityDataManager::get_player_character_data(int item_id) {
 	ERR_FAIL_COND_V_MSG(!_player_character_data_map.has(item_id), Ref<EntityData>(), "Could not find EntityData! Id:" + String::num(item_id));
 
 	return _player_character_data_map.get(item_id);
 }
-
 Ref<EntityData> EntityDataManager::get_player_character_data_index(int index) {
 	ERR_FAIL_INDEX_V(index, _player_character_datas.size(), Ref<EntityData>());
 
 	return _player_character_datas.get(index);
 }
-
 int EntityDataManager::get_player_character_data_count() {
 	return _player_character_datas.size();
+}
+
+String EntityDataManager::get_entity_species_data_folder() {
+	return _entity_species_data_folder;
+}
+void EntityDataManager::set_entity_species_data_folder(String folder) {
+	_entity_species_data_folder = folder;
+}
+Vector<Ref<EntitySpeciesData> > *EntityDataManager::get_entity_species_datas() {
+	return &_entity_species_datas;
+}
+void EntityDataManager::add_entity_species_data(const Ref<EntitySpeciesData> &cda) {
+	ERR_FAIL_COND(!cda.is_valid());
+
+	_entity_species_datas.push_back(cda);
+	_entity_species_data_map.set(cda->get_id(), cda);
+}
+Ref<EntitySpeciesData> EntityDataManager::get_entity_species_data(int item_id) {
+	if (!_entity_species_data_map.has(item_id))
+		return Ref<EntitySpeciesData>();
+
+	return _entity_species_data_map.get(item_id);
+}
+Ref<EntitySpeciesData> EntityDataManager::get_entity_species_data_index(int index) {
+	ERR_FAIL_INDEX_V(index, _entity_species_datas.size(), Ref<EntitySpeciesData>());
+
+	return _entity_species_datas.get(index);
+}
+int EntityDataManager::get_entity_species_data_count() {
+	return _entity_species_datas.size();
 }
 
 void EntityDataManager::load_all() {
@@ -395,6 +422,7 @@ void EntityDataManager::load_all() {
 	load_item_templates();
 	load_mob_datas();
 	load_player_character_datas();
+	load_entity_species_datas();
 }
 
 void EntityDataManager::load_xp_data() {
@@ -861,6 +889,50 @@ void EntityDataManager::load_player_character_datas() {
 	}
 }
 
+void EntityDataManager::load_entity_species_datas() {
+	_Directory dir;
+
+	ERR_FAIL_COND(_entity_species_data_folder.ends_with("/"));
+
+	if (dir.open(_entity_species_data_folder) == OK) {
+
+		dir.list_dir_begin();
+
+		String filename;
+
+		while (true) {
+			filename = dir.get_next();
+
+			if (filename == "")
+				break;
+
+			if (!dir.current_is_dir()) {
+				String path = _entity_species_data_folder + "/" + filename;
+
+				_ResourceLoader *rl = _ResourceLoader::get_singleton();
+
+				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntitySpeciesData");
+
+				ERR_CONTINUE(!resl.is_valid());
+
+				resl->wait();
+
+				Ref<Resource> s = resl->get_resource();
+
+				ERR_CONTINUE(!s.is_valid());
+
+				Ref<EntitySpeciesData> pcd = s;
+
+				ERR_CONTINUE(!pcd.is_valid());
+
+				add_entity_species_data(pcd);
+			}
+		}
+	} else {
+		print_error("An error occurred when trying to access the path.");
+	}
+}
+
 void EntityDataManager::request_entity_spawn(const Ref<EntityCreateInfo> &info) {
 	emit_signal("on_entity_spawn_requested", info);
 }
@@ -987,6 +1059,16 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_player_character_data_index", "index"), &EntityDataManager::get_player_character_data_index);
 	ClassDB::bind_method(D_METHOD("get_player_character_data_count"), &EntityDataManager::get_player_character_data_count);
 
+	//Player Character Data
+	ClassDB::bind_method(D_METHOD("get_entity_species_data_folder"), &EntityDataManager::get_entity_species_data_folder);
+	ClassDB::bind_method(D_METHOD("set_entity_species_data_folder", "folder"), &EntityDataManager::set_entity_species_data_folder);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_species_data_folder"), "set_entity_species_data_folder", "get_entity_species_data_folder");
+
+	ClassDB::bind_method(D_METHOD("add_entity_species_data", "pcd"), &EntityDataManager::add_entity_species_data);
+	ClassDB::bind_method(D_METHOD("get_entity_species_data", "pcd_id"), &EntityDataManager::get_entity_species_data);
+	ClassDB::bind_method(D_METHOD("get_entity_species_data_index", "index"), &EntityDataManager::get_entity_species_data_index);
+	ClassDB::bind_method(D_METHOD("get_entity_species_data_count"), &EntityDataManager::get_entity_species_data_count);
+
 	//load
 	ClassDB::bind_method(D_METHOD("load_all"), &EntityDataManager::load_all);
 	ClassDB::bind_method(D_METHOD("load_entity_resources"), &EntityDataManager::load_entity_resources);
@@ -1000,6 +1082,7 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("load_item_templates"), &EntityDataManager::load_item_templates);
 	ClassDB::bind_method(D_METHOD("load_mob_datas"), &EntityDataManager::load_mob_datas);
 	ClassDB::bind_method(D_METHOD("load_player_character_datas"), &EntityDataManager::load_player_character_datas);
+	ClassDB::bind_method(D_METHOD("load_entity_species_datas"), &EntityDataManager::load_entity_species_datas);
 
 	ADD_SIGNAL(MethodInfo("on_entity_spawn_requested", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
 	ADD_SIGNAL(MethodInfo("on_world_spell_spawn_requested", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -1024,6 +1107,7 @@ EntityDataManager::EntityDataManager() {
 	_item_template_folder = GLOBAL_DEF("ess/data/item_template_folder", "");
 	_mob_data_folder = GLOBAL_DEF("ess/data/mob_data_folder", "");
 	_player_character_data_folder = GLOBAL_DEF("ess/data/player_character_data_folder", "");
+	_entity_species_data_folder = GLOBAL_DEF("ess/data/entity_species_data_folder", "");
 
 	if (_automatic_load) {
 		call_deferred("load_all");
@@ -1062,4 +1146,7 @@ EntityDataManager::~EntityDataManager() {
 
 	_player_character_datas.clear();
 	_player_character_data_map.clear();
+
+	_entity_species_datas.clear();
+	_entity_species_data_map.clear();
 }

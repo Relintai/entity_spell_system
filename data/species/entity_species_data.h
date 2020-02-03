@@ -38,22 +38,22 @@ class EntitySpeciesData : public Resource {
 	GDCLASS(EntitySpeciesData, Resource);
 
 public:
-	int get_id();
-	void set_id(int value);
+	int get_id() const;
+	void set_id(const int value);
 
-	EntityEnums::EntityType get_type();
-	void set_type(EntityEnums::EntityType value);
+	EntityEnums::EntityType get_type() const;
+	void set_type(const EntityEnums::EntityType value);
 
-	String get_text_description();
-	void set_text_description(String value);
+	String get_text_description() const;
+	void set_text_description(const String &value);
 
 	Ref<SpeciesModelData> get_model_data();
-	void set_model_data(Ref<SpeciesModelData> data);
+	void set_model_data(const Ref<SpeciesModelData> &data);
 
 	//Spells
 	Ref<Spell> get_spell(const int index) const;
-	void set_spell(const int index, const Ref<Spell> spell);
-	void add_spell(const Ref<Spell> spell);
+	void set_spell(const int index, const Ref<Spell> &spell);
+	void add_spell(const Ref<Spell> &spell);
 	void remove_spell(const int index);
 
 	int get_spell_count() const;
@@ -63,8 +63,8 @@ public:
 
 	//Auras
 	Ref<Aura> get_aura(const int index) const;
-	void set_aura(const int index, const Ref<Aura> aura);
-	void add_aura(const Ref<Aura> aura);
+	void set_aura(const int index, const Ref<Aura> &aura);
+	void add_aura(const Ref<Aura> &aura);
 	void remove_aura(const int index);
 
 	int get_aura_count() const;

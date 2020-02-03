@@ -54,6 +54,7 @@ class EntitySkillData;
 class EntityCreateInfo;
 class WorldSpellData;
 class SpellCastInfo;
+class EntitySpeciesData;
 
 class EntityDataManager : public Object {
 	GDCLASS(EntityDataManager, Object);
@@ -151,6 +152,14 @@ public:
 	Ref<EntityData> get_player_character_data_index(int index);
 	int get_player_character_data_count();
 
+	String get_entity_species_data_folder();
+	void set_entity_species_data_folder(String folder);
+	Vector<Ref<EntitySpeciesData> > *get_entity_species_datas();
+	void add_entity_species_data(const Ref<EntitySpeciesData> &aura);
+	Ref<EntitySpeciesData> get_entity_species_data(int item_id);
+	Ref<EntitySpeciesData> get_entity_species_data_index(int index);
+	int get_entity_species_data_count();
+
 	void load_all();
 	void load_entity_resources();
 	void load_entity_skills();
@@ -163,6 +172,7 @@ public:
 	void load_item_templates();
 	void load_mob_datas();
 	void load_player_character_datas();
+	void load_entity_species_datas();
 
 	void request_entity_spawn(const Ref<EntityCreateInfo> &info);
 	void request_world_spell_spawn(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info);
@@ -216,6 +226,10 @@ private:
 	String _player_character_data_folder;
 	Vector<Ref<EntityData> > _player_character_datas;
 	HashMap<int, Ref<EntityData> > _player_character_data_map;
+
+	String _entity_species_data_folder;
+	Vector<Ref<EntitySpeciesData> > _entity_species_datas;
+	HashMap<int, Ref<EntitySpeciesData> > _entity_species_data_map;
 
 	Ref<Aura> _armor_type_skills[ItemEnums::ARMOR_TYPE_MAX];
 
