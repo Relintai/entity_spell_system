@@ -23,7 +23,8 @@ SOFTWARE.
 #include "spell_cast_info.h"
 
 #include "../data/spells/spell.h"
-
+#include "../entities/entity.h"
+#include "../world_spells/world_spell.h"
 #include "../singletons/entity_data_manager.h"
 
 ////    SpellCastInfo    ////
@@ -35,11 +36,9 @@ Entity *SpellCastInfo::get_caster() {
 
 	return _caster;
 }
-
 void SpellCastInfo::set_caster(Entity *value) {
 	_caster = value;
 }
-
 void SpellCastInfo::set_caster_bind(Node *caster) {
 	if (!caster) {
 		return;
@@ -61,11 +60,9 @@ Entity *SpellCastInfo::get_target() {
 
 	return _target;
 }
-
 void SpellCastInfo::set_target(Entity *value) {
 	_target = value;
 }
-
 void SpellCastInfo::set_target_bind(Node *target) {
 	if (!target) {
 		return;
@@ -80,10 +77,33 @@ void SpellCastInfo::set_target_bind(Node *target) {
 	_target = e;
 }
 
+WorldSpell *SpellCastInfo::get_world_spell() {
+	if (_world_spell && !ObjectDB::instance_validate(_world_spell)) {
+		_world_spell = NULL;
+	}
+
+	return _world_spell;
+}
+void SpellCastInfo::set_world_spell(WorldSpell *world_spell) {
+	_world_spell = world_spell;
+}
+void SpellCastInfo::set_world_spell_bind(Node *world_spell) {
+	if (!world_spell) {
+		return;
+	}
+
+	WorldSpell *w = cast_to<WorldSpell>(world_spell);
+
+	if (!ObjectDB::instance_validate(w)) {
+		return;
+	}
+
+	_world_spell = w;
+}
+
 bool SpellCastInfo::get_has_cast_time() const {
 	return _has_cast_time;
 }
-
 void SpellCastInfo::set_has_cast_time(bool value) {
 	_has_cast_time = value;
 }
@@ -91,7 +111,6 @@ void SpellCastInfo::set_has_cast_time(bool value) {
 float SpellCastInfo::get_cast_time() const {
 	return _cast_time;
 }
-
 void SpellCastInfo::set_cast_time(float value) {
 	_cast_time = value;
 }
@@ -99,7 +118,6 @@ void SpellCastInfo::set_cast_time(float value) {
 float SpellCastInfo::get_current_cast_time() const {
 	return _current_cast_time;
 }
-
 void SpellCastInfo::set_current_cast_time(float value) {
 	_current_cast_time = value;
 }
@@ -107,7 +125,6 @@ void SpellCastInfo::set_current_cast_time(float value) {
 bool SpellCastInfo::get_is_casting() const {
 	return _is_casting;
 }
-
 void SpellCastInfo::set_is_casting(bool value) {
 	_is_casting = value;
 }
@@ -115,7 +132,6 @@ void SpellCastInfo::set_is_casting(bool value) {
 int SpellCastInfo::get_num_pushbacks() const {
 	return _num_pushbacks;
 }
-
 void SpellCastInfo::set_num_pushbacks(int value) {
 	_num_pushbacks = value;
 }
@@ -123,7 +139,6 @@ void SpellCastInfo::set_num_pushbacks(int value) {
 float SpellCastInfo::get_spell_scale() const {
 	return _spell_scale;
 }
-
 void SpellCastInfo::set_spell_scale(float value) {
 	_spell_scale = value;
 }
@@ -131,7 +146,6 @@ void SpellCastInfo::set_spell_scale(float value) {
 Ref<Spell> SpellCastInfo::get_spell() const {
 	return _spell;
 }
-
 void SpellCastInfo::set_spell(Ref<Spell> spell) {
 	_spell = spell;
 }
@@ -234,6 +248,10 @@ void SpellCastInfo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_target"), &SpellCastInfo::get_target);
 	ClassDB::bind_method(D_METHOD("set_target", "caster"), &SpellCastInfo::set_target_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_target", "get_target");
+
+	ClassDB::bind_method(D_METHOD("get_world_spell"), &SpellCastInfo::get_world_spell);
+	ClassDB::bind_method(D_METHOD("set_world_spell", "world_spell"), &SpellCastInfo::set_world_spell_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_spell", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpell"), "set_world_spell", "get_world_spell");
 
 	ClassDB::bind_method(D_METHOD("get_has_cast_time"), &SpellCastInfo::get_has_cast_time);
 	ClassDB::bind_method(D_METHOD("set_has_cast_time", "value"), &SpellCastInfo::set_has_cast_time);
