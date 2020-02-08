@@ -221,6 +221,7 @@ void SpellCastInfo::from_dict(const Dictionary &dict) {
 SpellCastInfo::SpellCastInfo() {
 	_caster = NULL;
 	_target = NULL;
+	_world_spell = NULL;
 
 	_has_cast_time = false;
 	_cast_time = 0;
