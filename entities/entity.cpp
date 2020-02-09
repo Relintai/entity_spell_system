@@ -351,8 +351,6 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 
 	sets_entity_data(info->get_entity_data());
 
-	sets_entity_data(info->get_entity_data());
-
 	if (!info->get_serialized_data().empty()) {
 		from_dict(info->get_serialized_data());
 	}
