@@ -175,7 +175,9 @@ public:
 	void load_entity_species_datas();
 
 	void request_entity_spawn(const Ref<EntityCreateInfo> &info);
+	void request_entity_spawn_deferred(const Ref<EntityCreateInfo> &info);
 	void request_world_spell_spawn(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info);
+	void request_world_spell_spawn_deferred(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info);
 
 	EntityDataManager();
 	~EntityDataManager();

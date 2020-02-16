@@ -936,8 +936,14 @@ void EntityDataManager::load_entity_species_datas() {
 void EntityDataManager::request_entity_spawn(const Ref<EntityCreateInfo> &info) {
 	emit_signal("on_entity_spawn_requested", info);
 }
+void EntityDataManager::request_entity_spawn_deferred(const Ref<EntityCreateInfo> &info) {
+	call_deferred("emit_signal", "on_entity_spawn_requested", info);
+}
 void EntityDataManager::request_world_spell_spawn(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info) {
 	emit_signal("on_world_spell_spawn_requested", data, info);
+}
+void EntityDataManager::request_world_spell_spawn_deferred(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info) {
+	call_deferred("emit_signal", "on_world_spell_spawn_requested", data, info);
 }
 
 void EntityDataManager::_bind_methods() {
@@ -1088,7 +1094,9 @@ void EntityDataManager::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("on_world_spell_spawn_requested", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
 	ClassDB::bind_method(D_METHOD("request_entity_spawn", "info"), &EntityDataManager::request_entity_spawn);
+	ClassDB::bind_method(D_METHOD("request_entity_spawn_deferred", "info"), &EntityDataManager::request_entity_spawn_deferred);
 	ClassDB::bind_method(D_METHOD("request_world_spell_spawn", "data", "info"), &EntityDataManager::request_world_spell_spawn);
+	ClassDB::bind_method(D_METHOD("request_world_spell_spawn_deferred", "data", "info"), &EntityDataManager::request_world_spell_spawn_deferred);
 }
 
 EntityDataManager::EntityDataManager() {
