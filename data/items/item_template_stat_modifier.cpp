@@ -22,67 +22,67 @@ SOFTWARE.
 
 #include "item_template_stat_modifier.h"
 
-Stat::StatId ItemTemplateStatModifier::get_stat_id() {
+Stat::StatId ItemTemplateStatModifier::get_stat_id() const {
 	return _stat_id;
 }
 
-void ItemTemplateStatModifier::set_stat_id(Stat::StatId value) {
+void ItemTemplateStatModifier::set_stat_id(const Stat::StatId value) {
 	_stat_id = value;
 }
 
-float ItemTemplateStatModifier::get_min_base_mod() {
+float ItemTemplateStatModifier::get_min_base_mod() const {
 	return _min_mod_max;
 }
 
-void ItemTemplateStatModifier::set_min_base_mod(float value) {
+void ItemTemplateStatModifier::set_min_base_mod(const float value) {
 	_min_mod_max = value;
 }
 
-float ItemTemplateStatModifier::get_max_base_mod() {
+float ItemTemplateStatModifier::get_max_base_mod() const {
 	return _max_mod_max;
 }
 
-void ItemTemplateStatModifier::set_max_base_mod(float value) {
+void ItemTemplateStatModifier::set_max_base_mod(const float value) {
 	_max_mod_max = value;
 }
 
-float ItemTemplateStatModifier::get_min_bonus_mod() {
+float ItemTemplateStatModifier::get_min_bonus_mod() const {
 	return _min_mod_max;
 }
 
-void ItemTemplateStatModifier::set_min_bonus_mod(float value) {
+void ItemTemplateStatModifier::set_min_bonus_mod(const float value) {
 	_min_mod_max = value;
 }
 
-float ItemTemplateStatModifier::get_max_bonus_mod() {
+float ItemTemplateStatModifier::get_max_bonus_mod() const {
 	return _max_mod_max;
 }
 
-void ItemTemplateStatModifier::set_max_bonus_mod(float value) {
+void ItemTemplateStatModifier::set_max_bonus_mod(const float value) {
 	_max_mod_max = value;
 }
 
-float ItemTemplateStatModifier::get_min_percent_mod() {
+float ItemTemplateStatModifier::get_min_percent_mod() const {
 	return _min_mod_precent;
 }
 
-void ItemTemplateStatModifier::set_min_percent_mod(float value) {
+void ItemTemplateStatModifier::set_min_percent_mod(const float value) {
 	_min_mod_precent = value;
 }
 
-float ItemTemplateStatModifier::get_max_percent_mod() {
+float ItemTemplateStatModifier::get_max_percent_mod() const {
 	return _max_mod_precent;
 }
 
-void ItemTemplateStatModifier::set_max_percent_mod(float value) {
+void ItemTemplateStatModifier::set_max_percent_mod(const float value) {
 	_max_mod_precent = value;
 }
 
-float ItemTemplateStatModifier::get_scaling_factor() {
+float ItemTemplateStatModifier::get_scaling_factor() const {
 	return _scaling_factor;
 }
 
-void ItemTemplateStatModifier::set_scaling_factor(float value) {
+void ItemTemplateStatModifier::set_scaling_factor(const float value) {
 	_scaling_factor = value;
 }
 

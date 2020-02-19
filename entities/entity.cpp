@@ -2291,7 +2291,7 @@ void Entity::son_after_aura_applied(Ref<AuraData> data) {
 void Entity::scast_spell(int spell_id) {
 	Ref<EntityData> cc = gets_entity_data();
 
-	if (cc == NULL)
+	if (!cc.is_valid())
 		return;
 
 	cc->start_casting(spell_id, this, 1);
@@ -2299,6 +2299,15 @@ void Entity::scast_spell(int spell_id) {
 
 void Entity::crequest_spell_cast(int spell_id) {
 	RPCS(scast_spell, spell_id);
+}
+
+void Entity::suse_item(int item_id) {
+	call("_suse_item", item_id);
+}
+void Entity::crequest_use_item(int item_id) {
+	RPCS(suse_item, item_id);
+}
+void Entity::_suse_item(int item_id) {
 }
 
 void Entity::update_auras(float delta) {
@@ -5532,6 +5541,7 @@ Entity::Entity() {
 	////    SpellSystem    ////
 
 	SET_RPC_REMOTE("scast_spell");
+	SET_RPC_REMOTE("suse_item");
 
 	//Damage Operations
 
@@ -6187,6 +6197,12 @@ void Entity::_bind_methods() {
 	//Spell operations
 	ClassDB::bind_method(D_METHOD("scast_spell", "spell_id"), &Entity::scast_spell);
 	ClassDB::bind_method(D_METHOD("crequest_spell_cast", "spell_id"), &Entity::crequest_spell_cast);
+
+	BIND_VMETHOD(MethodInfo("_suse_item", PropertyInfo(Variant::INT, "item_id")));
+
+	ClassDB::bind_method(D_METHOD("suse_item", "item_id"), &Entity::suse_item);
+	ClassDB::bind_method(D_METHOD("crequest_use_item", "item_id"), &Entity::crequest_use_item);
+	ClassDB::bind_method(D_METHOD("_suse_item", "item_id"), &Entity::_suse_item);
 
 	//Damage Operations
 	ClassDB::bind_method(D_METHOD("stake_damage", "data"), &Entity::stake_damage);

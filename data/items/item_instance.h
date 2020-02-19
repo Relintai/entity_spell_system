@@ -36,18 +36,21 @@ class ItemInstance : public Reference {
 	GDCLASS(ItemInstance, Reference);
 
 public:
-	Ref<ItemTemplate> get_item_template() const;
-	void set_item_template(const Ref<ItemTemplate> value);
+	Ref<ItemTemplate> get_item_template();
+	void set_item_template(const Ref<ItemTemplate> &value);
 
-	Ref<ItemStatModifier> get_item_stat_modifier(int index);
-	void add_item_stat_modifier(Ref<ItemStatModifier> modifier);
-	void remove_item_stat_modifier(int index);
+	Ref<ItemStatModifier> get_item_stat_modifier(const int index);
+	void add_item_stat_modifier(const Ref<ItemStatModifier> &modifier);
+	void remove_item_stat_modifier(const int index);
 	void clear_item_stat_modifiers();
 
-	int get_item_stat_modifier_count();
+	int get_item_stat_modifier_count() const;
 
-	int get_stack_size();
-	void set_stack_size(int value);
+	int get_stack_size() const;
+	void set_stack_size(const int value);
+
+	int get_charges() const;
+	void set_charges(const int value);
 
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
@@ -66,6 +69,7 @@ private:
 	int _item_template_id;
 
 	int _stack_size;
+	int _charges;
 
 	Vector<Ref<ItemStatModifier> > _modifiers;
 };

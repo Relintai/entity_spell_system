@@ -79,14 +79,14 @@ void ItemTemplate::set_equip_slot(const ItemEnums::EquipSlots value) {
 Ref<ItemVisual> ItemTemplate::get_item_visual() const {
 	return _item_visual;
 }
-void ItemTemplate::set_item_visual(const Ref<ItemVisual> value) {
+void ItemTemplate::set_item_visual(const Ref<ItemVisual> &value) {
 	_item_visual = value;
 }
 
 Ref<EntityClassData> ItemTemplate::get_required_character_class() const {
 	return _required_character_class;
 }
-void ItemTemplate::set_required_character_class(const Ref<EntityClassData> value) {
+void ItemTemplate::set_required_character_class(const Ref<EntityClassData> &value) {
 	_required_character_class = value;
 }
 
@@ -109,7 +109,7 @@ Ref<Texture> ItemTemplate::get_icon() const {
 	return _icon;
 }
 
-void ItemTemplate::set_icon(const Ref<Texture> value) {
+void ItemTemplate::set_icon(const Ref<Texture> &value) {
 	_icon = value;
 }
 
@@ -146,19 +146,19 @@ void ItemTemplate::set_bag_size(const int size) {
 
 ////    TEACHES    ////
 
-int ItemTemplate::get_num_teaches_spells() {
+int ItemTemplate::get_num_teaches_spells() const {
 	return _teaches_spells.size();
 }
 void ItemTemplate::set_num_teaches_spells(int value) {
 	_teaches_spells.resize(value);
 }
 
-Ref<Spell> ItemTemplate::get_teaches_spell(int index) const {
+Ref<Spell> ItemTemplate::get_teaches_spell(const int index) {
 	ERR_FAIL_INDEX_V(index, _teaches_spells.size(), Ref<Spell>());
 
 	return _teaches_spells[index];
 }
-void ItemTemplate::set_teaches_spell(int index, Ref<Spell> spell) {
+void ItemTemplate::set_teaches_spell(const int index, const Ref<Spell> &spell) {
 	ERR_FAIL_INDEX(index, _teaches_spells.size());
 
 	_teaches_spells.set(index, Ref<Spell>(spell));
@@ -182,19 +182,19 @@ void ItemTemplate::set_teaches_spells(const Vector<Variant> &spells) {
 
 ////    GRANTS SPELLS    ////
 
-int ItemTemplate::get_num_grants_spells() {
+int ItemTemplate::get_num_grants_spells() const {
 	return _grants_spells.size();
 }
-void ItemTemplate::set_num_grants_spells(int value) {
+void ItemTemplate::set_num_grants_spells(const int value) {
 	_grants_spells.resize(value);
 }
 
-Ref<Spell> ItemTemplate::get_grants_spell(int index) const {
+Ref<Spell> ItemTemplate::get_grants_spell(const int index) {
 	ERR_FAIL_INDEX_V(index, _grants_spells.size(), Ref<Spell>());
 
 	return _grants_spells[index];
 }
-void ItemTemplate::set_grants_spell(int index, Ref<Spell> spell) {
+void ItemTemplate::set_grants_spell(const int index, const Ref<Spell> &spell) {
 	ERR_FAIL_INDEX(index, _grants_spells.size());
 
 	_grants_spells.set(index, Ref<Spell>(spell));
@@ -218,19 +218,19 @@ void ItemTemplate::set_grants_spells(const Vector<Variant> &spells) {
 
 ////    AURAS    ////
 
-int ItemTemplate::get_num_auras() {
+int ItemTemplate::get_num_auras() const {
 	return _auras.size();
 }
 void ItemTemplate::set_num_auras(int value) {
 	_auras.resize(value);
 }
 
-Ref<Aura> ItemTemplate::get_aura(int index) const {
+Ref<Aura> ItemTemplate::get_aura(const int index) {
 	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>());
 
 	return _auras[index];
 }
-void ItemTemplate::set_aura(int index, Ref<Aura> aura) {
+void ItemTemplate::set_aura(const int index, const Ref<Aura> &aura) {
 	ERR_FAIL_INDEX(index, _auras.size());
 
 	_auras.set(index, Ref<Aura>(aura));
@@ -253,16 +253,16 @@ void ItemTemplate::set_auras(const Vector<Variant> &auras) {
 }
 
 //Required Skills
-int ItemTemplate::get_num_required_skills() {
+int ItemTemplate::get_num_required_skills() const {
 	return _required_skills.size();
 }
 
-Ref<Aura> ItemTemplate::get_required_skill(int index) const {
+Ref<Aura> ItemTemplate::get_required_skill(const int index) {
 	ERR_FAIL_INDEX_V(index, _required_skills.size(), Ref<Aura>());
 
 	return _required_skills.get(index);
 }
-void ItemTemplate::set_required_skill(int index, Ref<Aura> aura) {
+void ItemTemplate::set_required_skill(const int index, const Ref<Aura> &aura) {
 	ERR_FAIL_INDEX(index, _required_skills.size());
 
 	_required_skills.set(index, aura);
@@ -285,11 +285,25 @@ void ItemTemplate::set_required_skills(const Vector<Variant> &skills) {
 }
 
 //use spell
-Ref<Spell> ItemTemplate::get_use_spell() const {
+Ref<Spell> ItemTemplate::get_use_spell() {
 	return _use_spell;
 }
-void ItemTemplate::set_use_spell(Ref<Spell> use_spell) {
+void ItemTemplate::set_use_spell(const Ref<Spell> &use_spell) {
 	_use_spell = use_spell;
+}
+
+int ItemTemplate::get_charges() const {
+	return _charges;
+}
+void ItemTemplate::set_charges(const int value) {
+	_charges = value;
+}
+
+bool ItemTemplate::get_consumed() const {
+	return _consumed;
+}
+void ItemTemplate::set_consumed(const bool value) {
+	_consumed = false;
 }
 
 int ItemTemplate::get_item_stat_modifier_count() const {
@@ -300,71 +314,71 @@ void ItemTemplate::set_item_stat_modifier_count(int value) {
 	_modifier_count = value;
 }
 
-Stat::StatId ItemTemplate::get_item_stat_id(int index) {
+Stat::StatId ItemTemplate::get_item_stat_id(const int index) const {
 	return _modifiers[index]->get_stat_id();
 }
 
-void ItemTemplate::set_item_stat_id(int index, Stat::StatId value) {
+void ItemTemplate::set_item_stat_id(const int index, const Stat::StatId value) {
 	_modifiers[index]->set_stat_id(value);
 }
 
-float ItemTemplate::get_item_min_base_mod(int index) {
+float ItemTemplate::get_item_min_base_mod(const int index) const {
 	return _modifiers[index]->get_min_base_mod();
 }
 
-void ItemTemplate::set_item_min_base_mod(int index, float value) {
+void ItemTemplate::set_item_min_base_mod(const int index, const float value) {
 	_modifiers[index]->set_min_base_mod(value);
 }
 
-float ItemTemplate::get_item_max_base_mod(int index) {
+float ItemTemplate::get_item_max_base_mod(const int index) const {
 	return _modifiers[index]->get_max_base_mod();
 }
 
-void ItemTemplate::set_item_max_base_mod(int index, float value) {
+void ItemTemplate::set_item_max_base_mod(const int index, const float value) {
 	_modifiers[index]->set_max_base_mod(value);
 }
 
-float ItemTemplate::get_item_min_bonus_mod(int index) {
+float ItemTemplate::get_item_min_bonus_mod(const int index) const {
 	return _modifiers[index]->get_min_bonus_mod();
 }
 
-void ItemTemplate::set_item_min_bonus_mod(int index, float value) {
+void ItemTemplate::set_item_min_bonus_mod(const int index, const float value) {
 	_modifiers[index]->set_min_bonus_mod(value);
 }
 
-float ItemTemplate::get_item_max_bonus_mod(int index) {
+float ItemTemplate::get_item_max_bonus_mod(const int index) const {
 	return _modifiers[index]->get_max_bonus_mod();
 }
 
-void ItemTemplate::set_item_max_bonus_mod(int index, float value) {
+void ItemTemplate::set_item_max_bonus_mod(const int index, const float value) {
 	_modifiers[index]->set_max_bonus_mod(value);
 }
 
-float ItemTemplate::get_item_min_percent_mod(int index) {
+float ItemTemplate::get_item_min_percent_mod(const int index) const {
 	return _modifiers[index]->get_min_percent_mod();
 }
 
-void ItemTemplate::set_item_min_percent_mod(int index, float value) {
+void ItemTemplate::set_item_min_percent_mod(const int index, const float value) {
 	_modifiers[index]->set_min_percent_mod(value);
 }
 
-float ItemTemplate::get_item_max_percent_mod(int index) {
+float ItemTemplate::get_item_max_percent_mod(const int index) const {
 	return _modifiers[index]->get_max_percent_mod();
 }
 
-void ItemTemplate::set_item_max_percent_mod(int index, float value) {
+void ItemTemplate::set_item_max_percent_mod(const int index, const float value) {
 	_modifiers[index]->set_max_percent_mod(value);
 }
 
-float ItemTemplate::get_item_scaling_factor(int index) {
+float ItemTemplate::get_item_scaling_factor(const int index) const {
 	return _modifiers[index]->get_scaling_factor();
 }
 
-void ItemTemplate::set_item_scaling_factor(int index, float value) {
+void ItemTemplate::set_item_scaling_factor(const int index, const float value) {
 	_modifiers[index]->set_scaling_factor(value);
 }
 
-Ref<ItemTemplateStatModifier> ItemTemplate::get_item_template_stat_modifier(int index) {
+Ref<ItemTemplateStatModifier> ItemTemplate::get_item_template_stat_modifier(const int index) {
 	return Ref<ItemTemplateStatModifier>(_modifiers[index]);
 }
 /*
@@ -421,6 +435,9 @@ ItemTemplate::ItemTemplate() {
 
 	_stack_size = 1;
 	_bag_size = 0;
+
+	_charges = -1;
+	_consumed = false;
 
 	for (int i = 0; i < MAX_ITEM_STAT_MOD; ++i) {
 		_modifiers[i] = Ref<ItemTemplateStatModifier>(memnew(ItemTemplateStatModifier()));
@@ -558,6 +575,14 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_use_spell"), &ItemTemplate::get_use_spell);
 	ClassDB::bind_method(D_METHOD("set_use_spell", "size"), &ItemTemplate::set_use_spell);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "use_spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_use_spell", "get_use_spell");
+
+	ClassDB::bind_method(D_METHOD("get_charges"), &ItemTemplate::get_charges);
+	ClassDB::bind_method(D_METHOD("set_charges", "size"), &ItemTemplate::set_charges);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "charges"), "set_charges", "get_charges");
+
+	ClassDB::bind_method(D_METHOD("get_consumed"), &ItemTemplate::get_consumed);
+	ClassDB::bind_method(D_METHOD("set_consumed", "size"), &ItemTemplate::set_consumed);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "consumed"), "set_consumed", "get_consumed");
 
 	//StatMods Property binds
 	ClassDB::bind_method(D_METHOD("get_item_stat_modifier_count"), &ItemTemplate::get_item_stat_modifier_count);

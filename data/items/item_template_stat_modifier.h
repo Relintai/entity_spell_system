@@ -30,29 +30,29 @@ class ItemTemplateStatModifier : public Reference {
 	GDCLASS(ItemTemplateStatModifier, Reference);
 
 public:
-	Stat::StatId get_stat_id();
-	void set_stat_id(Stat::StatId value);
+	Stat::StatId get_stat_id() const;
+	void set_stat_id(const Stat::StatId value);
 
-	float get_min_base_mod();
-	void set_min_base_mod(float value);
+	float get_min_base_mod() const;
+	void set_min_base_mod(const float value);
 
-	float get_max_base_mod();
-	void set_max_base_mod(float value);
+	float get_max_base_mod() const;
+	void set_max_base_mod(const float value);
 
-	float get_min_bonus_mod();
+	float get_min_bonus_mod() const;
 	void set_min_bonus_mod(float value);
 
-	float get_max_bonus_mod();
-	void set_max_bonus_mod(float value);
+	float get_max_bonus_mod() const;
+	void set_max_bonus_mod(const float value);
 
-	float get_min_percent_mod();
-	void set_min_percent_mod(float value);
+	float get_min_percent_mod() const;
+	void set_min_percent_mod(const float value);
 
-	float get_max_percent_mod();
-	void set_max_percent_mod(float value);
+	float get_max_percent_mod() const;
+	void set_max_percent_mod(const float value);
 
-	float get_scaling_factor();
-	void set_scaling_factor(float value);
+	float get_scaling_factor() const;
+	void set_scaling_factor(const float value);
 
 	ItemTemplateStatModifier();
 

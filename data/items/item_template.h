@@ -63,10 +63,10 @@ public:
 	void set_equip_slot(const ItemEnums::EquipSlots value);
 
 	Ref<ItemVisual> get_item_visual() const;
-	void set_item_visual(const Ref<ItemVisual> value);
+	void set_item_visual(const Ref<ItemVisual> &value);
 
 	Ref<EntityClassData> get_required_character_class() const;
-	void set_required_character_class(const Ref<EntityClassData> value);
+	void set_required_character_class(const Ref<EntityClassData> &value);
 
 	int get_price() const;
 	void set_price(const int value);
@@ -75,7 +75,7 @@ public:
 	void set_stack_size(const int value);
 
 	Ref<Texture> get_icon() const;
-	void set_icon(const Ref<Texture> value);
+	void set_icon(const Ref<Texture> &value);
 
 	float get_scale_x() const;
 	void set_scale_x(const float value);
@@ -90,71 +90,77 @@ public:
 	void set_bag_size(const int size);
 
 	//Teaches
-	int get_num_teaches_spells();
-	void set_num_teaches_spells(int value);
+	int get_num_teaches_spells() const;
+	void set_num_teaches_spells(const int value);
 
-	Ref<Spell> get_teaches_spell(int index) const;
-	void set_teaches_spell(int index, Ref<Spell> teaches_spell);
+	Ref<Spell> get_teaches_spell(const int index);
+	void set_teaches_spell(const int index, const Ref<Spell> &teaches_spell);
 
 	Vector<Variant> get_teaches_spells();
 	void set_teaches_spells(const Vector<Variant> &teaches_spells);
 
 	//Grants Spells
-	int get_num_grants_spells();
-	void set_num_grants_spells(int value);
+	int get_num_grants_spells() const;
+	void set_num_grants_spells(const int value);
 
-	Ref<Spell> get_grants_spell(int index) const;
-	void set_grants_spell(int index, Ref<Spell> grants_spell);
+	Ref<Spell> get_grants_spell(const int index);
+	void set_grants_spell(const int index, const Ref<Spell> &grants_spell);
 
 	Vector<Variant> get_grants_spells();
 	void set_grants_spells(const Vector<Variant> &grants_spells);
 
 	//Auras
-	int get_num_auras();
-	void set_num_auras(int value);
+	int get_num_auras() const;
+	void set_num_auras(const int value);
 
-	Ref<Aura> get_aura(int index) const;
-	void set_aura(int index, Ref<Aura> aura);
+	Ref<Aura> get_aura(const int index);
+	void set_aura(const int index, const Ref<Aura> &aura);
 
 	Vector<Variant> get_auras();
 	void set_auras(const Vector<Variant> &auras);
 
 	//Required Skills
-	int get_num_required_skills();
+	int get_num_required_skills() const;
 
-	Ref<Aura> get_required_skill(int index) const;
-	void set_required_skill(int index, Ref<Aura> skills);
+	Ref<Aura> get_required_skill(const int index);
+	void set_required_skill(const int index, const Ref<Aura> &skills);
 
 	Vector<Variant> get_required_skills();
 	void set_required_skills(const Vector<Variant> &grants_spells);
 
 	//use spell
-	Ref<Spell> get_use_spell() const;
-	void set_use_spell(Ref<Spell> use_spell);
+	Ref<Spell> get_use_spell();
+	void set_use_spell(const Ref<Spell> &use_spell);
+
+	int get_charges() const;
+	void set_charges(const int value);
+
+	bool get_consumed() const;
+	void set_consumed(const bool value);
 
 	//Stat mods
 	int get_item_stat_modifier_count() const;
 	void set_item_stat_modifier_count(const int value);
 
-	Stat::StatId get_item_stat_id(int index);
+	Stat::StatId get_item_stat_id(int index) const;
 	void set_item_stat_id(int index, Stat::StatId value);
 
-	float get_item_min_base_mod(int index);
-	void set_item_min_base_mod(int index, float value);
-	float get_item_max_base_mod(int index);
-	void set_item_max_base_mod(int index, float value);
-	float get_item_min_bonus_mod(int index);
-	void set_item_min_bonus_mod(int index, float value);
-	float get_item_max_bonus_mod(int index);
-	void set_item_max_bonus_mod(int index, float value);
-	float get_item_min_percent_mod(int index);
-	void set_item_min_percent_mod(int index, float value);
-	float get_item_max_percent_mod(int index);
-	void set_item_max_percent_mod(int index, float value);
-	float get_item_scaling_factor(int index);
-	void set_item_scaling_factor(int index, float value);
+	float get_item_min_base_mod(const int index) const;
+	void set_item_min_base_mod(const int index, const float value);
+	float get_item_max_base_mod(const int index) const;
+	void set_item_max_base_mod(const int index, const float value);
+	float get_item_min_bonus_mod(const int index) const;
+	void set_item_min_bonus_mod(const int index, const float value);
+	float get_item_max_bonus_mod(const int index) const;
+	void set_item_max_bonus_mod(const int index, const float value);
+	float get_item_min_percent_mod(const int index) const;
+	void set_item_min_percent_mod(const int index, const float value);
+	float get_item_max_percent_mod(const int index) const;
+	void set_item_max_percent_mod(const int index, const float value);
+	float get_item_scaling_factor(const int index) const;
+	void set_item_scaling_factor(const int index, const float value);
 
-	Ref<ItemTemplateStatModifier> get_item_template_stat_modifier(int index);
+	Ref<ItemTemplateStatModifier> get_item_template_stat_modifier(const int index);
 	//void set_item_stat_modifier(int index, ItemStatModifier modifier);
 
 	int get_animator_weapon_type();
@@ -207,6 +213,8 @@ private:
 	Vector<Ref<Aura> > _auras;
 	Vector<Ref<Aura> > _required_skills;
 	Ref<Spell> _use_spell;
+	int _charges;
+	bool _consumed;
 
 	int _modifier_count;
 	Ref<ItemTemplateStatModifier> _modifiers[MAX_ITEM_STAT_MOD];

@@ -26,10 +26,10 @@ SOFTWARE.
 
 #include "../../singletons/entity_data_manager.h"
 
-Ref<ItemTemplate> ItemInstance::get_item_template() const {
+Ref<ItemTemplate> ItemInstance::get_item_template() {
 	return _item_template;
 }
-void ItemInstance::set_item_template(const Ref<ItemTemplate> value) {
+void ItemInstance::set_item_template(const Ref<ItemTemplate> &value) {
 	_item_template = value;
 
 	_item_template_id = 0;
@@ -38,15 +38,15 @@ void ItemInstance::set_item_template(const Ref<ItemTemplate> value) {
 		_item_template_id = value->get_id();
 }
 
-Ref<ItemStatModifier> ItemInstance::get_item_stat_modifier(int index) {
+Ref<ItemStatModifier> ItemInstance::get_item_stat_modifier(const int index) {
 	ERR_FAIL_INDEX_V(index, _modifiers.size(), Ref<ItemStatModifier>());
 
 	return _modifiers.get(index);
 }
-void ItemInstance::add_item_stat_modifier(Ref<ItemStatModifier> modifier) {
+void ItemInstance::add_item_stat_modifier(const Ref<ItemStatModifier> &modifier) {
 	_modifiers.push_back(modifier);
 }
-void ItemInstance::remove_item_stat_modifier(int index) {
+void ItemInstance::remove_item_stat_modifier(const int index) {
 	ERR_FAIL_INDEX(index, _modifiers.size());
 
 	_modifiers.remove(index);
@@ -54,17 +54,26 @@ void ItemInstance::remove_item_stat_modifier(int index) {
 void ItemInstance::clear_item_stat_modifiers() {
 	_modifiers.clear();
 }
-int ItemInstance::get_item_stat_modifier_count() {
+int ItemInstance::get_item_stat_modifier_count() const {
 	return _modifiers.size();
 }
 
-int ItemInstance::get_stack_size() {
+int ItemInstance::get_stack_size() const {
 	return _stack_size;
 }
-void ItemInstance::set_stack_size(int value) {
+void ItemInstance::set_stack_size(const int value) {
 	_stack_size = value;
 
 	emit_signal("stack_size_changed", Ref<ItemInstance>(this));
+}
+
+int ItemInstance::get_charges() const {
+	return _charges;
+}
+void ItemInstance::set_charges(const int value) {
+	_charges = value;
+
+	emit_signal("stack_charges_changed", Ref<ItemInstance>(this));
 }
 
 Dictionary ItemInstance::to_dict() {
@@ -117,6 +126,7 @@ void ItemInstance::_from_dict(const Dictionary &dict) {
 ItemInstance::ItemInstance() {
 	_stack_size = 1;
 	_item_template_id = 0;
+	_charges = -1;
 }
 ItemInstance::~ItemInstance() {
 	_modifiers.clear();
@@ -124,6 +134,7 @@ ItemInstance::~ItemInstance() {
 
 void ItemInstance::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("stack_size_changed", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	ADD_SIGNAL(MethodInfo("stack_charges_changed", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 
 	ClassDB::bind_method(D_METHOD("get_item_template"), &ItemInstance::get_item_template);
 	ClassDB::bind_method(D_METHOD("set_item_template", "value"), &ItemInstance::set_item_template);
@@ -132,6 +143,10 @@ void ItemInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stack_size"), &ItemInstance::get_stack_size);
 	ClassDB::bind_method(D_METHOD("set_stack_size", "count"), &ItemInstance::set_stack_size);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "stack_size"), "set_stack_size", "get_stack_size");
+
+	ClassDB::bind_method(D_METHOD("get_charges"), &ItemInstance::get_charges);
+	ClassDB::bind_method(D_METHOD("set_charges", "size"), &ItemInstance::set_charges);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "charges"), "set_charges", "get_charges");
 
 	ClassDB::bind_method(D_METHOD("get_item_stat_modifier", "index"), &ItemInstance::get_item_stat_modifier);
 	ClassDB::bind_method(D_METHOD("add_item_stat_modifier", "modifier"), &ItemInstance::add_item_stat_modifier);

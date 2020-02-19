@@ -528,6 +528,10 @@ public:
 	void scast_spell(int spell_id);
 	void crequest_spell_cast(int spell_id);
 
+	void suse_item(int item_id);
+	void crequest_use_item(int item_id);
+	void _suse_item(int item_id);
+
 	//Damage Operations
 	void stake_damage(Ref<SpellDamageInfo> info);
 	void sdeal_damage_to(Ref<SpellDamageInfo> info);
