@@ -70,7 +70,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	ComplexLevelStatsEntry _entries[EntityEnums::MAX_LEVEL];
+	ComplexLevelStatsEntry _entries[EntityEnums::MAX_CHARACTER_LEVEL];
 };
 
 #endif

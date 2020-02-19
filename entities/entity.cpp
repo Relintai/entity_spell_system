@@ -244,7 +244,7 @@ int Entity::gets_level() {
 void Entity::sets_level(int value) {
 	_s_level = value;
 
-	emit_signal("son_level_changed", this, value);
+	emit_signal("son_character_level_changed", this, value);
 
 	VRPC(setc_level, value);
 }
@@ -255,7 +255,7 @@ int Entity::getc_level() {
 void Entity::setc_level(int value) {
 	_c_level = value;
 
-	emit_signal("con_level_changed", this, value);
+	emit_signal("con_character_level_changed", this, value);
 }
 
 int Entity::gets_xp() {
@@ -537,7 +537,7 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 		sets_entity_name(_s_entity_data->get_name());
 	}
 
-	slevelup(info->get_level() - 1);
+	scharacter_levelup(info->get_level() - 1);
 	sets_xp(info->get_xp());
 }
 
@@ -2229,23 +2229,42 @@ void Entity::addc_xp(int value) {
 	con_xp_gained(value);
 }
 
-void Entity::slevelup(int value) {
+void Entity::sclass_levelup(int value) {
 	if (value <= 0)
 		return;
 
-	if (_s_level == EntityEnums::MAX_LEVEL)
+	if (_s_level == EntityEnums::MAX_CLASS_LEVEL)
+		return;
+
+	//_s_level += value;
+
+	son_class_level_up(value);
+
+	VRPC(cclass_levelup, value);
+}
+void Entity::cclass_levelup(int value) {
+	_c_level += value;
+
+	con_class_level_up(value);
+}
+
+void Entity::scharacter_levelup(int value) {
+	if (value <= 0)
+		return;
+
+	if (_s_level == EntityEnums::MAX_CHARACTER_LEVEL)
 		return;
 
 	_s_level += value;
 
-	son_level_up(value);
+	son_character_level_up(value);
 
-	VRPC(clevelup, value);
+	VRPC(ccharacter_levelup, value);
 }
-void Entity::clevelup(int value) {
+void Entity::ccharacter_levelup(int value) {
 	_c_level += value;
 
-	con_level_up(value);
+	con_character_level_up(value);
 }
 
 void Entity::son_before_aura_applied(Ref<AuraData> data) {
@@ -2843,21 +2862,38 @@ void Entity::son_xp_gained(int value) {
 	emit_signal("son_xp_gained", this, value);
 }
 
-void Entity::son_level_up(int value) {
+void Entity::son_class_level_up(int value) {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_level_up(this, value);
+		_s_entity_data->son_class_level_up(this, value);
 	}
 
-	if (has_method("_son_level_up"))
-		call("_son_level_up", value);
+	if (has_method("_son_class_level_up"))
+		call("_son_class_level_up", value);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_level_up(ad, value);
+		ad->get_aura()->son_class_level_up(ad, value);
 	}
 
-	emit_signal("son_level_up", this, value);
+	emit_signal("son_class_level_up", this, value);
+}
+
+void Entity::son_character_level_up(int value) {
+	if (_s_entity_data.is_valid()) {
+		_s_entity_data->son_character_level_up(this, value);
+	}
+
+	if (has_method("_son_character_level_up"))
+		call("_son_character_level_up", value);
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->son_character_level_up(ad, value);
+	}
+
+	emit_signal("son_character_level_up", this, value);
 }
 
 void Entity::sadd_aura(Ref<AuraData> aura) {
@@ -3553,21 +3589,38 @@ void Entity::con_xp_gained(int value) {
 	emit_signal("con_xp_gained", this, value);
 }
 
-void Entity::con_level_up(int value) {
+void Entity::con_class_level_up(int value) {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->con_level_up(this, value);
+		_s_entity_data->con_class_level_up(this, value);
 	}
 
-	if (has_method("_con_level_up"))
-		call("_con_level_up", value);
+	if (has_method("_con_class_level_up"))
+		call("_con_class_level_up", value);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->con_level_up(ad, value);
+		ad->get_aura()->con_class_level_up(ad, value);
 	}
 
-	emit_signal("con_level_up", this, value);
+	emit_signal("con_class_level_up", this, value);
+}
+
+void Entity::con_character_level_up(int value) {
+	if (_s_entity_data.is_valid()) {
+		_s_entity_data->con_character_level_up(this, value);
+	}
+
+	if (has_method("_con_character_level_up"))
+		call("_con_character_level_up", value);
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->con_character_level_up(ad, value);
+	}
+
+	emit_signal("con_character_level_up", this, value);
 }
 
 ////    Casting System    ////
@@ -5569,7 +5622,8 @@ Entity::Entity() {
 	//XP Operations
 
 	SET_RPC_REMOTE("addc_xp");
-	SET_RPC_REMOTE("clevelup");
+	SET_RPC_REMOTE("cclass_levelup");
+	SET_RPC_REMOTE("ccharacter_levelup");
 
 	//Aura Manipulation
 
@@ -5776,12 +5830,12 @@ void Entity::_son_xp_gained(int value) {
 	int xpr = EntityDataManager::get_instance()->get_xp_data()->get_xp(gets_level());
 
 	if (xpr <= gets_xp()) {
-		slevelup(1);
+		scharacter_levelup(1);
 		sets_xp(0);
 	}
 }
 
-void Entity::_son_level_up(int level) {
+void Entity::_son_character_level_up(int level) {
 	if (!gets_entity_data().is_valid())
 		return;
 
@@ -6042,7 +6096,8 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_gcd_finished"));
 
 	BIND_VMETHOD(MethodInfo("_son_xp_gained", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_son_level_up", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_son_class_level_up", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_son_character_level_up", PropertyInfo(Variant::INT, "value")));
 
 	BIND_VMETHOD(MethodInfo("_son_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_con_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
@@ -6153,7 +6208,8 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_gcd_finished"));
 
 	BIND_VMETHOD(MethodInfo("_con_xp_gained", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_con_level_up", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_con_class_level_up", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_con_character_level_up", PropertyInfo(Variant::INT, "value")));
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_canc_interact"));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_cans_interact"));
@@ -6188,7 +6244,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_gcd_finished"), &Entity::con_gcd_finished);
 
 	ClassDB::bind_method(D_METHOD("con_xp_gained", "value"), &Entity::con_xp_gained);
-	ClassDB::bind_method(D_METHOD("con_level_up", "value"), &Entity::con_level_up);
+	ClassDB::bind_method(D_METHOD("con_class_level_up", "value"), &Entity::con_class_level_up);
+	ClassDB::bind_method(D_METHOD("con_character_level_up", "value"), &Entity::con_character_level_up);
 
 	//Modifiers/Requesters
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Entity::sapply_passives_damage_receive);
@@ -6232,20 +6289,30 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("son_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 	ADD_SIGNAL(MethodInfo("con_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
-	ADD_SIGNAL(MethodInfo("con_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	ADD_SIGNAL(MethodInfo("son_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("con_class_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("son_class_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
-	ADD_SIGNAL(MethodInfo("son_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
-	ADD_SIGNAL(MethodInfo("con_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
+	ADD_SIGNAL(MethodInfo("con_character_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("son_character_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+
+	ADD_SIGNAL(MethodInfo("son_class_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
+	ADD_SIGNAL(MethodInfo("con_class_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
+
+	ADD_SIGNAL(MethodInfo("son_character_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
+	ADD_SIGNAL(MethodInfo("con_character_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
 
 	ClassDB::bind_method(D_METHOD("adds_xp", "value"), &Entity::adds_xp);
 	ClassDB::bind_method(D_METHOD("addc_xp", "value"), &Entity::addc_xp);
 
-	ClassDB::bind_method(D_METHOD("slevelup", "value"), &Entity::slevelup);
-	ClassDB::bind_method(D_METHOD("clevelup", "value"), &Entity::clevelup);
+	ClassDB::bind_method(D_METHOD("sclass_levelup", "value"), &Entity::sclass_levelup);
+	ClassDB::bind_method(D_METHOD("cclass_levelup", "value"), &Entity::cclass_levelup);
+
+	ClassDB::bind_method(D_METHOD("scharacter_levelup", "value"), &Entity::scharacter_levelup);
+	ClassDB::bind_method(D_METHOD("ccharacter_levelup", "value"), &Entity::ccharacter_levelup);
 
 	ClassDB::bind_method(D_METHOD("son_xp_gained", "value"), &Entity::son_xp_gained);
-	ClassDB::bind_method(D_METHOD("son_level_up", "value"), &Entity::son_level_up);
+	ClassDB::bind_method(D_METHOD("son_class_level_up", "value"), &Entity::son_class_level_up);
+	ClassDB::bind_method(D_METHOD("son_character_level_up", "value"), &Entity::son_character_level_up);
 
 	//Aura Manipulation
 	ClassDB::bind_method(D_METHOD("sadd_aura", "aura"), &Entity::sadd_aura);
@@ -6922,7 +6989,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_scraft", "id"), &Entity::_scraft);
 	ClassDB::bind_method(D_METHOD("_son_xp_gained", "value"), &Entity::_son_xp_gained);
-	ClassDB::bind_method(D_METHOD("_son_level_up", "level"), &Entity::_son_level_up);
+	ClassDB::bind_method(D_METHOD("_son_character_level_up", "level"), &Entity::_son_character_level_up);
 	ClassDB::bind_method(D_METHOD("_moved"), &Entity::_moved);
 	ClassDB::bind_method(D_METHOD("_con_target_changed", "entity", "old_target"), &Entity::_con_target_changed);
 	ClassDB::bind_method(D_METHOD("_son_death"), &Entity::_son_death);

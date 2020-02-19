@@ -36,6 +36,11 @@ public:
 	void set_xp(int level, int value);
 	bool can_level_up(int level);
 
+	int get_class_max_level();
+	int get_class_xp(int level);
+	void set_class_xp(int level, int value);
+	bool can_class_level_up(int level);
+
 	XPData();
 	~XPData();
 
@@ -44,6 +49,7 @@ protected:
 
 private:
 	Vector<int> _xps;
+	Vector<int> _class_xps;
 };
 
 #endif

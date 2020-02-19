@@ -293,7 +293,8 @@ public:
 	void son_physics_process(Ref<AuraData> data);
 
 	void son_xp_gained(Ref<AuraData> data, int value);
-	void son_level_up(Ref<AuraData> data, int value);
+	void son_class_level_up(Ref<AuraData> data, int value);
+	void son_character_level_up(Ref<AuraData> data, int value);
 
 	//Clientside Event Handlers
 	void con_cast_failed(Ref<AuraData> data, Ref<SpellCastInfo> info);
@@ -322,7 +323,8 @@ public:
 	void con_gcd_finished(Ref<AuraData> data);
 
 	void con_xp_gained(Ref<AuraData> data, int value);
-	void con_level_up(Ref<AuraData> data, int value);
+	void con_class_level_up(Ref<AuraData> data, int value);
+	void con_character_level_up(Ref<AuraData> data, int value);
 
 	//Equipment
 	bool should_deny_equip(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);

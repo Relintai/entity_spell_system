@@ -489,7 +489,8 @@ public:
 	void son_physics_process(float delta);
 
 	void son_xp_gained(int value);
-	void son_level_up(int value);
+	void son_class_level_up(int value);
+	void son_character_level_up(int value);
 
 	//Clientside EventHandlers
 	void con_cast_failed(Ref<SpellCastInfo> info);
@@ -515,7 +516,8 @@ public:
 	void con_dealt_heal(Ref<SpellHealInfo> info);
 
 	void con_xp_gained(int value);
-	void con_level_up(int value);
+	void con_class_level_up(int value);
+	void con_character_level_up(int value);
 
 	//Modifiers/Requesters
 	void sapply_passives_damage_receive(Ref<SpellDamageInfo> info);
@@ -559,8 +561,10 @@ public:
 	//XP Operations
 	void adds_xp(int value);
 	void addc_xp(int value);
-	void slevelup(int value);
-	void clevelup(int value);
+	void sclass_levelup(int value);
+	void cclass_levelup(int value);
+	void scharacter_levelup(int value);
+	void ccharacter_levelup(int value);
 
 	//Aura Manipulation
 	void sadd_aura(Ref<AuraData> aura);
@@ -964,7 +968,7 @@ public:
 protected:
 	void _scraft(int id);
 	void _son_xp_gained(int value);
-	void _son_level_up(int level);
+	void _son_character_level_up(int level);
 	void _moved();
 	void _con_target_changed(Node *p_entity, Node *p_old_target);
 	void _son_death();

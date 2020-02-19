@@ -603,21 +603,38 @@ void EntityData::son_xp_gained_bind(Node *entity, int value) {
 	son_xp_gained(e, value);
 }
 
-void EntityData::son_level_up(Entity *entity, int value) {
+void EntityData::son_class_level_up(Entity *entity, int value) {
 	if (_entity_class_data.is_valid())
-		_entity_class_data->son_level_up(entity, value);
+		_entity_class_data->son_class_level_up(entity, value);
 
-	if (has_method("_son_level_up"))
-		call("_son_level_up", entity);
+	if (has_method("_son_class_level_up"))
+		call("_son_class_level_up", entity);
 }
-void EntityData::son_level_up_bind(Node *entity, int value) {
+void EntityData::son_class_level_up_bind(Node *entity, int value) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(e == NULL);
 
-	son_level_up(e, value);
+	son_class_level_up(e, value);
+}
+
+void EntityData::son_character_level_up(Entity *entity, int value) {
+	if (_entity_class_data.is_valid())
+		_entity_class_data->son_character_level_up(entity, value);
+
+	if (has_method("_son_character_level_up"))
+		call("_son_character_level_up", entity);
+}
+void EntityData::son_character_level_up_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	son_character_level_up(e, value);
 }
 
 //Clientside Event Handlers
@@ -844,21 +861,38 @@ void EntityData::con_xp_gained_bind(Node *entity, int value) {
 	con_xp_gained(e, value);
 }
 
-void EntityData::con_level_up(Entity *entity, int value) {
+void EntityData::con_class_level_up(Entity *entity, int value) {
 	if (_entity_class_data.is_valid())
-		_entity_class_data->con_level_up(entity, value);
+		_entity_class_data->con_class_level_up(entity, value);
 
-	if (has_method("_con_level_up"))
-		call("_con_level_up", entity);
+	if (has_method("_con_class_level_up"))
+		call("_con_class_level_up", entity);
 }
-void EntityData::con_level_up_bind(Node *entity, int value) {
+void EntityData::con_class_level_up_bind(Node *entity, int value) {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(e == NULL);
 
-	con_level_up(e, value);
+	con_class_level_up(e, value);
+}
+
+void EntityData::con_character_level_up(Entity *entity, int value) {
+	if (_entity_class_data.is_valid())
+		_entity_class_data->con_character_level_up(entity, value);
+
+	if (has_method("_con_character_level_up"))
+		call("_con_character_level_up", entity);
+}
+void EntityData::con_character_level_up_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	con_character_level_up(e, value);
 }
 
 //Equipment
@@ -1025,7 +1059,8 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_gcd_finished", "entity"), &EntityData::son_gcd_finished_bind);
 
 	ClassDB::bind_method(D_METHOD("son_xp_gained", "entity", "value"), &EntityData::son_xp_gained_bind);
-	ClassDB::bind_method(D_METHOD("son_level_up", "entity", "value"), &EntityData::son_level_up_bind);
+	ClassDB::bind_method(D_METHOD("son_class_level_up", "entity", "value"), &EntityData::son_class_level_up_bind);
+	ClassDB::bind_method(D_METHOD("son_character_level_up", "entity", "value"), &EntityData::son_character_level_up_bind);
 
 	BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -1068,7 +1103,8 @@ void EntityData::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	BIND_VMETHOD(MethodInfo("_son_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_son_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_son_class_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_son_character_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
 	BIND_VMETHOD(MethodInfo("_setup_resources", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
@@ -1094,7 +1130,8 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_gcd_finished", "entity"), &EntityData::con_gcd_finished_bind);
 
 	ClassDB::bind_method(D_METHOD("con_xp_gained", "entity", "value"), &EntityData::con_xp_gained_bind);
-	ClassDB::bind_method(D_METHOD("con_level_up", "entity", "value"), &EntityData::con_level_up_bind);
+	ClassDB::bind_method(D_METHOD("con_class_level_up", "entity", "value"), &EntityData::con_class_level_up_bind);
+	ClassDB::bind_method(D_METHOD("con_character_level_up", "entity", "value"), &EntityData::con_character_level_up_bind);
 
 	BIND_VMETHOD(MethodInfo("_con_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -1117,7 +1154,8 @@ void EntityData::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	BIND_VMETHOD(MethodInfo("_con_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_con_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_con_class_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_con_character_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
 	//Equipment
 

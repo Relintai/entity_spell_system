@@ -25,30 +25,56 @@ SOFTWARE.
 #include "../../entity_enums.h"
 
 int XPData::get_max_level() {
-	return EntityEnums::MAX_LEVEL;
+	return EntityEnums::MAX_CHARACTER_LEVEL;
 }
 
 int XPData::get_xp(int level) {
-	ERR_FAIL_INDEX_V(level - 1, EntityEnums::MAX_LEVEL, 9999999);
+	ERR_FAIL_INDEX_V(level - 1, EntityEnums::MAX_CHARACTER_LEVEL, 9999999);
 
 	return _xps.get(level - 1);
 }
 
 void XPData::set_xp(int level, int value) {
-	ERR_FAIL_INDEX(level - 1, EntityEnums::MAX_LEVEL);
+	ERR_FAIL_INDEX(level - 1, EntityEnums::MAX_CHARACTER_LEVEL);
 
 	_xps.set(level - 1, value);
 }
 
 bool XPData::can_level_up(int level) {
-	return level < EntityEnums::MAX_LEVEL;
+	return level < EntityEnums::MAX_CHARACTER_LEVEL;
+}
+
+int XPData::get_class_max_level() {
+	return EntityEnums::MAX_CLASS_LEVEL;
+}
+
+int XPData::get_class_xp(int level) {
+	ERR_FAIL_INDEX_V(level - 1, EntityEnums::MAX_CLASS_LEVEL, 9999999);
+
+	return _class_xps.get(level - 1);
+}
+
+void XPData::set_class_xp(int level, int value) {
+	ERR_FAIL_INDEX(level - 1, EntityEnums::MAX_CLASS_LEVEL);
+
+	_class_xps.set(level - 1, value);
+}
+
+bool XPData::can_class_level_up(int level) {
+	return level < EntityEnums::MAX_CLASS_LEVEL;
 }
 
 XPData::XPData() {
-	_xps.resize(EntityEnums::MAX_LEVEL);
+	_xps.resize(EntityEnums::MAX_CHARACTER_LEVEL);
 
 	for (int i = 0; i < _xps.size(); ++i) {
 		_xps.set(i, 0);
+	}
+
+	_class_xps.resize(EntityEnums::MAX_CLASS_LEVEL);
+
+	for (int i = 0; i < _class_xps.size(); ++i) {
+		_class_xps.set(i, 0);
 	}
 }
 
@@ -62,7 +88,17 @@ void XPData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("can_level_up", "level"), &XPData::can_level_up);
 
 	ADD_GROUP("Level", "level_");
-	for (int i = 1; i <= EntityEnums::MAX_LEVEL; ++i) {
+	for (int i = 1; i <= EntityEnums::MAX_CHARACTER_LEVEL; ++i) {
 		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i)), "set_xp", "get_xp", i);
+	}
+
+	ClassDB::bind_method(D_METHOD("get_class_max_level"), &XPData::get_class_max_level);
+	ClassDB::bind_method(D_METHOD("get_class_xp", "level"), &XPData::get_class_xp);
+	ClassDB::bind_method(D_METHOD("set_class_xp", "level", "value"), &XPData::set_class_xp);
+	ClassDB::bind_method(D_METHOD("can_class_level_up", "level"), &XPData::can_class_level_up);
+
+	ADD_GROUP("Class Level", "class_level_");
+	for (int i = 1; i <= EntityEnums::MAX_CLASS_LEVEL; ++i) {
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "class_level_" + String::num(i)), "set_class_xp", "get_class_xp", i);
 	}
 }

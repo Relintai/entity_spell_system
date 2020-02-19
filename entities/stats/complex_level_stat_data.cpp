@@ -101,7 +101,7 @@ void ComplexLevelStatData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_spirit_for_level", "level"), &ComplexLevelStatData::get_spirit_for_level);
 	ClassDB::bind_method(D_METHOD("set_spirit_for_level", "level", "value"), &ComplexLevelStatData::set_spirit_for_level);
 
-	for (int i = 0; i < EntityEnums::MAX_LEVEL; ++i) {
+	for (int i = 0; i < EntityEnums::MAX_CHARACTER_LEVEL; ++i) {
 		ADD_GROUP("Level " + String::num(i + 1), "level_" + String::num(i + 1));
 		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_agility"), "set_agility_for_level", "get_agility_for_level", i);
 		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_strength"), "set_strength_for_level", "get_strength_for_level", i);
