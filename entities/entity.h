@@ -219,6 +219,17 @@ public:
 	EntityEnums::EntityType getc_entity_type();
 	void setc_entity_type(EntityEnums::EntityType value);
 
+	//Relations
+	EntityEnums::EntityRelationType gets_relation_to_bind(Node *to);
+	EntityEnums::EntityRelationType gets_relation_to(Entity *to);
+
+	EntityEnums::EntityRelationType _gets_relation_to(Node *to);
+
+	EntityEnums::EntityRelationType getc_relation_to_bind(Node *to);
+	EntityEnums::EntityRelationType getc_relation_to(Entity *to);
+
+	EntityEnums::EntityRelationType _getc_relation_to(Node *to);
+
 	//EntityInteractionType
 	EntityEnums::EntityInteractionType gets_entity_interaction_type();
 	void sets_entity_interaction_type(EntityEnums::EntityInteractionType value);

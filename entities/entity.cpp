@@ -116,6 +116,47 @@ void Entity::setc_entity_type(EntityEnums::EntityType value) {
 	_c_entity_type = value;
 }
 
+//Relations
+EntityEnums::EntityRelationType Entity::gets_relation_to_bind(Node *to) {
+	Entity *e = Object::cast_to<Entity>(to);
+
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+
+	return gets_relation_to(e);
+}
+EntityEnums::EntityRelationType Entity::gets_relation_to(Entity *to) {
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+
+	return static_cast<EntityEnums::EntityRelationType>(static_cast<int>(call("_gets_relation_to", to)));
+}
+
+EntityEnums::EntityRelationType Entity::_gets_relation_to(Node *to) {
+	if (to == this)
+		return EntityEnums::ENTITY_RELATION_TYPE_FRIENDLY;
+
+	return EntityEnums::ENTITY_RELATION_TYPE_HOSTILE;
+}
+
+EntityEnums::EntityRelationType Entity::getc_relation_to_bind(Node *to) {
+	Entity *e = Object::cast_to<Entity>(to);
+
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+
+	return getc_relation_to(e);
+}
+EntityEnums::EntityRelationType Entity::getc_relation_to(Entity *to) {
+	ERR_FAIL_COND_V(!ObjectDB::instance_validate(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+
+	return static_cast<EntityEnums::EntityRelationType>(static_cast<int>(call("_getc_relation_to", to)));
+}
+
+EntityEnums::EntityRelationType Entity::_getc_relation_to(Node *to) {
+	if (to == this)
+		return EntityEnums::ENTITY_RELATION_TYPE_FRIENDLY;
+
+	return EntityEnums::ENTITY_RELATION_TYPE_HOSTILE;
+}
+
 //EntityInteractionType
 EntityEnums::EntityInteractionType Entity::gets_entity_interaction_type() {
 	return _s_interaction_type;
@@ -6297,6 +6338,15 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cseed"), "setc_seed", "getc_seed");
 
 	//Interaction type
+	BIND_VMETHOD(MethodInfo("_gets_relation_to", PropertyInfo(Variant::OBJECT, "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_getc_relation_to", PropertyInfo(Variant::OBJECT, "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
+	ClassDB::bind_method(D_METHOD("gets_relation_to", "to"), &Entity::gets_relation_to_bind);
+	ClassDB::bind_method(D_METHOD("_gets_relation_to", "to"), &Entity::_gets_relation_to);
+
+	ClassDB::bind_method(D_METHOD("getc_relation_to", "to"), &Entity::getc_relation_to_bind);
+	ClassDB::bind_method(D_METHOD("_getc_relation_to", "to"), &Entity::_getc_relation_to);
+
 	ClassDB::bind_method(D_METHOD("gets_entity_interaction_type"), &Entity::gets_entity_interaction_type);
 	ClassDB::bind_method(D_METHOD("sets_entity_interaction_type", "value"), &Entity::sets_entity_interaction_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_interaction_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE), "sets_entity_interaction_type", "gets_entity_interaction_type");
