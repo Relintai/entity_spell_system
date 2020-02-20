@@ -31,10 +31,10 @@ class XPData : public Resource {
 	GDCLASS(XPData, Resource);
 
 public:
-	int get_max_level();
-	int get_xp(int level);
-	void set_xp(int level, int value);
-	bool can_level_up(int level);
+	int get_character_max_level();
+	int get_character_xp(int level);
+	void set_character_xp(int level, int value);
+	bool can_character_level_up(int level);
 
 	int get_class_max_level();
 	int get_class_xp(int level);
@@ -48,7 +48,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	Vector<int> _xps;
+	Vector<int> _character_xps;
 	Vector<int> _class_xps;
 };
 

@@ -258,21 +258,28 @@ public:
 	EntityEnums::EntityGender getc_gender();
 	void setc_gender(EntityEnums::EntityGender value);
 
-	int gets_level();
-	void sets_level(int value);
+	int gets_class_level();
+	void sets_class_level(int value);
+	int getc_class_level();
+	void setc_class_level(int value);
 
-	int getc_level();
-	void setc_level(int value);
+	int gets_character_level();
+	void sets_character_level(int value);
+	int getc_character_level();
+	void setc_character_level(int value);
 
-	int gets_xp();
-	void sets_xp(int value);
+	int gets_class_xp();
+	void sets_class_xp(int value);
+	int getc_class_xp();
+	void setc_class_xp(int value);
 
-	int getc_xp();
-	void setc_xp(int value);
+	int gets_character_xp();
+	void sets_character_xp(int value);
+	int getc_character_xp();
+	void setc_character_xp(int value);
 
 	int gets_money();
 	void sets_money(int value);
-
 	int getc_money();
 	void setc_money(int value);
 
@@ -969,6 +976,7 @@ protected:
 	void _scraft(int id);
 	void _son_xp_gained(int value);
 	void _son_character_level_up(int level);
+	void _son_class_level_up(int level);
 	void _moved();
 	void _con_target_changed(Node *p_entity, Node *p_old_target);
 	void _son_death();
@@ -1007,11 +1015,17 @@ private:
 	EntityEnums::EntityGender _s_gender;
 	EntityEnums::EntityGender _c_gender;
 
-	int _s_level;
-	int _c_level;
+	int _s_class_level;
+	int _c_class_level;
 
-	int _s_xp;
-	int _c_xp;
+	int _s_character_level;
+	int _c_character_level;
+
+	int _s_class_xp;
+	int _c_class_xp;
+
+	int _s_character_xp;
+	int _c_character_xp;
 
 	int _s_money;
 	int _c_money;

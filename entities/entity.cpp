@@ -238,40 +238,72 @@ void Entity::setc_gender(EntityEnums::EntityGender value) {
 	}
 }
 
-int Entity::gets_level() {
-	return _s_level;
+int Entity::gets_class_level() {
+	return _s_class_level;
 }
-void Entity::sets_level(int value) {
-	_s_level = value;
+void Entity::sets_class_level(int value) {
+	_s_class_level = value;
 
 	emit_signal("son_character_level_changed", this, value);
 
-	VRPC(setc_level, value);
+	VRPC(setc_class_level, value);
 }
-
-int Entity::getc_level() {
-	return _c_level;
+int Entity::getc_class_level() {
+	return _c_class_level;
 }
-void Entity::setc_level(int value) {
-	_c_level = value;
+void Entity::setc_class_level(int value) {
+	_c_class_level = value;
 
 	emit_signal("con_character_level_changed", this, value);
 }
 
-int Entity::gets_xp() {
-	return _s_xp;
+int Entity::gets_character_level() {
+	return _s_character_level;
 }
-void Entity::sets_xp(int value) {
-	_s_xp = value;
+void Entity::sets_character_level(int value) {
+	_s_character_level = value;
 
-	ORPC(setc_xp, value);
+	emit_signal("son_character_level_changed", this, value);
+
+	VRPC(setc_character_level, value);
+}
+int Entity::getc_character_level() {
+	return _c_character_level;
+}
+void Entity::setc_character_level(int value) {
+	_c_character_level = value;
+
+	emit_signal("con_character_level_changed", this, value);
 }
 
-int Entity::getc_xp() {
-	return _c_xp;
+int Entity::gets_class_xp() {
+	return _s_class_xp;
 }
-void Entity::setc_xp(int value) {
-	_c_xp = value;
+void Entity::sets_class_xp(int value) {
+	_s_class_xp = value;
+
+	ORPC(setc_class_xp, value);
+}
+int Entity::getc_class_xp() {
+	return _c_class_xp;
+}
+void Entity::setc_class_xp(int value) {
+	_c_class_xp = value;
+}
+
+int Entity::gets_character_xp() {
+	return _s_character_xp;
+}
+void Entity::sets_character_xp(int value) {
+	_s_character_xp = value;
+
+	ORPC(setc_character_xp, value);
+}
+int Entity::getc_character_xp() {
+	return _c_character_xp;
+}
+void Entity::setc_character_xp(int value) {
+	_c_character_xp = value;
 }
 
 int Entity::gets_money() {
@@ -537,8 +569,11 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 		sets_entity_name(_s_entity_data->get_name());
 	}
 
-	scharacter_levelup(info->get_level() - 1);
-	sets_xp(info->get_xp());
+	scharacter_levelup(info->get_character_level() - 1);
+	sclass_levelup(info->get_class_level() - 1);
+
+	sets_class_xp(info->get_class_xp());
+	sets_character_xp(info->get_character_xp());
 }
 
 void Entity::setup_actionbars() {
@@ -811,8 +846,10 @@ Dictionary Entity::_to_dict() {
 	//dict["entity_data_id"] = _s_class_id;
 	dict["type"] = _s_type;
 	dict["gender"] = _s_gender;
-	dict["level"] = _s_level;
-	dict["xp"] = _s_xp;
+	dict["class_level"] = _s_class_level;
+	dict["character_level"] = _s_character_level;
+	dict["class_xp"] = _s_class_xp;
+	dict["character_xp"] = _s_character_xp;
 	dict["money"] = _s_money;
 	dict["seed"] = _s_seed;
 
@@ -981,8 +1018,12 @@ void Entity::_from_dict(const Dictionary &dict) {
 	sets_entity_type((EntityEnums::EntityType)((int)dict.get("type", 0)));
 
 	sets_gender(static_cast<EntityEnums::EntityGender>(static_cast<int>(dict.get("gender", 0))));
-	sets_level(dict.get("level", 0));
-	sets_xp(dict.get("xp", 0));
+
+	sets_class_level(dict.get("class_level", 0));
+	sets_character_level(dict.get("character_level", 0));
+	sets_class_xp(dict.get("class_xp", 0));
+	sets_character_xp(dict.get("character_xp", 0));
+
 	sets_money(dict.get("money", 0));
 
 	sets_entity_name(dict.get("entity_name", ""));
@@ -2217,14 +2258,16 @@ void Entity::copen_window(int window_id) {
 
 //XP Operations
 void Entity::adds_xp(int value) {
-	_s_xp += value;
+	_s_class_xp += value;
+	_s_character_xp += value;
 
 	son_xp_gained(value);
 
 	ORPC(addc_xp, value);
 }
 void Entity::addc_xp(int value) {
-	_c_xp += value;
+	_c_class_xp += value;
+	_c_character_xp += value;
 
 	con_xp_gained(value);
 }
@@ -2233,7 +2276,7 @@ void Entity::sclass_levelup(int value) {
 	if (value <= 0)
 		return;
 
-	if (_s_level == EntityEnums::MAX_CLASS_LEVEL)
+	if (_s_class_level == EntityEnums::MAX_CLASS_LEVEL)
 		return;
 
 	//_s_level += value;
@@ -2243,7 +2286,7 @@ void Entity::sclass_levelup(int value) {
 	VRPC(cclass_levelup, value);
 }
 void Entity::cclass_levelup(int value) {
-	_c_level += value;
+	_c_class_level += value;
 
 	con_class_level_up(value);
 }
@@ -2252,17 +2295,17 @@ void Entity::scharacter_levelup(int value) {
 	if (value <= 0)
 		return;
 
-	if (_s_level == EntityEnums::MAX_CHARACTER_LEVEL)
+	if (_s_character_level == EntityEnums::MAX_CHARACTER_LEVEL)
 		return;
 
-	_s_level += value;
+	_s_character_level += value;
 
 	son_character_level_up(value);
 
 	VRPC(ccharacter_levelup, value);
 }
 void Entity::ccharacter_levelup(int value) {
-	_c_level += value;
+	_c_character_level += value;
 
 	con_character_level_up(value);
 }
@@ -5449,11 +5492,17 @@ Entity::Entity() {
 	_s_gender = EntityEnums::GENDER_MALE;
 	_c_gender = EntityEnums::GENDER_MALE;
 
-	_s_level = 1;
-	_c_level = 1;
+	_s_class_level = 1;
+	_c_class_level = 1;
 
-	_s_xp = 0;
-	_c_xp = 0;
+	_s_character_level = 1;
+	_c_character_level = 1;
+
+	_s_class_xp = 0;
+	_c_class_xp = 0;
+
+	_s_character_xp = 0;
+	_c_character_xp = 0;
 
 	_s_send_flag = 0;
 
@@ -5533,24 +5582,19 @@ Entity::Entity() {
 	SET_RPC_REMOTE("setc_entity_type");
 	SET_RPC_REMOTE("setc_entity_name");
 	SET_RPC_REMOTE("setc_gender");
-	SET_RPC_REMOTE("setc_level");
-	SET_RPC_REMOTE("setc_xp");
+	SET_RPC_REMOTE("setc_class_level");
+	SET_RPC_REMOTE("setc_character_level");
+	SET_RPC_REMOTE("setc_class_xp");
+	SET_RPC_REMOTE("setc_character_xp");
 	SET_RPC_REMOTE("setc_seed");
 
 	//EntityType
-
-	SET_RPC_REMOTE("setc_entity_type");
 
 	//EntityInteractionType
 
 	SET_RPC_REMOTE("setc_entity_interaction_type");
 	SET_RPC_REMOTE("setc_entity_flags");
-	SET_RPC_REMOTE("setc_entity_name");
-	SET_RPC_REMOTE("setc_gender");
-	SET_RPC_REMOTE("setc_level");
-	SET_RPC_REMOTE("setc_xp");
 	SET_RPC_REMOTE("setc_money");
-	SET_RPC_REMOTE("setc_entity_data_id");
 
 	////     Stats    ////
 
@@ -5823,15 +5867,22 @@ void Entity::_scraft(int id) {
 }
 
 void Entity::_son_xp_gained(int value) {
-	if (EntityDataManager::get_instance()->get_xp_data()->can_level_up(gets_level())) {
-		return;
+	if (EntityDataManager::get_instance()->get_xp_data()->can_class_level_up(gets_class_level())) {
+		int xpr = EntityDataManager::get_instance()->get_xp_data()->get_class_xp(gets_class_level());
+
+		if (xpr <= gets_class_xp()) {
+			sclass_levelup(1);
+			sets_class_xp(0);
+		}
 	}
 
-	int xpr = EntityDataManager::get_instance()->get_xp_data()->get_xp(gets_level());
+	if (EntityDataManager::get_instance()->get_xp_data()->can_character_level_up(gets_character_level())) {
+		int xpr = EntityDataManager::get_instance()->get_xp_data()->get_character_xp(gets_character_level());
 
-	if (xpr <= gets_xp()) {
-		scharacter_levelup(1);
-		sets_xp(0);
+		if (xpr <= gets_character_xp()) {
+			scharacter_levelup(1);
+			sets_character_xp(0);
+		}
 	}
 }
 
@@ -5844,11 +5895,8 @@ void Entity::_son_character_level_up(int level) {
 	if (!ecd.is_valid())
 		return;
 
-	sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
-	sets_free_talent_points(gets_free_talent_points() + level);
-
 	for (int i = 0; i < Stat::MAIN_STAT_ID_COUNT; ++i) {
-		int st = gets_entity_data()->get_entity_class_data()->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_level() - level, gets_level());
+		int st = gets_entity_data()->get_entity_class_data()->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_character_level() - level, gets_character_level());
 
 		int statid = i + Stat::MAIN_STAT_ID_START;
 
@@ -5857,6 +5905,19 @@ void Entity::_son_character_level_up(int level) {
 		Ref<StatModifier> sm = stat->get_modifier(0);
 		sm->set_base_mod(sm->get_base_mod() + st);
 	}
+}
+
+void Entity::_son_class_level_up(int level) {
+	if (!gets_entity_data().is_valid())
+		return;
+
+	Ref<EntityClassData> ecd = gets_entity_data()->get_entity_class_data();
+
+	if (!ecd.is_valid())
+		return;
+
+	sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
+	sets_free_talent_points(gets_free_talent_points() + level);
 }
 
 void Entity::_moved() {
@@ -6466,21 +6527,33 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_gender", "value"), &Entity::setc_gender);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cgender"), "setc_gender", "getc_gender");
 
-	ClassDB::bind_method(D_METHOD("gets_level"), &Entity::gets_level);
-	ClassDB::bind_method(D_METHOD("sets_level", "value"), &Entity::sets_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "slevel"), "sets_level", "gets_level");
+	ClassDB::bind_method(D_METHOD("gets_class_level"), &Entity::gets_class_level);
+	ClassDB::bind_method(D_METHOD("sets_class_level", "value"), &Entity::sets_class_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sclass_level"), "sets_class_level", "gets_class_level");
+	ClassDB::bind_method(D_METHOD("getc_class_level"), &Entity::getc_class_level);
+	ClassDB::bind_method(D_METHOD("setc_class_level", "value"), &Entity::setc_class_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cclass_level"), "setc_class_level", "getc_class_level");
 
-	ClassDB::bind_method(D_METHOD("getc_level"), &Entity::getc_level);
-	ClassDB::bind_method(D_METHOD("setc_level", "value"), &Entity::setc_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "clevel"), "setc_level", "getc_level");
+	ClassDB::bind_method(D_METHOD("gets_character_level"), &Entity::gets_character_level);
+	ClassDB::bind_method(D_METHOD("sets_character_level", "value"), &Entity::sets_character_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "scharacter_level"), "sets_character_level", "gets_character_level");
+	ClassDB::bind_method(D_METHOD("getc_character_level"), &Entity::getc_character_level);
+	ClassDB::bind_method(D_METHOD("setc_character_level", "value"), &Entity::setc_character_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "ccharacter_level"), "setc_character_level", "getc_character_level");
 
-	ClassDB::bind_method(D_METHOD("gets_xp"), &Entity::gets_xp);
-	ClassDB::bind_method(D_METHOD("sets_xp", "value"), &Entity::sets_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sxp"), "sets_xp", "gets_xp");
+	ClassDB::bind_method(D_METHOD("gets_class_xp"), &Entity::gets_class_xp);
+	ClassDB::bind_method(D_METHOD("sets_class_xp", "value"), &Entity::sets_class_xp);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sclass_xp"), "sets_class_xp", "gets_class_xp");
+	ClassDB::bind_method(D_METHOD("getc_class_xp"), &Entity::getc_class_xp);
+	ClassDB::bind_method(D_METHOD("setc_class_xp", "value"), &Entity::setc_class_xp);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cclass_xp"), "setc_class_xp", "getc_class_xp");
 
-	ClassDB::bind_method(D_METHOD("getc_xp"), &Entity::getc_xp);
-	ClassDB::bind_method(D_METHOD("setc_xp", "value"), &Entity::setc_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cxp"), "setc_xp", "getc_xp");
+	ClassDB::bind_method(D_METHOD("gets_character_xp"), &Entity::gets_character_xp);
+	ClassDB::bind_method(D_METHOD("sets_character_xp", "value"), &Entity::sets_character_xp);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "scharacter_xp"), "sets_character_xp", "gets_character_xp");
+	ClassDB::bind_method(D_METHOD("getc_character_xp"), &Entity::getc_character_xp);
+	ClassDB::bind_method(D_METHOD("setc_character_xp", "value"), &Entity::setc_character_xp);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "ccharacter_xp"), "setc_character_xp", "getc_character_xp");
 
 	ClassDB::bind_method(D_METHOD("gets_money"), &Entity::gets_money);
 	ClassDB::bind_method(D_METHOD("sets_money", "value"), &Entity::sets_money);
@@ -6990,6 +7063,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_scraft", "id"), &Entity::_scraft);
 	ClassDB::bind_method(D_METHOD("_son_xp_gained", "value"), &Entity::_son_xp_gained);
 	ClassDB::bind_method(D_METHOD("_son_character_level_up", "level"), &Entity::_son_character_level_up);
+	ClassDB::bind_method(D_METHOD("_son_class_level_up", "level"), &Entity::_son_class_level_up);
 	ClassDB::bind_method(D_METHOD("_moved"), &Entity::_moved);
 	ClassDB::bind_method(D_METHOD("_con_target_changed", "entity", "old_target"), &Entity::_con_target_changed);
 	ClassDB::bind_method(D_METHOD("_son_death"), &Entity::_son_death);

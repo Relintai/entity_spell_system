@@ -75,18 +75,32 @@ void EntityCreateInfo::set_entity_name(const String &value) {
 	_entity_name = value;
 }
 
-int EntityCreateInfo::get_level() const {
-	return _level;
+int EntityCreateInfo::get_class_level() const {
+	return _class_level;
 }
-void EntityCreateInfo::set_level(const int value) {
-	_level = value;
+void EntityCreateInfo::set_class_level(const int value) {
+	_class_level = value;
 }
 
-int EntityCreateInfo::get_xp() const {
-	return _xp;
+int EntityCreateInfo::get_character_level() const {
+	return _character_level;
 }
-void EntityCreateInfo::set_xp(const int value) {
-	_xp = value;
+void EntityCreateInfo::set_character_level(const int value) {
+	_character_level = value;
+}
+
+int EntityCreateInfo::get_class_xp() const {
+	return _class_xp;
+}
+void EntityCreateInfo::set_class_xp(const int value) {
+	_class_xp = value;
+}
+
+int EntityCreateInfo::get_character_xp() const {
+	return _character_xp;
+}
+void EntityCreateInfo::set_character_xp(const int value) {
+	_character_xp = value;
 }
 
 Transform EntityCreateInfo::get_transform() const {
@@ -166,8 +180,11 @@ Dictionary EntityCreateInfo::_to_dict() {
 	dict["network_owner"] = _network_owner;
 	dict["entity_controller"] = _entity_controller;
 	dict["entity_name"] = _entity_name;
-	dict["level"] = _level;
-	dict["xp"] = _xp;
+	dict["class_level"] = _class_level;
+	dict["character_level"] = _character_level;
+	dict["class_xp"] = _class_xp;
+	dict["character_xp"] = _character_xp;
+
 	dict["transform"] = _transform;
 	dict["transform2d"] = _transform2d;
 
@@ -189,8 +206,10 @@ void EntityCreateInfo::_from_dict(const Dictionary &dict) {
 	_network_owner = dict.get("network_owner", 0);
 	_entity_controller = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
 	_entity_name = dict.get("entity_name", "");
-	_level = dict.get("level", 0);
-	_xp = dict.get("xp", 0);
+	_class_level = dict.get("class_level", 0);
+	_character_level = dict.get("character_level", 0);
+	_class_xp = dict.get("class_xp", 0);
+	_character_xp = dict.get("character_xp", 0);
 	_transform = dict.get("transform", Transform());
 	_transform2d = dict.get("transform2d", Transform2D());
 	_species_instance = dict.get("species_instance", Ref<SpeciesInstance>());
@@ -204,8 +223,10 @@ EntityCreateInfo::EntityCreateInfo() {
 	_entity_player_type = 0;
 	_network_owner = 0;
 	_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
-	_level = 0;
-	_xp = 0;
+	_class_level = 0;
+	_character_level = 0;
+	_class_xp = 0;
+	_character_xp = 0;
 	_created_entity = NULL;
 }
 
@@ -243,13 +264,21 @@ void EntityCreateInfo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_entity_name", "value"), &EntityCreateInfo::set_entity_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "player_name"), "set_entity_name", "get_entity_name");
 
-	ClassDB::bind_method(D_METHOD("get_level"), &EntityCreateInfo::get_level);
-	ClassDB::bind_method(D_METHOD("set_level", "value"), &EntityCreateInfo::set_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "level"), "set_level", "get_level");
+	ClassDB::bind_method(D_METHOD("get_class_level"), &EntityCreateInfo::get_class_level);
+	ClassDB::bind_method(D_METHOD("set_class_level", "value"), &EntityCreateInfo::set_class_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "class_level"), "set_class_level", "get_class_level");
 
-	ClassDB::bind_method(D_METHOD("get_xp"), &EntityCreateInfo::get_xp);
-	ClassDB::bind_method(D_METHOD("set_xp", "value"), &EntityCreateInfo::set_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "xp"), "set_xp", "get_xp");
+	ClassDB::bind_method(D_METHOD("get_character_level"), &EntityCreateInfo::get_character_level);
+	ClassDB::bind_method(D_METHOD("set_character_level", "value"), &EntityCreateInfo::set_character_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "character_level"), "set_character_level", "get_character_level");
+
+	ClassDB::bind_method(D_METHOD("get_class_xp"), &EntityCreateInfo::get_class_xp);
+	ClassDB::bind_method(D_METHOD("set_class_xp", "value"), &EntityCreateInfo::set_class_xp);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "class_xp"), "set_class_xp", "get_class_xp");
+
+	ClassDB::bind_method(D_METHOD("get_character_xp"), &EntityCreateInfo::get_character_xp);
+	ClassDB::bind_method(D_METHOD("set_character_xp", "value"), &EntityCreateInfo::set_character_xp);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "character_xp"), "set_character_xp", "get_character_xp");
 
 	ClassDB::bind_method(D_METHOD("get_transform"), &EntityCreateInfo::get_transform);
 	ClassDB::bind_method(D_METHOD("set_transform", "value"), &EntityCreateInfo::set_transform);
