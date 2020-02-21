@@ -980,6 +980,7 @@ protected:
 	void _moved();
 	void _con_target_changed(Node *p_entity, Node *p_old_target);
 	void _son_death();
+	void _slearn_spell(int id);
 
 	static void _bind_methods();
 	virtual void _notification(int p_what);

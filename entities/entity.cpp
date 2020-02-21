@@ -980,7 +980,8 @@ Dictionary Entity::_to_dict() {
 
 	////    Known Spells    ////
 
-	dict["free_spell_points"] = _s_free_spell_points;
+	if (EntityDataManager::get_instance()->get_use_spell_points())
+		dict["free_spell_points"] = _s_free_spell_points;
 
 	Dictionary known_spells;
 
@@ -1203,7 +1204,8 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	////    Known Spells    ////
 
-	sets_free_spell_points(dict.get("free_spell_points", 0));
+	if (EntityDataManager::get_instance()->get_use_spell_points())
+		sets_free_spell_points(dict.get("free_spell_points", 0));
 
 	Dictionary known_spells = dict.get("known_spells", Dictionary());
 
@@ -4140,37 +4142,10 @@ void Entity::crequest_spell_learn(int id) {
 	slearn_spell(id);
 }
 void Entity::slearn_spell(int id) {
-	if (has_method("_slearn_spell")) {
-		call("_slearn_spell", id);
-		return;
-	}
-
-	ERR_FAIL_COND(gets_free_spell_points() <= 0);
-
-	ERR_FAIL_COND(!_s_entity_data.is_valid());
-
-	Ref<EntityClassData> cd = _s_entity_data->get_entity_class_data();
-
-	ERR_FAIL_COND(!cd.is_valid());
-
-	for (int i = 0; i < cd->get_num_spells(); ++i) {
-		Ref<Spell> sp = cd->get_spell(i);
-
-		if (!sp.is_valid())
-			continue;
-
-		if (sp->get_id() == id) {
-			Ref<Spell> req_spell = sp->get_training_required_spell();
-
-			if (req_spell.is_valid() && !hass_spell(req_spell)) {
-				return;
-			}
-
-			adds_spell(sp);
-			sets_free_spell_points(_s_free_spell_points - 1);
-			return;
-		}
-	}
+	//if (has_method("_slearn_spell")) {
+	call("_slearn_spell", id);
+	//	return;
+	//	}
 }
 
 bool Entity::hass_spell(Ref<Spell> spell) {
@@ -5916,7 +5891,9 @@ void Entity::_son_class_level_up(int level) {
 	if (!ecd.is_valid())
 		return;
 
-	sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
+	if (EntityDataManager::get_instance()->get_use_spell_points())
+		sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
+
 	sets_free_talent_points(gets_free_talent_points() + level);
 }
 
@@ -5979,6 +5956,39 @@ void Entity::_son_death() {
 #	set_process(false)
 	set_physics_process(false)
 	*/
+}
+
+void Entity::_slearn_spell(int id) {
+	if (EntityDataManager::get_instance()->get_use_spell_points())
+		ERR_FAIL_COND(gets_free_spell_points() <= 0);
+
+	ERR_FAIL_COND(!_s_entity_data.is_valid());
+
+	Ref<EntityClassData> cd = _s_entity_data->get_entity_class_data();
+
+	ERR_FAIL_COND(!cd.is_valid());
+
+	for (int i = 0; i < cd->get_num_spells(); ++i) {
+		Ref<Spell> sp = cd->get_spell(i);
+
+		if (!sp.is_valid())
+			continue;
+
+		if (sp->get_id() == id) {
+			Ref<Spell> req_spell = sp->get_training_required_spell();
+
+			if (req_spell.is_valid() && !hass_spell(req_spell)) {
+				return;
+			}
+
+			adds_spell(sp);
+
+			if (EntityDataManager::get_instance()->get_use_spell_points())
+				sets_free_spell_points(_s_free_spell_points - 1);
+
+			return;
+		}
+	}
 }
 
 void Entity::_notification(int p_what) {

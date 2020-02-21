@@ -36,6 +36,13 @@ EntityDataManager *EntityDataManager::get_instance() {
 	return instance;
 }
 
+bool EntityDataManager::get_use_spell_points() {
+	return _use_spell_points;
+}
+void EntityDataManager::set_use_spell_points(bool value) {
+	_use_spell_points = value;
+}
+
 bool EntityDataManager::get_automatic_load() {
 	return _automatic_load;
 }
@@ -1102,6 +1109,7 @@ void EntityDataManager::_bind_methods() {
 EntityDataManager::EntityDataManager() {
 	instance = this;
 
+	_use_spell_points = GLOBAL_DEF("ess/spells/use_spell_points", false);
 	_automatic_load = GLOBAL_DEF("ess/data/automatic_load", false);
 
 	_xp_data_path = GLOBAL_DEF("ess/data/xp_data_path", "");

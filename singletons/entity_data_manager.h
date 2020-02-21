@@ -62,6 +62,9 @@ class EntityDataManager : public Object {
 public:
 	static EntityDataManager *get_instance();
 
+	bool get_use_spell_points();
+	void set_use_spell_points(bool value);
+
 	bool get_automatic_load();
 	void set_automatic_load(bool load);
 
@@ -237,6 +240,7 @@ private:
 
 	static EntityDataManager *instance;
 
+	bool _use_spell_points;
 	bool _automatic_load;
 };
 
