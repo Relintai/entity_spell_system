@@ -22,10 +22,12 @@ SOFTWARE.
 
 #include "spell_cast_info.h"
 
+#include "../data/items/item_instance.h"
+#include "../data/items/item_template.h"
 #include "../data/spells/spell.h"
 #include "../entities/entity.h"
-#include "../world_spells/world_spell.h"
 #include "../singletons/entity_data_manager.h"
+#include "../world_spells/world_spell.h"
 
 ////    SpellCastInfo    ////
 
@@ -146,8 +148,22 @@ void SpellCastInfo::set_spell_scale(float value) {
 Ref<Spell> SpellCastInfo::get_spell() const {
 	return _spell;
 }
-void SpellCastInfo::set_spell(Ref<Spell> spell) {
+void SpellCastInfo::set_spell(const Ref<Spell> &spell) {
 	_spell = spell;
+}
+
+Ref<ItemInstance> SpellCastInfo::get_source_item() const {
+	return _source_item;
+}
+void SpellCastInfo::set_source_item(const Ref<ItemInstance> &item) {
+	_source_item = item;
+}
+
+Ref<ItemTemplate> SpellCastInfo::get_source_template() const {
+	return _source_template;
+}
+void SpellCastInfo::set_source_template(const Ref<ItemTemplate> &source_template) {
+	_source_template = source_template;
 }
 
 bool SpellCastInfo::update_cast_time(float delta) {
@@ -203,6 +219,8 @@ Dictionary SpellCastInfo::to_dict() {
 
 	dict["spell_id"] = _spell->get_id();
 
+	//item serialization not needed
+
 	return dict;
 }
 void SpellCastInfo::from_dict(const Dictionary &dict) {
@@ -216,6 +234,8 @@ void SpellCastInfo::from_dict(const Dictionary &dict) {
 	_is_casting = dict.get("is_casting", true);
 
 	_spell_id = dict.get("spell_id", 0);
+
+	//item serialization not needed
 }
 
 SpellCastInfo::SpellCastInfo() {
@@ -238,7 +258,10 @@ SpellCastInfo::SpellCastInfo() {
 SpellCastInfo::~SpellCastInfo() {
 	_caster = NULL;
 	_target = NULL;
-	//_spell = Ref<Spell>(NULL);
+
+	_spell.unref();
+	_source_item.unref();
+	_source_template.unref();
 }
 
 void SpellCastInfo::_bind_methods() {
@@ -281,6 +304,14 @@ void SpellCastInfo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_spell"), &SpellCastInfo::get_spell);
 	ClassDB::bind_method(D_METHOD("set_spell", "spell"), &SpellCastInfo::set_spell);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_spell", "get_spell");
+
+	ClassDB::bind_method(D_METHOD("get_source_item"), &SpellCastInfo::get_source_item);
+	ClassDB::bind_method(D_METHOD("set_source_item", "spell"), &SpellCastInfo::set_source_item);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "source_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "set_source_item", "get_source_item");
+
+	ClassDB::bind_method(D_METHOD("get_source_template"), &SpellCastInfo::get_source_template);
+	ClassDB::bind_method(D_METHOD("set_source_template", "spell"), &SpellCastInfo::set_source_template);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "source_template", PROPERTY_HINT_RESOURCE_TYPE, "ItemTemplate"), "set_source_template", "get_source_template");
 
 	ClassDB::bind_method(D_METHOD("update_cast_time", "delta"), &SpellCastInfo::update_cast_time);
 

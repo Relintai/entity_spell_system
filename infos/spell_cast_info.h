@@ -28,6 +28,8 @@ SOFTWARE.
 class Spell;
 class Entity;
 class WorldSpell;
+class ItemInstance;
+class ItemTemplate;
 
 class SpellCastInfo : public Reference {
 	GDCLASS(SpellCastInfo, Reference);
@@ -64,7 +66,13 @@ public:
 	void set_spell_scale(float value);
 
 	Ref<Spell> get_spell() const;
-	void set_spell(Ref<Spell> spell);
+	void set_spell(const Ref<Spell> &spell);
+
+	Ref<ItemInstance> get_source_item() const;
+	void set_source_item(const Ref<ItemInstance> &item);
+
+	Ref<ItemTemplate> get_source_template() const;
+	void set_source_template(const Ref<ItemTemplate> &source_template);
 
 	bool update_cast_time(float delta);
 
@@ -95,6 +103,8 @@ private:
 
 	int _spell_id;
 	Ref<Spell> _spell;
+	Ref<ItemInstance> _source_item;
+	Ref<ItemTemplate> _source_template;
 
 	NodePath _target_path;
 };

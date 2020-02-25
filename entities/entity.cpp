@@ -2372,6 +2372,59 @@ void Entity::crequest_use_item(int item_id) {
 	RPCS(suse_item, item_id);
 }
 void Entity::_suse_item(int item_id) {
+	Ref<ItemTemplate> it = EntityDataManager::get_instance()->get_item_template(item_id);
+
+	ERR_FAIL_COND(!it.is_valid());
+
+	Ref<Spell> sp = it->get_use_spell();
+
+	ERR_FAIL_COND(!sp.is_valid());
+
+	ItemEnums::ItemType type = it->get_item_type();
+
+	if (type == ItemEnums::ITEM_TYPE_EQUIPMENT) {
+		Ref<ItemInstance> ii = gets_equip_slot(it->get_equip_slot());
+
+		if (!ii.is_valid())
+			return;
+
+		if (ii->get_item_template() != it)
+			return;
+
+		Ref<SpellCastInfo> info;
+		info.instance();
+
+		info->set_caster(this);
+		info->set_target(gets_target());
+		info->set_has_cast_time(sp->get_cast_time_enabled());
+		info->set_cast_time(sp->get_cast_time());
+		info->set_spell_scale(1);
+		info->set_spell(sp);
+		info->set_source_item(ii);
+		info->set_source_template(it);
+
+		sstart_casting(info);
+
+		sp->sstart_casting(info);
+	} else {
+		if (!gets_bag()->has_item(it, 1))
+			return;
+
+		Ref<SpellCastInfo> info;
+		info.instance();
+
+		info->set_caster(this);
+		info->set_target(gets_target());
+		info->set_has_cast_time(sp->get_cast_time_enabled());
+		info->set_cast_time(sp->get_cast_time());
+		info->set_spell_scale(1);
+		info->set_spell(sp);
+		info->set_source_template(it);
+
+		sstart_casting(info);
+
+		sp->sstart_casting(info);
+	}
 }
 
 void Entity::update_auras(float delta) {
