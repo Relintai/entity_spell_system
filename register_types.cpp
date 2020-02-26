@@ -112,8 +112,6 @@ SOFTWARE.
 #include "utility/entity_create_info.h"
 
 #include "data/loot/loot_data_base.h"
-#include "data/loot/loot_data_container.h"
-#include "data/loot/loot_data_item.h"
 
 #include "data/spells/spell_effect_visual.h"
 #include "data/spells/spell_effect_visual_simple.h"
@@ -239,8 +237,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<CategoryCooldown>();
 
 	ClassDB::register_class<LootDataBase>();
-	ClassDB::register_class<LootDataItem>();
-	ClassDB::register_class<LootDataContainter>();
 
 	ClassDB::register_class<SpellEffectVisual>();
 	ClassDB::register_class<SpellEffectVisualSimple>();

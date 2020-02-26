@@ -102,8 +102,6 @@ sources = [
     "utility/category_cooldown.cpp",
 
     "data/loot/loot_data_base.cpp",
-    "data/loot/loot_data_container.cpp",
-    "data/loot/loot_data_item.cpp",
 
     "entities/ai/entity_ai.cpp",
 

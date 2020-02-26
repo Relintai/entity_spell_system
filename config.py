@@ -70,8 +70,6 @@ def get_doc_classes():
         "Bag",
 
         "LootDataBase",
-        "LootDataContainter",
-        "LootDataItem",
 
         "SpellDamageInfo",
         "SpellHealInfo",
