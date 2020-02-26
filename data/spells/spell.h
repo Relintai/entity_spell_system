@@ -319,6 +319,7 @@ public:
 
 	String get_name_translated() const;
 	String get_description(const int class_level, const int character_level);
+	String _get_description(const int class_level, const int character_level);
 
 	Spell();
 	~Spell();

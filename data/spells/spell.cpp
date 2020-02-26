@@ -723,6 +723,10 @@ String Spell::get_name_translated() const {
 }
 
 String Spell::get_description(const int class_level, const int character_level) {
+	return call("_get_description", class_level, character_level);
+}
+
+String Spell::_get_description(const int class_level, const int character_level) {
 	String str;
 
 	if (_text_translation_key != "") {
@@ -730,6 +734,45 @@ String Spell::get_description(const int class_level, const int character_level) 
 	}
 
 	str = _text_description;
+
+	int pos = str.find_char('%');
+
+	while (pos > 0) {
+		if (pos == str.size() - 1)
+			break;
+
+		CharType o = str[pos + 1];
+
+		if (o == '#' || o == '$' || o == '%') {
+			int nsp = str.find_char(' ', pos + 1);
+
+			if (pos < 0)
+				break;
+
+			String prop = str.substr(pos + 2, nsp - pos - 2);
+			StringName psm = prop;
+			bool valid = false;
+			Variant value = get(psm, &valid);
+
+			if (valid) {
+				if (o == '#') {
+					value = Variant::evaluate(Variant::OP_MULTIPLY, value, class_level / static_cast<float>(EntityEnums::MAX_CLASS_LEVEL));
+
+					value = static_cast<int>(value);
+				}
+
+				if (o == '$') {
+					value = Variant::evaluate(Variant::OP_MULTIPLY, value, character_level / static_cast<float>(EntityEnums::MAX_CHARACTER_LEVEL));
+
+					value = static_cast<int>(value);
+				}
+
+				str = str.replace(str.substr(pos, nsp - pos) + " ", value);
+			}
+		}
+
+		pos = str.find_char('%', pos + 1);
+	}
 
 	return str;
 }
@@ -1140,7 +1183,13 @@ void Spell::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "on_learn_auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_on_learn_auras", "get_on_learn_auras");
 
 	ADD_GROUP("Texts", "text");
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_get_description", PropertyInfo(Variant::INT, "class_level"), PropertyInfo(Variant::INT, "character_level")));
+
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
+
+	ClassDB::bind_method(D_METHOD("get_text_translation_key"), &Spell::get_text_translation_key);
+	ClassDB::bind_method(D_METHOD("set_text_translation_key", "value"), &Spell::set_text_description);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_translation_key"), "set_text_translation_key", "get_text_translation_key");
 
 	ClassDB::bind_method(D_METHOD("get_text_description"), &Spell::get_text_description);
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &Spell::set_text_description);
@@ -1148,6 +1197,7 @@ void Spell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_name_translated"), &Spell::get_name_translated);
 	ClassDB::bind_method(D_METHOD("get_description", "class_level", "character_level"), &Spell::get_description);
+	ClassDB::bind_method(D_METHOD("_get_description", "class_level", "character_level"), &Spell::_get_description);
 
 	ADD_GROUP("Scaling", "scale");
 	ClassDB::bind_method(D_METHOD("get_scale_with_level"), &Spell::get_scale_with_level);
