@@ -149,10 +149,17 @@ void Spell::set_icon(const Ref<Texture> &value) {
 	_icon = Ref<Texture>(value);
 }
 
+String Spell::get_text_translation_key() const {
+	return _text_translation_key;
+}
+void Spell::set_text_translation_key(const String &value) {
+	_text_translation_key = value;
+}
+
 String Spell::get_text_description() const {
 	return _text_description;
 }
-void Spell::set_text_description(const String value) {
+void Spell::set_text_description(const String &value) {
 	_text_description = value;
 }
 
@@ -707,8 +714,24 @@ void Spell::handle_cooldown(Ref<SpellCastInfo> info) {
 	}
 }
 
-String Spell::get_description(int level) {
-	return _text_description;
+String Spell::get_name_translated() const {
+	if (_text_translation_key != "") {
+		return tr(_text_translation_key);
+	}
+
+	return get_name();
+}
+
+String Spell::get_description(const int class_level, const int character_level) {
+	String str;
+
+	if (_text_translation_key != "") {
+		str = tr(_text_translation_key + "_DESC");
+	}
+
+	str = _text_description;
+
+	return str;
 }
 
 Spell::Spell() {
@@ -1122,6 +1145,9 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_text_description"), &Spell::get_text_description);
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &Spell::set_text_description);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description");
+
+	ClassDB::bind_method(D_METHOD("get_name_translated"), &Spell::get_name_translated);
+	ClassDB::bind_method(D_METHOD("get_description", "class_level", "character_level"), &Spell::get_description);
 
 	ADD_GROUP("Scaling", "scale");
 	ClassDB::bind_method(D_METHOD("get_scale_with_level"), &Spell::get_scale_with_level);

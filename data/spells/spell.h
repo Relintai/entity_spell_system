@@ -131,8 +131,11 @@ public:
 	Ref<Texture> get_icon();
 	void set_icon(const Ref<Texture> &value);
 
+	String get_text_translation_key() const;
+	void set_text_translation_key(const String &value);
+
 	String get_text_description() const;
-	void set_text_description(const String value);
+	void set_text_description(const String &value);
 
 	Ref<SpellEffectVisual> get_visual_spell_effects();
 	void set_visual_spell_effects(const Ref<SpellEffectVisual> &value);
@@ -314,7 +317,8 @@ public:
 	void handle_gcd(Ref<SpellCastInfo> info);
 	void handle_cooldown(Ref<SpellCastInfo> info);
 
-	String get_description(int level);
+	String get_name_translated() const;
+	String get_description(const int class_level, const int character_level);
 
 	Spell();
 	~Spell();
@@ -363,6 +367,7 @@ private:
 	bool _is_local_spell;
 	Ref<Texture> _icon;
 
+	String _text_translation_key;
 	String _text_description;
 
 	Ref<SpellEffectVisual> _visual_spell_effects;
