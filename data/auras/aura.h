@@ -85,6 +85,9 @@ public:
 	int get_rank() const;
 	void set_rank(const int value);
 
+	String get_text_translation_key() const;
+	void set_text_translation_key(const String &value);
+
 	String get_text_description() const;
 	void set_text_description(const String description);
 
@@ -350,6 +353,10 @@ public:
 
 	_FORCE_INLINE_ bool is_talent() const { return _aura_type == SpellEnums::AURA_TYPE_TALENT; }
 
+	String get_name_translated() const;
+	String get_description(const int class_level, const int character_level);
+	String _get_description(const int class_level, const int character_level);
+
 	Aura();
 	~Aura();
 
@@ -393,6 +400,7 @@ private:
 	bool _hide;
 	Ref<Spell> _teaches_spell;
 
+	String _text_translation_key;
 	String _text_description;
 	int ability_scale_data_id;
 	int _rank;

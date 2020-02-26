@@ -80,6 +80,13 @@ void Aura::set_rank(const int value) {
 	_rank = value;
 }
 
+String Aura::get_text_translation_key() const {
+	return _text_translation_key;
+}
+void Aura::set_text_translation_key(const String &value) {
+	_text_translation_key = value;
+}
+
 String Aura::get_text_description() const {
 	return _text_description;
 }
@@ -1030,6 +1037,69 @@ void Aura::handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> data) {
 	call("_handle_aura_heal", aura_data, data);
 }
 
+String Aura::get_name_translated() const {
+	if (_text_translation_key != "") {
+		return tr(_text_translation_key);
+	}
+
+	return get_name();
+}
+
+String Aura::get_description(const int class_level, const int character_level) {
+	return call("_get_description", class_level, character_level);
+}
+
+String Aura::_get_description(const int class_level, const int character_level) {
+	String str;
+
+	if (_text_translation_key != "") {
+		str = tr(_text_translation_key + "_DESC");
+	}
+
+	str = _text_description;
+
+	int pos = str.find_char('%');
+
+	while (pos > 0) {
+		if (pos == str.size() - 1)
+			break;
+
+		CharType o = str[pos + 1];
+
+		if (o == '#' || o == '$' || o == '%') {
+			int nsp = str.find_char(' ', pos + 1);
+
+			if (pos < 0)
+				break;
+
+			String prop = str.substr(pos + 2, nsp - pos - 2);
+			StringName psm = prop;
+			bool valid = false;
+			Variant value = get(psm, &valid);
+
+			if (valid) {
+				if (o == '#') {
+					value = Variant::evaluate(Variant::OP_MULTIPLY, value, class_level / static_cast<float>(EntityEnums::MAX_CLASS_LEVEL));
+
+					value = static_cast<int>(value);
+				}
+
+				if (o == '$') {
+					value = Variant::evaluate(Variant::OP_MULTIPLY, value, character_level / static_cast<float>(EntityEnums::MAX_CHARACTER_LEVEL));
+
+					value = static_cast<int>(value);
+				}
+
+				str = str.replace(str.substr(pos, nsp - pos) + " ", value);
+			}
+		}
+
+		pos = str.find_char('%', pos + 1);
+	}
+
+	return str;
+}
+
 void Aura::_sapply(Ref<AuraApplyInfo> info) {
 	ERR_FAIL_COND(info->get_target() == NULL || info->get_caster() == NULL || !info->get_aura().is_valid());
 
@@ -1518,11 +1588,21 @@ void Aura::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "ability_scale_data_id"), "set_ability_scale_data_id", "get_ability_scale_data_id");
 
 	ADD_GROUP("Texts", "text");
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_get_description", PropertyInfo(Variant::INT, "class_level"), PropertyInfo(Variant::INT, "character_level")));
+
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
+
+	ClassDB::bind_method(D_METHOD("get_text_translation_key"), &Aura::get_text_translation_key);
+	ClassDB::bind_method(D_METHOD("set_text_translation_key", "value"), &Aura::set_text_description);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_translation_key"), "set_text_translation_key", "get_text_translation_key");
 
 	ClassDB::bind_method(D_METHOD("get_text_description"), &Aura::get_text_description);
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &Aura::set_text_description);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_description", PROPERTY_HINT_MULTILINE_TEXT), "set_text_description", "get_text_description");
+
+	ClassDB::bind_method(D_METHOD("get_name_translated"), &Aura::get_name_translated);
+	ClassDB::bind_method(D_METHOD("get_description", "class_level", "character_level"), &Aura::get_description);
+	ClassDB::bind_method(D_METHOD("_get_description", "class_level", "character_level"), &Aura::_get_description);
 
 	ClassDB::bind_method(D_METHOD("get_visual_spell_effects"), &Aura::get_visual_spell_effects);
 	ClassDB::bind_method(D_METHOD("set_visual_spell_effects", "value"), &Aura::set_visual_spell_effects);
