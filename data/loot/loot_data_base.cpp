@@ -89,8 +89,7 @@ void LootDataBase::set_item(const int index, const Ref<ItemTemplate> &value) {
 }
 
 Array LootDataBase::get_loot() {
-	if (has_method("_get_loot"))
-		return call("_get_loot");
+	return call("_get_loot");
 }
 
 Array LootDataBase::_get_loot() {
