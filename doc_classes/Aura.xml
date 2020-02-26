@@ -768,7 +768,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_sremove_dispell" qualifiers="virtual">
+		<method name="_removes_dispell" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="AuraData">
@@ -776,7 +776,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_sremove_expired" qualifiers="virtual">
+		<method name="_removes_expired" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="AuraData">
@@ -1662,7 +1662,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sremove_dispell">
+		<method name="removes_dispell">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -1670,7 +1670,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sremove_expired">
+		<method name="removes_expired">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">

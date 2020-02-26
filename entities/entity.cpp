@@ -457,7 +457,7 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 			Ref<AuraData> ad = _s_auras.get(i);
 
 			if (!ad->get_aura()->get_hide())
-				VRPCOBJ(cadd_aura_rpc, JSON::print(ad->to_dict()), cadd_aura, ad);
+				VRPCOBJ(addc_aura_rpc, JSON::print(ad->to_dict()), addc_aura, ad);
 		}
 
 		for (int i = 0; i < _s_resources.size(); ++i) {
@@ -1333,7 +1333,7 @@ void Entity::setc_state(int state) {
 	emit_signal("cstate_changed", state);
 }
 
-void Entity::sadd_state_ref(int state_index) {
+void Entity::adds_state_ref(int state_index) {
 	ERR_FAIL_INDEX(state_index, EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX);
 
 	if (_s_states[state_index]++ == 0) {
@@ -1341,7 +1341,7 @@ void Entity::sadd_state_ref(int state_index) {
 	}
 }
 
-void Entity::sremove_state_ref(int state_index) {
+void Entity::removes_state_ref(int state_index) {
 	ERR_FAIL_INDEX(state_index, EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX);
 
 	if (--_s_states[state_index] == 0) {
@@ -2994,7 +2994,7 @@ void Entity::son_character_level_up(int value) {
 	emit_signal("son_character_level_up", this, value);
 }
 
-void Entity::sadd_aura(Ref<AuraData> aura) {
+void Entity::adds_aura(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	son_before_aura_applied(aura);
@@ -3008,10 +3008,10 @@ void Entity::sadd_aura(Ref<AuraData> aura) {
 	emit_signal("saura_added", aura);
 
 	if (!aura->get_aura()->get_hide())
-		VRPCOBJ(cadd_aura_rpc, JSON::print(aura->to_dict()), cadd_aura, aura);
+		VRPCOBJ(addc_aura_rpc, JSON::print(aura->to_dict()), addc_aura, aura);
 }
 
-void Entity::sremove_aura(Ref<AuraData> aura) {
+void Entity::removes_aura(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	int aid = aura->get_aura_id();
@@ -3033,11 +3033,11 @@ void Entity::sremove_aura(Ref<AuraData> aura) {
 		emit_signal("saura_removed", a);
 
 		if (!aura->get_aura()->get_hide())
-			VRPCOBJ(cremove_aura_rpc, JSON::print(aura->to_dict()), cremove_aura, aura);
+			VRPCOBJ(removec_aura_rpc, JSON::print(aura->to_dict()), removec_aura, aura);
 	}
 }
 
-void Entity::sremove_aura_exact(Ref<AuraData> aura) {
+void Entity::removes_aura_exact(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	for (int i = 0; i < _s_auras.size(); i++) {
@@ -3055,10 +3055,10 @@ void Entity::sremove_aura_exact(Ref<AuraData> aura) {
 	emit_signal("saura_removed", aura);
 
 	if (!aura->get_aura()->get_hide())
-		VRPCOBJ(cremove_aura_rpc, JSON::print(aura->to_dict()), cremove_aura, aura);
+		VRPCOBJ(removec_aura_rpc, JSON::print(aura->to_dict()), removec_aura, aura);
 }
 
-void Entity::sremove_aura_expired(Ref<AuraData> aura) {
+void Entity::removes_aura_expired(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	for (int i = 0; i < _s_auras.size(); i++) {
@@ -3076,10 +3076,10 @@ void Entity::sremove_aura_expired(Ref<AuraData> aura) {
 	emit_signal("saura_removed_expired", aura);
 
 	if (!aura->get_aura()->get_hide())
-		VRPCOBJ(cremove_aura_rpc, JSON::print(aura->to_dict()), cremove_aura, aura);
+		VRPCOBJ(removec_aura_rpc, JSON::print(aura->to_dict()), removec_aura, aura);
 }
 
-void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
+void Entity::removes_aura_dispelled(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	for (int i = 0; i < _s_auras.size(); i++) {
@@ -3097,7 +3097,7 @@ void Entity::sremove_aura_dispelled(Ref<AuraData> aura) {
 	emit_signal("saura_removed_dispelled", aura);
 
 	if (!aura->get_aura()->get_hide())
-		VRPCOBJ(cremove_aura_rpc, JSON::print(aura->to_dict()), cremove_aura, aura);
+		VRPCOBJ(removec_aura_rpc, JSON::print(aura->to_dict()), removec_aura, aura);
 }
 
 void Entity::saura_refreshed(Ref<AuraData> aura) {
@@ -3112,54 +3112,54 @@ void Entity::saura_refreshed(Ref<AuraData> aura) {
 		VRPCOBJ(caura_refreshed_rpc, JSON::print(aura->to_dict()), caura_refreshed, aura);
 }
 
-void Entity::cadd_aura_rpc(String data) {
+void Entity::addc_aura_rpc(String data) {
 	Ref<AuraData> aura;
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
 	aura->resolve_references(this);
 
-	cadd_aura(aura);
+	addc_aura(aura);
 }
 
-void Entity::cremove_aura_rpc(String data) {
+void Entity::removec_aura_rpc(String data) {
 	Ref<AuraData> aura;
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
 	aura->resolve_references(this);
 
-	cremove_aura(aura);
+	removec_aura(aura);
 }
 
-void Entity::cremove_aura_exact_rpc(String data) {
+void Entity::removec_aura_exact_rpc(String data) {
 	Ref<AuraData> aura;
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
 	aura->resolve_references(this);
 
-	cremove_aura_exact(aura);
+	removec_aura_exact(aura);
 }
 
-void Entity::cremove_aura_expired_rpc(String data) {
+void Entity::removec_aura_expired_rpc(String data) {
 	Ref<AuraData> aura;
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
 	aura->resolve_references(this);
 
-	cremove_aura_expired(aura);
+	removec_aura_expired(aura);
 }
 
-void Entity::cremove_aura_dispelled_rpc(String data) {
+void Entity::removec_aura_dispelled_rpc(String data) {
 	Ref<AuraData> aura;
 	aura.instance();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
 	aura->resolve_references(this);
 
-	cremove_aura_dispelled(aura);
+	removec_aura_dispelled(aura);
 }
 
 void Entity::caura_refreshed_rpc(String data) {
@@ -3172,7 +3172,7 @@ void Entity::caura_refreshed_rpc(String data) {
 	caura_refreshed(aura);
 }
 
-void Entity::cadd_aura(Ref<AuraData> aura) {
+void Entity::addc_aura(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	_c_auras.push_back(aura);
@@ -3182,7 +3182,7 @@ void Entity::cadd_aura(Ref<AuraData> aura) {
 	emit_signal("caura_added", aura);
 }
 
-void Entity::cremove_aura(Ref<AuraData> aura) {
+void Entity::removec_aura(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	int aid = aura->get_aura_id();
@@ -3207,7 +3207,7 @@ void Entity::cremove_aura(Ref<AuraData> aura) {
 	}
 }
 
-void Entity::cremove_aura_exact(Ref<AuraData> aura) {
+void Entity::removec_aura_exact(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	for (int i = 0; i < _c_auras.size(); i++) {
@@ -3222,7 +3222,7 @@ void Entity::cremove_aura_exact(Ref<AuraData> aura) {
 	emit_signal("caura_removed", aura);
 }
 
-void Entity::cremove_aura_dispelled(Ref<AuraData> aura) {
+void Entity::removec_aura_dispelled(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	for (int i = 0; i < _c_auras.size(); i++) {
@@ -3246,7 +3246,7 @@ void Entity::caura_refreshed(Ref<AuraData> aura) {
 	emit_signal("caura_refreshed", aura);
 }
 
-void Entity::cremove_aura_expired(Ref<AuraData> aura) {
+void Entity::removec_aura_expired(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	for (int i = 0; i < _c_auras.size(); i++) {
@@ -3261,17 +3261,17 @@ void Entity::cremove_aura_expired(Ref<AuraData> aura) {
 	emit_signal("caura_removed_expired", aura);
 }
 
-int Entity::sget_aura_count() {
+int Entity::gets_aura_count() {
 	return _s_auras.size();
 }
 
-Ref<AuraData> Entity::sget_aura(int index) {
+Ref<AuraData> Entity::gets_aura(int index) {
 	ERR_FAIL_INDEX_V(index, _s_auras.size(), Ref<AuraData>(NULL));
 
 	return Ref<AuraData>(_s_auras.get(index));
 }
 
-Ref<AuraData> Entity::sget_aura_by(Entity *caster, int aura_id) {
+Ref<AuraData> Entity::gets_aura_by(Entity *caster, int aura_id) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -3282,7 +3282,7 @@ Ref<AuraData> Entity::sget_aura_by(Entity *caster, int aura_id) {
 
 	return Ref<AuraData>(NULL);
 }
-Ref<AuraData> Entity::sget_aura_by_bind(Node *caster, int aura_id) {
+Ref<AuraData> Entity::gets_aura_by_bind(Node *caster, int aura_id) {
 	if (!caster) {
 		return Ref<AuraData>();
 	}
@@ -3293,10 +3293,10 @@ Ref<AuraData> Entity::sget_aura_by_bind(Node *caster, int aura_id) {
 		return Ref<AuraData>();
 	}
 
-	return sget_aura_by(e, aura_id);
+	return gets_aura_by(e, aura_id);
 }
 
-Ref<AuraData> Entity::sget_aura_with_group_by(Entity *caster, Ref<AuraGroup> aura_group) {
+Ref<AuraData> Entity::gets_aura_with_group_by(Entity *caster, Ref<AuraGroup> aura_group) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
@@ -3307,7 +3307,7 @@ Ref<AuraData> Entity::sget_aura_with_group_by(Entity *caster, Ref<AuraGroup> aur
 
 	return Ref<AuraData>();
 }
-Ref<AuraData> Entity::sget_aura_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group) {
+Ref<AuraData> Entity::gets_aura_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group) {
 	if (!ObjectDB::instance_validate(caster)) {
 		return Ref<AuraData>();
 	}
@@ -3318,14 +3318,14 @@ Ref<AuraData> Entity::sget_aura_with_group_by_bind(Node *caster, Ref<AuraGroup> 
 		return Ref<AuraData>();
 	}
 
-	return sget_aura_with_group_by(e, aura_group);
+	return gets_aura_with_group_by(e, aura_group);
 }
 
-int Entity::cget_aura_count() {
+int Entity::getc_aura_count() {
 	return _s_auras.size();
 }
 
-Ref<AuraData> Entity::cget_aura(int index) {
+Ref<AuraData> Entity::getc_aura(int index) {
 	ERR_FAIL_INDEX_V(index, _c_auras.size(), Ref<AuraData>(NULL));
 
 	return Ref<AuraData>(_c_auras.get(index));
@@ -4516,19 +4516,19 @@ void Entity::setc_spell_cast_info(Ref<SpellCastInfo> info) {
 	_c_spell_cast_info = Ref<SpellCastInfo>(info);
 }
 
-void Entity::sremove_auras_with_group(Ref<AuraGroup> aura_group) {
+void Entity::removes_auras_with_group(Ref<AuraGroup> aura_group) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
 		if (ad->get_aura()->get_aura_group() == aura_group) {
 
-			cremove_aura(ad);
+			removec_aura(ad);
 
 			_s_auras.remove(i);
 
 			emit_signal("saura_removed", ad);
 
-			cremove_aura(ad);
+			removec_aura(ad);
 
 			i--;
 		}
@@ -4730,11 +4730,11 @@ void Entity::_sreceive_talent_learn_request(int spec_index, int talent_row, int 
 		if (i > 0) {
 			Ref<Aura> pt = tr->get_talent(talent_culomn, i - 1);
 
-			for (int j = 0; j < sget_aura_count(); ++j) {
-				Ref<AuraData> ad = sget_aura(j);
+			for (int j = 0; j < gets_aura_count(); ++j) {
+				Ref<AuraData> ad = gets_aura(j);
 
 				if (ad->get_aura_id() == pt->get_id()) {
-					sremove_aura(ad);
+					removes_aura(ad);
 
 					break;
 				}
@@ -4805,11 +4805,11 @@ void Entity::removes_talent(int talent) {
 		if (_s_talents[i] == talent) {
 			_s_talents.remove(i);
 
-			for (int j = 0; j < sget_aura_count(); ++j) {
-				Ref<AuraData> ad = sget_aura(j);
+			for (int j = 0; j < gets_aura_count(); ++j) {
+				Ref<AuraData> ad = gets_aura(j);
 
 				if (ad->get_aura_id() == talent) {
-					sremove_aura(ad);
+					removes_aura(ad);
 
 					break;
 				}
@@ -5001,30 +5001,30 @@ void Entity::cloot(int index) {
 }
 
 void Entity::ons_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
-	ORPCOBJP(cadd_item_rpc, slot_id, JSON::print(item->to_dict()), cadd_item, slot_id, item);
+	ORPCOBJP(addc_item_rpc, slot_id, JSON::print(item->to_dict()), addc_item, slot_id, item);
 }
-void Entity::cadd_item_rpc(int slot_id, String item_data) {
+void Entity::addc_item_rpc(int slot_id, String item_data) {
 	Ref<ItemInstance> ii;
 	ii.instance();
 	ii->from_dict(data_as_dict(item_data));
 
-	cadd_item(slot_id, ii);
+	addc_item(slot_id, ii);
 }
-void Entity::cadd_item(int slot_id, Ref<ItemInstance> item) {
+void Entity::addc_item(int slot_id, Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!_c_bag.is_valid());
 
 	_c_bag->add_item_at(slot_id, item);
 }
 
 void Entity::ons_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
-	ORPC(cremove_item, slot_id);
+	ORPC(removec_item, slot_id);
 }
-void Entity::sremove_item(const int slot_id) {
+void Entity::removes_item(const int slot_id) {
 	ERR_FAIL_COND(!_s_bag.is_valid());
 
 	_s_bag->remove_item(slot_id);
 }
-void Entity::cremove_item(const int slot_id) {
+void Entity::removec_item(const int slot_id) {
 	ERR_FAIL_COND(!_c_bag.is_valid());
 
 	_c_bag->remove_item(slot_id);
@@ -5032,7 +5032,7 @@ void Entity::cremove_item(const int slot_id) {
 void Entity::cdenyremove_item(const int slot_id) {
 }
 void Entity::crequest_remove_item(const int slot_id) {
-	RPCS(sremove_item, slot_id);
+	RPCS(removes_item, slot_id);
 }
 
 void Entity::ons_items_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
@@ -5073,30 +5073,30 @@ void Entity::ons_overburden_removed(Ref<Bag> bag) {
 //Target Bag
 
 void Entity::ons_target_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
-	ORPCOBJP(cadd_target_item_rpc, slot_id, JSON::print(item->to_dict()), cadd_target_item, slot_id, item);
+	ORPCOBJP(addc_target_item_rpc, slot_id, JSON::print(item->to_dict()), addc_target_item, slot_id, item);
 }
-void Entity::cadd_target_item_rpc(int slot_id, String item_data) {
+void Entity::addc_target_item_rpc(int slot_id, String item_data) {
 	Ref<ItemInstance> ii;
 	ii.instance();
 	ii->from_dict(data_as_dict(item_data));
 
-	cadd_target_item(slot_id, ii);
+	addc_target_item(slot_id, ii);
 }
-void Entity::cadd_target_item(int slot_id, Ref<ItemInstance> item) {
+void Entity::addc_target_item(int slot_id, Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!_c_target_bag.is_valid());
 
 	_c_target_bag->add_item_at(slot_id, item);
 }
 
 void Entity::ons_target_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
-	ORPC(cremove_target_item, slot_id);
+	ORPC(removec_target_item, slot_id);
 }
-void Entity::sremove_target_item(const int slot_id) {
+void Entity::removes_target_item(const int slot_id) {
 	ERR_FAIL_COND(!_s_target_bag.is_valid());
 
 	_s_target_bag->remove_item(slot_id);
 }
-void Entity::cremove_target_item(const int slot_id) {
+void Entity::removec_target_item(const int slot_id) {
 	ERR_FAIL_COND(!_c_target_bag.is_valid());
 
 	_c_target_bag->remove_item(slot_id);
@@ -5104,7 +5104,7 @@ void Entity::cremove_target_item(const int slot_id) {
 void Entity::cdenyremove_target_item(const int slot_id) {
 }
 void Entity::crequest_target_remove_item(const int slot_id) {
-	RPCS(sremove_target_item, slot_id);
+	RPCS(removes_target_item, slot_id);
 }
 
 void Entity::ons_target_items_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
@@ -5699,11 +5699,11 @@ Entity::Entity() {
 
 	//Aura Manipulation
 
-	SET_RPC_REMOTE("cadd_aura_rpc");
-	SET_RPC_REMOTE("cremove_aura_rpc");
-	SET_RPC_REMOTE("cremove_aura_exact_rpc");
-	SET_RPC_REMOTE("cremove_aura_expired_rpc");
-	SET_RPC_REMOTE("cremove_aura_dispelled_rpc");
+	SET_RPC_REMOTE("addc_aura_rpc");
+	SET_RPC_REMOTE("removec_aura_rpc");
+	SET_RPC_REMOTE("removec_aura_exact_rpc");
+	SET_RPC_REMOTE("removec_aura_expired_rpc");
+	SET_RPC_REMOTE("removec_aura_dispelled_rpc");
 	SET_RPC_REMOTE("caura_refreshed_rpc");
 
 	////    Casting System    ////
@@ -5767,18 +5767,18 @@ Entity::Entity() {
 	SET_RPC_REMOTE("sloot");
 	SET_RPC_REMOTE("cloot");
 
-	SET_RPC_REMOTE("cadd_item_rpc");
-	SET_RPC_REMOTE("sremove_item");
-	SET_RPC_REMOTE("cremove_item");
+	SET_RPC_REMOTE("addc_item_rpc");
+	SET_RPC_REMOTE("removes_item");
+	SET_RPC_REMOTE("removec_item");
 	SET_RPC_REMOTE("cdenyremove_item");
 	SET_RPC_REMOTE("sswap_items");
 	SET_RPC_REMOTE("cswap_items");
 	SET_RPC_REMOTE("cdeny_item_swap");
 	SET_RPC_REMOTE("cchange_item_count");
 
-	SET_RPC_REMOTE("cadd_target_item_rpc");
-	SET_RPC_REMOTE("sremove_target_item");
-	SET_RPC_REMOTE("cremove_target_item");
+	SET_RPC_REMOTE("addc_target_item_rpc");
+	SET_RPC_REMOTE("removes_target_item");
+	SET_RPC_REMOTE("removec_target_item");
 	SET_RPC_REMOTE("cdenyremove_target_item");
 	SET_RPC_REMOTE("sswap_target_items");
 	SET_RPC_REMOTE("cswap_target_items");
@@ -5982,8 +5982,8 @@ void Entity::_son_death() {
 		return
 		
 	#warning-ignore:unused_variable
-	for i in range(sget_aura_count()):
-		sremove_aura(sget_aura(0))
+	for i in range(gets_aura_count()):
+		removes_aura(gets_aura(0))
 	
 	dead = true
 	
@@ -6439,35 +6439,35 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_character_level_up", "value"), &Entity::son_character_level_up);
 
 	//Aura Manipulation
-	ClassDB::bind_method(D_METHOD("sadd_aura", "aura"), &Entity::sadd_aura);
-	ClassDB::bind_method(D_METHOD("sremove_aura", "aura"), &Entity::sremove_aura);
-	ClassDB::bind_method(D_METHOD("sremove_aura_exact", "aura"), &Entity::sremove_aura_exact);
-	ClassDB::bind_method(D_METHOD("sremove_aura_expired", "aura"), &Entity::sremove_aura_expired);
-	ClassDB::bind_method(D_METHOD("sremove_aura_dispelled", "aura"), &Entity::sremove_aura_dispelled);
+	ClassDB::bind_method(D_METHOD("adds_aura", "aura"), &Entity::adds_aura);
+	ClassDB::bind_method(D_METHOD("removes_aura", "aura"), &Entity::removes_aura);
+	ClassDB::bind_method(D_METHOD("removes_aura_exact", "aura"), &Entity::removes_aura_exact);
+	ClassDB::bind_method(D_METHOD("removes_aura_expired", "aura"), &Entity::removes_aura_expired);
+	ClassDB::bind_method(D_METHOD("removes_aura_dispelled", "aura"), &Entity::removes_aura_dispelled);
 	//ClassDB::bind_method(D_METHOD("saura_refreshed", "aura"), &Entity::saura_refreshed);
 
-	ClassDB::bind_method(D_METHOD("cadd_aura_rpc", "data"), &Entity::cadd_aura_rpc);
-	ClassDB::bind_method(D_METHOD("cremove_aura_rpc", "data"), &Entity::cremove_aura_rpc);
-	ClassDB::bind_method(D_METHOD("cremove_aura_exact_rpc", "data"), &Entity::cremove_aura_exact_rpc);
-	ClassDB::bind_method(D_METHOD("cremove_aura_expired_rpc", "data"), &Entity::cremove_aura_expired_rpc);
-	ClassDB::bind_method(D_METHOD("cremove_aura_dispelled_rpc", "data"), &Entity::cremove_aura_dispelled_rpc);
+	ClassDB::bind_method(D_METHOD("addc_aura_rpc", "data"), &Entity::addc_aura_rpc);
+	ClassDB::bind_method(D_METHOD("removec_aura_rpc", "data"), &Entity::removec_aura_rpc);
+	ClassDB::bind_method(D_METHOD("removec_aura_exact_rpc", "data"), &Entity::removec_aura_exact_rpc);
+	ClassDB::bind_method(D_METHOD("removec_aura_expired_rpc", "data"), &Entity::removec_aura_expired_rpc);
+	ClassDB::bind_method(D_METHOD("removec_aura_dispelled_rpc", "data"), &Entity::removec_aura_dispelled_rpc);
 
-	ClassDB::bind_method(D_METHOD("cadd_aura", "aura"), &Entity::cadd_aura);
-	ClassDB::bind_method(D_METHOD("cremove_aura", "aura"), &Entity::cremove_aura);
-	ClassDB::bind_method(D_METHOD("cremove_aura_exact", "aura"), &Entity::cremove_aura_exact);
-	ClassDB::bind_method(D_METHOD("cremove_aura_expired", "aura"), &Entity::cremove_aura_expired);
-	ClassDB::bind_method(D_METHOD("cremove_aura_dispelled", "aura"), &Entity::cremove_aura_dispelled);
+	ClassDB::bind_method(D_METHOD("addc_aura", "aura"), &Entity::addc_aura);
+	ClassDB::bind_method(D_METHOD("removec_aura", "aura"), &Entity::removec_aura);
+	ClassDB::bind_method(D_METHOD("removec_aura_exact", "aura"), &Entity::removec_aura_exact);
+	ClassDB::bind_method(D_METHOD("removec_aura_expired", "aura"), &Entity::removec_aura_expired);
+	ClassDB::bind_method(D_METHOD("removec_aura_dispelled", "aura"), &Entity::removec_aura_dispelled);
 	//ClassDB::bind_method(D_METHOD("caura_refreshed", "aura"), &Entity::caura_refreshed);
 
-	ClassDB::bind_method(D_METHOD("sremove_auras_with_group", "aura_group"), &Entity::sremove_auras_with_group);
+	ClassDB::bind_method(D_METHOD("removes_auras_with_group", "aura_group"), &Entity::removes_auras_with_group);
 
-	ClassDB::bind_method(D_METHOD("sget_aura_count"), &Entity::sget_aura_count);
-	ClassDB::bind_method(D_METHOD("sget_aura", "index"), &Entity::sget_aura);
-	ClassDB::bind_method(D_METHOD("sget_aura_by", "caster", "aura_id"), &Entity::sget_aura_by_bind);
-	ClassDB::bind_method(D_METHOD("sget_aura_with_group_by", "caster", "aura_group"), &Entity::sget_aura_with_group_by_bind);
+	ClassDB::bind_method(D_METHOD("gets_aura_count"), &Entity::gets_aura_count);
+	ClassDB::bind_method(D_METHOD("gets_aura", "index"), &Entity::gets_aura);
+	ClassDB::bind_method(D_METHOD("gets_aura_by", "caster", "aura_id"), &Entity::gets_aura_by_bind);
+	ClassDB::bind_method(D_METHOD("gets_aura_with_group_by", "caster", "aura_group"), &Entity::gets_aura_with_group_by_bind);
 
-	ClassDB::bind_method(D_METHOD("cget_aura_count"), &Entity::cget_aura_count);
-	ClassDB::bind_method(D_METHOD("cget_aura", "index"), &Entity::cget_aura);
+	ClassDB::bind_method(D_METHOD("getc_aura_count"), &Entity::getc_aura_count);
+	ClassDB::bind_method(D_METHOD("getc_aura", "index"), &Entity::getc_aura);
 
 	//Hooks
 	BIND_VMETHOD(MethodInfo("_moved"));
@@ -6774,8 +6774,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_state", "state"), &Entity::setc_state);
 	ClassDB::bind_method(D_METHOD("gets_state"), &Entity::gets_state);
 	ClassDB::bind_method(D_METHOD("sets_state", "state"), &Entity::sets_state);
-	ClassDB::bind_method(D_METHOD("sadd_state_ref", "state_index"), &Entity::sadd_state_ref);
-	ClassDB::bind_method(D_METHOD("sremove_state_ref", "state_index"), &Entity::sremove_state_ref);
+	ClassDB::bind_method(D_METHOD("adds_state_ref", "state_index"), &Entity::adds_state_ref);
+	ClassDB::bind_method(D_METHOD("removes_state_ref", "state_index"), &Entity::removes_state_ref);
 
 	//Casting System
 
@@ -6983,12 +6983,12 @@ void Entity::_bind_methods() {
 
 	//Bag
 	ClassDB::bind_method(D_METHOD("ons_item_added", "bag", "item", "slot_id"), &Entity::ons_item_added);
-	ClassDB::bind_method(D_METHOD("cadd_item_rpc", "slot_id", "item_data"), &Entity::cadd_item_rpc);
-	ClassDB::bind_method(D_METHOD("cadd_item", "slot_id", "item"), &Entity::cadd_item);
+	ClassDB::bind_method(D_METHOD("addc_item_rpc", "slot_id", "item_data"), &Entity::addc_item_rpc);
+	ClassDB::bind_method(D_METHOD("addc_item", "slot_id", "item"), &Entity::addc_item);
 
 	ClassDB::bind_method(D_METHOD("ons_item_removed", "bag", "item", "slot_id"), &Entity::ons_item_removed);
-	ClassDB::bind_method(D_METHOD("sremove_item", "slot_id"), &Entity::sremove_item);
-	ClassDB::bind_method(D_METHOD("cremove_item", "slot_id"), &Entity::cremove_item);
+	ClassDB::bind_method(D_METHOD("removes_item", "slot_id"), &Entity::removes_item);
+	ClassDB::bind_method(D_METHOD("removec_item", "slot_id"), &Entity::removec_item);
 	ClassDB::bind_method(D_METHOD("cdenyremove_item", "slot_id"), &Entity::cdenyremove_item);
 	ClassDB::bind_method(D_METHOD("crequest_remove_item", "slot_id"), &Entity::crequest_remove_item);
 
@@ -7006,12 +7006,12 @@ void Entity::_bind_methods() {
 
 	//target Bag
 	ClassDB::bind_method(D_METHOD("ons_target_item_added", "bag", "item", "slot_id"), &Entity::ons_target_item_added);
-	ClassDB::bind_method(D_METHOD("cadd_target_item_rpc", "slot_id", "item_data"), &Entity::cadd_target_item_rpc);
-	ClassDB::bind_method(D_METHOD("cadd_target_item", "slot_id", "item"), &Entity::cadd_target_item);
+	ClassDB::bind_method(D_METHOD("addc_target_item_rpc", "slot_id", "item_data"), &Entity::addc_target_item_rpc);
+	ClassDB::bind_method(D_METHOD("addc_target_item", "slot_id", "item"), &Entity::addc_target_item);
 
 	ClassDB::bind_method(D_METHOD("ons_target_item_removed", "bag", "item", "slot_id"), &Entity::ons_target_item_removed);
-	ClassDB::bind_method(D_METHOD("sremove_target_item", "slot_id"), &Entity::sremove_target_item);
-	ClassDB::bind_method(D_METHOD("cremove_target_item", "slot_id"), &Entity::cremove_target_item);
+	ClassDB::bind_method(D_METHOD("removes_target_item", "slot_id"), &Entity::removes_target_item);
+	ClassDB::bind_method(D_METHOD("removec_target_item", "slot_id"), &Entity::removec_target_item);
 	ClassDB::bind_method(D_METHOD("cdenyremove_target_item", "slot_id"), &Entity::cdenyremove_target_item);
 	ClassDB::bind_method(D_METHOD("crequest_target_remove_item", "slot_id"), &Entity::crequest_target_remove_item);
 

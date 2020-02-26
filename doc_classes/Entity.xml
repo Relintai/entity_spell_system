@@ -817,7 +817,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cadd_aura">
+		<method name="addc_aura">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -825,7 +825,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cadd_aura_rpc">
+		<method name="addc_aura_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -833,7 +833,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cadd_item">
+		<method name="addc_item">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -843,7 +843,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cadd_item_rpc">
+		<method name="addc_item_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -853,7 +853,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cadd_target_item">
+		<method name="addc_target_item">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -863,7 +863,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cadd_target_item_rpc">
+		<method name="addc_target_item_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -1033,7 +1033,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cget_aura">
+		<method name="getc_aura">
 			<return type="AuraData">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -1041,7 +1041,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cget_aura_count">
+		<method name="getc_aura_count">
 			<return type="int">
 			</return>
 			<description>
@@ -1389,7 +1389,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cremove_aura">
+		<method name="removec_aura">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -1397,7 +1397,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cremove_aura_dispelled">
+		<method name="removec_aura_dispelled">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -1405,7 +1405,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cremove_aura_dispelled_rpc">
+		<method name="removec_aura_dispelled_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -1413,7 +1413,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cremove_aura_exact">
+		<method name="removec_aura_exact">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -1421,7 +1421,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cremove_aura_exact_rpc">
+		<method name="removec_aura_exact_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -1429,7 +1429,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cremove_aura_expired">
+		<method name="removec_aura_expired">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -1437,7 +1437,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cremove_aura_expired_rpc">
+		<method name="removec_aura_expired_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -1445,7 +1445,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cremove_aura_rpc">
+		<method name="removec_aura_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -1453,7 +1453,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cremove_item">
+		<method name="removec_item">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -1461,7 +1461,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cremove_target_item">
+		<method name="removec_target_item">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -2689,7 +2689,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sadd_aura">
+		<method name="adds_aura">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -2697,7 +2697,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sadd_state_ref">
+		<method name="adds_state_ref">
 			<return type="void">
 			</return>
 			<argument index="0" name="state_index" type="int">
@@ -2905,7 +2905,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sget_aura">
+		<method name="gets_aura">
 			<return type="AuraData">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2913,7 +2913,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sget_aura_by">
+		<method name="gets_aura_by">
 			<return type="AuraData">
 			</return>
 			<argument index="0" name="caster" type="Node">
@@ -2923,13 +2923,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="sget_aura_count">
+		<method name="gets_aura_count">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="sget_aura_with_group_by">
+		<method name="gets_aura_with_group_by">
 			<return type="AuraData">
 			</return>
 			<argument index="0" name="caster" type="Node">
@@ -3231,7 +3231,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sremove_aura">
+		<method name="removes_aura">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -3239,7 +3239,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sremove_aura_dispelled">
+		<method name="removes_aura_dispelled">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -3247,7 +3247,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sremove_aura_exact">
+		<method name="removes_aura_exact">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -3255,7 +3255,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sremove_aura_expired">
+		<method name="removes_aura_expired">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -3263,7 +3263,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sremove_auras_with_group">
+		<method name="removes_auras_with_group">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura_group" type="AuraGroup">
@@ -3271,7 +3271,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sremove_item">
+		<method name="removes_item">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -3279,7 +3279,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sremove_state_ref">
+		<method name="removes_state_ref">
 			<return type="void">
 			</return>
 			<argument index="0" name="state_index" type="int">
@@ -3287,7 +3287,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sremove_target_item">
+		<method name="removes_target_item">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">

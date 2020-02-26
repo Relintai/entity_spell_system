@@ -64,8 +64,8 @@ and :ref:`Entity.centity_flags <class_Entity_property_centity_flags>`.
 -----------------------------------------------------------------------
 
 For ease of use, Entity refcounts states, this is the enum, used to do it. When you want to add a state to an 
-entity, you need to use See :ref:`Entity.sadd_state_ref() <class_Entity_method_sadd_state_ref>`, 
-when you want to remove states use :ref:`Entity.sremove_state_ref() <class_Entity_method_sremove_state_ref>`.
+entity, you need to use See :ref:`Entity.adds_state_ref() <class_Entity_method_adds_state_ref>`, 
+when you want to remove states use :ref:`Entity.removes_state_ref() <class_Entity_method_removes_state_ref>`.
 
 .. note:: This in only available serverside.
 
@@ -73,13 +73,13 @@ For exmaple let's add a stun to an Entity:
 
 .. code-block:: gdscript
 
-    entity.sadd_state_ref(EntityEnums.ENTITY_STATE_TYPE_INDEX_STUN)
+    entity.adds_state_ref(EntityEnums.ENTITY_STATE_TYPE_INDEX_STUN)
 
 Let's remove it:
 
 .. code-block:: gdscript
 
-    entity.sremove_state_ref(EntityEnums.ENTITY_STATE_TYPE_INDEX_STUN)
+    entity.removes_state_ref(EntityEnums.ENTITY_STATE_TYPE_INDEX_STUN)
 
 Since these states are refcounted, everything will work, even if you have multiple sources stunning an entity.
 

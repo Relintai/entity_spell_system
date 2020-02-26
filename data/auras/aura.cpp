@@ -542,18 +542,18 @@ void Aura::sremove(Ref<AuraData> aura) {
 	call("_sremove", aura);
 }
 
-void Aura::sremove_expired(Ref<AuraData> aura) {
+void Aura::removes_expired(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	//always exists
-	call("_sremove_expired", aura);
+	call("_removes_expired", aura);
 }
 
-void Aura::sremove_dispell(Ref<AuraData> aura) {
+void Aura::removes_dispell(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	//always exists
-	call("_sremove_dispell", aura);
+	call("_removes_dispell", aura);
 }
 
 void Aura::supdate(Ref<AuraData> aura, float delta) {
@@ -1105,7 +1105,7 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 
 	Ref<Aura> aura = info->get_aura();
 
-	Ref<AuraData> ad = info->get_target()->sget_aura_by(info->get_caster(), _id);
+	Ref<AuraData> ad = info->get_target()->gets_aura_by(info->get_caster(), _id);
 
 	if (!ad.is_valid()) {
 		ad.instance();
@@ -1124,12 +1124,12 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 				int t = 1 << i;
 
 				if ((_add_states & t) != 0) {
-					info->get_target()->sadd_state_ref(i);
+					info->get_target()->adds_state_ref(i);
 				}
 			}
 		}
 
-		info->get_target()->sadd_aura(ad);
+		info->get_target()->adds_aura(ad);
 	} else {
 		ad->set_remaining_time(_time);
 	}
@@ -1150,7 +1150,7 @@ void Aura::_sdeapply(Ref<AuraData> data) {
 			int t = 1 << i;
 
 			if ((_add_states & t) != 0) {
-				data->get_owner()->sremove_state_ref(i);
+				data->get_owner()->removes_state_ref(i);
 			}
 		}
 	}
@@ -1161,8 +1161,8 @@ void Aura::_sadd(Ref<AuraData> aura) {
 
 	//sapply(aura);
 
-	aura->get_owner()->sremove_aura(aura);
-	aura->get_owner()->sadd_aura(aura);
+	aura->get_owner()->removes_aura(aura);
+	aura->get_owner()->adds_aura(aura);
 }
 
 void Aura::_sremove(Ref<AuraData> aura) {
@@ -1170,23 +1170,23 @@ void Aura::_sremove(Ref<AuraData> aura) {
 
 	sdeapply(aura);
 
-	aura->get_owner()->sremove_aura(aura);
+	aura->get_owner()->removes_aura(aura);
 }
 
-void Aura::_sremove_expired(Ref<AuraData> aura) {
+void Aura::_removes_expired(Ref<AuraData> aura) {
 	ERR_FAIL_COND(aura->get_owner() == NULL);
 
 	sdeapply(aura);
 
-	aura->get_owner()->sremove_aura_expired(aura);
+	aura->get_owner()->removes_aura_expired(aura);
 }
 
-void Aura::_sremove_dispell(Ref<AuraData> aura) {
+void Aura::_removes_dispell(Ref<AuraData> aura) {
 	ERR_FAIL_COND(aura->get_owner() == NULL);
 
 	sdeapply(aura);
 
-	aura->get_owner()->sremove_aura_dispelled(aura);
+	aura->get_owner()->removes_aura_dispelled(aura);
 }
 
 void Aura::_supdate(Ref<AuraData> aura, float delta) {
@@ -1222,7 +1222,7 @@ void Aura::_supdate(Ref<AuraData> aura, float delta) {
 	}
 
 	if (remove) {
-		sremove_expired(aura);
+		removes_expired(aura);
 	}
 }
 
@@ -1322,24 +1322,24 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sdeapply", "aura"), &Aura::sdeapply);
 	ClassDB::bind_method(D_METHOD("sadd", "aura"), &Aura::sadd);
 	ClassDB::bind_method(D_METHOD("sremove", "aura"), &Aura::sremove);
-	ClassDB::bind_method(D_METHOD("sremove_expired", "aura"), &Aura::sremove_expired);
-	ClassDB::bind_method(D_METHOD("sremove_dispell", "aura"), &Aura::sremove_dispell);
+	ClassDB::bind_method(D_METHOD("removes_expired", "aura"), &Aura::removes_expired);
+	ClassDB::bind_method(D_METHOD("removes_dispell", "aura"), &Aura::removes_dispell);
 	ClassDB::bind_method(D_METHOD("supdate", "aura", "delta"), &Aura::supdate);
 
 	BIND_VMETHOD(MethodInfo("_sapply", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraApplyInfo")));
 	BIND_VMETHOD(MethodInfo("_sdeapply", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_sadd", PropertyInfo(Variant::OBJECT, "aura", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_sremove", PropertyInfo(Variant::OBJECT, "aura", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_sremove_expired", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_sremove_dispell", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_removes_expired", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_removes_dispell", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_supdate", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::REAL, "delta")));
 
 	ClassDB::bind_method(D_METHOD("_sapply", "info"), &Aura::_sapply);
 	ClassDB::bind_method(D_METHOD("_sdeapply", "aura"), &Aura::_sdeapply);
 	ClassDB::bind_method(D_METHOD("_sadd", "aura"), &Aura::_sadd);
 	ClassDB::bind_method(D_METHOD("_sremove", "aura"), &Aura::_sremove);
-	ClassDB::bind_method(D_METHOD("_sremove_expired", "aura"), &Aura::_sremove_expired);
-	ClassDB::bind_method(D_METHOD("_sremove_dispell", "aura"), &Aura::_sremove_dispell);
+	ClassDB::bind_method(D_METHOD("_removes_expired", "aura"), &Aura::_removes_expired);
+	ClassDB::bind_method(D_METHOD("_removes_dispell", "aura"), &Aura::_removes_dispell);
 	ClassDB::bind_method(D_METHOD("_supdate", "aura", "delta"), &Aura::_supdate);
 
 	//EventHandlers

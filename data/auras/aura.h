@@ -249,8 +249,8 @@ public:
 	void sdeapply(Ref<AuraData> info);
 	void sadd(Ref<AuraData> aura);
 	void sremove(Ref<AuraData> aura);
-	void sremove_expired(Ref<AuraData> aura);
-	void sremove_dispell(Ref<AuraData> aura);
+	void removes_expired(Ref<AuraData> aura);
+	void removes_dispell(Ref<AuraData> aura);
 	void supdate(Ref<AuraData> aura, float delta);
 
 	//EventHandlers
@@ -365,8 +365,8 @@ protected:
 	virtual void _sdeapply(Ref<AuraData> info);
 	virtual void _sadd(Ref<AuraData> aura);
 	virtual void _sremove(Ref<AuraData> aura);
-	virtual void _sremove_expired(Ref<AuraData> aura);
-	virtual void _sremove_dispell(Ref<AuraData> aura);
+	virtual void _removes_expired(Ref<AuraData> aura);
+	virtual void _removes_dispell(Ref<AuraData> aura);
 	virtual void _supdate(Ref<AuraData> aura, float delta);
 
 	virtual void _setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);

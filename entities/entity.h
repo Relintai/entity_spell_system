@@ -426,8 +426,8 @@ public:
 	int gets_state();
 	void sets_state(int state);
 
-	void sadd_state_ref(int state_index);
-	void sremove_state_ref(int state_index);
+	void adds_state_ref(int state_index);
+	void removes_state_ref(int state_index);
 
 	////    Crafting System    ////
 
@@ -574,40 +574,40 @@ public:
 	void ccharacter_levelup(int value);
 
 	//Aura Manipulation
-	void sadd_aura(Ref<AuraData> aura);
-	void sremove_aura(Ref<AuraData> aura);
-	void sremove_aura_exact(Ref<AuraData> aura);
-	void sremove_aura_expired(Ref<AuraData> aura);
-	void sremove_aura_dispelled(Ref<AuraData> aura);
+	void adds_aura(Ref<AuraData> aura);
+	void removes_aura(Ref<AuraData> aura);
+	void removes_aura_exact(Ref<AuraData> aura);
+	void removes_aura_expired(Ref<AuraData> aura);
+	void removes_aura_dispelled(Ref<AuraData> aura);
 	void saura_refreshed(Ref<AuraData> aura);
 
-	void cadd_aura_rpc(String data);
-	void cremove_aura_rpc(String data);
-	void cremove_aura_exact_rpc(String data);
-	void cremove_aura_expired_rpc(String data);
-	void cremove_aura_dispelled_rpc(String data);
+	void addc_aura_rpc(String data);
+	void removec_aura_rpc(String data);
+	void removec_aura_exact_rpc(String data);
+	void removec_aura_expired_rpc(String data);
+	void removec_aura_dispelled_rpc(String data);
 	void caura_refreshed_rpc(String data);
 
-	void cadd_aura(Ref<AuraData> aura);
-	void cremove_aura(Ref<AuraData> aura);
-	void cremove_aura_exact(Ref<AuraData> aura);
-	void cremove_aura_expired(Ref<AuraData> aura);
-	void cremove_aura_dispelled(Ref<AuraData> aura);
+	void addc_aura(Ref<AuraData> aura);
+	void removec_aura(Ref<AuraData> aura);
+	void removec_aura_exact(Ref<AuraData> aura);
+	void removec_aura_expired(Ref<AuraData> aura);
+	void removec_aura_dispelled(Ref<AuraData> aura);
 	void caura_refreshed(Ref<AuraData> aura);
 
-	void sremove_auras_with_group(Ref<AuraGroup> aura_group);
+	void removes_auras_with_group(Ref<AuraGroup> aura_group);
 
 	//NOTE: No reason for shas_aura_by, just query it, and check for null.
-	int sget_aura_count();
-	Ref<AuraData> sget_aura(int index);
-	Ref<AuraData> sget_aura_by(Entity *caster, int aura_id);
-	Ref<AuraData> sget_aura_by_bind(Node *caster, int aura_id);
+	int gets_aura_count();
+	Ref<AuraData> gets_aura(int index);
+	Ref<AuraData> gets_aura_by(Entity *caster, int aura_id);
+	Ref<AuraData> gets_aura_by_bind(Node *caster, int aura_id);
 
-	Ref<AuraData> sget_aura_with_group_by(Entity *caster, Ref<AuraGroup> aura_group);
-	Ref<AuraData> sget_aura_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group);
+	Ref<AuraData> gets_aura_with_group_by(Entity *caster, Ref<AuraGroup> aura_group);
+	Ref<AuraData> gets_aura_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group);
 
-	int cget_aura_count();
-	Ref<AuraData> cget_aura(int index);
+	int getc_aura_count();
+	Ref<AuraData> getc_aura(int index);
 
 	//Hooks
 	void moved();
@@ -813,13 +813,13 @@ public:
 	void cloot(int index);
 
 	void ons_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
-	void cadd_item_rpc(int slot_id, String item_data);
-	void cadd_item(int slot_id, Ref<ItemInstance> item);
+	void addc_item_rpc(int slot_id, String item_data);
+	void addc_item(int slot_id, Ref<ItemInstance> item);
 
 	//Bag
 	void ons_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
-	void sremove_item(const int slot_id);
-	void cremove_item(const int slot_id);
+	void removes_item(const int slot_id);
+	void removec_item(const int slot_id);
 	void cdenyremove_item(const int slot_id);
 	void crequest_remove_item(const int slot_id);
 
@@ -837,12 +837,12 @@ public:
 
 	//Target Bag
 	void ons_target_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
-	void cadd_target_item_rpc(int slot_id, String item_data);
-	void cadd_target_item(int slot_id, Ref<ItemInstance> item);
+	void addc_target_item_rpc(int slot_id, String item_data);
+	void addc_target_item(int slot_id, Ref<ItemInstance> item);
 
 	void ons_target_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
-	void sremove_target_item(const int slot_id);
-	void cremove_target_item(const int slot_id);
+	void removes_target_item(const int slot_id);
+	void removec_target_item(const int slot_id);
 	void cdenyremove_target_item(const int slot_id);
 	void crequest_target_remove_item(const int slot_id);
 
