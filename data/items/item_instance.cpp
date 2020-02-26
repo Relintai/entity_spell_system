@@ -76,6 +76,13 @@ void ItemInstance::set_charges(const int value) {
 	emit_signal("stack_charges_changed", Ref<ItemInstance>(this));
 }
 
+String ItemInstance::get_description() {
+	if (!has_method("_get_description"))
+		return "";
+
+	return call("_get_description");
+}
+
 Dictionary ItemInstance::to_dict() {
 	return call("_to_dict");
 }
@@ -153,6 +160,9 @@ void ItemInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("remove_item_stat_modifier", "index"), &ItemInstance::remove_item_stat_modifier);
 	ClassDB::bind_method(D_METHOD("clear_item_stat_modifiers"), &ItemInstance::clear_item_stat_modifiers);
 	ClassDB::bind_method(D_METHOD("get_item_stat_modifier_count"), &ItemInstance::get_item_stat_modifier_count);
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_get_description"));
+	ClassDB::bind_method(D_METHOD("get_description"), &ItemInstance::get_description);
 
 	//Serialization
 	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));

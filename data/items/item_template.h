@@ -89,6 +89,9 @@ public:
 	int get_bag_size() const;
 	void set_bag_size(const int size);
 
+	String get_text_translation_key() const;
+	void set_text_translation_key(const String &value);
+
 	//Teaches
 	int get_num_teaches_spells() const;
 	void set_num_teaches_spells(const int value);
@@ -167,6 +170,8 @@ public:
 
 	Ref<ItemInstance> create_item_instance();
 
+	String get_description();
+
 	ItemTemplate();
 	~ItemTemplate();
 
@@ -207,6 +212,8 @@ private:
 	float _scale_z;
 
 	int _bag_size;
+
+	String _text_translation_key;
 
 	Vector<Ref<Spell> > _teaches_spells;
 	Vector<Ref<Spell> > _grants_spells;

@@ -52,6 +52,8 @@ public:
 	int get_charges() const;
 	void set_charges(const int value);
 
+	String get_description();
+
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
 

@@ -144,6 +144,15 @@ void ItemTemplate::set_bag_size(const int size) {
 	_bag_size = size;
 }
 
+///     TEXTS    ////
+
+String ItemTemplate::get_text_translation_key() const {
+	return _text_translation_key;
+}
+void ItemTemplate::set_text_translation_key(const String &value) {
+	_text_translation_key = value;
+}
+
 ////    TEACHES    ////
 
 int ItemTemplate::get_num_teaches_spells() const {
@@ -418,6 +427,13 @@ Ref<ItemInstance> ItemTemplate::create_item_instance() {
 	return item;
 }
 
+String ItemTemplate::get_description() {
+	if (!has_method("_get_description"))
+		return "";
+
+	return call("_get_description");
+}
+
 ItemTemplate::ItemTemplate() {
 	_id = 0;
 	_item_type = ItemEnums::ITEM_TYPE_NONE;
@@ -469,8 +485,6 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_id"), &ItemTemplate::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "count"), &ItemTemplate::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
-
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
 	ClassDB::bind_method(D_METHOD("get_item_type"), &ItemTemplate::get_item_type);
 	ClassDB::bind_method(D_METHOD("set_item_type", "count"), &ItemTemplate::set_item_type);
@@ -583,6 +597,16 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_consumed"), &ItemTemplate::get_consumed);
 	ClassDB::bind_method(D_METHOD("set_consumed", "size"), &ItemTemplate::set_consumed);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "consumed"), "set_consumed", "get_consumed");
+
+	ADD_GROUP("Texts", "text");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
+
+	ClassDB::bind_method(D_METHOD("get_text_translation_key"), &ItemTemplate::get_text_translation_key);
+	ClassDB::bind_method(D_METHOD("set_text_translation_key", "value"), &ItemTemplate::set_text_translation_key);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_translation_key"), "set_text_translation_key", "get_text_translation_key");
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_get_description"));
+	ClassDB::bind_method(D_METHOD("get_description"), &ItemTemplate::get_description);
 
 	//StatMods Property binds
 	ClassDB::bind_method(D_METHOD("get_item_stat_modifier_count"), &ItemTemplate::get_item_stat_modifier_count);

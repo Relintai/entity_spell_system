@@ -1593,7 +1593,7 @@ void Aura::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
 	ClassDB::bind_method(D_METHOD("get_text_translation_key"), &Aura::get_text_translation_key);
-	ClassDB::bind_method(D_METHOD("set_text_translation_key", "value"), &Aura::set_text_description);
+	ClassDB::bind_method(D_METHOD("set_text_translation_key", "value"), &Aura::set_text_translation_key);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_translation_key"), "set_text_translation_key", "get_text_translation_key");
 
 	ClassDB::bind_method(D_METHOD("get_text_description"), &Aura::get_text_description);
