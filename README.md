@@ -2,10 +2,11 @@
 
 An entity and spell system for the GODOT Engine.
 
-The actual player, mob etc implementations are still in the main game's repository (https://github.com/Relintai/broken_seals). (As GDScript)
-Also there is a data editor addon for this module. The main game should have it.
+Usable for both 2d, and 3d games.
 
-This module have dependencies to some of my other engine modules, these will be made optional later, for now you will need to install them as well.
+The actual player, mob etc implementations are still in the main game's repository (https://github.com/Relintai/broken_seals). (As GDScript)
+
+This module have optional dependencies to some of my other engine modules.
 
 The main class that can be used for players/mobs is Entity. I ended up merging subclass functionality into it, because
 that way it gains a lot more utility, by sacrificing only a small amount of memory.
@@ -34,12 +35,4 @@ Right now everything wokrs authoritatively, except for movement. FYI Movement is
 Everything is called the remotesync way, but instead of remotesync, I have c++ macros, which sends the rpc, and then calls the given function directly aswell.
 
 For usage check the main game's repo.
-
-## 2D games
-
-The modules uses 3D by default, however it can be compiled to work with 2D games, you need to add `entities_2d=yes` to your scons command.
-
-For example
-
-```scons -j2 platform=x11 target=release_debug entities_2d=yes```
 
