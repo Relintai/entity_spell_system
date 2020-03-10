@@ -62,19 +62,19 @@ void EntityResource::set_data_id(int value) {
 	_data_id = value;
 }
 
-int EntityResource::get_current() {
+int EntityResource::get_current_value() {
 	return _current;
 }
-void EntityResource::set_current(int value) {
+void EntityResource::set_current_value(int value) {
 	_current = value;
 
 	emit_signal("changed", Ref<EntityResource>(this));
 }
 
-int EntityResource::get_max() {
+int EntityResource::get_max_value() {
 	return _max;
 }
-void EntityResource::set_max(int value) {
+void EntityResource::set_max_value(int value) {
 	_max = value;
 
 	emit_signal("changed", Ref<EntityResource>(this));
@@ -221,13 +221,13 @@ void EntityResource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_data_id", "value"), &EntityResource::set_data_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "data_id"), "set_data_id", "get_data_id");
 
-	ClassDB::bind_method(D_METHOD("get_current"), &EntityResource::get_current);
-	ClassDB::bind_method(D_METHOD("set_current", "value"), &EntityResource::set_current);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "current"), "set_current", "get_current");
+	ClassDB::bind_method(D_METHOD("get_current_value"), &EntityResource::get_current_value);
+	ClassDB::bind_method(D_METHOD("set_current_value", "value"), &EntityResource::set_current_value);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "current_value"), "set_current_value", "get_current_value");
 
-	ClassDB::bind_method(D_METHOD("get_max"), &EntityResource::get_max);
-	ClassDB::bind_method(D_METHOD("set_max", "value"), &EntityResource::set_max);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "max"), "set_max", "get_max");
+	ClassDB::bind_method(D_METHOD("get_max_value"), &EntityResource::get_max_value);
+	ClassDB::bind_method(D_METHOD("set_max_value", "value"), &EntityResource::set_max_value);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_value"), "set_max_value", "get_max_value");
 
 	ClassDB::bind_method(D_METHOD("get_owner"), &EntityResource::get_owner);
 	ClassDB::bind_method(D_METHOD("set_owner", "value"), &EntityResource::set_owner_bind);

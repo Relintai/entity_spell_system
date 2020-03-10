@@ -45,11 +45,11 @@ public:
 	int get_data_id();
 	void set_data_id(int value);
 
-	int get_current();
-	void set_current(int value);
+	int get_current_value();
+	void set_current_value(int value);
 
-	int get_max();
-	void set_max(int value);
+	int get_max_value();
+	void set_max_value(int value);
 
 	Entity *get_owner();
 	void set_owner(Entity *entity);
