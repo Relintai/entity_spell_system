@@ -23,6 +23,7 @@ SOFTWARE.
 #include "aura.h"
 
 #include "../../entities/resources/entity_resource_cost_data.h"
+#include "../../singletons/entity_data_manager.h"
 
 int Aura::get_id() const {
 	return _id;
@@ -78,6 +79,13 @@ int Aura::get_rank() const {
 }
 void Aura::set_rank(const int value) {
 	_rank = value;
+}
+
+bool Aura::get_scale_with_level() const {
+	return _scale_with_level;
+}
+void Aura::set_scale_with_level(const bool value) {
+	_scale_with_level = value;
 }
 
 String Aura::get_text_translation_key() const {
@@ -153,13 +161,13 @@ void Aura::set_teaches_spell(const Ref<Spell> &spell) {
 
 /*
 void Aura::SetScalingData(AbilityScalingData *scalingData) {
-	scalingData->getDamageCurve();
-	scalingData->getAbsorbCurve();
-	scalingData->getHealingCurve();
+scalingData->getDamageCurve();
+scalingData->getAbsorbCurve();
+scalingData->getHealingCurve();
 }*/
 /*
 void Aura::OnAuraAbilityScalingDataLoaded(AbilityScalingDataLoaderHelper *h) {
-	this->SetScalingData(h->getData());
+this->SetScalingData(h->getData());
 }
 */
 
@@ -325,6 +333,7 @@ Aura::Aura() {
 	_is_debuff = false;
 	_hide = false;
 	_rank = 0;
+	_scale_with_level = EntityDataManager::get_instance()->get_scale_spells_by_default();
 
 	_damage_enabled = false;
 	_damage_type = 0;
@@ -1570,6 +1579,10 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_rank"), &Aura::get_rank);
 	ClassDB::bind_method(D_METHOD("set_rank", "value"), &Aura::set_rank);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rank"), "set_rank", "get_rank");
+
+	ClassDB::bind_method(D_METHOD("get_scale_with_level"), &Aura::get_scale_with_level);
+	ClassDB::bind_method(D_METHOD("set_scale_with_level", "value"), &Aura::set_scale_with_level);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scale_with_level"), "set_scale_with_level", "get_scale_with_level");
 
 	ClassDB::bind_method(D_METHOD("get_aura_type"), &Aura::get_aura_type);
 	ClassDB::bind_method(D_METHOD("set_aura_type", "value"), &Aura::set_aura_type);

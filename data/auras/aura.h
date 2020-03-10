@@ -85,6 +85,9 @@ public:
 	int get_rank() const;
 	void set_rank(const int value);
 
+	bool get_scale_with_level() const;
+	void set_scale_with_level(const bool value);
+
 	String get_text_translation_key() const;
 	void set_text_translation_key(const String &value);
 
@@ -404,6 +407,7 @@ private:
 	String _text_description;
 	int ability_scale_data_id;
 	int _rank;
+	bool _scale_with_level;
 
 	Ref<SpellEffectVisual> _visual_spell_effects;
 

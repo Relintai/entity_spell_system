@@ -30,6 +30,8 @@ SOFTWARE.
 
 #include "../../entities/auras/aura_data.h"
 
+#include "../../singletons/entity_data_manager.h"
+
 int Spell::get_id() const {
 	return _id;
 }
@@ -794,7 +796,7 @@ Spell::Spell() {
 
 	_level = 1;
 	_rank = 0;
-	_scale_with_level = true;
+	_scale_with_level = EntityDataManager::get_instance()->get_scale_spells_by_default();
 
 	_global_cooldown_enabled = true;
 	_is_local_spell = false;
@@ -1137,6 +1139,10 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_needs_target", "value"), &Spell::set_needs_target);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "needs_target"), "set_needs_target", "get_needs_target");
 
+	ClassDB::bind_method(D_METHOD("get_scale_with_level"), &Spell::get_scale_with_level);
+	ClassDB::bind_method(D_METHOD("set_scale_with_level", "value"), &Spell::set_scale_with_level);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scale_with_level"), "set_scale_with_level", "get_scale_with_level");
+
 	ClassDB::bind_method(D_METHOD("get_visual_spell_effects"), &Spell::get_visual_spell_effects);
 	ClassDB::bind_method(D_METHOD("set_visual_spell_effects", "value"), &Spell::set_visual_spell_effects);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "visual_spell_effects", PROPERTY_HINT_RESOURCE_TYPE, "SpellEffectVisual"), "set_visual_spell_effects", "get_visual_spell_effects");
@@ -1198,11 +1204,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_name_translated"), &Spell::get_name_translated);
 	ClassDB::bind_method(D_METHOD("get_description", "class_level", "character_level"), &Spell::get_description);
 	ClassDB::bind_method(D_METHOD("_get_description", "class_level", "character_level"), &Spell::_get_description);
-
-	ADD_GROUP("Scaling", "scale");
-	ClassDB::bind_method(D_METHOD("get_scale_with_level"), &Spell::get_scale_with_level);
-	ClassDB::bind_method(D_METHOD("set_scale_with_level", "value"), &Spell::set_scale_with_level);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scale_with_level"), "set_scale_with_level", "get_scale_with_level");
 
 	ADD_GROUP("Cooldown", "cooldown");
 	ClassDB::bind_method(D_METHOD("get_cooldown"), &Spell::get_cooldown);

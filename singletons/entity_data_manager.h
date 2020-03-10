@@ -62,14 +62,17 @@ class EntityDataManager : public Object {
 public:
 	static EntityDataManager *get_instance();
 
-	bool get_use_spell_points();
-	void set_use_spell_points(bool value);
+	bool get_use_spell_points() const;
+	void set_use_spell_points(const bool value);
 
-	bool get_automatic_load();
-	void set_automatic_load(bool load);
+	bool get_scale_spells_by_default() const;
+	void set_scale_spells_by_default(const bool value);
 
-	Ref<Aura> get_skill_for_armor_type(int index);
-	void set_skill_for_armor_type(int index, const Ref<Aura> &aura);
+	bool get_automatic_load() const;
+	void set_automatic_load(const bool load);
+
+	Ref<Aura> get_skill_for_armor_type(const int index);
+	void set_skill_for_armor_type(const int index, const Ref<Aura> &aura);
 
 	String get_xp_data_path();
 	void set_xp_data_path(String path);
@@ -241,6 +244,7 @@ private:
 	static EntityDataManager *instance;
 
 	bool _use_spell_points;
+	bool _scale_spells_by_default;
 	bool _automatic_load;
 };
 

@@ -36,26 +36,33 @@ EntityDataManager *EntityDataManager::get_instance() {
 	return instance;
 }
 
-bool EntityDataManager::get_use_spell_points() {
+bool EntityDataManager::get_use_spell_points() const {
 	return _use_spell_points;
 }
-void EntityDataManager::set_use_spell_points(bool value) {
+void EntityDataManager::set_use_spell_points(const bool value) {
 	_use_spell_points = value;
 }
 
-bool EntityDataManager::get_automatic_load() {
+bool EntityDataManager::get_scale_spells_by_default() const {
+	return _scale_spells_by_default;
+}
+void EntityDataManager::set_scale_spells_by_default(const bool value) {
+	_scale_spells_by_default = value;
+}
+
+bool EntityDataManager::get_automatic_load() const {
 	return _automatic_load;
 }
-void EntityDataManager::set_automatic_load(bool load) {
+void EntityDataManager::set_automatic_load(const bool load) {
 	_automatic_load = load;
 }
 
-Ref<Aura> EntityDataManager::get_skill_for_armor_type(int index) {
+Ref<Aura> EntityDataManager::get_skill_for_armor_type(const int index) {
 	ERR_FAIL_INDEX_V(index, ItemEnums::ARMOR_TYPE_MAX, Ref<Aura>());
 
 	return _armor_type_skills[index];
 }
-void EntityDataManager::set_skill_for_armor_type(int index, const Ref<Aura> &aura) {
+void EntityDataManager::set_skill_for_armor_type(const int index, const Ref<Aura> &aura) {
 	ERR_FAIL_INDEX(index, ItemEnums::ARMOR_TYPE_MAX);
 
 	_armor_type_skills[index] = aura;
@@ -954,16 +961,24 @@ void EntityDataManager::request_world_spell_spawn_deferred(const Ref<WorldSpellD
 }
 
 void EntityDataManager::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_use_spell_points"), &EntityDataManager::get_use_spell_points);
+	ClassDB::bind_method(D_METHOD("set_use_spell_points", "value"), &EntityDataManager::set_use_spell_points);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_spell_points"), "set_use_spell_points", "get_use_spell_points");
+
+	ClassDB::bind_method(D_METHOD("get_scale_spells_by_default"), &EntityDataManager::get_scale_spells_by_default);
+	ClassDB::bind_method(D_METHOD("set_scale_spells_by_default", "value"), &EntityDataManager::set_scale_spells_by_default);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scale_spells_by_default"), "set_scale_spells_by_default", "get_scale_spells_by_default");
+
+	ClassDB::bind_method(D_METHOD("get_automatic_load"), &EntityDataManager::get_automatic_load);
+	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &EntityDataManager::set_automatic_load);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
+
 	ClassDB::bind_method(D_METHOD("get_skill_for_armor_type", "index"), &EntityDataManager::get_skill_for_armor_type);
 	ClassDB::bind_method(D_METHOD("set_skill_for_armor_type", "index", "aura"), &EntityDataManager::set_skill_for_armor_type);
 
 	for (int i = 0; i < ItemEnums::ARMOR_TYPE_MAX; ++i) {
 		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "skill_for_armor_type_" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_skill_for_armor_type", "get_skill_for_armor_type", i);
 	}
-
-	ClassDB::bind_method(D_METHOD("get_automatic_load"), &EntityDataManager::get_automatic_load);
-	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &EntityDataManager::set_automatic_load);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
 
 	//XPData
 	ClassDB::bind_method(D_METHOD("get_xp_data_path"), &EntityDataManager::get_xp_data_path);
@@ -1110,6 +1125,7 @@ EntityDataManager::EntityDataManager() {
 	instance = this;
 
 	_use_spell_points = GLOBAL_DEF("ess/spells/use_spell_points", false);
+	_scale_spells_by_default = GLOBAL_DEF("ess/spells/scale_spells_by_default", false);
 	_automatic_load = GLOBAL_DEF("ess/data/automatic_load", false);
 
 	_xp_data_path = GLOBAL_DEF("ess/data/xp_data_path", "");
