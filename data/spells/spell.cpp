@@ -32,6 +32,10 @@ SOFTWARE.
 
 #include "../../singletons/entity_data_manager.h"
 
+#include "../../pipelines/spell_damage_info.h"
+#include "../../pipelines/spell_heal_info.h"
+
+
 int Spell::get_id() const {
 	return _id;
 }
@@ -689,6 +693,18 @@ void Spell::handle_spell_damage(Ref<SpellDamageInfo> data) {
 	call("_handle_spell_damage", data);
 }
 
+void Spell::calculate_initial_heal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid() || data->get_receiver() == NULL);
+
+	call("_calculate_initial_heal", data);
+}
+
+void Spell::handle_spell_heal(Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!data.is_valid() || data->get_receiver() == NULL);
+
+	call("_handle_spell_heal", data);
+}
+
 void Spell::handle_projectile(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
@@ -928,13 +944,27 @@ void Spell::_son_spell_hit(Ref<SpellCastInfo> info) {
 }
 
 void Spell::_calculate_initial_damage(Ref<SpellDamageInfo> data) {
-	data->set_damage(get_damage_min());
+	Math::randomize();
+
+	data->set_damage(get_damage_min() + (get_damage_max() - get_damage_min() * Math::randf()));
 }
 
 void Spell::_handle_spell_damage(Ref<SpellDamageInfo> data) {
 	calculate_initial_damage(data);
 
 	data->get_dealer()->sdeal_damage_to(data);
+}
+
+void Spell::_calculate_initial_heal(Ref<SpellHealInfo> data) {
+	Math::randomize();
+
+	data->set_heal(get_heal_min() + (get_heal_max() - get_heal_min() * Math::randf()));
+}
+
+void Spell::_handle_spell_heal(Ref<SpellHealInfo> data) {
+	calculate_initial_heal(data);
+
+	data->get_dealer()->sdeal_heal_to(data);
 }
 
 void Spell::_handle_projectile(Ref<SpellCastInfo> info) {
@@ -1072,6 +1102,12 @@ void Spell::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_calculate_initial_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	BIND_VMETHOD(MethodInfo("_handle_spell_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
+	ClassDB::bind_method(D_METHOD("calculate_initial_heal", "data"), &Spell::calculate_initial_heal);
+	ClassDB::bind_method(D_METHOD("handle_spell_heal", "data"), &Spell::handle_spell_heal);
+
+	BIND_VMETHOD(MethodInfo("_calculate_initial_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_handle_spell_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+
 	ClassDB::bind_method(D_METHOD("handle_projectile", "info"), &Spell::handle_projectile);
 	ClassDB::bind_method(D_METHOD("handle_effect", "info"), &Spell::handle_effect);
 
@@ -1090,6 +1126,9 @@ void Spell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_calculate_initial_damage", "info"), &Spell::_calculate_initial_damage);
 	ClassDB::bind_method(D_METHOD("_handle_spell_damage", "info"), &Spell::_handle_spell_damage);
+
+	ClassDB::bind_method(D_METHOD("_calculate_initial_heal", "info"), &Spell::_calculate_initial_heal);
+	ClassDB::bind_method(D_METHOD("_handle_spell_heal", "info"), &Spell::_handle_spell_heal);
 
 	ClassDB::bind_method(D_METHOD("_handle_projectile", "info"), &Spell::_handle_projectile);
 	ClassDB::bind_method(D_METHOD("_handle_effect", "info"), &Spell::_handle_effect);

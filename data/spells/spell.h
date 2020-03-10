@@ -35,7 +35,6 @@ SOFTWARE.
 #include "../../entities/stats/stat.h"
 
 #include "../../infos/aura_infos.h"
-#include "../../pipelines/spell_damage_info.h"
 
 #include "spell_effect_visual.h"
 
@@ -48,6 +47,8 @@ class Spell;
 class CraftRecipe;
 class EntityResourceCostData;
 class EntitySkillData;
+class SpellDamageInfo;
+class SpellHealInfo;
 
 enum TargetRelationType {
 	TARGET_SELF = 1 << 0,
@@ -311,6 +312,9 @@ public:
 	void calculate_initial_damage(Ref<SpellDamageInfo> data);
 	void handle_spell_damage(Ref<SpellDamageInfo> data);
 
+	void calculate_initial_heal(Ref<SpellHealInfo> data);
+	void handle_spell_heal(Ref<SpellHealInfo> data);
+
 	void handle_projectile(Ref<SpellCastInfo> info);
 	void handle_effect(Ref<SpellCastInfo> info);
 
@@ -333,6 +337,9 @@ protected:
 
 	virtual void _calculate_initial_damage(Ref<SpellDamageInfo> data);
 	virtual void _handle_spell_damage(Ref<SpellDamageInfo> data);
+
+	virtual void _calculate_initial_heal(Ref<SpellHealInfo> data);
+	virtual void _handle_spell_heal(Ref<SpellHealInfo> data);
 
 	virtual void _handle_projectile(Ref<SpellCastInfo> info);
 	virtual void _handle_effect(Ref<SpellCastInfo> info);
