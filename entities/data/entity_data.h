@@ -190,6 +190,9 @@ public:
 	void son_character_level_up(Entity *entity, int value);
 	void son_character_level_up_bind(Node *entity, int value);
 
+	void son_entity_resource_added(Ref<EntityResource> resource);
+	void son_entity_resource_removed(Ref<EntityResource> resource);
+
 	//Clientside Event Handlers
 	void con_cast_failed(Ref<SpellCastInfo> info);
 	void con_cast_started(Ref<SpellCastInfo> info);
@@ -225,6 +228,9 @@ public:
 	void con_class_level_up_bind(Node *entity, int value);
 	void con_character_level_up(Entity *entity, int value);
 	void con_character_level_up_bind(Node *entity, int value);
+
+	void con_entity_resource_added(Ref<EntityResource> resource);
+	void con_entity_resource_removed(Ref<EntityResource> resource);
 
 	//Equipment
 

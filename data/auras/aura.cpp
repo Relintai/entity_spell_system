@@ -814,7 +814,20 @@ void Aura::son_character_level_up(Ref<AuraData> data, int value) {
 	if (has_method("_son_character_level_up"))
 		call("_son_character_level_up", data, value);
 }
+void Aura::son_entity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource) {
+	ERR_FAIL_COND(!data.is_valid());
+	ERR_FAIL_COND(!resource.is_valid());
 
+	if (has_method("_son_entity_resource_added"))
+		call("_son_entity_resource_added", data, resource);
+}
+void Aura::son_entity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource) {
+	ERR_FAIL_COND(!data.is_valid());
+	ERR_FAIL_COND(!resource.is_valid());
+
+	if (has_method("_son_entity_resource_removed"))
+		call("_son_entity_resource_removed", data, resource);
+}
 void Aura::con_cast_failed(Ref<AuraData> data, Ref<SpellCastInfo> info) {
 	if (has_method("_con_cast_failed"))
 		call("_con_cast_failed", data, info);
@@ -943,6 +956,21 @@ void Aura::con_character_level_up(Ref<AuraData> data, int value) {
 
 	if (has_method("_con_character_level_up"))
 		call("_con_character_level_up", data, value);
+}
+
+void Aura::con_entity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource) {
+	ERR_FAIL_COND(!data.is_valid());
+	ERR_FAIL_COND(!resource.is_valid());
+
+	if (has_method("_con_entity_resource_added"))
+		call("_con_entity_resource_added", data, resource);
+}
+void Aura::con_entity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource) {
+	ERR_FAIL_COND(!data.is_valid());
+	ERR_FAIL_COND(!resource.is_valid());
+
+	if (has_method("_con_entity_resource_removed"))
+		call("_con_entity_resource_removed", data, resource);
 }
 
 //Equipment
@@ -1397,6 +1425,9 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_class_level_up", "data", "value"), &Aura::son_class_level_up);
 	ClassDB::bind_method(D_METHOD("son_character_level_up", "data", "value"), &Aura::son_character_level_up);
 
+	ClassDB::bind_method(D_METHOD("son_entity_resource_added", "data", "value"), &Aura::son_entity_resource_added);
+	ClassDB::bind_method(D_METHOD("son_entity_resource_removed", "data", "value"), &Aura::son_entity_resource_removed);
+
 	BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -1441,6 +1472,9 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_class_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 	BIND_VMETHOD(MethodInfo("_son_character_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 
+	BIND_VMETHOD(MethodInfo("_son_entity_resource_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_son_entity_resource_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+
 	//Clientside Event Handlers
 	ClassDB::bind_method(D_METHOD("con_cast_failed", "data", "info"), &Aura::con_cast_failed);
 	ClassDB::bind_method(D_METHOD("con_cast_started", "data", "info"), &Aura::con_cast_started);
@@ -1471,6 +1505,9 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_class_level_up", "data", "value"), &Aura::con_class_level_up);
 	ClassDB::bind_method(D_METHOD("con_character_level_up", "data", "value"), &Aura::con_character_level_up);
 
+	ClassDB::bind_method(D_METHOD("con_entity_resource_added", "data", "value"), &Aura::con_entity_resource_added);
+	ClassDB::bind_method(D_METHOD("con_entity_resource_removed", "data", "value"), &Aura::con_entity_resource_removed);
+
 	BIND_VMETHOD(MethodInfo("_con_cast_failed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_state_changed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -1499,6 +1536,9 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_xp_gained", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 	BIND_VMETHOD(MethodInfo("_con_class_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 	BIND_VMETHOD(MethodInfo("_con_character_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+
+	BIND_VMETHOD(MethodInfo("_con_entity_resource_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_con_entity_resource_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 
 	//Equipment
 

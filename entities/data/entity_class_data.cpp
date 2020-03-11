@@ -381,8 +381,7 @@ void EntityClassData::setup_resources(Entity *entity) {
 	if (_inherits.is_valid())
 		_inherits->setup_resources(entity);
 
-	if (has_method("_setup_resources"))
-		call("_setup_resources", entity);
+	call("_setup_resources", entity);
 }
 
 void EntityClassData::_setup_resources(Node *entity) {
@@ -660,6 +659,16 @@ void EntityClassData::son_character_level_up_bind(Node *entity, int value) {
 	son_character_level_up(e, value);
 }
 
+void EntityClassData::son_entity_resource_added(Ref<EntityResource> resource) {
+	if (has_method("_son_entity_resource_added"))
+		call("_son_entity_resource_added", resource);
+}
+
+void EntityClassData::son_entity_resource_removed(Ref<EntityResource> resource) {
+	if (has_method("_son_entity_resource_removed"))
+		call("_son_entity_resource_removed", resource);
+}
+
 //Clientside Event Handlers
 void EntityClassData::con_cast_failed(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
@@ -852,7 +861,15 @@ void EntityClassData::con_character_level_up_bind(Node *entity, int value) {
 	con_character_level_up(e, value);
 }
 
-//Equipment
+void EntityClassData::con_entity_resource_added(Ref<EntityResource> resource) {
+	if (has_method("_con_entity_resource_added"))
+		call("_con_entity_resource_added", resource);
+}
+
+void EntityClassData::con_entity_resource_removed(Ref<EntityResource> resource) {
+	if (has_method("_con_entity_resource_removed"))
+		call("_con_entity_resource_removed", resource);
+}
 
 //Equipment
 
@@ -986,6 +1003,9 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_class_level_up", "entity", "value"), &EntityClassData::son_class_level_up_bind);
 	ClassDB::bind_method(D_METHOD("son_character_level_up", "entity", "value"), &EntityClassData::son_character_level_up_bind);
 
+	ClassDB::bind_method(D_METHOD("son_entity_resource_added", "resource"), &EntityClassData::son_entity_resource_added);
+	ClassDB::bind_method(D_METHOD("son_entity_resource_removed", "resource"), &EntityClassData::son_entity_resource_removed);
+
 	BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_son_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -1025,6 +1045,12 @@ void EntityClassData::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_class_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 	BIND_VMETHOD(MethodInfo("_son_character_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
+	BIND_VMETHOD(MethodInfo("_son_entity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_son_entity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+
+	BIND_VMETHOD(MethodInfo("_con_entity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_con_entity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+
 	BIND_VMETHOD(MethodInfo("_setup_resources", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	//Clientside Event Handlers
@@ -1051,6 +1077,9 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_xp_gained", "entity", "value"), &EntityClassData::con_xp_gained_bind);
 	ClassDB::bind_method(D_METHOD("con_class_level_up", "entity", "value"), &EntityClassData::con_class_level_up_bind);
 	ClassDB::bind_method(D_METHOD("con_character_level_up", "entity", "value"), &EntityClassData::con_character_level_up_bind);
+
+	ClassDB::bind_method(D_METHOD("con_entity_resource_added", "resource"), &EntityClassData::con_entity_resource_added);
+	ClassDB::bind_method(D_METHOD("con_entity_resource_removed", "resource"), &EntityClassData::con_entity_resource_removed);
 
 	BIND_VMETHOD(MethodInfo("_con_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));

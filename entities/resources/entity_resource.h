@@ -33,23 +33,23 @@ class EntityResource : public Reference {
 	GDCLASS(EntityResource, Reference);
 
 public:
-	bool get_dirty();
-	void set_dirty(bool value);
+	bool get_dirty() const;
+	void set_dirty(const bool value);
 
-	bool get_should_process();
-	void set_should_process(bool value);
+	bool get_should_process() const;
+	void set_should_process(const bool value);
 
 	Ref<EntityResourceData> get_resource_data();
-	void set_resource_data(Ref<EntityResourceData> value);
+	void set_resource_data(const Ref<EntityResourceData> &value);
 
-	int get_data_id();
-	void set_data_id(int value);
+	int get_data_id() const;
+	void set_data_id(const int value);
 
-	int get_current_value();
-	void set_current_value(int value);
+	int get_current_value() const;
+	void set_current_value(const int value);
 
-	int get_max_value();
-	void set_max_value(int value);
+	int get_max_value() const;
+	void set_max_value(const int value);
 
 	Entity *get_owner();
 	void set_owner(Entity *entity);
@@ -64,15 +64,15 @@ public:
 	void ons_target_changed(Entity *entity, Entity *old_target);
 	void onc_target_changed(Entity *entity, Entity *old_target);
 
-	void process_server(float delta);
-	void _process_server(float delta);
+	void process_server(const float delta);
+	void _process_server(const float delta);
 
-	void process_client(float delta);
-	void _process_client(float delta);
+	void process_client(const float delta);
+	void _process_client(const float delta);
 
-	void receivec_update(int current);
-	void receivec_update_full(int current, int max);
-	void receivec_update_string(String str);
+	void receivec_update(const int current);
+	void receivec_update_full(const int current, const int max);
+	void receivec_update_string(const String str);
 
 	void resolve_references();
 

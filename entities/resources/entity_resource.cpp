@@ -27,55 +27,60 @@ SOFTWARE.
 #include "../stats/stat.h"
 #include "entity_resource_data.h"
 
-bool EntityResource::get_dirty() {
+bool EntityResource::get_dirty() const {
 	return _dirty;
 }
-void EntityResource::set_dirty(bool value) {
+void EntityResource::set_dirty(const bool value) {
 	_dirty = value;
 }
 
-bool EntityResource::get_should_process() {
+bool EntityResource::get_should_process() const {
 	return _should_process;
 }
-void EntityResource::set_should_process(bool value) {
+void EntityResource::set_should_process(const bool value) {
 	_should_process = value;
 }
 
 Ref<EntityResourceData> EntityResource::get_resource_data() {
 	return _data;
 }
-void EntityResource::set_resource_data(Ref<EntityResourceData> value) {
+void EntityResource::set_resource_data(const Ref<EntityResourceData> &value) {
 	_data = value;
 
-	if (_data.is_valid())
-		_data_id = _data->get_id();
-	else
-		_data_id = 0;
+	_dirty = true;
 
 	emit_signal("changed", Ref<EntityResource>(this));
 }
 
-int EntityResource::get_data_id() {
+int EntityResource::get_data_id() const {
 	return _data_id;
 }
-void EntityResource::set_data_id(int value) {
+void EntityResource::set_data_id(const int value) {
 	_data_id = value;
-}
 
-int EntityResource::get_current_value() {
-	return _current;
-}
-void EntityResource::set_current_value(int value) {
-	_current = value;
+	_dirty = true;
 
 	emit_signal("changed", Ref<EntityResource>(this));
 }
 
-int EntityResource::get_max_value() {
+int EntityResource::get_current_value() const {
+	return _current;
+}
+void EntityResource::set_current_value(const int value) {
+	_current = value;
+
+	_dirty = true;
+
+	emit_signal("changed", Ref<EntityResource>(this));
+}
+
+int EntityResource::get_max_value() const {
 	return _max;
 }
-void EntityResource::set_max_value(int value) {
+void EntityResource::set_max_value(const int value) {
 	_max = value;
+
+	_dirty = true;
 
 	emit_signal("changed", Ref<EntityResource>(this));
 }
@@ -131,32 +136,32 @@ void EntityResource::onc_target_changed(Entity *entity, Entity *old_target) {
 		call("_ons_target_changed", entity, old_target);
 }
 
-void EntityResource::process_server(float delta) {
+void EntityResource::process_server(const float delta) {
 	call("_process_server", delta);
 }
-void EntityResource::_process_server(float delta) {
+void EntityResource::_process_server(const float delta) {
 }
 
-void EntityResource::process_client(float delta) {
+void EntityResource::process_client(const float delta) {
 	call("_process_client", delta);
 }
-void EntityResource::_process_client(float delta) {
+void EntityResource::_process_client(const float delta) {
 }
 
-void EntityResource::receivec_update(int current) {
+void EntityResource::receivec_update(const int current) {
 	_current = current;
 }
-void EntityResource::receivec_update_full(int current, int max) {
+void EntityResource::receivec_update_full(const int current, const int max) {
 	_current = current;
 	_max = max;
 }
-void EntityResource::receivec_update_string(String str) {
+void EntityResource::receivec_update_string(const String str) {
 	if (has_method("_receivec_update_string"))
 		call("_receivec_update_string", str);
 }
 
 void EntityResource::resolve_references() {
-	_data = EntityDataManager::get_instance()->get_entity_resource(_data_id);
+	set_resource_data(EntityDataManager::get_instance()->get_entity_resource(_data_id));
 }
 
 Dictionary EntityResource::to_dict() {

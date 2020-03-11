@@ -302,6 +302,9 @@ public:
 	void son_class_level_up(Ref<AuraData> data, int value);
 	void son_character_level_up(Ref<AuraData> data, int value);
 
+	void son_entity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource);
+	void son_entity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource);
+
 	//Clientside Event Handlers
 	void con_cast_failed(Ref<AuraData> data, Ref<SpellCastInfo> info);
 	void con_cast_started(Ref<AuraData> data, Ref<SpellCastInfo> info);
@@ -331,6 +334,9 @@ public:
 	void con_xp_gained(Ref<AuraData> data, int value);
 	void con_class_level_up(Ref<AuraData> data, int value);
 	void con_character_level_up(Ref<AuraData> data, int value);
+
+	void con_entity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource);
+	void con_entity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource);
 
 	//Equipment
 	bool should_deny_equip(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);

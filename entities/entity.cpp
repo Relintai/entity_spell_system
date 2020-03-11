@@ -36,6 +36,8 @@ SOFTWARE.
 #include "./data/talent_row_data.h"
 #include "./skills/entity_skill.h"
 
+#include "core/script_language.h"
+
 NodePath Entity::get_body_path() {
 	return _body_path;
 }
@@ -466,8 +468,14 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 			ERR_CONTINUE(!res.is_valid());
 
 			res->resolve_references();
+		}
 
-			//SEND
+		for (int i = 0; i < _c_resources.size(); ++i) {
+			Ref<EntityResource> res = _c_resources.get(i);
+
+			ERR_CONTINUE(!res.is_valid());
+
+			res->resolve_references();
 		}
 
 		if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY) {
@@ -550,6 +558,14 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 
 	for (int i = 0; i < _s_resources.size(); ++i) {
 		Ref<EntityResource> res = _s_resources.get(i);
+
+		ERR_CONTINUE(!res.is_valid());
+
+		res->resolve_references();
+	}
+
+	for (int i = 0; i < _c_resources.size(); ++i) {
+		Ref<EntityResource> res = _c_resources.get(i);
 
 		ERR_CONTINUE(!res.is_valid());
 
@@ -891,7 +907,11 @@ Dictionary Entity::_to_dict() {
 	Dictionary rd;
 
 	for (int i = 0; i < _s_resources.size(); ++i) {
-		rd[i] = _s_resources.get(i)->to_dict();
+		Ref<EntityResource> r = _s_resources.get(i);
+
+		ERR_CONTINUE(!r.is_valid());
+
+		rd[String::num(i)] = r->to_dict();
 	}
 
 	dict["resources"] = rd;
@@ -1068,12 +1088,21 @@ void Entity::_from_dict(const Dictionary &dict) {
 	Dictionary rd = dict.get("resources", Dictionary());
 
 	for (int i = 0; i < rd.size(); ++i) {
-		Ref<EntityResource> r;
-		r.instance();
+		Dictionary ird = rd.get(String::num(i), Dictionary());
 
-		r->from_dict(rd.get(String::num(i), Dictionary()));
+		int data_id = ird.get("data_id", 0);
 
-		adds_resource(r);
+		Ref<EntityResourceData> resd = EntityDataManager::get_instance()->get_entity_resource(data_id);
+
+		ERR_CONTINUE(!resd.is_valid());
+
+		Ref<EntityResource> res = resd->get_entity_resource_instance();
+
+		ERR_CONTINUE(!res.is_valid());
+
+		res->from_dict(ird);
+
+		adds_resource(res);
 	}
 
 	////    GCD    ////
@@ -1924,6 +1953,8 @@ void Entity::adds_resource(Ref<EntityResource> resource) {
 
 	resource->ons_added(this);
 
+	son_entity_resource_added(resource);
+
 	VRPCOBJP(addc_resource_rpc, _s_resources.size() - 1, JSON::print(resource->to_dict()), addc_resource, _s_resources.size() - 1, resource);
 }
 int Entity::gets_resource_count() {
@@ -1932,7 +1963,10 @@ int Entity::gets_resource_count() {
 void Entity::removes_resource(int index) {
 	ERR_FAIL_INDEX(index, _s_resources.size());
 
+	Ref<EntityResource> res = _s_resources.get(index);
 	_s_resources.remove(index);
+
+	son_entity_resource_removed(res);
 
 	VRPC(removec_resource, index);
 }
@@ -1943,10 +1977,48 @@ void Entity::clears_resource() {
 }
 
 void Entity::addc_resource_rpc(int index, String data) {
-	Ref<EntityResource> res;
-	res.instance();
-	res->from_dict(data_as_dict(data));
+	//Ref<EntityResource> res;
+
+	Dictionary dict = data_as_dict(data);
+	/*
+	String clsname = dict.get("id", "EntityResource");
+
+	res = Ref<EntityResource>(Object::cast_to<EntityResource>(ClassDB::instance(clsname)));
+
+	ERR_FAIL_COND(!res.is_valid());
+	//res.instance();
+
+	String script_path = dict.get("script", "");
+
+	Ref<Script> s;
+	if (script_path != "") {
+		if (ResourceLoader::exists(script_path)) {
+			s = ResourceLoader::load(script_path);
+
+			if (s.is_valid()) {
+				res->set_script(s.get_ref_ptr());
+			} else {
+				ERR_PRINT("Error, script is not valid! " + script_path);
+			}
+		}
+	}
+
+	Dictionary d = dict.get("data", Dictionary());
+	res->from_dict(d);
 	res->resolve_references();
+*/
+
+	int data_id = dict.get("data_id", 0);
+
+	Ref<EntityResourceData> resd = EntityDataManager::get_instance()->get_entity_resource(data_id);
+
+	ERR_FAIL_COND(!resd.is_valid());
+
+	Ref<EntityResource> res = resd->get_entity_resource_instance();
+
+	ERR_FAIL_COND(!res.is_valid());
+
+	res->from_dict(dict);
 
 	addc_resource(index, res);
 }
@@ -1977,6 +2049,8 @@ void Entity::addc_resource(int index, Ref<EntityResource> resource) {
 	_c_resources.set(index, resource);
 
 	resource->onc_added(this);
+
+	con_entity_resource_added(resource);
 }
 int Entity::getc_resource_count() {
 	return _c_resources.size();
@@ -1984,7 +2058,10 @@ int Entity::getc_resource_count() {
 void Entity::removec_resource(int index) {
 	ERR_FAIL_INDEX(index, _c_resources.size());
 
+	Ref<EntityResource> res = _c_resources.get(index);
 	_c_resources.remove(index);
+
+	con_entity_resource_removed(res);
 }
 void Entity::clearc_resource() {
 	_s_resources.clear();
@@ -2994,6 +3071,40 @@ void Entity::son_character_level_up(int value) {
 	emit_signal("son_character_level_up", this, value);
 }
 
+void Entity::son_entity_resource_added(Ref<EntityResource> resource) {
+	if (_s_entity_data.is_valid()) {
+		_s_entity_data->son_entity_resource_added(resource);
+	}
+
+	if (has_method("_son_entity_resource_added"))
+		call("_son_entity_resource_added", resource);
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->son_entity_resource_added(ad, resource);
+	}
+
+	emit_signal("sentity_resource_added", resource);
+}
+
+void Entity::son_entity_resource_removed(Ref<EntityResource> resource) {
+	if (_s_entity_data.is_valid()) {
+		_s_entity_data->son_entity_resource_removed(resource);
+	}
+
+	if (has_method("_son_entity_resource_removed"))
+		call("_son_entity_resource_removed", resource);
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		Ref<AuraData> ad = _s_auras.get(i);
+
+		ad->get_aura()->son_entity_resource_removed(ad, resource);
+	}
+
+	emit_signal("sentity_resource_removed", resource);
+}
+
 void Entity::adds_aura(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
@@ -3719,6 +3830,40 @@ void Entity::con_character_level_up(int value) {
 	}
 
 	emit_signal("con_character_level_up", this, value);
+}
+
+void Entity::con_entity_resource_added(Ref<EntityResource> resource) {
+	if (_c_entity_data.is_valid()) {
+		_c_entity_data->con_entity_resource_added(resource);
+	}
+
+	if (has_method("_con_entity_resource_added"))
+		call("_con_entity_resource_added", resource);
+
+	for (int i = 0; i < _c_auras.size(); ++i) {
+		Ref<AuraData> ad = _c_auras.get(i);
+
+		ad->get_aura()->con_entity_resource_added(ad, resource);
+	}
+
+	emit_signal("centity_resource_added", resource);
+}
+
+void Entity::con_entity_resource_removed(Ref<EntityResource> resource) {
+	if (_c_entity_data.is_valid()) {
+		_c_entity_data->con_entity_resource_removed(resource);
+	}
+
+	if (has_method("_con_entity_resource_removed"))
+		call("_con_entity_resource_removed", resource);
+
+	for (int i = 0; i < _c_auras.size(); ++i) {
+		Ref<AuraData> ad = _c_auras.get(i);
+
+		ad->get_aura()->con_entity_resource_removed(ad, resource);
+	}
+
+	emit_signal("centity_resource_removed", resource);
 }
 
 ////    Casting System    ////
@@ -5293,6 +5438,11 @@ void Entity::update(float delta) {
 
 			if (res->get_should_process())
 				res->process_server(delta);
+
+			if (res->get_dirty()) {
+				sends_resource_curr_max(i, res->get_current_value(), res->get_max_value());
+				res->set_dirty(false);
+			}
 		}
 	}
 
@@ -6129,6 +6279,11 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("sdied", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("cdied", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
+	ADD_SIGNAL(MethodInfo("sentity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	ADD_SIGNAL(MethodInfo("sentity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	ADD_SIGNAL(MethodInfo("centity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	ADD_SIGNAL(MethodInfo("centity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+
 	//SpellCastSignals
 	ADD_SIGNAL(MethodInfo("scast_started", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("scast_failed", PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -6223,6 +6378,9 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_class_level_up", PropertyInfo(Variant::INT, "value")));
 	BIND_VMETHOD(MethodInfo("_son_character_level_up", PropertyInfo(Variant::INT, "value")));
 
+	BIND_VMETHOD(MethodInfo("_son_entity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_son_entity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+
 	BIND_VMETHOD(MethodInfo("_son_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_con_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
@@ -6254,6 +6412,9 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("son_gcd_started"), &Entity::son_gcd_started);
 	ClassDB::bind_method(D_METHOD("son_gcd_finished"), &Entity::son_gcd_finished);
+
+	ClassDB::bind_method(D_METHOD("son_entity_resource_added", "resource"), &Entity::son_entity_resource_added);
+	ClassDB::bind_method(D_METHOD("son_entity_resource_removed", "resource"), &Entity::son_entity_resource_removed);
 
 	//Talents
 
@@ -6335,6 +6496,9 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_class_level_up", PropertyInfo(Variant::INT, "value")));
 	BIND_VMETHOD(MethodInfo("_con_character_level_up", PropertyInfo(Variant::INT, "value")));
 
+	BIND_VMETHOD(MethodInfo("_con_entity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_con_entity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_canc_interact"));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_cans_interact"));
 	BIND_VMETHOD(MethodInfo("_sinteract"));
@@ -6370,6 +6534,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_xp_gained", "value"), &Entity::con_xp_gained);
 	ClassDB::bind_method(D_METHOD("con_class_level_up", "value"), &Entity::con_class_level_up);
 	ClassDB::bind_method(D_METHOD("con_character_level_up", "value"), &Entity::con_character_level_up);
+
+	ClassDB::bind_method(D_METHOD("con_entity_resource_added", "resource"), &Entity::con_entity_resource_added);
+	ClassDB::bind_method(D_METHOD("con_entity_resource_removed", "resource"), &Entity::con_entity_resource_removed);
 
 	//Modifiers/Requesters
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Entity::sapply_passives_damage_receive);
