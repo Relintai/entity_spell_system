@@ -87,8 +87,6 @@ sources = [
     "entities/resources/entity_resource_cost_data.cpp",
     "entities/resources/entity_resource.cpp",
 
-    "ui/unit_frame.cpp",
-
     "drag_and_drop/es_drag_and_drop.cpp",
 
     "skeleton/character_skeleton_2d.cpp",

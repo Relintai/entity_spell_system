@@ -94,8 +94,6 @@ SOFTWARE.
 #include "data/auras/aura_stat_attribute.h"
 #include "data/auras/aura_trigger_data.h"
 
-#include "ui/unit_frame.h"
-
 #include "drag_and_drop/es_drag_and_drop.h"
 
 #include "skeleton/character_skeleton_2d.h"
@@ -220,8 +218,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<AuraApplyInfo>();
 
 	//UI
-	ClassDB::register_class<UnitFrame>();
-
 	ClassDB::register_class<ESDragAndDrop>();
 
 	ClassDB::register_class<CharacterSkeleton2D>();
