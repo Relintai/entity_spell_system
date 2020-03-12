@@ -219,6 +219,7 @@ void EntityCreateInfo::_from_dict(const Dictionary &dict) {
 
 EntityCreateInfo::EntityCreateInfo() {
 	_guid = 0;
+	_networked = false;
 	_class_id = 0;
 	_entity_player_type = 0;
 	_network_owner = 0;
