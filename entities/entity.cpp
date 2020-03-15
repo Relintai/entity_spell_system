@@ -6208,7 +6208,7 @@ void Entity::_notification(int p_what) {
 				if (_character_skeleton->has_method("set_gender"))
 					_character_skeleton->call("set_gender", _c_gender);
 			}
-		}
+		} break;
 		case NOTIFICATION_ENTER_TREE: {
 			if (!Engine::get_singleton()->is_editor_hint())
 				set_process(true);
