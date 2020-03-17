@@ -71,6 +71,15 @@ public:
 	bool get_automatic_load() const;
 	void set_automatic_load(const bool load);
 
+	bool get_use_class_xp() const;
+	void set_use_class_xp(const bool value);
+
+	bool get_automatic_class_levelups() const;
+	void set_automatic_class_levelups(const bool value);
+
+	bool get_use_global_class_level() const;
+	void set_use_global_class_level(const bool value);
+
 	Ref<Aura> get_skill_for_armor_type(const int index);
 	void set_skill_for_armor_type(const int index, const Ref<Aura> &aura);
 
@@ -246,6 +255,9 @@ private:
 	bool _use_spell_points;
 	bool _scale_spells_by_default;
 	bool _automatic_load;
+	bool _use_class_xp;
+	bool _automatic_class_levelups;
+	bool _use_global_class_level;
 };
 
 #endif

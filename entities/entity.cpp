@@ -32,6 +32,7 @@ SOFTWARE.
 #include "../inventory/bag.h"
 #include "../pipelines/spell_damage_info.h"
 #include "../pipelines/spell_heal_info.h"
+#include "../profiles/class_profile.h"
 #include "./data/character_spec.h"
 #include "./data/talent_row_data.h"
 #include "./skills/entity_skill.h"
@@ -479,6 +480,22 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 		}
 
 		if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY) {
+			if (EntityDataManager::get_instance()->get_use_global_class_level()) {
+				Ref<ClassProfile> cp = ProfileManager::get_instance()->get_class_profile(gets_entity_data()->get_id());
+
+				if (cp.is_valid()) {
+					int leveldiff = cp->get_level() - _s_class_level;
+
+					sets_class_level(cp->get_level());
+
+					if (leveldiff > 0) {
+						sclass_levelup(leveldiff);
+					}
+
+					sets_class_xp(cp->get_xp());
+				}
+			}
+
 			setup_actionbars();
 		}
 
@@ -836,6 +853,12 @@ int Entity::getc_pet_count() {
 	return _s_pets.size();
 }
 
+////    Profiles    ////
+
+Ref<ClassProfile> Entity::get_class_profile() {
+	return ProfileManager::get_instance()->get_class_profile(_s_class_id);
+}
+
 ////    Serialization    ////
 
 bool Entity::is_deserialized() {
@@ -862,9 +885,10 @@ Dictionary Entity::_to_dict() {
 	//dict["entity_data_id"] = _s_class_id;
 	dict["type"] = _s_type;
 	dict["gender"] = _s_gender;
-	dict["class_level"] = _s_class_level;
+	dict["class_level"] = gets_class_level();
+	dict["class_xp"] = gets_class_xp();
+
 	dict["character_level"] = _s_character_level;
-	dict["class_xp"] = _s_class_xp;
 	dict["character_xp"] = _s_character_xp;
 	dict["money"] = _s_money;
 	dict["seed"] = _s_seed;
@@ -1040,9 +1064,15 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	sets_gender(static_cast<EntityEnums::EntityGender>(static_cast<int>(dict.get("gender", 0))));
 
-	sets_class_level(dict.get("class_level", 0));
+	if (EntityDataManager::get_instance()->get_use_global_class_level()) {
+		_s_class_level = (dict.get("class_level", 0));
+		_s_class_xp = (dict.get("class_xp", 0));
+	} else {
+		sets_class_level(dict.get("class_level", 0));
+		sets_class_xp(dict.get("class_xp", 0));
+	}
+
 	sets_character_level(dict.get("character_level", 0));
-	sets_class_xp(dict.get("class_xp", 0));
 	sets_character_xp(dict.get("character_xp", 0));
 
 	sets_money(dict.get("money", 0));
@@ -6045,12 +6075,14 @@ void Entity::_scraft(int id) {
 }
 
 void Entity::_son_xp_gained(int value) {
-	if (EntityDataManager::get_instance()->get_xp_data()->can_class_level_up(gets_class_level())) {
-		int xpr = EntityDataManager::get_instance()->get_xp_data()->get_class_xp(gets_class_level());
+	if (EntityDataManager::get_instance()->get_use_class_xp() && EntityDataManager::get_instance()->get_automatic_class_levelups()) {
+		if (EntityDataManager::get_instance()->get_xp_data()->can_class_level_up(gets_class_level())) {
+			int xpr = EntityDataManager::get_instance()->get_xp_data()->get_class_xp(gets_class_level());
 
-		if (xpr <= gets_class_xp()) {
-			sclass_levelup(1);
-			sets_class_xp(0);
+			if (xpr <= gets_class_xp()) {
+				sclass_levelup(1);
+				sets_class_xp(0);
+			}
 		}
 	}
 
@@ -6082,6 +6114,13 @@ void Entity::_son_character_level_up(int level) {
 
 		Ref<StatModifier> sm = stat->get_modifier(0);
 		sm->set_base_mod(sm->get_base_mod() + st);
+	}
+
+	if (!EntityDataManager::get_instance()->get_use_class_xp()) {
+		if (EntityDataManager::get_instance()->get_use_spell_points())
+			sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
+
+		sets_free_talent_points(gets_free_talent_points() + level);
 	}
 }
 

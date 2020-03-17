@@ -66,6 +66,7 @@ class EntityCreateInfo;
 class TalentRowData;
 class CharacterSpec;
 class EntitySkill;
+class ClassProfile;
 
 enum SpellCastDataSignals {
 	CastFailed,
@@ -935,6 +936,10 @@ public:
 	//void pets_attack();
 	//void pets_follow();
 	//void pets_stop();
+
+	////    Profiles    ////
+
+	Ref<ClassProfile> get_class_profile();
 
 	////    Serialization    ////
 

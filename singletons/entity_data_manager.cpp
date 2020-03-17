@@ -57,6 +57,27 @@ void EntityDataManager::set_automatic_load(const bool load) {
 	_automatic_load = load;
 }
 
+bool EntityDataManager::get_use_class_xp() const {
+	return _use_class_xp;
+}
+void EntityDataManager::set_use_class_xp(const bool value) {
+	_use_class_xp = value;
+}
+
+bool EntityDataManager::get_automatic_class_levelups() const {
+	return _automatic_class_levelups;
+}
+void EntityDataManager::set_automatic_class_levelups(const bool value) {
+	_automatic_class_levelups = value;
+}
+
+bool EntityDataManager::get_use_global_class_level() const {
+	return _use_global_class_level;
+}
+void EntityDataManager::set_use_global_class_level(const bool value) {
+	_use_global_class_level = value;
+}
+
 Ref<Aura> EntityDataManager::get_skill_for_armor_type(const int index) {
 	ERR_FAIL_INDEX_V(index, ItemEnums::ARMOR_TYPE_MAX, Ref<Aura>());
 
@@ -973,6 +994,18 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &EntityDataManager::set_automatic_load);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
 
+	ClassDB::bind_method(D_METHOD("get_automatic_class_levelups"), &EntityDataManager::get_automatic_class_levelups);
+	ClassDB::bind_method(D_METHOD("set_automatic_class_levelups", "load"), &EntityDataManager::set_automatic_class_levelups);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_class_levelups"), "set_automatic_class_levelups", "get_automatic_class_levelups");
+
+	ClassDB::bind_method(D_METHOD("get_use_class_xp"), &EntityDataManager::get_use_class_xp);
+	ClassDB::bind_method(D_METHOD("set_use_class_xp", "load"), &EntityDataManager::set_use_class_xp);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_class_xp"), "set_use_class_xp", "get_use_class_xp");
+
+	ClassDB::bind_method(D_METHOD("get_use_global_class_level"), &EntityDataManager::get_use_global_class_level);
+	ClassDB::bind_method(D_METHOD("set_use_global_class_level", "load"), &EntityDataManager::set_use_global_class_level);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_global_class_level"), "set_use_global_class_level", "get_use_global_class_level");
+
 	ClassDB::bind_method(D_METHOD("get_skill_for_armor_type", "index"), &EntityDataManager::get_skill_for_armor_type);
 	ClassDB::bind_method(D_METHOD("set_skill_for_armor_type", "index", "aura"), &EntityDataManager::set_skill_for_armor_type);
 
@@ -1126,6 +1159,11 @@ EntityDataManager::EntityDataManager() {
 
 	_use_spell_points = GLOBAL_DEF("ess/spells/use_spell_points", false);
 	_scale_spells_by_default = GLOBAL_DEF("ess/spells/scale_spells_by_default", false);
+
+	_use_class_xp = GLOBAL_DEF("ess/level/use_class_xp", false);
+	_automatic_class_levelups = GLOBAL_DEF("ess/level/automatic_class_levelups", false);
+	_use_global_class_level = GLOBAL_DEF("ess/level/use_global_class_level", false);
+
 	_automatic_load = GLOBAL_DEF("ess/data/automatic_load", false);
 
 	_xp_data_path = GLOBAL_DEF("ess/data/xp_data_path", "");
