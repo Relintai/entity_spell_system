@@ -22,12 +22,23 @@ SOFTWARE.
 
 #include "action_bar_profile.h"
 
+#include "../class_profile.h"
+
+Ref<ClassProfile> ActionBarProfile::get_owner() {
+	return Ref<ClassProfile>(_owner);
+}
+void ActionBarProfile::set_owner(ClassProfile *owner) {
+	_owner = owner;
+}
+
 String ActionBarProfile::get_action_bar_profile_name() {
 	return _name;
 }
 
 void ActionBarProfile::set_action_bar_profile_name(String value) {
 	_name = value;
+
+	emit_change();
 }
 
 Vector<Ref<ActionBarEntry> > &ActionBarProfile::get_action_bars() {
@@ -40,22 +51,28 @@ void ActionBarProfile::load_defaults() {
 	Ref<ActionBarEntry> actionBarEntry = Ref<ActionBarEntry>(memnew(ActionBarEntry()));
 	actionBarEntry->set_action_bar_id(1);
 	actionBarEntry->set_slot_num(12);
+	actionBarEntry->set_owner(this);
 	_action_bars.push_back(Ref<ActionBarEntry>(actionBarEntry));
 
 	actionBarEntry = Ref<ActionBarEntry>(memnew(ActionBarEntry()));
 	actionBarEntry->set_action_bar_id(2);
 	actionBarEntry->set_slot_num(12);
+	actionBarEntry->set_owner(this);
 	_action_bars.push_back(Ref<ActionBarEntry>(actionBarEntry));
 
 	actionBarEntry = Ref<ActionBarEntry>(memnew(ActionBarEntry()));
 	actionBarEntry->set_action_bar_id(3);
 	actionBarEntry->set_slot_num(12);
+	actionBarEntry->set_owner(this);
 	_action_bars.push_back(Ref<ActionBarEntry>(actionBarEntry));
 
 	actionBarEntry = Ref<ActionBarEntry>(memnew(ActionBarEntry()));
 	actionBarEntry->set_action_bar_id(4);
 	actionBarEntry->set_slot_num(12);
+	actionBarEntry->set_owner(this);
 	_action_bars.push_back(Ref<ActionBarEntry>(actionBarEntry));
+
+	emit_change();
 }
 
 int ActionBarProfile::get_action_bar_count() {
@@ -63,7 +80,12 @@ int ActionBarProfile::get_action_bar_count() {
 }
 
 void ActionBarProfile::add_action_bar(Ref<ActionBarEntry> actionbar) {
+	ERR_FAIL_COND(!actionbar.is_valid());
+
+	actionbar->set_owner(this);
 	_action_bars.push_back(Ref<ActionBarEntry>(actionbar));
+
+	emit_change();
 }
 
 Ref<ActionBarEntry> ActionBarProfile::get_action_bar(int index) {
@@ -73,11 +95,21 @@ Ref<ActionBarEntry> ActionBarProfile::get_action_bar(int index) {
 }
 
 void ActionBarProfile::remove_action_bar(int index) {
+	_action_bars.get(index)->set_owner(NULL);
+
 	_action_bars.remove(index);
+
+	emit_change();
 }
 
 void ActionBarProfile::clear_action_bars() {
+	for (int i = 0; i < _action_bars.size(); ++i) {
+		_action_bars.get(i)->set_owner(NULL);
+	}
+
 	_action_bars.clear();
+
+	emit_change();
 }
 
 Dictionary ActionBarProfile::to_dict() const {
@@ -101,6 +133,10 @@ void ActionBarProfile::from_dict(const Dictionary &dict) {
 	if (dict.empty())
 		return;
 
+	for (int i = 0; i < _action_bars.size(); ++i) {
+		_action_bars.get(i)->set_owner(NULL);
+	}
+
 	_action_bars.clear();
 
 	_name = dict.get("name", "");
@@ -112,29 +148,53 @@ void ActionBarProfile::from_dict(const Dictionary &dict) {
 		e.instance();
 
 		e->from_dict(arr.get(i));
+		e->set_owner(this);
 
 		_action_bars.push_back(e);
 	}
+
+	emit_change();
 }
 
 void ActionBarProfile::from_actionbar_profile(Ref<ActionBarProfile> other) {
+	for (int i = 0; i < _action_bars.size(); ++i) {
+		_action_bars.get(i)->set_owner(NULL);
+	}
+
 	_action_bars.clear();
 
 	_name = other->get_action_bar_profile_name();
 
 	for (int i = 0; i < other->get_action_bar_count(); ++i) {
-		_action_bars.push_back(other->get_action_bar(i));
+		Ref<ActionBarEntry> e = other->get_action_bar(i);
+
+		e->set_owner(this);
+		_action_bars.push_back(e);
 	}
+
+	emit_change();
 }
 
 ActionBarProfile::ActionBarProfile() {
+	_owner = NULL;
 }
 
 ActionBarProfile::~ActionBarProfile() {
 	_action_bars.clear();
 }
 
+void ActionBarProfile::emit_change() {
+	emit_signal("changed");
+
+	if (_owner != NULL)
+		_owner->emit_change();
+}
+
 void ActionBarProfile::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("changed"));
+
+	ClassDB::bind_method(D_METHOD("get_owner"), &ActionBarProfile::get_owner);
+
 	ClassDB::bind_method(D_METHOD("get_action_bar_profile_name"), &ActionBarProfile::get_action_bar_profile_name);
 	ClassDB::bind_method(D_METHOD("set_action_bar_profile_name", "value"), &ActionBarProfile::set_action_bar_profile_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "action_bar_profile_name"), "set_action_bar_profile_name", "get_action_bar_profile_name");
@@ -151,4 +211,6 @@ void ActionBarProfile::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("to_dict"), &ActionBarProfile::to_dict);
 
 	ClassDB::bind_method(D_METHOD("from_actionbar_profile", "other"), &ActionBarProfile::from_actionbar_profile);
+
+	ClassDB::bind_method(D_METHOD("emit_change"), &ActionBarProfile::emit_change);
 }

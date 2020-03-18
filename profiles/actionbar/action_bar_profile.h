@@ -31,10 +31,15 @@ SOFTWARE.
 
 #include "action_bar_entry.h"
 
+class ClassProfile;
+
 class ActionBarProfile : public Reference {
 	GDCLASS(ActionBarProfile, Reference);
 
 public:
+	Ref<ClassProfile> get_owner();
+	void set_owner(ClassProfile *owner);
+
 	String get_action_bar_profile_name();
 	void set_action_bar_profile_name(String value);
 	Vector<Ref<ActionBarEntry> > &get_action_bars();
@@ -51,6 +56,8 @@ public:
 
 	void from_actionbar_profile(Ref<ActionBarProfile> other);
 
+	void emit_change();
+
 	ActionBarProfile();
 	~ActionBarProfile();
 
@@ -60,6 +67,8 @@ protected:
 private:
 	String _name;
 	Vector<Ref<ActionBarEntry> > _action_bars;
+
+	ClassProfile *_owner;
 };
 
 #endif

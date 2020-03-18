@@ -44,6 +44,8 @@ int ClassProfile::get_level() {
 
 void ClassProfile::set_level(int value) {
 	_level = value;
+
+	emit_change();
 }
 
 int ClassProfile::get_xp() {
@@ -52,6 +54,8 @@ int ClassProfile::get_xp() {
 
 void ClassProfile::set_xp(int value) {
 	_xp = value;
+
+	emit_change();
 }
 
 bool ClassProfile::get_actionbar_locked() {
@@ -59,6 +63,8 @@ bool ClassProfile::get_actionbar_locked() {
 }
 void ClassProfile::set_actionbar_locked(bool value) {
 	_actionbar_locked = value;
+
+	emit_change();
 }
 
 Ref<InputProfile> ClassProfile::get_input_profile() {
@@ -68,11 +74,17 @@ Ref<ActionBarProfile> ClassProfile::get_action_bar_profile() {
 	return _action_bar_profile;
 }
 
+void ClassProfile::emit_change() {
+	emit_signal("changed", Ref<ClassProfile>(this));
+}
+
 Dictionary ClassProfile::get_custom_data() {
 	return _custom_data;
 }
 void ClassProfile::set_custom_data(const Dictionary &dict) {
 	_custom_data = dict;
+
+	emit_change();
 }
 
 Dictionary ClassProfile::to_dict() const {
@@ -101,11 +113,14 @@ void ClassProfile::from_dict(const Dictionary &dict) {
 	_action_bar_profile->from_dict(dict.get("actionbar_profile", Dictionary()));
 
 	_custom_data = dict.get("custom_data", Dictionary());
+
+	emit_change();
 }
 
 ClassProfile::ClassProfile() {
-	_action_bar_profile = Ref<ActionBarProfile>(memnew(ActionBarProfile()));
-	_input_profile = Ref<InputProfile>(memnew(InputProfile()));
+	_action_bar_profile.instance();
+	_action_bar_profile->set_owner(this);
+	_input_profile.instance();
 
 	_class_id = 0;
 	_level = 0;
@@ -114,36 +129,45 @@ ClassProfile::ClassProfile() {
 }
 
 ClassProfile::ClassProfile(int class_id) {
-	_action_bar_profile = Ref<ActionBarProfile>(memnew(ActionBarProfile()));
-	_input_profile = Ref<InputProfile>(memnew(InputProfile()));
+	_action_bar_profile.instance();
+	_action_bar_profile->set_owner(this);
+	_input_profile.instance();
 
 	_class_id = class_id;
 	_level = 50;
 	_xp = 0;
 	_actionbar_locked = false;
-	load_defaults();
 }
 
-ClassProfile::ClassProfile(String class_name, int class_id, int level, int xp, bool locked, bool pload_defaults) {
-	_action_bar_profile = Ref<ActionBarProfile>(memnew(ActionBarProfile()));
-	_input_profile = Ref<InputProfile>(memnew(InputProfile()));
+ClassProfile::ClassProfile(String class_name, int class_id, int level, int xp, bool locked) {
+	_action_bar_profile.instance();
+	_action_bar_profile->set_owner(this);
+
+	_input_profile.instance();
 
 	_character_class_name = class_name;
 	_class_id = class_id;
 	_level = level;
 	_xp = xp;
 	_actionbar_locked = true;
+}
 
-	if (pload_defaults) {
-		load_defaults();
-	}
+ClassProfile::~ClassProfile() {
+	_input_profile.unref();
+	_action_bar_profile.unref();
+
+	_custom_data.clear();
 }
 
 void ClassProfile::load_defaults() {
 	_action_bar_profile->load_defaults();
+
+	emit_change();
 }
 
 void ClassProfile::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("changed"));
+
 	ClassDB::bind_method(D_METHOD("get_class_id"), &ClassProfile::get_class_id);
 	ClassDB::bind_method(D_METHOD("set_class_id", "value"), &ClassProfile::set_class_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "class_id"), "set_class_id", "get_class_id");

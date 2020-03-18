@@ -620,19 +620,20 @@ void Entity::setup_actionbars() {
 
 	ProfileManager *pm = ProfileManager::get_instance();
 
-	if (pm != NULL) {
-		Ref<ClassProfile> cp = pm->get_class_profile(gets_entity_data()->get_id());
+	//if (pm != NULL) {
+	//	Ref<ClassProfile> cp = pm->get_class_profile(gets_entity_data()->get_id());
 
-		if (cp.is_valid()) {
-			set_actionbar_locked(cp->get_actionbar_locked());
+	//	if (cp.is_valid()) {
+	//		set_actionbar_locked(cp->get_actionbar_locked());
+	//		_action_bar_profile = cp->get_action_bar_profile();
 
-			get_action_bar_profile()->clear_action_bars();
+	//get_action_bar_profile()->clear_action_bars();
 
-			Ref<ActionBarProfile> abp = cp->get_action_bar_profile();
+	//Ref<ActionBarProfile> abp = cp->get_action_bar_profile();
 
-			get_action_bar_profile()->from_actionbar_profile(abp);
-		}
-	}
+	//get_action_bar_profile()->from_actionbar_profile(abp);
+	//}
+	//}
 
 	if (!gets_bag().is_valid()) {
 
@@ -1053,7 +1054,7 @@ Dictionary Entity::_to_dict() {
 	////     Actionbars    ////
 
 	dict["actionbar_locked"] = _actionbar_locked;
-	dict["actionbar_profile"] = _action_bar_profile->to_dict();
+	//dict["actionbar_profile"] = _action_bar_profile->to_dict();
 
 	return dict;
 }
@@ -1315,7 +1316,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 	////     Actionbars    ////
 
 	_actionbar_locked = dict.get("actionbar_locked", false);
-	_action_bar_profile->from_dict(dict.get("actionbar_profile", Dictionary()));
+	//_action_bar_profile->from_dict(dict.get("actionbar_profile", Dictionary()));
 
 	int edi = dict.get("entity_data_id", 0);
 
@@ -5361,7 +5362,16 @@ void Entity::set_actionbar_locked(bool value) {
 }
 
 Ref<ActionBarProfile> Entity::get_action_bar_profile() {
-	return _action_bar_profile;
+	Ref<ClassProfile> cp = ProfileManager::get_instance()->get_class_profile(gets_entity_data()->get_id());
+
+	if (cp.is_valid()) {
+		set_actionbar_locked(cp->get_actionbar_locked());
+		return cp->get_action_bar_profile();
+	}
+
+	return Ref<ActionBarProfile>();
+
+	//return _action_bar_profile;
 }
 
 void Entity::loaded() {
@@ -5762,7 +5772,7 @@ Entity::Entity() {
 	_s_free_spell_points = 0;
 	_c_free_spell_points = 0;
 
-	_action_bar_profile.instance();
+	//_action_bar_profile.instance();
 	_actionbar_locked = false;
 
 	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {

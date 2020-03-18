@@ -38,41 +38,64 @@ String ProfileManager::get_save_file() const {
 }
 void ProfileManager::set_save_file(const String &file) {
 	_save_file = file;
+
+	if (_automatic_save)
+		save();
 }
 
-int ProfileManager::get_last_used_class() {
+int ProfileManager::get_last_used_class() const {
 	return _last_used_class;
 }
 
-void ProfileManager::set_last_used_class(int value) {
+void ProfileManager::set_last_used_class(const int value) {
 	_last_used_class = value;
+
+	if (_automatic_save)
+		save();
 }
 
-int ProfileManager::get_class_profile_count() {
+int ProfileManager::get_class_profile_count() const {
 	return _class_profiles.size();
 }
 
-Ref<ClassProfile> ProfileManager::get_class_profile_index(int index) {
+Ref<ClassProfile> ProfileManager::get_class_profile_index(const int index) {
 	return _class_profiles.get(index);
 }
 
 void ProfileManager::add_class_profile(Ref<ClassProfile> profile) {
+	profile->connect("changed", this, "_on_class_profile_changed");
+
 	_class_profiles.push_back(profile);
+
+	if (_automatic_save)
+		save();
 }
 
 void ProfileManager::clear_class_profiles() {
+	for (int i = 0; i < _class_profiles.size(); ++i) {
+		_class_profiles.get(i)->disconnect("changed", this, "_on_class_profile_changed");
+	}
+
 	_class_profiles.clear();
+
+	if (_automatic_save)
+		save();
 }
 
-void ProfileManager::remove_class_profile(int index) {
+void ProfileManager::remove_class_profile(const int index) {
+	_class_profiles.get(index)->disconnect("changed", this, "_on_class_profile_changed");
+
 	_class_profiles.remove(index);
+
+	if (_automatic_save)
+		save();
 }
 
 Vector<Ref<ClassProfile> > &ProfileManager::get_class_profiles() {
 	return _class_profiles;
 }
 
-Ref<ClassProfile> ProfileManager::get_class_profile(int class_id) {
+Ref<ClassProfile> ProfileManager::get_class_profile(const int class_id) {
 	for (int i = 0; i < _class_profiles.size(); ++i) {
 		if (_class_profiles.get(i)->get_class_id() == class_id) {
 			return Ref<ClassProfile>(_class_profiles.get(i));
@@ -82,12 +105,13 @@ Ref<ClassProfile> ProfileManager::get_class_profile(int class_id) {
 	Ref<ClassProfile> class_profile = Ref<ClassProfile>(memnew(ClassProfile(class_id)));
 
 	class_profile->load_defaults();
+	class_profile->connect("changed", this, "_on_class_profile_changed");
 
 	_class_profiles.push_back(Ref<ClassProfile>(class_profile));
 
 	emit_signal("changed");
 
-	return Ref<ClassProfile>(class_profile);
+	return class_profile;
 }
 
 void ProfileManager::save() {
@@ -96,6 +120,8 @@ void ProfileManager::save() {
 
 void ProfileManager::load() {
 	call("_load");
+
+	emit_signal("changed");
 }
 
 void ProfileManager::_save() {
@@ -140,29 +166,24 @@ void ProfileManager::_load() {
 	}
 }
 
-void ProfileManager::save_profile(String name) {
+void ProfileManager::save_profile(const String &name) {
 }
 
-void ProfileManager::load_profile(String name) {
+void ProfileManager::load_profile(const String &name) {
 	load_defaults();
 }
 
-int _last_used_class;
-
-String _profile_name;
-
-Vector<Ref<ClassProfile> > _class_profiles;
-
 void ProfileManager::load_defaults() {
-	_class_profiles.clear();
+	clear_class_profiles();
 
-	_class_profiles.push_back(memnew(ClassProfile("Naturalist", 1, 1, 0, false, true)));
-	_class_profiles.push_back(memnew(ClassProfile("Berserker", 3, 1, 0, false, true)));
-	_class_profiles.push_back(memnew(ClassProfile("IceArcher", 4, 1, 0, false, true)));
-	_class_profiles.push_back(memnew(ClassProfile("Chronomancer", 6, 1, 0, false, true)));
+	_class_profiles.push_back(memnew(ClassProfile("Naturalist", 1, 1, 0, false)));
+	_class_profiles.push_back(memnew(ClassProfile("Berserker", 3, 1, 0, false)));
+	_class_profiles.push_back(memnew(ClassProfile("IceArcher", 4, 1, 0, false)));
+	_class_profiles.push_back(memnew(ClassProfile("Chronomancer", 6, 1, 0, false)));
 
 	for (int i = 0; i < _class_profiles.size(); ++i) {
 		_class_profiles.get(i)->load_defaults();
+		_class_profiles.get(i)->connect("changed", this, "_on_class_profile_changed");
 	}
 
 	emit_signal("changed");
@@ -189,6 +210,8 @@ Dictionary ProfileManager::to_dict() const {
 void ProfileManager::from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
+	clear_class_profiles();
+
 	_last_used_class = dict.get("last_used_class", "");
 	_profile_name = dict.get("profile_name", 0);
 
@@ -199,6 +222,7 @@ void ProfileManager::from_dict(const Dictionary &dict) {
 		c.instance();
 
 		c->from_dict(arr.get(i));
+		c->connect("changed", this, "_on_class_profile_changed");
 
 		_class_profiles.push_back(c);
 	}
@@ -211,17 +235,22 @@ ProfileManager::ProfileManager() {
 	_profile_name = ProfileManager::DEFAULT_PROFILE_FILE_NAME;
 
 	_automatic_load = GLOBAL_DEF("ess/profiles/automatic_load", false);
+	_automatic_save = GLOBAL_DEF("ess/profiles/automatic_save", false);
 	_save_file = GLOBAL_DEF("ess/profiles/save_file", "user://profile.save");
 
-	if (_automatic_load) {
+	if (_automatic_load)
 		call_deferred("load");
-	}
 }
 
 ProfileManager::~ProfileManager() {
 	_instance = NULL;
 
 	_class_profiles.clear();
+}
+
+void ProfileManager::_on_class_profile_changed(Ref<ClassProfile> profile) {
+	if (_automatic_save)
+		save();
 }
 
 void ProfileManager::_bind_methods() {
@@ -260,4 +289,6 @@ void ProfileManager::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &ProfileManager::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &ProfileManager::to_dict);
+
+	ClassDB::bind_method(D_METHOD("_on_class_profile_changed", "profile"), &ProfileManager::_on_class_profile_changed);
 }

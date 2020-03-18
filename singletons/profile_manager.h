@@ -40,20 +40,23 @@ public:
 	bool get_automatic_load() { return _automatic_load; }
 	void set_automatic_load(bool load) { _automatic_load = load; }
 
+	bool get_automatic_save() { return _automatic_save; }
+	void set_automatic_save(bool load) { _automatic_save = load; }
+
 	String get_save_file() const;
 	void set_save_file(const String &file);
 
-	int get_last_used_class();
-	void set_last_used_class(int value);
+	int get_last_used_class() const;
+	void set_last_used_class(const int value);
 
-	int get_class_profile_count();
-	Ref<ClassProfile> get_class_profile_index(int index);
+	int get_class_profile_count() const;
+	Ref<ClassProfile> get_class_profile_index(const int index);
 	void add_class_profile(Ref<ClassProfile> profile);
 	void clear_class_profiles();
-	void remove_class_profile(int index);
+	void remove_class_profile(const int index);
 
 	Vector<Ref<ClassProfile> > &get_class_profiles();
-	Ref<ClassProfile> get_class_profile(int class_id);
+	Ref<ClassProfile> get_class_profile(const int class_id);
 
 	void save();
 	void load();
@@ -61,8 +64,8 @@ public:
 	void _save();
 	void _load();
 
-	void save_profile(String name);
-	void load_profile(String name);
+	void save_profile(const String &name);
+	void load_profile(const String &name);
 
 	void load_defaults();
 
@@ -73,12 +76,14 @@ public:
 	~ProfileManager();
 
 protected:
+	void _on_class_profile_changed(Ref<ClassProfile> profile);
 	static void _bind_methods();
 
 private:
 	static ProfileManager *_instance;
 
 	bool _automatic_load;
+	bool _automatic_save;
 
 	int _last_used_class;
 

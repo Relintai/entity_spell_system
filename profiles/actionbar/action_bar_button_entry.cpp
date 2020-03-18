@@ -22,7 +22,16 @@ SOFTWARE.
 
 #include "action_bar_button_entry.h"
 
+#include "action_bar_entry.h"
+
 const String ActionBarButtonEntry::BINDING_STRING_ACTIONBAR_BUTTON_ENTRY_TYPE = "None, Spell, Item";
+
+Ref<ActionBarEntry> ActionBarButtonEntry::get_owner() {
+	return Ref<ActionBarEntry>(_owner);
+}
+void ActionBarButtonEntry::set_owner(ActionBarEntry *owner) {
+	_owner = owner;
+}
 
 int ActionBarButtonEntry::get_action_bar_id() {
 	return _action_bar_id;
@@ -31,7 +40,7 @@ int ActionBarButtonEntry::get_action_bar_id() {
 void ActionBarButtonEntry::set_action_bar_id(int value) {
 	_action_bar_id = value;
 
-	changed();
+	emit_change();
 }
 
 int ActionBarButtonEntry::get_slot_id() {
@@ -41,7 +50,7 @@ int ActionBarButtonEntry::get_slot_id() {
 void ActionBarButtonEntry::set_slot_id(int value) {
 	_slot_id = value;
 
-	changed();
+	emit_change();
 }
 
 ActionBarButtonEntry::ActionBarButtonEntryType ActionBarButtonEntry::get_type() {
@@ -51,7 +60,7 @@ ActionBarButtonEntry::ActionBarButtonEntryType ActionBarButtonEntry::get_type() 
 void ActionBarButtonEntry::set_type(ActionBarButtonEntry::ActionBarButtonEntryType value) {
 	_type = value;
 
-	changed();
+	emit_change();
 }
 
 int ActionBarButtonEntry::get_item_id() {
@@ -61,11 +70,14 @@ int ActionBarButtonEntry::get_item_id() {
 void ActionBarButtonEntry::set_item_id(int value) {
 	_item_id = value;
 
-	changed();
+	emit_change();
 }
 
-void ActionBarButtonEntry::changed() {
-	emit_signal("changed");
+void ActionBarButtonEntry::emit_change() {
+	emit_signal("changed", Ref<ActionBarButtonEntry>(this));
+
+	if (_owner != NULL)
+		_owner->emit_change();
 }
 
 Dictionary ActionBarButtonEntry::to_dict() const {
@@ -85,9 +97,13 @@ void ActionBarButtonEntry::from_dict(const Dictionary &dict) {
 	_slot_id = dict.get("slot_id", 0);
 	_type = VariantCaster<ActionBarButtonEntryType>().cast(dict.get("type", ACTION_BAR_BUTTON_ENTRY_TYPE_NONE));
 	_item_id = dict.get("item_id", 0);
+
+	emit_change();
 }
 
 ActionBarButtonEntry::ActionBarButtonEntry() {
+	_owner = NULL;
+
 	_action_bar_id = 0;
 	_slot_id = 0;
 	_type = ACTION_BAR_BUTTON_ENTRY_TYPE_NONE;
@@ -95,6 +111,8 @@ ActionBarButtonEntry::ActionBarButtonEntry() {
 }
 
 ActionBarButtonEntry::ActionBarButtonEntry(int actionBarId, int slotId) {
+	_owner = NULL;
+
 	_action_bar_id = actionBarId;
 	_slot_id = slotId;
 
@@ -103,14 +121,21 @@ ActionBarButtonEntry::ActionBarButtonEntry(int actionBarId, int slotId) {
 }
 
 ActionBarButtonEntry::ActionBarButtonEntry(int actionBarId, int slotId, ActionBarButtonEntryType type, int itemId) {
+	_owner = NULL;
+
 	_action_bar_id = actionBarId;
 	_slot_id = slotId;
 	_type = type;
 	_item_id = itemId;
 }
 
+ActionBarButtonEntry::~ActionBarButtonEntry() {
+}
+
 void ActionBarButtonEntry::_bind_methods() {
-	ADD_SIGNAL(MethodInfo("changed"));
+	ADD_SIGNAL(MethodInfo("changed", PropertyInfo(Variant::OBJECT, "action_bar_button_entry", PROPERTY_HINT_RESOURCE_TYPE, "ActionBarButtonEntry")));
+
+	ClassDB::bind_method(D_METHOD("get_owner"), &ActionBarButtonEntry::get_owner);
 
 	ClassDB::bind_method(D_METHOD("get_action_bar_id"), &ActionBarButtonEntry::get_action_bar_id);
 	ClassDB::bind_method(D_METHOD("set_action_bar_id", "value"), &ActionBarButtonEntry::set_action_bar_id);
@@ -130,6 +155,8 @@ void ActionBarButtonEntry::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &ActionBarButtonEntry::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &ActionBarButtonEntry::to_dict);
+
+	ClassDB::bind_method(D_METHOD("emit_change"), &ActionBarButtonEntry::emit_change);
 
 	BIND_ENUM_CONSTANT(ACTION_BAR_BUTTON_ENTRY_TYPE_NONE);
 	BIND_ENUM_CONSTANT(ACTION_BAR_BUTTON_ENTRY_TYPE_SPELL);

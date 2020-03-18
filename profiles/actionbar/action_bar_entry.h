@@ -30,10 +30,15 @@ SOFTWARE.
 
 #include "action_bar_button_entry.h"
 
+class ActionBarProfile;
+
 class ActionBarEntry : public Reference {
 	GDCLASS(ActionBarEntry, Reference);
 
 public:
+	Ref<ActionBarProfile> get_owner();
+	void set_owner(ActionBarProfile *owner);
+
 	float get_size();
 	void set_size(float value);
 
@@ -44,6 +49,8 @@ public:
 	void set_slot_num(int value);
 
 	int get_action_bar_entry_count();
+
+	void emit_change();
 
 	Ref<ActionBarButtonEntry> get_button_for_slotid(int slotId);
 	Ref<ActionBarButtonEntry> get_button(int index);
@@ -63,6 +70,8 @@ private:
 	Vector<Ref<ActionBarButtonEntry> > _button_entries;
 
 	float _size;
+
+	ActionBarProfile *_owner;
 };
 
 #endif

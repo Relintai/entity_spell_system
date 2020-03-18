@@ -47,6 +47,8 @@ public:
 	Ref<InputProfile> get_input_profile();
 	Ref<ActionBarProfile> get_action_bar_profile();
 
+	void emit_change();
+
 	Dictionary get_custom_data();
 	void set_custom_data(const Dictionary &dict);
 
@@ -55,7 +57,9 @@ public:
 
 	ClassProfile();
 	ClassProfile(int class_id);
-	ClassProfile(String class_name, int class_id, int level, int xp, bool locked, bool load_defaults);
+	ClassProfile(String class_name, int class_id, int level, int xp, bool locked);
+	~ClassProfile();
+
 	void load_defaults();
 
 protected:

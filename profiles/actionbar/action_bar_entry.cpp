@@ -22,6 +22,15 @@ SOFTWARE.
 
 #include "action_bar_entry.h"
 
+#include "action_bar_profile.h"
+
+Ref<ActionBarProfile> ActionBarEntry::get_owner() {
+	return Ref<ActionBarProfile>(_owner);
+}
+void ActionBarEntry::set_owner(ActionBarProfile *owner) {
+	_owner = owner;
+}
+
 float ActionBarEntry::get_size() {
 	return _size;
 }
@@ -29,7 +38,7 @@ float ActionBarEntry::get_size() {
 void ActionBarEntry::set_size(float value) {
 	_size = value;
 
-	emit_signal("changed");
+	emit_change();
 }
 
 int ActionBarEntry::get_action_bar_id() {
@@ -39,7 +48,7 @@ int ActionBarEntry::get_action_bar_id() {
 void ActionBarEntry::set_action_bar_id(int value) {
 	_action_bar_id = value;
 
-	emit_signal("changed");
+	emit_change();
 }
 
 int ActionBarEntry::get_slot_num() {
@@ -49,11 +58,18 @@ int ActionBarEntry::get_slot_num() {
 void ActionBarEntry::set_slot_num(int value) {
 	_slot_num = value;
 
-	emit_signal("changed");
+	emit_change();
 }
 
 int ActionBarEntry::get_action_bar_entry_count() {
 	return _button_entries.size();
+}
+
+void ActionBarEntry::emit_change() {
+	emit_signal("changed");
+
+	if (_owner != NULL)
+		_owner->emit_change();
 }
 
 Ref<ActionBarButtonEntry> ActionBarEntry::get_button_for_slotid(int slotId) {
@@ -64,7 +80,11 @@ Ref<ActionBarButtonEntry> ActionBarEntry::get_button_for_slotid(int slotId) {
 	}
 
 	Ref<ActionBarButtonEntry> abe = Ref<ActionBarButtonEntry>(memnew(ActionBarButtonEntry(_action_bar_id, slotId, ActionBarButtonEntry::ACTION_BAR_BUTTON_ENTRY_TYPE_NONE, 0)));
+	abe->set_owner(this);
 	_button_entries.push_back(abe);
+
+	emit_change();
+
 	return Ref<ActionBarButtonEntry>(abe);
 }
 
@@ -95,6 +115,10 @@ Dictionary ActionBarEntry::to_dict() const {
 void ActionBarEntry::from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
+	for (int i = 0; i < _button_entries.size(); ++i) {
+		_button_entries.get(i)->set_owner(NULL);
+	}
+
 	_button_entries.clear();
 
 	_action_bar_id = dict.get("action_bar_id", 0);
@@ -107,12 +131,17 @@ void ActionBarEntry::from_dict(const Dictionary &dict) {
 		e.instance();
 
 		e->from_dict(arr.get(i));
+		e->set_owner(this);
 
 		_button_entries.push_back(e);
 	}
+
+	emit_change();
 }
 
 ActionBarEntry::ActionBarEntry() {
+	_owner = NULL;
+
 	_size = 45;
 	_slot_num = 12;
 }
@@ -123,6 +152,8 @@ ActionBarEntry::~ActionBarEntry() {
 
 void ActionBarEntry::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("changed"));
+
+	ClassDB::bind_method(D_METHOD("get_owner"), &ActionBarEntry::get_owner);
 
 	ClassDB::bind_method(D_METHOD("get_size"), &ActionBarEntry::get_size);
 	ClassDB::bind_method(D_METHOD("set_size", "value"), &ActionBarEntry::set_size);
@@ -143,4 +174,6 @@ void ActionBarEntry::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &ActionBarEntry::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &ActionBarEntry::to_dict);
+
+	ClassDB::bind_method(D_METHOD("emit_change"), &ActionBarEntry::emit_change);
 }

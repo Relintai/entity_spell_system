@@ -26,6 +26,8 @@ SOFTWARE.
 #include "core/dictionary.h"
 #include "core/reference.h"
 
+class ActionBarEntry;
+
 class ActionBarButtonEntry : public Reference {
 	GDCLASS(ActionBarButtonEntry, Reference);
 
@@ -37,6 +39,9 @@ public:
 		ACTION_BAR_BUTTON_ENTRY_TYPE_SPELL,
 		ACTION_BAR_BUTTON_ENTRY_TYPE_ITEM
 	};
+
+	Ref<ActionBarEntry> get_owner();
+	void set_owner(ActionBarEntry *owner);
 
 	int get_action_bar_id();
 	void set_action_bar_id(int value);
@@ -50,7 +55,7 @@ public:
 	int get_item_id();
 	void set_item_id(int value);
 
-	void changed();
+	void emit_change();
 
 	Dictionary to_dict() const;
 	void from_dict(const Dictionary &dict);
@@ -58,6 +63,7 @@ public:
 	ActionBarButtonEntry();
 	ActionBarButtonEntry(int actionBarId, int slotId);
 	ActionBarButtonEntry(int actionBarId, int slotId, ActionBarButtonEntryType type, int itemId);
+	~ActionBarButtonEntry();
 
 protected:
 	static void _bind_methods();
@@ -67,6 +73,8 @@ private:
 	int _slot_id;
 	ActionBarButtonEntryType _type;
 	int _item_id;
+
+	ActionBarEntry *_owner;
 };
 
 VARIANT_ENUM_CAST(ActionBarButtonEntry::ActionBarButtonEntryType);
