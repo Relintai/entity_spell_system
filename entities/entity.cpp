@@ -481,7 +481,7 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 
 		if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY) {
 			if (EntityDataManager::get_instance()->get_use_global_class_level()) {
-				Ref<ClassProfile> cp = ProfileManager::get_instance()->get_class_profile(gets_entity_data()->get_id());
+				Ref<ClassProfile> cp = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(gets_entity_data()->get_id());
 
 				if (cp.is_valid()) {
 					int leveldiff = cp->get_level() - _s_class_level;
@@ -857,7 +857,7 @@ int Entity::getc_pet_count() {
 ////    Profiles    ////
 
 Ref<ClassProfile> Entity::get_class_profile() {
-	return ProfileManager::get_instance()->get_class_profile(_s_class_id);
+	return ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_class_id);
 }
 
 ////    Serialization    ////
@@ -5362,7 +5362,7 @@ void Entity::set_actionbar_locked(bool value) {
 }
 
 Ref<ActionBarProfile> Entity::get_action_bar_profile() {
-	Ref<ClassProfile> cp = ProfileManager::get_instance()->get_class_profile(gets_entity_data()->get_id());
+	Ref<ClassProfile> cp = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(gets_entity_data()->get_id());
 
 	if (cp.is_valid()) {
 		set_actionbar_locked(cp->get_actionbar_locked());

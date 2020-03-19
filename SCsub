@@ -115,6 +115,8 @@ sources = [
 
     "profiles/class_profile.cpp",
 
+    "profiles/player_profile.cpp",
+
     "singletons/profile_manager.cpp",
     "singletons/entity_data_manager.cpp",
 ]

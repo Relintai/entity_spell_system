@@ -130,6 +130,7 @@ SOFTWARE.
 #include "profiles/actionbar/action_bar_profile.h"
 
 #include "profiles/class_profile.h"
+#include "profiles/player_profile.h"
 
 #include "singletons/profile_manager.h"
 
@@ -255,6 +256,8 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<ActionBarProfile>();
 
 	ClassDB::register_class<ClassProfile>();
+	ClassDB::register_class<PlayerProfile>();
+
 	ClassDB::register_class<ProfileManager>();
 
 	entity_data_manager = memnew(EntityDataManager);

@@ -75,7 +75,7 @@ Ref<ActionBarProfile> ClassProfile::get_action_bar_profile() {
 }
 
 void ClassProfile::emit_change() {
-	emit_signal("changed", Ref<ClassProfile>(this));
+	emit_signal("changed");
 }
 
 Dictionary ClassProfile::get_custom_data() {
@@ -187,6 +187,10 @@ void ClassProfile::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_actionbar_locked"), &ClassProfile::get_actionbar_locked);
 	ClassDB::bind_method(D_METHOD("set_actionbar_locked", "value"), &ClassProfile::set_actionbar_locked);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "actionbar_locked"), "set_actionbar_locked", "get_actionbar_locked");
+
+	ClassDB::bind_method(D_METHOD("get_custom_data"), &ClassProfile::get_custom_data);
+	ClassDB::bind_method(D_METHOD("set_custom_data", "value"), &ClassProfile::set_custom_data);
+	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "custom_data"), "set_custom_data", "get_custom_data");
 
 	ClassDB::bind_method(D_METHOD("get_input_profile"), &ClassProfile::get_input_profile);
 	ClassDB::bind_method(D_METHOD("get_action_bar_profile"), &ClassProfile::get_action_bar_profile);

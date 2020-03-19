@@ -27,36 +27,30 @@ SOFTWARE.
 
 #include "core/vector.h"
 
-#include "../profiles/class_profile.h"
+#include "../profiles/player_profile.h"
 
 class ProfileManager : public Object {
 	GDCLASS(ProfileManager, Object);
 
 public:
-	static const String DEFAULT_PROFILE_FILE_NAME;
-
 	static ProfileManager *get_instance();
 
-	bool get_automatic_load() { return _automatic_load; }
-	void set_automatic_load(bool load) { _automatic_load = load; }
+	bool get_automatic_load() const;
+	void set_automatic_load(const bool load);
 
-	bool get_automatic_save() { return _automatic_save; }
-	void set_automatic_save(bool load) { _automatic_save = load; }
+	bool get_automatic_save() const;
+	void set_automatic_save(const bool load);
 
 	String get_save_file() const;
 	void set_save_file(const String &file);
 
-	int get_last_used_class() const;
-	void set_last_used_class(const int value);
+	int gets_player_profile_count() const;
+	Ref<PlayerProfile> gets_player_profile_index(const int index);
+	void adds_player_profile(const Ref<PlayerProfile> &profile);
+	void clears_player_profiles();
+	void removes_player_profile(const int index);
 
-	int get_class_profile_count() const;
-	Ref<ClassProfile> get_class_profile_index(const int index);
-	void add_class_profile(Ref<ClassProfile> profile);
-	void clear_class_profiles();
-	void remove_class_profile(const int index);
-
-	Vector<Ref<ClassProfile> > &get_class_profiles();
-	Ref<ClassProfile> get_class_profile(const int class_id);
+	Ref<PlayerProfile> getc_player_profile();
 
 	void save();
 	void load();
@@ -76,7 +70,7 @@ public:
 	~ProfileManager();
 
 protected:
-	void _on_class_profile_changed(Ref<ClassProfile> profile);
+	void _on_player_profile_changed(Ref<PlayerProfile> profile);
 	static void _bind_methods();
 
 private:
@@ -85,12 +79,10 @@ private:
 	bool _automatic_load;
 	bool _automatic_save;
 
-	int _last_used_class;
-
-	String _profile_name;
 	String _save_file;
 
-	Vector<Ref<ClassProfile> > _class_profiles;
+	Vector<Ref<PlayerProfile> > _s_player_profiles;
+	Ref<PlayerProfile> _c_player_profile;
 };
 
 #endif
