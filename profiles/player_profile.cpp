@@ -136,6 +136,8 @@ Dictionary PlayerProfile::to_dict() const {
 
 	dict["class_profiles"] = arr;
 
+	dict["custom_data"] = _custom_data;
+
 	return dict;
 }
 void PlayerProfile::from_dict(const Dictionary &dict) {
@@ -157,6 +159,8 @@ void PlayerProfile::from_dict(const Dictionary &dict) {
 
 		_class_profiles.push_back(c);
 	}
+
+	_custom_data = dict.get("custom_data", Dictionary());
 
 	emit_change();
 }

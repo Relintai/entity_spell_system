@@ -66,6 +66,10 @@ void ProfileManager::adds_player_profile(const Ref<PlayerProfile> &profile) {
 	_s_player_profiles.push_back(profile);
 }
 void ProfileManager::clears_player_profiles() {
+	//for (int i = 0; i < _s_player_profiles.size(); ++i) {
+	//	_c_player_profile->disconnect("changed", this, "_on_player_profile_changed");
+	//}
+
 	_s_player_profiles.clear();
 }
 void ProfileManager::removes_player_profile(const int index) {
@@ -158,9 +162,11 @@ Dictionary ProfileManager::to_dict() const {
 void ProfileManager::from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
-	//clears_player_profiles();
+	clears_player_profiles();
 
+	_c_player_profile->disconnect("changed", this, "_on_player_profile_changed");
 	_c_player_profile->from_dict(dict.get("cplayer_profile", Dictionary()));
+	_c_player_profile->connect("changed", this, "_on_player_profile_changed");
 
 	Array arr = dict.get("splayer_profiles", Array());
 
@@ -183,6 +189,7 @@ ProfileManager::ProfileManager() {
 	_save_file = GLOBAL_DEF("ess/profiles/save_file", "user://profile.save");
 
 	_c_player_profile.instance();
+	_c_player_profile->connect("changed", this, "_on_player_profile_changed");
 
 	if (_automatic_load)
 		call_deferred("load");
@@ -190,6 +197,8 @@ ProfileManager::ProfileManager() {
 
 ProfileManager::~ProfileManager() {
 	_instance = NULL;
+
+	_c_player_profile->disconnect("changed", this, "_on_player_profile_changed");
 
 	_s_player_profiles.clear();
 }
