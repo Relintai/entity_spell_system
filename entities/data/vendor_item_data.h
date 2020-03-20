@@ -33,7 +33,6 @@ class VendorItemData : public Resource {
 public:
 	//Vendor data
 	int get_num_vendor_datas();
-	void set_num_vendor_datas(int value);
 
 	Ref<VendorItemDataEntry> get_vendor_data(int index);
 	void set_vendor_data(int index, Ref<VendorItemDataEntry> data);
@@ -48,7 +47,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	Vector<Ref<VendorItemData> > _vendor_datas;
+	Vector<Ref<VendorItemDataEntry> > _vendor_datas;
 };
 
 #endif

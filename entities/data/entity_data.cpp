@@ -150,14 +150,14 @@ Ref<EntityAI> EntityData::_get_ai_instance() {
 Ref<AIFormation> EntityData::get_formation() const {
 	return _formation;
 }
-void EntityData::set_formation(const Ref<AIFormation> data) {
+void EntityData::set_formation(const Ref<AIFormation> &data) {
 	_formation = data;
 }
 
 Ref<LootDataBase> EntityData::get_loot_db() const {
 	return _lootdb;
 }
-void EntityData::set_loot_db(const Ref<LootDataBase> lootdb) {
+void EntityData::set_loot_db(const Ref<LootDataBase> &lootdb) {
 	_lootdb = lootdb;
 }
 
@@ -168,8 +168,19 @@ Ref<VendorItemData> EntityData::get_vendor_item_data() const {
 
 	return _vendor_item_data;
 }
-void EntityData::set_vendor_item_data(const Ref<VendorItemData> data) {
+void EntityData::set_vendor_item_data(const Ref<VendorItemData> &data) {
 	_vendor_item_data = data;
+}
+
+Ref<VendorItemData> EntityData::get_spell_train_data() const {
+	if (!_spell_train_data.is_valid() && _inherits.is_valid()) {
+		return _inherits->get_spell_train_data();
+	}
+
+	return _spell_train_data;
+}
+void EntityData::set_spell_train_data(const Ref<VendorItemData> &data) {
+	_spell_train_data = data;
 }
 
 Ref<ItemContainerData> EntityData::get_item_container_data() const {
@@ -179,7 +190,7 @@ Ref<ItemContainerData> EntityData::get_item_container_data() const {
 
 	return _item_container_data;
 }
-void EntityData::set_item_container_data(const Ref<ItemContainerData> data) {
+void EntityData::set_item_container_data(const Ref<ItemContainerData> &data) {
 	_item_container_data = data;
 }
 
@@ -193,7 +204,7 @@ Ref<CraftRecipe> EntityData::get_craft_recipe(int index) {
 
 	return _craft_recipes[index];
 }
-void EntityData::set_craft_recipe(int index, Ref<CraftRecipe> craft_data) {
+void EntityData::set_craft_recipe(int index, const Ref<CraftRecipe> &craft_data) {
 	ERR_FAIL_INDEX(index, _craft_recipes.size());
 
 	_craft_recipes.set(index, craft_data);
@@ -645,7 +656,6 @@ void EntityData::son_entity_resource_added(Ref<EntityResource> resource) {
 		call("_son_entity_resource_added", resource);
 }
 
-
 void EntityData::son_entity_resource_removed(Ref<EntityResource> resource) {
 	if (_entity_class_data.is_valid()) {
 		_entity_class_data->son_entity_resource_removed(resource);
@@ -922,7 +932,6 @@ void EntityData::con_entity_resource_added(Ref<EntityResource> resource) {
 		call("_con_entity_resource_added", resource);
 }
 
-
 void EntityData::con_entity_resource_removed(Ref<EntityResource> resource) {
 	if (_entity_class_data.is_valid()) {
 		_entity_class_data->con_entity_resource_removed(resource);
@@ -931,7 +940,6 @@ void EntityData::con_entity_resource_removed(Ref<EntityResource> resource) {
 	if (has_method("_con_entity_resource_removed"))
 		call("_con_entity_resource_removed", resource);
 }
-
 
 //Equipment
 
@@ -1047,6 +1055,7 @@ EntityData::~EntityData() {
 
 	_lootdb.unref();
 	_vendor_item_data.unref();
+	_spell_train_data.unref();
 	_item_container_data.unref();
 
 	_craft_recipes.clear();
@@ -1284,10 +1293,14 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_loot_db", "value"), &EntityData::set_loot_db);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "loot_db", PROPERTY_HINT_RESOURCE_TYPE, "LootDataBase"), "set_loot_db", "get_loot_db");
 
-	//EntityData
+	//Vendor
 	ClassDB::bind_method(D_METHOD("get_vendor_item_data"), &EntityData::get_vendor_item_data);
 	ClassDB::bind_method(D_METHOD("set_vendor_item_data", "value"), &EntityData::set_vendor_item_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "vendor_item_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData"), "set_vendor_item_data", "get_vendor_item_data");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "vendor_item_data", PROPERTY_HINT_RESOURCE_TYPE, "VendorItemData"), "set_vendor_item_data", "get_vendor_item_data");
+
+	ClassDB::bind_method(D_METHOD("get_spell_train_data"), &EntityData::get_spell_train_data);
+	ClassDB::bind_method(D_METHOD("set_spell_train_data", "value"), &EntityData::set_spell_train_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell_train_data", PROPERTY_HINT_RESOURCE_TYPE, "VendorItemData"), "set_spell_train_data", "get_spell_train_data");
 
 	//ItemContainerData
 	ClassDB::bind_method(D_METHOD("get_item_container_data"), &EntityData::get_item_container_data);

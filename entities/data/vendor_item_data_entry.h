@@ -26,22 +26,29 @@ SOFTWARE.
 #include "core/resource.h"
 
 class ItemTemplate;
+class Spell;
 
 class VendorItemDataEntry : public Resource {
 	GDCLASS(VendorItemDataEntry, Resource);
 
 public:
 	Ref<ItemTemplate> get_item();
-	void set_item(Ref<ItemTemplate> item);
+	void set_item(const Ref<ItemTemplate> &item);
 
-	int get_item_price() const;
-	void set_item_price(int value);
+	Ref<Spell> get_spell();
+	void set_spell(const Ref<Spell> &spell);
 
-	int get_item_count() const;
-	void set_item_count(int value);
+	Ref<ItemTemplate> get_cost_item();
+	void set_cost_item(const Ref<ItemTemplate> &item);
 
-	int get_item_spawn_time() const;
-	void set_item_spawn_time(int time);
+	int get_price() const;
+	void set_price(const int value);
+
+	int get_count() const;
+	void set_count(const int value);
+
+	int get_spawn_time() const;
+	void set_spawn_time(const int time);
 
 	VendorItemDataEntry();
 	~VendorItemDataEntry();
@@ -51,9 +58,12 @@ protected:
 
 private:
 	Ref<ItemTemplate> _item;
-	int _item_price;
-	int _item_count;
-	int _item_spawn_time;
+	Ref<Spell> _spell;
+	Ref<ItemTemplate> _cost_item;
+
+	int _price;
+	int _count;
+	int _spawn_time;
 };
 
 #endif

@@ -25,9 +25,6 @@ SOFTWARE.
 int VendorItemData::get_num_vendor_datas() {
 	return _vendor_datas.size();
 }
-void VendorItemData::set_num_vendor_datas(int value) {
-	_vendor_datas.resize(value);
-}
 
 Ref<VendorItemDataEntry> VendorItemData::get_vendor_data(int index) {
 	ERR_FAIL_INDEX_V(index, _vendor_datas.size(), Ref<VendorItemDataEntry>());
@@ -64,8 +61,6 @@ VendorItemData::~VendorItemData() {
 
 void VendorItemData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_num_vendor_datas"), &VendorItemData::get_num_vendor_datas);
-	ClassDB::bind_method(D_METHOD("set_num_vendor_datas", "value"), &VendorItemData::set_num_vendor_datas);
-
 	ClassDB::bind_method(D_METHOD("get_vendor_data", "index"), &VendorItemData::get_vendor_data);
 	ClassDB::bind_method(D_METHOD("set_vendor_data", "index", "vendor_data"), &VendorItemData::set_vendor_data);
 
