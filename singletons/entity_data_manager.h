@@ -80,6 +80,12 @@ public:
 	bool get_use_global_class_level() const;
 	void set_use_global_class_level(const bool value);
 
+	bool get_allow_class_spell_learning() const;
+	void set_allow_class_spell_learning(const bool value);
+
+	bool get_allow_class_recipe_learning() const;
+	void set_allow_class_recipe_learning(const bool value);
+
 	Ref<Aura> get_skill_for_armor_type(const int index);
 	void set_skill_for_armor_type(const int index, const Ref<Aura> &aura);
 
@@ -258,6 +264,8 @@ private:
 	bool _use_class_xp;
 	bool _automatic_class_levelups;
 	bool _use_global_class_level;
+	bool _allow_class_spell_learning;
+	bool _allow_class_recipe_learning;
 };
 
 #endif

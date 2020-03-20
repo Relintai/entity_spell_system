@@ -607,6 +607,30 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 
 	sets_class_xp(info->get_class_xp());
 	sets_character_xp(info->get_character_xp());
+
+	if (EntityDataManager::get_instance()->get_allow_class_spell_learning()) {
+		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_id());
+
+		if (class_profile.is_valid() && class_profile->has_custom_data("spells")) {
+			Vector<int> spells = class_profile->get_custom_data("spells");
+
+			for (int i = 0; i < spells.size(); ++i) {
+				adds_spell_id(spells.get(i));
+			}
+		}
+	}
+
+	if (EntityDataManager::get_instance()->get_allow_class_recipe_learning()) {
+		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_id());
+
+		if (class_profile.is_valid() && class_profile->has_custom_data("recipes")) {
+			Vector<int> recipes = class_profile->get_custom_data("recipes");
+
+			for (int i = 0; i < recipes.size(); ++i) {
+				adds_craft_recipe_id(recipes.get(i));
+			}
+		}
+	}
 }
 
 void Entity::setup_actionbars() {
@@ -1465,6 +1489,32 @@ void Entity::adds_craft_recipe_id(int id) {
 	ERR_FAIL_COND(!craft_recipe.is_valid());
 
 	_s_craft_recipes.push_back(craft_recipe);
+
+	if (EntityDataManager::get_instance()->get_allow_class_recipe_learning() && (_s_entity_player_type == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY)) {
+		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_id());
+
+		if (class_profile->has_custom_data("recipes")) {
+			Vector<int> recipes = class_profile->get_custom_data("recipes");
+
+			bool found = false;
+
+			for (int i = 0; i < recipes.size(); ++i) {
+				if (recipes[i] == id) {
+					found = true;
+					break;
+				}
+			}
+
+			if (!found) {
+				recipes.push_back(id);
+				class_profile->set_custom_data("recipes", recipes);
+			}
+		} else {
+			Vector<int> recipes;
+			recipes.push_back(id);
+			class_profile->set_custom_data("recipes", recipes);
+		}
+	}
 
 	emit_signal("scraft_recipe_added", this, craft_recipe);
 
@@ -2389,7 +2439,7 @@ void Entity::sclass_levelup(int value) {
 	if (_s_class_level == EntityEnums::MAX_CLASS_LEVEL)
 		return;
 
-	//_s_level += value;
+	_s_class_level += value;
 
 	son_class_level_up(value);
 
@@ -4404,11 +4454,47 @@ void Entity::adds_spell(Ref<Spell> spell) {
 	if (hass_spell(spell))
 		return;
 
+	int id = spell->get_id();
+
 	_s_spells.push_back(spell);
+
+	if (EntityDataManager::get_instance()->get_allow_class_spell_learning() && (_s_entity_player_type == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY)) {
+		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_id());
+
+		if (class_profile->has_custom_data("spells")) {
+			Vector<int> spells = class_profile->get_custom_data("spells");
+
+			bool found = false;
+
+			for (int i = 0; i < spells.size(); ++i) {
+				if (spells[i] == id) {
+					found = true;
+					break;
+				}
+			}
+
+			if (!found) {
+				spells.push_back(id);
+				class_profile->set_custom_data("spells", spells);
+			}
+
+		} else {
+			Vector<int> spells;
+			spells.push_back(id);
+			class_profile->set_custom_data("spells", spells);
+		}
+	}
 
 	emit_signal("sspell_added", this, spell);
 
 	ORPCOBJ(addc_spell_rpc, spell->get_id(), addc_spell, spell);
+}
+void Entity::adds_spell_id(int id) {
+	Ref<Spell> spell = EntityDataManager::get_instance()->get_spell(id);
+
+	ERR_FAIL_COND(!spell.is_valid());
+
+	adds_spell(spell);
 }
 void Entity::removes_spell(Ref<Spell> spell) {
 	for (int i = 0; i < _s_spells.size(); ++i) {
@@ -7083,6 +7169,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("hass_spell", "spell"), &Entity::hass_spell);
 	ClassDB::bind_method(D_METHOD("hass_spell_id", "id"), &Entity::hass_spell_id);
 	ClassDB::bind_method(D_METHOD("adds_spell", "spell"), &Entity::adds_spell);
+	ClassDB::bind_method(D_METHOD("adds_spell_id", "id"), &Entity::adds_spell_id);
 	ClassDB::bind_method(D_METHOD("removes_spell", "spell"), &Entity::removes_spell);
 	ClassDB::bind_method(D_METHOD("gets_spell", "spell"), &Entity::gets_spell);
 	ClassDB::bind_method(D_METHOD("gets_spell_count"), &Entity::gets_spell_count);

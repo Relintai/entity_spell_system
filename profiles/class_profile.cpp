@@ -78,11 +78,32 @@ void ClassProfile::emit_change() {
 	emit_signal("changed");
 }
 
-Dictionary ClassProfile::get_custom_data() {
-	return _custom_data;
+bool ClassProfile::has_custom_data(const String &p_name) const {
+	return _custom_data.has(p_name);
 }
-void ClassProfile::set_custom_data(const Dictionary &dict) {
-	_custom_data = dict;
+
+void ClassProfile::set_custom_data(const String &p_name, const Variant &p_value) {
+	if (p_value.get_type() == Variant::NIL) {
+		_custom_data.erase(p_name);
+
+		emit_change();
+
+		return;
+	};
+
+	_custom_data[p_name] = p_value;
+
+	emit_change();
+}
+
+Variant ClassProfile::get_custom_data(const String &p_name) const {
+	ERR_FAIL_COND_V(!_custom_data.has(p_name), Variant());
+
+	return _custom_data[p_name];
+}
+
+void ClassProfile::remove_custom_data(const String &p_name) {
+	_custom_data.erase(p_name);
 
 	emit_change();
 }
@@ -178,7 +199,7 @@ void ClassProfile::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_level"), &ClassProfile::get_level);
 	ClassDB::bind_method(D_METHOD("set_level", "value"), &ClassProfile::set_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "level"), "set_class_id", "get_level");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "level"), "set_level", "get_level");
 
 	ClassDB::bind_method(D_METHOD("get_xp"), &ClassProfile::get_xp);
 	ClassDB::bind_method(D_METHOD("set_xp", "value"), &ClassProfile::set_xp);
@@ -188,9 +209,10 @@ void ClassProfile::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_actionbar_locked", "value"), &ClassProfile::set_actionbar_locked);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "actionbar_locked"), "set_actionbar_locked", "get_actionbar_locked");
 
-	ClassDB::bind_method(D_METHOD("get_custom_data"), &ClassProfile::get_custom_data);
-	ClassDB::bind_method(D_METHOD("set_custom_data", "value"), &ClassProfile::set_custom_data);
-	ADD_PROPERTY(PropertyInfo(Variant::DICTIONARY, "custom_data"), "set_custom_data", "get_custom_data");
+	ClassDB::bind_method(D_METHOD("has_custom_data", "name"), &ClassProfile::has_custom_data);
+	ClassDB::bind_method(D_METHOD("set_custom_data", "name", "value"), &ClassProfile::set_custom_data);
+	ClassDB::bind_method(D_METHOD("remove_custom_data", "name"), &ClassProfile::remove_custom_data);
+	ClassDB::bind_method(D_METHOD("get_custom_data", "name"), &ClassProfile::get_custom_data);
 
 	ClassDB::bind_method(D_METHOD("get_input_profile"), &ClassProfile::get_input_profile);
 	ClassDB::bind_method(D_METHOD("get_action_bar_profile"), &ClassProfile::get_action_bar_profile);

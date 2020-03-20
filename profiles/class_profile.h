@@ -49,8 +49,10 @@ public:
 
 	void emit_change();
 
-	Dictionary get_custom_data();
-	void set_custom_data(const Dictionary &dict);
+	bool has_custom_data(const String &p_name) const;
+	void set_custom_data(const String &p_name, const Variant &p_value);
+	void remove_custom_data(const String &p_name);
+	Variant get_custom_data(const String &p_name) const;
 
 	Dictionary to_dict() const;
 	void from_dict(const Dictionary &dict);

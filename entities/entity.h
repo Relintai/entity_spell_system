@@ -715,6 +715,7 @@ public:
 	bool hass_spell(Ref<Spell> spell);
 	bool hass_spell_id(int id);
 	void adds_spell(Ref<Spell> spell);
+	void adds_spell_id(int id);
 	void removes_spell(Ref<Spell> spell);
 	Ref<Spell> gets_spell(int index);
 	int gets_spell_count();

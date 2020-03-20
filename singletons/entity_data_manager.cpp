@@ -78,6 +78,20 @@ void EntityDataManager::set_use_global_class_level(const bool value) {
 	_use_global_class_level = value;
 }
 
+bool EntityDataManager::get_allow_class_spell_learning() const {
+	return _allow_class_spell_learning;
+}
+void EntityDataManager::set_allow_class_spell_learning(const bool value) {
+	_allow_class_spell_learning = value;
+}
+
+bool EntityDataManager::get_allow_class_recipe_learning() const {
+	return _allow_class_recipe_learning;
+}
+void EntityDataManager::set_allow_class_recipe_learning(const bool value) {
+	_allow_class_recipe_learning = value;
+}
+
 Ref<Aura> EntityDataManager::get_skill_for_armor_type(const int index) {
 	ERR_FAIL_INDEX_V(index, ItemEnums::ARMOR_TYPE_MAX, Ref<Aura>());
 
@@ -999,12 +1013,20 @@ void EntityDataManager::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_class_levelups"), "set_automatic_class_levelups", "get_automatic_class_levelups");
 
 	ClassDB::bind_method(D_METHOD("get_use_class_xp"), &EntityDataManager::get_use_class_xp);
-	ClassDB::bind_method(D_METHOD("set_use_class_xp", "load"), &EntityDataManager::set_use_class_xp);
+	ClassDB::bind_method(D_METHOD("set_use_class_xp", "value"), &EntityDataManager::set_use_class_xp);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_class_xp"), "set_use_class_xp", "get_use_class_xp");
 
 	ClassDB::bind_method(D_METHOD("get_use_global_class_level"), &EntityDataManager::get_use_global_class_level);
-	ClassDB::bind_method(D_METHOD("set_use_global_class_level", "load"), &EntityDataManager::set_use_global_class_level);
+	ClassDB::bind_method(D_METHOD("set_use_global_class_level", "value"), &EntityDataManager::set_use_global_class_level);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_global_class_level"), "set_use_global_class_level", "get_use_global_class_level");
+
+	ClassDB::bind_method(D_METHOD("get_allow_class_spell_learning"), &EntityDataManager::get_allow_class_spell_learning);
+	ClassDB::bind_method(D_METHOD("set_allow_class_spell_learning", "value"), &EntityDataManager::set_allow_class_spell_learning);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_class_spell_learning"), "set_allow_class_spell_learning", "get_allow_class_spell_learning");
+
+	ClassDB::bind_method(D_METHOD("get_allow_class_recipe_learning"), &EntityDataManager::get_allow_class_recipe_learning);
+	ClassDB::bind_method(D_METHOD("set_allow_class_recipe_learning", "value"), &EntityDataManager::set_allow_class_recipe_learning);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_class_recipe_learning"), "set_allow_class_recipe_learning", "get_allow_class_recipe_learning");
 
 	ClassDB::bind_method(D_METHOD("get_skill_for_armor_type", "index"), &EntityDataManager::get_skill_for_armor_type);
 	ClassDB::bind_method(D_METHOD("set_skill_for_armor_type", "index", "aura"), &EntityDataManager::set_skill_for_armor_type);
@@ -1159,6 +1181,8 @@ EntityDataManager::EntityDataManager() {
 
 	_use_spell_points = GLOBAL_DEF("ess/spells/use_spell_points", false);
 	_scale_spells_by_default = GLOBAL_DEF("ess/spells/scale_spells_by_default", false);
+	_allow_class_spell_learning = GLOBAL_DEF("ess/spells/allow_class_spell_learning", false);
+	_allow_class_recipe_learning = GLOBAL_DEF("ess/spells/allow_class_recipe_learning", false);
 
 	_use_class_xp = GLOBAL_DEF("ess/level/use_class_xp", false);
 	_automatic_class_levelups = GLOBAL_DEF("ess/level/automatic_class_levelups", false);
