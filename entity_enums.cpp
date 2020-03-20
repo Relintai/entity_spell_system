@@ -34,7 +34,7 @@ const String EntityEnums::BINDING_STRING_ENTITY_RELATION_TYPE = "Neutral,Friendl
 const String EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE = "Normal,Speak,Loot,Use,None";
 const String EntityEnums::BINDING_STRING_ENTITY_PLAYSTYLE_TYPE = "Melee,Spell,Hybrid,None";
 const String EntityEnums::BINDING_STRING_ENTITY_GENDER = "Male,Female";
-const String EntityEnums::BINDING_STRING_ENTITY_WINDOWS = "Loot,Container,Vendor";
+const String EntityEnums::BINDING_STRING_ENTITY_WINDOWS = "Loot,Container,Vendor,Trainer";
 
 void EntityEnums::_bind_methods() {
 	BIND_ENUM_CONSTANT(ENTITY_PLAYER_TYPE_NONE);
@@ -197,6 +197,7 @@ void EntityEnums::_bind_methods() {
 	BIND_ENUM_CONSTANT(ENTITY_WINDOW_LOOT);
 	BIND_ENUM_CONSTANT(ENTITY_WINDOW_CONTAINER);
 	BIND_ENUM_CONSTANT(ENTITY_WINDOW_VENDOR);
+	BIND_ENUM_CONSTANT(ENTITY_WINDOW_TRAINER);
 
 	BIND_CONSTANT(GENDER_COUNT);
 	BIND_CONSTANT(MAX_CHARACTER_LEVEL);
