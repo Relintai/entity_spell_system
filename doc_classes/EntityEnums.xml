@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityEnums" inherits="Object" category="Core" version="3.2">
+<class name="EntityEnums" inherits="Object" version="3.2">
 	<brief_description>
 		Contains lots of general-use enums for entities.
 	</brief_description>
@@ -10,6 +10,16 @@
 	<methods>
 	</methods>
 	<constants>
+		<constant name="ENTITY_PLAYER_TYPE_NONE" value="0" enum="EntityPlayerType">
+		</constant>
+		<constant name="ENTITY_PLAYER_TYPE_PLAYER" value="1" enum="EntityPlayerType">
+		</constant>
+		<constant name="ENTITY_PLAYER_TYPE_NETWORKED" value="2" enum="EntityPlayerType">
+		</constant>
+		<constant name="ENTITY_PLAYER_TYPE_AI" value="3" enum="EntityPlayerType">
+		</constant>
+		<constant name="ENTITY_PLAYER_TYPE_DISPLAY" value="4" enum="EntityPlayerType">
+		</constant>
 		<constant name="ENITIY_TYPE_NONE" value="0" enum="EntityType">
 		</constant>
 		<constant name="ENITIY_TYPE_CREATURE" value="1" enum="EntityType">
@@ -172,15 +182,13 @@
 		</constant>
 		<constant name="AI_STATE_ATTACK" value="5" enum="AIStates">
 		</constant>
-		<constant name="AI_STATE_MAX" value="6">
+		<constant name="AI_STATE_PET_FOLLOW" value="7" enum="AIStates">
 		</constant>
-		<constant name="PET_STATE_PET_FOLLOW" value="1" enum="PetStates">
+		<constant name="AI_STATE_PET_STOP" value="8" enum="AIStates">
 		</constant>
-		<constant name="PET_STATE_PET_STOP" value="2" enum="PetStates">
+		<constant name="AI_STATE_PET_ATTACK" value="9" enum="AIStates">
 		</constant>
-		<constant name="PET_STATE_PET_ATTACK" value="3" enum="PetStates">
-		</constant>
-		<constant name="PET_STATE_MAX" value="4">
+		<constant name="AI_STATE_MAX" value="10">
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_NONE" value="0" enum="EntityImmunityFlags">
 		</constant>
@@ -244,6 +252,12 @@
 		</constant>
 		<constant name="ENTITY_IMMUNITY_FLAG_ATTACKS" value="536870912" enum="EntityImmunityFlags">
 		</constant>
+		<constant name="ENTITY_RELATION_TYPE_NEUTRAL" value="0" enum="EntityRelationType">
+		</constant>
+		<constant name="ENTITY_RELATION_TYPE_FRIENDLY" value="1" enum="EntityRelationType">
+		</constant>
+		<constant name="ENTITY_RELATION_TYPE_HOSTILE" value="2" enum="EntityRelationType">
+		</constant>
 		<constant name="ENITIY_INTERACTION_TYPE_NORMAL" value="0" enum="EntityInteractionType">
 		</constant>
 		<constant name="ENITIY_INTERACTION_TYPE_SPEAK" value="1" enum="EntityInteractionType">
@@ -272,9 +286,13 @@
 		</constant>
 		<constant name="ENTITY_WINDOW_VENDOR" value="2" enum="EntityWindows">
 		</constant>
+		<constant name="ENTITY_WINDOW_TRAINER" value="2" enum="EntityWindows">
+		</constant>
 		<constant name="GENDER_COUNT" value="2">
 		</constant>
-		<constant name="MAX_LEVEL" value="50">
+		<constant name="MAX_CHARACTER_LEVEL" value="20">
+		</constant>
+		<constant name="MAX_CLASS_LEVEL" value="60">
 		</constant>
 		<constant name="BASE_XP" value="50">
 		</constant>

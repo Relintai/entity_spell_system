@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityResourceData" inherits="Resource" category="Core" version="3.2">
+<class name="EntityResourceData" inherits="Resource" version="3.2">
 	<brief_description>
 		The data for an [Entity]'s resource. Resource in this context is things like mana.
 	</brief_description>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SpellEnums" inherits="Object" category="Core" version="3.2">
+<class name="SpellEnums" inherits="Object" version="3.2">
 	<brief_description>
 		Contains lots of general-use enums for spells.
 	</brief_description>
@@ -96,15 +96,15 @@
 		</constant>
 		<constant name="AURA_TYPE_POISON" value="2" enum="AuraType">
 		</constant>
-		<constant name="AURA_TYPE_PHYSICAL" value="3" enum="AuraType">
+		<constant name="AURA_TYPE_PHYSICAL" value="4" enum="AuraType">
 		</constant>
-		<constant name="AURA_TYPE_CURSE" value="4" enum="AuraType">
+		<constant name="AURA_TYPE_CURSE" value="8" enum="AuraType">
 		</constant>
-		<constant name="AURA_TYPE_BLEED" value="5" enum="AuraType">
+		<constant name="AURA_TYPE_BLEED" value="16" enum="AuraType">
 		</constant>
-		<constant name="AURA_TYPE_TALENT" value="6" enum="AuraType">
+		<constant name="AURA_TYPE_TALENT" value="32" enum="AuraType">
 		</constant>
-		<constant name="AURA_TYPE_SKILL" value="7" enum="AuraType">
+		<constant name="AURA_TYPE_SKILL" value="64" enum="AuraType">
 		</constant>
 		<constant name="COLLIDER_TYPE_NONE" value="0" enum="ColliderType">
 		</constant>

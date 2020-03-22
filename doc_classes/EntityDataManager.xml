@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityDataManager" inherits="Node" category="Core" version="3.2">
+<class name="EntityDataManager" inherits="Object" version="3.2">
 	<brief_description>
 		This class should be added as an autoload. (Or be present in the scene when you want to spawn entities).
 
@@ -47,6 +47,14 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="cls" type="EntitySkillData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="add_entity_species_data">
+			<return type="void">
+			</return>
+			<argument index="0" name="pcd" type="EntitySpeciesData">
 			</argument>
 			<description>
 			</description>
@@ -195,6 +203,28 @@
 		</method>
 		<method name="get_entity_skill_index">
 			<return type="EntitySkillData">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_species_data">
+			<return type="EntitySpeciesData">
+			</return>
+			<argument index="0" name="pcd_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_species_data_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_species_data_index">
+			<return type="EntitySpeciesData">
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
@@ -361,6 +391,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="load_entity_species_datas">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
 		<method name="load_item_templates">
 			<return type="void">
 			</return>
@@ -397,6 +433,42 @@
 			<description>
 			</description>
 		</method>
+		<method name="request_entity_spawn">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="request_entity_spawn_deferred">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="request_world_spell_spawn">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="WorldSpellData">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="request_world_spell_spawn_deferred">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="WorldSpellData">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="set_skill_for_armor_type">
 			<return type="void">
 			</return>
@@ -409,9 +481,15 @@
 		</method>
 	</methods>
 	<members>
+		<member name="allow_class_recipe_learning" type="bool" setter="set_allow_class_recipe_learning" getter="get_allow_class_recipe_learning" default="false">
+		</member>
+		<member name="allow_class_spell_learning" type="bool" setter="set_allow_class_spell_learning" getter="get_allow_class_spell_learning" default="false">
+		</member>
 		<member name="auras_folder" type="String" setter="set_auras_folder" getter="get_auras_folder" default="&quot;&quot;">
 		</member>
-		<member name="automatic_load" type="bool" setter="set_automatic_load" getter="get_automatic_load" default="true">
+		<member name="automatic_class_levelups" type="bool" setter="set_automatic_class_levelups" getter="get_automatic_class_levelups" default="false">
+		</member>
+		<member name="automatic_load" type="bool" setter="set_automatic_load" getter="get_automatic_load" default="false">
 		</member>
 		<member name="craft_data_folder" type="String" setter="set_craft_data_folder" getter="get_craft_data_folder" default="&quot;&quot;">
 		</member>
@@ -421,11 +499,15 @@
 		</member>
 		<member name="entity_skills_folder" type="String" setter="set_entity_skills_folder" getter="get_entity_skills_folder" default="&quot;&quot;">
 		</member>
+		<member name="entity_species_data_folder" type="String" setter="set_entity_species_data_folder" getter="get_entity_species_data_folder" default="&quot;&quot;">
+		</member>
 		<member name="item_template_folder" type="String" setter="set_item_template_folder" getter="get_item_template_folder" default="&quot;&quot;">
 		</member>
 		<member name="mob_data_folder" type="String" setter="set_mob_data_folder" getter="get_mob_data_folder" default="&quot;&quot;">
 		</member>
 		<member name="player_character_data_folder" type="String" setter="set_player_character_data_folder" getter="get_player_character_data_folder" default="&quot;&quot;">
+		</member>
+		<member name="scale_spells_by_default" type="bool" setter="set_scale_spells_by_default" getter="get_scale_spells_by_default" default="false">
 		</member>
 		<member name="skill_for_armor_type_0" type="Aura" setter="set_skill_for_armor_type" getter="get_skill_for_armor_type">
 		</member>
@@ -439,11 +521,33 @@
 		</member>
 		<member name="spells_folder" type="String" setter="set_spells_folder" getter="get_spells_folder" default="&quot;&quot;">
 		</member>
+		<member name="use_class_xp" type="bool" setter="set_use_class_xp" getter="get_use_class_xp" default="false">
+		</member>
+		<member name="use_global_class_level" type="bool" setter="set_use_global_class_level" getter="get_use_global_class_level" default="false">
+		</member>
+		<member name="use_spell_points" type="bool" setter="set_use_spell_points" getter="get_use_spell_points" default="false">
+		</member>
 		<member name="world_spell_datas_folder" type="String" setter="set_world_spell_datas_folder" getter="get_world_spell_datas_folder" default="&quot;&quot;">
 		</member>
 		<member name="xp_data_path" type="String" setter="set_xp_data_path" getter="get_xp_data_path" default="&quot;&quot;">
 		</member>
 	</members>
+	<signals>
+		<signal name="on_entity_spawn_requested">
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="on_world_spell_spawn_requested">
+			<argument index="0" name="data" type="WorldSpellData">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
+	</signals>
 	<constants>
 	</constants>
 </class>

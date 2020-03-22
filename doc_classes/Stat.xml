@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Stat" inherits="Reference" category="Core" version="3.2">
+<class name="Stat" inherits="Reference" version="3.2">
 	<brief_description>
 		Contains the runtime data of a stat.
 	</brief_description>
@@ -174,7 +174,7 @@
 		</member>
 		<member name="dirty_mods" type="bool" setter="set_dirty_mods" getter="get_dirty_mods" default="false">
 		</member>
-		<member name="id" type="int" setter="set_id" getter="get_id" enum="Stat.StatId" default="41">
+		<member name="id" type="int" setter="set_id" getter="get_id" enum="Stat.StatId" default="42">
 		</member>
 		<member name="is_dirty" type="bool" setter="set_dirty" getter="get_dirty" default="true">
 		</member>
@@ -280,9 +280,9 @@
 		</constant>
 		<constant name="STAT_ID_FEAR_RESIST" value="36" enum="StatId">
 		</constant>
-		<constant name="STAT_ID_TOTAL_STATS" value="41" enum="StatId">
+		<constant name="STAT_ID_TOTAL_STATS" value="42" enum="StatId">
 		</constant>
-		<constant name="STAT_ID_NONE" value="41" enum="StatId">
+		<constant name="STAT_ID_NONE" value="42" enum="StatId">
 		</constant>
 		<constant name="MODIFIER_APPLY_TYPE_STANDARD" value="0" enum="StatModifierApplyType">
 		</constant>

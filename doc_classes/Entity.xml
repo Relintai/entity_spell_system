@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Entity" inherits="KinematicBody" category="Core" version="3.2">
+<class name="Entity" inherits="Node" version="3.2">
 	<brief_description>
 		Represents an [Entity] inside the world. Entities can be players, mobs, chests, or any kind of interactable things.
 	</brief_description>
@@ -107,6 +107,22 @@
 			<description>
 			</description>
 		</method>
+		<method name="_con_character_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_class_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="_con_damage_dealt" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -134,6 +150,22 @@
 		<method name="_con_death" qualifiers="virtual">
 			<return type="void">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_con_entity_resource_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_entity_resource_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -187,14 +219,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_level_up" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="_con_spell_cast_success" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -239,6 +263,22 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_getc_relation_to" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="to" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_gets_relation_to" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="to" type="Entity">
 			</argument>
 			<description>
 			</description>
@@ -310,6 +350,8 @@
 		<method name="_setup" qualifiers="virtual">
 			<return type="void">
 			</return>
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -425,6 +467,22 @@
 			<description>
 			</description>
 		</method>
+		<method name="_son_character_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_class_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="_son_damage_dealt" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -460,6 +518,22 @@
 		<method name="_son_death" qualifiers="virtual">
 			<return type="void">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_son_entity_resource_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_entity_resource_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -529,14 +603,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_level_up" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="_son_spell_cast_success" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -595,9 +661,33 @@
 			<description>
 			</description>
 		</method>
+		<method name="_suse_item" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="item_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="addc_aura">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="addc_aura_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="String">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -641,6 +731,42 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="EntityDataContainer">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="addc_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="addc_item_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<argument index="1" name="item_data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="addc_pet">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="addc_pet_path">
+			<return type="void">
+			</return>
+			<argument index="0" name="arg0" type="NodePath">
 			</argument>
 			<description>
 			</description>
@@ -709,10 +835,38 @@
 			<description>
 			</description>
 		</method>
+		<method name="addc_target_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="addc_target_item_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<argument index="1" name="item_data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="addc_xp">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="adds_aura">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
 			</argument>
 			<description>
 			</description>
@@ -761,6 +915,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="adds_pet">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="adds_resource">
 			<return type="void">
 			</return>
@@ -801,6 +963,22 @@
 			<description>
 			</description>
 		</method>
+		<method name="adds_spell_id">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="adds_state_ref">
+			<return type="void">
+			</return>
+			<argument index="0" name="state_index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="adds_talent">
 			<return type="void">
 			</return>
@@ -813,62 +991,6 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="addc_aura">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="addc_aura_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="addc_item">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="addc_item_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<argument index="1" name="item_data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="addc_target_item">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="addc_target_item_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<argument index="1" name="item_data" type="String">
 			</argument>
 			<description>
 			</description>
@@ -911,6 +1033,22 @@
 			<argument index="0" name="slot_id" type="int">
 			</argument>
 			<argument index="1" name="new_count" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="ccharacter_levelup">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cclass_levelup">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -1033,20 +1171,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_aura">
-			<return type="AuraData">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="getc_aura_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
 		<method name="changec_skill">
 			<return type="void">
 			</return>
@@ -1096,14 +1220,6 @@
 		<method name="clears_resource">
 			<return type="void">
 			</return>
-			<description>
-			</description>
-		</method>
-		<method name="clevelup">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
 			<description>
 			</description>
 		</method>
@@ -1187,14 +1303,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_category_cooldown_removed" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="category_cooldown" type="CategoryCooldown">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="con_category_cooldown_removed">
 			<return type="void">
 			</return>
@@ -1203,10 +1311,26 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_cooldown_added">
+		<method name="con_category_cooldown_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
-			<argument index="0" name="cooldown" type="Cooldown">
+			<argument index="0" name="category_cooldown" type="CategoryCooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_character_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_class_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -1219,7 +1343,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_cooldown_removed">
+		<method name="con_cooldown_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -1228,6 +1352,14 @@
 			</description>
 		</method>
 		<method name="con_cooldown_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="Cooldown">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_cooldown_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -1262,6 +1394,22 @@
 		<method name="con_death">
 			<return type="void">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="con_entity_resource_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_entity_resource_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -1309,14 +1457,6 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_level_up">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -1385,86 +1525,6 @@
 			<argument index="1" name="ccurrent" type="int">
 			</argument>
 			<argument index="2" name="cmax" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removec_aura">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removec_aura_dispelled">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removec_aura_dispelled_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removec_aura_exact">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removec_aura_exact_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removec_aura_expired">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removec_aura_expired_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removec_aura_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removec_item">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removec_target_item">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
 			</argument>
 			<description>
 			</description>
@@ -1579,6 +1639,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="crequest_use_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="item_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="creset_talents">
 			<return type="void">
 			</return>
@@ -1673,8 +1741,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_body">
+			<return type="Node">
+			</return>
+			<description>
+			</description>
+		</method>
 		<method name="get_character_skeleton">
-			<return type="CharacterSkeleton">
+			<return type="Node">
 			</return>
 			<description>
 			</description>
@@ -1711,6 +1785,12 @@
 		</method>
 		<method name="get_mana">
 			<return type="Stat">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_maunal_process" qualifiers="const">
+			<return type="bool">
 			</return>
 			<description>
 			</description>
@@ -1794,6 +1874,20 @@
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="getc_aura">
+			<return type="AuraData">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="getc_aura_count">
+			<return type="int">
+			</return>
 			<description>
 			</description>
 		</method>
@@ -1889,6 +1983,28 @@
 			<description>
 			</description>
 		</method>
+		<method name="getc_pet">
+			<return type="Entity">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="getc_pet_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="getc_relation_to">
+			<return type="int" enum="EntityEnums.EntityRelationType">
+			</return>
+			<argument index="0" name="to" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="getc_resource_count">
 			<return type="int">
 			</return>
@@ -1956,6 +2072,40 @@
 		<method name="getc_talent_count">
 			<return type="int">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="gets_aura">
+			<return type="AuraData">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="gets_aura_by">
+			<return type="AuraData">
+			</return>
+			<argument index="0" name="caster" type="Node">
+			</argument>
+			<argument index="1" name="aura_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="gets_aura_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="gets_aura_with_group_by">
+			<return type="AuraData">
+			</return>
+			<argument index="0" name="caster" type="Node">
+			</argument>
+			<argument index="1" name="aura_group" type="AuraGroup">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -2056,6 +2206,28 @@
 		<method name="gets_has_global_cooldown">
 			<return type="bool">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="gets_pet">
+			<return type="Entity">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="gets_pet_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="gets_relation_to">
+			<return type="int" enum="EntityEnums.EntityRelationType">
+			</return>
+			<argument index="0" name="to" type="Node">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -2301,14 +2473,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="initialize">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity_create_info" type="EntityCreateInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="is_deserialized">
 			<return type="bool">
 			</return>
@@ -2497,6 +2661,70 @@
 			<description>
 			</description>
 		</method>
+		<method name="removec_aura">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removec_aura_dispelled">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removec_aura_dispelled_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removec_aura_exact">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removec_aura_exact_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removec_aura_expired">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removec_aura_expired_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removec_aura_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="removec_category_cooldown">
 			<return type="void">
 			</return>
@@ -2530,6 +2758,30 @@
 			</description>
 		</method>
 		<method name="removec_data">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removec_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removec_pet">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removec_pet_index">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2585,6 +2837,54 @@
 			<description>
 			</description>
 		</method>
+		<method name="removec_target_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removes_aura">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removes_aura_dispelled">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removes_aura_exact">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removes_aura_expired">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removes_auras_with_group">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura_group" type="AuraGroup">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="removes_category_cooldown">
 			<return type="void">
 			</return>
@@ -2618,6 +2918,30 @@
 			</description>
 		</method>
 		<method name="removes_data">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removes_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removes_pet">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removes_pet_index">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2681,6 +3005,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="removes_state_ref">
+			<return type="void">
+			</return>
+			<argument index="0" name="state_index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="removes_talent">
 			<return type="void">
 			</return>
@@ -2689,18 +3021,10 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_aura">
+		<method name="removes_target_item">
 			<return type="void">
 			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="adds_state_ref">
-			<return type="void">
-			</return>
-			<argument index="0" name="state_index" type="int">
+			<argument index="0" name="slot_id" type="int">
 			</argument>
 			<description>
 			</description>
@@ -2733,6 +3057,22 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="scharacter_levelup">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sclass_levelup">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -2829,6 +3169,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="set_maunal_process">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="bool">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="set_stat_enum">
 			<return type="void">
 			</return>
@@ -2884,6 +3232,8 @@
 		<method name="setup">
 			<return type="void">
 			</return>
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -2902,40 +3252,6 @@
 		<method name="sfinish_cast">
 			<return type="void">
 			</return>
-			<description>
-			</description>
-		</method>
-		<method name="gets_aura">
-			<return type="AuraData">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="gets_aura_by">
-			<return type="AuraData">
-			</return>
-			<argument index="0" name="caster" type="Node">
-			</argument>
-			<argument index="1" name="aura_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="gets_aura_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="gets_aura_with_group_by">
-			<return type="AuraData">
-			</return>
-			<argument index="0" name="caster" type="Node">
-			</argument>
-			<argument index="1" name="aura_group" type="AuraGroup">
-			</argument>
 			<description>
 			</description>
 		</method>
@@ -2971,14 +3287,6 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="slevelup">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -3087,6 +3395,22 @@
 			<description>
 			</description>
 		</method>
+		<method name="son_character_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_class_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="son_damage_dealt">
 			<return type="void">
 			</return>
@@ -3122,6 +3446,22 @@
 		<method name="son_death">
 			<return type="void">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="son_entity_resource_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_entity_resource_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -3189,14 +3529,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_level_up">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="son_spell_cast_success">
 			<return type="void">
 			</return>
@@ -3227,70 +3559,6 @@
 			<argument index="1" name="talent_row" type="int">
 			</argument>
 			<argument index="2" name="talent_culomn" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removes_aura">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removes_aura_dispelled">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removes_aura_exact">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removes_aura_expired">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removes_auras_with_group">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura_group" type="AuraGroup">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removes_item">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removes_state_ref">
-			<return type="void">
-			</return>
-			<argument index="0" name="state_index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removes_target_item">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
 			</argument>
 			<description>
 			</description>
@@ -3381,9 +3649,25 @@
 			<description>
 			</description>
 		</method>
+		<method name="suse_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="item_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="to_dict">
 			<return type="Dictionary">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="update">
+			<return type="void">
+			</return>
+			<argument index="0" name="delta" type="float">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -3401,7 +3685,17 @@
 		</member>
 		<member name="ai_state" type="int" setter="sets_ai_state" getter="gets_ai_state" enum="EntityEnums.AIStates" default="0">
 		</member>
+		<member name="body_path" type="NodePath" setter="set_body_path" getter="get_body_path" default="NodePath(&quot;&quot;)">
+		</member>
 		<member name="cbag" type="Bag" setter="setc_bag" getter="getc_bag">
+		</member>
+		<member name="ccharacter_level" type="int" setter="setc_character_level" getter="getc_character_level" default="1">
+		</member>
+		<member name="ccharacter_xp" type="int" setter="setc_character_xp" getter="getc_character_xp" default="0">
+		</member>
+		<member name="cclass_level" type="int" setter="setc_class_level" getter="getc_class_level" default="1">
+		</member>
+		<member name="cclass_xp" type="int" setter="setc_class_xp" getter="getc_class_xp" default="0">
 		</member>
 		<member name="centity_data" type="EntityData" setter="setc_entity_data" getter="getc_entity_data">
 		</member>
@@ -3411,6 +3705,8 @@
 		</member>
 		<member name="centity_name" type="String" setter="setc_entity_name" getter="getc_entity_name" default="&quot;&quot;">
 		</member>
+		<member name="centity_player_type" type="int" setter="setc_entity_player_type" getter="getc_entity_player_type" default="0">
+		</member>
 		<member name="centity_type" type="int" setter="setc_entity_type" getter="getc_entity_type" enum="EntityEnums.EntityType" default="0">
 		</member>
 		<member name="cfree_spell_points" type="int" setter="setc_free_spell_points" getter="getc_free_spell_points" default="0">
@@ -3419,11 +3715,13 @@
 		</member>
 		<member name="cgender" type="int" setter="setc_gender" getter="getc_gender" enum="EntityEnums.EntityGender" default="0">
 		</member>
+		<member name="cguid" type="int" setter="setc_guid" getter="getc_guid" default="0">
+		</member>
 		<member name="character_skeleton_path" type="NodePath" setter="set_character_skeleton_path" getter="get_character_skeleton_path" default="NodePath(&quot;&quot;)">
 		</member>
 		<member name="characterclass_id" type="int" setter="sets_entity_data_id" getter="gets_entity_data_id" default="0">
 		</member>
-		<member name="clevel" type="int" setter="setc_level" getter="getc_level" default="1">
+		<member name="cis_pet" type="bool" setter="" getter="getc_is_pet" default="false">
 		</member>
 		<member name="cmoney" type="int" setter="setc_money" getter="getc_money" default="0">
 		</member>
@@ -3435,13 +3733,21 @@
 		</member>
 		<member name="ctarget_bag" type="Bag" setter="setc_target_bag" getter="getc_target_bag">
 		</member>
-		<member name="cxp" type="int" setter="setc_xp" getter="getc_xp" default="0">
-		</member>
 		<member name="entity_data_id" type="int" setter="setc_entity_data_id" getter="getc_entity_data_id" default="0">
+		</member>
+		<member name="gets_pet_ai_state" type="int" setter="sets_pet_ai_state" getter="gets_pet_ai_state" enum="EntityEnums.AIStates" default="0">
 		</member>
 		<member name="sai" type="EntityAI" setter="sets_ai" getter="gets_ai">
 		</member>
 		<member name="sbag" type="Bag" setter="sets_bag" getter="gets_bag">
+		</member>
+		<member name="scharacter_level" type="int" setter="sets_character_level" getter="gets_character_level" default="1">
+		</member>
+		<member name="scharacter_xp" type="int" setter="sets_character_xp" getter="gets_character_xp" default="0">
+		</member>
+		<member name="sclass_level" type="int" setter="sets_class_level" getter="gets_class_level" default="1">
+		</member>
+		<member name="sclass_xp" type="int" setter="sets_class_xp" getter="gets_class_xp" default="0">
 		</member>
 		<member name="sentity_controller" type="int" setter="sets_entity_controller" getter="gets_entity_controller" enum="EntityEnums.EntityController" default="0">
 		</member>
@@ -3453,6 +3759,8 @@
 		</member>
 		<member name="sentity_name" type="String" setter="sets_entity_name" getter="gets_entity_name" default="&quot;&quot;">
 		</member>
+		<member name="sentity_player_type" type="int" setter="sets_entity_player_type" getter="gets_entity_player_type" default="0">
+		</member>
 		<member name="sentity_type" type="int" setter="sets_entity_type" getter="gets_entity_type" enum="EntityEnums.EntityType" default="0">
 		</member>
 		<member name="sfree_spell_points" type="int" setter="sets_free_spell_points" getter="gets_free_spell_points" default="0">
@@ -3461,19 +3769,19 @@
 		</member>
 		<member name="sgender" type="int" setter="sets_gender" getter="gets_gender" enum="EntityEnums.EntityGender" default="0">
 		</member>
+		<member name="sguid" type="int" setter="sets_guid" getter="gets_guid" default="0">
+		</member>
 		<member name="simmunity_flags" type="int" setter="sets_immunity_flags" getter="gets_immunity_flags" default="0">
 		</member>
-		<member name="sis_pet" type="int" setter="sets_is_pet" getter="gets_is_pet" default="0">
-		</member>
-		<member name="slevel" type="int" setter="sets_level" getter="gets_level" default="1">
+		<member name="sis_pet" type="bool" setter="" getter="gets_is_pet" default="false">
 		</member>
 		<member name="smoney" type="int" setter="sets_money" getter="gets_money" default="0">
+		</member>
+		<member name="soriginal_entity_controller" type="int" setter="sets_original_entity_controller" getter="gets_original_entity_controller" enum="EntityEnums.EntityController" default="0">
 		</member>
 		<member name="spet_formation_index" type="int" setter="sets_pet_formation_index" getter="gets_pet_formation_index" default="0">
 		</member>
 		<member name="spet_owner" type="Entity" setter="sets_pet_owner" getter="gets_pet_owner">
-		</member>
-		<member name="spet_state" type="int" setter="sets_pet_state" getter="gets_pet_state" enum="EntityEnums.PetStates" default="0">
 		</member>
 		<member name="sseed" type="int" setter="sets_seed" getter="gets_seed" default="0">
 		</member>
@@ -3482,8 +3790,6 @@
 		<member name="starget" type="Entity" setter="sets_target" getter="gets_target">
 		</member>
 		<member name="starget_bag" type="Bag" setter="sets_target_bag" getter="gets_target_bag">
-		</member>
-		<member name="sxp" type="int" setter="sets_xp" getter="gets_xp" default="0">
 		</member>
 	</members>
 	<signals>
@@ -3601,6 +3907,18 @@
 			<description>
 			</description>
 		</signal>
+		<signal name="centity_resource_added">
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="centity_resource_removed">
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</signal>
 		<signal name="cfree_spell_points_changed">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
@@ -3621,6 +3939,38 @@
 		</signal>
 		<signal name="cname_changed">
 			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="con_character_level_changed">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="level" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="con_character_level_up">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="con_class_level_changed">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="level" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="con_class_level_up">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -3697,22 +4047,6 @@
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="info" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="con_level_changed">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="level" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="con_level_up">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -3961,6 +4295,18 @@
 			<description>
 			</description>
 		</signal>
+		<signal name="sentity_resource_added">
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="sentity_resource_removed">
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</signal>
 		<signal name="sfree_spell_points_changed">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
@@ -3981,6 +4327,38 @@
 		</signal>
 		<signal name="sname_changed">
 			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="son_character_level_changed">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="level" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="son_character_level_up">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="son_class_level_changed">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="level" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="son_class_level_up">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -4041,22 +4419,6 @@
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="info" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="son_level_changed">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="level" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="son_level_up">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>

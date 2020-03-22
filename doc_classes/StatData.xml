@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="StatData" inherits="Resource" category="Core" version="3.2">
+<class name="StatData" inherits="Resource" version="3.2">
 	<brief_description>
 		Contains a [Stat]'s data.
 	</brief_description>
@@ -46,6 +46,8 @@
 		</method>
 	</methods>
 	<members>
+		<member name="base_stat_" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
+		</member>
 		<member name="base_stat_agility" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
 		</member>
 		<member name="base_stat_armor" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">

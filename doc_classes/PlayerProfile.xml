@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ActionBarProfile" inherits="Reference" version="3.2">
+<class name="PlayerProfile" inherits="Reference" version="3.2">
 	<brief_description>
-		Stores all actionbar-related data for a class. ProfileManager uses it.
 	</brief_description>
 	<description>
 	</description>
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="add_action_bar">
+		<method name="add_class_profile">
 			<return type="void">
 			</return>
-			<argument index="0" name="actionbar" type="ActionBarEntry">
+			<argument index="0" name="profile" type="ClassProfile">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="clear_action_bars">
+		<method name="clear_class_profiles">
 			<return type="void">
 			</return>
 			<description>
@@ -28,14 +27,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="from_actionbar_profile">
-			<return type="void">
-			</return>
-			<argument index="0" name="other" type="ActionBarProfile">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="from_dict">
 			<return type="void">
 			</return>
@@ -44,23 +35,25 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_action_bar">
-			<return type="ActionBarEntry">
+		<method name="get_class_profile">
+			<return type="ClassProfile">
 			</return>
-			<argument index="0" name="index" type="int">
+			<argument index="0" name="class_id" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="get_action_bar_count">
+		<method name="get_class_profile_count" qualifiers="const">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="get_owner">
+		<method name="get_class_profile_index">
 			<return type="ClassProfile">
 			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -70,7 +63,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="remove_action_bar">
+		<method name="remove_class_profile">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -86,11 +79,19 @@
 		</method>
 	</methods>
 	<members>
-		<member name="action_bar_profile_name" type="String" setter="set_action_bar_profile_name" getter="get_action_bar_profile_name" default="&quot;&quot;">
+		<member name="custom_data" type="Dictionary" setter="set_custom_data" getter="get_custom_data" default="{}">
+		</member>
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="profile_name" type="String" setter="set_profile_name" getter="get_profile_name" default="&quot;default.profile&quot;">
+		</member>
+		<member name="set_last_used_character" type="int" setter="set_last_used_character" getter="get_last_used_character" default="0">
 		</member>
 	</members>
 	<signals>
 		<signal name="changed">
+			<argument index="0" name="profile" type="PlayerProfile">
+			</argument>
 			<description>
 			</description>
 		</signal>

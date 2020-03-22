@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Cooldown" inherits="Reference" category="Core" version="3.2">
+<class name="Cooldown" inherits="Reference" version="3.2">
 	<brief_description>
 		Contains the runtime data for one of the [Cooldown]s of an [Entity].
 	</brief_description>

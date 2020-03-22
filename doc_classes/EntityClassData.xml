@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityClassData" inherits="Resource" category="Core" version="3.2">
+<class name="EntityClassData" inherits="Resource" version="3.2">
 	<brief_description>
 		Contains all of information for an [Entity]'s class. (Ingame class)
 	</brief_description>
@@ -80,6 +80,26 @@
 			<description>
 			</description>
 		</method>
+		<method name="_con_character_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_class_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="_con_cooldown_added" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -100,6 +120,22 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_entity_resource_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_entity_resource_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
 			</argument>
 			<description>
 			</description>
@@ -150,16 +186,6 @@
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="gcd" type="float">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_level_up" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -320,6 +346,26 @@
 			<description>
 			</description>
 		</method>
+		<method name="_son_character_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_class_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="_son_cooldown_added" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -372,6 +418,22 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_entity_resource_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_entity_resource_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
 			</argument>
 			<description>
 			</description>
@@ -446,16 +508,6 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_level_up" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -550,6 +602,26 @@
 			<description>
 			</description>
 		</method>
+		<method name="con_character_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_class_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="con_cooldown_added">
 			<return type="void">
 			</return>
@@ -570,6 +642,22 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_entity_resource_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_entity_resource_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
 			</argument>
 			<description>
 			</description>
@@ -620,16 +708,6 @@
 			<argument index="0" name="entity" type="Node">
 			</argument>
 			<argument index="1" name="gcd" type="float">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_level_up">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Node">
-			</argument>
-			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -974,6 +1052,26 @@
 			<description>
 			</description>
 		</method>
+		<method name="son_character_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_class_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="son_cooldown_added">
 			<return type="void">
 			</return>
@@ -1026,6 +1124,22 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_entity_resource_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_entity_resource_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
 			</argument>
 			<description>
 			</description>
@@ -1100,16 +1214,6 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_level_up">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Node">
-			</argument>
-			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>

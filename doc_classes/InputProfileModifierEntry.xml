@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="InputProfileModifierEntry" inherits="Reference" category="Core" version="3.2">
+<class name="InputProfileModifierEntry" inherits="Reference" version="3.2">
 	<brief_description>
 		One key entry for a key.
 	</brief_description>

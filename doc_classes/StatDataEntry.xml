@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="StatDataEntry" inherits="Resource" category="Core" version="3.2">
+<class name="StatDataEntry" inherits="Resource" version="3.2">
 	<brief_description>
 		One entry for [StatData].
 	</brief_description>
@@ -88,7 +88,7 @@
 		</member>
 		<member name="percent" type="float" setter="set_percent" getter="get_percent" default="100.0">
 		</member>
-		<member name="stat_id" type="int" setter="set_stat_id" getter="get_stat_id" enum="Stat.StatId" default="41">
+		<member name="stat_id" type="int" setter="set_stat_id" getter="get_stat_id" enum="Stat.StatId" default="42">
 		</member>
 	</members>
 	<constants>

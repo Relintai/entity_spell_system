@@ -81,16 +81,17 @@ def get_doc_classes():
         "InputProfileModifier",
         "InputProfile",
         "ClassProfile",
+        "PlayerProfile",
         "ProfileManager",
 
         "CharacterBones",
         "CharacterSkeleton3D",
+        "CharacterSkeleton2D",
         "CharacterSkeleton",
         "EntitySpeciesData",
+        "SpeciesInstance",
         "SkeletonModelEntry",
         "SpeciesModelData",
-
-        "UnitFrame",
 
         "CategoryCooldown",
         "Cooldown",

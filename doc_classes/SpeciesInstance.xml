@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="StatModifier" inherits="Reference" version="3.2">
+<class name="SpeciesInstance" inherits="Resource" version="3.2">
 	<brief_description>
-		Class for holding the runtime information for a stat modifier.
 	</brief_description>
 	<description>
 	</description>
@@ -38,13 +37,19 @@
 		</method>
 	</methods>
 	<members>
-		<member name="base_mod" type="float" setter="set_base_mod" getter="get_base_mod" default="0.0">
+		<member name="hair_color_index" type="int" setter="set_hair_color_index" getter="get_hair_color_index" default="0">
 		</member>
-		<member name="bonus_mod" type="float" setter="set_bonus_mod" getter="get_bonus_mod" default="0.0">
+		<member name="hair_style_index" type="int" setter="set_hair_style_index" getter="get_hair_style_index" default="0">
+		</member>
+		<member name="head_index" type="int" setter="set_head_index" getter="get_head_index" default="0">
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
 		</member>
-		<member name="percent_mod" type="float" setter="set_percent_mod" getter="get_percent_mod" default="0.0">
+		<member name="skin_color_index" type="int" setter="set_skin_color_index" getter="get_skin_color_index" default="0">
+		</member>
+		<member name="species" type="EntitySpeciesData" setter="set_species" getter="get_species">
+		</member>
+		<member name="species_id" type="int" setter="set_species_id" getter="get_species_id" default="0">
 		</member>
 	</members>
 	<constants>

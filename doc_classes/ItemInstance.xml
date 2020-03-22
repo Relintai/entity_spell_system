@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ItemInstance" inherits="Reference" category="Core" version="3.2">
+<class name="ItemInstance" inherits="Reference" version="3.2">
 	<brief_description>
 		Runtime information for an item.
 	</brief_description>
@@ -13,6 +13,12 @@
 			</return>
 			<argument index="0" name="dict" type="Dictionary">
 			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_get_description" qualifiers="virtual">
+			<return type="String">
+			</return>
 			<description>
 			</description>
 		</method>
@@ -44,6 +50,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_description">
+			<return type="String">
+			</return>
+			<description>
+			</description>
+		</method>
 		<method name="get_item_stat_modifier">
 			<return type="ItemStatModifier">
 			</return>
@@ -52,7 +64,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_stat_modifier_count">
+		<method name="get_item_stat_modifier_count" qualifiers="const">
 			<return type="int">
 			</return>
 			<description>
@@ -74,12 +86,20 @@
 		</method>
 	</methods>
 	<members>
+		<member name="charges" type="int" setter="set_charges" getter="get_charges" default="-1">
+		</member>
 		<member name="item_template" type="ItemTemplate" setter="set_item_template" getter="get_item_template">
 		</member>
 		<member name="stack_size" type="int" setter="set_stack_size" getter="get_stack_size" default="1">
 		</member>
 	</members>
 	<signals>
+		<signal name="stack_charges_changed">
+			<argument index="0" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</signal>
 		<signal name="stack_size_changed">
 			<argument index="0" name="item" type="ItemInstance">
 			</argument>

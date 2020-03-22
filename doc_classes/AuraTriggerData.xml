@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="AuraTriggerData" inherits="Reference" category="Core" version="3.2">
+<class name="AuraTriggerData" inherits="Reference" version="3.2">
 	<brief_description>
 		[Aura] effect trigger information. Not yet complete.
 	</brief_description>
@@ -14,7 +14,7 @@
 		</member>
 		<member name="spell" type="Spell" setter="set_spell" getter="get_spell">
 		</member>
-		<member name="trigger_event" type="int" setter="set_trigger_event" getter="get_trigger_event" enum="SpellEnums.TriggerEvents" default="41">
+		<member name="trigger_event" type="int" setter="set_trigger_event" getter="get_trigger_event" enum="SpellEnums.TriggerEvents" default="42">
 		</member>
 	</members>
 	<constants>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ItemEnums" inherits="Object" category="Core" version="3.2">
+<class name="ItemEnums" inherits="Object" version="3.2">
 	<brief_description>
 		Contains lots of general-use enums for items.
 	</brief_description>
@@ -42,31 +42,29 @@
 		</constant>
 		<constant name="ITEM_TYPE_EQUIPMENT" value="1" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_WEAPON" value="2" enum="ItemType">
+		<constant name="ITEM_TYPE_POTION" value="2" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_POTION" value="4" enum="ItemType">
+		<constant name="ITEM_TYPE_HERB" value="4" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_HERB" value="8" enum="ItemType">
+		<constant name="ITEM_TYPE_ORE" value="8" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_ORE" value="16" enum="ItemType">
+		<constant name="ITEM_TYPE_GEMSTONE" value="16" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_GEMSTONE" value="32" enum="ItemType">
+		<constant name="ITEM_TYPE_FOOD" value="32" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_FOOD" value="64" enum="ItemType">
+		<constant name="ITEM_TYPE_ALCHEMY" value="64" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_ALCHEMY" value="128" enum="ItemType">
+		<constant name="ITEM_TYPE_ENGINEERING" value="128" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_ENGINEERING" value="256" enum="ItemType">
+		<constant name="ITEM_TYPE_ENCHANTING" value="256" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_ENCHANTING" value="512" enum="ItemType">
+		<constant name="ITEM_TYPE_TAILORING" value="512" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_TAILORING" value="1024" enum="ItemType">
+		<constant name="ITEM_TYPE_RECIPE" value="1024" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_RECIPE" value="2048" enum="ItemType">
+		<constant name="ITEM_TYPE_CURRENCY" value="2048" enum="ItemType">
 		</constant>
-		<constant name="ITEM_TYPE_CURRENCY" value="4096" enum="ItemType">
-		</constant>
-		<constant name="ITEM_TYPE_BAG" value="8192" enum="ItemType">
+		<constant name="ITEM_TYPE_BAG" value="4096" enum="ItemType">
 		</constant>
 		<constant name="ITEM_SUB_TYPE_NONE" value="0" enum="ItemSubtype">
 		</constant>

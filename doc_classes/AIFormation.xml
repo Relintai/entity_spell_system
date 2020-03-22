@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="AIFormation" inherits="Resource" category="Core" version="3.2">
+<class name="AIFormation" inherits="Resource" version="3.2">
 	<brief_description>
 		Class for scriptable AI formations. Not yet used. Needs pet support.
 	</brief_description>

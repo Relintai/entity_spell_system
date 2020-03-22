@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Aura" inherits="Resource" category="Core" version="3.2">
+<class name="Aura" inherits="Resource" version="3.2">
 	<brief_description>
 		Base Aura class. Contains data, and callbacks for aura scripts. Inherit from this to create auras with different functionality.
 		Future: Standard funtionality will be implemented by default, you will only need to inherit for unique spell effects.
@@ -14,7 +14,7 @@
 			</return>
 			<argument index="0" name="data" type="AuraData">
 			</argument>
-			<argument index="1" name="data" type="AuraApplyInfo">
+			<argument index="1" name="info" type="AuraApplyInfo">
 			</argument>
 			<description>
 				Override to change the default damage calculation formula. Serverside only.
@@ -124,6 +124,26 @@
 				Called clientside when an [Entity]'s [CategoryCooldown] is removed / expires.
 			</description>
 		</method>
+		<method name="_con_character_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_class_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="_con_cooldown_added" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -186,6 +206,26 @@
 			</argument>
 			<description>
 				Called clientside for an [Entity] who dies.
+			</description>
+		</method>
+		<method name="_con_entity_resource_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_entity_resource_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="_con_equip_fail" qualifiers="virtual">
@@ -253,17 +293,6 @@
 				Called clientside for an [Entity] who receives heal.
 			</description>
 		</method>
-		<method name="_con_level_up" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="AuraData">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
-			<description>
-				Called clientside for an [Entity] who levels up.
-			</description>
-		</method>
 		<method name="_con_spell_cast_success" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -286,12 +315,22 @@
 				Called clientside for an [Entity] who gains xp.
 			</description>
 		</method>
+		<method name="_get_description" qualifiers="virtual">
+			<return type="String">
+			</return>
+			<argument index="0" name="class_level" type="int">
+			</argument>
+			<argument index="1" name="character_level" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="_handle_aura_damage" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="AuraData">
 			</argument>
-			<argument index="1" name="data" type="SpellDamageInfo">
+			<argument index="1" name="info" type="SpellDamageInfo">
 			</argument>
 			<description>
 				Called when this aura wants to deal damage. Serverside only.
@@ -306,6 +345,22 @@
 			</argument>
 			<description>
 				Called when this aura wants to deal damage. Serverside only.
+			</description>
+		</method>
+		<method name="_removes_dispell" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_removes_expired" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="AuraData">
+			</argument>
+			<description>
 			</description>
 		</method>
 		<method name="_sadd" qualifiers="virtual">
@@ -376,7 +431,7 @@
 			</return>
 			<argument index="0" name="data" type="AuraData">
 			</argument>
-			<argument index="1" name="data" type="AuraApplyInfo">
+			<argument index="1" name="info" type="AuraApplyInfo">
 			</argument>
 			<description>
 				This method sets up the given [AuraData] based on the given [AuraApplyInfo]. Override it, if you need to do something special. Serverside.
@@ -392,7 +447,7 @@
 			<argument index="2" name="item" type="ItemInstance">
 			</argument>
 			<description>
-				Gets called if an [Entity] wants to equip an [ItemInstance]. Return true, if tou want this [Aura] to prevent the equip. Serverside. 
+				Gets called if an [Entity] wants to equip an [ItemInstance]. Return true, if tou want this [Aura] to prevent the equip. Serverside.
 			</description>
 		</method>
 		<method name="_son_after_aura_applied" qualifiers="virtual">
@@ -544,6 +599,26 @@
 				Called serverside when a [CategoryCooldown] of the [Entity] this [Aura] is on gets removed.
 			</description>
 		</method>
+		<method name="_son_character_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_class_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="_son_cooldown_added" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -607,13 +682,32 @@
 			<argument index="1" name="data" type="SpellHealInfo">
 			</argument>
 			<description>
-				
 			</description>
 		</method>
 		<method name="_son_death" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_entity_resource_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_son_entity_resource_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -698,16 +792,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_level_up" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="AuraData">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="_son_physics_process" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -764,22 +848,6 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_removes_dispell" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_removes_expired" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="AuraData">
 			</argument>
 			<description>
 			</description>
@@ -898,6 +966,26 @@
 			<description>
 			</description>
 		</method>
+		<method name="con_character_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_class_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="con_cooldown_added">
 			<return type="void">
 			</return>
@@ -952,6 +1040,26 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_entity_resource_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="con_entity_resource_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="EntityResource">
 			</argument>
 			<description>
 			</description>
@@ -1016,16 +1124,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_level_up">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="AuraData">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="con_spell_cast_success">
 			<return type="void">
 			</return>
@@ -1086,6 +1184,22 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_description">
+			<return type="String">
+			</return>
+			<argument index="0" name="class_level" type="int">
+			</argument>
+			<argument index="1" name="character_level" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_name_translated" qualifiers="const">
+			<return type="String">
+			</return>
+			<description>
+			</description>
+		</method>
 		<method name="get_trigger_aura" qualifiers="const">
 			<return type="Aura">
 			</return>
@@ -1133,6 +1247,22 @@
 		<method name="is_talent" qualifiers="const">
 			<return type="bool">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="removes_dispell">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removes_expired">
+			<return type="void">
+			</return>
+			<argument index="0" name="aura" type="AuraData">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -1444,6 +1574,26 @@
 			<description>
 			</description>
 		</method>
+		<method name="son_character_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_class_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="son_cooldown_added">
 			<return type="void">
 			</return>
@@ -1508,6 +1658,26 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_entity_resource_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="son_entity_resource_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="AuraData">
+			</argument>
+			<argument index="1" name="value" type="EntityResource">
 			</argument>
 			<description>
 			</description>
@@ -1592,16 +1762,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_level_up">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="AuraData">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="son_physics_process">
 			<return type="void">
 			</return>
@@ -1662,22 +1822,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_dispell">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removes_expired">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="supdate">
 			<return type="void">
 			</return>
@@ -1694,7 +1838,7 @@
 		</member>
 		<member name="absorb_damage_type" type="int" setter="set_absorb_damage_type" getter="get_absorb_damage_type" default="0">
 		</member>
-		<member name="absorb_enabled" type="bool" setter="set_absorb_enabled" getter="is_absorb_enabled" default="false">
+		<member name="absorb_enabled" type="bool" setter="set_absorb_enabled" getter="get_absorb_enabled" default="false">
 		</member>
 		<member name="absorb_max" type="int" setter="set_absorb_max" getter="get_absorb_max" default="0">
 		</member>
@@ -1710,7 +1854,7 @@
 		</member>
 		<member name="damage_can_crit" type="bool" setter="set_damage_can_crit" getter="get_damage_can_crit" default="false">
 		</member>
-		<member name="damage_enabled" type="bool" setter="set_damage_enabled" getter="is_damage_enabled" default="false">
+		<member name="damage_enabled" type="bool" setter="set_damage_enabled" getter="get_damage_enabled" default="false">
 		</member>
 		<member name="damage_max" type="int" setter="set_damage_max" getter="get_damage_max" default="0">
 		</member>
@@ -1722,9 +1866,17 @@
 		</member>
 		<member name="debuff" type="bool" setter="set_is_debuff" getter="get_is_debuff" default="false">
 		</member>
+		<member name="dispell_aura_types" type="int" setter="set_dispell_aura_types" getter="get_dispell_aura_types" default="0">
+		</member>
+		<member name="dispell_count_max" type="int" setter="set_dispell_count_max" getter="get_dispell_count_max" default="0">
+		</member>
+		<member name="dispell_count_min" type="int" setter="set_dispell_count_min" getter="get_dispell_count_min" default="0">
+		</member>
+		<member name="dispell_enabled" type="bool" setter="set_dispell_enabled" getter="get_dispell_enabled" default="false">
+		</member>
 		<member name="heal_can_crit" type="bool" setter="set_heal_can_crit" getter="get_heal_can_crit" default="false">
 		</member>
-		<member name="heal_enabled" type="bool" setter="set_heal_enabled" getter="is_heal_enabled" default="false">
+		<member name="heal_enabled" type="bool" setter="set_heal_enabled" getter="get_heal_enabled" default="false">
 		</member>
 		<member name="heal_max" type="int" setter="set_heal_max" getter="get_heal_max" default="0">
 		</member>
@@ -1744,6 +1896,8 @@
 		</member>
 		<member name="resource_give" type="EntityResourceCostData" setter="set_resource_give" getter="get_resource_give">
 		</member>
+		<member name="scale_with_level" type="bool" setter="set_scale_with_level" getter="get_scale_with_level" default="false">
+		</member>
 		<member name="states_add" type="int" setter="set_add_states" getter="get_add_states" default="0">
 		</member>
 		<member name="states_remove_effects" type="int" setter="set_remove_effects_with_states" getter="get_remove_effects_with_states" default="0">
@@ -1759,6 +1913,8 @@
 		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+		<member name="text_translation_key" type="String" setter="set_text_translation_key" getter="get_text_translation_key" default="&quot;&quot;">
 		</member>
 		<member name="tick" type="float" setter="set_tick" getter="get_tick" default="0.0">
 		</member>

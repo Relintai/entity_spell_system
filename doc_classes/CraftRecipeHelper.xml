@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="CraftRecipeHelper" inherits="Resource" category="Core" version="3.2">
+<class name="CraftRecipeHelper" inherits="Resource" version="3.2">
 	<brief_description>
 		Contains one item entry for [CraftRecipes]s
 	</brief_description>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SpellDamageInfo" inherits="Reference" category="Core" version="3.2">
+<class name="SpellDamageInfo" inherits="Reference" version="3.2">
 	<brief_description>
 		Contains damage information. It is passed around in callbacks, so things can modify values. (absorbs, immunities etc.)
 	</brief_description>

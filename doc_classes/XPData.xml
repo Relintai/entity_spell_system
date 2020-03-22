@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="XPData" inherits="Resource" category="Core" version="3.2">
+<class name="XPData" inherits="Resource" version="3.2">
 	<brief_description>
 		Contains the XP values required to level up for entities.
 	</brief_description>
@@ -8,7 +8,7 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="can_level_up">
+		<method name="can_character_level_up">
 			<return type="bool">
 			</return>
 			<argument index="0" name="level" type="int">
@@ -16,13 +16,21 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_max_level">
+		<method name="can_class_level_up">
+			<return type="bool">
+			</return>
+			<argument index="0" name="level" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_character_max_level">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="get_xp">
+		<method name="get_character_xp">
 			<return type="int">
 			</return>
 			<argument index="0" name="level" type="int">
@@ -30,7 +38,31 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_xp">
+		<method name="get_class_max_level">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_class_xp">
+			<return type="int">
+			</return>
+			<argument index="0" name="level" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_character_xp">
+			<return type="void">
+			</return>
+			<argument index="0" name="level" type="int">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_class_xp">
 			<return type="void">
 			</return>
 			<argument index="0" name="level" type="int">
@@ -42,105 +74,165 @@
 		</method>
 	</methods>
 	<members>
-		<member name="level_1" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_1" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_10" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_10" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_11" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_11" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_12" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_12" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_13" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_13" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_14" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_14" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_15" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_15" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_16" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_16" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_17" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_17" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_18" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_18" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_19" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_19" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_2" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_2" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_20" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_20" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_21" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_3" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_22" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_4" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_23" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_5" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_24" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_6" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_25" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_7" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_26" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_8" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_27" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="character_level_9" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
 		</member>
-		<member name="level_28" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_1" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_29" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_10" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_3" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_11" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_30" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_12" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_31" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_13" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_32" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_14" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_33" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_15" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_34" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_16" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_35" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_17" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_36" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_18" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_37" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_19" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_38" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_2" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_39" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_20" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_4" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_21" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_40" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_22" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_41" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_23" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_42" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_24" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_43" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_25" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_44" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_26" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_45" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_27" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_46" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_28" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_47" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_29" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_48" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_3" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_49" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_30" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_5" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_31" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_50" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_32" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_6" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_33" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_7" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_34" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_8" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_35" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
-		<member name="level_9" type="int" setter="set_xp" getter="get_xp" default="0">
+		<member name="class_level_36" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_37" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_38" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_39" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_4" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_40" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_41" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_42" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_43" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_44" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_45" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_46" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_47" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_48" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_49" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_5" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_50" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_51" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_52" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_53" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_54" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_55" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_56" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_57" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_58" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_59" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_6" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_60" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_7" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_8" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
+		</member>
+		<member name="class_level_9" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
 	</members>
 	<constants>

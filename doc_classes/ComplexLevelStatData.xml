@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ComplexLevelStatData" inherits="LevelStatData" category="Core" version="3.2">
+<class name="ComplexLevelStatData" inherits="LevelStatData" version="3.2">
 	<brief_description>
 		Per level stat information for an [Entity].
 	</brief_description>
@@ -220,96 +220,6 @@
 		</member>
 		<member name="level_20_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
 		</member>
-		<member name="level_21_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_21_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_21_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_21_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_21_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_22_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_22_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_22_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_22_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_22_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_23_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_23_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_23_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_23_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_23_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_24_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_24_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_24_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_24_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_24_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_25_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_25_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_25_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_25_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_25_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_26_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_26_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_26_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_26_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_26_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_27_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_27_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_27_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_27_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_27_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_28_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_28_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_28_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_28_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_28_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_29_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_29_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_29_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_29_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_29_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
 		<member name="level_2_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
 		</member>
 		<member name="level_2_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
@@ -319,106 +229,6 @@
 		<member name="level_2_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
 		</member>
 		<member name="level_2_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_30_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_30_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_30_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_30_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_30_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_31_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_31_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_31_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_31_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_31_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_32_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_32_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_32_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_32_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_32_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_33_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_33_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_33_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_33_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_33_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_34_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_34_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_34_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_34_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_34_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_35_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_35_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_35_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_35_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_35_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_36_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_36_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_36_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_36_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_36_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_37_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_37_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_37_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_37_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_37_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_38_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_38_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_38_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_38_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_38_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_39_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_39_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_39_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_39_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_39_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
 		</member>
 		<member name="level_3_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
 		</member>
@@ -430,106 +240,6 @@
 		</member>
 		<member name="level_3_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
 		</member>
-		<member name="level_40_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_40_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_40_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_40_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_40_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_41_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_41_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_41_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_41_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_41_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_42_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_42_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_42_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_42_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_42_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_43_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_43_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_43_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_43_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_43_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_44_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_44_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_44_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_44_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_44_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_45_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_45_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_45_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_45_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_45_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_46_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_46_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_46_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_46_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_46_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_47_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_47_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_47_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_47_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_47_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_48_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_48_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_48_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_48_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_48_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_49_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_49_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_49_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_49_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_49_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
 		<member name="level_4_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
 		</member>
 		<member name="level_4_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
@@ -539,16 +249,6 @@
 		<member name="level_4_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
 		</member>
 		<member name="level_4_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
-		</member>
-		<member name="level_50_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
-		</member>
-		<member name="level_50_intellect" type="int" setter="set_intellect_for_level" getter="get_intellect_for_level" default="0">
-		</member>
-		<member name="level_50_spirit" type="int" setter="set_spirit_for_level" getter="get_spirit_for_level" default="0">
-		</member>
-		<member name="level_50_stamina" type="int" setter="set_stamina_for_level" getter="get_stamina_for_level" default="0">
-		</member>
-		<member name="level_50_strength" type="int" setter="set_strength_for_level" getter="get_strength_for_level" default="0">
 		</member>
 		<member name="level_5_agility" type="int" setter="set_agility_for_level" getter="get_agility_for_level" default="0">
 		</member>
