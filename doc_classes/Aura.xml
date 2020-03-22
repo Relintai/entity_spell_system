@@ -2,7 +2,6 @@
 <class name="Aura" inherits="Resource" version="3.2">
 	<brief_description>
 		Base Aura class. Contains data, and callbacks for aura scripts. Inherit from this to create auras with different functionality.
-		Future: Standard funtionality will be implemented by default, you will only need to inherit for unique spell effects.
 	</brief_description>
 	<description>
 	</description>

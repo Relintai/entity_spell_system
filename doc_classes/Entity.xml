@@ -6,7 +6,6 @@
 	<description>
 		Functions starting, or having an 's' in them (like adds_cooldown, or sapply_item etc) are only called, or meant to be called by serverside code.
 		Functions with a 'c' in them (like addc_cooldown, cdeapply_item etc) are only called, or meant to be called from clientside code.
-
 		Functions that have a virtual variant starting with an underscore, should be called, they will call the virtual version.
 		They will check if the virtual properly exists, also usually they check if the parameters are valid, so you don't have to do it every time in gdscript.
 	</description>

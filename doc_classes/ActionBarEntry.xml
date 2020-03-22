@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="ActionBarEntry" inherits="Reference" version="3.2">
 	<brief_description>
-		Stores the data for an actionbar. ProfileManager uses it.
+		Stores the data for an actionbar. Also see [ProfileManager].
 	</brief_description>
 	<description>
 	</description>

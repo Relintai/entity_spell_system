@@ -2,7 +2,6 @@
 <class name="ProfileManager" inherits="Object" version="3.2">
 	<brief_description>
 		Stores, saves, loads per class profile data.
-
 		Should be added as an autoload, or at least is should be in the scene before spawning entities.
 	</brief_description>
 	<description>

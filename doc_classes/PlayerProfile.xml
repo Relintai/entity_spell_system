@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="PlayerProfile" inherits="Reference" version="3.2">
 	<brief_description>
+		Stores the data for a player. Also see [ProfileManager].
 	</brief_description>
 	<description>
 	</description>

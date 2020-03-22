@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="EntityDataManager" inherits="Object" version="3.2">
 	<brief_description>
-		This class should be added as an autoload. (Or be present in the scene when you want to spawn entities).
-
-		This loads in and stores all information required.
+		The EntityDataManager singleton.
 	</brief_description>
 	<description>
-		The main reason for this class is networking, when the server sends the client an aura, you need to be able to look it up by an id.
+		Gives easy access to entity and spell related data, providing easy lookups.
+		Make sure that you add everything both server and clientside before use, because the system uses ids (get_id()) for server clinet communications. This also means that ids should be unique per resources for every ESS-related resources. 
+		For example you shouldn't register 2 spells with id 1 (you will get an error), but you can register a [Spell] with id1 and an [Aura] with an id 1.
+		Also grants access easy to ESS-related project settings.
 	</description>
 	<tutorials>
 	</tutorials>

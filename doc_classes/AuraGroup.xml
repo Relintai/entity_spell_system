@@ -5,7 +5,6 @@
 	</brief_description>
 	<description>
 		Only one [Aura] with the same group is allowed on an [Entity] by the same caster by default.
-
 		For example if an [Entity] wants to apply the same [Aura] except different ranks to a target, this is how you can prevent it easily.
 	</description>
 	<tutorials>
