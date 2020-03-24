@@ -102,7 +102,7 @@ Ref<ClassProfile> PlayerProfile::get_class_profile(const int class_id) {
 
 	_class_profiles.push_back(Ref<ClassProfile>(class_profile));
 
-	emit_signal("changed");
+	emit_change();
 
 	return class_profile;
 }
