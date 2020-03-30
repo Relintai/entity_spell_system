@@ -259,6 +259,8 @@ Array CharacterSkeleton3D::merge_mesh_array(Array arr) const {
 	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
 	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
 	PoolIntArray indices = arr[VisualServer::ARRAY_INDEX];
+	PoolIntArray bones = arr[VisualServer::ARRAY_BONES];
+	PoolRealArray weights = arr[VisualServer::ARRAY_WEIGHTS];
 
 	int i = 0;
 	while (i < verts.size()) {
@@ -281,6 +283,12 @@ Array CharacterSkeleton3D::merge_mesh_array(Array arr) const {
 			uvs.remove(remk);
 			colors.remove(remk);
 
+			int bindex = remk * 4;
+			for (int l = 0; l < 4; ++l) {
+				bones.remove(bindex);
+				weights.remove(bindex);
+			}
+
 			for (int j = 0; j < indices.size(); ++j) {
 				int indx = indices[j];
 
@@ -299,6 +307,8 @@ Array CharacterSkeleton3D::merge_mesh_array(Array arr) const {
 	arr[VisualServer::ARRAY_TEX_UV] = uvs;
 	arr[VisualServer::ARRAY_COLOR] = colors;
 	arr[VisualServer::ARRAY_INDEX] = indices;
+	arr[VisualServer::ARRAY_BONES] = bones;
+	arr[VisualServer::ARRAY_WEIGHTS] = weights;
 
 	return arr;
 }
