@@ -85,6 +85,9 @@ public:
 	void build_model();
 	void _build_model();
 
+	Array merge_mesh_array(Array arr) const;
+	Array bake_mesh_array_uv(Array arr, Ref<Texture> tex, float mul_color = 0.7) const;
+
 	CharacterSkeleton3D();
 	~CharacterSkeleton3D();
 

@@ -251,6 +251,88 @@ void CharacterSkeleton3D::_build_model() {
 	set_process(false);
 }
 
+Array CharacterSkeleton3D::merge_mesh_array(Array arr) const {
+	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
+
+	PoolVector3Array verts = arr[VisualServer::ARRAY_VERTEX];
+	PoolVector3Array normals = arr[VisualServer::ARRAY_NORMAL];
+	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
+	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
+	PoolIntArray indices = arr[VisualServer::ARRAY_INDEX];
+
+	int i = 0;
+	while (i < verts.size()) {
+		Vector3 v = verts[i];
+
+		Array equals;
+		for (int j = i + 1; j < verts.size(); ++j) {
+			Vector3 vc = verts[j];
+
+			if (Math::is_equal_approx(v.x, vc.x) && Math::is_equal_approx(v.y, vc.y) && Math::is_equal_approx(v.z, vc.z))
+				equals.push_back(j);
+		}
+
+		for (int k = 0; k < equals.size(); ++k) {
+			int rem = equals[k];
+			int remk = rem - k;
+
+			verts.remove(remk);
+			normals.remove(remk);
+			uvs.remove(remk);
+			colors.remove(remk);
+
+			for (int j = 0; j < indices.size(); ++j) {
+				int indx = indices[j];
+
+				if (indx == remk)
+					indices.set(j, i);
+				else if (indx > remk)
+					indices.set(j, indx - 1);
+			}
+		}
+
+		++i;
+	}
+
+	arr[VisualServer::ARRAY_VERTEX] = verts;
+	arr[VisualServer::ARRAY_NORMAL] = normals;
+	arr[VisualServer::ARRAY_TEX_UV] = uvs;
+	arr[VisualServer::ARRAY_COLOR] = colors;
+	arr[VisualServer::ARRAY_INDEX] = indices;
+
+	return arr;
+}
+Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float mul_color) const {
+	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
+	ERR_FAIL_COND_V(!tex.is_valid(), arr);
+
+	Ref<Image> img = tex->get_data();
+
+	ERR_FAIL_COND_V(!img.is_valid(), arr);
+
+	Vector2 imgsize = img->get_size();
+
+	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
+	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
+
+	img->lock();
+
+	for (int i = 0; i < uvs.size(); ++i) {
+		Vector2 uv = uvs[i];
+		uv *= imgsize;
+
+		Color c = img->get_pixelv(uv);
+
+		colors.set(i, colors[i] * c * mul_color);
+	}
+
+	img->unlock();
+
+	arr[VisualServer::ARRAY_COLOR] = colors;
+
+	return arr;
+}
+
 CharacterSkeleton3D::CharacterSkeleton3D() {
 	_model_dirty = false;
 	_gender = EntityEnums::GENDER_MALE;
@@ -320,6 +402,9 @@ void CharacterSkeleton3D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("build_model"), &CharacterSkeleton3D::build_model);
 	ClassDB::bind_method(D_METHOD("_build_model"), &CharacterSkeleton3D::_build_model);
+
+	ClassDB::bind_method(D_METHOD("merge_mesh_array", "arr"), &CharacterSkeleton3D::merge_mesh_array);
+	ClassDB::bind_method(D_METHOD("bake_mesh_array_uv", "arr", "tex", "mul_color"), &CharacterSkeleton3D::bake_mesh_array_uv, DEFVAL(0.7));
 
 	//Bone Paths
 	ClassDB::bind_method(D_METHOD("get_bone_path", "index"), &CharacterSkeleton3D::get_bone_path);
