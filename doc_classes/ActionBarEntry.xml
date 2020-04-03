@@ -58,7 +58,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="action_bar_id" type="int" setter="set_action_bar_id" getter="get_action_bar_id" default="132730080">
+		<member name="action_bar_id" type="int" setter="set_action_bar_id" getter="get_action_bar_id" default="0">
 		</member>
 		<member name="size" type="float" setter="set_size" getter="get_size" default="45.0">
 		</member>

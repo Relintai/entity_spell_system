@@ -142,6 +142,7 @@ void ActionBarEntry::from_dict(const Dictionary &dict) {
 ActionBarEntry::ActionBarEntry() {
 	_owner = NULL;
 
+	_action_bar_id = 0;
 	_size = 45;
 	_slot_num = 12;
 }
