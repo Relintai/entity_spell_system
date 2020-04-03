@@ -36,6 +36,18 @@
 			<description>
 			</description>
 		</method>
+		<method name="bake_mesh_array_uv" qualifiers="const">
+			<return type="Array">
+			</return>
+			<argument index="0" name="arr" type="Array">
+			</argument>
+			<argument index="1" name="tex" type="Texture">
+			</argument>
+			<argument index="2" name="mul_color" type="float" default="0.7">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="build_model">
 			<return type="void">
 			</return>
@@ -104,6 +116,14 @@
 			<return type="int">
 			</return>
 			<argument index="0" name="bone_index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="merge_mesh_array" qualifiers="const">
+			<return type="Array">
+			</return>
+			<argument index="0" name="arr" type="Array">
 			</argument>
 			<description>
 			</description>

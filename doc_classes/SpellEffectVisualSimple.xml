@@ -36,13 +36,13 @@
 	<members>
 		<member name="aura_effect_visual" type="PackedScene" setter="set_aura_effect_visual" getter="get_aura_effect_visual">
 		</member>
-		<member name="aura_effect_visual_point" type="int" setter="set_aura_effect_visual_point" getter="get_aura_effect_visual_point" enum="EntityEnums.CharacterSkeletonPoints" default="80855392">
+		<member name="aura_effect_visual_point" type="int" setter="set_aura_effect_visual_point" getter="get_aura_effect_visual_point" enum="EntityEnums.CharacterSkeletonPoints" default="113777216">
 		</member>
 		<member name="effect_spell_cast_effect_id" type="PackedScene" setter="set_spell_cast_effect" getter="get_spell_cast_effect">
 		</member>
 		<member name="effect_spell_cast_finish_effect" type="PackedScene" setter="set_spell_cast_finish_effect" getter="get_spell_cast_finish_effect">
 		</member>
-		<member name="spell_cast_finish_effect_point" type="int" setter="set_spell_cast_finish_effect_point" getter="get_spell_cast_finish_effect_point" enum="EntityEnums.CharacterSkeletonPoints" default="80855392">
+		<member name="spell_cast_finish_effect_point" type="int" setter="set_spell_cast_finish_effect_point" getter="get_spell_cast_finish_effect_point" enum="EntityEnums.CharacterSkeletonPoints" default="0">
 		</member>
 		<member name="spell_effect_visual" type="PackedScene" setter="set_spell_effect_visual" getter="get_spell_effect_visual">
 		</member>
