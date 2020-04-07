@@ -186,20 +186,20 @@ public:
 	void set_cast_time(const float value);
 
 	//Delay
-	bool delay_get_use_time() const;
-	void delay_set_use_time(const bool value);
+	bool projectile_get_use_time() const;
+	void projectile_set_use_time(const bool value);
 
-	float delay_get_time() const;
-	void delay_set_time(const float value);
+	float projectile_get_time() const;
+	void projectile_set_time(const float value);
 
-	bool delay_get_use_speed() const;
-	void delay_set_use_speed(const bool value);
+	bool projectile_get_use_speed() const;
+	void projectile_set_use_speed(const bool value);
 
-	float delay_get_speed() const;
-	void delay_set_speed(const float value);
+	float projectile_get_speed() const;
+	void projectile_set_speed(const float value);
 
-	Ref<PackedScene> delay_get_scene() const;
-	void delay_set_scene(const Ref<PackedScene> &value);
+	Ref<PackedScene> projectile_get_scene() const;
+	void projectile_set_scene(const Ref<PackedScene> &value);
 
 	//Damage
 	bool get_damage_enabled() const;
@@ -398,11 +398,11 @@ private:
 	float _range;
 
 	//Delay
-	bool _delay_use_time;
-	float _delay_time;
-	bool _delay_use_speed;
-	float _delay_speed;
-	Ref<PackedScene> _delay_scene;
+	bool _projectile_use_time;
+	float _projectile_time;
+	bool _projectile_use_speed;
+	float _projectile_speed;
+	Ref<PackedScene> _projectile_scene;
 
 	bool _damage_enabled;
 	int _damage_type;

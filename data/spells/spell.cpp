@@ -319,39 +319,39 @@ void Spell::set_cast_time(const float value) {
 	_cast_time = value;
 }
 
-bool Spell::delay_get_use_time() const {
-	return _delay_use_time;
+bool Spell::projectile_get_use_time() const {
+	return _projectile_use_time;
 }
-void Spell::delay_set_use_time(const bool value) {
-	_delay_use_time = value;
-}
-
-float Spell::delay_get_time() const {
-	return _delay_time;
-}
-void Spell::delay_set_time(const float value) {
-	_delay_time = value;
+void Spell::projectile_set_use_time(const bool value) {
+	_projectile_use_time = value;
 }
 
-bool Spell::delay_get_use_speed() const {
-	return _delay_use_speed;
+float Spell::projectile_get_time() const {
+	return _projectile_time;
 }
-void Spell::delay_set_use_speed(const bool value) {
-	_delay_use_speed = value;
-}
-
-float Spell::delay_get_speed() const {
-	return _delay_speed;
-}
-void Spell::delay_set_speed(const float value) {
-	_delay_speed = value;
+void Spell::projectile_set_time(const float value) {
+	_projectile_time = value;
 }
 
-Ref<PackedScene> Spell::delay_get_scene() const {
-	return _delay_scene;
+bool Spell::projectile_get_use_speed() const {
+	return _projectile_use_speed;
 }
-void Spell::delay_set_scene(const Ref<PackedScene> &value) {
-	_delay_scene = value;
+void Spell::projectile_set_use_speed(const bool value) {
+	_projectile_use_speed = value;
+}
+
+float Spell::projectile_get_speed() const {
+	return _projectile_speed;
+}
+void Spell::projectile_set_speed(const float value) {
+	_projectile_speed = value;
+}
+
+Ref<PackedScene> Spell::projectile_get_scene() const {
+	return _projectile_scene;
+}
+void Spell::projectile_set_scene(const Ref<PackedScene> &value) {
+	_projectile_scene = value;
 }
 
 bool Spell::get_damage_enabled() const {
@@ -883,10 +883,10 @@ Spell::Spell() {
 	_training_cost = 0;
 	_training_required_skill_level = 0;
 
-	_delay_use_time = false;
-	_delay_time = 0;
-	_delay_use_speed = false;
-	_delay_speed = 0;
+	_projectile_use_time = false;
+	_projectile_time = 0;
+	_projectile_use_speed = false;
+	_projectile_speed = 0;
 }
 
 Spell::~Spell() {
@@ -908,7 +908,7 @@ Spell::~Spell() {
 	_training_required_spell.unref();
 	_training_required_skill.unref();
 
-	_delay_scene.unref();
+	_projectile_scene.unref();
 }
 
 void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
@@ -998,18 +998,18 @@ void Spell::_handle_spell_heal(Ref<SpellHealInfo> data) {
 }
 
 void Spell::_handle_projectile(Ref<SpellCastInfo> info) {
-	/*
-	if (_world_spell_data.is_valid()) {
-		WorldSpell *ws = memnew(WorldSpell);
+	if (_projectile_scene.is_valid()) {
+		Node *projectile = _projectile_scene->instance();
 
 		Node *p = info->get_caster()->get_parent();
 
 		ERR_FAIL_COND(!ObjectDB::instance_validate(p));
 
-		p->add_child(ws);
-		ws->send(_world_spell_data, info);
+		p->add_child(projectile);
+
+		if (projectile->has_method("setup_projectile"))
+			projectile->call("setup_projectile", info);
 	}
-	*/
 }
 
 void Spell::_handle_effect(Ref<SpellCastInfo> info) {
@@ -1303,26 +1303,26 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_can_move_while_casting", "value"), &Spell::set_can_move_while_casting);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cast_can_move_while_casting"), "set_can_move_while_casting", "get_can_move_while_casting");
 
-	ADD_GROUP("Delay", "delay");
-	ClassDB::bind_method(D_METHOD("delay_get_use_time"), &Spell::delay_get_use_time);
-	ClassDB::bind_method(D_METHOD("delay_set_use_time", "value"), &Spell::delay_set_use_time);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "delay_use_time"), "delay_set_use_time", "delay_get_use_time");
+	ADD_GROUP("Projectile", "projectile");
+	ClassDB::bind_method(D_METHOD("projectile_get_use_time"), &Spell::projectile_get_use_time);
+	ClassDB::bind_method(D_METHOD("projectile_set_use_time", "value"), &Spell::projectile_set_use_time);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "projectile_use_time"), "projectile_set_use_time", "projectile_get_use_time");
 
-	ClassDB::bind_method(D_METHOD("delay_get_time"), &Spell::delay_get_time);
-	ClassDB::bind_method(D_METHOD("delay_set_time", "value"), &Spell::delay_set_time);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "delay_time"), "delay_set_time", "delay_get_time");
+	ClassDB::bind_method(D_METHOD("projectile_get_time"), &Spell::projectile_get_time);
+	ClassDB::bind_method(D_METHOD("projectile_set_time", "value"), &Spell::projectile_set_time);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "projectile_time"), "projectile_set_time", "projectile_get_time");
 
-	ClassDB::bind_method(D_METHOD("delay_get_use_speed"), &Spell::delay_get_use_speed);
-	ClassDB::bind_method(D_METHOD("delay_set_use_speed", "value"), &Spell::delay_set_use_speed);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "delay_use_speed"), "delay_set_use_speed", "delay_get_use_speed");
+	ClassDB::bind_method(D_METHOD("projectile_get_use_speed"), &Spell::projectile_get_use_speed);
+	ClassDB::bind_method(D_METHOD("projectile_set_use_speed", "value"), &Spell::projectile_set_use_speed);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "projectile_use_speed"), "projectile_set_use_speed", "projectile_get_use_speed");
 
-	ClassDB::bind_method(D_METHOD("delay_get_speed"), &Spell::delay_get_speed);
-	ClassDB::bind_method(D_METHOD("delay_set_speed", "value"), &Spell::delay_set_speed);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "delay_speed"), "delay_set_speed", "delay_get_speed");
+	ClassDB::bind_method(D_METHOD("projectile_get_speed"), &Spell::projectile_get_speed);
+	ClassDB::bind_method(D_METHOD("projectile_set_speed", "value"), &Spell::projectile_set_speed);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "projectile_speed"), "projectile_set_speed", "projectile_get_speed");
 
-	ClassDB::bind_method(D_METHOD("delay_get_scene"), &Spell::delay_get_scene);
-	ClassDB::bind_method(D_METHOD("delay_set_scene", "value"), &Spell::delay_set_scene);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "delay_scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "delay_set_scene", "delay_get_scene");
+	ClassDB::bind_method(D_METHOD("projectile_get_scene"), &Spell::projectile_get_scene);
+	ClassDB::bind_method(D_METHOD("projectile_set_scene", "value"), &Spell::projectile_set_scene);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "projectile_scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "projectile_set_scene", "projectile_get_scene");
 
 	ADD_GROUP("Damage", "damage");
 	ClassDB::bind_method(D_METHOD("get_damage_enabled"), &Spell::get_damage_enabled);

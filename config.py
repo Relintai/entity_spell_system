@@ -97,8 +97,7 @@ def get_doc_classes():
         "Cooldown",
         "EntityCreateInfo",
 
-        "WorldSpellData",
-        "WorldSpell",
+        "SpellFollowProjectile3D",
 
         "EntityDataManager",
 

@@ -114,6 +114,8 @@ SOFTWARE.
 #include "data/spells/spell_effect_visual.h"
 #include "data/spells/spell_effect_visual_simple.h"
 
+#include "projectiles/3d/spell_follow_projectile_3d.h"
+
 #include "entities/ai/entity_ai.h"
 
 #include "formations/ai_formation.h"
@@ -218,6 +220,7 @@ void register_entity_spell_system_types() {
 	//UI
 	ClassDB::register_class<ESDragAndDrop>();
 
+	//Skeleton
 	ClassDB::register_class<CharacterSkeleton2D>();
 	ClassDB::register_class<CharacterSkeleton3D>();
 
@@ -234,6 +237,9 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<SpellEffectVisual>();
 	ClassDB::register_class<SpellEffectVisualSimple>();
+
+	//Projectiles
+	ClassDB::register_class<SpellFollowProjectile3D>();
 
 	//AI
 	ClassDB::register_class<EntityAI>();

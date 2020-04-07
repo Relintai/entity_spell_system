@@ -102,6 +102,8 @@ sources = [
 
     "formations/ai_formation.cpp",
 
+    "projectiles/3d/spell_follow_projectile_3d.cpp",
+
     "profiles/input/input_profile_modifier.cpp",
     "profiles/input/input_profile_modifier_entry.cpp",
     "profiles/input/input_profile.cpp",
