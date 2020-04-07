@@ -38,8 +38,6 @@ SOFTWARE.
 
 #include "spell_effect_visual.h"
 
-#include "../../world_spells/world_spell_data.h"
-
 class Entity;
 class Aura;
 class SpellCastInfo;
@@ -141,9 +139,6 @@ public:
 	Ref<SpellEffectVisual> get_visual_spell_effects();
 	void set_visual_spell_effects(const Ref<SpellEffectVisual> &value);
 
-	Ref<WorldSpellData> get_projectile();
-	void set_projectile(const Ref<WorldSpellData> &value);
-
 	Ref<CraftRecipe> get_teaches_craft_recipe();
 	void set_teaches_craft_recipe(const Ref<CraftRecipe> &value);
 
@@ -190,6 +185,23 @@ public:
 	float get_cast_time() const;
 	void set_cast_time(const float value);
 
+	//Delay
+	bool delay_get_use_time() const;
+	void delay_set_use_time(const bool value);
+
+	float delay_get_time() const;
+	void delay_set_time(const float value);
+
+	bool delay_get_use_speed() const;
+	void delay_set_use_speed(const bool value);
+
+	float delay_get_speed() const;
+	void delay_set_speed(const float value);
+
+	Ref<PackedScene> delay_get_scene() const;
+	void delay_set_scene(const Ref<PackedScene> &value);
+
+	//Damage
 	bool get_damage_enabled() const;
 	void set_damage_enabled(const bool value);
 
@@ -380,11 +392,17 @@ private:
 
 	Ref<SpellEffectVisual> _visual_spell_effects;
 
-	Ref<WorldSpellData> _world_spell_data;
 	Ref<CraftRecipe> _teaches_craft_recipe;
 
 	bool _range_enabled;
 	float _range;
+
+	//Delay
+	bool _delay_use_time;
+	float _delay_time;
+	bool _delay_use_speed;
+	float _delay_speed;
+	Ref<PackedScene> _delay_scene;
 
 	bool _damage_enabled;
 	int _damage_type;
@@ -418,8 +436,6 @@ private:
 	SpellEnums::ColliderType _aoe_colliderType;
 	float _aoe_radius;
 	Vector3 _aoe_box_extents;
-
-	Ref<WorldSpellData> _projectile;
 
 	int _spell_cooldown_mainpulation_data_count;
 

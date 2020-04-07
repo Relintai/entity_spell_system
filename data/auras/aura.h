@@ -49,8 +49,6 @@ SOFTWARE.
 
 #include "../spells/spell_effect_visual.h"
 
-#include "../../world_spells/world_spell_data.h"
-
 class AuraApplyInfo;
 class AuraScript;
 class Entity;
@@ -99,9 +97,6 @@ public:
 
 	Ref<SpellEffectVisual> get_visual_spell_effects();
 	void set_visual_spell_effects(const Ref<SpellEffectVisual> &value);
-
-	Ref<WorldSpellData> get_world_spell_data();
-	void set_world_spell_data(const Ref<WorldSpellData> &value);
 
 	int get_ability_scale_data_id() const;
 	void set_ability_scale_data_id(const int value);
@@ -416,8 +411,6 @@ private:
 	bool _scale_with_level;
 
 	Ref<SpellEffectVisual> _visual_spell_effects;
-
-	Ref<WorldSpellData> _world_spell_data;
 
 	bool _damage_enabled;
 	int _damage_type;

@@ -27,7 +27,6 @@ SOFTWARE.
 #include "../data/spells/spell.h"
 #include "../entities/entity.h"
 #include "../singletons/entity_data_manager.h"
-#include "../world_spells/world_spell.h"
 
 ////    SpellCastInfo    ////
 
@@ -77,30 +76,6 @@ void SpellCastInfo::set_target_bind(Node *target) {
 	}
 
 	_target = e;
-}
-
-WorldSpell *SpellCastInfo::get_world_spell() {
-	if (_world_spell && !ObjectDB::instance_validate(_world_spell)) {
-		_world_spell = NULL;
-	}
-
-	return _world_spell;
-}
-void SpellCastInfo::set_world_spell(WorldSpell *world_spell) {
-	_world_spell = world_spell;
-}
-void SpellCastInfo::set_world_spell_bind(Node *world_spell) {
-	if (!world_spell) {
-		return;
-	}
-
-	WorldSpell *w = cast_to<WorldSpell>(world_spell);
-
-	if (!ObjectDB::instance_validate(w)) {
-		return;
-	}
-
-	_world_spell = w;
 }
 
 bool SpellCastInfo::get_has_cast_time() const {
@@ -241,7 +216,6 @@ void SpellCastInfo::from_dict(const Dictionary &dict) {
 SpellCastInfo::SpellCastInfo() {
 	_caster = NULL;
 	_target = NULL;
-	_world_spell = NULL;
 
 	_has_cast_time = false;
 	_cast_time = 0;
@@ -272,10 +246,6 @@ void SpellCastInfo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_target"), &SpellCastInfo::get_target);
 	ClassDB::bind_method(D_METHOD("set_target", "caster"), &SpellCastInfo::set_target_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_target", "get_target");
-
-	ClassDB::bind_method(D_METHOD("get_world_spell"), &SpellCastInfo::get_world_spell);
-	ClassDB::bind_method(D_METHOD("set_world_spell", "world_spell"), &SpellCastInfo::set_world_spell_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_spell", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpell"), "set_world_spell", "get_world_spell");
 
 	ClassDB::bind_method(D_METHOD("get_has_cast_time"), &SpellCastInfo::get_has_cast_time);
 	ClassDB::bind_method(D_METHOD("set_has_cast_time", "value"), &SpellCastInfo::set_has_cast_time);

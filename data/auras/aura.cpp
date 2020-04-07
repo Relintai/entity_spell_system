@@ -116,13 +116,6 @@ void Aura::set_visual_spell_effects(const Ref<SpellEffectVisual> &value) {
 	_visual_spell_effects = value;
 }
 
-Ref<WorldSpellData> Aura::get_world_spell_data() {
-	return _world_spell_data;
-}
-void Aura::set_world_spell_data(const Ref<WorldSpellData> &value) {
-	_world_spell_data = value;
-}
-
 int Aura::get_ability_scale_data_id() const {
 	return ability_scale_data_id;
 }
@@ -378,8 +371,6 @@ Aura::~Aura() {
 	_teaches_spell.unref();
 
 	_visual_spell_effects.unref();
-
-	_world_spell_data.unref();
 
 	_damage_scaling_curve.unref();
 	_absorb_scaling_curve.unref();
@@ -1660,10 +1651,6 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_visual_spell_effects"), &Aura::get_visual_spell_effects);
 	ClassDB::bind_method(D_METHOD("set_visual_spell_effects", "value"), &Aura::set_visual_spell_effects);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "visual_spell_effects", PROPERTY_HINT_RESOURCE_TYPE, "SpellEffectVisual"), "set_visual_spell_effects", "get_visual_spell_effects");
-
-	ClassDB::bind_method(D_METHOD("get_world_spell_data"), &Aura::get_world_spell_data);
-	ClassDB::bind_method(D_METHOD("set_world_spell_data", "value"), &Aura::set_world_spell_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_spell_data", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), "set_world_spell_data", "get_world_spell_data");
 
 	ClassDB::bind_method(D_METHOD("get_teaches_spell"), &Aura::get_teaches_spell);
 	ClassDB::bind_method(D_METHOD("set_teaches_spell", "next_rank"), &Aura::set_teaches_spell);

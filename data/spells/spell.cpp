@@ -24,7 +24,6 @@ SOFTWARE.
 
 #include "../../entities/resources/entity_resource_cost_data.h"
 #include "../../entities/skills/entity_skill_data.h"
-#include "../../world_spells/world_spell.h"
 #include "../auras/aura.h"
 #include "../items/craft_recipe.h"
 
@@ -34,7 +33,6 @@ SOFTWARE.
 
 #include "../../pipelines/spell_damage_info.h"
 #include "../../pipelines/spell_heal_info.h"
-
 
 int Spell::get_id() const {
 	return _id;
@@ -174,13 +172,6 @@ Ref<SpellEffectVisual> Spell::get_visual_spell_effects() {
 }
 void Spell::set_visual_spell_effects(const Ref<SpellEffectVisual> &value) {
 	_visual_spell_effects = value;
-}
-
-Ref<WorldSpellData> Spell::get_projectile() {
-	return _projectile;
-}
-void Spell::set_projectile(const Ref<WorldSpellData> &value) {
-	_projectile = value;
 }
 
 Ref<CraftRecipe> Spell::get_teaches_craft_recipe() {
@@ -326,6 +317,41 @@ float Spell::get_cast_time() const {
 }
 void Spell::set_cast_time(const float value) {
 	_cast_time = value;
+}
+
+bool Spell::delay_get_use_time() const {
+	return _delay_use_time;
+}
+void Spell::delay_set_use_time(const bool value) {
+	_delay_use_time = value;
+}
+
+float Spell::delay_get_time() const {
+	return _delay_time;
+}
+void Spell::delay_set_time(const float value) {
+	_delay_time = value;
+}
+
+bool Spell::delay_get_use_speed() const {
+	return _delay_use_speed;
+}
+void Spell::delay_set_use_speed(const bool value) {
+	_delay_use_speed = value;
+}
+
+float Spell::delay_get_speed() const {
+	return _delay_speed;
+}
+void Spell::delay_set_speed(const float value) {
+	_delay_speed = value;
+}
+
+Ref<PackedScene> Spell::delay_get_scene() const {
+	return _delay_scene;
+}
+void Spell::delay_set_scene(const Ref<PackedScene> &value) {
+	_delay_scene = value;
 }
 
 bool Spell::get_damage_enabled() const {
@@ -856,6 +882,11 @@ Spell::Spell() {
 
 	_training_cost = 0;
 	_training_required_skill_level = 0;
+
+	_delay_use_time = false;
+	_delay_time = 0;
+	_delay_use_speed = false;
+	_delay_speed = 0;
 }
 
 Spell::~Spell() {
@@ -873,12 +904,11 @@ Spell::~Spell() {
 
 	_visual_spell_effects.unref();
 
-	_world_spell_data.unref();
-
 	_teaches_craft_recipe.unref();
-	_projectile.unref();
 	_training_required_spell.unref();
 	_training_required_skill.unref();
+
+	_delay_scene.unref();
 }
 
 void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
@@ -905,11 +935,11 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 
 	info->get_target()->son_cast_finished_target(info);
 
-	if (get_projectile().is_valid()) {
-		handle_projectile(info);
-	} else {
-		handle_effect(info);
-	}
+	//if (get_projectile().is_valid()) {
+	//	handle_projectile(info);
+	//} else {
+	//	handle_effect(info);
+	//}
 
 	handle_cooldown(info);
 
@@ -924,11 +954,11 @@ void Spell::_sfinish_cast(Ref<SpellCastInfo> info) {
 		info->get_target()->son_cast_finished_target(info);
 	}
 
-	if (get_projectile().is_valid()) {
-		handle_projectile(info);
-	} else {
-		handle_effect(info);
-	}
+	//if (get_projectile().is_valid()) {
+	//	handle_projectile(info);
+	//} else {
+	//	handle_effect(info);
+	//}
 
 	handle_cooldown(info);
 }
@@ -968,6 +998,7 @@ void Spell::_handle_spell_heal(Ref<SpellHealInfo> data) {
 }
 
 void Spell::_handle_projectile(Ref<SpellCastInfo> info) {
+	/*
 	if (_world_spell_data.is_valid()) {
 		WorldSpell *ws = memnew(WorldSpell);
 
@@ -978,6 +1009,7 @@ void Spell::_handle_projectile(Ref<SpellCastInfo> info) {
 		p->add_child(ws);
 		ws->send(_world_spell_data, info);
 	}
+	*/
 }
 
 void Spell::_handle_effect(Ref<SpellCastInfo> info) {
@@ -1186,10 +1218,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_visual_spell_effects", "value"), &Spell::set_visual_spell_effects);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "visual_spell_effects", PROPERTY_HINT_RESOURCE_TYPE, "SpellEffectVisual"), "set_visual_spell_effects", "get_visual_spell_effects");
 
-	ClassDB::bind_method(D_METHOD("get_projectile"), &Spell::get_projectile);
-	ClassDB::bind_method(D_METHOD("set_projectile", "value"), &Spell::set_projectile);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "projectile", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), "set_projectile", "get_projectile");
-
 	ClassDB::bind_method(D_METHOD("get_teaches_craft_recipe"), &Spell::get_teaches_craft_recipe);
 	ClassDB::bind_method(D_METHOD("set_teaches_craft_recipe", "value"), &Spell::set_teaches_craft_recipe);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "teaches_craft_recipe", PROPERTY_HINT_RESOURCE_TYPE, "CraftRecipe"), "set_teaches_craft_recipe", "get_teaches_craft_recipe");
@@ -1274,6 +1302,27 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_can_move_while_casting"), &Spell::get_can_move_while_casting);
 	ClassDB::bind_method(D_METHOD("set_can_move_while_casting", "value"), &Spell::set_can_move_while_casting);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cast_can_move_while_casting"), "set_can_move_while_casting", "get_can_move_while_casting");
+
+	ADD_GROUP("Delay", "delay");
+	ClassDB::bind_method(D_METHOD("delay_get_use_time"), &Spell::delay_get_use_time);
+	ClassDB::bind_method(D_METHOD("delay_set_use_time", "value"), &Spell::delay_set_use_time);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "delay_use_time"), "delay_set_use_time", "delay_get_use_time");
+
+	ClassDB::bind_method(D_METHOD("delay_get_time"), &Spell::delay_get_time);
+	ClassDB::bind_method(D_METHOD("delay_set_time", "value"), &Spell::delay_set_time);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "delay_time"), "delay_set_time", "delay_get_time");
+
+	ClassDB::bind_method(D_METHOD("delay_get_use_speed"), &Spell::delay_get_use_speed);
+	ClassDB::bind_method(D_METHOD("delay_set_use_speed", "value"), &Spell::delay_set_use_speed);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "delay_use_speed"), "delay_set_use_speed", "delay_get_use_speed");
+
+	ClassDB::bind_method(D_METHOD("delay_get_speed"), &Spell::delay_get_speed);
+	ClassDB::bind_method(D_METHOD("delay_set_speed", "value"), &Spell::delay_set_speed);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "delay_speed"), "delay_set_speed", "delay_get_speed");
+
+	ClassDB::bind_method(D_METHOD("delay_get_scene"), &Spell::delay_get_scene);
+	ClassDB::bind_method(D_METHOD("delay_set_scene", "value"), &Spell::delay_set_scene);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "delay_scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "delay_set_scene", "delay_get_scene");
 
 	ADD_GROUP("Damage", "damage");
 	ClassDB::bind_method(D_METHOD("get_damage_enabled"), &Spell::get_damage_enabled);

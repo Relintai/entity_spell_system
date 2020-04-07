@@ -27,7 +27,6 @@ SOFTWARE.
 
 class Spell;
 class Entity;
-class WorldSpell;
 class ItemInstance;
 class ItemTemplate;
 
@@ -42,10 +41,6 @@ public:
 	Entity *get_target();
 	void set_target(Entity *caster);
 	void set_target_bind(Node *caster);
-
-	WorldSpell *get_world_spell();
-	void set_world_spell(WorldSpell *world_spell);
-	void set_world_spell_bind(Node *world_spell);
 
 	bool get_has_cast_time() const;
 	void set_has_cast_time(bool value);
@@ -91,7 +86,6 @@ protected:
 private:
 	Entity *_caster;
 	Entity *_target;
-	WorldSpell *_world_spell;
 	bool _has_cast_time;
 	float _cast_time;
 	float _spell_scale;

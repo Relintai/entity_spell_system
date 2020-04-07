@@ -114,9 +114,6 @@ SOFTWARE.
 #include "data/spells/spell_effect_visual.h"
 #include "data/spells/spell_effect_visual_simple.h"
 
-#include "world_spells/world_spell.h"
-#include "world_spells/world_spell_data.h"
-
 #include "entities/ai/entity_ai.h"
 
 #include "formations/ai_formation.h"
@@ -237,9 +234,6 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<SpellEffectVisual>();
 	ClassDB::register_class<SpellEffectVisualSimple>();
-
-	ClassDB::register_class<WorldSpellData>();
-	ClassDB::register_class<WorldSpell>();
 
 	//AI
 	ClassDB::register_class<EntityAI>();

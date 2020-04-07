@@ -270,36 +270,6 @@ int EntityDataManager::get_aura_count() {
 	return _auras.size();
 }
 
-//WorldSpellsDatas
-String EntityDataManager::get_world_spell_datas_folder() {
-	return _world_spell_datas_folder;
-}
-void EntityDataManager::set_world_spell_datas_folder(String folder) {
-	_world_spell_datas_folder = folder;
-}
-Vector<Ref<WorldSpellData> > *EntityDataManager::get_world_spell_datas() {
-	return &_world_spell_datas;
-}
-Ref<WorldSpellData> EntityDataManager::get_world_spell_data(int class_id) {
-	ERR_FAIL_COND_V_MSG(!_world_spell_data_map.has(class_id), Ref<WorldSpellData>(), "Could not find WorldSpellData! Id:" + String::num(class_id));
-
-	return _world_spell_data_map.get(class_id);
-}
-Ref<WorldSpellData> EntityDataManager::get_world_spell_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _world_spell_datas.size(), Ref<WorldSpellData>());
-
-	return _world_spell_datas.get(index);
-}
-int EntityDataManager::get_world_spell_data_count() {
-	return _world_spell_datas.size();
-}
-void EntityDataManager::add_world_spell_data(const Ref<WorldSpellData> &cls) {
-	ERR_FAIL_COND(!cls.is_valid());
-
-	_world_spell_datas.push_back(cls);
-	_world_spell_data_map.set(cls->get_id(), cls);
-}
-
 //Craft Data
 void EntityDataManager::add_craft_data(const Ref<CraftRecipe> &cda) {
 	ERR_FAIL_COND(!cda.is_valid());
@@ -465,7 +435,6 @@ void EntityDataManager::load_all() {
 	load_entity_skills();
 	load_spells();
 	load_auras();
-	load_world_spell_datas();
 	load_characters();
 	load_craft_datas();
 	load_item_templates();
@@ -667,50 +636,6 @@ void EntityDataManager::load_auras() {
 				ERR_CONTINUE(!aura.is_valid());
 
 				add_aura(aura);
-			}
-		}
-	} else {
-		print_error("An error occurred when trying to access the path.");
-	}
-}
-
-void EntityDataManager::load_world_spell_datas() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_world_spell_datas_folder.ends_with("/"));
-
-	if (dir.open(_world_spell_datas_folder) == OK) {
-
-		dir.list_dir_begin();
-
-		String filename;
-
-		while (true) {
-			filename = dir.get_next();
-
-			if (filename == "")
-				break;
-
-			if (!dir.current_is_dir()) {
-				String path = _world_spell_datas_folder + "/" + filename;
-
-				_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "WorldSpellData");
-
-				ERR_CONTINUE(!resl.is_valid());
-
-				resl->wait();
-
-				Ref<Resource> s = resl->get_resource();
-
-				ERR_CONTINUE(!s.is_valid());
-
-				Ref<WorldSpellData> wsp = s;
-
-				ERR_CONTINUE(!wsp.is_valid());
-
-				add_world_spell_data(wsp);
 			}
 		}
 	} else {
@@ -988,12 +913,6 @@ void EntityDataManager::request_entity_spawn(const Ref<EntityCreateInfo> &info) 
 void EntityDataManager::request_entity_spawn_deferred(const Ref<EntityCreateInfo> &info) {
 	call_deferred("emit_signal", "on_entity_spawn_requested", info);
 }
-void EntityDataManager::request_world_spell_spawn(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info) {
-	emit_signal("on_world_spell_spawn_requested", data, info);
-}
-void EntityDataManager::request_world_spell_spawn_deferred(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info) {
-	call_deferred("emit_signal", "on_world_spell_spawn_requested", data, info);
-}
 
 void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_use_spell_points"), &EntityDataManager::get_use_spell_points);
@@ -1092,16 +1011,6 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_aura_index", "index"), &EntityDataManager::get_aura_index);
 	ClassDB::bind_method(D_METHOD("get_aura_count"), &EntityDataManager::get_aura_count);
 
-	//WorldSpellData
-	ClassDB::bind_method(D_METHOD("get_world_spell_datas_folder"), &EntityDataManager::get_world_spell_datas_folder);
-	ClassDB::bind_method(D_METHOD("set_world_spell_datas_folder", "folder"), &EntityDataManager::set_world_spell_datas_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "world_spell_datas_folder"), "set_world_spell_datas_folder", "get_world_spell_datas_folder");
-
-	ClassDB::bind_method(D_METHOD("add_world_spell_data", "cls"), &EntityDataManager::add_world_spell_data);
-	ClassDB::bind_method(D_METHOD("get_world_spell_data", "class_id"), &EntityDataManager::get_world_spell_data);
-	ClassDB::bind_method(D_METHOD("get_world_spell_data_index", "index"), &EntityDataManager::get_world_spell_data_index);
-	ClassDB::bind_method(D_METHOD("get_world_spell_data_count"), &EntityDataManager::get_world_spell_data_count);
-
 	//Craft Data
 	ClassDB::bind_method(D_METHOD("get_craft_data_folder"), &EntityDataManager::get_craft_data_folder);
 	ClassDB::bind_method(D_METHOD("set_craft_data_folder", "folder"), &EntityDataManager::set_craft_data_folder);
@@ -1159,7 +1068,6 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("load_xp_data"), &EntityDataManager::load_xp_data);
 	ClassDB::bind_method(D_METHOD("load_spells"), &EntityDataManager::load_spells);
 	ClassDB::bind_method(D_METHOD("load_auras"), &EntityDataManager::load_auras);
-	ClassDB::bind_method(D_METHOD("load_world_spell_datas"), &EntityDataManager::load_world_spell_datas);
 	ClassDB::bind_method(D_METHOD("load_characters"), &EntityDataManager::load_characters);
 	ClassDB::bind_method(D_METHOD("load_craft_datas"), &EntityDataManager::load_craft_datas);
 	ClassDB::bind_method(D_METHOD("load_item_templates"), &EntityDataManager::load_item_templates);
@@ -1168,12 +1076,9 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("load_entity_species_datas"), &EntityDataManager::load_entity_species_datas);
 
 	ADD_SIGNAL(MethodInfo("on_entity_spawn_requested", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
-	ADD_SIGNAL(MethodInfo("on_world_spell_spawn_requested", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "WorldSpellData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
 	ClassDB::bind_method(D_METHOD("request_entity_spawn", "info"), &EntityDataManager::request_entity_spawn);
 	ClassDB::bind_method(D_METHOD("request_entity_spawn_deferred", "info"), &EntityDataManager::request_entity_spawn_deferred);
-	ClassDB::bind_method(D_METHOD("request_world_spell_spawn", "data", "info"), &EntityDataManager::request_world_spell_spawn);
-	ClassDB::bind_method(D_METHOD("request_world_spell_spawn_deferred", "data", "info"), &EntityDataManager::request_world_spell_spawn_deferred);
 }
 
 EntityDataManager::EntityDataManager() {
@@ -1196,7 +1101,6 @@ EntityDataManager::EntityDataManager() {
 	_entity_datas_folder = GLOBAL_DEF("ess/data/entity_datas_folder", "");
 	_spells_folder = GLOBAL_DEF("ess/data/spells_folder", "");
 	_auras_folder = GLOBAL_DEF("ess/data/auras_folder", "");
-	_world_spell_datas_folder = GLOBAL_DEF("ess/data/world_spell_datas_folder", "");
 	_craft_data_folder = GLOBAL_DEF("ess/data/craft_data_folder", "");
 	_item_template_folder = GLOBAL_DEF("ess/data/item_template_folder", "");
 	_mob_data_folder = GLOBAL_DEF("ess/data/mob_data_folder", "");
@@ -1225,9 +1129,6 @@ EntityDataManager::~EntityDataManager() {
 
 	_auras.clear();
 	_aura_map.clear();
-
-	_world_spell_datas.clear();
-	_world_spell_data_map.clear();
 
 	_craft_datas.clear();
 	_craft_data_map.clear();

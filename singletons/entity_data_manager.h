@@ -42,8 +42,6 @@ SOFTWARE.
 
 #include "../data/entities/xp_data.h"
 
-#include "../world_spells/world_spell_data.h"
-
 class Aura;
 class Spell;
 class EntityData;
@@ -52,7 +50,6 @@ class ItemTemplate;
 class EntityResourceData;
 class EntitySkillData;
 class EntityCreateInfo;
-class WorldSpellData;
 class SpellCastInfo;
 class EntitySpeciesData;
 
@@ -133,14 +130,6 @@ public:
 	int get_aura_count();
 	void add_aura(const Ref<Aura> &aura);
 
-	String get_world_spell_datas_folder();
-	void set_world_spell_datas_folder(String folder);
-	Vector<Ref<WorldSpellData> > *get_world_spell_datas();
-	Ref<WorldSpellData> get_world_spell_data(int class_id);
-	Ref<WorldSpellData> get_world_spell_data_index(int index);
-	int get_world_spell_data_count();
-	void add_world_spell_data(const Ref<WorldSpellData> &cls);
-
 	String get_craft_data_folder();
 	void set_craft_data_folder(String folder);
 	Vector<Ref<CraftRecipe> > *get_craft_datas();
@@ -187,7 +176,6 @@ public:
 	void load_xp_data();
 	void load_spells();
 	void load_auras();
-	void load_world_spell_datas();
 	void load_characters();
 	void load_craft_datas();
 	void load_item_templates();
@@ -197,8 +185,6 @@ public:
 
 	void request_entity_spawn(const Ref<EntityCreateInfo> &info);
 	void request_entity_spawn_deferred(const Ref<EntityCreateInfo> &info);
-	void request_world_spell_spawn(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info);
-	void request_world_spell_spawn_deferred(const Ref<WorldSpellData> &data, const Ref<SpellCastInfo> &info);
 
 	EntityDataManager();
 	~EntityDataManager();
@@ -229,10 +215,6 @@ private:
 	String _auras_folder;
 	Vector<Ref<Aura> > _auras;
 	HashMap<int, Ref<Aura> > _aura_map;
-
-	String _world_spell_datas_folder;
-	Vector<Ref<WorldSpellData> > _world_spell_datas;
-	HashMap<int, Ref<WorldSpellData> > _world_spell_data_map;
 
 	String _craft_data_folder;
 	Vector<Ref<CraftRecipe> > _craft_datas;

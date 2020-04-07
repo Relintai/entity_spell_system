@@ -69,9 +69,6 @@ sources = [
     "entities/stats/simple_level_stat_data.cpp",
     "entities/stats/complex_level_stat_data.cpp",
 
-    "world_spells/world_spell_data.cpp",
-    "world_spells/world_spell.cpp",
-
     "inventory/bag.cpp",
     #"inventory/inventory.cpp",
 
