@@ -26,7 +26,7 @@ https://github.com/Relintai/mesh_data_resource.git
 
 Adds mesh support to ItemVisuals. This is exists because in gles2 mesh data cannot be accessed directly from ArrayMeshes.
 
-## Overwiew
+## Overview
 
 The module provides a huge number of script callbacks, usually as virtual methods they usually start with an underscore.
 
