@@ -1,38 +1,162 @@
 # Entity Spell System
 
-An entity and spell system for the GODOT Engine.
+An entity and spell system for the GODOT Engine, that is usable for both 2d, and 3d games. The main purpose of this 
+module is to handle spells, auras, and most entity-related things like spawning, items, inventory, contaiers, 
+vendors, interaction, targeting, equipment (+ visuals), loot, crafting, talents, pets, npcs, etc ...
 
-Usable for both 2d, and 3d games.
+The module supports networking. It is designed to be authoritative, so players shouldn't be able to cheat by design.
 
-The actual player, mob etc implementations are still in the main game's repository (https://github.com/Relintai/broken_seals). (As GDScript)
+It is a c++ engine module, which means you will need to compile it into godot. (See compiling)
 
-This module have optional dependencies to some of my other engine modules.
+It supports godot 3.2 at the moment.
 
-The main class that can be used for players/mobs is Entity. I ended up merging subclass functionality into it, because
+### What the module doesn't cover
+
+Movement, and controls.
+
+Unfortunately, there isn't a one-stop-shop solution for movement, especially if we throw networking into the mix,
+and the same is true for targeting. This means that this module cannot really do much in this regard, but it will 
+give you as much help to set everything up as possible.
+
+## Optional Dependencies
+
+Mesh Data Resource
+
+https://github.com/Relintai/mesh_data_resource.git
+
+Adds mesh support to ItemVisuals. This is exists because in gles2 mesh data cannot be accessed directly from ArrayMeshes.
+
+## Overwiew
+
+The module provides a huge number of script callbacks, usually as virtual methods they usually start with an underscore.
+
+Do not call methods with underscores, all of them has a normal counterpart, always call that.
+
+For example entity has `scraft(int id)` and `_scraft(int id)` (virtual). Always use `scraft(int id)`, it will
+call `_scraft(int id)`.
+
+For networked classes, every variable is broken up into clientside, and serverside. This makes it easier to 
+develop games that can also run locally, with less overhead and simpler logic. 
+E.g. this makes it easy to use the visibility system even when you play locally on the server, because you just use the clientside variables,
+and your logic will work the same way.
+
+## Entity
+
+This is the main class that can be used for players/mobs/npcs and also other things like chests. 
+
+I ended up merging subclass functionality into it, because
 that way it gains a lot more utility, by sacrificing only a small amount of memory.
-
 For example this way it is easy to make chests attack the player, or make spell that animate objects.
+
+### Spawning
+
+Since spawning (= creating) entities is entirely dependant on the type of game you are making, ESS cannot do
+everything for you. It will set up stats, equipment etc, but there is no way to set up positions for example.
+
+In lieu of this EntityDataManager has a signal that you should hook into from a class, and using that hook 
+you can set up your entities however you like.
+
+EntityDataManager also contains the method to request the system to spawn an Entity.
+
+#### EntityCreateInfo
+
+Entity spawning usually requires a lot of complexity and hassle, this helper class aims to make it painless.
+
+All methods that deal with spawning will take this as a parameter.
+
+### EntityData
+
+Since setting up Entities as scenes is usually quite the hassle, `EntityData` had to be created.
+
+It stores everything an entity needs.
+
+In order to spawn an entity you need it.
+
+### AI
+
+You can implement ai by extending `EntityAI`, and then assigning it to an EntityData.
+
+When an `Entity` gets spawned it will create a copy for itself, so you can safely use class variables.
+
+### Bags
+
+Stores item. See `Bag`. It has aquite a few virtual methods, you should be able to implement most inventory types
+should you want to.
+
+Entity will send these over the network.
+
+Also Entities have a target bag property. For example this makes vendors easily implementable.
+
+### VRPCs
+
+Entities has a networked visibility system. The method itself is called `vrpc`, it works the same way as normal rpcs.
+If you want to send data to every client that sees the current entity, use this. 
+
+## Spells, Auras
 
 Spell is the class you need to create spells, it stores the data, and also it has the ability to be scripted.
 
-Aura is also built the same way.
+Aura is also built the same way as spells.
 
-The module provides a huge number of script callbacks, usually as vmethods.
+### Infos / Pipelines
 
-The main data class is EntityData. You will need this to properly initialize an entity.
+SpellCastInfo
 
-The module can do multiplayer, but it's not finished, and at the moment not safe to use. It should mostly work though.
-Also it supports entity visibility. If you need rpcs that use this, use vrpc. (Implemented inside Entity).
+Stores information about the state of a spell's cast.
 
-Every variable is broken up into clientside, and serverside ones, when applicable. This makes it easy to 
-develop games, that can also run locally, with less overhead. And simpler logic. 
-E.g. this makes it easy to use the visibility system even on the server, because you just use the clientside variables,
-and the logic will work the same way.
+AuraApplyInfo
 
-Right now everything wokrs authoritatively, except for movement. FYI Movement is handled in GDScript int the game's repo right now.
-(I plan to implement authoritative movement later.)
+Helps to apply auras
 
-Everything is called the remotesync way, but instead of remotesync, I have c++ macros, which sends the rpc, and then calls the given function directly aswell.
+SpellDamageInfo, SpellHealInfo
 
-For usage check the main game's repo.
+These are used in the damage and heal calculation. For example these can be used to implement immunities, or absorb effects 
+by modifying their damage values in aura callbacks.
 
+## Examples
+
+Eventually I'll create a separate repository with a few examples/demos, but for now you can check the game 
+I've been working on for examples.
+
+For 3d:
+https://github.com/Relintai/broken_seals.git
+
+For 2d:
+https://github.com/Relintai/broken_seals_2d.git
+
+## Compiling
+
+First make sure that you can compile godot. See the official docs: https://docs.godotengine.org/en/3.2/development/compiling/index.html
+
+1. Clone the engine if you haven't already:
+
+```git clone https://github.com/godotengine/godot.git godot```
+
+2. go into the modules folder inside the engine's directory"
+
+```cd godot```
+```cd modules```
+
+3. clone this repository
+
+```git clone https://github.com/Relintai/entity_spell_system.git entity_spell_system```
+
+(the folder needs to be named entity_spell_system!)
+
+4. Go up one folder
+
+```cd ..```
+
+5. Compile godot.
+
+For example:
+
+```scons p=x11 t=release_debug tools=yes```
+
+## TODO
+
+Add to readme: 
+Loot, Species, cds, categ cds, items (crafting etc), Xp, 
+levelling, Stats, drag and drop, talents, vendors, Skills, 
+Profiles, Projectiles, Singletons, Skeleton, 
+Global enums

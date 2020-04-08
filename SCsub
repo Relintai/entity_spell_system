@@ -7,7 +7,6 @@ module_env = env.Clone()
 if os.path.isdir('../mesh_data_resource'):
     module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
 
-
 sources = [
     "register_types.cpp",
 
