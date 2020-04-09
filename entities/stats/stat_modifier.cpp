@@ -24,6 +24,12 @@ SOFTWARE.
 
 #include "stat.h"
 
+#include "core/version.h"
+
+#if VERSION_MAJOR >= 4
+#define REAL FLOAT
+#endif
+
 Ref<Stat> StatModifier::get_owner() {
 	return Ref<Stat>(_owner);
 }

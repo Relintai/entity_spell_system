@@ -24,6 +24,8 @@ SOFTWARE.
 
 #include "../../data/auras/aura.h"
 
+#include "core/version.h"
+
 int CharacterSpec::get_id() {
 	return _id;
 }
@@ -52,7 +54,11 @@ void CharacterSpec::set_talent_row(const int index, const Ref<TalentRowData> row
 Vector<Variant> CharacterSpec::get_talent_rows() {
 	Vector<Variant> r;
 	for (int i = 0; i < _rows.size(); i++) {
+		#if VERSION_MAJOR < 4
 		r.push_back(_rows[i].get_ref_ptr());
+		#else
+		r.push_back(_rows[i]);
+		#endif
 	}
 	return r;
 }

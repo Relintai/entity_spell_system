@@ -25,6 +25,8 @@ SOFTWARE.
 #include "../auras/aura.h"
 #include "../spells/spell.h"
 
+#include "core/version.h"
+
 int EntitySpeciesData::get_id() const {
 	return _id;
 }
@@ -81,7 +83,11 @@ int EntitySpeciesData::get_spell_count() const {
 Vector<Variant> EntitySpeciesData::get_spells() {
 	Vector<Variant> r;
 	for (int i = 0; i < _spells.size(); i++) {
+		#if VERSION_MAJOR < 4
 		r.push_back(_spells[i].get_ref_ptr());
+		#else
+		r.push_back(_spells[i]);
+		#endif
 	}
 	return r;
 }
@@ -122,7 +128,11 @@ int EntitySpeciesData::get_aura_count() const {
 Vector<Variant> EntitySpeciesData::get_auras() {
 	Vector<Variant> r;
 	for (int i = 0; i < _auras.size(); i++) {
+		#if VERSION_MAJOR < 4
 		r.push_back(_auras[i].get_ref_ptr());
+		#else
+		r.push_back(_auras[i]);
+		#endif
 	}
 	return r;
 }

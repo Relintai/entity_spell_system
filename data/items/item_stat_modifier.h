@@ -26,6 +26,12 @@ SOFTWARE.
 #include "../../entities/stats/stat.h"
 #include "core/reference.h"
 
+#include "core/version.h"
+
+#if VERSION_MAJOR >= 4
+#define REAL FLOAT
+#endif
+
 class ItemStatModifier : public Reference {
 	GDCLASS(ItemStatModifier, Reference);
 

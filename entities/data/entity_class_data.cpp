@@ -30,6 +30,8 @@ SOFTWARE.
 #include "../entity.h"
 #include "character_spec.h"
 
+#include "core/version.h"
+
 int EntityClassData::get_id() {
 	return _id;
 }
@@ -125,7 +127,11 @@ void EntityClassData::set_entity_resource(int index, Ref<EntityResourceData> ent
 Vector<Variant> EntityClassData::get_entity_resources() {
 	Vector<Variant> r;
 	for (int i = 0; i < _entity_resources.size(); i++) {
+		#if VERSION_MAJOR < 4
 		r.push_back(_entity_resources[i].get_ref_ptr());
+		#else
+		r.push_back(_entity_resources[i]);
+		#endif
 	}
 	return r;
 }
@@ -169,7 +175,11 @@ void EntityClassData::set_spec(int index, Ref<CharacterSpec> spec) {
 Vector<Variant> EntityClassData::get_specs() {
 	Vector<Variant> r;
 	for (int i = 0; i < _specs.size(); i++) {
+		#if VERSION_MAJOR < 4
 		r.push_back(_specs[i].get_ref_ptr());
+		#else
+		r.push_back(_specs[i]);
+		#endif
 	}
 	return r;
 }
@@ -213,7 +223,11 @@ void EntityClassData::set_spell(int index, Ref<Spell> spell) {
 Vector<Variant> EntityClassData::get_spells() {
 	Vector<Variant> r;
 	for (int i = 0; i < _spells.size(); i++) {
+		#if VERSION_MAJOR < 4
 		r.push_back(_spells[i].get_ref_ptr());
+		#else
+		r.push_back(_spells[i]);
+		#endif
 	}
 	return r;
 }
@@ -257,7 +271,11 @@ void EntityClassData::set_start_spell(int index, Ref<Spell> spell) {
 Vector<Variant> EntityClassData::get_start_spells() {
 	Vector<Variant> r;
 	for (int i = 0; i < _start_spells.size(); i++) {
+		#if VERSION_MAJOR < 4
 		r.push_back(_start_spells[i].get_ref_ptr());
+		#else
+		r.push_back(_start_spells[i]);
+		#endif
 	}
 	return r;
 }
@@ -301,7 +319,11 @@ void EntityClassData::set_aura(int index, Ref<Aura> aura) {
 Vector<Variant> EntityClassData::get_auras() {
 	Vector<Variant> r;
 	for (int i = 0; i < _auras.size(); i++) {
+		#if VERSION_MAJOR < 4
 		r.push_back(_auras[i].get_ref_ptr());
+		#else
+		r.push_back(_auras[i]);
+		#endif
 	}
 	return r;
 }
@@ -345,7 +367,11 @@ void EntityClassData::set_ai(int index, Ref<EntityAI> ai) {
 Vector<Variant> EntityClassData::get_ais() {
 	Vector<Variant> r;
 	for (int i = 0; i < _ais.size(); i++) {
+		#if VERSION_MAJOR < 4
 		r.push_back(_ais[i].get_ref_ptr());
+		#else
+		r.push_back(_ais[i]);
+		#endif
 	}
 	return r;
 }
@@ -622,7 +648,12 @@ void EntityClassData::son_xp_gained(Entity *entity, int value) {
 		call("_son_xp_gained", entity, value);
 }
 void EntityClassData::son_xp_gained_bind(Node *entity, int value) {
+	
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -636,7 +667,11 @@ void EntityClassData::son_class_level_up(Entity *entity, int value) {
 		call("_son_class_level_up", entity);
 }
 void EntityClassData::son_class_level_up_bind(Node *entity, int value) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -650,7 +685,11 @@ void EntityClassData::son_character_level_up(Entity *entity, int value) {
 		call("_son_character_level_up", entity);
 }
 void EntityClassData::son_character_level_up_bind(Node *entity, int value) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -824,7 +863,11 @@ void EntityClassData::con_xp_gained(Entity *entity, int value) {
 		call("_con_xp_gained", entity, value);
 }
 void EntityClassData::con_xp_gained_bind(Node *entity, int value) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -838,7 +881,11 @@ void EntityClassData::con_class_level_up(Entity *entity, int value) {
 		call("_con_class_level_up", entity);
 }
 void EntityClassData::con_class_level_up_bind(Node *entity, int value) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -852,7 +899,11 @@ void EntityClassData::con_character_level_up(Entity *entity, int value) {
 		call("_con_character_level_up", entity);
 }
 void EntityClassData::con_character_level_up_bind(Node *entity, int value) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -881,7 +932,11 @@ bool EntityClassData::should_deny_equip(Entity *entity, ItemEnums::EquipSlots eq
 	return false;
 }
 bool EntityClassData::should_deny_equip_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(entity), false);
+	#else
+	ERR_FAIL_COND_V(entity == NULL, false);
+	#endif
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -895,7 +950,11 @@ void EntityClassData::son_equip_success(Entity *entity, ItemEnums::EquipSlots eq
 		call("_son_equip_success", entity, equip_slot, item, old_item, bag_slot);
 }
 void EntityClassData::son_equip_success_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -909,7 +968,11 @@ void EntityClassData::son_equip_fail(Entity *entity, ItemEnums::EquipSlots equip
 		call("_son_equip_fail", entity, equip_slot, item, old_item, bag_slot);
 }
 void EntityClassData::son_equip_fail_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -923,7 +986,11 @@ void EntityClassData::con_equip_success(Entity *entity, ItemEnums::EquipSlots eq
 		call("_con_equip_success", entity, equip_slot, item, old_item, bag_slot);
 }
 void EntityClassData::con_equip_success_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
@@ -937,7 +1004,11 @@ void EntityClassData::con_equip_fail(Entity *entity, ItemEnums::EquipSlots equip
 		call("_con_equip_fail", entity, equip_slot, item, old_item, bag_slot);
 }
 void EntityClassData::con_equip_fail_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	Entity *e = Object::cast_to<Entity>(entity);
 

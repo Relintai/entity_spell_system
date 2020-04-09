@@ -22,6 +22,12 @@ SOFTWARE.
 
 #include "stat_data_entry.h"
 
+#include "core/version.h"
+
+#if VERSION_MAJOR >= 4
+#define REAL FLOAT
+#endif
+
 Stat::StatId StatDataEntry::get_stat_id() {
 	return _stat_id;
 }

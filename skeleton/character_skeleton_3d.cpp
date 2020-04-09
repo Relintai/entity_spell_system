@@ -24,6 +24,21 @@ SOFTWARE.
 
 #include "../data/items/item_visual.h"
 
+#include "core/version.h"
+
+#if VERSION_MAJOR >= 4
+#include "servers/rendering_server.h"
+
+typedef class RenderingServer VisualServer;
+typedef class RenderingServer VS;
+
+#define PoolVector3Array PackedVector3Array
+#define PoolVector2Array PackedVector2Array
+#define PoolColorArray PackedColorArray
+#define PoolIntArray PackedInt32Array
+#define PoolRealArray PackedFloat32Array
+#endif
+
 EntityEnums::EntityGender CharacterSkeleton3D::get_gender() {
 	return _gender;
 }
@@ -325,7 +340,9 @@ Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
 	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
 
+	#if VERSION_MAJOR < 4
 	img->lock();
+	#endif
 
 	for (int i = 0; i < uvs.size(); ++i) {
 		Vector2 uv = uvs[i];
@@ -336,7 +353,9 @@ Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 		colors.set(i, colors[i] * c * mul_color);
 	}
 
+	#if VERSION_MAJOR < 4
 	img->unlock();
+	#endif
 
 	arr[VisualServer::ARRAY_COLOR] = colors;
 

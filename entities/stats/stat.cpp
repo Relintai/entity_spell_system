@@ -25,6 +25,8 @@ SOFTWARE.
 #include "../entity.h"
 #include "stat_data_entry.h"
 
+#include "core/version.h"
+
 const String Stat::STAT_BINDING_STRING = "Health,Speed,Mana,GCD,Haste,Agility,Strength,Stamina,Intellect,Spirit,Haste Rating,Resilience,Armor,Attack Power,Spell Power,Melee Crit,Melee Crit bonus,Spell Crit,Spell Crit Bonus,Block,Parry,Damage Reduction,Melee Damage Reduction,Spell Damage Reduction,Damage Taken,Heal Taken,Melee Damage,Spell Damage,Holy Resist,Shadow Resist,Nature Resist,Fire Resist,Frost Resist,Lightning Resist,Chaos Resist,Silence Resist,Fear Resist,Stun Resist,Energy,Rage,XP Rate,None";
 const String Stat::MAIN_STAT_BINDING_STRING = "Agility,Strength,Stamina,Intellect,Spirit";
 
@@ -327,7 +329,11 @@ void Stat::remove_modifier_index(int index) {
 }
 
 void Stat::apply_modifiers() {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
+	#else
+	ERR_FAIL_COND(_owner == NULL);
+	#endif
 	ERR_FAIL_COND(!_stat_data_entry.is_valid());
 
 	reset_values();

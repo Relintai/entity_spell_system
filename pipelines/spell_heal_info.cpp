@@ -27,6 +27,8 @@ SOFTWARE.
 #include "../entities/entity.h"
 #include "../singletons/entity_data_manager.h"
 
+#include "core/version.h"
+
 bool SpellHealInfo::get_immune() {
 	return _immune;
 }
@@ -158,7 +160,11 @@ void SpellHealInfo::reset() {
 }
 
 void SpellHealInfo::resolve_references(Node *owner) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
+	#else
+	ERR_FAIL_COND(owner == NULL);
+	#endif
 	ERR_FAIL_COND(!owner->is_inside_tree());
 
 	_dealer = Object::cast_to<Entity>(owner->get_node_or_null(_dealer_path));
@@ -174,11 +180,19 @@ void SpellHealInfo::resolve_references(Node *owner) {
 Dictionary SpellHealInfo::to_dict() {
 	Dictionary dict;
 
+	#if VERSION_MAJOR < 4
 	if (ObjectDB::instance_validate(_dealer))
 		dict["dealer_path"] = _dealer->get_path();
 
 	if (ObjectDB::instance_validate(_receiver))
 		dict["receiver_path"] = _receiver->get_path();
+	#else
+	if (_dealer == NULL)
+		dict["dealer_path"] = _dealer->get_path();
+
+	if (_receiver == NULL)
+		dict["receiver_path"] = _receiver->get_path();
+	#endif
 
 	dict["immune"] = _immune;
 	dict["heal"] = _heal;

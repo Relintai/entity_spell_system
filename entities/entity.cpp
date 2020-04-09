@@ -39,6 +39,8 @@ SOFTWARE.
 
 #include "core/script_language.h"
 
+#include "core/version.h"
+
 NodePath Entity::get_body_path() {
 	return _body_path;
 }
@@ -47,8 +49,13 @@ void Entity::set_body_path(NodePath value) {
 
 	_body = get_node_or_null(_body_path);
 
+	#if VERSION_MAJOR < 4
 	if (ObjectDB::instance_validate(_body))
 		_body->set_owner(this);
+	#else
+	if (_body == NULL)
+		_body->set_owner(this);
+	#endif
 }
 Node *Entity::get_body() {
 	return _body;
@@ -123,12 +130,20 @@ void Entity::setc_entity_type(EntityEnums::EntityType value) {
 EntityEnums::EntityRelationType Entity::gets_relation_to_bind(Node *to) {
 	Entity *e = Object::cast_to<Entity>(to);
 
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	#else
+	ERR_FAIL_COND_V(e == NULL, EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	#endif
 
 	return gets_relation_to(e);
 }
 EntityEnums::EntityRelationType Entity::gets_relation_to(Entity *to) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	#else
+	ERR_FAIL_COND_V(to == NULL, EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	#endif
 
 	return static_cast<EntityEnums::EntityRelationType>(static_cast<int>(call("_gets_relation_to", to)));
 }
@@ -143,12 +158,21 @@ EntityEnums::EntityRelationType Entity::_gets_relation_to(Node *to) {
 EntityEnums::EntityRelationType Entity::getc_relation_to_bind(Node *to) {
 	Entity *e = Object::cast_to<Entity>(to);
 
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	#else
+	ERR_FAIL_COND_V(e == NULL, EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	#endif
 
 	return getc_relation_to(e);
 }
 EntityEnums::EntityRelationType Entity::getc_relation_to(Entity *to) {
+	
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	#else
+	ERR_FAIL_COND_V(to == NULL, EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
+	#endif
 
 	return static_cast<EntityEnums::EntityRelationType>(static_cast<int>(call("_getc_relation_to", to)));
 }
@@ -235,7 +259,12 @@ EntityEnums::EntityGender Entity::getc_gender() {
 void Entity::setc_gender(EntityEnums::EntityGender value) {
 	_c_gender = value;
 
+	#if VERSION_MAJOR < 4
 	if (ObjectDB::instance_validate(_character_skeleton)) {
+	#else
+	if (_character_skeleton != NULL) {
+	#endif
+
 		if (_character_skeleton->has_method("set_gender"))
 			_character_skeleton->call("set_gender", _c_gender);
 	}
@@ -642,7 +671,7 @@ void Entity::setup_actionbars() {
 		return;
 	}
 
-	ProfileManager *pm = ProfileManager::get_instance();
+	//ProfileManager *pm = ProfileManager::get_instance();
 
 	//if (pm != NULL) {
 	//	Ref<ClassProfile> cp = pm->get_class_profile(gets_entity_data()->get_id());
@@ -744,7 +773,11 @@ void Entity::sets_ai(Ref<EntityAI> value) {
 ////    Pets    ////
 
 void Entity::adds_pet(Entity *entity) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	//the owner always want to see his pet, and you pet will always want to see the owner
 	adds_sees(entity);
@@ -786,12 +819,20 @@ void Entity::removes_pet_index(int index) {
 	for (int i = 0; i < _s_pets.size(); ++i) {
 		Entity *pet = _s_pets.get(index);
 
-		ERR_CONTINUE(!ObjectDB::instance_validate(entity));
+		#if VERSION_MAJOR < 4
+		ERR_CONTINUE(!ObjectDB::instance_validate(pet));
+		#else
+		ERR_CONTINUE(pet == NULL);
+		#endif
 
 		_s_pets.get(i)->sets_pet_formation_index(i);
 	}
 
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	entity->sets_pet_owner(NULL);
 
@@ -824,13 +865,21 @@ void Entity::addc_pet_path(NodePath path) {
 
 	Entity *entity = Object::cast_to<Entity>(n);
 
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	addc_pet(entity);
 }
 
 void Entity::addc_pet(Entity *entity) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	_c_pets.push_back(entity);
 
@@ -851,11 +900,15 @@ Entity *Entity::getc_pet(int index) {
 void Entity::removec_pet_index(int index) {
 	ERR_FAIL_INDEX(index, _c_pets.size());
 
-	Entity *entity = _c_pets.get(index);
+	//Entity *entity = _c_pets.get(index);
 
 	_c_pets.remove(index);
 
-	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	//#if VERSION_MAJOR < 4
+	//ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	//#else
+	//ERR_FAIL_COND(entity == NULL);
+	//#endif
 
 	//full callback stack spet_added
 }
@@ -1991,7 +2044,12 @@ void Entity::_capply_item(Ref<ItemInstance> item) {
 
 	ERR_FAIL_COND(!it.is_valid());
 
+	#if VERSION_MAJOR < 4
 	if (it->get_item_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
+	#else
+	if (it->get_item_visual().is_valid() && _character_skeleton == NULL) {
+	#endif
+
 		if (_character_skeleton->has_method("add_item_visual"))
 			_character_skeleton->call("add_item_visual", it->get_item_visual());
 	}
@@ -2003,7 +2061,12 @@ void Entity::_cdeapply_item(Ref<ItemInstance> item) {
 
 	ERR_FAIL_COND(!it.is_valid());
 
+	#if VERSION_MAJOR < 4
 	if (it->get_item_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
+	#else
+	if (it->get_item_visual().is_valid() && _character_skeleton == NULL) {
+	#endif
+
 		if (_character_skeleton->has_method("remove_item_visual"))
 			_character_skeleton->call("remove_item_visual", it->get_item_visual());
 	}
@@ -2382,7 +2445,12 @@ bool Entity::canc_interact() {
 		return call("_canc_interact");
 	}
 
+	#if VERSION_MAJOR < 4
 	if (!ObjectDB::instance_validate(_c_target)) {
+	#else
+	if (_c_target == NULL) {
+	#endif
+
 		return false;
 	}
 
@@ -3500,7 +3568,12 @@ Ref<AuraData> Entity::gets_aura_with_group_by(Entity *caster, Ref<AuraGroup> aur
 	return Ref<AuraData>();
 }
 Ref<AuraData> Entity::gets_aura_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group) {
+	#if VERSION_MAJOR < 4
 	if (!ObjectDB::instance_validate(caster)) {
+	#else
+	if (caster == NULL) {
+	#endif
+	
 		return Ref<AuraData>();
 	}
 
@@ -4605,8 +4678,13 @@ void Entity::adds_skill(Ref<EntitySkill> skill) {
 	if (hass_skill(skill))
 		return;
 
+	#if VERSION_MAJOR < 4
 	skill->connect("current_changed", this, "sskill_current_changed");
 	skill->connect("max_changed", this, "sskill_max_changed");
+	#else
+	skill->connect("current_changed", callable_mp(this, &Entity::sskill_current_changed));
+	skill->connect("max_changed", callable_mp(this, &Entity::sskill_max_changed));
+	#endif
 
 	_s_skills.push_back(skill);
 
@@ -4832,7 +4910,12 @@ Entity *Entity::gets_target() {
 void Entity::sets_target(Node *p_target) {
 	Entity *original_target = _s_target;
 
+	#if VERSION_MAJOR < 4
 	if (!ObjectDB::instance_validate(original_target)) {
+	#else
+	if (original_target == NULL) {
+	#endif
+
 		original_target = NULL;
 		_s_target = NULL;
 	}
@@ -4882,7 +4965,12 @@ Entity *Entity::getc_target() {
 void Entity::setc_target(Node *p_target) {
 	Entity *original_target = _c_target;
 
+	#if VERSION_MAJOR < 4
 	if (!ObjectDB::instance_validate(original_target)) {
+	#else
+	if (original_target == NULL) {
+	#endif
+
 		original_target = NULL;
 		_c_target = NULL;
 	}
@@ -5152,23 +5240,41 @@ Ref<Bag> Entity::gets_bag() const {
 }
 void Entity::sets_bag(const Ref<Bag> bag) {
 	if (_s_bag.is_valid()) {
+		#if VERSION_MAJOR < 4
 		_s_bag->disconnect("item_added", this, "ons_item_added");
 		_s_bag->disconnect("item_removed", this, "ons_item_removed");
 		_s_bag->disconnect("item_swapped", this, "ons_items_swapped");
 		_s_bag->disconnect("item_count_changed", this, "ons_item_count_changed");
 		_s_bag->disconnect("overburdened", this, "ons_overburdened");
 		_s_bag->disconnect("overburden_removed", this, "ons_overburden_removed");
+		#else
+		_s_bag->disconnect("item_added", callable_mp(this, &Entity::ons_item_added));
+		_s_bag->disconnect("item_removed", callable_mp(this, &Entity::ons_item_removed));
+		_s_bag->disconnect("item_swapped", callable_mp(this, &Entity::ons_items_swapped));
+		_s_bag->disconnect("item_count_changed", callable_mp(this, &Entity::ons_item_count_changed));
+		_s_bag->disconnect("overburdened", callable_mp(this, &Entity::ons_overburdened));
+		_s_bag->disconnect("overburden_removed", callable_mp(this, &Entity::ons_overburden_removed));
+		#endif
 	}
 
 	_s_bag = bag;
 
 	if (_s_bag.is_valid()) {
+		#if VERSION_MAJOR < 4
 		_s_bag->connect("item_added", this, "ons_item_added");
 		_s_bag->connect("item_removed", this, "ons_item_removed");
 		_s_bag->connect("item_swapped", this, "ons_items_swapped");
 		_s_bag->connect("item_count_changed", this, "ons_item_count_changed");
 		_s_bag->connect("overburdened", this, "ons_overburdened");
 		_s_bag->connect("overburden_removed", this, "ons_overburden_removed");
+		#else
+		_s_bag->connect("item_added", callable_mp(this, &Entity::ons_item_added));
+		_s_bag->connect("item_removed", callable_mp(this, &Entity::ons_item_removed));
+		_s_bag->connect("item_swapped", callable_mp(this, &Entity::ons_items_swapped));
+		_s_bag->connect("item_count_changed", callable_mp(this, &Entity::ons_item_count_changed));
+		_s_bag->connect("overburdened", callable_mp(this, &Entity::ons_overburdened));
+		_s_bag->connect("overburden_removed", callable_mp(this, &Entity::ons_overburden_removed));
+		#endif
 	}
 
 	emit_signal("sbag_changed", this, _s_bag);
@@ -5194,19 +5300,33 @@ Ref<Bag> Entity::gets_target_bag() const {
 }
 void Entity::sets_target_bag(const Ref<Bag> bag) {
 	if (_s_target_bag.is_valid()) {
+		#if VERSION_MAJOR < 4
 		_s_target_bag->disconnect("item_added", this, "ons_target_item_added");
 		_s_target_bag->disconnect("item_removed", this, "ons_target_item_removed");
 		_s_target_bag->disconnect("item_swapped", this, "ons_target_items_swapped");
 		_s_target_bag->disconnect("item_count_changed", this, "ons_target_item_count_changed");
+		#else
+		_s_target_bag->disconnect("item_added", callable_mp(this, &Entity::ons_target_item_added));
+		_s_target_bag->disconnect("item_removed", callable_mp(this, &Entity::ons_target_item_removed));
+		_s_target_bag->disconnect("item_swapped", callable_mp(this, &Entity::ons_target_items_swapped));
+		_s_target_bag->disconnect("item_count_changed", callable_mp(this, &Entity::ons_target_item_count_changed));
+		#endif
 	}
 
 	_s_target_bag = bag;
 
 	if (_s_target_bag.is_valid()) {
+		#if VERSION_MAJOR < 4
 		_s_target_bag->connect("item_added", this, "ons_target_item_added");
 		_s_target_bag->connect("item_removed", this, "ons_target_item_removed");
 		_s_target_bag->connect("item_swapped", this, "ons_target_items_swapped");
 		_s_target_bag->connect("item_count_changed", this, "ons_target_item_count_changed");
+		#else
+		_s_target_bag->connect("item_added", callable_mp(this, &Entity::ons_target_item_added));
+		_s_target_bag->connect("item_removed", callable_mp(this, &Entity::ons_target_item_removed));
+		_s_target_bag->connect("item_swapped", callable_mp(this, &Entity::ons_target_items_swapped));
+		_s_target_bag->connect("item_count_changed", callable_mp(this, &Entity::ons_target_item_count_changed));
+		#endif
 	}
 
 	emit_signal("starget_bag_changed", this, _s_target_bag);
@@ -5602,7 +5722,12 @@ Entity *Entity::gets_sees(int index) {
 void Entity::removes_sees_index(int index) {
 	Entity *e = _s_sees.get(index);
 
+	#if VERSION_MAJOR < 4
 	if (unlikely(!ObjectDB::instance_validate(e))) {
+	#else
+	if (e == NULL) {
+	#endif
+
 		_s_sees.remove(index);
 		return;
 	}
@@ -5612,7 +5737,12 @@ void Entity::removes_sees_index(int index) {
 	_s_sees.remove(index);
 }
 void Entity::removes_sees(Entity *entity) {
+	#if VERSION_MAJOR < 4
 	if (unlikely(!ObjectDB::instance_validate(entity))) {
+	#else
+	if (entity == NULL) {
+	#endif
+
 		_s_sees.erase(entity);
 		return;
 	}
@@ -5629,7 +5759,11 @@ void Entity::removes_sees_bind(Node *entity) {
 	removes_sees(e);
 }
 void Entity::adds_sees(Entity *entity) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	entity->adds_seen_by(this);
 
@@ -5670,7 +5804,11 @@ void Entity::removes_seen_by_bind(Node *entity) {
 	removes_seen_by(e);
 }
 void Entity::adds_seen_by(Entity *entity) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
+	#else
+	ERR_FAIL_COND(entity == NULL);
+	#endif
 
 	for (int i = 0; i < _s_seen_by.size(); ++i) {
 		if (_s_seen_by.get(i) == entity)
@@ -5705,7 +5843,12 @@ void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
 	for (int i = 0; i < _s_seen_by.size(); ++i) {
 		Entity *e = _s_seen_by.get(i);
 
+		#if VERSION_MAJOR < 4
 		if (unlikely(!ObjectDB::instance_validate(e))) {
+		#else
+		if (e == NULL) {
+		#endif
+
 			_s_seen_by.remove(i);
 			--i;
 			continue;
@@ -5721,16 +5864,30 @@ void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
 		rpcp(get_network_master(), false, p_method, argptr, argc);
 }
 
+#if VERSION_MAJOR < 4
 Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
+#else
+Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Callable::CallError &r_error) {
+#endif
 
 	if (p_argcount < 1) {
+		#if VERSION_MAJOR < 4
 		r_error.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
+		#else
+		r_error.error = Callable::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
+		#endif
+
 		r_error.argument = 1;
 		return Variant();
 	}
 
 	if (p_args[0]->get_type() != Variant::STRING) {
+		#if VERSION_MAJOR < 4
 		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+		#else
+		r_error.error = Callable::CallError::CALL_ERROR_INVALID_ARGUMENT;
+		#endif
+		
 		r_error.argument = 0;
 		r_error.expected = Variant::STRING;
 		return Variant();
@@ -5741,7 +5898,12 @@ Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::Call
 	for (int i = 0; i < _s_seen_by.size(); ++i) {
 		Entity *e = _s_seen_by.get(i);
 
+		#if VERSION_MAJOR < 4
 		if (unlikely(!ObjectDB::instance_validate(e))) {
+		#else
+		if (unlikely(e == NULL)) {
+		#endif
+
 			_s_seen_by.remove(i);
 			--i;
 			continue;
@@ -5755,7 +5917,12 @@ Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::Call
 
 	//call(method, &p_args[1], p_argcount - 1);
 
+	#if VERSION_MAJOR < 4
 	r_error.error = Variant::CallError::CALL_OK;
+	#else
+	r_error.error = Callable::CallError::CALL_OK;
+	#endif
+	
 	return Variant();
 }
 
@@ -6241,13 +6408,21 @@ void Entity::_moved() {
 }
 
 void Entity::_con_target_changed(Node *p_entity, Node *p_old_target) {
-	Entity *entity = Object::cast_to<Entity>(p_entity);
+	//Entity *entity = Object::cast_to<Entity>(p_entity);
 	Entity *old_target = Object::cast_to<Entity>(p_old_target);
 
+	#if VERSION_MAJOR < 4
 	if (ObjectDB::instance_validate(old_target))
 		old_target->onc_untargeted();
 
 	if (ObjectDB::instance_validate(getc_target())) {
+	#else
+	if (old_target != NULL)
+		old_target->onc_untargeted();
+
+	if (getc_target() != NULL) {
+	#endif
+
 		getc_target()->onc_targeted();
 
 		if (canc_interact())
@@ -6297,8 +6472,9 @@ void Entity::_son_death() {
 }
 
 void Entity::_slearn_spell(int id) {
-	if (EntityDataManager::get_instance()->get_use_spell_points())
+	if (EntityDataManager::get_instance()->get_use_spell_points()) {
 		ERR_FAIL_COND(gets_free_spell_points() <= 0);
+	}
 
 	ERR_FAIL_COND(!_s_entity_data.is_valid());
 
@@ -6334,8 +6510,13 @@ void Entity::_notification(int p_what) {
 		case NOTIFICATION_INSTANCED: {
 			_body = get_node_or_null(_body_path);
 
+			#if VERSION_MAJOR < 4
 			if (ObjectDB::instance_validate(_body))
 				_body->set_owner(this);
+			#else
+			if (_body != NULL)
+				_body->set_owner(this);
+			#endif
 
 			_character_skeleton = get_node_or_null(_character_skeleton_path);
 
@@ -6351,8 +6532,13 @@ void Entity::_notification(int p_what) {
 			if (!_body) {
 				_body = get_node_or_null(_body_path);
 
+				#if VERSION_MAJOR < 4
 				if (ObjectDB::instance_validate(_body))
 					_body->set_owner(this);
+				#else
+				if (_body != NULL)
+					_body->set_owner(this);
+				#endif
 			}
 
 			if (!_character_skeleton) {
@@ -6375,9 +6561,13 @@ void Entity::_notification(int p_what) {
 			for (int i = 0; i < _s_seen_by.size(); ++i) {
 				Entity *e = _s_seen_by.get(i);
 
-				if (ObjectDB::instance_validate(e)) {
+				#if VERSION_MAJOR < 4
+				if (ObjectDB::instance_validate(e))
 					e->removes_sees(this);
-				}
+				#else
+				if (e != NULL)
+					e->removes_sees(this);
+				#endif
 			}
 		} break;
 	}

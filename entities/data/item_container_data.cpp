@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "item_container_data.h"
 
+#include "core/version.h"
+
 int ItemContainerData::get_num_container_datas() {
 	return _container_datas.size();
 }
@@ -43,7 +45,11 @@ void ItemContainerData::set_container_data(int index, Ref<ItemContainerDataEntry
 Vector<Variant> ItemContainerData::get_container_datas() {
 	Vector<Variant> r;
 	for (int i = 0; i < _container_datas.size(); i++) {
+		#if VERSION_MAJOR < 4
 		r.push_back(_container_datas[i].get_ref_ptr());
+		#else
+		r.push_back(_container_datas[i]);
+		#endif
 	}
 	return r;
 }

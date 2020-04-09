@@ -22,6 +22,12 @@ SOFTWARE.
 
 #include "category_cooldown.h"
 
+#include "core/version.h"
+
+#if VERSION_MAJOR >= 4
+#define REAL FLOAT
+#endif
+
 int CategoryCooldown::get_category_id() const {
 	return _category_id;
 }

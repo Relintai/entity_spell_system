@@ -37,6 +37,16 @@ SOFTWARE.
 
 #include "../data/items/item_visual_entry.h"
 
+#include "core/version.h"
+
+#if VERSION_MAJOR < 4
+#include "scene/3d/spatial.h"
+#else
+#include "scene/3d/node_3d.h"
+#define Spatial Node3D
+#define Texture Texture2D
+#endif
+
 class ItemVisual;
 
 //Rename to HumanoidCharSkeleton -> maybe make that a subclass?

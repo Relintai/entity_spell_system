@@ -26,6 +26,8 @@ SOFTWARE.
 #include "../../singletons/entity_data_manager.h"
 #include "../entity.h"
 
+#include "core/version.h"
+
 float AuraData::get_damage_count() {
 	return _damage_already_taken;
 }
@@ -257,7 +259,11 @@ void AuraData::set_slow(float value) {
 }
 
 void AuraData::resolve_references(Node *owner) {
+	#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
+	#else
+	ERR_FAIL_COND(owner == NULL);
+	#endif
 	ERR_FAIL_COND(!owner->is_inside_tree());
 
 	_owner = Object::cast_to<Entity>(owner);

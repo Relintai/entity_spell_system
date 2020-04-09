@@ -56,6 +56,8 @@ SOFTWARE.
 
 #include "../data/auras/aura_group.h"
 
+#include "core/version.h"
+
 class EntityData;
 class AuraData;
 class Spell;
@@ -970,7 +972,12 @@ public:
 	int gets_seen_by_count();
 
 	void vrpc(const StringName &p_method, VARIANT_ARG_LIST);
+	#if VERSION_MAJOR < 4
 	Variant _vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
+	#else
+	Variant _vrpc_bind(const Variant **p_args, int p_argcount, Callable::CallError &r_error);
+	#endif
+	
 
 	Dictionary data_as_dict(String &data);
 
