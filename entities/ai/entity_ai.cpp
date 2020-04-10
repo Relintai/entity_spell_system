@@ -100,42 +100,42 @@ String EntityAI::get_editor_description() const {
 }
 
 void EntityAI::update(float delta) {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
-	#else
+#else
 	ERR_FAIL_COND(_owner == NULL);
-	#endif
+#endif
 
 	if (has_method("_update"))
 		call("_update", delta);
 }
 void EntityAI::pet_update(float delta) {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
-	#else
+#else
 	ERR_FAIL_COND(_owner == NULL);
-	#endif
+#endif
 
 	if (has_method("_pet_update"))
 		call("_pet_update", delta);
 }
 
 void EntityAI::move(float delta) {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
-	#else
+#else
 	ERR_FAIL_COND(_owner == NULL);
-	#endif
+#endif
 
 	if (has_method("_move"))
 		call("_move", delta);
 }
 void EntityAI::pet_move(float delta) {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
-	#else
+#else
 	ERR_FAIL_COND(_owner == NULL);
-	#endif
+#endif
 
 	if (has_method("_pet_move"))
 		call("_pet_move", delta);

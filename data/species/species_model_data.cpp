@@ -75,11 +75,11 @@ Vector<Variant> SpeciesModelData::get_visuals(const int bone_index) {
 
 	Vector<Variant> r;
 	for (int i = 0; i < _visuals[bone_index].size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_visuals[bone_index][i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_visuals[bone_index][i]);
-		#endif
+#endif
 	}
 	return r;
 }
@@ -163,11 +163,11 @@ int SpeciesModelData::get_hair_style_count() const {
 Vector<Variant> SpeciesModelData::get_hair_styles() {
 	Vector<Variant> r;
 	for (int i = 0; i < _hair_styles.size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_hair_styles[i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_hair_styles[i]);
-		#endif
+#endif
 	}
 	return r;
 }
@@ -249,11 +249,11 @@ int SpeciesModelData::get_head_count() const {
 Vector<Variant> SpeciesModelData::get_heads() {
 	Vector<Variant> r;
 	for (int i = 0; i < _heads.size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_heads[i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_heads[i]);
-		#endif
+#endif
 	}
 	return r;
 }

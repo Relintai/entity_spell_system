@@ -33,11 +33,11 @@ SOFTWARE.
 ////    SpellCastInfo    ////
 
 Entity *SpellCastInfo::get_caster() {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	if (_caster && !ObjectDB::instance_validate(_caster)) {
 		_caster = NULL;
 	}
-	#endif
+#endif
 
 	return _caster;
 }
@@ -59,12 +59,11 @@ void SpellCastInfo::set_caster_bind(Node *caster) {
 }
 
 Entity *SpellCastInfo::get_target() {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	if (_target && !ObjectDB::instance_validate(_target)) {
 		_target = NULL;
 	}
-	#endif
-	
+#endif
 
 	return _target;
 }
@@ -167,12 +166,12 @@ void SpellCastInfo::physics_process(float delta) {
 }
 
 void SpellCastInfo::resolve_references(Node *owner) {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
-	#else
+#else
 	ERR_FAIL_COND(owner == NULL);
-	#endif
-	
+#endif
+
 	ERR_FAIL_COND(!owner->is_inside_tree());
 
 	_caster = Object::cast_to<Entity>(owner);
@@ -191,19 +190,19 @@ void SpellCastInfo::resolve_references(Node *owner) {
 Dictionary SpellCastInfo::to_dict() {
 	Dictionary dict;
 
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	if (ObjectDB::instance_validate(_caster))
 		dict["caster"] = _caster->get_path();
 
 	if (ObjectDB::instance_validate(_target))
 		dict["target"] = _target->get_path();
-	#else
+#else
 	if (_caster == NULL)
 		dict["caster"] = _caster->get_path();
 
 	if (_target == NULL)
 		dict["target"] = _target->get_path();
-	#endif
+#endif
 
 	dict["has_cast_time"] = _has_cast_time;
 	dict["cast_time"] = _cast_time;

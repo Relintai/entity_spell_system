@@ -340,9 +340,9 @@ Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
 	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
 
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	img->lock();
-	#endif
+#endif
 
 	for (int i = 0; i < uvs.size(); ++i) {
 		Vector2 uv = uvs[i];
@@ -353,9 +353,9 @@ Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 		colors.set(i, colors[i] * c * mul_color);
 	}
 
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	img->unlock();
-	#endif
+#endif
 
 	arr[VisualServer::ARRAY_COLOR] = colors;
 

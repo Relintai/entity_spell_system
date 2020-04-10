@@ -178,11 +178,11 @@ void ItemTemplate::set_teaches_spell(const int index, const Ref<Spell> &spell) {
 Vector<Variant> ItemTemplate::get_teaches_spells() {
 	Vector<Variant> r;
 	for (int i = 0; i < _teaches_spells.size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_teaches_spells[i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_teaches_spells[i]);
-		#endif
+#endif
 	}
 	return r;
 }
@@ -218,11 +218,11 @@ void ItemTemplate::set_grants_spell(const int index, const Ref<Spell> &spell) {
 Vector<Variant> ItemTemplate::get_grants_spells() {
 	Vector<Variant> r;
 	for (int i = 0; i < _grants_spells.size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_grants_spells[i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_grants_spells[i]);
-		#endif
+#endif
 	}
 	return r;
 }
@@ -258,11 +258,11 @@ void ItemTemplate::set_aura(const int index, const Ref<Aura> &aura) {
 Vector<Variant> ItemTemplate::get_auras() {
 	Vector<Variant> r;
 	for (int i = 0; i < _auras.size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_auras[i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_auras[i]);
-		#endif
+#endif
 	}
 	return r;
 }
@@ -294,11 +294,11 @@ void ItemTemplate::set_required_skill(const int index, const Ref<Aura> &aura) {
 Vector<Variant> ItemTemplate::get_required_skills() {
 	Vector<Variant> r;
 	for (int i = 0; i < _required_skills.size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_required_skills[i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_required_skills[i]);
-		#endif
+#endif
 	}
 	return r;
 }

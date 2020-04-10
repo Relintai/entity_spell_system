@@ -206,11 +206,11 @@ void Spell::set_caster_aura_apply(const int index, const Ref<Aura> &caster_aura_
 Vector<Variant> Spell::get_caster_aura_applys() {
 	Vector<Variant> r;
 	for (int i = 0; i < _caster_aura_applys.size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_caster_aura_applys[i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_caster_aura_applys[i]);
-		#endif
+#endif
 	}
 	return r;
 }
@@ -246,11 +246,11 @@ void Spell::set_target_aura_apply(const int index, const Ref<Aura> &target_aura_
 Vector<Variant> Spell::get_target_aura_applys() {
 	Vector<Variant> r;
 	for (int i = 0; i < _target_aura_applys.size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_target_aura_applys[i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_target_aura_applys[i]);
-		#endif
+#endif
 	}
 	return r;
 }
@@ -286,11 +286,11 @@ void Spell::set_on_learn_aura(const int index, const Ref<Aura> &on_learn_aura_ap
 Vector<Variant> Spell::get_on_learn_auras() {
 	Vector<Variant> r;
 	for (int i = 0; i < _on_learn_auras.size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_on_learn_auras[i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_on_learn_auras[i]);
-		#endif
+#endif
 	}
 	return r;
 }
@@ -574,11 +574,11 @@ void Spell::set_training_required_skill_level(const int value) {
 ////    Spell System    ////
 
 void Spell::sstart_casting_simple(Entity *caster, float spell_scale) {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
-	#else
+#else
 	ERR_FAIL_COND(!caster || caster == NULL);
-	#endif
+#endif
 
 	Ref<SpellCastInfo> info = Ref<SpellCastInfo>(memnew(SpellCastInfo()));
 
@@ -593,11 +593,11 @@ void Spell::sstart_casting_simple(Entity *caster, float spell_scale) {
 }
 
 void Spell::sinterrupt_cast_simple(Entity *caster) {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
-	#else
+#else
 	ERR_FAIL_COND(!caster || caster == NULL);
-	#endif
+#endif
 
 	Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
 
@@ -608,11 +608,11 @@ void Spell::sinterrupt_cast_simple(Entity *caster) {
 }
 
 void Spell::sstart_casting_triggered_simple(Entity *caster) {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
-	#else
+#else
 	ERR_FAIL_COND(!caster || caster == NULL);
-	#endif
+#endif
 
 	Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
 
@@ -976,12 +976,12 @@ void Spell::_sfinish_cast(Ref<SpellCastInfo> info) {
 	info->get_caster()->son_cast_finished(info);
 	info->get_caster()->sspell_cast_success(info);
 
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	if (ObjectDB::instance_validate(info->get_target())) {
-	#else
+#else
 	if (info->get_target() != NULL) {
-	#endif
-	
+#endif
+
 		info->get_target()->son_cast_finished_target(info);
 	}
 
@@ -1034,11 +1034,11 @@ void Spell::_handle_projectile(Ref<SpellCastInfo> info) {
 
 		Node *p = info->get_caster()->get_parent();
 
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		ERR_FAIL_COND(!ObjectDB::instance_validate(p));
-		#else
+#else
 		ERR_FAIL_COND(p == NULL);
-		#endif
+#endif
 
 		p->add_child(projectile);
 
@@ -1065,11 +1065,11 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 #			return
 			*/
 
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	bool has_target = ObjectDB::instance_validate(info->get_target());
-	#else
+#else
 	bool has_target = info->get_target() == NULL;
-	#endif
+#endif
 
 	if (_target_type == SPELL_TARGET_TYPE_TARGET) {
 		if (!has_target)

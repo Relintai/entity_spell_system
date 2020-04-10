@@ -259,11 +259,11 @@ void AuraData::set_slow(float value) {
 }
 
 void AuraData::resolve_references(Node *owner) {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(owner));
-	#else
+#else
 	ERR_FAIL_COND(owner == NULL);
-	#endif
+#endif
 	ERR_FAIL_COND(!owner->is_inside_tree());
 
 	_owner = Object::cast_to<Entity>(owner);

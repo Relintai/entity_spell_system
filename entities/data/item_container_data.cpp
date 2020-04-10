@@ -45,11 +45,11 @@ void ItemContainerData::set_container_data(int index, Ref<ItemContainerDataEntry
 Vector<Variant> ItemContainerData::get_container_datas() {
 	Vector<Variant> r;
 	for (int i = 0; i < _container_datas.size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_container_datas[i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_container_datas[i]);
-		#endif
+#endif
 	}
 	return r;
 }

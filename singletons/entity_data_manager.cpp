@@ -450,7 +450,7 @@ void EntityDataManager::load_xp_data() {
 
 	_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(_xp_data_path, "XPData");
 
 	ERR_FAIL_COND(!resl.is_valid());
@@ -458,9 +458,9 @@ void EntityDataManager::load_xp_data() {
 	resl->wait();
 
 	Ref<Resource> s = resl->get_resource();
-	#else
+#else
 	Ref<Resource> s = rl->load(_xp_data_path, "XPData");
-	#endif
+#endif
 
 	ERR_FAIL_COND(!s.is_valid());
 
@@ -493,7 +493,7 @@ void EntityDataManager::load_entity_resources() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityResourceData");
 
 				ERR_CONTINUE(!resl.is_valid());
@@ -501,9 +501,9 @@ void EntityDataManager::load_entity_resources() {
 				resl->wait();
 
 				Ref<Resource> s = resl->get_resource();
-				#else
+#else
 				Ref<Resource> s = rl->load(path, "EntityResourceData");
-				#endif
+#endif
 
 				ERR_CONTINUE(!s.is_valid());
 
@@ -541,7 +541,7 @@ void EntityDataManager::load_entity_skills() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntitySkillData");
 
 				ERR_CONTINUE(!resl.is_valid());
@@ -549,9 +549,9 @@ void EntityDataManager::load_entity_skills() {
 				resl->wait();
 
 				Ref<Resource> s = resl->get_resource();
-				#else
+#else
 				Ref<Resource> s = rl->load(path, "EntitySkillData");
-				#endif
+#endif
 
 				ERR_CONTINUE(!s.is_valid());
 
@@ -589,7 +589,7 @@ void EntityDataManager::load_spells() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "Spell");
 
 				ERR_CONTINUE(!resl.is_valid());
@@ -597,9 +597,9 @@ void EntityDataManager::load_spells() {
 				resl->wait();
 
 				Ref<Resource> s = resl->get_resource();
-				#else
+#else
 				Ref<Resource> s = rl->load(path, "Spell");
-				#endif
+#endif
 
 				ERR_CONTINUE(!s.is_valid());
 
@@ -637,7 +637,7 @@ void EntityDataManager::load_auras() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "Aura");
 
 				ERR_CONTINUE(!resl.is_valid());
@@ -645,9 +645,9 @@ void EntityDataManager::load_auras() {
 				resl->wait();
 
 				Ref<Resource> s = resl->get_resource();
-				#else
+#else
 				Ref<Resource> s = rl->load(path, "Aura");
-				#endif
+#endif
 
 				ERR_CONTINUE(!s.is_valid());
 
@@ -685,7 +685,7 @@ void EntityDataManager::load_characters() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityData");
 
 				ERR_CONTINUE(!resl.is_valid());
@@ -693,9 +693,9 @@ void EntityDataManager::load_characters() {
 				resl->wait();
 
 				Ref<Resource> s = resl->get_resource();
-				#else
+#else
 				Ref<Resource> s = rl->load(path, "EntityData");
-				#endif
+#endif
 
 				ERR_CONTINUE(!s.is_valid());
 
@@ -733,7 +733,7 @@ void EntityDataManager::load_craft_datas() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "CraftRecipe");
 
 				ERR_CONTINUE(!resl.is_valid());
@@ -741,9 +741,9 @@ void EntityDataManager::load_craft_datas() {
 				resl->wait();
 
 				Ref<Resource> s = resl->get_resource();
-				#else
+#else
 				Ref<Resource> s = rl->load(path, "CraftRecipe");
-				#endif
+#endif
 
 				ERR_CONTINUE(!s.is_valid());
 
@@ -781,7 +781,7 @@ void EntityDataManager::load_item_templates() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "ItemTemplate");
 
 				ERR_CONTINUE(!resl.is_valid());
@@ -789,9 +789,9 @@ void EntityDataManager::load_item_templates() {
 				resl->wait();
 
 				Ref<Resource> s = resl->get_resource();
-				#else
+#else
 				Ref<Resource> s = rl->load(path, "ItemTemplate");
-				#endif
+#endif
 
 				ERR_CONTINUE(!s.is_valid());
 
@@ -829,7 +829,7 @@ void EntityDataManager::load_mob_datas() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityData");
 
 				ERR_CONTINUE(!resl.is_valid());
@@ -837,9 +837,9 @@ void EntityDataManager::load_mob_datas() {
 				resl->wait();
 
 				Ref<Resource> s = resl->get_resource();
-				#else
+#else
 				Ref<Resource> s = rl->load(path, "EntityData");
-				#endif
+#endif
 
 				ERR_CONTINUE(!s.is_valid());
 
@@ -877,7 +877,7 @@ void EntityDataManager::load_player_character_datas() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityData");
 
 				ERR_CONTINUE(!resl.is_valid());
@@ -885,10 +885,10 @@ void EntityDataManager::load_player_character_datas() {
 				resl->wait();
 
 				Ref<Resource> s = resl->get_resource();
-				#else
+#else
 				Ref<Resource> s = rl->load(path, "EntityData");
-				#endif
-				
+#endif
+
 				ERR_CONTINUE(!s.is_valid());
 
 				Ref<EntityData> pcd = s;
@@ -925,7 +925,7 @@ void EntityDataManager::load_entity_species_datas() {
 
 				_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
-				#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntitySpeciesData");
 
 				ERR_CONTINUE(!resl.is_valid());
@@ -933,9 +933,9 @@ void EntityDataManager::load_entity_species_datas() {
 				resl->wait();
 
 				Ref<Resource> s = resl->get_resource();
-				#else
+#else
 				Ref<Resource> s = rl->load(path, "EntitySpeciesData");
-				#endif
+#endif
 
 				ERR_CONTINUE(!s.is_valid());
 

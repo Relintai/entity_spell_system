@@ -1258,11 +1258,11 @@ void Aura::_supdate(Ref<AuraData> aura, float delta) {
 
 void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
 
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_caster()));
-	#else
+#else
 	ERR_FAIL_COND(info->get_caster() == NULL);
-	#endif
+#endif
 
 	data->set_aura(Ref<Aura>(this));
 	data->set_aura_id(get_id());
@@ -1298,23 +1298,23 @@ void Aura::_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo>
 }
 
 void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> info) {
-	
-	#if VERSION_MAJOR < 4
+
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_dealer()));
-	#else
+#else
 	ERR_FAIL_COND(info->get_dealer() == NULL);
-	#endif
+#endif
 
 	Math::randomize();
 
 	info->set_damage(_damage_min + (Math::rand() % (_damage_max = _damage_min)));
 	info->set_damage_source_type(SpellDamageInfo::DAMAGE_SOURCE_AURA);
 
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_dealer()));
-	#else
+#else
 	ERR_FAIL_COND(info->get_dealer() == NULL);
-	#endif
+#endif
 
 	info->get_dealer()->sdeal_damage_to(info);
 }
@@ -1332,22 +1332,22 @@ void Aura::_calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> i
 }
 
 void Aura::_handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info) {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_dealer()));
-	#else
+#else
 	ERR_FAIL_COND(info->get_dealer() == NULL);
-	#endif
+#endif
 
 	Math::randomize();
 
 	info->set_heal(_heal_min + (Math::rand() % (_heal_max = _heal_min)));
 	info->set_heal_source_type(SpellHealInfo::HEAL_SOURCE_AURA);
 
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_dealer()));
-	#else
+#else
 	ERR_FAIL_COND(info->get_dealer() == NULL);
-	#endif
+#endif
 
 	info->get_dealer()->sdeal_heal_to(info);
 }

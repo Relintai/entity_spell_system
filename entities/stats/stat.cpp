@@ -329,11 +329,11 @@ void Stat::remove_modifier_index(int index) {
 }
 
 void Stat::apply_modifiers() {
-	#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(_owner));
-	#else
+#else
 	ERR_FAIL_COND(_owner == NULL);
-	#endif
+#endif
 	ERR_FAIL_COND(!_stat_data_entry.is_valid());
 
 	reset_values();

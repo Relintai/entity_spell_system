@@ -42,11 +42,11 @@ void VendorItemData::set_vendor_data(int index, Ref<VendorItemDataEntry> vendor_
 Vector<Variant> VendorItemData::get_vendor_datas() {
 	Vector<Variant> r;
 	for (int i = 0; i < _vendor_datas.size(); i++) {
-		#if VERSION_MAJOR < 4
+#if VERSION_MAJOR < 4
 		r.push_back(_vendor_datas[i].get_ref_ptr());
-		#else
+#else
 		r.push_back(_vendor_datas[i]);
-		#endif
+#endif
 	}
 	return r;
 }
