@@ -174,6 +174,8 @@ public:
 	void load_player_character_datas();
 	void load_entity_species_datas();
 
+	Ref<Resource> load_resource(const String &path, const String &type_hint);
+
 	void request_entity_spawn(const Ref<EntityCreateInfo> &info);
 	void request_entity_spawn_deferred(const Ref<EntityCreateInfo> &info);
 

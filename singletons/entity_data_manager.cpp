@@ -414,23 +414,7 @@ void EntityDataManager::load_xp_data() {
 
 	ERR_FAIL_COND(_xp_data_path == "");
 
-	_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(_xp_data_path, "XPData");
-
-	ERR_FAIL_COND(!resl.is_valid());
-
-	resl->wait();
-
-	Ref<Resource> s = resl->get_resource();
-#else
-	Ref<Resource> s = rl->load(_xp_data_path, "XPData");
-#endif
-
-	ERR_FAIL_COND(!s.is_valid());
-
-	Ref<XPData> d = s;
+	Ref<XPData> d = load_resource(_xp_data_path, "XPData");
 
 	ERR_FAIL_COND(!d.is_valid());
 
@@ -457,23 +441,7 @@ void EntityDataManager::load_entity_resources() {
 			if (!dir.current_is_dir()) {
 				String path = _entity_resources_folder + "/" + filename;
 
-				_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityResourceData");
-
-				ERR_CONTINUE(!resl.is_valid());
-
-				resl->wait();
-
-				Ref<Resource> s = resl->get_resource();
-#else
-				Ref<Resource> s = rl->load(path, "EntityResourceData");
-#endif
-
-				ERR_CONTINUE(!s.is_valid());
-
-				Ref<EntityResourceData> eresd = s;
+				Ref<EntityResourceData> eresd = load_resource(path, "EntityResourceData");
 
 				ERR_CONTINUE(!eresd.is_valid());
 
@@ -505,23 +473,7 @@ void EntityDataManager::load_entity_skills() {
 			if (!dir.current_is_dir()) {
 				String path = _entity_skills_folder + "/" + filename;
 
-				_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntitySkillData");
-
-				ERR_CONTINUE(!resl.is_valid());
-
-				resl->wait();
-
-				Ref<Resource> s = resl->get_resource();
-#else
-				Ref<Resource> s = rl->load(path, "EntitySkillData");
-#endif
-
-				ERR_CONTINUE(!s.is_valid());
-
-				Ref<EntitySkillData> eskilld = s;
+				Ref<EntitySkillData> eskilld = load_resource(path, "EntitySkillData");
 
 				ERR_CONTINUE(!eskilld.is_valid());
 
@@ -553,23 +505,7 @@ void EntityDataManager::load_spells() {
 			if (!dir.current_is_dir()) {
 				String path = _spells_folder + "/" + filename;
 
-				_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "Spell");
-
-				ERR_CONTINUE(!resl.is_valid());
-
-				resl->wait();
-
-				Ref<Resource> s = resl->get_resource();
-#else
-				Ref<Resource> s = rl->load(path, "Spell");
-#endif
-
-				ERR_CONTINUE(!s.is_valid());
-
-				Ref<Spell> spell = s;
+				Ref<Spell> spell = load_resource(path, "Spell");
 
 				ERR_CONTINUE(!spell.is_valid());
 
@@ -601,23 +537,7 @@ void EntityDataManager::load_auras() {
 			if (!dir.current_is_dir()) {
 				String path = _auras_folder + "/" + filename;
 
-				_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "Aura");
-
-				ERR_CONTINUE(!resl.is_valid());
-
-				resl->wait();
-
-				Ref<Resource> s = resl->get_resource();
-#else
-				Ref<Resource> s = rl->load(path, "Aura");
-#endif
-
-				ERR_CONTINUE(!s.is_valid());
-
-				Ref<Aura> aura = s;
+				Ref<Aura> aura = load_resource(path, "Aura");
 
 				ERR_CONTINUE(!aura.is_valid());
 
@@ -649,23 +569,7 @@ void EntityDataManager::load_characters() {
 			if (!dir.current_is_dir()) {
 				String path = _entity_datas_folder + "/" + filename;
 
-				_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityData");
-
-				ERR_CONTINUE(!resl.is_valid());
-
-				resl->wait();
-
-				Ref<Resource> s = resl->get_resource();
-#else
-				Ref<Resource> s = rl->load(path, "EntityData");
-#endif
-
-				ERR_CONTINUE(!s.is_valid());
-
-				Ref<EntityData> cls = s;
+				Ref<EntityData> cls = load_resource(path, "EntityData");
 
 				ERR_CONTINUE(!cls.is_valid());
 
@@ -697,23 +601,7 @@ void EntityDataManager::load_craft_datas() {
 			if (!dir.current_is_dir()) {
 				String path = _craft_data_folder + "/" + filename;
 
-				_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "CraftRecipe");
-
-				ERR_CONTINUE(!resl.is_valid());
-
-				resl->wait();
-
-				Ref<Resource> s = resl->get_resource();
-#else
-				Ref<Resource> s = rl->load(path, "CraftRecipe");
-#endif
-
-				ERR_CONTINUE(!s.is_valid());
-
-				Ref<CraftRecipe> cda = s;
+				Ref<CraftRecipe> cda = load_resource(path, "CraftRecipe");
 
 				ERR_CONTINUE(!cda.is_valid());
 
@@ -745,23 +633,7 @@ void EntityDataManager::load_item_templates() {
 			if (!dir.current_is_dir()) {
 				String path = _item_template_folder + "/" + filename;
 
-				_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "ItemTemplate");
-
-				ERR_CONTINUE(!resl.is_valid());
-
-				resl->wait();
-
-				Ref<Resource> s = resl->get_resource();
-#else
-				Ref<Resource> s = rl->load(path, "ItemTemplate");
-#endif
-
-				ERR_CONTINUE(!s.is_valid());
-
-				Ref<ItemTemplate> it = s;
+				Ref<ItemTemplate> it = load_resource(path, "ItemTemplate");
 
 				ERR_CONTINUE(!it.is_valid());
 
@@ -793,23 +665,7 @@ void EntityDataManager::load_player_character_datas() {
 			if (!dir.current_is_dir()) {
 				String path = _player_character_data_folder + "/" + filename;
 
-				_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityData");
-
-				ERR_CONTINUE(!resl.is_valid());
-
-				resl->wait();
-
-				Ref<Resource> s = resl->get_resource();
-#else
-				Ref<Resource> s = rl->load(path, "EntityData");
-#endif
-
-				ERR_CONTINUE(!s.is_valid());
-
-				Ref<EntityData> pcd = s;
+				Ref<EntityData> pcd = load_resource(path, "EntityData");
 
 				ERR_CONTINUE(!pcd.is_valid());
 
@@ -841,23 +697,7 @@ void EntityDataManager::load_entity_species_datas() {
 			if (!dir.current_is_dir()) {
 				String path = _entity_species_data_folder + "/" + filename;
 
-				_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntitySpeciesData");
-
-				ERR_CONTINUE(!resl.is_valid());
-
-				resl->wait();
-
-				Ref<Resource> s = resl->get_resource();
-#else
-				Ref<Resource> s = rl->load(path, "EntitySpeciesData");
-#endif
-
-				ERR_CONTINUE(!s.is_valid());
-
-				Ref<EntitySpeciesData> pcd = s;
+				Ref<EntitySpeciesData> pcd = load_resource(path, "EntitySpeciesData");
 
 				ERR_CONTINUE(!pcd.is_valid());
 
@@ -867,6 +707,22 @@ void EntityDataManager::load_entity_species_datas() {
 	} else {
 		print_error("An error occurred when trying to access the path.");
 	}
+}
+
+Ref<Resource> EntityDataManager::load_resource(const String &path, const String &type_hint) {
+	_ResourceLoader *rl = _ResourceLoader::get_singleton();
+
+#if VERSION_MAJOR < 4
+	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, type_hint);
+
+	ERR_FAIL_COND_V(!resl.is_valid(), Ref<Resource>());
+
+	resl->wait();
+
+	return resl->get_resource();
+#else
+	return rl->load(path, type_hint);
+#endif
 }
 
 void EntityDataManager::request_entity_spawn(const Ref<EntityCreateInfo> &info) {
@@ -1025,6 +881,8 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("load_item_templates"), &EntityDataManager::load_item_templates);
 	ClassDB::bind_method(D_METHOD("load_player_character_datas"), &EntityDataManager::load_player_character_datas);
 	ClassDB::bind_method(D_METHOD("load_entity_species_datas"), &EntityDataManager::load_entity_species_datas);
+
+	ClassDB::bind_method(D_METHOD("load_resource", "path", "type_hint"), &EntityDataManager::load_resource);
 
 	ADD_SIGNAL(MethodInfo("on_entity_spawn_requested", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
 
