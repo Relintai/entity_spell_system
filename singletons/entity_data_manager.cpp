@@ -337,39 +337,6 @@ int EntityDataManager::get_item_template_count() {
 	return _item_templates.size();
 }
 
-String EntityDataManager::get_mob_data_folder() {
-	return _mob_data_folder;
-}
-void EntityDataManager::set_mob_data_folder(String folder) {
-	_mob_data_folder = folder;
-}
-Vector<Ref<EntityData> > *EntityDataManager::get_mob_datas() {
-	return &_mob_datas;
-}
-
-void EntityDataManager::add_mob_data(const Ref<EntityData> &cda) {
-	ERR_FAIL_COND(!cda.is_valid());
-
-	_mob_datas.push_back(cda);
-	_mob_data_map.set(cda->get_id(), cda);
-}
-
-Ref<EntityData> EntityDataManager::get_mob_data(int item_id) {
-	ERR_FAIL_COND_V_MSG(!_mob_data_map.has(item_id), Ref<EntityData>(), "Could not find EntityData! Id:" + String::num(item_id));
-
-	return _mob_data_map.get(item_id);
-}
-
-Ref<EntityData> EntityDataManager::get_mob_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _mob_datas.size(), Ref<EntityData>());
-
-	return _mob_datas.get(index);
-}
-
-int EntityDataManager::get_mob_data_count() {
-	return _mob_datas.size();
-}
-
 String EntityDataManager::get_player_character_data_folder() {
 	return _player_character_data_folder;
 }
@@ -438,7 +405,6 @@ void EntityDataManager::load_all() {
 	load_characters();
 	load_craft_datas();
 	load_item_templates();
-	load_mob_datas();
 	load_player_character_datas();
 	load_entity_species_datas();
 }
@@ -807,54 +773,6 @@ void EntityDataManager::load_item_templates() {
 	}
 }
 
-void EntityDataManager::load_mob_datas() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_mob_data_folder.ends_with("/"));
-
-	if (dir.open(_mob_data_folder) == OK) {
-
-		dir.list_dir_begin();
-
-		String filename;
-
-		while (true) {
-			filename = dir.get_next();
-
-			if (filename == "")
-				break;
-
-			if (!dir.current_is_dir()) {
-				String path = _mob_data_folder + "/" + filename;
-
-				_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-				Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, "EntityData");
-
-				ERR_CONTINUE(!resl.is_valid());
-
-				resl->wait();
-
-				Ref<Resource> s = resl->get_resource();
-#else
-				Ref<Resource> s = rl->load(path, "EntityData");
-#endif
-
-				ERR_CONTINUE(!s.is_valid());
-
-				Ref<EntityData> mob_data = s;
-
-				ERR_CONTINUE(!mob_data.is_valid());
-
-				add_mob_data(mob_data);
-			}
-		}
-	} else {
-		print_error("An error occurred when trying to access the path.");
-	}
-}
-
 void EntityDataManager::load_player_character_datas() {
 	_Directory dir;
 
@@ -1075,16 +993,6 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_item_template_index", "index"), &EntityDataManager::get_item_template_index);
 	ClassDB::bind_method(D_METHOD("get_item_template_count"), &EntityDataManager::get_item_template_count);
 
-	//Mob Data
-	ClassDB::bind_method(D_METHOD("get_mob_data_folder"), &EntityDataManager::get_mob_data_folder);
-	ClassDB::bind_method(D_METHOD("set_mob_data_folder", "folder"), &EntityDataManager::set_mob_data_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "mob_data_folder"), "set_mob_data_folder", "get_mob_data_folder");
-
-	ClassDB::bind_method(D_METHOD("add_mob_data", "mob_data"), &EntityDataManager::add_mob_data);
-	ClassDB::bind_method(D_METHOD("get_mob_data", "mob_data_id"), &EntityDataManager::get_mob_data);
-	ClassDB::bind_method(D_METHOD("get_mob_data_index", "index"), &EntityDataManager::get_mob_data_index);
-	ClassDB::bind_method(D_METHOD("get_mob_data_count"), &EntityDataManager::get_mob_data_count);
-
 	//Player Character Data
 	ClassDB::bind_method(D_METHOD("get_player_character_data_folder"), &EntityDataManager::get_player_character_data_folder);
 	ClassDB::bind_method(D_METHOD("set_player_character_data_folder", "folder"), &EntityDataManager::set_player_character_data_folder);
@@ -1115,7 +1023,6 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("load_characters"), &EntityDataManager::load_characters);
 	ClassDB::bind_method(D_METHOD("load_craft_datas"), &EntityDataManager::load_craft_datas);
 	ClassDB::bind_method(D_METHOD("load_item_templates"), &EntityDataManager::load_item_templates);
-	ClassDB::bind_method(D_METHOD("load_mob_datas"), &EntityDataManager::load_mob_datas);
 	ClassDB::bind_method(D_METHOD("load_player_character_datas"), &EntityDataManager::load_player_character_datas);
 	ClassDB::bind_method(D_METHOD("load_entity_species_datas"), &EntityDataManager::load_entity_species_datas);
 
@@ -1147,7 +1054,6 @@ EntityDataManager::EntityDataManager() {
 	_auras_folder = GLOBAL_DEF("ess/data/auras_folder", "");
 	_craft_data_folder = GLOBAL_DEF("ess/data/craft_data_folder", "");
 	_item_template_folder = GLOBAL_DEF("ess/data/item_template_folder", "");
-	_mob_data_folder = GLOBAL_DEF("ess/data/mob_data_folder", "");
 	_player_character_data_folder = GLOBAL_DEF("ess/data/player_character_data_folder", "");
 	_entity_species_data_folder = GLOBAL_DEF("ess/data/entity_species_data_folder", "");
 
@@ -1179,9 +1085,6 @@ EntityDataManager::~EntityDataManager() {
 
 	_item_templates.clear();
 	_item_template_map.clear();
-
-	_mob_datas.clear();
-	_mob_data_map.clear();
 
 	_player_character_datas.clear();
 	_player_character_data_map.clear();
