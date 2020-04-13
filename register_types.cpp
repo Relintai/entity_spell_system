@@ -133,6 +133,8 @@ SOFTWARE.
 
 #include "singletons/profile_manager.h"
 
+#include "editor/ess_editor_plugin.h"
+
 static EntityDataManager *entity_data_manager = NULL;
 static ProfileManager *profile_manager = NULL;
 
@@ -267,6 +269,10 @@ void register_entity_spell_system_types() {
 	profile_manager = memnew(ProfileManager);
 	ClassDB::register_class<ProfileManager>();
 	Engine::get_singleton()->add_singleton(Engine::Singleton("ProfileManager", ProfileManager::get_instance()));
+
+#ifdef TOOLS_ENABLED
+	//EditorPlugins::add_by_type<ESSEditorPlugin>();
+#endif
 }
 
 void unregister_entity_spell_system_types() {
