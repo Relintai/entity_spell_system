@@ -79,6 +79,9 @@ public:
 	EntityEnums::EntityInteractionType get_entity_interaction_type() const;
 	void set_entity_interaction_type(const EntityEnums::EntityInteractionType value);
 
+	bool get_is_playable() const;
+	void set_is_playable(const bool value);
+
 	int get_immunity_flags() const;
 	void set_immunity_flags(const int value);
 
@@ -89,10 +92,10 @@ public:
 	void set_entity_controller(const EntityEnums::EntityController value);
 
 	int get_money() const;
-	void set_money(int value);
+	void set_money(const int value);
 
 	int get_bag_size() const;
-	void set_bag_size(int value);
+	void set_bag_size(const int value);
 
 	Ref<EntitySpeciesData> get_entity_species_data() const;
 	void set_entity_species_data(const Ref<EntitySpeciesData> &value);
@@ -264,6 +267,8 @@ private:
 	EntityEnums::EntityType _entity_type;
 
 	EntityEnums::EntityInteractionType _interaction_type;
+
+	bool _is_playable;
 
 	int _immunity_flags;
 	int _entity_flags;

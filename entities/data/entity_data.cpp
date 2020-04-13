@@ -68,17 +68,24 @@ void EntityData::set_entity_interaction_type(EntityEnums::EntityInteractionType 
 	_interaction_type = value;
 }
 
+bool EntityData::get_is_playable() const {
+	return _is_playable;
+}
+void EntityData::set_is_playable(const bool value) {
+	_is_playable = value;
+}
+
 int EntityData::get_immunity_flags() const {
 	return _immunity_flags;
 }
-void EntityData::set_immunity_flags(int value) {
+void EntityData::set_immunity_flags(const int value) {
 	_immunity_flags = value;
 }
 
 int EntityData::get_entity_flags() const {
 	return _entity_flags;
 }
-void EntityData::set_entity_flags(int value) {
+void EntityData::set_entity_flags(const int value) {
 	_entity_flags = value;
 }
 
@@ -92,14 +99,14 @@ void EntityData::set_entity_controller(EntityEnums::EntityController value) {
 int EntityData::get_money() const {
 	return _money;
 }
-void EntityData::set_money(int value) {
+void EntityData::set_money(const int value) {
 	_money = value;
 }
 
 int EntityData::get_bag_size() const {
 	return _bag_size;
 }
-void EntityData::set_bag_size(int value) {
+void EntityData::set_bag_size(const int value) {
 	_bag_size = value;
 }
 
@@ -1106,6 +1113,7 @@ EntityData::EntityData() {
 	_id = 0;
 	_money = 0;
 	_bag_size = 0;
+	_is_playable = false;
 
 	_entity_type = EntityEnums::ENITIY_TYPE_NONE;
 	_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
@@ -1317,6 +1325,10 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_controller"), &EntityData::get_entity_controller);
 	ClassDB::bind_method(D_METHOD("set_entity_controller", "value"), &EntityData::set_entity_controller);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "set_entity_controller", "get_entity_controller");
+
+	ClassDB::bind_method(D_METHOD("get_is_playable"), &EntityData::get_is_playable);
+	ClassDB::bind_method(D_METHOD("set_is_playable", "value"), &EntityData::set_is_playable);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_playable"), "set_is_playable", "get_is_playable");
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
