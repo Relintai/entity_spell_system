@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "../../data/auras/aura.h"
 #include "../../database/ess_resource_db.h"
-#include "../../singletons/entity_data_manager.h"
+#include "../../singletons/ess.h"
 #include "../entity.h"
 
 #include "core/version.h"
@@ -314,7 +314,7 @@ void AuraData::_from_dict(const Dictionary &dict) {
 	_aura_group = dict.get("aura_group", 0);
 	int aura_id = dict.get("aura_id", 0);
 
-	Ref<Aura> aura = EntityDataManager::get_instance()->get_resource_db()->get_aura(aura_id);
+	Ref<Aura> aura = ESS::get_instance()->get_resource_db()->get_aura(aura_id);
 
 	if (aura.is_valid()) {
 		_aura = aura;

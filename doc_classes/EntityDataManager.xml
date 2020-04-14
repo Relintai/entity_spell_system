@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityDataManager" inherits="Object" version="3.2">
+<class name="ESS" inherits="Object" version="3.2">
 	<brief_description>
-		The EntityDataManager singleton.
+		The ESS singleton.
 	</brief_description>
 	<description>
 		Gives easy access to entity and spell related data, providing easy lookups.

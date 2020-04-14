@@ -20,84 +20,84 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "entity_data_manager.h"
+#include "ess.h"
 
 #include "../database/ess_resource_db.h"
 #include "../utility/entity_create_info.h"
 
-EntityDataManager *EntityDataManager::instance;
+ESS *ESS::instance;
 
-EntityDataManager *EntityDataManager::get_instance() {
+ESS *ESS::get_instance() {
 	return instance;
 }
 
-bool EntityDataManager::get_use_spell_points() const {
+bool ESS::get_use_spell_points() const {
 	return _use_spell_points;
 }
-void EntityDataManager::set_use_spell_points(const bool value) {
+void ESS::set_use_spell_points(const bool value) {
 	_use_spell_points = value;
 }
 
-bool EntityDataManager::get_scale_spells_by_default() const {
+bool ESS::get_scale_spells_by_default() const {
 	return _scale_spells_by_default;
 }
-void EntityDataManager::set_scale_spells_by_default(const bool value) {
+void ESS::set_scale_spells_by_default(const bool value) {
 	_scale_spells_by_default = value;
 }
 
-bool EntityDataManager::get_automatic_load() const {
+bool ESS::get_automatic_load() const {
 	return _automatic_load;
 }
-void EntityDataManager::set_automatic_load(const bool load) {
+void ESS::set_automatic_load(const bool load) {
 	_automatic_load = load;
 }
 
-bool EntityDataManager::get_use_class_xp() const {
+bool ESS::get_use_class_xp() const {
 	return _use_class_xp;
 }
-void EntityDataManager::set_use_class_xp(const bool value) {
+void ESS::set_use_class_xp(const bool value) {
 	_use_class_xp = value;
 }
 
-bool EntityDataManager::get_automatic_class_levelups() const {
+bool ESS::get_automatic_class_levelups() const {
 	return _automatic_class_levelups;
 }
-void EntityDataManager::set_automatic_class_levelups(const bool value) {
+void ESS::set_automatic_class_levelups(const bool value) {
 	_automatic_class_levelups = value;
 }
 
-bool EntityDataManager::get_use_global_class_level() const {
+bool ESS::get_use_global_class_level() const {
 	return _use_global_class_level;
 }
-void EntityDataManager::set_use_global_class_level(const bool value) {
+void ESS::set_use_global_class_level(const bool value) {
 	_use_global_class_level = value;
 }
 
-bool EntityDataManager::get_allow_class_spell_learning() const {
+bool ESS::get_allow_class_spell_learning() const {
 	return _allow_class_spell_learning;
 }
-void EntityDataManager::set_allow_class_spell_learning(const bool value) {
+void ESS::set_allow_class_spell_learning(const bool value) {
 	_allow_class_spell_learning = value;
 }
 
-bool EntityDataManager::get_allow_class_recipe_learning() const {
+bool ESS::get_allow_class_recipe_learning() const {
 	return _allow_class_recipe_learning;
 }
-void EntityDataManager::set_allow_class_recipe_learning(const bool value) {
+void ESS::set_allow_class_recipe_learning(const bool value) {
 	_allow_class_recipe_learning = value;
 }
 
-String EntityDataManager::get_resource_db_path() {
+String ESS::get_resource_db_path() {
 	return _ess_resource_db_path;
 }
-void EntityDataManager::set_resource_db_path(String path) {
+void ESS::set_resource_db_path(String path) {
 	_ess_resource_db_path = path;
 }
-Ref<ESSResourceDB> EntityDataManager::get_resource_db() {
+Ref<ESSResourceDB> ESS::get_resource_db() {
 	return _ess_resource_db;
 }
 
-void EntityDataManager::load_resource_db() {
+void ESS::load_resource_db() {
 	_Directory dir;
 
 	ERR_FAIL_COND(_ess_resource_db_path == "");
@@ -109,7 +109,7 @@ void EntityDataManager::load_resource_db() {
 	_ess_resource_db = d;
 }
 
-Ref<Resource> EntityDataManager::load_resource(const String &path, const String &type_hint) {
+Ref<Resource> ESS::load_resource(const String &path, const String &type_hint) {
 	_ResourceLoader *rl = _ResourceLoader::get_singleton();
 
 #if VERSION_MAJOR < 4
@@ -125,65 +125,65 @@ Ref<Resource> EntityDataManager::load_resource(const String &path, const String 
 #endif
 }
 
-void EntityDataManager::request_entity_spawn(const Ref<EntityCreateInfo> &info) {
+void ESS::request_entity_spawn(const Ref<EntityCreateInfo> &info) {
 	emit_signal("on_entity_spawn_requested", info);
 }
-void EntityDataManager::request_entity_spawn_deferred(const Ref<EntityCreateInfo> &info) {
+void ESS::request_entity_spawn_deferred(const Ref<EntityCreateInfo> &info) {
 	call_deferred("emit_signal", "on_entity_spawn_requested", info);
 }
 
-void EntityDataManager::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_use_spell_points"), &EntityDataManager::get_use_spell_points);
-	ClassDB::bind_method(D_METHOD("set_use_spell_points", "value"), &EntityDataManager::set_use_spell_points);
+void ESS::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_use_spell_points"), &ESS::get_use_spell_points);
+	ClassDB::bind_method(D_METHOD("set_use_spell_points", "value"), &ESS::set_use_spell_points);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_spell_points"), "set_use_spell_points", "get_use_spell_points");
 
-	ClassDB::bind_method(D_METHOD("get_scale_spells_by_default"), &EntityDataManager::get_scale_spells_by_default);
-	ClassDB::bind_method(D_METHOD("set_scale_spells_by_default", "value"), &EntityDataManager::set_scale_spells_by_default);
+	ClassDB::bind_method(D_METHOD("get_scale_spells_by_default"), &ESS::get_scale_spells_by_default);
+	ClassDB::bind_method(D_METHOD("set_scale_spells_by_default", "value"), &ESS::set_scale_spells_by_default);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "scale_spells_by_default"), "set_scale_spells_by_default", "get_scale_spells_by_default");
 
-	ClassDB::bind_method(D_METHOD("get_automatic_load"), &EntityDataManager::get_automatic_load);
-	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &EntityDataManager::set_automatic_load);
+	ClassDB::bind_method(D_METHOD("get_automatic_load"), &ESS::get_automatic_load);
+	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &ESS::set_automatic_load);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
 
-	ClassDB::bind_method(D_METHOD("get_automatic_class_levelups"), &EntityDataManager::get_automatic_class_levelups);
-	ClassDB::bind_method(D_METHOD("set_automatic_class_levelups", "load"), &EntityDataManager::set_automatic_class_levelups);
+	ClassDB::bind_method(D_METHOD("get_automatic_class_levelups"), &ESS::get_automatic_class_levelups);
+	ClassDB::bind_method(D_METHOD("set_automatic_class_levelups", "load"), &ESS::set_automatic_class_levelups);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_class_levelups"), "set_automatic_class_levelups", "get_automatic_class_levelups");
 
-	ClassDB::bind_method(D_METHOD("get_use_class_xp"), &EntityDataManager::get_use_class_xp);
-	ClassDB::bind_method(D_METHOD("set_use_class_xp", "value"), &EntityDataManager::set_use_class_xp);
+	ClassDB::bind_method(D_METHOD("get_use_class_xp"), &ESS::get_use_class_xp);
+	ClassDB::bind_method(D_METHOD("set_use_class_xp", "value"), &ESS::set_use_class_xp);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_class_xp"), "set_use_class_xp", "get_use_class_xp");
 
-	ClassDB::bind_method(D_METHOD("get_use_global_class_level"), &EntityDataManager::get_use_global_class_level);
-	ClassDB::bind_method(D_METHOD("set_use_global_class_level", "value"), &EntityDataManager::set_use_global_class_level);
+	ClassDB::bind_method(D_METHOD("get_use_global_class_level"), &ESS::get_use_global_class_level);
+	ClassDB::bind_method(D_METHOD("set_use_global_class_level", "value"), &ESS::set_use_global_class_level);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_global_class_level"), "set_use_global_class_level", "get_use_global_class_level");
 
-	ClassDB::bind_method(D_METHOD("get_allow_class_spell_learning"), &EntityDataManager::get_allow_class_spell_learning);
-	ClassDB::bind_method(D_METHOD("set_allow_class_spell_learning", "value"), &EntityDataManager::set_allow_class_spell_learning);
+	ClassDB::bind_method(D_METHOD("get_allow_class_spell_learning"), &ESS::get_allow_class_spell_learning);
+	ClassDB::bind_method(D_METHOD("set_allow_class_spell_learning", "value"), &ESS::set_allow_class_spell_learning);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_class_spell_learning"), "set_allow_class_spell_learning", "get_allow_class_spell_learning");
 
-	ClassDB::bind_method(D_METHOD("get_allow_class_recipe_learning"), &EntityDataManager::get_allow_class_recipe_learning);
-	ClassDB::bind_method(D_METHOD("set_allow_class_recipe_learning", "value"), &EntityDataManager::set_allow_class_recipe_learning);
+	ClassDB::bind_method(D_METHOD("get_allow_class_recipe_learning"), &ESS::get_allow_class_recipe_learning);
+	ClassDB::bind_method(D_METHOD("set_allow_class_recipe_learning", "value"), &ESS::set_allow_class_recipe_learning);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_class_recipe_learning"), "set_allow_class_recipe_learning", "get_allow_class_recipe_learning");
 
 	//XPData
-	ClassDB::bind_method(D_METHOD("get_resource_db_path"), &EntityDataManager::get_resource_db_path);
-	ClassDB::bind_method(D_METHOD("set_resource_db_path", "path"), &EntityDataManager::set_resource_db_path);
+	ClassDB::bind_method(D_METHOD("get_resource_db_path"), &ESS::get_resource_db_path);
+	ClassDB::bind_method(D_METHOD("set_resource_db_path", "path"), &ESS::set_resource_db_path);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "resource_db_path"), "set_resource_db_path", "get_resource_db_path");
 
-	ClassDB::bind_method(D_METHOD("get_resource_db"), &EntityDataManager::get_resource_db);
+	ClassDB::bind_method(D_METHOD("get_resource_db"), &ESS::get_resource_db);
 
 	//load
-	ClassDB::bind_method(D_METHOD("load_resource_db"), &EntityDataManager::load_resource_db);
+	ClassDB::bind_method(D_METHOD("load_resource_db"), &ESS::load_resource_db);
 
-	ClassDB::bind_method(D_METHOD("load_resource", "path", "type_hint"), &EntityDataManager::load_resource, DEFVAL(""));
+	ClassDB::bind_method(D_METHOD("load_resource", "path", "type_hint"), &ESS::load_resource, DEFVAL(""));
 
 	ADD_SIGNAL(MethodInfo("on_entity_spawn_requested", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
 
-	ClassDB::bind_method(D_METHOD("request_entity_spawn", "info"), &EntityDataManager::request_entity_spawn);
-	ClassDB::bind_method(D_METHOD("request_entity_spawn_deferred", "info"), &EntityDataManager::request_entity_spawn_deferred);
+	ClassDB::bind_method(D_METHOD("request_entity_spawn", "info"), &ESS::request_entity_spawn);
+	ClassDB::bind_method(D_METHOD("request_entity_spawn_deferred", "info"), &ESS::request_entity_spawn_deferred);
 }
 
-EntityDataManager::EntityDataManager() {
+ESS::ESS() {
 	instance = this;
 
 	_use_spell_points = GLOBAL_DEF("ess/spells/use_spell_points", false);
@@ -204,7 +204,7 @@ EntityDataManager::EntityDataManager() {
 	}
 }
 
-EntityDataManager::~EntityDataManager() {
+ESS::~ESS() {
 	instance = NULL;
 
 	_ess_resource_db.unref();

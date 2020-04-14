@@ -26,7 +26,7 @@ SOFTWARE.
 #include "../data/spells/spell.h"
 #include "../database/ess_resource_db.h"
 #include "../entities/entity.h"
-#include "../singletons/entity_data_manager.h"
+#include "../singletons/ess.h"
 
 #include "core/version.h"
 
@@ -176,9 +176,9 @@ void SpellDamageInfo::resolve_references(Node *owner) {
 	_receiver = Object::cast_to<Entity>(owner->get_node_or_null(_receiver_path));
 
 	if (_damage_source_type == DAMAGE_SOURCE_SPELL) {
-		_damage_source = EntityDataManager::get_instance()->get_resource_db()->get_spell(_damage_source_id);
+		_damage_source = ESS::get_instance()->get_resource_db()->get_spell(_damage_source_id);
 	} else if (_damage_source_type == DAMAGE_SOURCE_AURA) {
-		_damage_source = EntityDataManager::get_instance()->get_resource_db()->get_aura(_damage_source_id);
+		_damage_source = ESS::get_instance()->get_resource_db()->get_aura(_damage_source_id);
 	}
 }
 

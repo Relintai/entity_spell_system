@@ -23,7 +23,7 @@ SOFTWARE.
 #include "aura.h"
 
 #include "../../entities/resources/entity_resource_cost_data.h"
-#include "../../singletons/entity_data_manager.h"
+#include "../../singletons/ess.h"
 
 #include "core/version.h"
 
@@ -328,7 +328,7 @@ Aura::Aura() {
 	_is_debuff = false;
 	_hide = false;
 	_rank = 0;
-	_scale_with_level = EntityDataManager::get_instance()->get_scale_spells_by_default();
+	_scale_with_level = ESS::get_instance()->get_scale_spells_by_default();
 
 	_damage_enabled = false;
 	_damage_type = 0;

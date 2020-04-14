@@ -116,7 +116,7 @@ sources = [
     "profiles/player_profile.cpp",
 
     "singletons/profile_manager.cpp",
-    "singletons/entity_data_manager.cpp",
+    "singletons/ess.cpp",
 
     "database/ess_resource_db.cpp",
 

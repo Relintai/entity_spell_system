@@ -23,7 +23,7 @@ SOFTWARE.
 #include "entity_resource.h"
 
 #include "../../database/ess_resource_db.h"
-#include "../../singletons/entity_data_manager.h"
+#include "../../singletons/ess.h"
 #include "../entity.h"
 #include "../stats/stat.h"
 #include "entity_resource_data.h"
@@ -162,7 +162,7 @@ void EntityResource::receivec_update_string(const String str) {
 }
 
 void EntityResource::resolve_references() {
-	set_resource_data(EntityDataManager::get_instance()->get_resource_db()->get_entity_resource(_data_id));
+	set_resource_data(ESS::get_instance()->get_resource_db()->get_entity_resource(_data_id));
 }
 
 Dictionary EntityResource::to_dict() {

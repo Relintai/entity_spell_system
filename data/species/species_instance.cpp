@@ -23,7 +23,7 @@ SOFTWARE.
 #include "species_instance.h"
 
 #include "../../database/ess_resource_db.h"
-#include "../../singletons/entity_data_manager.h"
+#include "../../singletons/ess.h"
 
 #include "entity_species_data.h"
 
@@ -40,7 +40,7 @@ int SpeciesInstance::get_species_id() const {
 void SpeciesInstance::set_species_id(int value) {
 	_id = value;
 
-	_species = EntityDataManager::get_instance()->get_resource_db()->get_entity_species_data(_id);
+	_species = ESS::get_instance()->get_resource_db()->get_entity_species_data(_id);
 }
 
 Ref<EntitySpeciesData> SpeciesInstance::get_species() {

@@ -29,7 +29,7 @@ SOFTWARE.
 
 #include "../../entities/auras/aura_data.h"
 
-#include "../../singletons/entity_data_manager.h"
+#include "../../singletons/ess.h"
 
 #include "../../pipelines/spell_damage_info.h"
 #include "../../pipelines/spell_heal_info.h"
@@ -864,7 +864,7 @@ Spell::Spell() {
 
 	_level = 1;
 	_rank = 0;
-	_scale_with_level = EntityDataManager::get_instance()->get_scale_spells_by_default();
+	_scale_with_level = ESS::get_instance()->get_scale_spells_by_default();
 
 	_global_cooldown_enabled = true;
 	_is_local_spell = false;

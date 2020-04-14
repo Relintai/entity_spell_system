@@ -53,10 +53,10 @@ For example this way it is easy to make chests attack the player, or make spell 
 Since spawning (= creating) entities is entirely dependant on the type of game you are making, ESS cannot do
 everything for you. It will set up stats, equipment etc, but there is no way to set up positions for example.
 
-In lieu of this EntityDataManager has a signal that you should hook into from a class, and using that hook 
+In lieu of this ESS has a signal that you should hook into from a class, and using that hook 
 you can set up your entities however you like.
 
-EntityDataManager also contains the method to request the system to spawn an Entity.
+ESS also contains the method to request the system to spawn an Entity.
 
 #### EntityCreateInfo
 

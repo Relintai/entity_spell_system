@@ -13,7 +13,7 @@ def get_doc_classes():
         "CharacterAtlasEntry",
         "CharacterAtlas",
 
-        "EntityDataManager",
+        "ESS",
 
         "AuraGroup",
         "AuraStatAttribute",
@@ -99,7 +99,7 @@ def get_doc_classes():
 
         "SpellFollowProjectile3D",
 
-        "EntityDataManager",
+        "ESS",
 
         "EntityEnums",
         "ItemEnums",

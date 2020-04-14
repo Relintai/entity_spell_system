@@ -25,7 +25,7 @@ SOFTWARE.
 #include "entity_enums.h"
 #include "item_enums.h"
 
-#include "singletons/entity_data_manager.h"
+#include "singletons/ess.h"
 
 #include "data/auras/aura.h"
 #include "data/auras/aura_group.h"
@@ -137,7 +137,7 @@ SOFTWARE.
 
 #include "database/ess_resource_db.cpp"
 
-static EntityDataManager *entity_data_manager = NULL;
+static ESS *entity_data_manager = NULL;
 static ProfileManager *profile_manager = NULL;
 
 void register_entity_spell_system_types() {
@@ -267,9 +267,9 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<ProfileManager>();
 
-	entity_data_manager = memnew(EntityDataManager);
-	ClassDB::register_class<EntityDataManager>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("EntityDataManager", EntityDataManager::get_instance()));
+	entity_data_manager = memnew(ESS);
+	ClassDB::register_class<ESS>();
+	Engine::get_singleton()->add_singleton(Engine::Singleton("ESS", ESS::get_instance()));
 
 	profile_manager = memnew(ProfileManager);
 	ClassDB::register_class<ProfileManager>();

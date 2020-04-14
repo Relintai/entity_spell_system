@@ -25,7 +25,7 @@ SOFTWARE.
 #include "item_template.h"
 
 #include "../../database/ess_resource_db.h"
-#include "../../singletons/entity_data_manager.h"
+#include "../../singletons/ess.h"
 
 Ref<ItemTemplate> ItemInstance::get_item_template() {
 	return _item_template;
@@ -113,8 +113,8 @@ void ItemInstance::_from_dict(const Dictionary &dict) {
 
 	_item_template_id = dict.get("item_id", 0);
 
-	if (EntityDataManager::get_instance() != NULL) {
-		_item_template = EntityDataManager::get_instance()->get_resource_db()->get_item_template(_item_template_id);
+	if (ESS::get_instance() != NULL) {
+		_item_template = ESS::get_instance()->get_resource_db()->get_item_template(_item_template_id);
 	}
 
 	_stack_size = dict.get("stack_size", 0);

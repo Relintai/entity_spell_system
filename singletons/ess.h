@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef ENTITY_DATA_MANAGER_H
-#define ENTITY_DATA_MANAGER_H
+#ifndef ESS_H
+#define ESS_H
 
 #include "core/object.h"
 
@@ -36,11 +36,11 @@ SOFTWARE.
 class ESSResourceDB;
 class EntityCreateInfo;
 
-class EntityDataManager : public Object {
-	GDCLASS(EntityDataManager, Object);
+class ESS : public Object {
+	GDCLASS(ESS, Object);
 
 public:
-	static EntityDataManager *get_instance();
+	static ESS *get_instance();
 
 	bool get_use_spell_points() const;
 	void set_use_spell_points(const bool value);
@@ -78,8 +78,8 @@ public:
 	void request_entity_spawn(const Ref<EntityCreateInfo> &info);
 	void request_entity_spawn_deferred(const Ref<EntityCreateInfo> &info);
 
-	EntityDataManager();
-	~EntityDataManager();
+	ESS();
+	~ESS();
 
 protected:
 	static void _bind_methods();
@@ -89,7 +89,7 @@ private:
 	String _ess_resource_db_path;
 	Ref<ESSResourceDB> _ess_resource_db;
 
-	static EntityDataManager *instance;
+	static ESS *instance;
 
 	bool _use_spell_points;
 	bool _scale_spells_by_default;
