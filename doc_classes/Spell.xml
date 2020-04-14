@@ -530,7 +530,15 @@
 		</member>
 		<member name="on_learn_auras" type="Array" setter="set_on_learn_auras" getter="get_on_learn_auras" default="[  ]">
 		</member>
-		<member name="projectile" type="WorldSpellData" setter="set_projectile" getter="get_projectile">
+		<member name="projectile_scene" type="PackedScene" setter="projectile_set_scene" getter="projectile_get_scene">
+		</member>
+		<member name="projectile_speed" type="float" setter="projectile_set_speed" getter="projectile_get_speed" default="0.0">
+		</member>
+		<member name="projectile_time" type="float" setter="projectile_set_time" getter="projectile_get_time" default="0.0">
+		</member>
+		<member name="projectile_use_speed" type="bool" setter="projectile_set_use_speed" getter="projectile_get_use_speed" default="false">
+		</member>
+		<member name="projectile_use_time" type="bool" setter="projectile_set_use_time" getter="projectile_get_use_time" default="false">
 		</member>
 		<member name="range_enabled" type="bool" setter="set_range_enabled" getter="get_range_enabled" default="false">
 		</member>

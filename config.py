@@ -99,7 +99,7 @@ def get_doc_classes():
 
         "SpellFollowProjectile3D",
 
-        "ESS",
+        "ESSResourceDB",
 
         "EntityEnums",
         "ItemEnums",

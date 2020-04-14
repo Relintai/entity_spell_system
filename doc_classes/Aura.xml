@@ -1923,8 +1923,6 @@
 		</member>
 		<member name="visual_spell_effects" type="SpellEffectVisual" setter="set_visual_spell_effects" getter="get_visual_spell_effects">
 		</member>
-		<member name="world_spell_data" type="WorldSpellData" setter="set_world_spell_data" getter="get_world_spell_data">
-		</member>
 	</members>
 	<constants>
 		<constant name="MAX_AURA_STATS" value="5">

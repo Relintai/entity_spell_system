@@ -54,8 +54,6 @@
 		</member>
 		<member name="target" type="Entity" setter="set_target" getter="get_target">
 		</member>
-		<member name="world_spell" type="WorldSpell" setter="set_world_spell" getter="get_world_spell">
-		</member>
 	</members>
 	<constants>
 	</constants>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ESS" inherits="Object" version="3.2">
+	<brief_description>
+		The ESS singleton.
+	</brief_description>
+	<description>
+		Gives easy access to entity and spell related data, providing easy lookups.
+		Make sure that you add everything both server and clientside before use, because the system uses ids (get_id()) for server clinet communications. This also means that ids should be unique per resources for every ESS-related resources. 
+		For example you shouldn't register 2 spells with id 1 (you will get an error), but you can register a [Spell] with id1 and an [Aura] with an id 1.
+		Also grants access easy to ESS-related project settings.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_resource_db">
+			<return type="ESSResourceDB">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="load_resource">
+			<return type="Resource">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
+			<argument index="1" name="type_hint" type="String" default="&quot;&quot;">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="load_resource_db">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="request_entity_spawn">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="request_entity_spawn_deferred">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="allow_class_recipe_learning" type="bool" setter="set_allow_class_recipe_learning" getter="get_allow_class_recipe_learning" default="false">
+		</member>
+		<member name="allow_class_spell_learning" type="bool" setter="set_allow_class_spell_learning" getter="get_allow_class_spell_learning" default="false">
+		</member>
+		<member name="automatic_class_levelups" type="bool" setter="set_automatic_class_levelups" getter="get_automatic_class_levelups" default="false">
+		</member>
+		<member name="automatic_load" type="bool" setter="set_automatic_load" getter="get_automatic_load" default="false">
+		</member>
+		<member name="resource_db_path" type="String" setter="set_resource_db_path" getter="get_resource_db_path" default="&quot;&quot;">
+		</member>
+		<member name="scale_spells_by_default" type="bool" setter="set_scale_spells_by_default" getter="get_scale_spells_by_default" default="false">
+		</member>
+		<member name="use_class_xp" type="bool" setter="set_use_class_xp" getter="get_use_class_xp" default="false">
+		</member>
+		<member name="use_global_class_level" type="bool" setter="set_use_global_class_level" getter="get_use_global_class_level" default="false">
+		</member>
+		<member name="use_spell_points" type="bool" setter="set_use_spell_points" getter="get_use_spell_points" default="false">
+		</member>
+	</members>
+	<signals>
+		<signal name="on_entity_spawn_requested">
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

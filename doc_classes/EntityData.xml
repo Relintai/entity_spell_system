@@ -1172,6 +1172,8 @@
 		</member>
 		<member name="immunity_flags" type="int" setter="set_immunity_flags" getter="get_immunity_flags" default="0">
 		</member>
+		<member name="is_playable" type="bool" setter="set_is_playable" getter="get_is_playable" default="false">
+		</member>
 		<member name="item_container_data" type="ItemContainerData" setter="set_item_container_data" getter="get_item_container_data">
 		</member>
 		<member name="loot_db" type="LootDataBase" setter="set_loot_db" getter="get_loot_db">
