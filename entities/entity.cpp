@@ -1331,7 +1331,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 		int crid = known_recipes.get(String::num(i), 0);
 
 		if (EntityDataManager::get_instance() != NULL) {
-			Ref<CraftRecipe> cr = EntityDataManager::get_instance()->get_craft_data(crid);
+			Ref<CraftRecipe> cr = EntityDataManager::get_instance()->get_craft_recipe(crid);
 
 			if (cr.is_valid()) {
 				adds_craft_recipe(cr);
@@ -1537,7 +1537,7 @@ void Entity::adds_craft_recipe_id(int id) {
 	if (hass_craft_recipe_id(id))
 		return;
 
-	Ref<CraftRecipe> craft_recipe = EntityDataManager::get_instance()->get_craft_data(id);
+	Ref<CraftRecipe> craft_recipe = EntityDataManager::get_instance()->get_craft_recipe(id);
 
 	ERR_FAIL_COND(!craft_recipe.is_valid());
 
@@ -1657,7 +1657,7 @@ void Entity::addc_craft_recipe_id(int id) {
 	if (hasc_craft_recipe_id(id))
 		return;
 
-	Ref<CraftRecipe> craft_recipe = EntityDataManager::get_instance()->get_craft_data(id);
+	Ref<CraftRecipe> craft_recipe = EntityDataManager::get_instance()->get_craft_recipe(id);
 
 	ERR_FAIL_COND(!craft_recipe.is_valid());
 

@@ -68,6 +68,12 @@ public:
 	bool get_automatic_load() const;
 	void set_automatic_load(const bool load);
 
+	bool get_load_folders() const;
+	void set_load_folders(const bool load);
+
+	bool get_use_resource_data() const;
+	void set_use_resource_data(const bool load);
+
 	bool get_use_class_xp() const;
 	void set_use_class_xp(const bool value);
 
@@ -86,95 +92,80 @@ public:
 	Ref<Aura> get_skill_for_armor_type(const int index);
 	void set_skill_for_armor_type(const int index, const Ref<Aura> &aura);
 
+	String get_resource_db_path();
+	void set_resource_db_path(String path);
+	Ref<Resource> get_resource_db();
+
 	String get_xp_data_path();
 	void set_xp_data_path(String path);
 	Ref<XPData> get_xp_data();
 
-	String get_entity_resources_folder();
-	void set_entity_resources_folder(String folder);
-	Vector<Ref<EntityResourceData> > *get_entity_resources();
 	Ref<EntityResourceData> get_entity_resource(int class_id);
 	Ref<EntityResourceData> get_entity_resource_index(int index);
 	int get_entity_resource_count();
 	void add_entity_resource(const Ref<EntityResourceData> &cls);
+	Vector<Variant> get_entity_resources() const;
+	void set_entity_resources(const Vector<Variant> &data);
 
-	String get_entity_skills_folder();
-	void set_entity_skills_folder(String folder);
-	Vector<Ref<EntitySkillData> > *get_entity_skills();
 	Ref<EntitySkillData> get_entity_skill(int class_id);
 	Ref<EntitySkillData> get_entity_skill_index(int index);
 	int get_entity_skill_count();
 	void add_entity_skill(const Ref<EntitySkillData> &cls);
+	Vector<Variant> get_entity_skills() const;
+	void set_entity_skills(const Vector<Variant> &data);
 
-	String get_entity_datas_folder();
-	void set_entity_datas_folder(String folder);
-	Vector<Ref<EntityData> > *get_entity_datas();
 	Ref<EntityData> get_entity_data(int class_id);
 	Ref<EntityData> get_entity_data_index(int index);
 	int get_entity_data_count();
 	void add_entity_data(const Ref<EntityData> &cls);
+	Vector<Variant> get_entity_datas() const;
+	void set_entity_datas(const Vector<Variant> &data);
 
-	String get_spells_folder();
-	void set_spells_folder(String folder);
-	Vector<Ref<Spell> > *get_spells();
 	Ref<Spell> get_spell(int spell_id);
 	Ref<Spell> get_spell_index(int index);
 	int get_spell_count();
 	void add_spell(const Ref<Spell> &spell);
+	Vector<Variant> get_spells() const;
+	void set_spells(const Vector<Variant> &data);
 
-	String get_auras_folder();
-	void set_auras_folder(String folder);
-	Vector<Ref<Aura> > *get_auras();
 	Ref<Aura> get_aura(int aura_id);
 	Ref<Aura> get_aura_index(int index);
 	int get_aura_count();
 	void add_aura(const Ref<Aura> &aura);
+	Vector<Variant> get_auras() const;
+	void set_auras(const Vector<Variant> &data);
 
-	String get_craft_data_folder();
-	void set_craft_data_folder(String folder);
-	Vector<Ref<CraftRecipe> > *get_craft_datas();
-	Ref<CraftRecipe> get_craft_data(int craft_id);
-	Ref<CraftRecipe> get_craft_data_index(int index);
-	int get_craft_data_count();
-	void add_craft_data(const Ref<CraftRecipe> &aura);
+	Ref<CraftRecipe> get_craft_recipe(int craft_id);
+	Ref<CraftRecipe> get_craft_recipe_index(int index);
+	int get_craft_recipe_count();
+	void add_craft_recipe(const Ref<CraftRecipe> &aura);
+	Vector<Variant> get_craft_recipes() const;
+	void set_craft_recipes(const Vector<Variant> &data);
 
-	String get_item_template_folder();
-	void set_item_template_folder(String folder);
-	Vector<Ref<ItemTemplate> > *get_item_templates();
 	void add_item_template(const Ref<ItemTemplate> &aura);
 	Ref<ItemTemplate> get_item_template(int item_id);
 	Ref<ItemTemplate> get_item_template_index(int index);
 	int get_item_template_count();
+	Vector<Variant> get_item_templates() const;
+	void set_item_templates(const Vector<Variant> &data);
 
-	String get_player_character_data_folder();
-	void set_player_character_data_folder(String folder);
-	Vector<Ref<EntityData> > *get_player_character_datas();
-	void add_player_character_data(const Ref<EntityData> &aura);
-	Ref<EntityData> get_player_character_data(int item_id);
-	Ref<EntityData> get_player_character_data_index(int index);
-	int get_player_character_data_count();
-
-	String get_entity_species_data_folder();
-	void set_entity_species_data_folder(String folder);
-	Vector<Ref<EntitySpeciesData> > *get_entity_species_datas();
 	void add_entity_species_data(const Ref<EntitySpeciesData> &aura);
 	Ref<EntitySpeciesData> get_entity_species_data(int item_id);
 	Ref<EntitySpeciesData> get_entity_species_data_index(int index);
 	int get_entity_species_data_count();
+	Vector<Variant> get_entity_species_datas() const;
+	void set_entity_species_datas(const Vector<Variant> &data);
 
 	void load_all();
-	void load_entity_resources();
-	void load_entity_skills();
 	void load_xp_data();
-	void load_spells();
-	void load_auras();
-	void load_characters();
-	void load_craft_datas();
-	void load_item_templates();
-	void load_player_character_datas();
-	void load_entity_species_datas();
+	void load_folders();
+	void load_folder(const String &folder);
+	void add_resource(const Ref<Resource> &resource);
 
-	Ref<Resource> load_resource(const String &path, const String &type_hint);
+	Ref<Resource> load_resource(const String &path, const String &type_hint = "");
+
+	Vector<Variant> get_folders() const;
+	void set_folders(const Vector<Variant> &folders);
 
 	void request_entity_spawn(const Ref<EntityCreateInfo> &info);
 	void request_entity_spawn_deferred(const Ref<EntityCreateInfo> &info);
@@ -189,39 +180,29 @@ private:
 	String _xp_data_path;
 	Ref<XPData> _xp_data;
 
-	String _entity_resources_folder;
+	Vector<String> _folders;
+
 	Vector<Ref<EntityResourceData> > _entity_resources;
 	HashMap<int, Ref<EntityResourceData> > _entity_resource_map;
 
-	String _entity_skills_folder;
 	Vector<Ref<EntitySkillData> > _entity_skills;
 	HashMap<int, Ref<EntitySkillData> > _entity_skill_map;
 
-	String _entity_datas_folder;
 	Vector<Ref<EntityData> > _entity_datas;
 	HashMap<int, Ref<EntityData> > _entity_data_map;
 
-	String _spells_folder;
 	Vector<Ref<Spell> > _spells;
 	HashMap<int, Ref<Spell> > _spell_map;
 
-	String _auras_folder;
 	Vector<Ref<Aura> > _auras;
 	HashMap<int, Ref<Aura> > _aura_map;
 
-	String _craft_data_folder;
-	Vector<Ref<CraftRecipe> > _craft_datas;
-	HashMap<int, Ref<CraftRecipe> > _craft_data_map;
+	Vector<Ref<CraftRecipe> > _craft_recipes;
+	HashMap<int, Ref<CraftRecipe> > _craft_recipe_map;
 
-	String _item_template_folder;
 	Vector<Ref<ItemTemplate> > _item_templates;
 	HashMap<int, Ref<ItemTemplate> > _item_template_map;
 
-	String _player_character_data_folder;
-	Vector<Ref<EntityData> > _player_character_datas;
-	HashMap<int, Ref<EntityData> > _player_character_data_map;
-
-	String _entity_species_data_folder;
 	Vector<Ref<EntitySpeciesData> > _entity_species_datas;
 	HashMap<int, Ref<EntitySpeciesData> > _entity_species_data_map;
 
@@ -232,6 +213,7 @@ private:
 	bool _use_spell_points;
 	bool _scale_spells_by_default;
 	bool _automatic_load;
+	bool _load_folders;
 	bool _use_class_xp;
 	bool _automatic_class_levelups;
 	bool _use_global_class_level;

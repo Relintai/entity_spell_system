@@ -57,6 +57,13 @@ void EntityDataManager::set_automatic_load(const bool load) {
 	_automatic_load = load;
 }
 
+bool EntityDataManager::get_load_folders() const {
+	return _load_folders;
+}
+void EntityDataManager::set_load_folders(const bool load) {
+	_load_folders = load;
+}
+
 bool EntityDataManager::get_use_class_xp() const {
 	return _use_class_xp;
 }
@@ -113,15 +120,6 @@ Ref<XPData> EntityDataManager::get_xp_data() {
 	return _xp_data;
 }
 
-String EntityDataManager::get_entity_resources_folder() {
-	return _entity_resources_folder;
-}
-void EntityDataManager::set_entity_resources_folder(String folder) {
-	_entity_resources_folder = folder;
-}
-Vector<Ref<EntityResourceData> > *EntityDataManager::get_entity_resources() {
-	return &_entity_resources;
-}
 Ref<EntityResourceData> EntityDataManager::get_entity_resource(int class_id) {
 	//ERR_FAIL_COND_V_MSG(!_entity_resource_map.has(class_id), Ref<EntityResourceData>(), "Could not find EntityResourceData! Id:" + String::num(class_id));
 
@@ -145,16 +143,29 @@ void EntityDataManager::add_entity_resource(const Ref<EntityResourceData> &cls) 
 	_entity_resources.push_back(cls);
 	_entity_resource_map.set(cls->get_id(), cls);
 }
+Vector<Variant> EntityDataManager::get_entity_resources() const {
+	Vector<Variant> r;
+	for (int i = 0; i < _entity_resources.size(); i++) {
+#if VERSION_MAJOR < 4
+		r.push_back(_entity_resources[i].get_ref_ptr());
+#else
+		r.push_back(_entity_resources[i]);
+#endif
+	}
+	return r;
+}
+void EntityDataManager::set_entity_resources(const Vector<Variant> &data) {
+	_entity_resources.clear();
+	_entity_resource_map.clear();
+	for (int i = 0; i < data.size(); i++) {
+		Ref<EntityResource> d = Ref<EntityResource>(data[i]);
 
-String EntityDataManager::get_entity_skills_folder() {
-	return _entity_skills_folder;
+		ERR_CONTINUE(!d.is_valid());
+
+		add_entity_resource(d);
+	}
 }
-void EntityDataManager::set_entity_skills_folder(String folder) {
-	_entity_skills_folder = folder;
-}
-Vector<Ref<EntitySkillData> > *EntityDataManager::get_entity_skills() {
-	return &_entity_skills;
-}
+
 Ref<EntitySkillData> EntityDataManager::get_entity_skill(int class_id) {
 	ERR_FAIL_COND_V_MSG(!_entity_skill_map.has(class_id), Ref<EntitySkillData>(), "Could not find EntitySkillData! Id:" + String::num(class_id));
 
@@ -174,16 +185,29 @@ void EntityDataManager::add_entity_skill(const Ref<EntitySkillData> &cls) {
 	_entity_skills.push_back(cls);
 	_entity_skill_map.set(cls->get_id(), cls);
 }
+Vector<Variant> EntityDataManager::get_entity_skills() const {
+	Vector<Variant> r;
+	for (int i = 0; i < _entity_skills.size(); i++) {
+#if VERSION_MAJOR < 4
+		r.push_back(_entity_skills[i].get_ref_ptr());
+#else
+		r.push_back(_entity_skills[i]);
+#endif
+	}
+	return r;
+}
+void EntityDataManager::set_entity_skills(const Vector<Variant> &data) {
+	_entity_skills.clear();
+	_entity_skill_map.clear();
+	for (int i = 0; i < data.size(); i++) {
+		Ref<EntitySkillData> d = Ref<EntitySkillData>(data[i]);
 
-String EntityDataManager::get_entity_datas_folder() {
-	return _entity_datas_folder;
+		ERR_CONTINUE(!d.is_valid());
+
+		add_entity_skill(d);
+	}
 }
-void EntityDataManager::set_entity_datas_folder(String folder) {
-	_entity_datas_folder = folder;
-}
-Vector<Ref<EntityData> > *EntityDataManager::get_entity_datas() {
-	return &_entity_datas;
-}
+
 Ref<EntityData> EntityDataManager::get_entity_data(int class_id) {
 	ERR_FAIL_COND_V_MSG(!_entity_data_map.has(class_id), Ref<EntityData>(), "Could not find EntityData! Id:" + String::num(class_id));
 
@@ -203,15 +227,27 @@ void EntityDataManager::add_entity_data(const Ref<EntityData> &cls) {
 	_entity_datas.push_back(cls);
 	_entity_data_map.set(cls->get_id(), cls);
 }
+Vector<Variant> EntityDataManager::get_entity_datas() const {
+	Vector<Variant> r;
+	for (int i = 0; i < _entity_datas.size(); i++) {
+#if VERSION_MAJOR < 4
+		r.push_back(_entity_datas[i].get_ref_ptr());
+#else
+		r.push_back(_entity_datas[i]);
+#endif
+	}
+	return r;
+}
+void EntityDataManager::set_entity_datas(const Vector<Variant> &data) {
+	_craft_recipes.clear();
+	_craft_recipe_map.clear();
+	for (int i = 0; i < data.size(); i++) {
+		Ref<EntityResource> d = Ref<EntityResource>(data[i]);
 
-String EntityDataManager::get_spells_folder() {
-	return _spells_folder;
-}
-void EntityDataManager::set_spells_folder(String folder) {
-	_spells_folder = folder;
-}
-Vector<Ref<Spell> > *EntityDataManager::get_spells() {
-	return &_spells;
+		ERR_CONTINUE(!d.is_valid());
+
+		add_entity_data(d);
+	}
 }
 
 Ref<Spell> EntityDataManager::get_spell(int spell_id) {
@@ -225,16 +261,36 @@ Ref<Spell> EntityDataManager::get_spell_index(int index) {
 
 	return _spells.get(index);
 }
-
 int EntityDataManager::get_spell_count() {
 	return _spells.size();
 }
-
 void EntityDataManager::add_spell(const Ref<Spell> &spell) {
 	ERR_FAIL_COND(!spell.is_valid());
 
 	_spells.push_back(spell);
 	_spell_map.set(spell->get_id(), spell);
+}
+Vector<Variant> EntityDataManager::get_spells() const {
+	Vector<Variant> r;
+	for (int i = 0; i < _craft_recipes.size(); i++) {
+#if VERSION_MAJOR < 4
+		r.push_back(_craft_recipes[i].get_ref_ptr());
+#else
+		r.push_back(_craft_recipes[i]);
+#endif
+	}
+	return r;
+}
+void EntityDataManager::set_spells(const Vector<Variant> &data) {
+	_spells.clear();
+	_spell_map.clear();
+	for (int i = 0; i < data.size(); i++) {
+		Ref<Spell> d = Ref<Spell>(data[i]);
+
+		ERR_CONTINUE(!d.is_valid());
+
+		add_spell(d);
+	}
 }
 
 void EntityDataManager::add_aura(const Ref<Aura> &aura) {
@@ -242,16 +298,6 @@ void EntityDataManager::add_aura(const Ref<Aura> &aura) {
 
 	_auras.push_back(aura);
 	_aura_map.set(aura->get_id(), aura);
-}
-
-String EntityDataManager::get_auras_folder() {
-	return _auras_folder;
-}
-void EntityDataManager::set_auras_folder(String folder) {
-	_auras_folder = folder;
-}
-Vector<Ref<Aura> > *EntityDataManager::get_auras() {
-	return &_auras;
 }
 
 Ref<Aura> EntityDataManager::get_aura(int aura_id) {
@@ -270,48 +316,74 @@ int EntityDataManager::get_aura_count() {
 	return _auras.size();
 }
 
+Vector<Variant> EntityDataManager::get_auras() const {
+	Vector<Variant> r;
+	for (int i = 0; i < _auras.size(); i++) {
+#if VERSION_MAJOR < 4
+		r.push_back(_auras[i].get_ref_ptr());
+#else
+		r.push_back(_auras[i]);
+#endif
+	}
+	return r;
+}
+void EntityDataManager::set_auras(const Vector<Variant> &data) {
+	_auras.clear();
+	_aura_map.clear();
+	for (int i = 0; i < data.size(); i++) {
+		Ref<Aura> d = Ref<Aura>(data[i]);
+
+		ERR_CONTINUE(!d.is_valid());
+
+		add_aura(d);
+	}
+}
+
 //Craft Data
-void EntityDataManager::add_craft_data(const Ref<CraftRecipe> &cda) {
+void EntityDataManager::add_craft_recipe(const Ref<CraftRecipe> &cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
-	_craft_datas.push_back(cda);
-	_craft_data_map.set(cda->get_id(), cda);
+	_craft_recipes.push_back(cda);
+	_craft_recipe_map.set(cda->get_id(), cda);
 }
 
-String EntityDataManager::get_craft_data_folder() {
-	return _craft_data_folder;
-}
-void EntityDataManager::set_craft_data_folder(String folder) {
-	_craft_data_folder = folder;
-}
-Vector<Ref<CraftRecipe> > *EntityDataManager::get_craft_datas() {
-	return &_craft_datas;
+Ref<CraftRecipe> EntityDataManager::get_craft_recipe(int craft_id) {
+	ERR_FAIL_COND_V_MSG(!_craft_recipe_map.has(craft_id), Ref<CraftRecipe>(), "Could not find CraftRecipe! Id:" + String::num(craft_id));
+
+	return _craft_recipe_map.get(craft_id);
 }
 
-Ref<CraftRecipe> EntityDataManager::get_craft_data(int craft_id) {
-	ERR_FAIL_COND_V_MSG(!_craft_data_map.has(craft_id), Ref<CraftRecipe>(), "Could not find CraftRecipe! Id:" + String::num(craft_id));
+Ref<CraftRecipe> EntityDataManager::get_craft_recipe_index(int index) {
+	ERR_FAIL_INDEX_V(index, _craft_recipes.size(), Ref<CraftRecipe>());
 
-	return _craft_data_map.get(craft_id);
+	return _craft_recipes.get(index);
 }
 
-Ref<CraftRecipe> EntityDataManager::get_craft_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _craft_datas.size(), Ref<CraftRecipe>());
-
-	return _craft_datas.get(index);
+int EntityDataManager::get_craft_recipe_count() {
+	return _craft_recipes.size();
 }
 
-int EntityDataManager::get_craft_data_count() {
-	return _craft_datas.size();
+Vector<Variant> EntityDataManager::get_craft_recipes() const {
+	Vector<Variant> r;
+	for (int i = 0; i < _craft_recipes.size(); i++) {
+#if VERSION_MAJOR < 4
+		r.push_back(_craft_recipes[i].get_ref_ptr());
+#else
+		r.push_back(_craft_recipes[i]);
+#endif
+	}
+	return r;
 }
+void EntityDataManager::set_craft_recipes(const Vector<Variant> &data) {
+	_craft_recipes.clear();
+	_craft_recipe_map.clear();
+	for (int i = 0; i < data.size(); i++) {
+		Ref<CraftRecipe> d = Ref<CraftRecipe>(data[i]);
 
-String EntityDataManager::get_item_template_folder() {
-	return _item_template_folder;
-}
-void EntityDataManager::set_item_template_folder(String folder) {
-	_item_template_folder = folder;
-}
-Vector<Ref<ItemTemplate> > *EntityDataManager::get_item_templates() {
-	return &_item_templates;
+		ERR_CONTINUE(!d.is_valid());
+
+		add_craft_recipe(d);
+	}
 }
 
 void EntityDataManager::add_item_template(const Ref<ItemTemplate> &cda) {
@@ -336,45 +408,29 @@ Ref<ItemTemplate> EntityDataManager::get_item_template_index(int index) {
 int EntityDataManager::get_item_template_count() {
 	return _item_templates.size();
 }
+Vector<Variant> EntityDataManager::get_item_templates() const {
+	Vector<Variant> r;
+	for (int i = 0; i < _item_templates.size(); i++) {
+#if VERSION_MAJOR < 4
+		r.push_back(_item_templates[i].get_ref_ptr());
+#else
+		r.push_back(_item_templates[i]);
+#endif
+	}
+	return r;
+}
+void EntityDataManager::set_item_templates(const Vector<Variant> &data) {
+	_item_templates.clear();
+	_item_template_map.clear();
+	for (int i = 0; i < data.size(); i++) {
+		Ref<ItemTemplate> d = Ref<ItemTemplate>(data[i]);
 
-String EntityDataManager::get_player_character_data_folder() {
-	return _player_character_data_folder;
-}
-void EntityDataManager::set_player_character_data_folder(String folder) {
-	_player_character_data_folder = folder;
-}
-Vector<Ref<EntityData> > *EntityDataManager::get_player_character_datas() {
-	return &_player_character_datas;
-}
-void EntityDataManager::add_player_character_data(const Ref<EntityData> &cda) {
-	ERR_FAIL_COND(!cda.is_valid());
+		ERR_CONTINUE(!d.is_valid());
 
-	_player_character_datas.push_back(cda);
-	_player_character_data_map.set(cda->get_id(), cda);
-}
-Ref<EntityData> EntityDataManager::get_player_character_data(int item_id) {
-	ERR_FAIL_COND_V_MSG(!_player_character_data_map.has(item_id), Ref<EntityData>(), "Could not find EntityData! Id:" + String::num(item_id));
-
-	return _player_character_data_map.get(item_id);
-}
-Ref<EntityData> EntityDataManager::get_player_character_data_index(int index) {
-	ERR_FAIL_INDEX_V(index, _player_character_datas.size(), Ref<EntityData>());
-
-	return _player_character_datas.get(index);
-}
-int EntityDataManager::get_player_character_data_count() {
-	return _player_character_datas.size();
+		add_item_template(d);
+	}
 }
 
-String EntityDataManager::get_entity_species_data_folder() {
-	return _entity_species_data_folder;
-}
-void EntityDataManager::set_entity_species_data_folder(String folder) {
-	_entity_species_data_folder = folder;
-}
-Vector<Ref<EntitySpeciesData> > *EntityDataManager::get_entity_species_datas() {
-	return &_entity_species_datas;
-}
 void EntityDataManager::add_entity_species_data(const Ref<EntitySpeciesData> &cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
@@ -395,18 +451,32 @@ Ref<EntitySpeciesData> EntityDataManager::get_entity_species_data_index(int inde
 int EntityDataManager::get_entity_species_data_count() {
 	return _entity_species_datas.size();
 }
+Vector<Variant> EntityDataManager::get_entity_species_datas() const {
+	Vector<Variant> r;
+	for (int i = 0; i < _entity_species_datas.size(); i++) {
+#if VERSION_MAJOR < 4
+		r.push_back(_entity_species_datas[i].get_ref_ptr());
+#else
+		r.push_back(_entity_species_datas[i]);
+#endif
+	}
+	return r;
+}
+void EntityDataManager::set_entity_species_datas(const Vector<Variant> &data) {
+	_entity_species_datas.clear();
+	_entity_species_data_map.clear();
+	for (int i = 0; i < data.size(); i++) {
+		Ref<EntitySpeciesData> d = Ref<EntitySpeciesData>(data[i]);
+
+		ERR_CONTINUE(!d.is_valid());
+
+		add_item_template(d);
+	}
+}
 
 void EntityDataManager::load_all() {
 	load_xp_data();
-	load_entity_resources();
-	load_entity_skills();
-	load_spells();
-	load_auras();
-	load_characters();
-	load_craft_datas();
-	load_item_templates();
-	load_player_character_datas();
-	load_entity_species_datas();
+	load_folders();
 }
 
 void EntityDataManager::load_xp_data() {
@@ -421,12 +491,18 @@ void EntityDataManager::load_xp_data() {
 	_xp_data = d;
 }
 
-void EntityDataManager::load_entity_resources() {
+void EntityDataManager::load_folders() {
+	for (int i = 0; i < _folders.size(); ++i) {
+		load_folder(_folders[i]);
+	}
+}
+
+void EntityDataManager::load_folder(const String &folder) {
 	_Directory dir;
 
-	ERR_FAIL_COND(_entity_resources_folder.ends_with("/"));
+	bool ew = folder.ends_with("/");
 
-	if (dir.open(_entity_resources_folder) == OK) {
+	if (dir.open(folder) == OK) {
 
 		dir.list_dir_begin();
 
@@ -439,13 +515,18 @@ void EntityDataManager::load_entity_resources() {
 				break;
 
 			if (!dir.current_is_dir()) {
-				String path = _entity_resources_folder + "/" + filename;
+				String path;
 
-				Ref<EntityResourceData> eresd = load_resource(path, "EntityResourceData");
+				if (ew)
+					path = folder + filename;
+				else
+					path = folder + "/" + filename;
 
-				ERR_CONTINUE(!eresd.is_valid());
+				Ref<Resource> res = load_resource(path);
 
-				add_entity_resource(eresd);
+				ERR_CONTINUE(!res.is_valid());
+
+				add_resource(res);
 			}
 		}
 	} else {
@@ -453,259 +534,27 @@ void EntityDataManager::load_entity_resources() {
 	}
 }
 
-void EntityDataManager::load_entity_skills() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_entity_skills_folder.ends_with("/"));
-
-	if (dir.open(_entity_skills_folder) == OK) {
-
-		dir.list_dir_begin();
-
-		String filename;
-
-		while (true) {
-			filename = dir.get_next();
-
-			if (filename == "")
-				break;
-
-			if (!dir.current_is_dir()) {
-				String path = _entity_skills_folder + "/" + filename;
-
-				Ref<EntitySkillData> eskilld = load_resource(path, "EntitySkillData");
-
-				ERR_CONTINUE(!eskilld.is_valid());
-
-				add_entity_skill(eskilld);
-			}
-		}
-	} else {
-		print_error("An error occurred when trying to access the path.");
-	}
-}
-
-void EntityDataManager::load_spells() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_spells_folder.ends_with("/"));
-
-	if (dir.open(_spells_folder) == OK) {
-
-		dir.list_dir_begin();
-
-		String filename;
-
-		while (true) {
-			filename = dir.get_next();
-
-			if (filename == "")
-				break;
-
-			if (!dir.current_is_dir()) {
-				String path = _spells_folder + "/" + filename;
-
-				Ref<Spell> spell = load_resource(path, "Spell");
-
-				ERR_CONTINUE(!spell.is_valid());
-
-				add_spell(spell);
-			}
-		}
-	} else {
-		print_error("An error occurred when trying to access the path.");
-	}
-}
-
-void EntityDataManager::load_auras() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_auras_folder.ends_with("/"));
-
-	if (dir.open(_auras_folder) == OK) {
-
-		dir.list_dir_begin();
-
-		String filename;
-
-		while (true) {
-			filename = dir.get_next();
-
-			if (filename == "")
-				break;
-
-			if (!dir.current_is_dir()) {
-				String path = _auras_folder + "/" + filename;
-
-				Ref<Aura> aura = load_resource(path, "Aura");
-
-				ERR_CONTINUE(!aura.is_valid());
-
-				add_aura(aura);
-			}
-		}
-	} else {
-		print_error("An error occurred when trying to access the path.");
-	}
-}
-
-void EntityDataManager::load_characters() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_entity_datas_folder.ends_with("/"));
-
-	if (dir.open(_entity_datas_folder) == OK) {
-
-		dir.list_dir_begin();
-
-		String filename;
-
-		while (true) {
-			filename = dir.get_next();
-
-			if (filename == "")
-				break;
-
-			if (!dir.current_is_dir()) {
-				String path = _entity_datas_folder + "/" + filename;
-
-				Ref<EntityData> cls = load_resource(path, "EntityData");
-
-				ERR_CONTINUE(!cls.is_valid());
-
-				add_entity_data(cls);
-			}
-		}
-	} else {
-		print_error("An error occurred when trying to access the path.");
-	}
-}
-
-void EntityDataManager::load_craft_datas() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_craft_data_folder.ends_with("/"));
-
-	if (dir.open(_craft_data_folder) == OK) {
-
-		dir.list_dir_begin();
-
-		String filename;
-
-		while (true) {
-			filename = dir.get_next();
-
-			if (filename == "")
-				break;
-
-			if (!dir.current_is_dir()) {
-				String path = _craft_data_folder + "/" + filename;
-
-				Ref<CraftRecipe> cda = load_resource(path, "CraftRecipe");
-
-				ERR_CONTINUE(!cda.is_valid());
-
-				add_craft_data(cda);
-			}
-		}
-	} else {
-		print_error("An error occurred when trying to access the path.");
-	}
-}
-
-void EntityDataManager::load_item_templates() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_item_template_folder.ends_with("/"));
-
-	if (dir.open(_item_template_folder) == OK) {
-
-		dir.list_dir_begin();
-
-		String filename;
-
-		while (true) {
-			filename = dir.get_next();
-
-			if (filename == "")
-				break;
-
-			if (!dir.current_is_dir()) {
-				String path = _item_template_folder + "/" + filename;
-
-				Ref<ItemTemplate> it = load_resource(path, "ItemTemplate");
-
-				ERR_CONTINUE(!it.is_valid());
-
-				add_item_template(it);
-			}
-		}
-	} else {
-		print_error("An error occurred when trying to access the path.");
-	}
-}
-
-void EntityDataManager::load_player_character_datas() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_player_character_data_folder.ends_with("/"));
-
-	if (dir.open(_player_character_data_folder) == OK) {
-
-		dir.list_dir_begin();
-
-		String filename;
-
-		while (true) {
-			filename = dir.get_next();
-
-			if (filename == "")
-				break;
-
-			if (!dir.current_is_dir()) {
-				String path = _player_character_data_folder + "/" + filename;
-
-				Ref<EntityData> pcd = load_resource(path, "EntityData");
-
-				ERR_CONTINUE(!pcd.is_valid());
-
-				add_player_character_data(pcd);
-			}
-		}
-	} else {
-		print_error("An error occurred when trying to access the path.");
-	}
-}
-
-void EntityDataManager::load_entity_species_datas() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_entity_species_data_folder.ends_with("/"));
-
-	if (dir.open(_entity_species_data_folder) == OK) {
-
-		dir.list_dir_begin();
-
-		String filename;
-
-		while (true) {
-			filename = dir.get_next();
-
-			if (filename == "")
-				break;
-
-			if (!dir.current_is_dir()) {
-				String path = _entity_species_data_folder + "/" + filename;
-
-				Ref<EntitySpeciesData> pcd = load_resource(path, "EntitySpeciesData");
-
-				ERR_CONTINUE(!pcd.is_valid());
-
-				add_entity_species_data(pcd);
-			}
-		}
-	} else {
-		print_error("An error occurred when trying to access the path.");
+void EntityDataManager::add_resource(const Ref<Resource> &resource) {
+	StringName cls = resource->get_class_name();
+
+	if (cls == "EntityResourceData") {
+		add_entity_resource(resource);
+	} else if (cls == "EntitySkillData") {
+		add_entity_skill(resource);
+	} else if (cls == "EntityData") {
+		add_entity_data(resource);
+	} else if (cls == "Spell") {
+		add_spell(resource);
+	} else if (cls == "Aura") {
+		add_aura(resource);
+	} else if (cls == "CraftRecipe") {
+		add_craft_recipe(resource);
+	} else if (cls == "ItemTemplate") {
+		add_item_template(resource);
+	} else if (cls == "EntitySpeciesData") {
+		add_entity_species_data(resource);
+	} else if (cls == "XPData") {
+		_xp_data = resource;
 	}
 }
 
@@ -780,109 +629,85 @@ void EntityDataManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_xp_data"), &EntityDataManager::get_xp_data);
 
 	//EntityResourceData
-	ClassDB::bind_method(D_METHOD("get_entity_resources_folder"), &EntityDataManager::get_entity_resources_folder);
-	ClassDB::bind_method(D_METHOD("set_entity_resources_folder", "folder"), &EntityDataManager::set_entity_resources_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_resources_folder"), "set_entity_resources_folder", "get_entity_resources_folder");
-
 	ClassDB::bind_method(D_METHOD("add_entity_resource", "cls"), &EntityDataManager::add_entity_resource);
 	ClassDB::bind_method(D_METHOD("get_entity_resource", "class_id"), &EntityDataManager::get_entity_resource);
 	ClassDB::bind_method(D_METHOD("get_entity_resource_index", "index"), &EntityDataManager::get_entity_resource_index);
 	ClassDB::bind_method(D_METHOD("get_entity_resource_count"), &EntityDataManager::get_entity_resource_count);
+	ClassDB::bind_method(D_METHOD("get_entity_resources"), &EntityDataManager::get_entity_resources);
+	ClassDB::bind_method(D_METHOD("set_entity_resources", "recipe"), &EntityDataManager::set_entity_resources);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_resources", PROPERTY_HINT_NONE, "17/17:EntityResourceData", PROPERTY_USAGE_DEFAULT, "EntityResourceData"), "set_entity_resources", "get_entity_resources");
 
 	//EntitySkills
-	ClassDB::bind_method(D_METHOD("get_entity_skills_folder"), &EntityDataManager::get_entity_skills_folder);
-	ClassDB::bind_method(D_METHOD("set_entity_skills_folder", "folder"), &EntityDataManager::set_entity_skills_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_skills_folder"), "set_entity_skills_folder", "get_entity_skills_folder");
-
 	ClassDB::bind_method(D_METHOD("add_entity_skill", "cls"), &EntityDataManager::add_entity_skill);
 	ClassDB::bind_method(D_METHOD("get_entity_skill", "class_id"), &EntityDataManager::get_entity_skill);
 	ClassDB::bind_method(D_METHOD("get_entity_skill_index", "index"), &EntityDataManager::get_entity_skill_index);
 	ClassDB::bind_method(D_METHOD("get_entity_skill_count"), &EntityDataManager::get_entity_skill_count);
+	ClassDB::bind_method(D_METHOD("get_craft_recipes"), &EntityDataManager::get_craft_recipes);
+	ClassDB::bind_method(D_METHOD("set_craft_recipes", "recipe"), &EntityDataManager::set_craft_recipes);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "craft_recipes", PROPERTY_HINT_NONE, "17/17:CraftRecipe", PROPERTY_USAGE_DEFAULT, "CraftRecipe"), "set_craft_recipes", "get_craft_recipes");
 
 	//EntityData
-	ClassDB::bind_method(D_METHOD("get_entity_datas_folder"), &EntityDataManager::get_entity_datas_folder);
-	ClassDB::bind_method(D_METHOD("set_entity_datas_folder", "folder"), &EntityDataManager::set_entity_datas_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_datas_folder"), "set_entity_datas_folder", "get_entity_datas_folder");
-
 	ClassDB::bind_method(D_METHOD("add_entity_data", "cls"), &EntityDataManager::add_entity_data);
 	ClassDB::bind_method(D_METHOD("get_entity_data", "class_id"), &EntityDataManager::get_entity_data);
 	ClassDB::bind_method(D_METHOD("get_entity_data_index", "index"), &EntityDataManager::get_entity_data_index);
 	ClassDB::bind_method(D_METHOD("get_entity_data_count"), &EntityDataManager::get_entity_data_count);
+	ClassDB::bind_method(D_METHOD("get_entity_skills"), &EntityDataManager::get_entity_skills);
+	ClassDB::bind_method(D_METHOD("set_entity_skills", "recipe"), &EntityDataManager::set_entity_skills);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_skills", PROPERTY_HINT_NONE, "17/17:EntitySkillData", PROPERTY_USAGE_DEFAULT, "EntitySkillData"), "set_entity_skills", "get_entity_skills");
 
 	//Spell
-	ClassDB::bind_method(D_METHOD("get_spells_folder"), &EntityDataManager::get_spells_folder);
-	ClassDB::bind_method(D_METHOD("set_spells_folder", "folder"), &EntityDataManager::set_spells_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "spells_folder"), "set_spells_folder", "get_spells_folder");
-
 	ClassDB::bind_method(D_METHOD("add_spell", "spell"), &EntityDataManager::add_spell);
 	ClassDB::bind_method(D_METHOD("get_spell", "spell_id"), &EntityDataManager::get_spell);
 	ClassDB::bind_method(D_METHOD("get_spell_index", "index"), &EntityDataManager::get_spell_index);
 	ClassDB::bind_method(D_METHOD("get_spell_count"), &EntityDataManager::get_spell_count);
+	ClassDB::bind_method(D_METHOD("get_spells"), &EntityDataManager::get_spells);
+	ClassDB::bind_method(D_METHOD("set_spells", "recipe"), &EntityDataManager::set_spells);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
 
 	//Aura
-	ClassDB::bind_method(D_METHOD("get_auras_folder"), &EntityDataManager::get_auras_folder);
-	ClassDB::bind_method(D_METHOD("set_auras_folder", "folder"), &EntityDataManager::set_auras_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "auras_folder"), "set_auras_folder", "get_auras_folder");
-
 	ClassDB::bind_method(D_METHOD("add_aura", "spell"), &EntityDataManager::add_aura);
 	ClassDB::bind_method(D_METHOD("get_aura", "id"), &EntityDataManager::get_aura);
 	ClassDB::bind_method(D_METHOD("get_aura_index", "index"), &EntityDataManager::get_aura_index);
 	ClassDB::bind_method(D_METHOD("get_aura_count"), &EntityDataManager::get_aura_count);
+	ClassDB::bind_method(D_METHOD("get_auras"), &EntityDataManager::get_auras);
+	ClassDB::bind_method(D_METHOD("set_auras", "recipe"), &EntityDataManager::set_auras);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
 
 	//Craft Data
-	ClassDB::bind_method(D_METHOD("get_craft_data_folder"), &EntityDataManager::get_craft_data_folder);
-	ClassDB::bind_method(D_METHOD("set_craft_data_folder", "folder"), &EntityDataManager::set_craft_data_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "craft_data_folder"), "set_craft_data_folder", "get_craft_data_folder");
-
-	ClassDB::bind_method(D_METHOD("add_craft_data", "craft_data"), &EntityDataManager::add_craft_data);
-	ClassDB::bind_method(D_METHOD("get_craft_data", "craft_data_id"), &EntityDataManager::get_craft_data);
-	ClassDB::bind_method(D_METHOD("get_craft_data_index", "index"), &EntityDataManager::get_craft_data_index);
-	ClassDB::bind_method(D_METHOD("get_craft_data_count"), &EntityDataManager::get_craft_data_count);
+	ClassDB::bind_method(D_METHOD("add_craft_recipe", "craft_recipe"), &EntityDataManager::add_craft_recipe);
+	ClassDB::bind_method(D_METHOD("get_craft_recipe", "craft_recipe_id"), &EntityDataManager::get_craft_recipe);
+	ClassDB::bind_method(D_METHOD("get_craft_recipe_index", "index"), &EntityDataManager::get_craft_recipe_index);
+	ClassDB::bind_method(D_METHOD("get_craft_recipe_count"), &EntityDataManager::get_craft_recipe_count);
+	ClassDB::bind_method(D_METHOD("get_craft_recipes"), &EntityDataManager::get_craft_recipes);
+	ClassDB::bind_method(D_METHOD("set_craft_recipes", "recipe"), &EntityDataManager::set_craft_recipes);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "craft_recipes", PROPERTY_HINT_NONE, "17/17:CraftRecipe", PROPERTY_USAGE_DEFAULT, "CraftRecipe"), "set_craft_recipes", "get_craft_recipes");
 
 	//Item Templates
-	ClassDB::bind_method(D_METHOD("get_item_template_folder"), &EntityDataManager::get_item_template_folder);
-	ClassDB::bind_method(D_METHOD("set_item_template_folder", "folder"), &EntityDataManager::set_item_template_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "item_template_folder"), "set_item_template_folder", "get_item_template_folder");
-
 	ClassDB::bind_method(D_METHOD("add_item_template", "item_template"), &EntityDataManager::add_item_template);
 	ClassDB::bind_method(D_METHOD("get_item_template", "item_template_id"), &EntityDataManager::get_item_template);
 	ClassDB::bind_method(D_METHOD("get_item_template_index", "index"), &EntityDataManager::get_item_template_index);
 	ClassDB::bind_method(D_METHOD("get_item_template_count"), &EntityDataManager::get_item_template_count);
+	ClassDB::bind_method(D_METHOD("get_item_templates"), &EntityDataManager::get_item_templates);
+	ClassDB::bind_method(D_METHOD("set_item_templates", "recipe"), &EntityDataManager::set_item_templates);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "item_templates", PROPERTY_HINT_NONE, "17/17:ItemTemplate", PROPERTY_USAGE_DEFAULT, "ItemTemplate"), "set_item_templates", "get_item_templates");
 
 	//Player Character Data
-	ClassDB::bind_method(D_METHOD("get_player_character_data_folder"), &EntityDataManager::get_player_character_data_folder);
-	ClassDB::bind_method(D_METHOD("set_player_character_data_folder", "folder"), &EntityDataManager::set_player_character_data_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "player_character_data_folder"), "set_player_character_data_folder", "get_player_character_data_folder");
-
-	ClassDB::bind_method(D_METHOD("add_player_character_data", "pcd"), &EntityDataManager::add_player_character_data);
-	ClassDB::bind_method(D_METHOD("get_player_character_data", "pcd_id"), &EntityDataManager::get_player_character_data);
-	ClassDB::bind_method(D_METHOD("get_player_character_data_index", "index"), &EntityDataManager::get_player_character_data_index);
-	ClassDB::bind_method(D_METHOD("get_player_character_data_count"), &EntityDataManager::get_player_character_data_count);
-
-	//Player Character Data
-	ClassDB::bind_method(D_METHOD("get_entity_species_data_folder"), &EntityDataManager::get_entity_species_data_folder);
-	ClassDB::bind_method(D_METHOD("set_entity_species_data_folder", "folder"), &EntityDataManager::set_entity_species_data_folder);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_species_data_folder"), "set_entity_species_data_folder", "get_entity_species_data_folder");
-
 	ClassDB::bind_method(D_METHOD("add_entity_species_data", "pcd"), &EntityDataManager::add_entity_species_data);
 	ClassDB::bind_method(D_METHOD("get_entity_species_data", "pcd_id"), &EntityDataManager::get_entity_species_data);
 	ClassDB::bind_method(D_METHOD("get_entity_species_data_index", "index"), &EntityDataManager::get_entity_species_data_index);
 	ClassDB::bind_method(D_METHOD("get_entity_species_data_count"), &EntityDataManager::get_entity_species_data_count);
+	ClassDB::bind_method(D_METHOD("get_entity_species_datas"), &EntityDataManager::get_entity_species_datas);
+	ClassDB::bind_method(D_METHOD("set_entity_species_datas", "recipe"), &EntityDataManager::set_entity_species_datas);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_species_datas", PROPERTY_HINT_NONE, "17/17:EntitySpeciesData", PROPERTY_USAGE_DEFAULT, "EntitySpeciesData"), "set_entity_species_datas", "get_entity_species_datas");
 
 	//load
 	ClassDB::bind_method(D_METHOD("load_all"), &EntityDataManager::load_all);
-	ClassDB::bind_method(D_METHOD("load_entity_resources"), &EntityDataManager::load_entity_resources);
-	ClassDB::bind_method(D_METHOD("load_entity_skills"), &EntityDataManager::load_entity_skills);
 	ClassDB::bind_method(D_METHOD("load_xp_data"), &EntityDataManager::load_xp_data);
-	ClassDB::bind_method(D_METHOD("load_spells"), &EntityDataManager::load_spells);
-	ClassDB::bind_method(D_METHOD("load_auras"), &EntityDataManager::load_auras);
-	ClassDB::bind_method(D_METHOD("load_characters"), &EntityDataManager::load_characters);
-	ClassDB::bind_method(D_METHOD("load_craft_datas"), &EntityDataManager::load_craft_datas);
-	ClassDB::bind_method(D_METHOD("load_item_templates"), &EntityDataManager::load_item_templates);
-	ClassDB::bind_method(D_METHOD("load_player_character_datas"), &EntityDataManager::load_player_character_datas);
-	ClassDB::bind_method(D_METHOD("load_entity_species_datas"), &EntityDataManager::load_entity_species_datas);
+	ClassDB::bind_method(D_METHOD("load_folders"), &EntityDataManager::load_folders);
+	ClassDB::bind_method(D_METHOD("load_folder", "folder"), &EntityDataManager::load_folder);
+	ClassDB::bind_method(D_METHOD("add_resource", "resource"), &EntityDataManager::add_resource);
 
-	ClassDB::bind_method(D_METHOD("load_resource", "path", "type_hint"), &EntityDataManager::load_resource);
+	ClassDB::bind_method(D_METHOD("load_resource", "path", "type_hint"), &EntityDataManager::load_resource, DEFVAL(""));
 
 	ADD_SIGNAL(MethodInfo("on_entity_spawn_requested", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
 
@@ -905,15 +730,6 @@ EntityDataManager::EntityDataManager() {
 	_automatic_load = GLOBAL_DEF("ess/data/automatic_load", false);
 
 	_xp_data_path = GLOBAL_DEF("ess/data/xp_data_path", "");
-	_entity_resources_folder = GLOBAL_DEF("ess/data/entity_resources_folder", "");
-	_entity_skills_folder = GLOBAL_DEF("ess/data/entity_skills_folder", "");
-	_entity_datas_folder = GLOBAL_DEF("ess/data/entity_datas_folder", "");
-	_spells_folder = GLOBAL_DEF("ess/data/spells_folder", "");
-	_auras_folder = GLOBAL_DEF("ess/data/auras_folder", "");
-	_craft_data_folder = GLOBAL_DEF("ess/data/craft_data_folder", "");
-	_item_template_folder = GLOBAL_DEF("ess/data/item_template_folder", "");
-	_player_character_data_folder = GLOBAL_DEF("ess/data/player_character_data_folder", "");
-	_entity_species_data_folder = GLOBAL_DEF("ess/data/entity_species_data_folder", "");
 
 	if (_automatic_load) {
 		call_deferred("load_all");
@@ -922,6 +738,8 @@ EntityDataManager::EntityDataManager() {
 
 EntityDataManager::~EntityDataManager() {
 	instance = NULL;
+
+	_folders.clear();
 
 	_entity_resources.clear();
 	_entity_resource_map.clear();
@@ -938,14 +756,11 @@ EntityDataManager::~EntityDataManager() {
 	_auras.clear();
 	_aura_map.clear();
 
-	_craft_datas.clear();
-	_craft_data_map.clear();
+	_craft_recipes.clear();
+	_craft_recipe_map.clear();
 
 	_item_templates.clear();
 	_item_template_map.clear();
-
-	_player_character_datas.clear();
-	_player_character_data_map.clear();
 
 	_entity_species_datas.clear();
 	_entity_species_data_map.clear();
