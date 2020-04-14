@@ -27,6 +27,7 @@ SOFTWARE.
 
 #include "scene/main/node.h"
 
+#include "core/io/json.h"
 #include "../data/entities/xp_data.h"
 #include "../data/items/craft_recipe.h"
 #include "../data/items/item_instance.h"
