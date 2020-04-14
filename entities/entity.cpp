@@ -22,6 +22,7 @@ SOFTWARE.
 
 #include "entity.h"
 
+#include "../database/ess_resource_db.h"
 #include "../singletons/entity_data_manager.h"
 #include "../singletons/profile_manager.h"
 
@@ -375,7 +376,7 @@ void Entity::setc_entity_data_id(int value) {
 	}
 
 	if (EntityDataManager::get_instance() != NULL) {
-		setc_entity_data(EntityDataManager::get_instance()->get_entity_data(_c_class_id));
+		setc_entity_data(EntityDataManager::get_instance()->get_resource_db()->get_entity_data(_c_class_id));
 	}
 }
 
@@ -1200,7 +1201,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 		int data_id = ird.get("data_id", 0);
 
-		Ref<EntityResourceData> resd = EntityDataManager::get_instance()->get_entity_resource(data_id);
+		Ref<EntityResourceData> resd = EntityDataManager::get_instance()->get_resource_db()->get_entity_resource(data_id);
 
 		ERR_CONTINUE(!resd.is_valid());
 
@@ -1331,7 +1332,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 		int crid = known_recipes.get(String::num(i), 0);
 
 		if (EntityDataManager::get_instance() != NULL) {
-			Ref<CraftRecipe> cr = EntityDataManager::get_instance()->get_craft_recipe(crid);
+			Ref<CraftRecipe> cr = EntityDataManager::get_instance()->get_resource_db()->get_craft_recipe(crid);
 
 			if (cr.is_valid()) {
 				adds_craft_recipe(cr);
@@ -1350,7 +1351,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 		int spell_id = known_spells.get(String::num(i), 0);
 
 		if (EntityDataManager::get_instance() != NULL) {
-			Ref<Spell> sp = EntityDataManager::get_instance()->get_spell(spell_id);
+			Ref<Spell> sp = EntityDataManager::get_instance()->get_resource_db()->get_spell(spell_id);
 
 			if (sp.is_valid()) {
 				_s_spells.push_back(sp);
@@ -1398,7 +1399,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 	int edi = dict.get("entity_data_id", 0);
 
 	if (EntityDataManager::get_instance() != NULL) {
-		sets_entity_data(EntityDataManager::get_instance()->get_entity_data(edi));
+		sets_entity_data(EntityDataManager::get_instance()->get_resource_db()->get_entity_data(edi));
 	}
 
 	sets_entity_data_id(edi);
@@ -1537,7 +1538,7 @@ void Entity::adds_craft_recipe_id(int id) {
 	if (hass_craft_recipe_id(id))
 		return;
 
-	Ref<CraftRecipe> craft_recipe = EntityDataManager::get_instance()->get_craft_recipe(id);
+	Ref<CraftRecipe> craft_recipe = EntityDataManager::get_instance()->get_resource_db()->get_craft_recipe(id);
 
 	ERR_FAIL_COND(!craft_recipe.is_valid());
 
@@ -1657,7 +1658,7 @@ void Entity::addc_craft_recipe_id(int id) {
 	if (hasc_craft_recipe_id(id))
 		return;
 
-	Ref<CraftRecipe> craft_recipe = EntityDataManager::get_instance()->get_craft_recipe(id);
+	Ref<CraftRecipe> craft_recipe = EntityDataManager::get_instance()->get_resource_db()->get_craft_recipe(id);
 
 	ERR_FAIL_COND(!craft_recipe.is_valid());
 
@@ -2154,7 +2155,7 @@ void Entity::addc_resource_rpc(int index, String data) {
 
 	int data_id = dict.get("data_id", 0);
 
-	Ref<EntityResourceData> resd = EntityDataManager::get_instance()->get_entity_resource(data_id);
+	Ref<EntityResourceData> resd = EntityDataManager::get_instance()->get_resource_db()->get_entity_resource(data_id);
 
 	ERR_FAIL_COND(!resd.is_valid());
 
@@ -2598,7 +2599,7 @@ void Entity::crequest_use_item(int item_id) {
 	RPCS(suse_item, item_id);
 }
 void Entity::_suse_item(int item_id) {
-	Ref<ItemTemplate> it = EntityDataManager::get_instance()->get_item_template(item_id);
+	Ref<ItemTemplate> it = EntityDataManager::get_instance()->get_resource_db()->get_item_template(item_id);
 
 	ERR_FAIL_COND(!it.is_valid());
 
@@ -4563,7 +4564,7 @@ void Entity::adds_spell(Ref<Spell> spell) {
 	ORPCOBJ(addc_spell_rpc, spell->get_id(), addc_spell, spell);
 }
 void Entity::adds_spell_id(int id) {
-	Ref<Spell> spell = EntityDataManager::get_instance()->get_spell(id);
+	Ref<Spell> spell = EntityDataManager::get_instance()->get_resource_db()->get_spell(id);
 
 	ERR_FAIL_COND(!spell.is_valid());
 
@@ -4643,12 +4644,12 @@ int Entity::getc_spell_count() {
 void Entity::addc_spell_rpc(int id) {
 	ERR_FAIL_COND(EntityDataManager::get_instance() == NULL);
 
-	addc_spell(EntityDataManager::get_instance()->get_spell(id));
+	addc_spell(EntityDataManager::get_instance()->get_resource_db()->get_spell(id));
 }
 void Entity::removec_spell_rpc(int id) {
 	ERR_FAIL_COND(EntityDataManager::get_instance() == NULL);
 
-	removec_spell(EntityDataManager::get_instance()->get_spell(id));
+	removec_spell(EntityDataManager::get_instance()->get_resource_db()->get_spell(id));
 }
 
 //Skills
@@ -6339,8 +6340,8 @@ void Entity::_scraft(int id) {
 
 void Entity::_son_xp_gained(int value) {
 	if (EntityDataManager::get_instance()->get_use_class_xp() && EntityDataManager::get_instance()->get_automatic_class_levelups()) {
-		if (EntityDataManager::get_instance()->get_xp_data()->can_class_level_up(gets_class_level())) {
-			int xpr = EntityDataManager::get_instance()->get_xp_data()->get_class_xp(gets_class_level());
+		if (EntityDataManager::get_instance()->get_resource_db()->get_xp_data()->can_class_level_up(gets_class_level())) {
+			int xpr = EntityDataManager::get_instance()->get_resource_db()->get_xp_data()->get_class_xp(gets_class_level());
 
 			if (xpr <= gets_class_xp()) {
 				sclass_levelup(1);
@@ -6349,8 +6350,8 @@ void Entity::_son_xp_gained(int value) {
 		}
 	}
 
-	if (EntityDataManager::get_instance()->get_xp_data()->can_character_level_up(gets_character_level())) {
-		int xpr = EntityDataManager::get_instance()->get_xp_data()->get_character_xp(gets_character_level());
+	if (EntityDataManager::get_instance()->get_resource_db()->get_xp_data()->can_character_level_up(gets_character_level())) {
+		int xpr = EntityDataManager::get_instance()->get_resource_db()->get_xp_data()->get_character_xp(gets_character_level());
 
 		if (xpr <= gets_character_xp()) {
 			scharacter_levelup(1);

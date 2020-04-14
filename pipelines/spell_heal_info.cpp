@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include "../data/auras/aura.h"
 #include "../data/spells/spell.h"
+#include "../database/ess_resource_db.h"
 #include "../entities/entity.h"
 #include "../singletons/entity_data_manager.h"
 
@@ -171,9 +172,9 @@ void SpellHealInfo::resolve_references(Node *owner) {
 	_receiver = Object::cast_to<Entity>(owner->get_node_or_null(_receiver_path));
 
 	if (_heal_source_type == HEAL_SOURCE_SPELL) {
-		_heal_source = EntityDataManager::get_instance()->get_spell(_heal_source_id);
+		_heal_source = EntityDataManager::get_instance()->get_resource_db()->get_spell(_heal_source_id);
 	} else if (_heal_source_type == HEAL_SOURCE_AURA) {
-		_heal_source = EntityDataManager::get_instance()->get_aura(_heal_source_id);
+		_heal_source = EntityDataManager::get_instance()->get_resource_db()->get_aura(_heal_source_id);
 	}
 }
 

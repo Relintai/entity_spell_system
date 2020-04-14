@@ -135,6 +135,8 @@ SOFTWARE.
 
 #include "editor/ess_editor_plugin.h"
 
+#include "database/ess_resource_db.cpp"
+
 static EntityDataManager *entity_data_manager = NULL;
 static ProfileManager *profile_manager = NULL;
 
@@ -247,6 +249,9 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<EntityAI>();
 
 	ClassDB::register_class<AIFormation>();
+
+	//Resources
+	ClassDB::register_class<ESSResourceDB>();
 
 	//ProfileManager
 	ClassDB::register_class<InputProfileModifier>();

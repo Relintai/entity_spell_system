@@ -118,6 +118,8 @@ sources = [
     "singletons/profile_manager.cpp",
     "singletons/entity_data_manager.cpp",
 
+    "database/ess_resource_db.cpp",
+
     "editor/ess_editor_plugin.cpp",
 ]
 

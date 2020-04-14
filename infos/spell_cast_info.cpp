@@ -25,6 +25,7 @@ SOFTWARE.
 #include "../data/items/item_instance.h"
 #include "../data/items/item_template.h"
 #include "../data/spells/spell.h"
+#include "../database/ess_resource_db.h"
 #include "../entities/entity.h"
 #include "../singletons/entity_data_manager.h"
 
@@ -180,7 +181,7 @@ void SpellCastInfo::resolve_references(Node *owner) {
 		_target = Object::cast_to<Entity>(owner->get_node_or_null(_target_path));
 	}
 
-	Ref<Spell> spell = EntityDataManager::get_instance()->get_spell(_spell_id);
+	Ref<Spell> spell = EntityDataManager::get_instance()->get_resource_db()->get_spell(_spell_id);
 
 	if (spell.is_valid()) {
 		_spell = spell;

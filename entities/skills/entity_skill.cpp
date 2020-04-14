@@ -22,6 +22,7 @@ SOFTWARE.
 
 #include "entity_skill.h"
 
+#include "../../database/ess_resource_db.h"
 #include "../../singletons/entity_data_manager.h"
 
 Ref<EntitySkillData> EntitySkill::get_skill() {
@@ -45,7 +46,7 @@ void EntitySkill::set_skill_id(int value) {
 	_skill_id = value;
 
 	if (EntityDataManager::get_instance() != NULL) {
-		_skill = EntityDataManager::get_instance()->get_entity_skill(_skill_id);
+		_skill = EntityDataManager::get_instance()->get_resource_db()->get_entity_skill(_skill_id);
 	}
 
 	emit_signal("skill_changed", Ref<EntitySkill>(this));
