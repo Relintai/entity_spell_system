@@ -100,6 +100,8 @@ def get_doc_classes():
         "SpellFollowProjectile3D",
 
         "ESSResourceDB",
+        "ESSResourceDBFolders",
+        "ESSResourceDBStatic",
 
         "EntityEnums",
         "ItemEnums",

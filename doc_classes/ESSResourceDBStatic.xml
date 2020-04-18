@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ESSResourceDBStatic" inherits="ESSResourceDB" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="auras" type="Array" setter="set_auras" getter="get_auras" default="[  ]">
+		</member>
+		<member name="craft_recipes" type="Array" setter="set_craft_recipes" getter="get_craft_recipes" default="[  ]">
+		</member>
+		<member name="entity_datas" type="Array" setter="set_entity_datas" getter="get_entity_datas" default="[  ]">
+		</member>
+		<member name="entity_resources" type="Array" setter="set_entity_resources" getter="get_entity_resources" default="[  ]">
+		</member>
+		<member name="entity_skills" type="Array" setter="set_entity_skills" getter="get_entity_skills" default="[  ]">
+		</member>
+		<member name="entity_species_datas" type="Array" setter="set_entity_species_datas" getter="get_entity_species_datas" default="[  ]">
+		</member>
+		<member name="item_templates" type="Array" setter="set_item_templates" getter="get_item_templates" default="[  ]">
+		</member>
+		<member name="spells" type="Array" setter="set_spells" getter="get_spells" default="[  ]">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>
