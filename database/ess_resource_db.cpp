@@ -48,6 +48,11 @@ void ESSResourceDB::set_xp_data(const Ref<XPData> &data) {
 	_xp_data = data;
 }
 
+void ESSResourceDB::initialize() {
+	if (has_method("_initialize"))
+		call("_initialize");
+}
+
 ESSResourceDB::ESSResourceDB() {
 }
 
@@ -131,4 +136,7 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_species_data_count"), &ESSResourceDB::get_entity_species_data_count);
 	ClassDB::bind_method(D_METHOD("get_entity_species_datas"), &ESSResourceDB::get_entity_species_datas);
 	ClassDB::bind_method(D_METHOD("set_entity_species_datas", "recipe"), &ESSResourceDB::set_entity_species_datas);
+
+	BIND_VMETHOD(MethodInfo("_initialize"));
+	ClassDB::bind_method(D_METHOD("initialize"), &ESSResourceDB::initialize);
 }

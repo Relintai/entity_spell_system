@@ -113,6 +113,8 @@ public:
 	virtual Vector<Variant> get_entity_species_datas() const = 0;
 	virtual void set_entity_species_datas(const Vector<Variant> &data) = 0;
 
+	void initialize();
+
 	ESSResourceDB();
 	~ESSResourceDB();
 

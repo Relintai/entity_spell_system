@@ -23,6 +23,7 @@ SOFTWARE.
 #include "ess.h"
 
 #include "../database/ess_resource_db.h"
+#include "../spawners/ess_entity_spawner.h"
 #include "../utility/entity_create_info.h"
 
 ESS *ESS::instance;
@@ -87,14 +88,41 @@ void ESS::set_allow_class_recipe_learning(const bool value) {
 	_allow_class_recipe_learning = value;
 }
 
+Ref<ESSResourceDB> ESS::get_resource_db() {
+	return _ess_resource_db;
+}
+void ESS::set_resource_db(const Ref<ESSResourceDB> &resource_db) {
+	_ess_resource_db = resource_db;
+}
+
+Ref<ESSEntitySpawner> ESS::get_entity_spawner() {
+	return _ess_entity_spawner;
+}
+void ESS::set_entity_spawner(const Ref<ESSEntitySpawner> &spawner) {
+	_ess_entity_spawner = spawner;
+}
+
 String ESS::get_resource_db_path() {
 	return _ess_resource_db_path;
 }
-void ESS::set_resource_db_path(String path) {
+void ESS::set_resource_db_path(const String &path) {
 	_ess_resource_db_path = path;
 }
-Ref<ESSResourceDB> ESS::get_resource_db() {
-	return _ess_resource_db;
+
+String ESS::get_entity_spawner_path() {
+	return _ess_entity_spawner_path;
+}
+void ESS::set_entity_spawner_path(const String &path) {
+	_ess_entity_spawner_path = path;
+}
+
+void ESS::request_entity_spawn(Ref<EntityCreateInfo> info) {
+	if (_ess_entity_spawner.is_valid())
+		_ess_entity_spawner->request_entity_spawn(info);
+}
+void ESS::request_entity_spawn_deferred(Ref<EntityCreateInfo> info) {
+	if (_ess_entity_spawner.is_valid())
+		_ess_entity_spawner->request_entity_spawn_deferred(info);
 }
 
 void ESS::load_resource_db() {
@@ -107,6 +135,18 @@ void ESS::load_resource_db() {
 	ERR_FAIL_COND(!d.is_valid());
 
 	_ess_resource_db = d;
+}
+
+void ESS::load_entity_spawner() {
+	_Directory dir;
+
+	ERR_FAIL_COND(_ess_entity_spawner_path == "");
+
+	Ref<ESSEntitySpawner> d = load_resource(_ess_entity_spawner_path, "ESSEntitySpawner");
+
+	ERR_FAIL_COND(!d.is_valid());
+
+	_ess_entity_spawner = d;
 }
 
 Ref<Resource> ESS::load_resource(const String &path, const String &type_hint) {
@@ -125,11 +165,16 @@ Ref<Resource> ESS::load_resource(const String &path, const String &type_hint) {
 #endif
 }
 
-void ESS::request_entity_spawn(const Ref<EntityCreateInfo> &info) {
-	emit_signal("on_entity_spawn_requested", info);
+void ESS::load_all() {
+	load_resource_db();
+	load_entity_spawner();
+
+	_ess_resource_db->initialize();
 }
-void ESS::request_entity_spawn_deferred(const Ref<EntityCreateInfo> &info) {
-	call_deferred("emit_signal", "on_entity_spawn_requested", info);
+
+void ESS::setup(const Ref<ESSResourceDB> &resource_db, const Ref<ESSEntitySpawner> &entity_spawner) {
+	_ess_resource_db = resource_db;
+	_ess_entity_spawner = entity_spawner;
 }
 
 void ESS::_bind_methods() {
@@ -165,22 +210,33 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_allow_class_recipe_learning", "value"), &ESS::set_allow_class_recipe_learning);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_class_recipe_learning"), "set_allow_class_recipe_learning", "get_allow_class_recipe_learning");
 
-	//XPData
+	ClassDB::bind_method(D_METHOD("get_resource_db"), &ESS::get_resource_db);
+	ClassDB::bind_method(D_METHOD("set_resource_db"), &ESS::set_resource_db);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_db", PROPERTY_HINT_RESOURCE_TYPE, "ESSResourceDB"), "set_resource_db", "get_resource_db");
+
+	ClassDB::bind_method(D_METHOD("get_entity_spawner"), &ESS::get_entity_spawner);
+	ClassDB::bind_method(D_METHOD("set_entity_spawner"), &ESS::set_entity_spawner);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entity_spawner", PROPERTY_HINT_RESOURCE_TYPE, "ESSEntitySpawner"), "set_entity_spawner", "get_entity_spawner");
+
 	ClassDB::bind_method(D_METHOD("get_resource_db_path"), &ESS::get_resource_db_path);
 	ClassDB::bind_method(D_METHOD("set_resource_db_path", "path"), &ESS::set_resource_db_path);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "resource_db_path"), "set_resource_db_path", "get_resource_db_path");
 
-	ClassDB::bind_method(D_METHOD("get_resource_db"), &ESS::get_resource_db);
+	ClassDB::bind_method(D_METHOD("get_entity_spawner_path"), &ESS::get_entity_spawner_path);
+	ClassDB::bind_method(D_METHOD("set_entity_spawner_path", "path"), &ESS::set_entity_spawner_path);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_spawner_path"), "set_entity_spawner_path", "get_entity_spawner_path");
 
 	//load
 	ClassDB::bind_method(D_METHOD("load_resource_db"), &ESS::load_resource_db);
 
 	ClassDB::bind_method(D_METHOD("load_resource", "path", "type_hint"), &ESS::load_resource, DEFVAL(""));
 
-	ADD_SIGNAL(MethodInfo("on_entity_spawn_requested", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
-
 	ClassDB::bind_method(D_METHOD("request_entity_spawn", "info"), &ESS::request_entity_spawn);
 	ClassDB::bind_method(D_METHOD("request_entity_spawn_deferred", "info"), &ESS::request_entity_spawn_deferred);
+
+	ClassDB::bind_method(D_METHOD("load_all"), &ESS::load_all);
+
+	ClassDB::bind_method(D_METHOD("setup", "resource_db", "entity_spawner"), &ESS::setup);
 }
 
 ESS::ESS() {
@@ -198,8 +254,9 @@ ESS::ESS() {
 	_automatic_load = GLOBAL_DEF("ess/data/automatic_load", false);
 
 	_ess_resource_db_path = GLOBAL_DEF("ess/data/ess_resource_db_path", "");
+	_ess_entity_spawner_path = GLOBAL_DEF("ess/data/ess_entity_spawner_path", "");
 
-	if (_automatic_load) {
+	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load) {
 		call_deferred("load_all");
 	}
 }
@@ -208,4 +265,5 @@ ESS::~ESS() {
 	instance = NULL;
 
 	_ess_resource_db.unref();
+	_ess_entity_spawner.unref();
 }

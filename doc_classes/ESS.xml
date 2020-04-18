@@ -12,8 +12,8 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="get_resource_db">
-			<return type="ESSResourceDB">
+		<method name="load_all">
+			<return type="void">
 			</return>
 			<description>
 			</description>
@@ -50,6 +50,16 @@
 			<description>
 			</description>
 		</method>
+		<method name="setup">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource_db" type="ESSResourceDB">
+			</argument>
+			<argument index="1" name="entity_spawner" type="ESSEntitySpawner">
+			</argument>
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
 		<member name="allow_class_recipe_learning" type="bool" setter="set_allow_class_recipe_learning" getter="get_allow_class_recipe_learning" default="false">
@@ -59,6 +69,12 @@
 		<member name="automatic_class_levelups" type="bool" setter="set_automatic_class_levelups" getter="get_automatic_class_levelups" default="false">
 		</member>
 		<member name="automatic_load" type="bool" setter="set_automatic_load" getter="get_automatic_load" default="false">
+		</member>
+		<member name="entity_spawner" type="ESSEntitySpawner" setter="set_entity_spawner" getter="get_entity_spawner">
+		</member>
+		<member name="entity_spawner_path" type="String" setter="set_entity_spawner_path" getter="get_entity_spawner_path" default="&quot;&quot;">
+		</member>
+		<member name="resource_db" type="ESSResourceDB" setter="set_resource_db" getter="get_resource_db">
 		</member>
 		<member name="resource_db_path" type="String" setter="set_resource_db_path" getter="get_resource_db_path" default="&quot;&quot;">
 		</member>
@@ -71,14 +87,6 @@
 		<member name="use_spell_points" type="bool" setter="set_use_spell_points" getter="get_use_spell_points" default="false">
 		</member>
 	</members>
-	<signals>
-		<signal name="on_entity_spawn_requested">
-			<argument index="0" name="info" type="EntityCreateInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-	</signals>
 	<constants>
 	</constants>
 </class>

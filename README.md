@@ -53,10 +53,12 @@ For example this way it is easy to make chests attack the player, or make spell 
 Since spawning (= creating) entities is entirely dependant on the type of game you are making, ESS cannot do
 everything for you. It will set up stats, equipment etc, but there is no way to set up positions for example.
 
-In lieu of this ESS has a signal that you should hook into from a class, and using that hook 
-you can set up your entities however you like.
+You can implement your spawning logic by inheriting from ESSEntitySpawner, and implementing `_request_entity_spawn`.
 
-ESS also contains the method to request the system to spawn an Entity.
+You will need to register this spawner into the ESS singleton, either by using `setup(resource_db, entity_spawner)`, or 
+by using the provided property/setter `entity_spawner`/`set_entity_spawner()`. 
+
+The ESS singleton also contains convenience methods to request spawning an Entity.
 
 #### EntityCreateInfo
 
@@ -160,3 +162,4 @@ Loot, Species, cds, categ cds, items (crafting etc), Xp,
 levelling, Stats, drag and drop, talents, vendors, Skills, 
 Profiles, Projectiles, Singletons, Skeleton, 
 Global enums
+resourcedb

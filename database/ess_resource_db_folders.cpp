@@ -412,6 +412,10 @@ void ESSResourceDBFolders::set_entity_species_datas(const Vector<Variant> &data)
 	}
 }
 
+void ESSResourceDBFolders::_initialize() {
+	load_all();
+}
+
 void ESSResourceDBFolders::load_all() {
 	load_xp_data();
 	load_folders();
@@ -563,6 +567,7 @@ void ESSResourceDBFolders::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "folders"), "set_folders", "get_folders");
 
 	//load
+	ClassDB::bind_method(D_METHOD("_initialize"), &ESSResourceDBFolders::_initialize);
 	ClassDB::bind_method(D_METHOD("load_all"), &ESSResourceDBFolders::load_all);
 	ClassDB::bind_method(D_METHOD("load_xp_data"), &ESSResourceDBFolders::load_xp_data);
 	ClassDB::bind_method(D_METHOD("load_folders"), &ESSResourceDBFolders::load_folders);

@@ -115,6 +115,8 @@ sources = [
 
     "profiles/player_profile.cpp",
 
+    "spawners/ess_entity_spawner.cpp",
+
     "singletons/profile_manager.cpp",
     "singletons/ess.cpp",
 

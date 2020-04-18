@@ -34,6 +34,7 @@ SOFTWARE.
 #include "core/bind/core_bind.h"
 
 class ESSResourceDB;
+class ESSEntitySpawner;
 class EntityCreateInfo;
 
 class ESS : public Object {
@@ -69,14 +70,28 @@ public:
 	bool get_allow_class_recipe_learning() const;
 	void set_allow_class_recipe_learning(const bool value);
 
-	String get_resource_db_path();
-	void set_resource_db_path(String path);
 	Ref<ESSResourceDB> get_resource_db();
+	void set_resource_db(const Ref<ESSResourceDB> &resource_db);
+
+	Ref<ESSEntitySpawner> get_entity_spawner();
+	void set_entity_spawner(const Ref<ESSEntitySpawner> &spawner);
+
+	String get_resource_db_path();
+	void set_resource_db_path(const String &path);
+
+	String get_entity_spawner_path();
+	void set_entity_spawner_path(const String &path);
+
+	void request_entity_spawn(Ref<EntityCreateInfo> info);
+	void request_entity_spawn_deferred(Ref<EntityCreateInfo> info);
+
 	void load_resource_db();
+	void load_entity_spawner();
 	Ref<Resource> load_resource(const String &path, const String &type_hint = "");
 
-	void request_entity_spawn(const Ref<EntityCreateInfo> &info);
-	void request_entity_spawn_deferred(const Ref<EntityCreateInfo> &info);
+	void load_all();
+
+	void setup(const Ref<ESSResourceDB> &resource_db, const Ref<ESSEntitySpawner> &entity_spawner);
 
 	ESS();
 	~ESS();
@@ -86,8 +101,12 @@ protected:
 
 private:
 	bool _automatic_load;
-	String _ess_resource_db_path;
+
 	Ref<ESSResourceDB> _ess_resource_db;
+	Ref<ESSEntitySpawner> _ess_entity_spawner;
+
+	String _ess_resource_db_path;
+	String _ess_entity_spawner_path;
 
 	static ESS *instance;
 

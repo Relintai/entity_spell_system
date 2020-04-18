@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ESSEntitySpawner" inherits="Resource" version="3.2">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_request_entity_spawn" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_scene_tree" qualifiers="const">
+			<return type="SceneTree">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="request_entity_spawn">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="request_entity_spawn_deferred">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+	</methods>
+	<signals>
+		<signal name="on_entity_spawn">
+			<argument index="0" name="info" type="EntityCreateInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
+	</signals>
+	<constants>
+	</constants>
+</class>

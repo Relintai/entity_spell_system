@@ -25,6 +25,8 @@ SOFTWARE.
 #include "core/os/file_access.h"
 #include "core/project_settings.h"
 
+#include "core/engine.h"
+
 #include "core/version.h"
 
 ProfileManager *ProfileManager::_instance;
@@ -209,7 +211,7 @@ ProfileManager::ProfileManager() {
 	_c_player_profile->connect("changed", callable_mp(this, &ProfileManager::_on_player_profile_changed));
 #endif
 
-	if (_automatic_load)
+	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load)
 		call_deferred("load");
 }
 
@@ -226,7 +228,7 @@ ProfileManager::~ProfileManager() {
 }
 
 void ProfileManager::_on_player_profile_changed(Ref<PlayerProfile> profile) {
-	if (_automatic_save)
+	if (!Engine::get_singleton()->is_editor_hint() && _automatic_save)
 		save();
 }
 

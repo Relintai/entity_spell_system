@@ -132,6 +132,7 @@ public:
 	Vector<Variant> get_entity_species_datas() const;
 	void set_entity_species_datas(const Vector<Variant> &data);
 
+	virtual void _initialize();
 	void load_all();
 	void load_xp_data();
 	void load_folders();
@@ -151,29 +152,29 @@ private:
 
 	PoolStringArray _folders;
 
-	Vector<Ref<EntityResourceData>> _entity_resources;
-	HashMap<int, Ref<EntityResourceData>> _entity_resource_map;
+	Vector<Ref<EntityResourceData> > _entity_resources;
+	HashMap<int, Ref<EntityResourceData> > _entity_resource_map;
 
-	Vector<Ref<EntitySkillData>> _entity_skills;
-	HashMap<int, Ref<EntitySkillData>> _entity_skill_map;
+	Vector<Ref<EntitySkillData> > _entity_skills;
+	HashMap<int, Ref<EntitySkillData> > _entity_skill_map;
 
-	Vector<Ref<EntityData>> _entity_datas;
-	HashMap<int, Ref<EntityData>> _entity_data_map;
+	Vector<Ref<EntityData> > _entity_datas;
+	HashMap<int, Ref<EntityData> > _entity_data_map;
 
-	Vector<Ref<Spell>> _spells;
-	HashMap<int, Ref<Spell>> _spell_map;
+	Vector<Ref<Spell> > _spells;
+	HashMap<int, Ref<Spell> > _spell_map;
 
-	Vector<Ref<Aura>> _auras;
-	HashMap<int, Ref<Aura>> _aura_map;
+	Vector<Ref<Aura> > _auras;
+	HashMap<int, Ref<Aura> > _aura_map;
 
-	Vector<Ref<CraftRecipe>> _craft_recipes;
-	HashMap<int, Ref<CraftRecipe>> _craft_recipe_map;
+	Vector<Ref<CraftRecipe> > _craft_recipes;
+	HashMap<int, Ref<CraftRecipe> > _craft_recipe_map;
 
-	Vector<Ref<ItemTemplate>> _item_templates;
-	HashMap<int, Ref<ItemTemplate>> _item_template_map;
+	Vector<Ref<ItemTemplate> > _item_templates;
+	HashMap<int, Ref<ItemTemplate> > _item_template_map;
 
-	Vector<Ref<EntitySpeciesData>> _entity_species_datas;
-	HashMap<int, Ref<EntitySpeciesData>> _entity_species_data_map;
+	Vector<Ref<EntitySpeciesData> > _entity_species_datas;
+	HashMap<int, Ref<EntitySpeciesData> > _entity_species_data_map;
 
 	bool _automatic_load;
 	bool _load_folders;

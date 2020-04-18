@@ -106,6 +106,8 @@ def get_doc_classes():
         "EntityEnums",
         "ItemEnums",
         "SpellEnums",
+
+        "ESSEntitySpawner",
     ]
 
 def get_doc_path():

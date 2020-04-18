@@ -131,13 +131,15 @@ SOFTWARE.
 #include "profiles/class_profile.h"
 #include "profiles/player_profile.h"
 
+#include "spawners/ess_entity_spawner.h"
+
 #include "singletons/profile_manager.h"
 
 #include "editor/ess_editor_plugin.h"
 
 #include "database/ess_resource_db.cpp"
-#include "database/ess_resource_db_static.h"
 #include "database/ess_resource_db_folders.h"
+#include "database/ess_resource_db_static.h"
 
 static ESS *entity_data_manager = NULL;
 static ProfileManager *profile_manager = NULL;
@@ -270,6 +272,8 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<PlayerProfile>();
 
 	ClassDB::register_class<ProfileManager>();
+
+	ClassDB::register_class<ESSEntitySpawner>();
 
 	entity_data_manager = memnew(ESS);
 	ClassDB::register_class<ESS>();
