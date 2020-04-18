@@ -122,6 +122,7 @@ sources = [
 
     "database/ess_resource_db.cpp",
     "database/ess_resource_db_static.cpp",
+    "database/ess_resource_db_map.cpp",
     "database/ess_resource_db_folders.cpp",
 
     "editor/ess_editor_plugin.cpp",

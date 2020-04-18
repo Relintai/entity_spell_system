@@ -23,7 +23,7 @@ SOFTWARE.
 #ifndef ESS_RESOURCE_DB_FOLDERS_H
 #define ESS_RESOURCE_DB_FOLDERS_H
 
-#include "ess_resource_db.h"
+#include "ess_resource_db_map.h"
 
 #include "core/array.h"
 #include "core/engine.h"
@@ -60,8 +60,8 @@ class EntityCreateInfo;
 class SpellCastInfo;
 class EntitySpeciesData;
 
-class ESSResourceDBFolders : public ESSResourceDB {
-	GDCLASS(ESSResourceDBFolders, ESSResourceDB);
+class ESSResourceDBFolders : public ESSResourceDBMap {
+	GDCLASS(ESSResourceDBFolders, ESSResourceDBMap);
 
 public:
 	bool get_automatic_load() const;
@@ -75,62 +75,6 @@ public:
 
 	PoolStringArray get_folders() const;
 	void set_folders(const PoolStringArray &folders);
-
-	Ref<EntityResourceData> get_entity_resource(int class_id);
-	Ref<EntityResourceData> get_entity_resource_index(int index);
-	int get_entity_resource_count();
-	void add_entity_resource(Ref<EntityResourceData> cls);
-	Vector<Variant> get_entity_resources() const;
-	void set_entity_resources(const Vector<Variant> &data);
-
-	Ref<EntitySkillData> get_entity_skill(int class_id);
-	Ref<EntitySkillData> get_entity_skill_index(int index);
-	int get_entity_skill_count();
-	void add_entity_skill(Ref<EntitySkillData> cls);
-	Vector<Variant> get_entity_skills() const;
-	void set_entity_skills(const Vector<Variant> &data);
-
-	Ref<EntityData> get_entity_data(int class_id);
-	Ref<EntityData> get_entity_data_index(int index);
-	int get_entity_data_count();
-	void add_entity_data(Ref<EntityData> cls);
-	Vector<Variant> get_entity_datas() const;
-	void set_entity_datas(const Vector<Variant> &data);
-
-	Ref<Spell> get_spell(int spell_id);
-	Ref<Spell> get_spell_index(int index);
-	int get_spell_count();
-	void add_spell(Ref<Spell> spell);
-	Vector<Variant> get_spells() const;
-	void set_spells(const Vector<Variant> &data);
-
-	Ref<Aura> get_aura(int aura_id);
-	Ref<Aura> get_aura_index(int index);
-	int get_aura_count();
-	void add_aura(Ref<Aura> aura);
-	Vector<Variant> get_auras() const;
-	void set_auras(const Vector<Variant> &data);
-
-	Ref<CraftRecipe> get_craft_recipe(int craft_id);
-	Ref<CraftRecipe> get_craft_recipe_index(int index);
-	int get_craft_recipe_count();
-	void add_craft_recipe(Ref<CraftRecipe> aura);
-	Vector<Variant> get_craft_recipes() const;
-	void set_craft_recipes(const Vector<Variant> &data);
-
-	void add_item_template(Ref<ItemTemplate> aura);
-	Ref<ItemTemplate> get_item_template(int item_id);
-	Ref<ItemTemplate> get_item_template_index(int index);
-	int get_item_template_count();
-	Vector<Variant> get_item_templates() const;
-	void set_item_templates(const Vector<Variant> &data);
-
-	void add_entity_species_data(Ref<EntitySpeciesData> aura);
-	Ref<EntitySpeciesData> get_entity_species_data(int item_id);
-	Ref<EntitySpeciesData> get_entity_species_data_index(int index);
-	int get_entity_species_data_count();
-	Vector<Variant> get_entity_species_datas() const;
-	void set_entity_species_datas(const Vector<Variant> &data);
 
 	virtual void _initialize();
 	void load_all();
@@ -151,30 +95,6 @@ private:
 	String _xp_data_path;
 
 	PoolStringArray _folders;
-
-	Vector<Ref<EntityResourceData> > _entity_resources;
-	HashMap<int, Ref<EntityResourceData> > _entity_resource_map;
-
-	Vector<Ref<EntitySkillData> > _entity_skills;
-	HashMap<int, Ref<EntitySkillData> > _entity_skill_map;
-
-	Vector<Ref<EntityData> > _entity_datas;
-	HashMap<int, Ref<EntityData> > _entity_data_map;
-
-	Vector<Ref<Spell> > _spells;
-	HashMap<int, Ref<Spell> > _spell_map;
-
-	Vector<Ref<Aura> > _auras;
-	HashMap<int, Ref<Aura> > _aura_map;
-
-	Vector<Ref<CraftRecipe> > _craft_recipes;
-	HashMap<int, Ref<CraftRecipe> > _craft_recipe_map;
-
-	Vector<Ref<ItemTemplate> > _item_templates;
-	HashMap<int, Ref<ItemTemplate> > _item_template_map;
-
-	Vector<Ref<EntitySpeciesData> > _entity_species_datas;
-	HashMap<int, Ref<EntitySpeciesData> > _entity_species_data_map;
 
 	bool _automatic_load;
 	bool _load_folders;
