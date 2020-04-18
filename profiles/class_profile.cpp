@@ -144,7 +144,7 @@ ClassProfile::ClassProfile() {
 	_input_profile.instance();
 
 	_class_id = 0;
-	_level = 0;
+	_level = 1;
 	_xp = 0;
 	_actionbar_locked = false;
 }
@@ -155,7 +155,7 @@ ClassProfile::ClassProfile(int class_id) {
 	_input_profile.instance();
 
 	_class_id = class_id;
-	_level = 50;
+	_level = 1;
 	_xp = 0;
 	_actionbar_locked = false;
 }

@@ -205,11 +205,6 @@ PlayerProfile::~PlayerProfile() {
 void PlayerProfile::load_defaults() {
 	clear_class_profiles();
 
-	_class_profiles.push_back(memnew(ClassProfile("Naturalist", 1, 1, 0, false)));
-	_class_profiles.push_back(memnew(ClassProfile("Berserker", 3, 1, 0, false)));
-	_class_profiles.push_back(memnew(ClassProfile("IceArcher", 4, 1, 0, false)));
-	_class_profiles.push_back(memnew(ClassProfile("Chronomancer", 6, 1, 0, false)));
-
 	for (int i = 0; i < _class_profiles.size(); ++i) {
 		_class_profiles.get(i)->load_defaults();
 
