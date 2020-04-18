@@ -48,6 +48,50 @@ void ESSResourceDB::set_xp_data(const Ref<XPData> &data) {
 	_xp_data = data;
 }
 
+void ESSResourceDB::clear() {
+	_xp_data.unref();
+}
+
+void ESSResourceDB::add_entity_resource_db(Ref<ESSResourceDB> other) {
+	if (!other.is_valid())
+		return;
+
+	if (!_xp_data.is_valid() && other->_xp_data.is_valid())
+		_xp_data = other->_xp_data;
+
+	for (int i = 0; i < other->get_entity_resource_count(); ++i) {
+		add_entity_resource(other->get_entity_resource_index(i));
+	}
+
+	for (int i = 0; i < other->get_entity_skill_count(); ++i) {
+		add_entity_skill(other->get_entity_skill_index(i));
+	}
+
+	for (int i = 0; i < other->get_entity_data_count(); ++i) {
+		add_entity_data(other->get_entity_data_index(i));
+	}
+
+	for (int i = 0; i < other->get_spell_count(); ++i) {
+		add_spell(other->get_spell_index(i));
+	}
+
+	for (int i = 0; i < other->get_aura_count(); ++i) {
+		add_aura(other->get_aura_index(i));
+	}
+
+	for (int i = 0; i < other->get_craft_recipe_count(); ++i) {
+		add_craft_recipe(other->get_craft_recipe_index(i));
+	}
+
+	for (int i = 0; i < other->get_item_template_count(); ++i) {
+		add_item_template(other->get_item_template_index(i));
+	}
+
+	for (int i = 0; i < other->get_entity_species_data_count(); ++i) {
+		add_entity_species_data(other->get_entity_species_data_index(i));
+	}
+}
+
 void ESSResourceDB::initialize() {
 	if (has_method("_initialize"))
 		call("_initialize");
@@ -136,6 +180,9 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_species_data_count"), &ESSResourceDB::get_entity_species_data_count);
 	ClassDB::bind_method(D_METHOD("get_entity_species_datas"), &ESSResourceDB::get_entity_species_datas);
 	ClassDB::bind_method(D_METHOD("set_entity_species_datas", "recipe"), &ESSResourceDB::set_entity_species_datas);
+
+	ClassDB::bind_method(D_METHOD("clear"), &ESSResourceDB::clear);
+	ClassDB::bind_method(D_METHOD("add_entity_resource_db", "other"), &ESSResourceDB::add_entity_resource_db);
 
 	BIND_VMETHOD(MethodInfo("_initialize"));
 	ClassDB::bind_method(D_METHOD("initialize"), &ESSResourceDB::initialize);

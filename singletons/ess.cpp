@@ -228,6 +228,7 @@ void ESS::_bind_methods() {
 
 	//load
 	ClassDB::bind_method(D_METHOD("load_resource_db"), &ESS::load_resource_db);
+	ClassDB::bind_method(D_METHOD("load_entity_spawner"), &ESS::load_entity_spawner);
 
 	ClassDB::bind_method(D_METHOD("load_resource", "path", "type_hint"), &ESS::load_resource, DEFVAL(""));
 

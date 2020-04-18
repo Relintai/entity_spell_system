@@ -30,8 +30,15 @@ SOFTWARE.
 #include "../entities/resources/entity_resource_data.h"
 #include "../entities/skills/entity_skill_data.h"
 
+bool ESSResourceDBStatic::get_remap_ids() const {
+	return _remap_ids;
+}
+void ESSResourceDBStatic::set_remap_ids(const bool value) {
+	_remap_ids = value;
+}
+
 Ref<EntityResourceData> ESSResourceDBStatic::get_entity_resource(int id) {
-	if (id < 0 || id > _entity_resources.size())
+	if (id < 0 || id >= _entity_resources.size())
 		return Ref<EntityResourceData>();
 
 	return _entity_resources.get(id);
@@ -45,7 +52,7 @@ int ESSResourceDBStatic::get_entity_resource_count() {
 	return _entity_resources.size();
 }
 void ESSResourceDBStatic::add_entity_resource(Ref<EntityResourceData> cls) {
-	if (cls.is_valid())
+	if (_remap_ids && cls.is_valid())
 		cls->set_id(_entity_resources.size());
 
 	_entity_resources.push_back(cls);
@@ -71,7 +78,7 @@ void ESSResourceDBStatic::set_entity_resources(const Vector<Variant> &data) {
 }
 
 Ref<EntitySkillData> ESSResourceDBStatic::get_entity_skill(int id) {
-	if (id < 0 || id > _entity_skills.size())
+	if (id < 0 || id >= _entity_skills.size())
 		return Ref<EntitySkillData>();
 
 	return _entity_skills.get(id);
@@ -85,7 +92,7 @@ int ESSResourceDBStatic::get_entity_skill_count() {
 	return _entity_skills.size();
 }
 void ESSResourceDBStatic::add_entity_skill(Ref<EntitySkillData> cls) {
-	if (cls.is_valid())
+	if (_remap_ids && cls.is_valid())
 		cls->set_id(_entity_skills.size());
 
 	_entity_skills.push_back(cls);
@@ -111,7 +118,7 @@ void ESSResourceDBStatic::set_entity_skills(const Vector<Variant> &data) {
 }
 
 Ref<EntityData> ESSResourceDBStatic::get_entity_data(int id) {
-	if (id < 0 || id > _entity_datas.size())
+	if (id < 0 || id >= _entity_datas.size())
 		return Ref<EntityData>();
 
 	return _entity_datas.get(id);
@@ -125,7 +132,7 @@ int ESSResourceDBStatic::get_entity_data_count() {
 	return _entity_datas.size();
 }
 void ESSResourceDBStatic::add_entity_data(Ref<EntityData> cls) {
-	if (cls.is_valid())
+	if (_remap_ids && cls.is_valid())
 		cls->set_id(_entity_datas.size());
 
 	_entity_datas.push_back(cls);
@@ -151,7 +158,7 @@ void ESSResourceDBStatic::set_entity_datas(const Vector<Variant> &data) {
 }
 
 Ref<Spell> ESSResourceDBStatic::get_spell(int id) {
-	if (id < 0 || id > _spells.size())
+	if (id < 0 || id >= _spells.size())
 		return Ref<Spell>();
 
 	return _spells.get(id);
@@ -166,7 +173,7 @@ int ESSResourceDBStatic::get_spell_count() {
 	return _spells.size();
 }
 void ESSResourceDBStatic::add_spell(Ref<Spell> spell) {
-	if (spell.is_valid())
+	if (_remap_ids && spell.is_valid())
 		spell->set_id(_spells.size());
 
 	_spells.push_back(spell);
@@ -192,14 +199,14 @@ void ESSResourceDBStatic::set_spells(const Vector<Variant> &data) {
 }
 
 void ESSResourceDBStatic::add_aura(Ref<Aura> aura) {
-	if (aura.is_valid())
+	if (_remap_ids && aura.is_valid())
 		aura->set_id(_auras.size());
 
 	_auras.push_back(aura);
 }
 
 Ref<Aura> ESSResourceDBStatic::get_aura(int id) {
-	if (id < 0 || id > _auras.size())
+	if (id < 0 || id >= _auras.size())
 		return Ref<Aura>();
 
 	return _auras.get(id);
@@ -237,14 +244,14 @@ void ESSResourceDBStatic::set_auras(const Vector<Variant> &data) {
 
 //Craft Data
 void ESSResourceDBStatic::add_craft_recipe(Ref<CraftRecipe> cda) {
-	if (cda.is_valid())
+	if (_remap_ids && cda.is_valid())
 		cda->set_id(_craft_recipes.size());
 
 	_craft_recipes.push_back(cda);
 }
 
 Ref<CraftRecipe> ESSResourceDBStatic::get_craft_recipe(int id) {
-	if (id < 0 || id > _craft_recipes.size())
+	if (id < 0 || id >= _craft_recipes.size())
 		return Ref<CraftRecipe>();
 
 	return _craft_recipes.get(id);
@@ -281,14 +288,14 @@ void ESSResourceDBStatic::set_craft_recipes(const Vector<Variant> &data) {
 }
 
 void ESSResourceDBStatic::add_item_template(Ref<ItemTemplate> cda) {
-	if (cda.is_valid())
+	if (_remap_ids && cda.is_valid())
 		cda->set_id(_item_templates.size());
 
 	_item_templates.push_back(cda);
 }
 
 Ref<ItemTemplate> ESSResourceDBStatic::get_item_template(int item_id) {
-	if (item_id < 0 || item_id > _item_templates.size())
+	if (item_id < 0 || item_id >= _item_templates.size())
 		return Ref<ItemTemplate>();
 
 	return _item_templates.get(item_id);
@@ -324,7 +331,7 @@ void ESSResourceDBStatic::set_item_templates(const Vector<Variant> &data) {
 }
 
 void ESSResourceDBStatic::add_entity_species_data(Ref<EntitySpeciesData> cda) {
-	if (cda.is_valid())
+	if (_remap_ids && cda.is_valid())
 		cda->set_id(_entity_species_datas.size());
 
 	_entity_species_datas.push_back(cda);
@@ -363,7 +370,19 @@ void ESSResourceDBStatic::set_entity_species_datas(const Vector<Variant> &data) 
 	}
 }
 
+void ESSResourceDBStatic::clear() {
+	_entity_resources.clear();
+	_entity_skills.clear();
+	_entity_datas.clear();
+	_spells.clear();
+	_auras.clear();
+	_craft_recipes.clear();
+	_item_templates.clear();
+	_entity_species_datas.clear();
+}
+
 ESSResourceDBStatic::ESSResourceDBStatic() {
+	_remap_ids = false;
 }
 
 ESSResourceDBStatic::~ESSResourceDBStatic() {
@@ -378,6 +397,10 @@ ESSResourceDBStatic::~ESSResourceDBStatic() {
 }
 
 void ESSResourceDBStatic::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_remap_ids"), &ESSResourceDBStatic::get_remap_ids);
+	ClassDB::bind_method(D_METHOD("set_remap_ids", "value"), &ESSResourceDBStatic::set_remap_ids);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "remap_ids"), "set_remap_ids", "get_remap_ids");
+
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_resources", PROPERTY_HINT_NONE, "17/17:EntityResourceData", PROPERTY_USAGE_DEFAULT, "EntityResourceData"), "set_entity_resources", "get_entity_resources");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_skills", PROPERTY_HINT_NONE, "17/17:EntitySkillData", PROPERTY_USAGE_DEFAULT, "EntitySkillData"), "set_entity_skills", "get_entity_skills");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_datas", PROPERTY_HINT_NONE, "17/17:EntityData", PROPERTY_USAGE_DEFAULT, "EntityData"), "set_entity_datas", "get_entity_datas");

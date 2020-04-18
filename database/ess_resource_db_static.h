@@ -54,6 +54,9 @@ class ESSResourceDBStatic : public ESSResourceDB {
 	GDCLASS(ESSResourceDBStatic, ESSResourceDB);
 
 public:
+	bool get_remap_ids() const;
+	void set_remap_ids(const bool value);
+
 	String get_xp_data_path();
 	void set_xp_data_path(String path);
 
@@ -91,7 +94,7 @@ public:
 	Ref<Aura> get_aura(int aura_id);
 	Ref<Aura> get_aura_index(int index);
 	int get_aura_count();
-	void add_aura( Ref<Aura> aura);
+	void add_aura(Ref<Aura> aura);
 	Vector<Variant> get_auras() const;
 	void set_auras(const Vector<Variant> &data);
 
@@ -116,6 +119,8 @@ public:
 	Vector<Variant> get_entity_species_datas() const;
 	void set_entity_species_datas(const Vector<Variant> &data);
 
+	void clear();
+
 	ESSResourceDBStatic();
 	~ESSResourceDBStatic();
 
@@ -123,14 +128,16 @@ protected:
 	static void _bind_methods();
 
 private:
-	Vector<Ref<EntityResourceData>> _entity_resources;
-	Vector<Ref<EntitySkillData>> _entity_skills;
-	Vector<Ref<EntityData>> _entity_datas;
-	Vector<Ref<Spell>> _spells;
-	Vector<Ref<Aura>> _auras;
-	Vector<Ref<CraftRecipe>> _craft_recipes;
-	Vector<Ref<ItemTemplate>> _item_templates;
-	Vector<Ref<EntitySpeciesData>> _entity_species_datas;
+	bool _remap_ids;
+
+	Vector<Ref<EntityResourceData> > _entity_resources;
+	Vector<Ref<EntitySkillData> > _entity_skills;
+	Vector<Ref<EntityData> > _entity_datas;
+	Vector<Ref<Spell> > _spells;
+	Vector<Ref<Aura> > _auras;
+	Vector<Ref<CraftRecipe> > _craft_recipes;
+	Vector<Ref<ItemTemplate> > _item_templates;
+	Vector<Ref<EntitySpeciesData> > _entity_species_datas;
 };
 
 #endif
