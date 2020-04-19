@@ -42,8 +42,8 @@ public:
 	Ref<EntityResourceData> get_resource_data();
 	void set_resource_data(const Ref<EntityResourceData> &value);
 
-	int get_data_id() const;
-	void set_data_id(const int value);
+	StringName get_data_path() const;
+	void set_data_path(const StringName &value);
 
 	int get_current_value() const;
 	void set_current_value(const int value);
@@ -96,7 +96,7 @@ private:
 	bool _should_process;
 
 	Ref<EntityResourceData> _data;
-	int _data_id;
+	StringName _data_path;
 
 	int _current;
 	int _max;

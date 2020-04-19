@@ -33,10 +33,10 @@ Ref<ItemTemplate> ItemInstance::get_item_template() {
 void ItemInstance::set_item_template(const Ref<ItemTemplate> &value) {
 	_item_template = value;
 
-	_item_template_id = 0;
+	_item_template_path = "";
 
 	if (value.is_valid())
-		_item_template_id = value->get_id();
+		_item_template_path = value->get_path();
 }
 
 Ref<ItemStatModifier> ItemInstance::get_item_stat_modifier(const int index) {
@@ -94,7 +94,7 @@ void ItemInstance::from_dict(const Dictionary &dict) {
 Dictionary ItemInstance::_to_dict() {
 	Dictionary dict;
 
-	dict["item_id"] = _item_template->get_id();
+	dict["item_path"] = _item_template->get_path();
 
 	dict["stack_size"] = _stack_size;
 
@@ -111,10 +111,10 @@ Dictionary ItemInstance::_to_dict() {
 void ItemInstance::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
-	_item_template_id = dict.get("item_id", 0);
+	_item_template_path = dict.get("item_path", 0);
 
 	if (ESS::get_instance() != NULL) {
-		_item_template = ESS::get_instance()->get_resource_db()->get_item_template(_item_template_id);
+		_item_template = ESS::get_instance()->get_resource_db()->get_item_template_path(_item_template_path);
 	}
 
 	_stack_size = dict.get("stack_size", 0);
@@ -133,7 +133,6 @@ void ItemInstance::_from_dict(const Dictionary &dict) {
 
 ItemInstance::ItemInstance() {
 	_stack_size = 1;
-	_item_template_id = 0;
 	_charges = -1;
 }
 ItemInstance::~ItemInstance() {

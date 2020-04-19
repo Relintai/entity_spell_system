@@ -111,6 +111,7 @@ protected:
 private:
 	Entity *_owner;
 	int _aura_id;
+	StringName _aura_path;
 	float _remaining_time;
 	Entity *_caster;
 	NodePath _caster_path;

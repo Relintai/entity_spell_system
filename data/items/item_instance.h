@@ -68,7 +68,7 @@ protected:
 
 private:
 	Ref<ItemTemplate> _item_template;
-	int _item_template_id;
+	StringName _item_template_path;
 
 	int _stack_size;
 	int _charges;

@@ -380,6 +380,13 @@ void Entity::setc_entity_data_id(int value) {
 	}
 }
 
+StringName Entity::gets_entity_data_path() {
+	return _s_entity_data_path;
+}
+void Entity::sets_entity_data_path(const StringName &value) {
+	_s_entity_data_path = value;
+}
+
 Ref<EntityData> Entity::gets_entity_data() {
 	return _s_entity_data;
 }
@@ -973,9 +980,9 @@ Dictionary Entity::_to_dict() {
 	dict["seed"] = _s_seed;
 
 	if (_s_entity_data.is_valid())
-		dict["entity_data_id"] = _s_entity_data->get_id();
+		dict["entity_data_path"] = _s_entity_data->get_path();
 	else
-		dict["entity_data_id"] = 0;
+		dict["entity_data_path"] = _s_entity_data_path;
 
 	//dict["send_flag"] = _s_send_flag;
 	dict["entity_name"] = _s_entity_name;
@@ -1096,7 +1103,7 @@ Dictionary Entity::_to_dict() {
 	Dictionary known_recipes;
 
 	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
-		known_recipes[i] = _s_craft_recipes.get(i)->get_id();
+		known_recipes[i] = _s_craft_recipes.get(i)->get_path();
 	}
 
 	dict["known_recipes"] = known_recipes;
@@ -1109,7 +1116,7 @@ Dictionary Entity::_to_dict() {
 	Dictionary known_spells;
 
 	for (int i = 0; i < _s_spells.size(); ++i) {
-		known_spells[i] = _s_spells.get(i)->get_id();
+		known_spells[i] = _s_spells.get(i)->get_path();
 	}
 
 	dict["known_spells"] = known_spells;
@@ -1199,9 +1206,9 @@ void Entity::_from_dict(const Dictionary &dict) {
 	for (int i = 0; i < rd.size(); ++i) {
 		Dictionary ird = rd.get(String::num(i), Dictionary());
 
-		int data_id = ird.get("data_id", 0);
+		StringName data_path = ird.get("data_path", "");
 
-		Ref<EntityResourceData> resd = ESS::get_instance()->get_resource_db()->get_entity_resource(data_id);
+		Ref<EntityResourceData> resd = ESS::get_instance()->get_resource_db()->get_entity_resource_path(data_path);
 
 		ERR_CONTINUE(!resd.is_valid());
 
@@ -1329,10 +1336,10 @@ void Entity::_from_dict(const Dictionary &dict) {
 	Dictionary known_recipes = dict.get("known_recipes", Dictionary());
 
 	for (int i = 0; i < known_recipes.size(); ++i) {
-		int crid = known_recipes.get(String::num(i), 0);
+		StringName crn = known_recipes.get(String::num(i), "");
 
 		if (ESS::get_instance() != NULL) {
-			Ref<CraftRecipe> cr = ESS::get_instance()->get_resource_db()->get_craft_recipe(crid);
+			Ref<CraftRecipe> cr = ESS::get_instance()->get_resource_db()->get_craft_recipe_path(crn);
 
 			if (cr.is_valid()) {
 				adds_craft_recipe(cr);
@@ -1348,10 +1355,10 @@ void Entity::_from_dict(const Dictionary &dict) {
 	Dictionary known_spells = dict.get("known_spells", Dictionary());
 
 	for (int i = 0; i < known_spells.size(); ++i) {
-		int spell_id = known_spells.get(String::num(i), 0);
+		StringName spell_path = known_spells.get(String::num(i), "");
 
 		if (ESS::get_instance() != NULL) {
-			Ref<Spell> sp = ESS::get_instance()->get_resource_db()->get_spell(spell_id);
+			Ref<Spell> sp = ESS::get_instance()->get_resource_db()->get_spell_path(spell_path);
 
 			if (sp.is_valid()) {
 				_s_spells.push_back(sp);
@@ -1396,13 +1403,13 @@ void Entity::_from_dict(const Dictionary &dict) {
 	_actionbar_locked = dict.get("actionbar_locked", false);
 	//_action_bar_profile->from_dict(dict.get("actionbar_profile", Dictionary()));
 
-	int edi = dict.get("entity_data_id", 0);
+	StringName edp = dict.get("entity_data_path", "");
 
 	if (ESS::get_instance() != NULL) {
-		sets_entity_data(ESS::get_instance()->get_resource_db()->get_entity_data(edi));
+		sets_entity_data(ESS::get_instance()->get_resource_db()->get_entity_data_path(edp));
 	}
 
-	sets_entity_data_id(edi);
+	sets_entity_data_path(edp);
 }
 
 //////     Stat System      //////
@@ -2084,7 +2091,7 @@ Ref<EntityResource> Entity::gets_resource_id(int id) {
 	for (int i = 0; i < _s_resources.size(); ++i) {
 		Ref<EntityResource> r = _s_resources.get(i);
 
-		if (r->get_data_id() == id) {
+		if (r->get_resource_data()->get_id() == id) {
 			return r;
 		}
 	}
@@ -2177,7 +2184,7 @@ Ref<EntityResource> Entity::getc_resource_id(int id) {
 	for (int i = 0; i < _c_resources.size(); ++i) {
 		Ref<EntityResource> r = _c_resources.get(i);
 
-		if (r->get_data_id() == id) {
+		if (r->get_resource_data()->get_id() == id) {
 			return r;
 		}
 	}

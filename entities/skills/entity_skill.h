@@ -60,6 +60,7 @@ protected:
 private:
 	Ref<EntitySkillData> _skill;
 	int _skill_id;
+	StringName _skill_path;
 	int _current;
 	int _max;
 	bool _disabled;

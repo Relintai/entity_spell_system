@@ -27,13 +27,13 @@ SOFTWARE.
 
 #include "scene/main/node.h"
 
-#include "core/io/json.h"
 #include "../data/entities/xp_data.h"
 #include "../data/items/craft_recipe.h"
 #include "../data/items/item_instance.h"
 #include "../data/spells/spell.h"
 #include "./data/entity_data.h"
 #include "core/hash_map.h"
+#include "core/io/json.h"
 #include "core/object.h"
 #include "core/ustring.h"
 #include "core/vector.h"
@@ -298,6 +298,12 @@ public:
 
 	int getc_entity_data_id();
 	void setc_entity_data_id(int value);
+
+	StringName gets_entity_data_path();
+	void sets_entity_data_path(const StringName &value);
+
+	StringName getc_entity_data_path();
+	void setc_entity_data_path(const StringName &value);
 
 	EntityEnums::AIStates gets_ai_state() const;
 	void sets_ai_state(EntityEnums::AIStates state);
@@ -1025,6 +1031,8 @@ private:
 
 	int _s_class_id;
 	int _c_class_id;
+
+	StringName _s_entity_data_path;
 
 	int _s_entity_player_type;
 	int _c_entity_player_type;

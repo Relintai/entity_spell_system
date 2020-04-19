@@ -48,16 +48,20 @@ Ref<EntityResourceData> EntityResource::get_resource_data() {
 void EntityResource::set_resource_data(const Ref<EntityResourceData> &value) {
 	_data = value;
 
+	if (value.is_valid()) {
+		_data_path = value->get_path();
+	}
+
 	_dirty = true;
 
 	emit_signal("changed", Ref<EntityResource>(this));
 }
 
-int EntityResource::get_data_id() const {
-	return _data_id;
+StringName EntityResource::get_data_path() const {
+	return _data_path;
 }
-void EntityResource::set_data_id(const int value) {
-	_data_id = value;
+void EntityResource::set_data_path(const StringName &value) {
+	_data_path = value;
 
 	_dirty = true;
 
@@ -162,7 +166,7 @@ void EntityResource::receivec_update_string(const String str) {
 }
 
 void EntityResource::resolve_references() {
-	set_resource_data(ESS::get_instance()->get_resource_db()->get_entity_resource(_data_id));
+	set_resource_data(ESS::get_instance()->get_resource_db()->get_entity_resource_path(_data_path));
 }
 
 Dictionary EntityResource::to_dict() {
@@ -178,7 +182,9 @@ Dictionary EntityResource::_to_dict() {
 	dict["dirty"] = _dirty;
 	dict["should_process"] = _should_process;
 
-	dict["data_id"] = _data_id;
+	//dict["data_id"] = _data_id;
+	dict["data_path"] = _data_path;
+
 	dict["current"] = _current;
 
 	dict["max"] = _max;
@@ -187,10 +193,15 @@ Dictionary EntityResource::_to_dict() {
 }
 void EntityResource::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
+	ERR_FAIL_COND(!ESS::get_instance()->get_resource_db().is_valid());
 
 	_dirty = dict.get("dirty", false);
 	_should_process = dict.get("should_process", false);
-	_data_id = dict.get("data_id", 0);
+
+	_data_path = dict.get("data_path", "");
+	//_data_id = ESS::get_instance()->get_resource_db()->entity_data_path_to_id(_data_path);
+
+	//_data_id = dict.get("data_id", 0);
 	_current = dict.get("current", 0);
 	_max = dict.get("max", 0);
 }
@@ -201,7 +212,6 @@ EntityResource::EntityResource() {
 
 	_should_process = has_method("_process");
 
-	_data_id = 0;
 	_current = 0;
 	_max = 0;
 }
@@ -223,9 +233,9 @@ void EntityResource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_resource_data", "value"), &EntityResource::set_resource_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityResourceData"), "set_resource_data", "get_resource_data");
 
-	ClassDB::bind_method(D_METHOD("get_data_id"), &EntityResource::get_data_id);
-	ClassDB::bind_method(D_METHOD("set_data_id", "value"), &EntityResource::set_data_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "data_id"), "set_data_id", "get_data_id");
+	ClassDB::bind_method(D_METHOD("get_data_path"), &EntityResource::get_data_path);
+	ClassDB::bind_method(D_METHOD("set_data_path", "value"), &EntityResource::set_data_path);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "data_path"), "set_data_path", "get_data_path");
 
 	ClassDB::bind_method(D_METHOD("get_current_value"), &EntityResource::get_current_value);
 	ClassDB::bind_method(D_METHOD("set_current_value", "value"), &EntityResource::set_current_value);

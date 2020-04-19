@@ -31,10 +31,13 @@ Ref<EntitySkillData> EntitySkill::get_skill() {
 void EntitySkill::set_skill(Ref<EntitySkillData> value) {
 	_skill = value;
 
-	if (_skill.is_valid())
+	if (_skill.is_valid()) {
 		_skill_id = _skill->get_id();
-	else
+		_skill_path = _skill->get_path();
+	} else {
 		_skill_id = 0;
+		_skill_path = "";
+	}
 
 	emit_signal("skill_changed", Ref<EntitySkill>(this));
 }
@@ -90,6 +93,7 @@ Dictionary EntitySkill::_to_dict() {
 	Dictionary dict;
 
 	dict["skill_id"] = _skill_id;
+	dict["skill_path"] = _skill_path;
 	dict["current"] = _current;
 	dict["max"] = _max;
 	dict["disabled"] = _disabled;
@@ -100,6 +104,7 @@ void EntitySkill::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
 	_skill_id = dict.get("skill_id", 0);
+	_skill_path = dict.get("skill_path", "");
 	_current = dict.get("current", 0);
 	_max = dict.get("max", 0);
 	_disabled = dict.get("disabled", true);

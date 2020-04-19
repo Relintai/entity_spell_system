@@ -39,6 +39,9 @@ public:
 	int get_species_id() const;
 	void set_species_id(const int value);
 
+	StringName get_species_path() const;
+	void set_species_path(const StringName &value);
+
 	Ref<EntitySpeciesData> get_species();
 	void set_species(const Ref<EntitySpeciesData> &value);
 
@@ -68,6 +71,7 @@ protected:
 
 private:
 	int _id;
+	StringName _path;
 	int _species_id;
 	Ref<EntitySpeciesData> _species;
 	int _skin_color_index;

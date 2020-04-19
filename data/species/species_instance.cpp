@@ -43,6 +43,15 @@ void SpeciesInstance::set_species_id(int value) {
 	_species = ESS::get_instance()->get_resource_db()->get_entity_species_data(_id);
 }
 
+StringName SpeciesInstance::get_species_path() const {
+	return _path;
+}
+void SpeciesInstance::set_species_path(const StringName &value) {
+	_path = value;
+
+	_species = ESS::get_instance()->get_resource_db()->get_entity_species_data_path(_path);
+}
+
 Ref<EntitySpeciesData> SpeciesInstance::get_species() {
 	return _species;
 }
@@ -50,9 +59,9 @@ void SpeciesInstance::set_species(const Ref<EntitySpeciesData> &value) {
 	_species = value;
 
 	if (_species.is_valid()) {
-		_id = _species->get_id();
+		_path = _species->get_path();
 	} else {
-		_id = 0;
+		_path = "";
 	}
 }
 
@@ -95,7 +104,7 @@ Dictionary SpeciesInstance::_to_dict() {
 	Dictionary dict;
 
 	dict["id"] = _id;
-	dict["species_id"] = _species_id;
+	dict["species_path"] = _path;
 	dict["skin_color_index"] = _skin_color_index;
 	dict["hair_style_index"] = _hair_style_index;
 	dict["_hair_color_index"] = _hair_color_index;
@@ -107,7 +116,7 @@ void SpeciesInstance::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
 	_id = dict.get("id", 0);
-	set_species_id(dict.get("species_id", 0));
+	set_species_path(dict.get("species_path", ""));
 	_skin_color_index = dict.get("skin_color_index", 0);
 	_hair_style_index = dict.get("hair_style_index", 0);
 	_hair_color_index = dict.get("hair_color_index", 0);
@@ -115,7 +124,6 @@ void SpeciesInstance::_from_dict(const Dictionary &dict) {
 }
 
 SpeciesInstance::SpeciesInstance() {
-	_id = 0;
 	_species_id = 0;
 	_skin_color_index = 0;
 	_hair_style_index = 0;
