@@ -235,7 +235,7 @@ void EntityResource::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_data_path"), &EntityResource::get_data_path);
 	ClassDB::bind_method(D_METHOD("set_data_path", "value"), &EntityResource::set_data_path);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "data_path"), "set_data_path", "get_data_path");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "data_path"), "set_data_path", "get_data_path");
 
 	ClassDB::bind_method(D_METHOD("get_current_value"), &EntityResource::get_current_value);
 	ClassDB::bind_method(D_METHOD("set_current_value", "value"), &EntityResource::set_current_value);
