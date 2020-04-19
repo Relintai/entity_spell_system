@@ -34,16 +34,21 @@ class ClassProfile : public Reference {
 	GDCLASS(ClassProfile, Reference);
 
 public:
-	int get_class_id();
-	void set_class_id(int value);
-	String get_character_class_name();
-	void set_character_class_name(String value);
-	int get_level();
-	void set_level(int value);
-	int get_xp();
-	void set_xp(int value);
-	bool get_actionbar_locked();
-	void set_actionbar_locked(bool value);
+	StringName get_class_path() const;
+	void set_class_path(const StringName &value);
+
+	String get_character_class_name() const;
+	void set_character_class_name(const String &value);
+
+	int get_level() const;
+	void set_level(const int value);
+
+	int get_xp() const;
+	void set_xp(const int value);
+
+	bool get_actionbar_locked() const;
+	void set_actionbar_locked(const bool value);
+
 	Ref<InputProfile> get_input_profile();
 	Ref<ActionBarProfile> get_action_bar_profile();
 
@@ -58,8 +63,8 @@ public:
 	void from_dict(const Dictionary &dict);
 
 	ClassProfile();
-	ClassProfile(int class_id);
-	ClassProfile(String class_name, int class_id, int level, int xp, bool locked);
+	ClassProfile(const StringName &class_path);
+	ClassProfile(const String &class_name, const StringName &class_path, const int level, const int xp, const bool locked);
 	~ClassProfile();
 
 	void load_defaults();
@@ -69,7 +74,7 @@ protected:
 
 private:
 	String _character_class_name;
-	int _class_id;
+	StringName _class_path;
 	int _level;
 	int _xp;
 	bool _actionbar_locked;

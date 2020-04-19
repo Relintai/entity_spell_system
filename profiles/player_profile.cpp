@@ -103,14 +103,14 @@ Vector<Ref<ClassProfile> > &PlayerProfile::get_class_profiles() {
 	return _class_profiles;
 }
 
-Ref<ClassProfile> PlayerProfile::get_class_profile(const int class_id) {
+Ref<ClassProfile> PlayerProfile::get_class_profile(const StringName &class_path) {
 	for (int i = 0; i < _class_profiles.size(); ++i) {
-		if (_class_profiles.get(i)->get_class_id() == class_id) {
+		if (_class_profiles.get(i)->get_class_path() == class_path) {
 			return Ref<ClassProfile>(_class_profiles.get(i));
 		}
 	}
 
-	Ref<ClassProfile> class_profile = Ref<ClassProfile>(memnew(ClassProfile(class_id)));
+	Ref<ClassProfile> class_profile = Ref<ClassProfile>(memnew(ClassProfile(class_path)));
 
 	class_profile->load_defaults();
 

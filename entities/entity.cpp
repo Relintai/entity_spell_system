@@ -518,7 +518,7 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 
 		if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY) {
 			if (ESS::get_instance()->get_use_global_class_level()) {
-				Ref<ClassProfile> cp = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(gets_entity_data()->get_id());
+				Ref<ClassProfile> cp = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(gets_entity_data()->get_path());
 
 				if (cp.is_valid()) {
 					int leveldiff = cp->get_level() - _s_class_level;
@@ -646,7 +646,7 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 	sets_character_xp(info->get_character_xp());
 
 	if (ESS::get_instance()->get_allow_class_spell_learning()) {
-		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_id());
+		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
 
 		if (class_profile.is_valid() && class_profile->has_custom_data("spells")) {
 			Vector<int> spells = class_profile->get_custom_data("spells");
@@ -658,7 +658,7 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 	}
 
 	if (ESS::get_instance()->get_allow_class_recipe_learning()) {
-		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_id());
+		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
 
 		if (class_profile.is_valid() && class_profile->has_custom_data("recipes")) {
 			Vector<int> recipes = class_profile->get_custom_data("recipes");
@@ -942,7 +942,7 @@ int Entity::getc_pet_count() {
 ////    Profiles    ////
 
 Ref<ClassProfile> Entity::get_class_profile() {
-	return ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_class_id);
+	return ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
 }
 
 ////    Serialization    ////
@@ -1552,7 +1552,7 @@ void Entity::adds_craft_recipe_id(int id) {
 	_s_craft_recipes.push_back(craft_recipe);
 
 	if (ESS::get_instance()->get_allow_class_recipe_learning() && (_s_entity_player_type == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY)) {
-		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_id());
+		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
 
 		if (class_profile->has_custom_data("recipes")) {
 			Vector<int> recipes = class_profile->get_custom_data("recipes");
@@ -4540,7 +4540,7 @@ void Entity::adds_spell(Ref<Spell> spell) {
 	_s_spells.push_back(spell);
 
 	if (ESS::get_instance()->get_allow_class_spell_learning() && (_s_entity_player_type == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY)) {
-		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_id());
+		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
 
 		if (class_profile->has_custom_data("spells")) {
 			Vector<int> spells = class_profile->get_custom_data("spells");
@@ -5576,7 +5576,7 @@ void Entity::set_actionbar_locked(bool value) {
 }
 
 Ref<ActionBarProfile> Entity::get_action_bar_profile() {
-	Ref<ClassProfile> cp = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(gets_entity_data()->get_id());
+	Ref<ClassProfile> cp = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(gets_entity_data()->get_path());
 
 	if (cp.is_valid()) {
 		set_actionbar_locked(cp->get_actionbar_locked());

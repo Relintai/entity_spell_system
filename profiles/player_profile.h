@@ -51,7 +51,7 @@ public:
 	void remove_class_profile(const int index);
 
 	Vector<Ref<ClassProfile> > &get_class_profiles();
-	Ref<ClassProfile> get_class_profile(const int class_id);
+	Ref<ClassProfile> get_class_profile(const StringName &class_path);
 
 	Dictionary get_custom_data();
 	void set_custom_data(const Dictionary &dict);

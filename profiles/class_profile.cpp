@@ -22,33 +22,33 @@ SOFTWARE.
 
 #include "class_profile.h"
 
-int ClassProfile::get_class_id() {
-	return _class_id;
+StringName ClassProfile::get_class_path() const {
+	return _class_path;
 }
 
-void ClassProfile::set_class_id(int value) {
-	_class_id = value;
+void ClassProfile::set_class_path(const StringName &value) {
+	_class_path = value;
 }
 
-String ClassProfile::get_character_class_name() {
+String ClassProfile::get_character_class_name() const {
 	return _character_class_name;
 }
 
-void ClassProfile::set_character_class_name(String value) {
+void ClassProfile::set_character_class_name(const String &value) {
 	_character_class_name = value;
 }
 
-int ClassProfile::get_level() {
+int ClassProfile::get_level() const {
 	return _level;
 }
 
-void ClassProfile::set_level(int value) {
+void ClassProfile::set_level(const int value) {
 	_level = value;
 
 	emit_change();
 }
 
-int ClassProfile::get_xp() {
+int ClassProfile::get_xp() const {
 	return _xp;
 }
 
@@ -58,10 +58,10 @@ void ClassProfile::set_xp(int value) {
 	emit_change();
 }
 
-bool ClassProfile::get_actionbar_locked() {
+bool ClassProfile::get_actionbar_locked() const {
 	return _actionbar_locked;
 }
-void ClassProfile::set_actionbar_locked(bool value) {
+void ClassProfile::set_actionbar_locked(const bool value) {
 	_actionbar_locked = value;
 
 	emit_change();
@@ -112,7 +112,7 @@ Dictionary ClassProfile::to_dict() const {
 	Dictionary dict;
 
 	dict["character_class_name"] = _character_class_name;
-	dict["class_id"] = _class_id;
+	dict["class_path"] = _class_path;
 	dict["level"] = _level;
 	dict["xp"] = _xp;
 	dict["actionbar_locked"] = _actionbar_locked;
@@ -126,7 +126,7 @@ void ClassProfile::from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
 	_character_class_name = dict.get("character_class_name", "");
-	_class_id = dict.get("class_id", 0);
+	_class_path = dict.get("class_path", "");
 	_level = dict.get("level", 1);
 	_xp = dict.get("xp", 0);
 	_actionbar_locked = dict.get("actionbar_locked", false);
@@ -143,31 +143,30 @@ ClassProfile::ClassProfile() {
 	_action_bar_profile->set_owner(this);
 	_input_profile.instance();
 
-	_class_id = 0;
 	_level = 1;
 	_xp = 0;
 	_actionbar_locked = false;
 }
 
-ClassProfile::ClassProfile(int class_id) {
+ClassProfile::ClassProfile(const StringName &class_path) {
 	_action_bar_profile.instance();
 	_action_bar_profile->set_owner(this);
 	_input_profile.instance();
 
-	_class_id = class_id;
+	_class_path = class_path;
 	_level = 1;
 	_xp = 0;
 	_actionbar_locked = false;
 }
 
-ClassProfile::ClassProfile(String class_name, int class_id, int level, int xp, bool locked) {
+ClassProfile::ClassProfile(const String &class_name, const StringName &class_path, const int level, const int xp, const bool locked) {
 	_action_bar_profile.instance();
 	_action_bar_profile->set_owner(this);
 
 	_input_profile.instance();
 
 	_character_class_name = class_name;
-	_class_id = class_id;
+	_class_path = class_path;
 	_level = level;
 	_xp = xp;
 	_actionbar_locked = true;
@@ -189,9 +188,9 @@ void ClassProfile::load_defaults() {
 void ClassProfile::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("changed"));
 
-	ClassDB::bind_method(D_METHOD("get_class_id"), &ClassProfile::get_class_id);
-	ClassDB::bind_method(D_METHOD("set_class_id", "value"), &ClassProfile::set_class_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "class_id"), "set_class_id", "get_class_id");
+	ClassDB::bind_method(D_METHOD("get_class_path"), &ClassProfile::get_class_path);
+	ClassDB::bind_method(D_METHOD("set_class_path", "value"), &ClassProfile::set_class_path);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "class_path"), "set_class_path", "get_class_path");
 
 	ClassDB::bind_method(D_METHOD("get_character_class_name"), &ClassProfile::get_character_class_name);
 	ClassDB::bind_method(D_METHOD("set_character_class_name", "value"), &ClassProfile::set_character_class_name);
