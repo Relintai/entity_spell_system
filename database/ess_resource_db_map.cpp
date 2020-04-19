@@ -52,6 +52,8 @@ void ESSResourceDBMap::add_entity_resource(Ref<EntityResourceData> cls) {
 
 	_entity_resources.push_back(cls);
 	_entity_resource_map.set(cls->get_id(), cls);
+
+	ESSResourceDB::add_entity_resource(cls);
 }
 Vector<Variant> ESSResourceDBMap::get_entity_resources() const {
 	Vector<Variant> r;
@@ -94,6 +96,8 @@ void ESSResourceDBMap::add_entity_skill(Ref<EntitySkillData> cls) {
 
 	_entity_skills.push_back(cls);
 	_entity_skill_map.set(cls->get_id(), cls);
+
+	ESSResourceDB::add_entity_skill(cls);
 }
 Vector<Variant> ESSResourceDBMap::get_entity_skills() const {
 	Vector<Variant> r;
@@ -136,6 +140,8 @@ void ESSResourceDBMap::add_entity_data(Ref<EntityData> cls) {
 
 	_entity_datas.push_back(cls);
 	_entity_data_map.set(cls->get_id(), cls);
+
+	ESSResourceDB::add_entity_data(cls);
 }
 Vector<Variant> ESSResourceDBMap::get_entity_datas() const {
 	Vector<Variant> r;
@@ -179,6 +185,8 @@ void ESSResourceDBMap::add_spell(Ref<Spell> spell) {
 
 	_spells.push_back(spell);
 	_spell_map.set(spell->get_id(), spell);
+
+	ESSResourceDB::add_spell(spell);
 }
 Vector<Variant> ESSResourceDBMap::get_spells() const {
 	Vector<Variant> r;
@@ -208,6 +216,8 @@ void ESSResourceDBMap::add_aura(Ref<Aura> aura) {
 
 	_auras.push_back(aura);
 	_aura_map.set(aura->get_id(), aura);
+	_aura_id_to_path.set(aura->get_id(), aura->get_path());
+	_aura_path_to_id.set(aura->get_path(), aura->get_id());
 }
 
 Ref<Aura> ESSResourceDBMap::get_aura(int aura_id) {
@@ -255,6 +265,8 @@ void ESSResourceDBMap::add_craft_recipe(Ref<CraftRecipe> cda) {
 
 	_craft_recipes.push_back(cda);
 	_craft_recipe_map.set(cda->get_id(), cda);
+
+	ESSResourceDB::add_craft_recipe(cda);
 }
 
 Ref<CraftRecipe> ESSResourceDBMap::get_craft_recipe(int craft_id) {
@@ -301,6 +313,8 @@ void ESSResourceDBMap::add_item_template(Ref<ItemTemplate> cda) {
 
 	_item_templates.push_back(cda);
 	_item_template_map.set(cda->get_id(), cda);
+
+	ESSResourceDB::add_item_template(cda);
 }
 
 Ref<ItemTemplate> ESSResourceDBMap::get_item_template(int item_id) {
@@ -346,6 +360,8 @@ void ESSResourceDBMap::add_entity_species_data(Ref<EntitySpeciesData> cda) {
 
 	_entity_species_datas.push_back(cda);
 	_entity_species_data_map.set(cda->get_id(), cda);
+
+	ESSResourceDB::add_entity_species_data(cda);
 }
 Ref<EntitySpeciesData> ESSResourceDBMap::get_entity_species_data(int item_id) {
 	if (!_entity_species_data_map.has(item_id))

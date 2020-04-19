@@ -56,6 +56,8 @@ void ESSResourceDBStatic::add_entity_resource(Ref<EntityResourceData> cls) {
 		cls->set_id(_entity_resources.size());
 
 	_entity_resources.push_back(cls);
+
+	ESSResourceDB::add_entity_resource(cls);
 }
 Vector<Variant> ESSResourceDBStatic::get_entity_resources() const {
 	Vector<Variant> r;
@@ -96,6 +98,8 @@ void ESSResourceDBStatic::add_entity_skill(Ref<EntitySkillData> cls) {
 		cls->set_id(_entity_skills.size());
 
 	_entity_skills.push_back(cls);
+
+	ESSResourceDB::add_entity_skill(cls);
 }
 Vector<Variant> ESSResourceDBStatic::get_entity_skills() const {
 	Vector<Variant> r;
@@ -136,6 +140,8 @@ void ESSResourceDBStatic::add_entity_data(Ref<EntityData> cls) {
 		cls->set_id(_entity_datas.size());
 
 	_entity_datas.push_back(cls);
+
+	ESSResourceDB::add_entity_data(cls);
 }
 Vector<Variant> ESSResourceDBStatic::get_entity_datas() const {
 	Vector<Variant> r;
@@ -177,6 +183,8 @@ void ESSResourceDBStatic::add_spell(Ref<Spell> spell) {
 		spell->set_id(_spells.size());
 
 	_spells.push_back(spell);
+
+	ESSResourceDB::add_spell(spell);
 }
 Vector<Variant> ESSResourceDBStatic::get_spells() const {
 	Vector<Variant> r;
@@ -203,6 +211,8 @@ void ESSResourceDBStatic::add_aura(Ref<Aura> aura) {
 		aura->set_id(_auras.size());
 
 	_auras.push_back(aura);
+
+	ESSResourceDB::add_aura(aura);
 }
 
 Ref<Aura> ESSResourceDBStatic::get_aura(int id) {
@@ -248,6 +258,8 @@ void ESSResourceDBStatic::add_craft_recipe(Ref<CraftRecipe> cda) {
 		cda->set_id(_craft_recipes.size());
 
 	_craft_recipes.push_back(cda);
+
+	ESSResourceDB::add_craft_recipe(cda);
 }
 
 Ref<CraftRecipe> ESSResourceDBStatic::get_craft_recipe(int id) {
@@ -292,6 +304,8 @@ void ESSResourceDBStatic::add_item_template(Ref<ItemTemplate> cda) {
 		cda->set_id(_item_templates.size());
 
 	_item_templates.push_back(cda);
+
+	ESSResourceDB::add_item_template(cda);
 }
 
 Ref<ItemTemplate> ESSResourceDBStatic::get_item_template(int item_id) {
@@ -335,6 +349,8 @@ void ESSResourceDBStatic::add_entity_species_data(Ref<EntitySpeciesData> cda) {
 		cda->set_id(_entity_species_datas.size());
 
 	_entity_species_datas.push_back(cda);
+
+	ESSResourceDB::add_entity_species_data(cda);
 }
 Ref<EntitySpeciesData> ESSResourceDBStatic::get_entity_species_data(int id) {
 	if (id < 0 || id > _entity_species_datas.size())

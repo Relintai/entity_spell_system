@@ -36,6 +36,8 @@ SOFTWARE.
 
 #include "../data/entities/xp_data.h"
 
+#include "core/hash_map.h"
+
 class Aura;
 class Spell;
 class EntityData;
@@ -60,58 +62,74 @@ public:
 	virtual Ref<EntityResourceData> get_entity_resource(int class_id) = 0;
 	virtual Ref<EntityResourceData> get_entity_resource_index(int index) = 0;
 	virtual int get_entity_resource_count() = 0;
-	virtual void add_entity_resource(Ref<EntityResourceData> cls) = 0;
+	virtual void add_entity_resource(Ref<EntityResourceData> cls);
 	virtual Vector<Variant> get_entity_resources() const = 0;
 	virtual void set_entity_resources(const Vector<Variant> &data) = 0;
+	StringName entity_resource_id_to_path(const int id) const;
+	int entity_resource_path_to_id(const StringName &path) const;
 
 	virtual Ref<EntitySkillData> get_entity_skill(int class_id) = 0;
 	virtual Ref<EntitySkillData> get_entity_skill_index(int index) = 0;
 	virtual int get_entity_skill_count() = 0;
-	virtual void add_entity_skill(Ref<EntitySkillData> cls) = 0;
+	virtual void add_entity_skill(Ref<EntitySkillData> cls);
 	virtual Vector<Variant> get_entity_skills() const = 0;
 	virtual void set_entity_skills(const Vector<Variant> &data) = 0;
+	StringName entity_skill_id_to_path(const int id) const;
+	int entity_skill_path_to_id(const StringName &path) const;
 
 	virtual Ref<EntityData> get_entity_data(int class_id) = 0;
 	virtual Ref<EntityData> get_entity_data_index(int index) = 0;
 	virtual int get_entity_data_count() = 0;
-	virtual void add_entity_data(Ref<EntityData> cls) = 0;
+	virtual void add_entity_data(Ref<EntityData> cls);
 	virtual Vector<Variant> get_entity_datas() const = 0;
 	virtual void set_entity_datas(const Vector<Variant> &data) = 0;
+	StringName entity_data_id_to_path(const int id) const;
+	int entity_data_path_to_id(const StringName &path) const;
 
 	virtual Ref<Spell> get_spell(int spell_id) = 0;
 	virtual Ref<Spell> get_spell_index(int index) = 0;
 	virtual int get_spell_count() = 0;
-	virtual void add_spell(Ref<Spell> spell) = 0;
+	virtual void add_spell(Ref<Spell> spell);
 	virtual Vector<Variant> get_spells() const = 0;
 	virtual void set_spells(const Vector<Variant> &data) = 0;
+	StringName spell_id_to_path(const int id) const;
+	int spell_path_to_id(const StringName &path) const;
 
 	virtual Ref<Aura> get_aura(int aura_id) = 0;
 	virtual Ref<Aura> get_aura_index(int index) = 0;
 	virtual int get_aura_count() = 0;
-	virtual void add_aura(Ref<Aura> aura) = 0;
+	virtual void add_aura(Ref<Aura> aura);
 	virtual Vector<Variant> get_auras() const = 0;
 	virtual void set_auras(const Vector<Variant> &data) = 0;
+	StringName aura_id_to_path(const int id) const;
+	int aura_path_to_id(const StringName &path) const;
 
 	virtual Ref<CraftRecipe> get_craft_recipe(int craft_id) = 0;
 	virtual Ref<CraftRecipe> get_craft_recipe_index(int index) = 0;
 	virtual int get_craft_recipe_count() = 0;
-	virtual void add_craft_recipe(Ref<CraftRecipe> aura) = 0;
+	virtual void add_craft_recipe(Ref<CraftRecipe> aura);
 	virtual Vector<Variant> get_craft_recipes() const = 0;
 	virtual void set_craft_recipes(const Vector<Variant> &data) = 0;
+	StringName craft_recipe_id_to_path(const int id) const;
+	int craft_recipe_path_to_id(const StringName &path) const;
 
-	virtual void add_item_template(Ref<ItemTemplate> aura) = 0;
+	virtual void add_item_template(Ref<ItemTemplate> aura);
 	virtual Ref<ItemTemplate> get_item_template(int item_id) = 0;
 	virtual Ref<ItemTemplate> get_item_template_index(int index) = 0;
 	virtual int get_item_template_count() = 0;
 	virtual Vector<Variant> get_item_templates() const = 0;
 	virtual void set_item_templates(const Vector<Variant> &data) = 0;
+	StringName item_template_id_to_path(const int id) const;
+	int item_template_path_to_id(const StringName &path) const;
 
-	virtual void add_entity_species_data(Ref<EntitySpeciesData> aura) = 0;
+	virtual void add_entity_species_data(Ref<EntitySpeciesData> aura);
 	virtual Ref<EntitySpeciesData> get_entity_species_data(int item_id) = 0;
 	virtual Ref<EntitySpeciesData> get_entity_species_data_index(int index) = 0;
 	virtual int get_entity_species_data_count() = 0;
 	virtual Vector<Variant> get_entity_species_datas() const = 0;
 	virtual void set_entity_species_datas(const Vector<Variant> &data) = 0;
+	StringName entity_species_id_to_path(const int id) const;
+	int entity_species_path_to_id(const StringName &path) const;
 
 	virtual void clear();
 
@@ -125,10 +143,33 @@ public:
 protected:
 	static void _bind_methods();
 
-private:
 	Ref<XPData> _xp_data;
 
 	Ref<Aura> _armor_type_skills[ItemEnums::ARMOR_TYPE_MAX];
+
+	HashMap<int, StringName> _entity_resources_id_to_path;
+	HashMap<StringName, int> _entity_resources_path_to_id;
+
+	HashMap<int, StringName> _entity_skill_id_to_path;
+	HashMap<StringName, int> _entity_skill_path_to_id;
+
+	HashMap<int, StringName> _entity_data_id_to_path;
+	HashMap<StringName, int> _entity_data_path_to_id;
+
+	HashMap<int, StringName> _spell_id_to_path;
+	HashMap<StringName, int> _spell_path_to_id;
+
+	HashMap<int, StringName> _aura_id_to_path;
+	HashMap<StringName, int> _aura_path_to_id;
+
+	HashMap<int, StringName> _craft_recipe_id_to_path;
+	HashMap<StringName, int> _craft_recipe_path_to_id;
+
+	HashMap<int, StringName> _item_template_id_to_path;
+	HashMap<StringName, int> _item_template_path_to_id;
+
+	HashMap<int, StringName> _entity_species_id_to_path;
+	HashMap<StringName, int> _entity_species_path_to_id;
 };
 
 #endif

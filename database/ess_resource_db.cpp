@@ -48,6 +48,158 @@ void ESSResourceDB::set_xp_data(const Ref<XPData> &data) {
 	_xp_data = data;
 }
 
+void ESSResourceDB::add_entity_resource(Ref<EntityResourceData> cls) {
+	if (!cls.is_valid())
+		return;
+
+	_entity_resources_id_to_path.set(cls->get_id(), cls->get_path());
+	_entity_resources_path_to_id.set(cls->get_path(), cls->get_id());
+}
+
+void ESSResourceDB::add_entity_skill(Ref<EntitySkillData> cls) {
+	if (!cls.is_valid())
+		return;
+
+	_entity_skill_id_to_path.set(cls->get_id(), cls->get_path());
+	_entity_skill_path_to_id.set(cls->get_path(), cls->get_id());
+}
+
+void ESSResourceDB::add_entity_data(Ref<EntityData> cls) {
+	if (!cls.is_valid())
+		return;
+
+	_entity_data_id_to_path.set(cls->get_id(), cls->get_path());
+	_entity_data_path_to_id.set(cls->get_path(), cls->get_id());
+}
+
+void ESSResourceDB::add_spell(Ref<Spell> spell) {
+	if (!spell.is_valid())
+		return;
+
+	_spell_id_to_path.set(spell->get_id(), spell->get_path());
+	_spell_path_to_id.set(spell->get_path(), spell->get_id());
+}
+
+void ESSResourceDB::add_aura(Ref<Aura> aura) {
+	if (!aura.is_valid())
+		return;
+
+	_aura_id_to_path.set(aura->get_id(), aura->get_path());
+	_aura_path_to_id.set(aura->get_path(), aura->get_id());
+}
+
+void ESSResourceDB::add_craft_recipe(Ref<CraftRecipe> cda) {
+	if (!cda.is_valid())
+		return;
+
+	_craft_recipe_id_to_path.set(cda->get_id(), cda->get_path());
+	_craft_recipe_path_to_id.set(cda->get_path(), cda->get_id());
+}
+
+void ESSResourceDB::add_item_template(Ref<ItemTemplate> cda) {
+	if (!cda.is_valid())
+		return;
+
+	_item_template_id_to_path.set(cda->get_id(), cda->get_path());
+	_item_template_path_to_id.set(cda->get_path(), cda->get_id());
+}
+
+void ESSResourceDB::add_entity_species_data(Ref<EntitySpeciesData> cda) {
+	if (!cda.is_valid())
+		return;
+
+	_entity_species_id_to_path.set(cda->get_id(), cda->get_path());
+	_entity_species_path_to_id.set(cda->get_path(), cda->get_id());
+}
+
+StringName ESSResourceDB::entity_resource_id_to_path(const int id) const {
+	ERR_FAIL_COND_V(!_entity_resources_id_to_path.has(id), StringName());
+
+	return _entity_resources_id_to_path[id];
+}
+int ESSResourceDB::entity_resource_path_to_id(const StringName &path) const {
+	ERR_FAIL_COND_V(!_entity_resources_path_to_id.has(path), 0);
+
+	return _entity_resources_path_to_id[path];
+}
+
+StringName ESSResourceDB::entity_skill_id_to_path(const int id) const {
+	ERR_FAIL_COND_V(!_entity_skill_id_to_path.has(id), StringName());
+
+	return _entity_skill_id_to_path[id];
+}
+int ESSResourceDB::entity_skill_path_to_id(const StringName &path) const {
+	ERR_FAIL_COND_V(!_entity_skill_path_to_id.has(path), 0);
+
+	return _entity_skill_path_to_id[path];
+}
+
+StringName ESSResourceDB::entity_data_id_to_path(const int id) const {
+	ERR_FAIL_COND_V(!_entity_data_id_to_path.has(id), StringName());
+
+	return _entity_data_id_to_path[id];
+}
+int ESSResourceDB::entity_data_path_to_id(const StringName &path) const {
+	ERR_FAIL_COND_V(!_entity_data_path_to_id.has(path), 0);
+
+	return _entity_data_path_to_id[path];
+}
+
+StringName ESSResourceDB::spell_id_to_path(const int id) const {
+	ERR_FAIL_COND_V(!_spell_id_to_path.has(id), StringName());
+
+	return _spell_id_to_path[id];
+}
+int ESSResourceDB::spell_path_to_id(const StringName &path) const {
+	ERR_FAIL_COND_V(!_spell_path_to_id.has(path), 0);
+
+	return _spell_path_to_id[path];
+}
+
+StringName ESSResourceDB::aura_id_to_path(const int id) const {
+	ERR_FAIL_COND_V(!_aura_id_to_path.has(id), StringName());
+
+	return _aura_id_to_path[id];
+}
+int ESSResourceDB::aura_path_to_id(const StringName &path) const {
+	ERR_FAIL_COND_V(!_aura_path_to_id.has(path), 0);
+
+	return _aura_path_to_id[path];
+}
+
+StringName ESSResourceDB::craft_recipe_id_to_path(const int id) const {
+	ERR_FAIL_COND_V(!_craft_recipe_id_to_path.has(id), StringName());
+
+	return _craft_recipe_id_to_path[id];
+}
+int ESSResourceDB::craft_recipe_path_to_id(const StringName &path) const {
+	ERR_FAIL_COND_V(!_craft_recipe_path_to_id.has(path), 0);
+
+	return _craft_recipe_path_to_id[path];
+}
+
+StringName ESSResourceDB::item_template_id_to_path(const int id) const {
+	ERR_FAIL_COND_V(!_item_template_id_to_path.has(id), StringName());
+
+	return _item_template_id_to_path[id];
+}
+int ESSResourceDB::item_template_path_to_id(const StringName &path) const {
+	ERR_FAIL_COND_V(!_item_template_path_to_id.has(path), 0);
+
+	return _item_template_path_to_id[path];
+}
+
+StringName ESSResourceDB::entity_species_id_to_path(const int id) const {
+	ERR_FAIL_COND_V(!_entity_species_id_to_path.has(id), StringName());
+
+	return _entity_species_id_to_path[id];
+}
+int ESSResourceDB::entity_species_path_to_id(const StringName &path) const {
+	ERR_FAIL_COND_V(!_entity_species_path_to_id.has(path), 0);
+
+	return _entity_species_path_to_id[path];
+}
+
 void ESSResourceDB::clear() {
 	_xp_data.unref();
 }
@@ -102,6 +254,30 @@ ESSResourceDB::ESSResourceDB() {
 
 ESSResourceDB::~ESSResourceDB() {
 	_xp_data.unref();
+
+	_entity_resources_path_to_id.clear();
+	_entity_resources_id_to_path.clear();
+
+	_entity_skill_path_to_id.clear();
+	_entity_skill_id_to_path.clear();
+
+	_entity_data_path_to_id.clear();
+	_entity_data_id_to_path.clear();
+
+	_spell_path_to_id.clear();
+	_spell_id_to_path.clear();
+
+	_aura_path_to_id.clear();
+	_aura_id_to_path.clear();
+
+	_craft_recipe_path_to_id.clear();
+	_craft_recipe_id_to_path.clear();
+
+	_item_template_path_to_id.clear();
+	_item_template_id_to_path.clear();
+
+	_entity_species_path_to_id.clear();
+	_entity_species_id_to_path.clear();
 }
 
 void ESSResourceDB::_bind_methods() {
@@ -124,6 +300,8 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_resource_count"), &ESSResourceDB::get_entity_resource_count);
 	ClassDB::bind_method(D_METHOD("get_entity_resources"), &ESSResourceDB::get_entity_resources);
 	ClassDB::bind_method(D_METHOD("set_entity_resources", "recipe"), &ESSResourceDB::set_entity_resources);
+	ClassDB::bind_method(D_METHOD("entity_resource_id_to_path", "id"), &ESSResourceDB::entity_resource_id_to_path);
+	ClassDB::bind_method(D_METHOD("entity_resource_path_to_id", "path"), &ESSResourceDB::entity_resource_path_to_id);
 
 	//EntitySkills
 	ClassDB::bind_method(D_METHOD("add_entity_skill", "cls"), &ESSResourceDB::add_entity_skill);
@@ -132,6 +310,8 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_skill_count"), &ESSResourceDB::get_entity_skill_count);
 	ClassDB::bind_method(D_METHOD("get_entity_skills"), &ESSResourceDB::get_entity_skills);
 	ClassDB::bind_method(D_METHOD("set_entity_skills", "recipe"), &ESSResourceDB::set_entity_skills);
+	ClassDB::bind_method(D_METHOD("entity_skill_id_to_path", "id"), &ESSResourceDB::entity_skill_id_to_path);
+	ClassDB::bind_method(D_METHOD("entity_skill_path_to_id", "path"), &ESSResourceDB::entity_skill_path_to_id);
 
 	//EntityData
 	ClassDB::bind_method(D_METHOD("add_entity_data", "cls"), &ESSResourceDB::add_entity_data);
@@ -140,6 +320,8 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_data_count"), &ESSResourceDB::get_entity_data_count);
 	ClassDB::bind_method(D_METHOD("get_entity_datas"), &ESSResourceDB::get_entity_datas);
 	ClassDB::bind_method(D_METHOD("set_entity_datas", "recipe"), &ESSResourceDB::set_entity_skills);
+	ClassDB::bind_method(D_METHOD("entity_data_id_to_path", "id"), &ESSResourceDB::entity_data_id_to_path);
+	ClassDB::bind_method(D_METHOD("entity_data_path_to_id", "path"), &ESSResourceDB::entity_data_path_to_id);
 
 	//Spell
 	ClassDB::bind_method(D_METHOD("add_spell", "spell"), &ESSResourceDB::add_spell);
@@ -148,6 +330,8 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_spell_count"), &ESSResourceDB::get_spell_count);
 	ClassDB::bind_method(D_METHOD("get_spells"), &ESSResourceDB::get_spells);
 	ClassDB::bind_method(D_METHOD("set_spells", "recipe"), &ESSResourceDB::set_spells);
+	ClassDB::bind_method(D_METHOD("spell_id_to_path", "id"), &ESSResourceDB::spell_id_to_path);
+	ClassDB::bind_method(D_METHOD("spell_path_to_id", "path"), &ESSResourceDB::spell_path_to_id);
 
 	//Aura
 	ClassDB::bind_method(D_METHOD("add_aura", "spell"), &ESSResourceDB::add_aura);
@@ -156,6 +340,8 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_aura_count"), &ESSResourceDB::get_aura_count);
 	ClassDB::bind_method(D_METHOD("get_auras"), &ESSResourceDB::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "recipe"), &ESSResourceDB::set_auras);
+	ClassDB::bind_method(D_METHOD("aura_id_to_path", "id"), &ESSResourceDB::aura_id_to_path);
+	ClassDB::bind_method(D_METHOD("aura_path_to_id", "path"), &ESSResourceDB::aura_path_to_id);
 
 	//Craft Data
 	ClassDB::bind_method(D_METHOD("add_craft_recipe", "craft_recipe"), &ESSResourceDB::add_craft_recipe);
@@ -164,6 +350,8 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_craft_recipe_count"), &ESSResourceDB::get_craft_recipe_count);
 	ClassDB::bind_method(D_METHOD("get_craft_recipes"), &ESSResourceDB::get_craft_recipes);
 	ClassDB::bind_method(D_METHOD("set_craft_recipes", "recipe"), &ESSResourceDB::set_craft_recipes);
+	ClassDB::bind_method(D_METHOD("craft_recipe_id_to_path", "id"), &ESSResourceDB::craft_recipe_id_to_path);
+	ClassDB::bind_method(D_METHOD("craft_recipe_path_to_id", "path"), &ESSResourceDB::craft_recipe_path_to_id);
 
 	//Item Templates
 	ClassDB::bind_method(D_METHOD("add_item_template", "item_template"), &ESSResourceDB::add_item_template);
@@ -172,6 +360,8 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_item_template_count"), &ESSResourceDB::get_item_template_count);
 	ClassDB::bind_method(D_METHOD("get_item_templates"), &ESSResourceDB::get_item_templates);
 	ClassDB::bind_method(D_METHOD("set_item_templates", "recipe"), &ESSResourceDB::set_item_templates);
+	ClassDB::bind_method(D_METHOD("item_template_id_to_path", "id"), &ESSResourceDB::item_template_id_to_path);
+	ClassDB::bind_method(D_METHOD("item_template_path_to_id", "path"), &ESSResourceDB::item_template_path_to_id);
 
 	//Player Character Data
 	ClassDB::bind_method(D_METHOD("add_entity_species_data", "pcd"), &ESSResourceDB::add_entity_species_data);
@@ -180,6 +370,8 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_species_data_count"), &ESSResourceDB::get_entity_species_data_count);
 	ClassDB::bind_method(D_METHOD("get_entity_species_datas"), &ESSResourceDB::get_entity_species_datas);
 	ClassDB::bind_method(D_METHOD("set_entity_species_datas", "recipe"), &ESSResourceDB::set_entity_species_datas);
+	ClassDB::bind_method(D_METHOD("entity_species_id_to_path", "id"), &ESSResourceDB::entity_species_id_to_path);
+	ClassDB::bind_method(D_METHOD("entity_species_path_to_id", "path"), &ESSResourceDB::entity_species_path_to_id);
 
 	ClassDB::bind_method(D_METHOD("clear"), &ESSResourceDB::clear);
 	ClassDB::bind_method(D_METHOD("add_entity_resource_db", "other"), &ESSResourceDB::add_entity_resource_db);
