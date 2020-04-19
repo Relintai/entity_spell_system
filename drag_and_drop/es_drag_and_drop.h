@@ -44,11 +44,11 @@ public:
 	Node *get_origin() const;
 	void set_origin(Node *owner);
 
-	ESDragAndDropType get_type();
-	void set_type(ESDragAndDropType type);
+	ESDragAndDropType get_type() const;
+	void set_type(const ESDragAndDropType type);
 
-	int get_item_id();
-	void set_item_id(int item_id);
+	StringName get_item_path() const;
+	void set_item_path(const StringName &item_path);
 
 	ESDragAndDrop();
 
@@ -58,7 +58,7 @@ protected:
 private:
 	Node *_origin;
 	ESDragAndDropType _type;
-	int _item_id;
+	StringName _item_path;
 };
 
 VARIANT_ENUM_CAST(ESDragAndDrop::ESDragAndDropType);
