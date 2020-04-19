@@ -649,10 +649,10 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
 
 		if (class_profile.is_valid() && class_profile->has_custom_data("spells")) {
-			Vector<int> spells = class_profile->get_custom_data("spells");
+			Vector<String> spells = class_profile->get_custom_data("spells");
 
 			for (int i = 0; i < spells.size(); ++i) {
-				adds_spell_id(spells.get(i));
+				adds_spell_id(ESS::get_instance()->get_resource_db()->spell_path_to_id(spells.get(i)));
 			}
 		}
 	}
@@ -661,10 +661,10 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
 
 		if (class_profile.is_valid() && class_profile->has_custom_data("recipes")) {
-			Vector<int> recipes = class_profile->get_custom_data("recipes");
+			Vector<String> recipes = class_profile->get_custom_data("recipes");
 
 			for (int i = 0; i < recipes.size(); ++i) {
-				adds_craft_recipe_id(recipes.get(i));
+				adds_craft_recipe_id(ESS::get_instance()->get_resource_db()->craft_recipe_path_to_id(recipes.get(i)));
 			}
 		}
 	}
@@ -1555,24 +1555,24 @@ void Entity::adds_craft_recipe_id(int id) {
 		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
 
 		if (class_profile->has_custom_data("recipes")) {
-			Vector<int> recipes = class_profile->get_custom_data("recipes");
+			Vector<String> recipes = class_profile->get_custom_data("recipes");
 
 			bool found = false;
 
 			for (int i = 0; i < recipes.size(); ++i) {
-				if (recipes[i] == id) {
+				if (recipes[i] == craft_recipe->get_path()) {
 					found = true;
 					break;
 				}
 			}
 
 			if (!found) {
-				recipes.push_back(id);
+				recipes.push_back(craft_recipe->get_path());
 				class_profile->set_custom_data("recipes", recipes);
 			}
 		} else {
-			Vector<int> recipes;
-			recipes.push_back(id);
+			Vector<String> recipes;
+			recipes.push_back(craft_recipe->get_path());
 			class_profile->set_custom_data("recipes", recipes);
 		}
 	}
@@ -4543,25 +4543,25 @@ void Entity::adds_spell(Ref<Spell> spell) {
 		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
 
 		if (class_profile->has_custom_data("spells")) {
-			Vector<int> spells = class_profile->get_custom_data("spells");
+			Vector<String> spells = class_profile->get_custom_data("spells");
 
 			bool found = false;
 
 			for (int i = 0; i < spells.size(); ++i) {
-				if (spells[i] == id) {
+				if (spells[i] == spell->get_path()) {
 					found = true;
 					break;
 				}
 			}
 
 			if (!found) {
-				spells.push_back(id);
+				spells.push_back(spell->get_path());
 				class_profile->set_custom_data("spells", spells);
 			}
 
 		} else {
-			Vector<int> spells;
-			spells.push_back(id);
+			Vector<String> spells;
+			spells.push_back(spell->get_path());
 			class_profile->set_custom_data("spells", spells);
 		}
 	}
