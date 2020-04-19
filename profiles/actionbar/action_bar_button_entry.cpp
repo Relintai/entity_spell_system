@@ -149,7 +149,7 @@ void ActionBarButtonEntry::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_item_path"), &ActionBarButtonEntry::get_item_path);
 	ClassDB::bind_method(D_METHOD("set_item_path", "value"), &ActionBarButtonEntry::set_item_path);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "get_item_path"), "set_item_path", "get_item_path");
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "item_path"), "set_item_path", "get_item_path");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &ActionBarButtonEntry::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &ActionBarButtonEntry::to_dict);
