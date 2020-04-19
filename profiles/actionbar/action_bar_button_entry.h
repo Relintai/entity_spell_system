@@ -43,17 +43,17 @@ public:
 	Ref<ActionBarEntry> get_owner();
 	void set_owner(ActionBarEntry *owner);
 
-	int get_action_bar_id();
-	void set_action_bar_id(int value);
+	int get_action_bar_id() const;
+	void set_action_bar_id(const int value);
 
-	int get_slot_id();
+	int get_slot_id() const;
 	void set_slot_id(int value);
 
-	ActionBarButtonEntryType get_type();
-	void set_type(ActionBarButtonEntryType value);
+	ActionBarButtonEntryType get_type() const;
+	void set_type(const ActionBarButtonEntryType value);
 
-	int get_item_id();
-	void set_item_id(int value);
+	StringName get_item_path() const;
+	void set_item_path(const StringName &value);
 
 	void emit_change();
 
@@ -61,8 +61,8 @@ public:
 	void from_dict(const Dictionary &dict);
 
 	ActionBarButtonEntry();
-	ActionBarButtonEntry(int actionBarId, int slotId);
-	ActionBarButtonEntry(int actionBarId, int slotId, ActionBarButtonEntryType type, int itemId);
+	ActionBarButtonEntry(const int actionBarId, const int slotId);
+	ActionBarButtonEntry(const int actionBarId, const int slotId, const ActionBarButtonEntryType type, const StringName &item_path);
 	~ActionBarButtonEntry();
 
 protected:
@@ -72,7 +72,7 @@ private:
 	int _action_bar_id;
 	int _slot_id;
 	ActionBarButtonEntryType _type;
-	int _item_id;
+	StringName _item_path;
 
 	ActionBarEntry *_owner;
 };

@@ -85,7 +85,7 @@ Ref<ActionBarButtonEntry> ActionBarEntry::get_button_for_slotid(int slotId) {
 		}
 	}
 
-	Ref<ActionBarButtonEntry> abe = Ref<ActionBarButtonEntry>(memnew(ActionBarButtonEntry(_action_bar_id, slotId, ActionBarButtonEntry::ACTION_BAR_BUTTON_ENTRY_TYPE_NONE, 0)));
+	Ref<ActionBarButtonEntry> abe = Ref<ActionBarButtonEntry>(memnew(ActionBarButtonEntry(_action_bar_id, slotId, ActionBarButtonEntry::ACTION_BAR_BUTTON_ENTRY_TYPE_NONE, StringName())));
 	abe->set_owner(this);
 	_button_entries.push_back(abe);
 
