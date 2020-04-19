@@ -39,21 +39,21 @@ public:
 	Ref<ActionBarProfile> get_owner();
 	void set_owner(ActionBarProfile *owner);
 
-	float get_size();
-	void set_size(float value);
+	float get_size() const;
+	void set_size(const float value);
 
-	int get_action_bar_id();
-	void set_action_bar_id(int value);
+	int get_action_bar_id() const;
+	void set_action_bar_id(const int value);
 
-	int get_slot_num();
-	void set_slot_num(int value);
+	int get_slot_num() const;
+	void set_slot_num(const int value);
 
-	int get_action_bar_entry_count();
+	int get_action_bar_entry_count() const;
 
 	void emit_change();
 
-	Ref<ActionBarButtonEntry> get_button_for_slotid(int slotId);
-	Ref<ActionBarButtonEntry> get_button(int index);
+	Ref<ActionBarButtonEntry> get_button_for_slotid(const int slotId);
+	Ref<ActionBarButtonEntry> get_button(const int index);
 
 	Dictionary to_dict() const;
 	void from_dict(const Dictionary &dict);

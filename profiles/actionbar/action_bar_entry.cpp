@@ -37,37 +37,37 @@ void ActionBarEntry::set_owner(ActionBarProfile *owner) {
 	_owner = owner;
 }
 
-float ActionBarEntry::get_size() {
+float ActionBarEntry::get_size() const {
 	return _size;
 }
 
-void ActionBarEntry::set_size(float value) {
+void ActionBarEntry::set_size(const float value) {
 	_size = value;
 
 	emit_change();
 }
 
-int ActionBarEntry::get_action_bar_id() {
+int ActionBarEntry::get_action_bar_id() const {
 	return _action_bar_id;
 }
 
-void ActionBarEntry::set_action_bar_id(int value) {
+void ActionBarEntry::set_action_bar_id(const int value) {
 	_action_bar_id = value;
 
 	emit_change();
 }
 
-int ActionBarEntry::get_slot_num() {
+int ActionBarEntry::get_slot_num() const {
 	return _slot_num;
 }
 
-void ActionBarEntry::set_slot_num(int value) {
+void ActionBarEntry::set_slot_num(const int value) {
 	_slot_num = value;
 
 	emit_change();
 }
 
-int ActionBarEntry::get_action_bar_entry_count() {
+int ActionBarEntry::get_action_bar_entry_count() const {
 	return _button_entries.size();
 }
 
@@ -78,7 +78,7 @@ void ActionBarEntry::emit_change() {
 		_owner->emit_change();
 }
 
-Ref<ActionBarButtonEntry> ActionBarEntry::get_button_for_slotid(int slotId) {
+Ref<ActionBarButtonEntry> ActionBarEntry::get_button_for_slotid(const int slotId) {
 	for (int i = 0; i < _button_entries.size(); ++i) {
 		if (_button_entries.get(i)->get_slot_id() == slotId) {
 			return _button_entries.get(i);
@@ -94,7 +94,7 @@ Ref<ActionBarButtonEntry> ActionBarEntry::get_button_for_slotid(int slotId) {
 	return Ref<ActionBarButtonEntry>(abe);
 }
 
-Ref<ActionBarButtonEntry> ActionBarEntry::get_button(int index) {
+Ref<ActionBarButtonEntry> ActionBarEntry::get_button(const int index) {
 	ERR_FAIL_INDEX_V(index, _button_entries.size(), Ref<ActionBarButtonEntry>(NULL));
 
 	return _button_entries.get(index);

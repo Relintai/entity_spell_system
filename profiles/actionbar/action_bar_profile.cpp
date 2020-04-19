@@ -35,7 +35,7 @@ String ActionBarProfile::get_action_bar_profile_name() {
 	return _name;
 }
 
-void ActionBarProfile::set_action_bar_profile_name(String value) {
+void ActionBarProfile::set_action_bar_profile_name(const String &value) {
 	_name = value;
 
 	emit_change();
@@ -75,7 +75,7 @@ void ActionBarProfile::load_defaults() {
 	emit_change();
 }
 
-int ActionBarProfile::get_action_bar_count() {
+int ActionBarProfile::get_action_bar_count() const {
 	return _action_bars.size();
 }
 
@@ -94,7 +94,7 @@ Ref<ActionBarEntry> ActionBarProfile::get_action_bar(int index) {
 	return _action_bars.get(index);
 }
 
-void ActionBarProfile::remove_action_bar(int index) {
+void ActionBarProfile::remove_action_bar(const int index) {
 	_action_bars.get(index)->set_owner(NULL);
 
 	_action_bars.remove(index);

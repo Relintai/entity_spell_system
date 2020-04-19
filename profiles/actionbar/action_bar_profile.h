@@ -41,14 +41,14 @@ public:
 	void set_owner(ClassProfile *owner);
 
 	String get_action_bar_profile_name();
-	void set_action_bar_profile_name(String value);
+	void set_action_bar_profile_name(const String &value);
 	Vector<Ref<ActionBarEntry> > &get_action_bars();
 	void load_defaults();
 
-	int get_action_bar_count();
+	int get_action_bar_count() const;
 	void add_action_bar(Ref<ActionBarEntry> actionbar);
-	Ref<ActionBarEntry> get_action_bar(int index);
-	void remove_action_bar(int index);
+	Ref<ActionBarEntry> get_action_bar(const int index);
+	void remove_action_bar(const int index);
 	void clear_action_bars();
 
 	Dictionary to_dict() const;
