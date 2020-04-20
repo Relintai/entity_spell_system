@@ -22,7 +22,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_action_bar_entry_count">
+		<method name="get_action_bar_entry_count" qualifiers="const">
 			<return type="int">
 			</return>
 			<description>

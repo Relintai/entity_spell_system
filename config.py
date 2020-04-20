@@ -102,6 +102,7 @@ def get_doc_classes():
         "ESSResourceDB",
         "ESSResourceDBFolders",
         "ESSResourceDBStatic",
+        "ESSResourceDBMap",
 
         "EntityEnums",
         "ItemEnums",

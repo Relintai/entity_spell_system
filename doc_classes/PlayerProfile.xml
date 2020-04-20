@@ -39,7 +39,7 @@
 		<method name="get_class_profile">
 			<return type="ClassProfile">
 			</return>
-			<argument index="0" name="class_id" type="int">
+			<argument index="0" name="class_id" type="String">
 			</argument>
 			<description>
 			</description>

@@ -138,7 +138,7 @@
 	<members>
 		<member name="current_value" type="int" setter="set_current_value" getter="get_current_value" default="0">
 		</member>
-		<member name="data_id" type="int" setter="set_data_id" getter="get_data_id" default="0">
+		<member name="data_path" type="String" setter="set_data_path" getter="get_data_path" default="&quot;&quot;">
 		</member>
 		<member name="dirty" type="bool" setter="set_dirty" getter="get_dirty" default="false">
 		</member>

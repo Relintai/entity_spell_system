@@ -10,7 +10,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="item_id" type="int" setter="set_item_id" getter="get_item_id" default="0">
+		<member name="item_path" type="String" setter="set_item_path" getter="get_item_path" default="&quot;&quot;">
 		</member>
 		<member name="origin" type="Node" setter="set_origin" getter="get_origin">
 		</member>

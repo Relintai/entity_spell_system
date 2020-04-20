@@ -38,7 +38,7 @@
 	<members>
 		<member name="action_bar_id" type="int" setter="set_action_bar_id" getter="get_action_bar_id" default="0">
 		</member>
-		<member name="item_id" type="int" setter="set_item_id" getter="get_item_id" default="0">
+		<member name="item_path" type="String" setter="set_item_path" getter="get_item_path" default="&quot;&quot;">
 		</member>
 		<member name="slot_id" type="int" setter="set_slot_id" getter="get_slot_id" default="0">
 		</member>

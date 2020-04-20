@@ -45,6 +45,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="add_entity_resource_db">
+			<return type="void">
+			</return>
+			<argument index="0" name="other" type="ESSResourceDB">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="add_entity_skill">
 			<return type="void">
 			</return>
@@ -77,6 +85,108 @@
 			<description>
 			</description>
 		</method>
+		<method name="aura_id_to_path" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="aura_path_to_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="craft_recipe_id_to_path" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_recipe_path_to_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="entity_data_id_to_path" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="entity_data_path_to_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="entity_resource_id_to_path" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="entity_resource_path_to_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="entity_skill_id_to_path" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="entity_skill_path_to_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="entity_species_id_to_path" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="entity_species_path_to_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="get_aura">
 			<return type="Aura">
 			</return>
@@ -95,6 +205,14 @@
 			<return type="Aura">
 			</return>
 			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_aura_path">
+			<return type="Aura">
+			</return>
+			<argument index="0" name="path" type="String">
 			</argument>
 			<description>
 			</description>
@@ -127,6 +245,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_craft_recipe_path">
+			<return type="CraftRecipe">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="get_craft_recipes" qualifiers="const">
 			<return type="Array">
 			</return>
@@ -151,6 +277,14 @@
 			<return type="EntityData">
 			</return>
 			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_data_path">
+			<return type="EntityData">
+			</return>
+			<argument index="0" name="path" type="String">
 			</argument>
 			<description>
 			</description>
@@ -183,6 +317,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_entity_resource_path">
+			<return type="EntityResourceData">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="get_entity_resources" qualifiers="const">
 			<return type="Array">
 			</return>
@@ -207,6 +349,14 @@
 			<return type="EntitySkillData">
 			</return>
 			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_entity_skill_path">
+			<return type="EntitySkillData">
+			</return>
+			<argument index="0" name="path" type="String">
 			</argument>
 			<description>
 			</description>
@@ -239,6 +389,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_entity_species_data_path">
+			<return type="EntitySpeciesData">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="get_entity_species_datas" qualifiers="const">
 			<return type="Array">
 			</return>
@@ -263,6 +421,14 @@
 			<return type="ItemTemplate">
 			</return>
 			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_item_template_path">
+			<return type="ItemTemplate">
+			</return>
+			<argument index="0" name="path" type="String">
 			</argument>
 			<description>
 			</description>
@@ -303,6 +469,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_spell_path">
+			<return type="Spell">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="get_spells" qualifiers="const">
 			<return type="Array">
 			</return>
@@ -312,6 +486,22 @@
 		<method name="initialize">
 			<return type="void">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="item_template_id_to_path" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="item_template_path_to_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="path" type="String">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -385,6 +575,22 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="recipe" type="Array">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_id_to_path" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_path_to_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="path" type="String">
 			</argument>
 			<description>
 			</description>

@@ -74,9 +74,9 @@
 		</member>
 		<member name="character_class_name" type="String" setter="set_character_class_name" getter="get_character_class_name" default="&quot;&quot;">
 		</member>
-		<member name="class_id" type="int" setter="set_class_id" getter="get_class_id" default="0">
+		<member name="class_path" type="String" setter="set_class_path" getter="get_class_path" default="&quot;&quot;">
 		</member>
-		<member name="level" type="int" setter="set_level" getter="get_level" default="0">
+		<member name="level" type="int" setter="set_level" getter="get_level" default="1">
 		</member>
 		<member name="xp" type="int" setter="set_xp" getter="get_xp" default="0">
 		</member>

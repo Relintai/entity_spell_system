@@ -23,6 +23,8 @@
 		</member>
 		<member name="item_templates" type="Array" setter="set_item_templates" getter="get_item_templates" default="[  ]">
 		</member>
+		<member name="remap_ids" type="bool" setter="set_remap_ids" getter="get_remap_ids" default="false">
+		</member>
 		<member name="spells" type="Array" setter="set_spells" getter="get_spells" default="[  ]">
 		</member>
 	</members>
