@@ -920,6 +920,9 @@ public:
 	EntityEnums::EntityController gets_entity_controller();
 	void sets_entity_controller(EntityEnums::EntityController value);
 
+	bool getc_is_controlled();
+	void setc_is_controlled(bool value);
+
 	Ref<EntityAI> gets_ai();
 	void sets_ai(Ref<EntityAI> value);
 
@@ -1193,6 +1196,7 @@ private:
 
 	EntityEnums::EntityController _s_original_entity_controller;
 	EntityEnums::EntityController _s_entity_controller;
+	bool _c_is_controlled;
 	Ref<EntityAI> _s_ai;
 
 	//Pets
