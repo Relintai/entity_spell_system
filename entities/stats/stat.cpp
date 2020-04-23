@@ -595,7 +595,7 @@ void Stat::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_owner"), &Stat::get_owner);
 	ClassDB::bind_method(D_METHOD("set_owner", "value"), &Stat::set_owner_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_owner", "get_owner");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity", 0), "set_owner", "get_owner");
 
 	ClassDB::bind_method(D_METHOD("get_stat_modifier_type"), &Stat::get_stat_modifier_type);
 	ClassDB::bind_method(D_METHOD("set_stat_modifier_type", "value"), &Stat::set_stat_modifier_type);

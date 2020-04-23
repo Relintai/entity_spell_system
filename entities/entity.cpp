@@ -7159,6 +7159,11 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stat_enum", "index"), &Entity::get_stat_enum);
 	ClassDB::bind_method(D_METHOD("set_stat_enum", "stat_id", "entry"), &Entity::set_stat_enum);
 
+	//todo
+	//for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+	//	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "stats/" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "Stat"), "set_stat_int", "get_stat_int", i);
+	//}
+
 	//Equipment System
 
 	ADD_SIGNAL(MethodInfo("son_equip_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));

@@ -23,7 +23,7 @@ SOFTWARE.
 #ifndef STAT_H
 #define STAT_H
 
-#include "core/reference.h"
+#include "core/resource.h"
 #include "core/ustring.h"
 #include "core/vector.h"
 #include "scene/resources/curve.h"
@@ -33,8 +33,8 @@ SOFTWARE.
 class StatDataEntry;
 class Entity;
 
-class Stat : public Reference {
-	GDCLASS(Stat, Reference);
+class Stat : public Resource {
+	GDCLASS(Stat, Resource);
 
 public:
 	static const String STAT_BINDING_STRING;
