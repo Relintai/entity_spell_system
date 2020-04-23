@@ -23,12 +23,12 @@ SOFTWARE.
 #ifndef STAT_MODIFIER_H
 #define STAT_MODIFIER_H
 
-#include "core/resource.h"
+#include "core/reference.h"
 
 class Stat;
 
-class StatModifier : public Resource {
-	GDCLASS(StatModifier, Resource);
+class StatModifier : public Reference {
+	GDCLASS(StatModifier, Reference);
 
 public:
 	StatModifier();
