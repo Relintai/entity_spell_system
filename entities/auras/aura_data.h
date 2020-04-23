@@ -25,15 +25,15 @@ SOFTWARE.
 
 #include "core/array.h"
 #include "core/dictionary.h"
-#include "core/reference.h"
+#include "core/resource.h"
 
 #include "../../spell_enums.h"
 
 class Aura;
 class Entity;
 
-class AuraData : public Reference {
-	GDCLASS(AuraData, Reference);
+class AuraData : public Resource {
+	GDCLASS(AuraData, Resource);
 
 public:
 	int get_aura_id();
