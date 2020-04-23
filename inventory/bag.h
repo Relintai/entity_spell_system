@@ -23,7 +23,7 @@ SOFTWARE.
 #ifndef BAG_H
 #define BAG_H
 
-#include "core/reference.h"
+#include "core/resource.h"
 #include "core/vector.h"
 
 #include "../item_enums.h"
@@ -31,8 +31,8 @@ SOFTWARE.
 class ItemTemplate;
 class ItemInstance;
 
-class Bag : public Reference {
-	GDCLASS(Bag, Reference);
+class Bag : public Resource {
+	GDCLASS(Bag, Resource);
 
 public:
 	int get_allowed_item_types() const;
