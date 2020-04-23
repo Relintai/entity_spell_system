@@ -23,10 +23,10 @@ SOFTWARE.
 #ifndef COOLDOWN_H
 #define COOLDOWN_H
 
-#include "core/reference.h"
+#include "core/resource.h"
 
-class Cooldown : public Reference {
-	GDCLASS(Cooldown, Reference);
+class Cooldown : public Resource {
+	GDCLASS(Cooldown, Resource);
 
 public:
 	int get_spell_id() const;

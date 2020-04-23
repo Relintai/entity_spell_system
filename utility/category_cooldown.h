@@ -23,10 +23,10 @@ SOFTWARE.
 #ifndef CATEGORY_COOLDOWN_H
 #define CATEGORY_COOLDOWN_H
 
-#include "core/reference.h"
+#include "core/resource.h"
 
-class CategoryCooldown : public Reference {
-	GDCLASS(CategoryCooldown, Reference);
+class CategoryCooldown : public Resource {
+	GDCLASS(CategoryCooldown, Resource);
 
 public:
 	int get_category_id() const;
