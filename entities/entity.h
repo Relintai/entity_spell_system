@@ -911,7 +911,7 @@ public:
 	String random_name();
 
 	void setup(Ref<EntityCreateInfo> info);
-	virtual void _setup(Ref<EntityCreateInfo> info);
+	virtual void _setup();
 	void setup_actionbars();
 
 	////    AI    ////

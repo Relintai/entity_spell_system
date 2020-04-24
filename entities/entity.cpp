@@ -535,8 +535,13 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 	sets_original_entity_controller(info->get_entity_controller());
 	sets_entity_controller(info->get_entity_controller());
 
-	sets_entity_name(info->get_entity_name());
+	_s_character_level = info->get_character_level();
+	_s_class_level = info->get_class_level();
 
+	_s_class_xp = info->get_class_xp();
+	_s_character_xp = info->get_character_xp();
+
+	sets_entity_name(info->get_entity_name());
 	sets_entity_data(info->get_entity_data());
 
 	if (!info->get_serialized_data().empty()) {
@@ -544,11 +549,11 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 	}
 
 	if (has_method("_setup")) {
-		call_multilevel("_setup", info);
+		call_multilevel("_setup");
 	}
 }
 
-void Entity::_setup(Ref<EntityCreateInfo> info) {
+void Entity::_setup() {
 	if (!_s_entity_data.is_valid())
 		return;
 
@@ -714,11 +719,19 @@ void Entity::_setup(Ref<EntityCreateInfo> info) {
 		sets_entity_name(_s_entity_data->get_name());
 	}
 
-	scharacter_levelup(info->get_character_level() - 1);
-	sclass_levelup(info->get_class_level() - 1);
+	int chl = _s_character_level;
+	int cl = _s_class_level;
+	int chxp = _s_character_xp;
+	int clxp = _s_class_xp;
 
-	sets_class_xp(info->get_class_xp());
-	sets_character_xp(info->get_character_xp());
+	_s_character_level = 1;
+	_s_class_level = 1;
+
+	scharacter_levelup(chl - 1);
+	sclass_levelup(cl - 1);
+
+	sets_class_xp(clxp);
+	sets_character_xp(chxp);
 
 	if (ESS::get_instance()->get_allow_class_spell_learning()) {
 		Ref<ClassProfile> class_profile = ProfileManager::get_instance()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
@@ -6746,7 +6759,7 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("cskill_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
 
 	//setup
-	BIND_VMETHOD(MethodInfo("_setup", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
+	BIND_VMETHOD(MethodInfo("_setup"));
 
 	//Windows
 	ADD_SIGNAL(MethodInfo("onc_open_loot_winow_request"));
@@ -6754,7 +6767,7 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("onc_open_vendor_winow_request"));
 
 	ClassDB::bind_method(D_METHOD("setup", "info"), &Entity::setup);
-	ClassDB::bind_method(D_METHOD("_setup", "info"), &Entity::_setup);
+	ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
 	ClassDB::bind_method(D_METHOD("setup_actionbars"), &Entity::setup_actionbars);
 
 	//binds
