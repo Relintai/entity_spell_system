@@ -37,6 +37,8 @@ SOFTWARE.
 #include "./data/character_spec.h"
 #include "./data/talent_row_data.h"
 #include "./skills/entity_skill.h"
+#include "scene/2d/node_2d.h"
+#include "scene/3d/spatial.h"
 
 #include "core/script_language.h"
 
@@ -48,7 +50,7 @@ NodePath Entity::get_body_path() {
 void Entity::set_body_path(NodePath value) {
 	_body_path = value;
 
-	_body = get_node_or_null(_body_path);
+	set_body(get_node_or_null(_body_path));
 
 #if VERSION_MAJOR < 4
 	if (ObjectDB::instance_validate(_body))
@@ -61,6 +63,17 @@ void Entity::set_body_path(NodePath value) {
 Node *Entity::get_body() {
 	return _body;
 }
+Spatial *Entity::get_body_3d() {
+	return _body_3d;
+}
+Node2D *Entity::get_body_2d() {
+	return _body_2d;
+}
+void Entity::set_body(Node *body) {
+	_body = body;
+	_body_2d = Object::cast_to<Node2D>(body);
+	_body_3d = Object::cast_to<Spatial>(body);
+}
 
 NodePath Entity::get_character_skeleton_path() {
 	return _character_skeleton_path;
@@ -72,6 +85,9 @@ void Entity::set_character_skeleton_path(NodePath value) {
 }
 Node *Entity::get_character_skeleton() {
 	return _character_skeleton;
+}
+void Entity::set_character_skeleton(Node *skeleton) {
+	_character_skeleton = skeleton;
 }
 
 //GUID
@@ -91,6 +107,45 @@ void Entity::setc_guid(int value) {
 	_c_guid = value;
 
 	set_name(String::num(_c_guid));
+}
+
+//Transforms
+Transform Entity::get_transform_3d(bool only_stored) const {
+	if (!only_stored && _body_3d) {
+		ERR_FAIL_COND_V(!ObjectDB::instance_validate(_body_3d), _transform);
+
+		return _body_3d->get_transform();
+	}
+
+	return _transform;
+}
+void Entity::set_transform_3d(const Transform &transform, bool only_stored) {
+	if (!only_stored && _body_3d) {
+		ERR_FAIL_COND(!ObjectDB::instance_validate(_body_3d));
+
+		return _body_3d->set_transform(transform);
+	}
+
+	_transform = transform;
+}
+
+Transform2D Entity::get_transform_2d(bool only_stored) const {
+	if (!only_stored && _body_2d) {
+		ERR_FAIL_COND_V(!ObjectDB::instance_validate(_body_2d), _transform_2d);
+
+		return _body_2d->get_transform();
+	}
+
+	return _transform_2d;
+}
+void Entity::set_transform_2d(const Transform2D &transform, bool only_stored) {
+	if (!only_stored && _body_2d) {
+		ERR_FAIL_COND(!ObjectDB::instance_validate(_body_2d));
+
+		return _body_2d->set_transform(_transform_2d);
+	}
+
+	_transform_2d = transform;
 }
 
 //EntityPlayerType
@@ -402,6 +457,16 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 
 	//setup();
 
+	if (get_body() == NULL && value.is_valid() && value->get_entity_species_data().is_valid() &&
+			value->get_entity_species_data()->get_model_data().is_valid() &&
+			value->get_entity_species_data()->get_model_data()->get_body().is_valid()) {
+
+		Node *node = value->get_entity_species_data()->get_model_data()->get_body()->instance();
+
+		add_child(node);
+		set_body(node);
+	}
+
 	emit_signal("sentity_data_changed", value);
 
 	VRPC(setc_entity_data_id, _s_class_id);
@@ -413,6 +478,16 @@ Ref<EntityData> Entity::getc_entity_data() {
 
 void Entity::setc_entity_data(Ref<EntityData> value) {
 	_c_entity_data = value;
+
+	if (get_body() == NULL && value.is_valid() && value->get_entity_species_data().is_valid() &&
+			value->get_entity_species_data()->get_model_data().is_valid() &&
+			value->get_entity_species_data()->get_model_data()->get_body().is_valid()) {
+
+		Node *node = value->get_entity_species_data()->get_model_data()->get_body()->instance();
+
+		add_child(node);
+		set_body(node);
+	}
 
 	emit_signal("centity_data_changed", value);
 }
@@ -5967,6 +6042,10 @@ Entity::Entity() {
 	_maunal_process = false;
 	_deserialized = false;
 
+	_body = NULL;
+	_body_3d = NULL;
+	_body_2d = NULL;
+
 	_s_guid = 0;
 	_c_guid = 0;
 
@@ -6529,7 +6608,7 @@ void Entity::_slearn_spell(int id) {
 void Entity::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_INSTANCED: {
-			_body = get_node_or_null(_body_path);
+			set_body(get_node_or_null(_body_path));
 
 #if VERSION_MAJOR < 4
 			if (ObjectDB::instance_validate(_body))
@@ -6551,7 +6630,7 @@ void Entity::_notification(int p_what) {
 				set_process(true);
 
 			if (!_body) {
-				_body = get_node_or_null(_body_path);
+				set_body(get_node_or_null(_body_path));
 
 #if VERSION_MAJOR < 4
 				if (ObjectDB::instance_validate(_body))
@@ -7453,7 +7532,18 @@ void Entity::_bind_methods() {
 
 	//skeleton
 	ClassDB::bind_method(D_METHOD("get_body"), &Entity::get_body);
+	ClassDB::bind_method(D_METHOD("get_body_3d"), &Entity::get_body_3d);
+	ClassDB::bind_method(D_METHOD("get_body_2d"), &Entity::get_body_2d);
+	ClassDB::bind_method(D_METHOD("set_body", "body"), &Entity::set_body);
 	ClassDB::bind_method(D_METHOD("get_character_skeleton"), &Entity::get_character_skeleton);
+	ClassDB::bind_method(D_METHOD("set_character_skeleton", "skeleton"), &Entity::set_character_skeleton);
+
+	//Transforms
+	ClassDB::bind_method(D_METHOD("get_transform_3d", "only_stored"), &Entity::get_transform_3d, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("set_transform_3d", "transform", "only_stored"), &Entity::set_transform_3d, DEFVAL(false));
+
+	ClassDB::bind_method(D_METHOD("get_transform_2d", "only_stored"), &Entity::get_transform_2d, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("set_transform_2d", "transform", "only_stored"), &Entity::set_transform_2d, DEFVAL(false));
 
 	////    Targeting System    ////
 

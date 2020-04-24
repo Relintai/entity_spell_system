@@ -34,6 +34,8 @@ SOFTWARE.
 #include "./data/entity_data.h"
 #include "core/hash_map.h"
 #include "core/io/json.h"
+#include "core/math/transform.h"
+#include "core/math/transform_2d.h"
 #include "core/object.h"
 #include "core/ustring.h"
 #include "core/vector.h"
@@ -70,6 +72,8 @@ class TalentRowData;
 class CharacterSpec;
 class EntitySkill;
 class ClassProfile;
+class Spatial;
+class Node2D;
 
 enum SpellCastDataSignals {
 	CastFailed,
@@ -197,10 +201,21 @@ public:
 	NodePath get_body_path();
 	void set_body_path(NodePath value);
 	Node *get_body();
+	Spatial *get_body_3d();
+	Node2D *get_body_2d();
+	void set_body(Node *body);
 
 	NodePath get_character_skeleton_path();
 	void set_character_skeleton_path(NodePath value);
 	Node *get_character_skeleton();
+	void set_character_skeleton(Node *skeleton);
+
+	//Transforms
+	Transform get_transform_3d(bool only_stored = false) const;
+	void set_transform_3d(const Transform &transform, bool only_stored = false);
+
+	Transform2D get_transform_2d(bool only_stored = false) const;
+	void set_transform_2d(const Transform2D &transform, bool only_stored = false);
 
 	//GUID
 	int gets_guid();
@@ -1023,9 +1038,16 @@ private:
 
 	NodePath _body_path;
 	Node *_body;
+	Spatial *_body_3d;
+	Node2D *_body_2d;
 
 	NodePath _character_skeleton_path;
 	Node *_character_skeleton;
+
+	////    Transforms    ////
+
+	Transform _transform;
+	Transform2D _transform_2d;
 
 	////    PlayerData    ////
 

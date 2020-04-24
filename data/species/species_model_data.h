@@ -43,8 +43,8 @@ public:
 	int get_id();
 	void set_id(int value);
 
-	Ref<PackedScene> get_skeleton();
-	void set_skeleton(Ref<PackedScene> value);
+	Ref<PackedScene> get_body();
+	void set_body(Ref<PackedScene> value);
 
 	//Entries
 	Ref<ItemVisualEntry> get_visual(const int bone_index, const int index) const;
@@ -110,7 +110,7 @@ protected:
 private:
 	int _id;
 
-	Ref<PackedScene> _skeleton;
+	Ref<PackedScene> _body;
 
 	Vector<Ref<ItemVisualEntry> > _visuals[EntityEnums::SKELETON_POINTS_MAX];
 	Vector<Color> _skin_colors;

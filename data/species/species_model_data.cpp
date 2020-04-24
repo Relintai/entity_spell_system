@@ -31,11 +31,11 @@ void SpeciesModelData::set_id(int value) {
 	_id = value;
 }
 
-Ref<PackedScene> SpeciesModelData::get_skeleton() {
-	return _skeleton;
+Ref<PackedScene> SpeciesModelData::get_body() {
+	return _body;
 }
-void SpeciesModelData::set_skeleton(Ref<PackedScene> value) {
-	_skeleton = value;
+void SpeciesModelData::set_body(Ref<PackedScene> value) {
+	_body = value;
 }
 
 //Entries
@@ -270,7 +270,7 @@ SpeciesModelData::SpeciesModelData() {
 	_id = 0;
 }
 SpeciesModelData::~SpeciesModelData() {
-	_skeleton.unref();
+	_body.unref();
 
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
 		_visuals[i].clear();
@@ -289,9 +289,9 @@ void SpeciesModelData::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
-	ClassDB::bind_method(D_METHOD("get_skeleton"), &SpeciesModelData::get_skeleton);
-	ClassDB::bind_method(D_METHOD("set_skeleton", "value"), &SpeciesModelData::set_skeleton);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "skeleton", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_skeleton", "get_skeleton");
+	ClassDB::bind_method(D_METHOD("get_body"), &SpeciesModelData::get_body);
+	ClassDB::bind_method(D_METHOD("set_body", "value"), &SpeciesModelData::set_body);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "body", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_body", "get_body");
 
 	//Entries
 	ClassDB::bind_method(D_METHOD("get_visual", "bone_index", "index"), &SpeciesModelData::get_visual);
