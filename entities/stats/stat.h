@@ -143,8 +143,13 @@ public:
 	void set_dirty_mods(bool value);
 
 	float get_base();
+	void set_base(float value);
+
 	float get_bonus();
+	void set_bonus(float value);
+
 	float get_percent();
+	void set_percent(float value);
 
 	float gets_current();
 	void sets_current(float value);

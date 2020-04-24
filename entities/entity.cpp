@@ -37,6 +37,8 @@ SOFTWARE.
 #include "./data/character_spec.h"
 #include "./data/talent_row_data.h"
 #include "./skills/entity_skill.h"
+#include "./stats/stat.h"
+#include "./stats/stat_modifier.h"
 #include "scene/2d/node_2d.h"
 #include "scene/3d/spatial.h"
 
@@ -6683,6 +6685,605 @@ void Entity::_notification(int p_what) {
 #endif
 			}
 		} break;
+	}
+}
+
+bool Entity::_set(const StringName &p_name, const Variant &p_value) {
+	String name = p_name;
+
+	if (name.get_slicec('/', 0) == "stat") {
+		int stat_id = name.get_slicec('/', 1).to_int();
+		String stat_prop_name = name.get_slicec('/', 2);
+
+		Ref<Stat> stat = _stats[stat_id];
+
+		if (!stat.is_valid()) {
+			stat.instance();
+			stat->set_owner(this);
+			_stats[stat_id] = stat;
+		}
+
+		if (stat_prop_name == "public") {
+			stat->set_public(p_value);
+
+			return true;
+		} else if (stat_prop_name == "locked") {
+			stat->set_locked(p_value);
+
+			return true;
+		} else if (stat_prop_name == "base") {
+			stat->set_base(p_value);
+
+			return true;
+		} else if (stat_prop_name == "bonus") {
+			stat->set_bonus(p_value);
+
+			return true;
+		} else if (stat_prop_name == "percent") {
+			stat->set_percent(p_value);
+
+			return true;
+		} else if (stat_prop_name == "scurrent") {
+			stat->sets_current(p_value);
+
+			return true;
+		} else if (stat_prop_name == "smax") {
+			stat->sets_max(p_value);
+
+			return true;
+		} else if (stat_prop_name == "modifier") {
+			int modifier_index = name.get_slicec('/', 3).to_int();
+			String modifier_prop_name = name.get_slicec('/', 4);
+
+			if (stat->get_modifier_count() <= modifier_index) {
+				stat->get_modifiers()->resize(modifier_index + 1);
+			}
+
+			Ref<StatModifier> modifier = stat->get_modifier(modifier_index);
+
+			if (!modifier.is_valid()) {
+				modifier.instance();
+				modifier->set_owner(stat);
+				stat->get_modifiers()->set(modifier_index, modifier);
+			}
+
+			if (modifier_prop_name == "id") {
+				modifier->set_id(p_value);
+
+				return true;
+			} else if (modifier_prop_name == "base_mod") {
+				modifier->set_base_mod(p_value);
+
+				return true;
+			} else if (modifier_prop_name == "bonus_mod") {
+				modifier->set_bonus_mod(p_value);
+
+				return true;
+			} else if (modifier_prop_name == "percent_mod") {
+				modifier->set_percent_mod(p_value);
+
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+
+	return true;
+
+	/*
+	sets_entity_type((EntityEnums::EntityType)((int)dict.get("type", 0)));
+
+	sets_gender(static_cast<EntityEnums::EntityGender>(static_cast<int>(dict.get("gender", 0))));
+
+	if (ESS::get_instance()->get_use_global_class_level()) {
+		_s_class_level = (dict.get("class_level", 0));
+		_s_class_xp = (dict.get("class_xp", 0));
+	} else {
+		sets_class_level(dict.get("class_level", 0));
+		sets_class_xp(dict.get("class_xp", 0));
+	}
+
+	sets_character_level(dict.get("character_level", 0));
+	sets_character_xp(dict.get("character_xp", 0));
+
+	sets_money(dict.get("money", 0));
+
+	sets_entity_name(dict.get("entity_name", ""));
+
+	sets_seed(dict.get("seed", _s_seed));
+
+	////    Equipment    ////
+
+	Dictionary equipment = dict.get("equipment", Dictionary());
+
+	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+		if (equipment.has(String::num(i))) {
+			Ref<ItemInstance> ii = _s_equipment[i];
+
+			if (!ii.is_valid()) {
+				ii.instance();
+			}
+
+			ii->from_dict(dict[String::num(i)]);
+
+			_s_equipment[i] = ii;
+			_c_equipment[i] = ii;
+		}
+	}
+
+	////    Resources    ////
+
+	_s_resources.clear();
+	_c_resources.clear();
+
+	Dictionary rd = dict.get("resources", Dictionary());
+
+	for (int i = 0; i < rd.size(); ++i) {
+		Dictionary ird = rd.get(String::num(i), Dictionary());
+
+		StringName data_path = ird.get("data_path", "");
+
+		Ref<EntityResourceData> resd = ESS::get_instance()->get_resource_db()->get_entity_resource_path(data_path);
+
+		ERR_CONTINUE(!resd.is_valid());
+
+		Ref<EntityResource> res = resd->get_entity_resource_instance();
+
+		ERR_CONTINUE(!res.is_valid());
+
+		res->from_dict(ird);
+
+		adds_resource(res);
+	}
+
+	////    GCD    ////
+
+	_s_gcd = dict.get("gcd", 0);
+	_c_gcd = _s_gcd;
+
+	////    States    ////
+
+	Dictionary statesd = dict.get("states", Dictionary());
+
+	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
+		_s_states[i] = statesd.get(String::num(i), 0);
+	}
+
+	_s_state = dict.get("state", Dictionary());
+	_c_state = _s_state;
+
+	////    Auras    ////
+
+	_s_auras.clear();
+	_c_auras.clear();
+
+	Dictionary auras = dict.get("auras", Dictionary());
+
+	for (int i = 0; i < auras.size(); ++i) {
+		Ref<AuraData> r;
+		r.instance();
+
+		r->from_dict(auras.get(String::num(i), Dictionary()));
+		r->set_owner(this);
+		r->resolve_references(this);
+
+		_s_auras.push_back(r);
+		//_c_auras.push_back(r);
+	}
+
+	sets_entity_type((EntityEnums::EntityType)((int)dict.get("entity_type", 0)));
+	sets_immunity_flags(dict.get("immunity_flags", 0));
+	sets_entity_flags(dict.get("entity_flags", 0));
+	EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
+
+	sets_original_entity_controller(contr);
+	sets_entity_controller(contr);
+
+	////    Cooldowns    ////
+
+	_s_cooldowns.clear();
+	_c_cooldowns.clear();
+
+	Dictionary cds = dict.get("cooldowns", Dictionary());
+
+	for (int i = 0; i < cds.size(); ++i) {
+		Ref<Cooldown> cd;
+		cd.instance();
+
+		cd->from_dict(cds.get(String::num(i), Dictionary()));
+
+		_s_cooldowns.push_back(cd);
+		_c_cooldowns.push_back(cd);
+	}
+
+	Dictionary ccds = dict.get("category_cooldowns", Dictionary());
+
+	for (int i = 0; i < ccds.size(); ++i) {
+		Ref<CategoryCooldown> ccd;
+		ccd.instance();
+
+		ccd->from_dict(ccds.get(String::num(i), Dictionary()));
+
+		_s_category_cooldowns.push_back(ccd);
+		_c_category_cooldowns.push_back(ccd);
+	}
+
+	_s_active_category_cooldowns = dict.get("active_category_cooldowns", 0);
+	_c_active_category_cooldowns = _s_active_category_cooldowns;
+
+	////    Talents    ////
+
+	_s_free_talent_points = dict.get("free_talent_points", 0);
+	_c_free_talent_points = _s_free_talent_points;
+
+	Vector<int> talents = dict.get("talents", Vector<int>());
+
+	for (int i = 0; i < talents.size(); ++i) {
+		adds_talent(talents[i]);
+	}
+
+	////    Data    ////
+
+	Array entity_datas = dict.get("entity_datas", Array());
+
+	for (int i = 0; i < entity_datas.size(); ++i) {
+		Dictionary entry = entity_datas.get(i);
+
+		String class_name = dict.get("class_name", EntityDataContainer::get_class_static());
+
+		if (ClassDB::can_instance(class_name) && ClassDB::is_parent_class(class_name, EntityDataContainer::get_class_static())) {
+			Ref<EntityDataContainer> data = Ref<EntityDataContainer>(ClassDB::instance(class_name));
+
+			if (data.is_valid()) {
+				data->from_dict(entry);
+
+				_s_data.push_back(data);
+				_c_data.push_back(data);
+			}
+		}
+	}
+
+	////    Crafting    ////
+
+	_s_craft_recipes.clear();
+	_c_craft_recipes.clear();
+
+	Dictionary known_recipes = dict.get("known_recipes", Dictionary());
+
+	for (int i = 0; i < known_recipes.size(); ++i) {
+		StringName crn = known_recipes.get(String::num(i), "");
+
+		if (ESS::get_instance() != NULL) {
+			Ref<CraftRecipe> cr = ESS::get_instance()->get_resource_db()->get_craft_recipe_path(crn);
+
+			if (cr.is_valid()) {
+				adds_craft_recipe(cr);
+			}
+		}
+	}
+
+	////    Known Spells    ////
+
+	if (ESS::get_instance()->get_use_spell_points())
+		sets_free_spell_points(dict.get("free_spell_points", 0));
+
+	Dictionary known_spells = dict.get("known_spells", Dictionary());
+
+	for (int i = 0; i < known_spells.size(); ++i) {
+		StringName spell_path = known_spells.get(String::num(i), "");
+
+		if (ESS::get_instance() != NULL) {
+			Ref<Spell> sp = ESS::get_instance()->get_resource_db()->get_spell_path(spell_path);
+
+			if (sp.is_valid()) {
+				_s_spells.push_back(sp);
+				_c_spells.push_back(sp);
+			}
+		}
+	}
+
+	////    Skills    ////
+
+	Dictionary skills = dict.get("skills", Dictionary());
+
+	for (int i = 0; i < skills.size(); ++i) {
+		Ref<EntitySkill> r;
+		r.instance();
+
+		r->from_dict(skills.get(String::num(i), Dictionary()));
+
+		_s_skills.push_back(r);
+		_c_skills.push_back(r);
+	}
+
+	////    Bags    ////
+
+	Dictionary bagd = dict.get("bag", Dictionary());
+
+	if (!bagd.empty()) {
+		if (!_s_bag.is_valid()) {
+			Ref<Bag> bag;
+			bag.instance();
+
+			bag->from_dict(bagd);
+
+			sets_bag(bag);
+		} else {
+			_s_bag->from_dict(bagd);
+		}
+	}
+
+	////     Actionbars    ////
+
+	_actionbar_locked = dict.get("actionbar_locked", false);
+	//_action_bar_profile->from_dict(dict.get("actionbar_profile", Dictionary()));
+
+	StringName edp = dict.get("entity_data_path", "");
+
+	if (ESS::get_instance() != NULL) {
+		sets_entity_data(ESS::get_instance()->get_resource_db()->get_entity_data_path(edp));
+	}
+
+	sets_entity_data_path(edp);*/
+}
+
+bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
+	String name = p_name;
+
+	if (name.get_slicec('/', 0) == "stat") {
+		int stat_id = name.get_slicec('/', 1).to_int();
+		String stat_prop_name = name.get_slicec('/', 2);
+
+		Ref<Stat> stat = _stats[stat_id];
+
+		if (stat_prop_name == "modifier_apply_type") {
+			r_ret = stat->get_stat_modifier_type();
+
+			return true;
+		} else if (stat_prop_name == "public") {
+			r_ret = stat->get_public();
+
+			return true;
+		} else if (stat_prop_name == "locked") {
+			r_ret = stat->get_locked();
+
+			return true;
+		} else if (stat_prop_name == "base") {
+			r_ret = stat->get_base();
+
+			return true;
+		} else if (stat_prop_name == "bonus") {
+			r_ret = stat->get_bonus();
+
+			return true;
+		} else if (stat_prop_name == "percent") {
+			r_ret = stat->get_percent();
+
+			return true;
+		} else if (stat_prop_name == "scurrent") {
+			r_ret = stat->gets_current();
+
+			return true;
+		} else if (stat_prop_name == "smax") {
+			r_ret = stat->gets_max();
+
+			return true;
+		} else if (stat_prop_name == "modifier") {
+			int modifier_index = name.get_slicec('/', 3).to_int();
+			String modifier_prop_name = name.get_slicec('/', 4);
+
+			Ref<StatModifier> modifier = stat->get_modifier(modifier_index);
+
+			if (modifier_prop_name == "id") {
+				r_ret = modifier->get_id();
+
+				return true;
+			} else if (modifier_prop_name == "base_mod") {
+				r_ret = modifier->get_base_mod();
+
+				return true;
+			} else if (modifier_prop_name == "bonus_mod") {
+				r_ret = modifier->get_bonus_mod();
+
+				return true;
+			} else if (modifier_prop_name == "percent_mod") {
+				r_ret = modifier->get_percent_mod();
+
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+
+	} else {
+		return false;
+	}
+
+	return true;
+	/*
+	Dictionary dict;
+
+	////    Equipment    ////
+
+	Dictionary equipment;
+
+	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+		Ref<ItemInstance> ii = _s_equipment[i];
+
+		if (ii.is_valid())
+			equipment[i] = ii->to_dict();
+	}
+
+	dict["equipment"] = equipment;
+
+	////    Resources    ////
+
+	Dictionary rd;
+
+	for (int i = 0; i < _s_resources.size(); ++i) {
+		Ref<EntityResource> r = _s_resources.get(i);
+
+		ERR_CONTINUE(!r.is_valid());
+
+		rd[String::num(i)] = r->to_dict();
+	}
+
+	dict["resources"] = rd;
+
+	////    GCD    ////
+
+	dict["gcd"] = _s_gcd;
+
+	////    States    ////
+
+	Dictionary stated;
+
+	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
+		stated[i] = _s_states[i];
+	}
+
+	dict["states"] = stated;
+
+	dict["state"] = _s_state;
+
+	////    SpellCastData    ////
+
+	//Not needed
+	//Ref<SpellCastInfo> _s_spell_cast_info;
+	//Ref<SpellCastInfo> _c_spell_cast_info;
+
+	//// AuraComponent    ////
+
+	Dictionary auras;
+
+	for (int i = 0; i < _s_auras.size(); ++i) {
+		auras[i] = _s_auras.get(i)->to_dict();
+	}
+
+	dict["auras"] = auras;
+
+	dict["entity_type"] = _s_entity_type;
+	dict["immunity_flags"] = _s_immunity_flags;
+	dict["entity_flags"] = _s_entity_flags;
+	dict["entity_controller"] = _s_entity_controller;
+
+	////    Cooldowns    ////
+
+	Dictionary cds;
+
+	for (int i = 0; i < _s_cooldowns.size(); ++i) {
+		cds[i] = _s_cooldowns.get(i)->to_dict();
+	}
+
+	dict["cooldowns"] = cds;
+
+	Dictionary ccds;
+
+	for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
+		ccds[i] = _s_category_cooldowns.get(i)->to_dict();
+	}
+
+	dict["category_cooldowns"] = ccds;
+
+	dict["active_category_cooldowns"] = _s_active_category_cooldowns;
+
+	////    Talents    ////
+
+	dict["free_talent_points"] = _s_free_talent_points;
+	dict["talents"] = _s_talents;
+
+	////    Data    ////
+
+	Array entity_datas;
+
+	for (int i = 0; i < _s_data.size(); ++i) {
+		entity_datas.append(_s_data.get(i)->to_dict());
+	}
+
+	dict["entity_datas"] = entity_datas;
+
+	////    Crafting    ////
+
+	Dictionary known_recipes;
+
+	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
+		known_recipes[i] = _s_craft_recipes.get(i)->get_path();
+	}
+
+	dict["known_recipes"] = known_recipes;
+
+	////    Known Spells    ////
+
+	if (ESS::get_instance()->get_use_spell_points())
+		dict["free_spell_points"] = _s_free_spell_points;
+
+	Dictionary known_spells;
+
+	for (int i = 0; i < _s_spells.size(); ++i) {
+		known_spells[i] = _s_spells.get(i)->get_path();
+	}
+
+	dict["known_spells"] = known_spells;
+
+	////    Skills    ////
+
+	Dictionary skills;
+
+	for (int i = 0; i < _s_skills.size(); ++i) {
+		skills[i] = _s_skills.get(i)->to_dict();
+	}
+
+	dict["skills"] = skills;
+
+	////    Bags    ////
+
+	if (_s_bag.is_valid())
+		dict["bag"] = _s_bag->to_dict();
+
+	////     Actionbars    ////
+
+	dict["actionbar_locked"] = _actionbar_locked;
+	//dict["actionbar_profile"] = _action_bar_profile->to_dict();
+
+	return dict;*/
+}
+
+void Entity::_get_property_list(List<PropertyInfo> *p_list) const {
+	//int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
+	int property_usange = PROPERTY_USAGE_DEFAULT;
+
+	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+		Ref<Stat> stat = _stats[i];
+
+		if (!stat.is_valid())
+			continue;
+
+		p_list->push_back(PropertyInfo(Variant::INT, "stat/" + itos(i) + "/modifier_apply_type", PROPERTY_HINT_NONE, "", property_usange));
+		p_list->push_back(PropertyInfo(Variant::BOOL, "stat/" + itos(i) + "/public", PROPERTY_HINT_NONE, "", property_usange));
+		p_list->push_back(PropertyInfo(Variant::BOOL, "stat/" + itos(i) + "/locked", PROPERTY_HINT_NONE, "", property_usange));
+		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/base", PROPERTY_HINT_NONE, "", property_usange));
+		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/percent", PROPERTY_HINT_NONE, "", property_usange));
+		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/scurrent", PROPERTY_HINT_NONE, "", property_usange));
+		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/smax", PROPERTY_HINT_NONE, "", property_usange));
+
+		for (int j = 0; j < stat->get_modifier_count(); ++j) {
+			Ref<StatModifier> modifier = stat->get_modifier(j);
+
+			if (!modifier.is_valid())
+				continue;
+
+			p_list->push_back(PropertyInfo(Variant::INT, "stat/" + itos(i) + "/modifier/" + itos(j) + "id", PROPERTY_HINT_NONE, "", property_usange));
+			p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/modifier/" + itos(j) + "base_mod", PROPERTY_HINT_NONE, "", property_usange));
+			p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/modifier/" + itos(j) + "bonus_mod", PROPERTY_HINT_NONE, "", property_usange));
+			p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/modifier/" + itos(j) + "percent_mod", PROPERTY_HINT_NONE, "", property_usange));
+		}
 	}
 }
 

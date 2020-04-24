@@ -202,11 +202,22 @@ void Stat::set_dirty_mods(bool value) {
 float Stat::get_base() {
 	return _base;
 }
+void Stat::set_base(float value) {
+	_base = value;
+}
+
 float Stat::get_bonus() {
 	return _bonus;
 }
+void Stat::set_bonus(float value) {
+	_bonus = value;
+}
+
 float Stat::get_percent() {
 	return _percent;
+}
+void Stat::set_percent(float value) {
+	_percent = value;
 }
 
 float Stat::gets_current() {
@@ -267,7 +278,7 @@ void Stat::setc_values(int ccurrent, int cmax) {
 	emit_signal("c_changed", Ref<Stat>(this));
 }
 
-_FORCE_INLINE_ Vector<Ref<StatModifier> > *Stat::get_modifiers() {
+Vector<Ref<StatModifier> > *Stat::get_modifiers() {
 	return &_modifiers;
 }
 
@@ -618,8 +629,16 @@ void Stat::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dirty_mods"), "set_dirty_mods", "get_dirty_mods");
 
 	ClassDB::bind_method(D_METHOD("get_base"), &Stat::get_base);
+	ClassDB::bind_method(D_METHOD("set_base"), &Stat::set_base);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "base"), "set_base", "get_base");
+
 	ClassDB::bind_method(D_METHOD("get_bonus"), &Stat::get_bonus);
+	ClassDB::bind_method(D_METHOD("set_bonus"), &Stat::set_bonus);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "bonus"), "set_bonus", "get_bonus");
+
 	ClassDB::bind_method(D_METHOD("get_percent"), &Stat::get_percent);
+	ClassDB::bind_method(D_METHOD("set_percent"), &Stat::set_percent);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "percent"), "set_percent", "get_percent");
 
 	ClassDB::bind_method(D_METHOD("gets_current"), &Stat::gets_current);
 	ClassDB::bind_method(D_METHOD("sets_current", "value"), &Stat::sets_current);
