@@ -37,6 +37,7 @@ public:
 	int _get_stat_diff(int stat, int old_level, int new_level);
 
 	SimpleLevelStatData();
+	~SimpleLevelStatData();
 
 protected:
 	bool _set(const StringName &p_name, const Variant &p_value);

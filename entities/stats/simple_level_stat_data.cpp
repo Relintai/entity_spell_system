@@ -53,6 +53,10 @@ SimpleLevelStatData::SimpleLevelStatData() {
 	}
 }
 
+SimpleLevelStatData::~SimpleLevelStatData() {
+	_stat_per_level.clear();
+}
+
 bool SimpleLevelStatData::_set(const StringName &p_name, const Variant &p_value) {
 	if (ESS::get_instance()->stat_is_property(p_name)) {
 		int stat_id = ESS::get_instance()->stat_get_property_id(p_name);
