@@ -22,91 +22,127 @@ SOFTWARE.
 
 #include "complex_level_stat_data.h"
 
-int ComplexLevelStatData::get_agility_for_level(int level) {
-	return _entries[level].agility;
-}
-void ComplexLevelStatData::set_agility_for_level(int level, int value) {
-	_entries[level].agility = value;
-}
+#include "../../singletons/ess.h"
 
-int ComplexLevelStatData::get_strength_for_level(int level) {
-	return _entries[level].strength;
-}
-void ComplexLevelStatData::set_strength_for_level(int level, int value) {
-	_entries[level].strength = value;
-}
+int ComplexLevelStatData::get_stat_for_level(int main_stat, int level) {
+	ERR_FAIL_INDEX_V(level, EntityEnums::MAX_CHARACTER_LEVEL, 0);
+	ERR_FAIL_INDEX_V(main_stat, ESS::get_instance()->stat_get_main_stat_count(), 0);
 
-int ComplexLevelStatData::get_stamina_for_level(int level) {
-	return _entries[level].stamina;
+	return _stat_per_level[level][main_stat];
 }
-void ComplexLevelStatData::set_stamina_for_level(int level, int value) {
-	_entries[level].stamina = value;
-}
+void ComplexLevelStatData::set_stat_for_level(int main_stat, int level, int value) {
+	ERR_FAIL_INDEX(level, EntityEnums::MAX_CHARACTER_LEVEL);
+	ERR_FAIL_INDEX(main_stat, ESS::get_instance()->stat_get_main_stat_count());
 
-int ComplexLevelStatData::get_intellect_for_level(int level) {
-	return _entries[level].intellect;
-}
-void ComplexLevelStatData::set_intellect_for_level(int level, int value) {
-	_entries[level].intellect = value;
-}
-
-int ComplexLevelStatData::get_spirit_for_level(int level) {
-	return _entries[level].spirit;
-}
-void ComplexLevelStatData::set_spirit_for_level(int level, int value) {
-	_entries[level].spirit = value;
+	_stat_per_level[level].set(main_stat, value);
 }
 
 int ComplexLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_level) {
 	int s = 0;
 
 	for (int i = old_level; i < new_level; ++i) {
-		switch (main_stat) {
-			case Stat::MAIN_STAT_AGILITY:
-				s += get_agility_for_level(i);
-				break;
-			case Stat::MAIN_STAT_STRENGTH:
-				s += get_strength_for_level(i);
-				break;
-			case Stat::MAIN_STAT_STAMINA:
-				s += get_stamina_for_level(i);
-				break;
-			case Stat::MAIN_STAT_INTELLECT:
-				s += get_intellect_for_level(i);
-				break;
-			case Stat::MAIN_STAT_SPIRIT:
-				s += get_spirit_for_level(i);
-				break;
-		}
+		s += get_stat_for_level(main_stat, i);
 	}
 
 	return s;
 }
 
+ComplexLevelStatData::ComplexLevelStatData() {
+	int msc = ESS::get_instance()->stat_get_main_stat_count();
+
+	for (int i = 0; i < EntityEnums::MAX_CHARACTER_LEVEL; ++i) {
+		_stat_per_level[i].resize(msc);
+
+		for (int j = 0; j < msc; ++j) {
+			_stat_per_level[i].set(j, 0);
+		}
+	}
+}
+
+ComplexLevelStatData::~ComplexLevelStatData() {
+	for (int i = 0; i < EntityEnums::MAX_CHARACTER_LEVEL; ++i) {
+		_stat_per_level[i].clear();
+	}
+}
+
+bool ComplexLevelStatData::_set(const StringName &p_name, const Variant &p_value) {
+	String prop_name = p_name;
+
+	if (prop_name.begins_with("level_")) {
+		String level_prop = prop_name.get_slice("/", 0);
+		int level = level_prop.get_slice("_", 1).to_int();
+
+		if (level >= EntityEnums::MAX_CHARACTER_LEVEL)
+			return false;
+
+		String prop = prop_name.get_slice("/", 1);
+
+		if (ESS::get_instance()->stat_is_property(prop)) {
+			int stat_id = ESS::get_instance()->stat_get_property_id(prop);
+
+			if (_stat_per_level[level].size() < stat_id) {
+				_stat_per_level[level].resize(stat_id + 1);
+			}
+
+			_stat_per_level[level].set(stat_id, p_value);
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	return false;
+}
+
+bool ComplexLevelStatData::_get(const StringName &p_name, Variant &r_ret) const {
+	String prop_name = p_name;
+
+	if (prop_name.begins_with("level_")) {
+		String level_prop = prop_name.get_slice("/", 0);
+		int level = level_prop.get_slice("_", 1).to_int();
+
+		if (level >= EntityEnums::MAX_CHARACTER_LEVEL)
+			return false;
+
+		String prop = prop_name.get_slice("/", 1);
+
+		if (ESS::get_instance()->stat_is_property(prop)) {
+			int stat_id = ESS::get_instance()->stat_get_property_id(prop);
+
+			if (_stat_per_level[level].size() < stat_id) {
+				r_ret = 0;
+
+				return true;
+			}
+
+			r_ret = _stat_per_level[level].get(stat_id);
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	return false;
+}
+
+void ComplexLevelStatData::_get_property_list(List<PropertyInfo> *p_list) const {
+	//int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
+	int property_usange = PROPERTY_USAGE_DEFAULT;
+
+	int msc = ESS::get_instance()->stat_get_main_stat_count();
+
+	for (int i = 0; i < EntityEnums::MAX_CHARACTER_LEVEL; ++i) {
+		for (int j = 0; j < msc; ++j) {
+			p_list->push_back(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "/" + ESS::get_instance()->stat_get_property_name(j), PROPERTY_HINT_NONE, "", property_usange));
+		}
+	}
+}
+
 void ComplexLevelStatData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_get_stat_diff", "stat", "old_level", "new_level"), &ComplexLevelStatData::_get_stat_diff);
 
-	ClassDB::bind_method(D_METHOD("get_agility_for_level", "level"), &ComplexLevelStatData::get_agility_for_level);
-	ClassDB::bind_method(D_METHOD("set_agility_for_level", "level", "value"), &ComplexLevelStatData::set_agility_for_level);
-
-	ClassDB::bind_method(D_METHOD("get_strength_for_level", "level"), &ComplexLevelStatData::get_strength_for_level);
-	ClassDB::bind_method(D_METHOD("set_strength_for_level", "level", "value"), &ComplexLevelStatData::set_strength_for_level);
-
-	ClassDB::bind_method(D_METHOD("get_stamina_for_level", "level"), &ComplexLevelStatData::get_stamina_for_level);
-	ClassDB::bind_method(D_METHOD("set_stamina_for_level", "level", "value"), &ComplexLevelStatData::set_stamina_for_level);
-
-	ClassDB::bind_method(D_METHOD("get_intellect_for_level", "level"), &ComplexLevelStatData::get_intellect_for_level);
-	ClassDB::bind_method(D_METHOD("set_intellect_for_level", "level", "value"), &ComplexLevelStatData::set_intellect_for_level);
-
-	ClassDB::bind_method(D_METHOD("get_spirit_for_level", "level"), &ComplexLevelStatData::get_spirit_for_level);
-	ClassDB::bind_method(D_METHOD("set_spirit_for_level", "level", "value"), &ComplexLevelStatData::set_spirit_for_level);
-
-	for (int i = 0; i < EntityEnums::MAX_CHARACTER_LEVEL; ++i) {
-		ADD_GROUP("Level " + String::num(i + 1), "level_" + String::num(i + 1));
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_agility"), "set_agility_for_level", "get_agility_for_level", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_strength"), "set_strength_for_level", "get_strength_for_level", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_stamina"), "set_stamina_for_level", "get_stamina_for_level", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_intellect"), "set_intellect_for_level", "get_intellect_for_level", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "_spirit"), "set_spirit_for_level", "get_spirit_for_level", i);
-	}
+	ClassDB::bind_method(D_METHOD("get_stat_for_level", "main_stat", "level"), &ComplexLevelStatData::get_stat_for_level);
+	ClassDB::bind_method(D_METHOD("set_stat_for_level", "main_stat", "level", "value"), &ComplexLevelStatData::set_stat_for_level);
 }

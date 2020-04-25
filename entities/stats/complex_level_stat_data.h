@@ -32,45 +32,22 @@ class ComplexLevelStatData : public LevelStatData {
 	GDCLASS(ComplexLevelStatData, LevelStatData);
 
 public:
-	int get_agility_for_level(int level);
-	void set_agility_for_level(int level, int value);
-
-	int get_strength_for_level(int level);
-	void set_strength_for_level(int level, int value);
-
-	int get_stamina_for_level(int level);
-	void set_stamina_for_level(int level, int value);
-
-	int get_intellect_for_level(int level);
-	void set_intellect_for_level(int level, int value);
-
-	int get_spirit_for_level(int level);
-	void set_spirit_for_level(int level, int value);
+	int get_stat_for_level(int main_stat, int level);
+	void set_stat_for_level(int main_stat, int level, int value);
 
 	int _get_stat_diff(int stat, int old_level, int new_level);
 
-public:
-	struct ComplexLevelStatsEntry {
-		int agility;
-		int strength;
-		int stamina;
-		int intellect;
-		int spirit;
-
-		ComplexLevelStatsEntry() {
-			agility = 0;
-			strength = 0;
-			stamina = 0;
-			intellect = 0;
-			spirit = 0;
-		}
-	};
+	ComplexLevelStatData();
+	~ComplexLevelStatData();
 
 protected:
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
 	static void _bind_methods();
 
 private:
-	ComplexLevelStatsEntry _entries[EntityEnums::MAX_CHARACTER_LEVEL];
+	Vector<int> _stat_per_level[EntityEnums::MAX_CHARACTER_LEVEL];
 };
 
 #endif
