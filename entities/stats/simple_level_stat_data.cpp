@@ -61,8 +61,8 @@ bool SimpleLevelStatData::_set(const StringName &p_name, const Variant &p_value)
 	if (ESS::get_instance()->stat_is_property(p_name)) {
 		int stat_id = ESS::get_instance()->stat_get_property_id(p_name);
 
-		if (_stat_per_level.size() < stat_id) {
-			_stat_per_level.resize(stat_id + 1);
+		if (stat_id >= ESS::get_instance()->stat_get_main_stat_count()) {
+			return false;
 		}
 
 		_stat_per_level.set(stat_id, p_value);
@@ -77,10 +77,8 @@ bool SimpleLevelStatData::_get(const StringName &p_name, Variant &r_ret) const {
 	if (ESS::get_instance()->stat_is_property(p_name)) {
 		int stat_id = ESS::get_instance()->stat_get_property_id(p_name);
 
-		if (_stat_per_level.size() < stat_id) {
-			r_ret = 0;
-
-			return true;
+		if (stat_id >= ESS::get_instance()->stat_get_main_stat_count()) {
+			return false;
 		}
 
 		r_ret = _stat_per_level[stat_id];
