@@ -99,6 +99,10 @@ public:
 
 	int stat_get_id(const StringName &name) const;
 	StringName stat_get_name(const int id) const;
+
+	int stat_get_property_id(const StringName &name) const;
+	StringName stat_get_property_name(const int id) const;
+
 	int stat_get_count() const;
 
 	PoolStringArray stats_get() const;
@@ -135,6 +139,10 @@ private:
 	//Stats
 	Vector<StringName> _stat_id_to_name;
 	HashMap<StringName, int> _stat_name_to_id;
+
+	Vector<StringName> _stat_id_to_property;
+	HashMap<StringName, int> _stat_property_to_id;
+
 	String _stat_enum_string;
 	int _stat_main_stat_count;
 };

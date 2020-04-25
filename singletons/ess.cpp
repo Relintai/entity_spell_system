@@ -184,14 +184,27 @@ void ESS::stat_set_string(const String &stat_enum_string) {
 	_stat_id_to_name.clear();
 	_stat_name_to_id.clear();
 
+	_stat_id_to_property.clear();
+	_stat_property_to_id.clear();
+
 	int slicec = stat_enum_string.get_slice_count(",");
 	_stat_id_to_name.resize(slicec);
+	_stat_id_to_property.resize(slicec);
 
 	for (int i = 0; i < slicec; ++i) {
-		StringName s = StringName(stat_enum_string.get_slicec(',', i));
+		String slice = stat_enum_string.get_slicec(',', i);
+		StringName s = StringName(slice);
 
 		_stat_id_to_name.set(i, s);
 		_stat_name_to_id.set(s, i);
+
+		String st = slice;
+		st = st.to_lower();
+		st = st.replace(" ", "_");
+		StringName stp = StringName(st);
+
+		_stat_id_to_property.set(i, stp);
+		_stat_property_to_id.set(stp, i);
 	}
 }
 String ESS::stat_get_string() const {
@@ -208,6 +221,18 @@ StringName ESS::stat_get_name(const int id) const {
 
 	return _stat_id_to_name[id];
 }
+
+int ESS::stat_get_property_id(const StringName &name) const {
+	ERR_FAIL_COND_V(!_stat_property_to_id.has(name), 0);
+
+	return _stat_property_to_id[name];
+}
+StringName ESS::stat_get_property_name(const int id) const {
+	ERR_FAIL_INDEX_V(id, _stat_id_to_property.size(), StringName());
+
+	return _stat_id_to_property[id];
+}
+
 int ESS::stat_get_count() const {
 	return _stat_id_to_name.size();
 }
@@ -229,7 +254,11 @@ void ESS::stats_set(const PoolStringArray &array) {
 	_stat_id_to_name.clear();
 	_stat_name_to_id.clear();
 
+	_stat_id_to_property.clear();
+	_stat_property_to_id.clear();
+
 	_stat_id_to_name.resize(array.size());
+	_stat_id_to_property.resize(array.size());
 
 	if (array.size() > 0)
 		_stat_enum_string += array[0];
@@ -239,6 +268,14 @@ void ESS::stats_set(const PoolStringArray &array) {
 
 		_stat_id_to_name.set(i, s);
 		_stat_name_to_id.set(s, i);
+
+		String st = array[i];
+		st = st.to_lower();
+		st = st.replace(" ", "_");
+		StringName stp = StringName(st);
+
+		_stat_id_to_property.set(i, stp);
+		_stat_property_to_id.set(stp, i);
 
 		_stat_enum_string += ",";
 		_stat_enum_string += array[i];
@@ -321,6 +358,10 @@ void ESS::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("stat_get_id", "name"), &ESS::stat_get_id);
 	ClassDB::bind_method(D_METHOD("stat_get_name", "id"), &ESS::stat_get_name);
+
+	ClassDB::bind_method(D_METHOD("stat_get_property_id", "name"), &ESS::stat_get_property_id);
+	ClassDB::bind_method(D_METHOD("stat_get_property_name", "id"), &ESS::stat_get_property_name);
+
 	ClassDB::bind_method(D_METHOD("stat_get_count"), &ESS::stat_get_count);
 
 	ClassDB::bind_method(D_METHOD("stats_get"), &ESS::stats_get);
@@ -365,4 +406,7 @@ ESS::~ESS() {
 
 	_stat_id_to_name.clear();
 	_stat_name_to_id.clear();
+
+	_stat_id_to_property.clear();
+	_stat_property_to_id.clear();
 }
