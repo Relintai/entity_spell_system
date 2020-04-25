@@ -22,29 +22,20 @@ SOFTWARE.
 
 #include "stat_data.h"
 
-Ref<StatDataEntry> StatData::get_stat_data_int(int index) {
-	ERR_FAIL_INDEX_V(index, Stat::STAT_ID_TOTAL_STATS, Ref<StatDataEntry>(NULL));
+#include "../../singletons/ess.h"
 
-	return Ref<StatDataEntry>(_entries[index]);
+Ref<StatDataEntry> StatData::get_stat_data(int index) {
+	ERR_FAIL_INDEX_V(index, _entries.size(), Ref<StatDataEntry>(NULL));
+
+	return _entries[index];
 }
 
-void StatData::set_stat_data_int(int index, Ref<StatDataEntry> entry) {
-	ERR_FAIL_INDEX(index, Stat::STAT_ID_TOTAL_STATS);
+void StatData::set_stat_data(int index, Ref<StatDataEntry> entry) {
+	ERR_FAIL_INDEX(index, _entries.size());
 
-	_entries[index] = entry;
+	_entries.set(index, entry);
 }
 
-Ref<StatDataEntry> StatData::get_stat_data_enum(Stat::StatId stat_id) {
-	ERR_FAIL_INDEX_V(stat_id, Stat::STAT_ID_TOTAL_STATS, Ref<StatDataEntry>(NULL));
-
-	return Ref<StatDataEntry>(_entries[stat_id]);
-}
-
-void StatData::set_stat_data_enum(Stat::StatId stat_id, Ref<StatDataEntry> entry) {
-	ERR_FAIL_INDEX(stat_id, Stat::STAT_ID_TOTAL_STATS);
-
-	_entries[stat_id] = entry;
-}
 Ref<LevelStatData> StatData::get_level_stat_data() {
 	return _level_stat_data;
 }
@@ -54,22 +45,25 @@ void StatData::set_level_stat_data(Ref<LevelStatData> value) {
 }
 
 void StatData::get_stat_for_stat(Ref<Stat> stat) {
-	Ref<StatDataEntry> sd = get_stat_data_enum(stat->get_id());
+	Ref<StatDataEntry> sd = get_stat_data(stat->get_id());
 
-	ERR_FAIL_COND(sd == NULL);
+	ERR_FAIL_COND(!sd.is_valid());
 
 	sd->get_stats_for_stat(stat);
 }
 
 StatData::StatData() {
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+	//TODO remove? let properties handle this?
+	_entries.resize(ESS::get_instance()->stat_get_count());
+
+	for (int i = 0; i < _entries.size(); ++i) {
 		Ref<StatDataEntry> entry(memnew(StatDataEntry()));
-
-		entry->set_stat_id(static_cast<Stat::StatId>(i));
-
-		_entries[i] = Ref<StatDataEntry>(entry);
+		entry->set_stat_id(i);
+		_entries.set(i, Ref<StatDataEntry>(entry));
 	}
 
+	/*
+	TODO Add something equivalent to this into project settings
 	get_stat_data_enum(Stat::STAT_ID_HEALTH)->set_base(100);
 	get_stat_data_enum(Stat::STAT_ID_MANA)->set_base(100);
 	get_stat_data_enum(Stat::STAT_ID_SPEED)->set_base(4.2);
@@ -81,22 +75,71 @@ StatData::StatData() {
 	get_stat_data_enum(Stat::STAT_ID_BLOCK)->set_base(10);
 	get_stat_data_enum(Stat::STAT_ID_PARRY)->set_base(15);
 	get_stat_data_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION)->set_base(15);
-
 	get_stat_data_enum(Stat::STAT_ID_XP_RATE)->set_base(1);
+	*/
+}
+
+StatData::~StatData() {
+	_entries.clear();
+
+	_level_stat_data.unref();
+}
+
+bool StatData::_set(const StringName &p_name, const Variant &p_value) {
+	String name = p_name;
+
+	if (name.get_slicec('/', 0) == "stat") {
+		int stat_id = name.get_slicec('/', 1).to_int();
+
+		if (_entries.size() < stat_id) {
+			_entries.resize(stat_id + 1);
+		}
+
+		_entries.set(stat_id, p_value);
+
+		return true;
+	} else {
+		return false;
+	}
+
+	return true;
+}
+
+bool StatData::_get(const StringName &p_name, Variant &r_ret) const {
+	String name = p_name;
+
+	if (name.get_slicec('/', 0) == "stat") {
+		int stat_id = name.get_slicec('/', 1).to_int();
+
+		if (_entries.size() < stat_id) {
+			r_ret = Ref<StatDataEntry>();
+
+			return true;
+		}
+
+		r_ret = _entries[stat_id];
+
+		return true;
+	} else {
+		return false;
+	}
+
+	return true;
+}
+
+void StatData::_get_property_list(List<PropertyInfo> *p_list) const {
+	//int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
+	int property_usange = PROPERTY_USAGE_DEFAULT;
+
+	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
+		p_list->push_back(PropertyInfo(Variant::INT, "stat/" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry", property_usange));
+	}
 }
 
 void StatData::_bind_methods() {
 
-	ClassDB::bind_method(D_METHOD("get_stat_data_int", "index"), &StatData::get_stat_data_int);
-	ClassDB::bind_method(D_METHOD("set_stat_data_int", "index", "entry"), &StatData::set_stat_data_int);
-
-	ClassDB::bind_method(D_METHOD("get_stat_data_enum", "index"), &StatData::get_stat_data_enum);
-	ClassDB::bind_method(D_METHOD("set_stat_data_enum", "stat_id", "entry"), &StatData::set_stat_data_enum);
-
-	ADD_GROUP("Base Stats", "base_stat");
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "base_stat_" + Stat::stat_id_name(i), PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry"), "set_stat_data_enum", "get_stat_data_enum", i);
-	}
+	ClassDB::bind_method(D_METHOD("get_stat_data", "index"), &StatData::get_stat_data);
+	ClassDB::bind_method(D_METHOD("set_stat_data", "index", "entry"), &StatData::set_stat_data);
 
 	ClassDB::bind_method(D_METHOD("get_level_stat_data"), &StatData::get_level_stat_data);
 	ClassDB::bind_method(D_METHOD("set_level_stat_data", "value"), &StatData::set_level_stat_data);

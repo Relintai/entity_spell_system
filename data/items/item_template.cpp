@@ -27,6 +27,8 @@ SOFTWARE.
 #include "../spells/spell.h"
 #include "item_instance.h"
 
+#include "../../singletons/ess.h"
+
 #include "core/version.h"
 
 int ItemTemplate::get_id() const {
@@ -341,11 +343,11 @@ void ItemTemplate::set_item_stat_modifier_count(int value) {
 	_modifier_count = value;
 }
 
-Stat::StatId ItemTemplate::get_item_stat_id(const int index) const {
+int ItemTemplate::get_item_stat_id(const int index) const {
 	return _modifiers[index]->get_stat_id();
 }
 
-void ItemTemplate::set_item_stat_id(const int index, const Stat::StatId value) {
+void ItemTemplate::set_item_stat_id(const int index, const int value) {
 	_modifiers[index]->set_stat_id(value);
 }
 
@@ -492,6 +494,9 @@ void ItemTemplate::_validate_property(PropertyInfo &property) const {
 		if (frame >= _modifier_count) {
 			property.usage = 0;
 		}
+
+		if (property.name.ends_with("stat_id"))
+			property.hint_string = ESS::get_instance()->stat_get_string();
 	}
 }
 
@@ -656,7 +661,7 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_item_scaling_factor", "index", "value"), &ItemTemplate::set_item_scaling_factor);
 
 	for (int i = 0; i < MAX_ITEM_STAT_MOD; ++i) {
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "Modifiers_" + itos(i) + "/stat_id", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_stat_id", "get_item_stat_id", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "Modifiers_" + itos(i) + "/stat_id", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_stat_id", "get_item_stat_id", i);
 
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/min_base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_min_base_mod", "get_item_min_base_mod", i);
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/max_base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_max_base_mod", "get_item_max_base_mod", i);

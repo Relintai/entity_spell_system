@@ -33,8 +33,8 @@ class StatDataEntry : public Resource {
 	GDCLASS(StatDataEntry, Resource);
 
 public:
-	Stat::StatId get_stat_id();
-	void set_stat_id(Stat::StatId value);
+	int get_stat_id();
+	void set_stat_id(int value);
 
 	bool get_public();
 	void set_public(bool value);
@@ -56,8 +56,8 @@ public:
 	int get_mod_stat_count();
 	void set_mod_stat_count(int value);
 
-	Stat::StatId get_mod_stat_id(int index);
-	void set_mod_stat_id(int index, Stat::StatId value);
+	int get_mod_stat_id(int index);
+	void set_mod_stat_id(int index, int value);
 
 	Ref<Curve> get_mod_stat_curve(int index);
 	void set_mod_stat_curve(int index, Ref<Curve> curve);
@@ -71,12 +71,12 @@ public:
 	~StatDataEntry();
 
 protected:
-	static void _bind_methods();
 	void _validate_property(PropertyInfo &property) const;
+	static void _bind_methods();
 
 public:
 	struct ModStat {
-		Stat::StatId stat_id;
+		int stat_id;
 		Ref<Curve> curve;
 		float max_value;
 	};
@@ -86,7 +86,7 @@ public:
 	};
 
 private:
-	Stat::StatId _stat_id;
+	int _stat_id;
 	bool _public;
 	float _base;
 	float _bonus;

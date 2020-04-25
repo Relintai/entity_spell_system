@@ -22,11 +22,13 @@ SOFTWARE.
 
 #include "item_template_stat_modifier.h"
 
-Stat::StatId ItemTemplateStatModifier::get_stat_id() const {
+#include "../../singletons/ess.h"
+
+int ItemTemplateStatModifier::get_stat_id() const {
 	return _stat_id;
 }
 
-void ItemTemplateStatModifier::set_stat_id(const Stat::StatId value) {
+void ItemTemplateStatModifier::set_stat_id(const int value) {
 	_stat_id = value;
 }
 
@@ -87,7 +89,7 @@ void ItemTemplateStatModifier::set_scaling_factor(const float value) {
 }
 
 ItemTemplateStatModifier::ItemTemplateStatModifier() {
-	_stat_id = Stat::STAT_ID_HEALTH;
+	_stat_id = 0;
 	_min_mod_max = 0;
 	_max_mod_max = 0;
 	_min_mod_precent = 0;
@@ -95,10 +97,16 @@ ItemTemplateStatModifier::ItemTemplateStatModifier() {
 	_scaling_factor = 1;
 }
 
+void ItemTemplateStatModifier::_validate_property(PropertyInfo &property) const {
+	if (property.name == "stat_id") {
+		property.hint_string = ESS::get_instance()->stat_get_string();
+	}
+}
+
 void ItemTemplateStatModifier::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stat_id"), &ItemTemplateStatModifier::get_stat_id);
 	ClassDB::bind_method(D_METHOD("set_stat_id", "value"), &ItemTemplateStatModifier::set_stat_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_id", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING), "set_stat_id", "get_stat_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_id", PROPERTY_HINT_ENUM, ""), "set_stat_id", "get_stat_id");
 
 	ClassDB::bind_method(D_METHOD("get_min_base_mod"), &ItemTemplateStatModifier::get_min_base_mod);
 	ClassDB::bind_method(D_METHOD("set_min_base_mod", "value"), &ItemTemplateStatModifier::set_min_base_mod);

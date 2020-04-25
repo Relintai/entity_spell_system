@@ -34,11 +34,8 @@ class StatData : public Resource {
 	GDCLASS(StatData, Resource);
 
 public:
-	Ref<StatDataEntry> get_stat_data_int(int index);
-	void set_stat_data_int(int index, Ref<StatDataEntry> entry);
-
-	Ref<StatDataEntry> get_stat_data_enum(Stat::StatId stat_id);
-	void set_stat_data_enum(Stat::StatId stat_id, Ref<StatDataEntry> entry);
+	Ref<StatDataEntry> get_stat_data(int index);
+	void set_stat_data(int index, Ref<StatDataEntry> entry);
 
 	Ref<LevelStatData> get_level_stat_data();
 	void set_level_stat_data(Ref<LevelStatData> value);
@@ -46,12 +43,16 @@ public:
 	void get_stat_for_stat(Ref<Stat> stat);
 
 	StatData();
+	~StatData();
 
 protected:
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
 	static void _bind_methods();
 
 private:
-	Ref<StatDataEntry> _entries[Stat::STAT_ID_TOTAL_STATS];
+	Vector<Ref<StatDataEntry> > _entries;
 
 	Ref<LevelStatData> _level_stat_data;
 };

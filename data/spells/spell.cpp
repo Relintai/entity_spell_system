@@ -396,10 +396,10 @@ void Spell::set_damage_max(const int value) {
 	_damage_max = value;
 }
 
-Stat::StatId Spell::get_damage_scale_stat() const {
+int Spell::get_damage_scale_stat() const {
 	return _damage_scale_stat;
 }
-void Spell::set_damage_scale_stat(const Stat::StatId value) {
+void Spell::set_damage_scale_stat(const int value) {
 	_damage_scale_stat = value;
 }
 
@@ -431,10 +431,10 @@ void Spell::set_heal_max(const int value) {
 	_heal_max = value;
 }
 
-Stat::StatId Spell::get_heal_scale_stat() const {
+int Spell::get_heal_scale_stat() const {
 	return _heal_scale_stat;
 }
-void Spell::set_heal_scale_stat(const Stat::StatId value) {
+void Spell::set_heal_scale_stat(const int value) {
 	_heal_scale_stat = value;
 }
 
@@ -773,7 +773,10 @@ void Spell::handle_gcd(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
 	if (_global_cooldown_enabled && _cast_time_enabled) {
-		info->get_caster()->sstart_global_cooldown(info->get_caster()->get_gcd()->gets_current());
+		Ref<Stat> gcd = info->get_caster()->get_stat(ESS::get_instance()->stat_get_id("Global Cooldown"));
+
+		if (gcd.is_valid())
+			info->get_caster()->sstart_global_cooldown(gcd->gets_current());
 	}
 }
 void Spell::handle_cooldown(Ref<SpellCastInfo> info) {
@@ -876,13 +879,13 @@ Spell::Spell() {
 	_damage_type = 0;
 	_damage_min = 0;
 	_damage_max = 0;
-	_damage_scale_stat = Stat::STAT_ID_NONE;
+	_damage_scale_stat = 0;
 	_damage_scale_coeff = 0;
 
 	_heal_enabled = false;
 	_heal_min = 0;
 	_heal_max = 0;
-	_heal_scale_stat = Stat::STAT_ID_NONE;
+	_heal_scale_stat = 0;
 	_heal_scale_coeff = 0;
 
 	_dispell_enabled = false;
@@ -1127,6 +1130,12 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 
 			aura->sapply(aai);
 		}
+	}
+}
+
+void Spell::_validate_property(PropertyInfo &property) const {
+	if (property.name.ends_with("_stat")) {
+		property.hint_string = ESS::get_instance()->stat_get_string();
 	}
 }
 
@@ -1382,7 +1391,7 @@ void Spell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_damage_scale_stat"), &Spell::get_damage_scale_stat);
 	ClassDB::bind_method(D_METHOD("set_damage_scale_stat", "value"), &Spell::set_damage_scale_stat);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_scale_stat", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING), "set_damage_scale_stat", "get_damage_scale_stat");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_scale_stat", PROPERTY_HINT_ENUM, ""), "set_damage_scale_stat", "get_damage_scale_stat");
 
 	ClassDB::bind_method(D_METHOD("get_damage_scale_coeff"), &Spell::get_damage_scale_coeff);
 	ClassDB::bind_method(D_METHOD("set_damage_scale_coeff", "value"), &Spell::set_damage_scale_coeff);
@@ -1403,7 +1412,7 @@ void Spell::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_heal_scale_stat"), &Spell::get_heal_scale_stat);
 	ClassDB::bind_method(D_METHOD("set_heal_scale_stat", "value"), &Spell::set_heal_scale_stat);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_scale_stat", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING), "set_heal_scale_stat", "get_heal_scale_stat");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_scale_stat", PROPERTY_HINT_ENUM, ""), "set_heal_scale_stat", "get_heal_scale_stat");
 
 	ClassDB::bind_method(D_METHOD("get_heal_scale_coeff"), &Spell::get_heal_scale_coeff);
 	ClassDB::bind_method(D_METHOD("set_heal_scale_coeff", "value"), &Spell::set_heal_scale_coeff);

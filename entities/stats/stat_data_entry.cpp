@@ -24,18 +24,20 @@ SOFTWARE.
 
 #include "core/version.h"
 
+#include "../../singletons/ess.h"
+
 #if VERSION_MAJOR >= 4
 #define REAL FLOAT
 #endif
 
-Stat::StatId StatDataEntry::get_stat_id() {
+int StatDataEntry::get_stat_id() {
 	return _stat_id;
 }
-void StatDataEntry::set_stat_id(Stat::StatId value) {
+void StatDataEntry::set_stat_id(int value) {
 	_stat_id = value;
 
-	if (static_cast<int>(value) < Stat::STAT_ID_GLOBAL_COOLDOWN)
-		_public = true;
+	//if (value < Stat::STAT_ID_GLOBAL_COOLDOWN) TODO
+	_public = true;
 }
 
 bool StatDataEntry::get_public() {
@@ -84,12 +86,12 @@ void StatDataEntry::set_mod_stat_count(int value) {
 	_mod_stat_count = value;
 }
 
-Stat::StatId StatDataEntry::get_mod_stat_id(int index) {
-	ERR_FAIL_INDEX_V(index, MAX_MOD_STATS, Stat::STAT_ID_HEALTH);
+int StatDataEntry::get_mod_stat_id(int index) {
+	ERR_FAIL_INDEX_V(index, MAX_MOD_STATS, 0);
 
 	return _mod_stats[index].stat_id;
 }
-void StatDataEntry::set_mod_stat_id(int index, Stat::StatId value) {
+void StatDataEntry::set_mod_stat_id(int index, int value) {
 	ERR_FAIL_INDEX(index, MAX_MOD_STATS);
 
 	_mod_stats[index].stat_id = value;
@@ -128,7 +130,7 @@ void StatDataEntry::get_stats_for_stat(Ref<Stat> stat) {
 }
 
 StatDataEntry::StatDataEntry() {
-	_stat_id = Stat::STAT_ID_NONE;
+	_stat_id = 0;
 
 	_public = false;
 	_base = 0;
@@ -139,7 +141,7 @@ StatDataEntry::StatDataEntry() {
 	_modifier_apply_type = Stat::MODIFIER_APPLY_TYPE_STANDARD;
 
 	for (int i = 0; i < MAX_MOD_STATS; ++i) {
-		_mod_stats[i].stat_id = Stat::STAT_ID_HEALTH;
+		_mod_stats[i].stat_id = 0;
 		_mod_stats[i].max_value = 1000;
 	}
 }
@@ -150,10 +152,24 @@ StatDataEntry::~StatDataEntry() {
 	}
 }
 
+void StatDataEntry::_validate_property(PropertyInfo &property) const {
+	String prop = property.name;
+	if (prop.begins_with("ModStat_")) {
+		int frame = prop.get_slicec('/', 0).get_slicec('_', 1).to_int();
+		if (frame >= _mod_stat_count) {
+			property.usage = 0;
+		}
+	}
+
+	if (prop.ends_with("stat_id")) {
+		property.hint_string = ESS::get_instance()->stat_get_string();
+	}
+}
+
 void StatDataEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stat_id"), &StatDataEntry::get_stat_id);
 	ClassDB::bind_method(D_METHOD("set_stat_id", "value"), &StatDataEntry::set_stat_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_id", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING), "set_stat_id", "get_stat_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_id", PROPERTY_HINT_ENUM, ""), "set_stat_id", "get_stat_id");
 
 	ClassDB::bind_method(D_METHOD("get_base"), &StatDataEntry::get_base);
 	ClassDB::bind_method(D_METHOD("set_base", "value"), &StatDataEntry::set_base);
@@ -187,20 +203,10 @@ void StatDataEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_mod_stat_max_value", "index", "value"), &StatDataEntry::set_mod_stat_max_value);
 
 	for (int i = 0; i < MAX_MOD_STATS; i++) {
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "ModStat_" + itos(i) + "/stat_id", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_id", "get_mod_stat_id", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "ModStat_" + itos(i) + "/stat_id", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_id", "get_mod_stat_id", i);
 		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "ModStat_" + itos(i) + "/curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_curve", "get_mod_stat_curve", i);
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "ModStat_" + itos(i) + "/max_value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_max_value", "get_mod_stat_max_value", i);
 	}
 
 	ClassDB::bind_method(D_METHOD("get_stats_for_stat", "stat"), &StatDataEntry::get_stats_for_stat);
-}
-
-void StatDataEntry::_validate_property(PropertyInfo &property) const {
-	String prop = property.name;
-	if (prop.begins_with("ModStat_")) {
-		int frame = prop.get_slicec('/', 0).get_slicec('_', 1).to_int();
-		if (frame >= _mod_stat_count) {
-			property.usage = 0;
-		}
-	}
 }

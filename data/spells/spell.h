@@ -214,8 +214,8 @@ public:
 	int get_damage_max() const;
 	void set_damage_max(const int value);
 
-	Stat::StatId get_damage_scale_stat() const;
-	void set_damage_scale_stat(const Stat::StatId value);
+	int get_damage_scale_stat() const;
+	void set_damage_scale_stat(const int value);
 
 	float get_damage_scale_coeff() const;
 	void set_damage_scale_coeff(const float value);
@@ -229,8 +229,8 @@ public:
 	int get_heal_max() const;
 	void set_heal_max(const int value);
 
-	Stat::StatId get_heal_scale_stat() const;
-	void set_heal_scale_stat(const Stat::StatId value);
+	int get_heal_scale_stat() const;
+	void set_heal_scale_stat(const int value);
 
 	float get_heal_scale_coeff() const;
 	void set_heal_scale_coeff(const float value);
@@ -356,6 +356,7 @@ protected:
 	virtual void _handle_projectile(Ref<SpellCastInfo> info);
 	virtual void _handle_effect(Ref<SpellCastInfo> info);
 
+	void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 
 private:
@@ -408,13 +409,13 @@ private:
 	int _damage_type;
 	int _damage_min;
 	int _damage_max;
-	Stat::StatId _damage_scale_stat;
+	int _damage_scale_stat;
 	float _damage_scale_coeff;
 
 	bool _heal_enabled;
 	int _heal_min;
 	int _heal_max;
-	Stat::StatId _heal_scale_stat;
+	int _heal_scale_stat;
 	float _heal_scale_coeff;
 
 	bool _dispell_enabled;

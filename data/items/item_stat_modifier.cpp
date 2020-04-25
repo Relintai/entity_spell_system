@@ -22,11 +22,13 @@ SOFTWARE.
 
 #include "item_stat_modifier.h"
 
-Stat::StatId ItemStatModifier::get_stat_id() {
+#include "../../singletons/ess.h"
+
+int ItemStatModifier::get_stat_id() {
 	return _stat_id;
 }
 
-void ItemStatModifier::set_stat_id(Stat::StatId value) {
+void ItemStatModifier::set_stat_id(int value) {
 	_stat_id = value;
 }
 
@@ -75,23 +77,29 @@ Dictionary ItemStatModifier::_to_dict() {
 void ItemStatModifier::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
-	_stat_id = static_cast<Stat::StatId>(static_cast<int>(dict.get("stat_id", 0)));
+	_stat_id = dict.get("stat_id", 0);
 	_base_mod = dict.get("base_mod", 0);
 	_bonus_mod = dict.get("bonus_mod", 0);
 	_percent_mod = dict.get("percent_mod", 0);
 }
 
 ItemStatModifier::ItemStatModifier() {
-	_stat_id = Stat::STAT_ID_HEALTH;
+	_stat_id = 0;
 	_base_mod = 0;
 	_bonus_mod = 0;
 	_percent_mod = 0;
 }
 
+void ItemStatModifier::_validate_property(PropertyInfo &property) const {
+	if (property.name == "stat_id") {
+		property.hint_string = ESS::get_instance()->stat_get_string();
+	}
+}
+
 void ItemStatModifier::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stat_id"), &ItemStatModifier::get_stat_id);
 	ClassDB::bind_method(D_METHOD("set_stat_id", "value"), &ItemStatModifier::set_stat_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_id", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING), "set_stat_id", "get_stat_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_id", PROPERTY_HINT_ENUM, ""), "set_stat_id", "get_stat_id");
 
 	ClassDB::bind_method(D_METHOD("get_base_mod"), &ItemStatModifier::get_base_mod);
 	ClassDB::bind_method(D_METHOD("set_base_mod", "value"), &ItemStatModifier::set_base_mod);

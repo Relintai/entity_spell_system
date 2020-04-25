@@ -464,12 +464,12 @@ void Aura::set_aura_stat_attribute_count(int count) {
 	_aura_stat_attribute_count = count;
 }
 
-Stat::StatId Aura::get_aura_stat_attribute_stat(int index) const {
-	ERR_FAIL_INDEX_V(index, MAX_AURA_STATS, Stat::STAT_ID_NONE);
+int Aura::get_aura_stat_attribute_stat(int index) const {
+	ERR_FAIL_INDEX_V(index, MAX_AURA_STATS, 0);
 
 	return _aura_stat_attributes[index]->get_stat();
 }
-void Aura::set_aura_stat_attribute_stat(int index, const Stat::StatId value) {
+void Aura::set_aura_stat_attribute_stat(int index, const int value) {
 	ERR_FAIL_INDEX(index, MAX_AURA_STATS);
 
 	_aura_stat_attributes[index]->set_stat(value);
@@ -1145,7 +1145,7 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 		for (int i = 0; i < _aura_stat_attribute_count; ++i) {
 			Ref<AuraStatAttribute> stat_attribute = _aura_stat_attributes[i];
 
-			Ref<Stat> stat = info->get_target()->get_stat_enum(stat_attribute->get_stat());
+			Ref<Stat> stat = info->get_target()->get_stat(stat_attribute->get_stat());
 			stat->add_modifier(_id, stat_attribute->get_base_mod(), stat_attribute->get_bonus_mod(), stat_attribute->get_percent_mod());
 		}
 
@@ -1171,7 +1171,7 @@ void Aura::_sdeapply(Ref<AuraData> data) {
 	for (int i = 0; i < _aura_stat_attribute_count; ++i) {
 		Ref<AuraStatAttribute> stat_attribute = _aura_stat_attributes[i];
 
-		Ref<Stat> stat = data->get_owner()->get_stat_enum(stat_attribute->get_stat());
+		Ref<Stat> stat = data->get_owner()->get_stat(stat_attribute->get_stat());
 		stat->remove_modifier(_id);
 	}
 
@@ -1360,6 +1360,9 @@ void Aura::_validate_property(PropertyInfo &property) const {
 		if (frame >= _aura_stat_attribute_count) {
 			property.usage = 0;
 		}
+
+		if (property.name.ends_with("stat"))
+			property.hint_string = ESS::get_instance()->stat_get_string();
 	} else if (prop.begins_with("Trigger_")) {
 		int frame = prop.get_slicec('/', 0).get_slicec('_', 1).to_int();
 		if (frame >= _trigger_count) {
@@ -1848,7 +1851,7 @@ void Aura::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "attribute_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_AURA_STATS), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_aura_stat_attribute_count", "get_aura_stat_attribute_count");
 
 	for (int i = 0; i < MAX_AURA_STATS; i++) {
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "StatModAttribute_" + itos(i) + "/stat", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura_stat_attribute_stat", "get_aura_stat_attribute_stat", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "StatModAttribute_" + itos(i) + "/stat", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura_stat_attribute_stat", "get_aura_stat_attribute_stat", i);
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura_stat_attribute_base_mod", "get_aura_stat_attribute_base_mod", i);
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/bonus_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura_stat_attribute_bonus_mod", "get_aura_stat_attribute_bonus_mod", i);
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura_stat_attribute_percent_mod", "get_aura_stat_attribute_percent_mod", i);

@@ -223,8 +223,8 @@ public:
 	int get_aura_stat_attribute_count() const;
 	void set_aura_stat_attribute_count(int count);
 
-	Stat::StatId get_aura_stat_attribute_stat(int index) const;
-	void set_aura_stat_attribute_stat(int index, const Stat::StatId value);
+	int get_aura_stat_attribute_stat(int index) const;
+	void set_aura_stat_attribute_stat(int index, const int value);
 
 	float get_aura_stat_attribute_base_mod(int index) const;
 	void set_aura_stat_attribute_base_mod(int index, float value);

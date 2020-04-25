@@ -36,8 +36,8 @@ class ItemStatModifier : public Reference {
 	GDCLASS(ItemStatModifier, Reference);
 
 public:
-	Stat::StatId get_stat_id();
-	void set_stat_id(Stat::StatId value);
+	int get_stat_id();
+	void set_stat_id(int value);
 
 	float get_base_mod();
 	void set_base_mod(float value);
@@ -57,10 +57,11 @@ public:
 	ItemStatModifier();
 
 protected:
+	void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 
 private:
-	Stat::StatId _stat_id;
+	int _stat_id;
 	float _base_mod;
 	float _bonus_mod;
 	float _percent_mod;

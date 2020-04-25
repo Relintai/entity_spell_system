@@ -145,8 +145,8 @@ public:
 	int get_item_stat_modifier_count() const;
 	void set_item_stat_modifier_count(const int value);
 
-	Stat::StatId get_item_stat_id(int index) const;
-	void set_item_stat_id(int index, Stat::StatId value);
+	int get_item_stat_id(int index) const;
+	void set_item_stat_id(int index, int value);
 
 	float get_item_min_base_mod(const int index) const;
 	void set_item_min_base_mod(const int index, const float value);
@@ -182,8 +182,8 @@ public:
 	};
 
 protected:
-	static void _bind_methods();
 	void _validate_property(PropertyInfo &property) const;
+	static void _bind_methods();
 
 private:
 	enum {

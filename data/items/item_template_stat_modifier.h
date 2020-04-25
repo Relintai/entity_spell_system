@@ -36,8 +36,8 @@ class ItemTemplateStatModifier : public Reference {
 	GDCLASS(ItemTemplateStatModifier, Reference);
 
 public:
-	Stat::StatId get_stat_id() const;
-	void set_stat_id(const Stat::StatId value);
+	int get_stat_id() const;
+	void set_stat_id(const int value);
 
 	float get_min_base_mod() const;
 	void set_min_base_mod(const float value);
@@ -63,10 +63,11 @@ public:
 	ItemTemplateStatModifier();
 
 protected:
+	virtual void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 
 private:
-	Stat::StatId _stat_id;
+	int _stat_id;
 
 	float _min_mod_max;
 	float _max_mod_max;

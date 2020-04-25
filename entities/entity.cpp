@@ -567,10 +567,10 @@ void Entity::_setup() {
 
 		ERR_FAIL_COND(!stat_data.is_valid());
 
-		for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
-			Ref<StatDataEntry> sde = stat_data->get_stat_data_int(i);
+		for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
+			Ref<StatDataEntry> sde = stat_data->get_stat_data(i);
 
-			_stats[i]->set_stat_data_entry(sde);
+			_stats.get(i)->set_stat_data_entry(sde);
 		}
 
 		sets_ai(_s_entity_data->get_ai_instance());
@@ -631,11 +631,11 @@ void Entity::_setup() {
 
 	ERR_FAIL_COND(!cc.is_valid());
 
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
 		cc->get_stat_data()->get_stat_for_stat(_stats[i]);
 	}
 
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
 		Ref<Stat> s = _stats[i];
 
 		s->apply_modifiers();
@@ -1092,7 +1092,7 @@ Dictionary Entity::_to_dict() {
 
 	Dictionary sd;
 
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
 		Ref<Stat> s = _stats[i];
 
 		sd[i] = s->to_dict();
@@ -1272,7 +1272,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	Dictionary stats = dict.get("stats", Dictionary());
 
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
 		Ref<Stat> s = _stats[i];
 
 		s->from_dict(stats.get(String::num(i), Dictionary()));
@@ -1809,32 +1809,16 @@ int Entity::getc_craft_recipe_count() {
 
 ////    Stat System    ////
 
-Ref<Stat> Entity::get_stat_int(int index) {
+Ref<Stat> Entity::get_stat(int index) {
+	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), Ref<Stat>());
+
 	return _stats[index];
 }
 
-void Entity::set_stat_int(int index, Ref<Stat> entry) {
-	_stats[index] = Ref<Stat>(entry);
-}
+void Entity::set_stat(int index, Ref<Stat> entry) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
 
-Ref<Stat> Entity::get_stat_enum(Stat::StatId stat_id) {
-	ERR_FAIL_INDEX_V(stat_id, Stat::STAT_ID_TOTAL_STATS, Ref<Stat>());
-
-	return _stats[stat_id];
-}
-
-void Entity::set_stat_enum(Stat::StatId stat_id, Ref<Stat> entry) {
-	ERR_FAIL_COND(!entry.is_valid());
-
-	//ERR_FAIL_COND(stat_id == Stat::STAT_ID_NONE);
-
-	if (stat_id == Stat::STAT_ID_NONE) {
-		print_error("Add fail cond here, stat has STAT_ID_NONE!");
-		_stats[0] = Ref<Stat>(entry);
-		return;
-	}
-
-	_stats[stat_id] = Ref<Stat>(entry);
+	_stats.set(index, entry);
 }
 
 void Entity::sdie() {
@@ -1867,20 +1851,23 @@ void Entity::onc_stat_changed(Ref<Stat> stat) {
 }
 
 void Entity::ssend_stat(int id, int ccurrent, int cmax) {
-	ERR_FAIL_INDEX(id, Stat::STAT_ID_TOTAL_STATS);
+	ERR_FAIL_INDEX(id, ESS::get_instance()->stat_get_count());
 
-	if (id <= Stat::STAT_ID_MANA) {
-		VRPC(creceive_stat, id, ccurrent, cmax);
-		return;
-	}
+	//TODO, mark stats that should be sent to all clients like health
+	//if (id <= ESS::get_instance()->stat_get_main_stat_count()) {
+	//	VRPC(creceive_stat, id, ccurrent, cmax);
+	//	return;
+	//}
 
-	ORPC(creceive_stat, id, ccurrent, cmax);
+	VRPC(creceive_stat, id, ccurrent, cmax);
+
+	//ORPC(creceive_stat, id, ccurrent, cmax);
 }
 
 void Entity::creceive_stat(int id, int ccurrent, int cmax) {
-	ERR_FAIL_INDEX(id, Stat::STAT_ID_TOTAL_STATS);
+	ERR_FAIL_INDEX(id, ESS::get_instance()->stat_get_count());
 
-	_stats[id]->setc_values(ccurrent, cmax);
+	_stats.get(id)->setc_values(ccurrent, cmax);
 }
 
 ////    Equip Slots    ////
@@ -2099,7 +2086,7 @@ void Entity::_sapply_item(Ref<ItemInstance> item) {
 		if (!mod.is_valid())
 			continue;
 
-		Ref<Stat> stat = get_stat_enum(mod->get_stat_id());
+		Ref<Stat> stat = get_stat(mod->get_stat_id());
 
 		ERR_CONTINUE(!stat.is_valid());
 
@@ -2125,7 +2112,7 @@ void Entity::_sdeapply_item(Ref<ItemInstance> item) {
 		if (!mod.is_valid())
 			continue;
 
-		Ref<Stat> stat = get_stat_enum(mod->get_stat_id());
+		Ref<Stat> stat = get_stat(mod->get_stat_id());
 
 		ERR_CONTINUE(!stat.is_valid());
 
@@ -2386,13 +2373,16 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 
 	son_damage_receive(info);
 
-	int h = get_health()->gets_current() - info->get_damage();
+	Ref<Stat> hp = get_stat(ESS::get_instance()->stat_get_id("Health"));
+	ERR_FAIL_COND(!hp.is_valid());
+
+	int h = hp->gets_current() - info->get_damage();
 
 	if (h < 0) {
 		h = 0;
 	}
 
-	get_health()->sets_current(h);
+	hp->sets_current(h);
 
 	son_damage_dealt(info);
 
@@ -2402,7 +2392,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	//send an event to client
 	VRPCOBJ(cdamage_dealt_rpc, JSON::print(info->to_dict()), con_damage_dealt, info);
 
-	if (get_health()->gets_current() <= 0) {
+	if (hp->gets_current() <= 0) {
 		sdie();
 	}
 }
@@ -2426,7 +2416,10 @@ void Entity::sdeal_damage_to(Ref<SpellDamageInfo> info) {
 	//signal
 	emit_signal("son_damage_received", this, info);
 
-	if (get_health()->gets_current() <= 0) {
+	Ref<Stat> hp = get_stat(ESS::get_instance()->stat_get_id("Health"));
+	ERR_FAIL_COND(!hp.is_valid());
+
+	if (hp->gets_current() <= 0) {
 		sdie();
 	}
 }
@@ -2455,12 +2448,15 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 
 	son_heal_receive(info);
 
-	int h = get_health()->gets_current() + info->get_heal();
+	Ref<Stat> hp = get_stat(ESS::get_instance()->stat_get_id("Health"));
+	ERR_FAIL_COND(!hp.is_valid());
 
-	if (h > get_health()->gets_max()) {
-		h = get_health()->gets_max();
+	int h = hp->gets_current() + info->get_heal();
+
+	if (h > hp->gets_max()) {
+		h = hp->gets_max();
 	}
-	get_health()->sets_current(h);
+	hp->sets_current(h);
 
 	//send an event to client
 	VRPCOBJ(cheal_dealt_rpc, JSON::print(info->to_dict()), con_heal_dealt, info);
@@ -5766,7 +5762,7 @@ void Entity::update(float delta) {
 			}
 		}
 
-		for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+		for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
 			Ref<Stat> s = _stats[i];
 
 			if (s->get_dirty_mods())
@@ -6141,10 +6137,11 @@ Entity::Entity() {
 	//_action_bar_profile.instance();
 	_actionbar_locked = false;
 
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
-		Ref<Stat> s = Ref<Stat>(memnew(Stat(static_cast<Stat::StatId>(i), this)));
+	_stats.resize(ESS::get_instance()->stat_get_count());
+	for (int i = 0; i < _stats.size(); ++i) {
+		Ref<Stat> s = Ref<Stat>(memnew(Stat(i, this)));
 
-		_stats[i] = s;
+		_stats.set(i, s);
 	}
 
 	_sai_state = EntityEnums::AI_STATE_OFF;
@@ -6386,9 +6383,7 @@ Entity::~Entity() {
 	_s_talents.clear();
 	_c_talents.clear();
 
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
-		_stats[i].unref();
-	}
+	_stats.clear();
 
 	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
 		_s_equipment[i].unref();
@@ -6488,7 +6483,7 @@ void Entity::_son_character_level_up(int level) {
 
 		int statid = i + Stat::MAIN_STAT_ID_START;
 
-		Ref<Stat> stat = get_stat_int(statid);
+		Ref<Stat> stat = get_stat(statid);
 
 		Ref<StatModifier> sm = stat->get_modifier(0);
 		sm->set_base_mod(sm->get_base_mod() + st);
@@ -6700,7 +6695,7 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 		if (!stat.is_valid()) {
 			stat.instance();
 			stat->set_owner(this);
-			_stats[stat_id] = stat;
+			_stats.set(stat_id, stat);
 		}
 
 		if (stat_prop_name == "public") {
@@ -7259,7 +7254,7 @@ void Entity::_get_property_list(List<PropertyInfo> *p_list) const {
 	//int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
 	int property_usange = PROPERTY_USAGE_DEFAULT;
 
-	for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
 		Ref<Stat> stat = _stats[i];
 
 		if (!stat.is_valid())
@@ -7840,33 +7835,11 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_entity_data", "value"), &Entity::setc_entity_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "centity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData", 0), "setc_entity_data", "getc_entity_data");
 
-	ClassDB::bind_method(D_METHOD("get_health"), &Entity::get_health);
-	ClassDB::bind_method(D_METHOD("get_mana"), &Entity::get_mana);
-	ClassDB::bind_method(D_METHOD("get_rage"), &Entity::get_rage);
-	ClassDB::bind_method(D_METHOD("get_energy"), &Entity::get_energy);
-	ClassDB::bind_method(D_METHOD("get_speed"), &Entity::get_speed);
-	ClassDB::bind_method(D_METHOD("get_gcd"), &Entity::get_gcd);
-	ClassDB::bind_method(D_METHOD("get_melee_crit"), &Entity::get_melee_crit);
-	ClassDB::bind_method(D_METHOD("get_melee_crit_bonus"), &Entity::get_melee_crit_bonus);
-	ClassDB::bind_method(D_METHOD("get_spell_crit"), &Entity::get_spell_crit);
-	ClassDB::bind_method(D_METHOD("get_spell_crit_bonus"), &Entity::get_spell_crit_bonus);
-	ClassDB::bind_method(D_METHOD("get_block"), &Entity::get_block);
-	ClassDB::bind_method(D_METHOD("get_parry"), &Entity::get_parry);
-	ClassDB::bind_method(D_METHOD("get_damage_reduction"), &Entity::get_damage_reduction);
-	ClassDB::bind_method(D_METHOD("get_melee_damage_reduction"), &Entity::get_melee_damage_reduction);
-	ClassDB::bind_method(D_METHOD("get_spell_damage_reduction"), &Entity::get_spell_damage_reduction);
-	ClassDB::bind_method(D_METHOD("get_damage_taken"), &Entity::get_damage_taken);
-	ClassDB::bind_method(D_METHOD("get_melee_damage"), &Entity::get_melee_damage);
-	ClassDB::bind_method(D_METHOD("get_spell_damage"), &Entity::get_spell_damage);
-
-	ClassDB::bind_method(D_METHOD("get_stat_int", "index"), &Entity::get_stat_int);
-	ClassDB::bind_method(D_METHOD("set_stat_int", "index", "entry"), &Entity::set_stat_int);
-
-	ClassDB::bind_method(D_METHOD("get_stat_enum", "index"), &Entity::get_stat_enum);
-	ClassDB::bind_method(D_METHOD("set_stat_enum", "stat_id", "entry"), &Entity::set_stat_enum);
+	ClassDB::bind_method(D_METHOD("get_stat", "index"), &Entity::get_stat);
+	ClassDB::bind_method(D_METHOD("set_stat", "index", "entry"), &Entity::set_stat);
 
 	//todo
-	//for (int i = 0; i < Stat::STAT_ID_TOTAL_STATS; ++i) {
+	//for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
 	//	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "stats/" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "Stat"), "set_stat_int", "get_stat_int", i);
 	//}
 

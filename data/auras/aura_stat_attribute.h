@@ -26,12 +26,14 @@ SOFTWARE.
 #include "../../entities/stats/stat.h"
 #include "core/reference.h"
 
+#include "../../singletons/ess.h"
+
 class AuraStatAttribute : public Reference {
 	GDCLASS(AuraStatAttribute, Reference);
 
 public:
-	Stat::StatId get_stat() const { return _stat; }
-	void set_stat(Stat::StatId value) { _stat = value; }
+	int get_stat() const { return _stat; }
+	void set_stat(int value) { _stat = value; }
 
 	float get_base_mod() const { return _base_mod; }
 	void set_base_mod(float value) { _base_mod = value; }
@@ -43,17 +45,23 @@ public:
 	void set_percent_mod(float value) { _percent_mod = value; }
 
 	AuraStatAttribute() {
-		_stat = Stat::STAT_ID_NONE;
+		_stat = 0;
 		_base_mod = 0;
 		_bonus_mod = 0;
 		_percent_mod = 0;
 	}
 
 protected:
+	void validate_property(PropertyInfo &property) const {
+		if (property.name == "stat") {
+			property.hint_string = ESS::get_instance()->stat_get_string();
+		}
+	}
+
 	static void _bind_methods() {
 		ClassDB::bind_method(D_METHOD("get_stat"), &AuraStatAttribute::get_stat);
 		ClassDB::bind_method(D_METHOD("set_stat", "value"), &AuraStatAttribute::set_stat);
-		ADD_PROPERTY(PropertyInfo(Variant::INT, "stat", PROPERTY_HINT_ENUM, Stat::STAT_BINDING_STRING), "set_stat", "get_stat");
+		ADD_PROPERTY(PropertyInfo(Variant::INT, "stat", PROPERTY_HINT_ENUM, ""), "set_stat", "get_stat");
 
 		ClassDB::bind_method(D_METHOD("get_base_mod"), &AuraStatAttribute::get_base_mod);
 		ClassDB::bind_method(D_METHOD("set_base_mod", "value"), &AuraStatAttribute::set_base_mod);
@@ -69,7 +77,7 @@ protected:
 	}
 
 private:
-	Stat::StatId _stat;
+	int _stat;
 	float _base_mod;
 	float _bonus_mod;
 	float _percent_mod;

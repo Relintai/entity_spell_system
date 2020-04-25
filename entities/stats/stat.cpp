@@ -22,118 +22,20 @@ SOFTWARE.
 
 #include "stat.h"
 
+#include "../../singletons/ess.h"
 #include "../entity.h"
 #include "stat_data_entry.h"
 
 #include "core/version.h"
 
-const String Stat::STAT_BINDING_STRING = "Health,Speed,Mana,GCD,Haste,Agility,Strength,Stamina,Intellect,Spirit,Haste Rating,Resilience,Armor,Attack Power,Spell Power,Melee Crit,Melee Crit bonus,Spell Crit,Spell Crit Bonus,Block,Parry,Damage Reduction,Melee Damage Reduction,Spell Damage Reduction,Damage Taken,Heal Taken,Melee Damage,Spell Damage,Holy Resist,Shadow Resist,Nature Resist,Fire Resist,Frost Resist,Lightning Resist,Chaos Resist,Silence Resist,Fear Resist,Stun Resist,Energy,Rage,XP Rate,None";
 const String Stat::MAIN_STAT_BINDING_STRING = "Agility,Strength,Stamina,Intellect,Spirit";
 
 const String Stat::MODIFIER_APPLY_TYPE_BINDING_STRING = "Standard,Only min modifier,Only Max modifier";
 
-String Stat::stat_id_name(int stat_id) {
-	switch (stat_id) {
-		case STAT_ID_HEALTH:
-			return "health";
-		case STAT_ID_SPEED:
-			return "speed";
-		case STAT_ID_MANA:
-			return "mana";
-		case STAT_ID_GLOBAL_COOLDOWN:
-			return "gcd";
-		case STAT_ID_HASTE:
-			return "haste";
-
-		case STAT_ID_AGILITY:
-			return "agility";
-		case STAT_ID_STRENGTH:
-			return "strength";
-		case STAT_ID_STAMINA:
-			return "stamina";
-		case STAT_ID_INTELLECT:
-			return "intellect";
-		case STAT_ID_SPIRIT:
-			return "spirit";
-
-		case STAT_ID_HASTE_RATING:
-			return "haste_rating";
-		case STAT_ID_RESLILIENCE:
-			return "resilience";
-		case STAT_ID_ARMOR:
-			return "armor";
-
-		case STAT_ID_ATTACK_POWER:
-			return "attack_power";
-		case STAT_ID_SPELL_POWER:
-			return "spell_power";
-
-		case STAT_ID_MELEE_CRIT:
-			return "melee_crit";
-		case STAT_ID_MELEE_CRIT_BONUS:
-			return "melee_crit_bonus";
-		case STAT_ID_SPELL_CRIT:
-			return "spell_crit";
-		case STAT_ID_SPELL_CRIT_BONUS:
-			return "spell_crit_bonus";
-
-		case STAT_ID_BLOCK:
-			return "block";
-		case STAT_ID_PARRY:
-			return "parry";
-		case STAT_ID_DAMAGE_REDUCTION:
-			return "damage_reduction";
-		case STAT_ID_MELEE_DAMAGE_REDUCTION:
-			return "melee_damage_reduction";
-		case STAT_ID_SPELL_DAMAGE_REDUCTION:
-			return "spell_damage_reduction";
-		case STAT_ID_DAMAGE_TAKEN:
-			return "damage_taken";
-		case STAT_ID_HEAL_TAKEN:
-			return "heal_taken";
-
-		case STAT_ID_MELEE_DAMAGE:
-			return "melee_damage";
-		case STAT_ID_SPELL_DAMAGE:
-			return "spell_damage";
-
-		case STAT_ID_HOLY_RESIST:
-			return "holy_resist";
-		case STAT_ID_SHADOW_RESIST:
-			return "shadow_resist";
-		case STAT_ID_NATURE_RESIST:
-			return "nature_resist";
-		case STAT_ID_FIRE_RESIST:
-			return "fire_resist";
-		case STAT_ID_FROST_RESIST:
-			return "frost_resist";
-		case STAT_ID_LIGHTNING_RESIST:
-			return "lightning_resist";
-		case STAT_ID_CHAOS_RESIST:
-			return "chaos_resist";
-		case STAT_ID_SILENCE_RESIST:
-			return "silence_resist";
-		case STAT_ID_FEAR_RESIST:
-			return "fear_resist";
-		case STAT_ID_STUN_RESIST:
-			return "stun_resist";
-
-		case STAT_ID_ENERGY:
-			return "energy";
-		case STAT_ID_RAGE:
-			return "rage";
-
-		case STAT_ID_XP_RATE:
-			return "xp_rate";
-	}
-
-	return "";
-}
-
-Stat::StatId Stat::get_id() {
+int Stat::get_id() {
 	return _id;
 }
-void Stat::set_id(Stat::StatId id) {
+void Stat::set_id(int id) {
 	_id = id;
 }
 
@@ -384,7 +286,7 @@ void Stat::apply_modifiers() {
 	_dirty_mods = false;
 
 	for (int i = 0; i < _stat_data_entry->get_mod_stat_count(); ++i) {
-		Ref<Stat> stat = _owner->get_stat_enum(_stat_data_entry->get_mod_stat_id(i));
+		Ref<Stat> stat = _owner->get_stat(_stat_data_entry->get_mod_stat_id(i));
 		Ref<Curve> curve = _stat_data_entry->get_mod_stat_curve(i);
 		float max_value = _stat_data_entry->get_mod_stat_max_value(i);
 
@@ -481,7 +383,7 @@ Dictionary Stat::_to_dict() {
 void Stat::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
-	_id = (Stat::StatId)((int)dict.get("id", 0));
+	_id = dict.get("id", 0);
 	_modifier_apply_type = (StatModifierApplyType)((int)dict.get("modifier_apply_type", 0));
 
 	_public = dict.get("public", false);
@@ -518,7 +420,7 @@ void Stat::_from_dict(const Dictionary &dict) {
 }
 
 Stat::Stat() {
-	_id = Stat::STAT_ID_NONE;
+	_id = 0;
 	_owner = NULL;
 
 	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
@@ -540,7 +442,7 @@ Stat::Stat() {
 	_c_max = 0;
 }
 
-Stat::Stat(Stat::StatId id, Entity *owner) {
+Stat::Stat(int id, Entity *owner) {
 	_id = id;
 	_owner = owner;
 
@@ -563,7 +465,7 @@ Stat::Stat(Stat::StatId id, Entity *owner) {
 	_c_max = 0;
 }
 
-Stat::Stat(Stat::StatId id, StatModifierApplyType modifier_apply_type, Entity *owner) {
+Stat::Stat(int id, StatModifierApplyType modifier_apply_type, Entity *owner) {
 	_id = id;
 	_owner = owner;
 
@@ -592,13 +494,19 @@ Stat::~Stat() {
 	_stat_data_entry.unref();
 }
 
+void Stat::_validate_property(PropertyInfo &property) const {
+	if (property.name == "id") {
+		property.hint_string = ESS::get_instance()->stat_get_string();
+	}
+}
+
 void Stat::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("s_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
 	ADD_SIGNAL(MethodInfo("c_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
 
 	ClassDB::bind_method(D_METHOD("get_id"), &Stat::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "id"), &Stat::set_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "id", PROPERTY_HINT_ENUM, STAT_BINDING_STRING), "set_id", "get_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "id", PROPERTY_HINT_ENUM, ""), "set_id", "get_id");
 
 	ClassDB::bind_method(D_METHOD("get_stat_data_entry"), &Stat::get_stat_data_entry);
 	ClassDB::bind_method(D_METHOD("set_stat_data_entry", "value"), &Stat::set_stat_data_entry);
@@ -686,51 +594,6 @@ void Stat::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &Stat::_from_dict);
 	ClassDB::bind_method(D_METHOD("_to_dict"), &Stat::_to_dict);
-
-	BIND_ENUM_CONSTANT(STAT_ID_HEALTH);
-	BIND_ENUM_CONSTANT(STAT_ID_SPEED);
-	BIND_ENUM_CONSTANT(STAT_ID_MANA);
-	BIND_ENUM_CONSTANT(STAT_ID_GLOBAL_COOLDOWN);
-	BIND_ENUM_CONSTANT(STAT_ID_HASTE);
-
-	BIND_ENUM_CONSTANT(STAT_ID_AGILITY);
-	BIND_ENUM_CONSTANT(STAT_ID_STRENGTH);
-	BIND_ENUM_CONSTANT(STAT_ID_STAMINA);
-	BIND_ENUM_CONSTANT(STAT_ID_INTELLECT);
-	BIND_ENUM_CONSTANT(STAT_ID_SPIRIT);
-
-	BIND_ENUM_CONSTANT(STAT_ID_HASTE_RATING);
-	BIND_ENUM_CONSTANT(STAT_ID_RESLILIENCE);
-	BIND_ENUM_CONSTANT(STAT_ID_ARMOR);
-
-	BIND_ENUM_CONSTANT(STAT_ID_ATTACK_POWER);
-	BIND_ENUM_CONSTANT(STAT_ID_SPELL_POWER);
-
-	BIND_ENUM_CONSTANT(STAT_ID_MELEE_CRIT);
-	BIND_ENUM_CONSTANT(STAT_ID_MELEE_CRIT_BONUS);
-	BIND_ENUM_CONSTANT(STAT_ID_SPELL_CRIT);
-	BIND_ENUM_CONSTANT(STAT_ID_SPELL_CRIT_BONUS);
-	BIND_ENUM_CONSTANT(STAT_ID_BLOCK);
-	BIND_ENUM_CONSTANT(STAT_ID_PARRY);
-	BIND_ENUM_CONSTANT(STAT_ID_DAMAGE_REDUCTION);
-	BIND_ENUM_CONSTANT(STAT_ID_MELEE_DAMAGE_REDUCTION);
-	BIND_ENUM_CONSTANT(STAT_ID_SPELL_DAMAGE_REDUCTION);
-	BIND_ENUM_CONSTANT(STAT_ID_DAMAGE_TAKEN);
-	BIND_ENUM_CONSTANT(STAT_ID_MELEE_DAMAGE);
-	BIND_ENUM_CONSTANT(STAT_ID_SPELL_DAMAGE);
-
-	BIND_ENUM_CONSTANT(STAT_ID_HOLY_RESIST);
-	BIND_ENUM_CONSTANT(STAT_ID_SHADOW_RESIST);
-	BIND_ENUM_CONSTANT(STAT_ID_NATURE_RESIST);
-	BIND_ENUM_CONSTANT(STAT_ID_FIRE_RESIST);
-	BIND_ENUM_CONSTANT(STAT_ID_FROST_RESIST);
-	BIND_ENUM_CONSTANT(STAT_ID_LIGHTNING_RESIST);
-	BIND_ENUM_CONSTANT(STAT_ID_CHAOS_RESIST);
-	BIND_ENUM_CONSTANT(STAT_ID_SILENCE_RESIST);
-	BIND_ENUM_CONSTANT(STAT_ID_FEAR_RESIST);
-
-	BIND_ENUM_CONSTANT(STAT_ID_TOTAL_STATS);
-	BIND_ENUM_CONSTANT(STAT_ID_NONE);
 
 	BIND_ENUM_CONSTANT(MODIFIER_APPLY_TYPE_STANDARD);
 	BIND_ENUM_CONSTANT(MODIFIER_APPLY_TYPE_ONLY_MIN_MODIFIER);

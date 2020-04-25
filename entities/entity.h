@@ -333,34 +333,8 @@ public:
 	void setc_seed(int value);
 
 	////     Stats    ////
-
-	_FORCE_INLINE_ Ref<Stat> get_health() { return _stats[Stat::STAT_ID_HEALTH]; }
-	_FORCE_INLINE_ Ref<Stat> get_mana() { return _stats[Stat::STAT_ID_MANA]; }
-	_FORCE_INLINE_ Ref<Stat> get_energy() { return _stats[Stat::STAT_ID_RAGE]; }
-	_FORCE_INLINE_ Ref<Stat> get_rage() { return _stats[Stat::STAT_ID_ENERGY]; }
-	_FORCE_INLINE_ Ref<Stat> get_speed() { return _stats[Stat::STAT_ID_SPEED]; }
-	_FORCE_INLINE_ Ref<Stat> get_gcd() { return _stats[Stat::STAT_ID_GLOBAL_COOLDOWN]; }
-
-	_FORCE_INLINE_ Ref<Stat> get_melee_crit() { return _stats[Stat::STAT_ID_MELEE_CRIT]; }
-	_FORCE_INLINE_ Ref<Stat> get_melee_crit_bonus() { return _stats[Stat::STAT_ID_MELEE_CRIT_BONUS]; }
-	_FORCE_INLINE_ Ref<Stat> get_spell_crit() { return _stats[Stat::STAT_ID_SPELL_CRIT]; }
-	_FORCE_INLINE_ Ref<Stat> get_spell_crit_bonus() { return _stats[Stat::STAT_ID_SPELL_CRIT_BONUS]; }
-
-	_FORCE_INLINE_ Ref<Stat> get_block() { return _stats[Stat::STAT_ID_BLOCK]; }
-	_FORCE_INLINE_ Ref<Stat> get_parry() { return _stats[Stat::STAT_ID_PARRY]; }
-	_FORCE_INLINE_ Ref<Stat> get_damage_reduction() { return _stats[Stat::STAT_ID_DAMAGE_REDUCTION]; }
-	_FORCE_INLINE_ Ref<Stat> get_melee_damage_reduction() { return _stats[Stat::STAT_ID_MELEE_DAMAGE_REDUCTION]; }
-	_FORCE_INLINE_ Ref<Stat> get_spell_damage_reduction() { return _stats[Stat::STAT_ID_SPELL_DAMAGE_REDUCTION]; }
-	_FORCE_INLINE_ Ref<Stat> get_damage_taken() { return _stats[Stat::STAT_ID_DAMAGE_TAKEN]; }
-	_FORCE_INLINE_ Ref<Stat> get_heal_taken() { return _stats[Stat::STAT_ID_HEAL_TAKEN]; }
-	_FORCE_INLINE_ Ref<Stat> get_melee_damage() { return _stats[Stat::STAT_ID_MELEE_DAMAGE]; }
-	_FORCE_INLINE_ Ref<Stat> get_spell_damage() { return _stats[Stat::STAT_ID_SPELL_DAMAGE]; }
-
-	Ref<Stat> get_stat_int(int index);
-	void set_stat_int(int index, Ref<Stat> entry);
-
-	Ref<Stat> get_stat_enum(Stat::StatId stat_id);
-	void set_stat_enum(Stat::StatId stat_id, Ref<Stat> entry);
+	Ref<Stat> get_stat(int index);
+	void set_stat(int index, Ref<Stat> entry);
 
 	void sdie();
 	void cdie();
@@ -1105,7 +1079,7 @@ private:
 
 	////     Stats    ////
 
-	Ref<Stat> _stats[Stat::STAT_ID_TOTAL_STATS];
+	Vector<Ref<Stat> > _stats;
 
 	////    Equipment    ////
 
@@ -1204,7 +1178,7 @@ private:
 	////    Stat Allocations    ////
 
 	//int _unallocated_stats;
-	//int _stat_allocations[Stat::STAT_ID_TOTAL_STATS];
+	//int _stat_allocations[ESS::get_instance()->stat_get_count()];
 
 	////    Inventory    ////
 
