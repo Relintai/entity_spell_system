@@ -102,6 +102,7 @@ public:
 
 	int stat_get_property_id(const StringName &name) const;
 	StringName stat_get_property_name(const int id) const;
+	bool stat_is_property(const StringName &name) const;
 
 	int stat_get_count() const;
 

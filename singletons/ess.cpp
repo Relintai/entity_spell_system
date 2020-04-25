@@ -232,6 +232,9 @@ StringName ESS::stat_get_property_name(const int id) const {
 
 	return _stat_id_to_property[id];
 }
+bool ESS::stat_is_property(const StringName &name) const {
+	return _stat_property_to_id.has(name);
+}
 
 int ESS::stat_get_count() const {
 	return _stat_id_to_name.size();
@@ -361,6 +364,7 @@ void ESS::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("stat_get_property_id", "name"), &ESS::stat_get_property_id);
 	ClassDB::bind_method(D_METHOD("stat_get_property_name", "id"), &ESS::stat_get_property_name);
+	ClassDB::bind_method(D_METHOD("stat_is_property", "name"), &ESS::stat_is_property);
 
 	ClassDB::bind_method(D_METHOD("stat_get_count"), &ESS::stat_get_count);
 
