@@ -177,6 +177,81 @@ void ESS::setup(const Ref<ESSResourceDB> &resource_db, const Ref<ESSEntitySpawne
 	_ess_entity_spawner = entity_spawner;
 }
 
+//Stats
+void ESS::stat_set_string(const String &stat_enum_string) {
+	_stat_enum_string = stat_enum_string;
+
+	_stat_id_to_name.clear();
+	_stat_name_to_id.clear();
+
+	int slicec = stat_enum_string.get_slice_count(",");
+	_stat_id_to_name.resize(slicec);
+
+	for (int i = 0; i < slicec; ++i) {
+		StringName s = StringName(stat_enum_string.get_slicec(',', i));
+
+		_stat_id_to_name.set(i, s);
+		_stat_name_to_id.set(s, i);
+	}
+}
+String ESS::stat_get_string() const {
+	return _stat_enum_string;
+}
+
+int ESS::stat_get_id(const StringName &name) const {
+	ERR_FAIL_COND_V(!_stat_name_to_id.has(name), 0);
+
+	return _stat_name_to_id[name];
+}
+StringName ESS::stat_get_name(const int id) const {
+	ERR_FAIL_INDEX_V(id, _stat_id_to_name.size(), StringName());
+
+	return _stat_id_to_name[id];
+}
+int ESS::stat_get_count() const {
+	return _stat_id_to_name.size();
+}
+
+PoolStringArray ESS::stats_get() const {
+	PoolStringArray arr;
+	arr.resize(_stat_id_to_name.size());
+
+	for (int i = 0; i < _stat_id_to_name.size(); ++i) {
+		arr.set(i, _stat_id_to_name[i]);
+	}
+
+	return arr;
+}
+
+void ESS::stats_set(const PoolStringArray &array) {
+	_stat_enum_string = "";
+
+	_stat_id_to_name.clear();
+	_stat_name_to_id.clear();
+
+	_stat_id_to_name.resize(array.size());
+
+	if (array.size() > 0)
+		_stat_enum_string += array[0];
+
+	for (int i = 0; i < array.size(); ++i) {
+		StringName s = StringName(array[i]);
+
+		_stat_id_to_name.set(i, s);
+		_stat_name_to_id.set(s, i);
+
+		_stat_enum_string += ",";
+		_stat_enum_string += array[i];
+	}
+}
+
+int ESS::stat_get_main_stat_count() const {
+	return _stat_main_stat_count;
+}
+void ESS::stat_set_main_stat_count(const int index) {
+	_stat_main_stat_count = index;
+}
+
 void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_use_spell_points"), &ESS::get_use_spell_points);
 	ClassDB::bind_method(D_METHOD("set_use_spell_points", "value"), &ESS::set_use_spell_points);
@@ -238,6 +313,23 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("load_all"), &ESS::load_all);
 
 	ClassDB::bind_method(D_METHOD("setup", "resource_db", "entity_spawner"), &ESS::setup);
+
+	//Stats
+	ClassDB::bind_method(D_METHOD("stat_get_string"), &ESS::stat_get_string);
+	ClassDB::bind_method(D_METHOD("stat_set_string", "stat_enum_string"), &ESS::stat_set_string);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "stat_string"), "stat_set_string", "stat_get_string");
+
+	ClassDB::bind_method(D_METHOD("stat_get_id", "name"), &ESS::stat_get_id);
+	ClassDB::bind_method(D_METHOD("stat_get_name", "id"), &ESS::stat_get_name);
+	ClassDB::bind_method(D_METHOD("stat_get_count"), &ESS::stat_get_count);
+
+	ClassDB::bind_method(D_METHOD("stats_get"), &ESS::stats_get);
+	ClassDB::bind_method(D_METHOD("stats_set", "array"), &ESS::stats_set);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "stats"), "stats_set", "stats_get");
+
+	ClassDB::bind_method(D_METHOD("stat_get_main_stat_count"), &ESS::stat_get_main_stat_count);
+	ClassDB::bind_method(D_METHOD("stat_set_main_stat_count", "index"), &ESS::stat_set_main_stat_count);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "main_stat_count"), "stat_set_main_stat_count", "stat_get_main_stat_count");
 }
 
 ESS::ESS() {
@@ -257,6 +349,9 @@ ESS::ESS() {
 	_ess_resource_db_path = GLOBAL_DEF("ess/data/ess_resource_db_path", "");
 	_ess_entity_spawner_path = GLOBAL_DEF("ess/data/ess_entity_spawner_path", "");
 
+	stat_set_string(GLOBAL_DEF("ess/enums/stats", "Agility,Strenght,Stamina,Intellect,Spirit,Health,Speed,Global Cooldown,Haste"));
+	_stat_main_stat_count = GLOBAL_DEF("ess/enums/main_stat_count", 6);
+
 	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load) {
 		call_deferred("load_all");
 	}
@@ -267,4 +362,7 @@ ESS::~ESS() {
 
 	_ess_resource_db.unref();
 	_ess_entity_spawner.unref();
+
+	_stat_id_to_name.clear();
+	_stat_name_to_id.clear();
 }

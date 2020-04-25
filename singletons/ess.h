@@ -93,6 +93,20 @@ public:
 
 	void setup(const Ref<ESSResourceDB> &resource_db, const Ref<ESSEntitySpawner> &entity_spawner);
 
+	//Stats
+	String stat_get_string() const;
+	void stat_set_string(const String &stat_enum_string);
+
+	int stat_get_id(const StringName &name) const;
+	StringName stat_get_name(const int id) const;
+	int stat_get_count() const;
+
+	PoolStringArray stats_get() const;
+	void stats_set(const PoolStringArray &array);
+
+	int stat_get_main_stat_count() const;
+	void stat_set_main_stat_count(const int index);
+
 	ESS();
 	~ESS();
 
@@ -117,6 +131,12 @@ private:
 	bool _use_class_xp;
 	bool _allow_class_spell_learning;
 	bool _allow_class_recipe_learning;
+
+	//Stats
+	Vector<StringName> _stat_id_to_name;
+	HashMap<StringName, int> _stat_name_to_id;
+	String _stat_enum_string;
+	int _stat_main_stat_count;
 };
 
 #endif
