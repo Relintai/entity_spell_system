@@ -46,17 +46,6 @@ public:
 		MODIFIER_APPLY_TYPE_ONLY_MAX_MODIFIER,
 	};
 
-	enum MainStats {
-		MAIN_STAT_AGILITY = 0,
-		MAIN_STAT_STRENGTH = 1,
-		MAIN_STAT_STAMINA = 2,
-		MAIN_STAT_INTELLECT = 3,
-		MAIN_STAT_SPIRIT = 4,
-
-		MAIN_STAT_ID_START = 0,
-		MAIN_STAT_ID_COUNT = 5,
-	};
-
 	static String stat_id_name(int stat_id);
 
 public:
@@ -167,7 +156,6 @@ private:
 	Ref<StatDataEntry> _stat_data_entry;
 };
 
-VARIANT_ENUM_CAST(Stat::MainStats);
 VARIANT_ENUM_CAST(Stat::StatModifierApplyType);
 
 #endif
