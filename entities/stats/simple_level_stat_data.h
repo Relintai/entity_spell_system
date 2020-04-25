@@ -31,34 +31,21 @@ class SimpleLevelStatData : public LevelStatData {
 	GDCLASS(SimpleLevelStatData, LevelStatData);
 
 public:
-	int get_agility_per_level();
-	void set_agility_per_level(int value);
-
-	int get_strength_per_level();
-	void set_strength_per_level(int value);
-
-	int get_stamina_per_level();
-	void set_stamina_per_level(int value);
-
-	int get_intellect_per_level();
-	void set_intellect_per_level(int value);
-
-	int get_spirit_per_level();
-	void set_spirit_per_level(int value);
+	int get_stat_per_level(int main_stat);
+	void set_stat_per_level(int main_stat, int value);
 
 	int _get_stat_diff(int stat, int old_level, int new_level);
 
 	SimpleLevelStatData();
 
 protected:
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
 	static void _bind_methods();
 
 private:
-	int _agility_per_level;
-	int _strength_per_level;
-	int _stamina_per_level;
-	int _intellect_per_level;
-	int _spirit_per_level;
+	Vector<int> _stat_per_level;
 };
 
 #endif
