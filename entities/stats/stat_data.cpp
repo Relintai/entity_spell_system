@@ -132,7 +132,7 @@ void StatData::_get_property_list(List<PropertyInfo> *p_list) const {
 	int property_usange = PROPERTY_USAGE_DEFAULT;
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-		p_list->push_back(PropertyInfo(Variant::INT, "stat/" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry", property_usange));
+		p_list->push_back(PropertyInfo(Variant::OBJECT, "stat/" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry", property_usange));
 	}
 }
 
