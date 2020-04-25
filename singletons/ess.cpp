@@ -394,8 +394,8 @@ ESS::ESS() {
 	_ess_resource_db_path = GLOBAL_DEF("ess/data/ess_resource_db_path", "");
 	_ess_entity_spawner_path = GLOBAL_DEF("ess/data/ess_entity_spawner_path", "");
 
-	stat_set_string(GLOBAL_DEF("ess/enums/stats", "Agility,Strenght,Stamina,Intellect,Spirit,Health,Speed,Global Cooldown,Haste"));
-	_stat_main_stat_count = GLOBAL_DEF("ess/enums/main_stat_count", 6);
+	stat_set_string(GLOBAL_DEF("ess/enums/stats", "Agility,Strength,Stamina,Intellect,Spirit,Health,Speed,Global Cooldown,Haste"));
+	_stat_main_stat_count = GLOBAL_DEF("ess/enums/main_stat_count", 5);
 
 	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load) {
 		call_deferred("load_all");
