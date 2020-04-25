@@ -6478,12 +6478,10 @@ void Entity::_son_character_level_up(int level) {
 	if (!ecd.is_valid())
 		return;
 
-	for (int i = 0; i < Stat::MAIN_STAT_ID_COUNT; ++i) {
+	for (int i = 0; i < ESS::get_instance()->stat_get_main_stat_count(); ++i) {
 		int st = gets_entity_data()->get_entity_class_data()->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_character_level() - level, gets_character_level());
 
-		int statid = i + Stat::MAIN_STAT_ID_START;
-
-		Ref<Stat> stat = get_stat(statid);
+		Ref<Stat> stat = get_stat(i);
 
 		Ref<StatModifier> sm = stat->get_modifier(0);
 		sm->set_base_mod(sm->get_base_mod() + st);
