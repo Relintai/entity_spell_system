@@ -89,15 +89,21 @@ bool StatData::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name;
 
 	if (name.get_slicec('/', 0) == "stat") {
-		int stat_id = name.get_slicec('/', 1).to_int();
+		StringName prop = name.get_slicec('/', 1);
 
-		if (_entries.size() < stat_id) {
-			_entries.resize(stat_id + 1);
+		if (ESS::get_instance()->stat_is_property(prop)) {
+			int stat_id = ESS::get_instance()->stat_get_property_id(prop);
+
+			if (_entries.size() < stat_id) {
+				_entries.resize(stat_id + 1);
+			}
+
+			_entries.set(stat_id, p_value);
+
+			return true;
+		} else {
+			return false;
 		}
-
-		_entries.set(stat_id, p_value);
-
-		return true;
 	} else {
 		return false;
 	}
@@ -109,17 +115,23 @@ bool StatData::_get(const StringName &p_name, Variant &r_ret) const {
 	String name = p_name;
 
 	if (name.get_slicec('/', 0) == "stat") {
-		int stat_id = name.get_slicec('/', 1).to_int();
+		StringName prop = name.get_slicec('/', 1);
 
-		if (_entries.size() < stat_id) {
-			r_ret = Ref<StatDataEntry>();
+		if (ESS::get_instance()->stat_is_property(prop)) {
+			int stat_id = ESS::get_instance()->stat_get_property_id(prop);
+
+			if (_entries.size() < stat_id) {
+				r_ret = Ref<StatDataEntry>();
+
+				return true;
+			}
+
+			r_ret = _entries[stat_id];
 
 			return true;
+		} else {
+			return false;
 		}
-
-		r_ret = _entries[stat_id];
-
-		return true;
 	} else {
 		return false;
 	}
@@ -132,7 +144,7 @@ void StatData::_get_property_list(List<PropertyInfo> *p_list) const {
 	int property_usange = PROPERTY_USAGE_DEFAULT;
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-		p_list->push_back(PropertyInfo(Variant::OBJECT, "stat/" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry", property_usange));
+		p_list->push_back(PropertyInfo(Variant::OBJECT, "stat/" + ESS::get_instance()->stat_get_property_name(i), PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry", property_usange));
 	}
 }
 
