@@ -155,7 +155,7 @@ Vector<Variant> ESSResourceDBStatic::get_entity_datas() const {
 	return r;
 }
 void ESSResourceDBStatic::set_entity_datas(const Vector<Variant> &data) {
-	_craft_recipes.clear();
+	_entity_datas.clear();
 	for (int i = 0; i < data.size(); i++) {
 		Ref<EntityData> d = Ref<EntityData>(data[i]);
 

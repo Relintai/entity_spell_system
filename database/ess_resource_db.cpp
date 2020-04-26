@@ -355,7 +355,7 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_data_index", "index"), &ESSResourceDB::get_entity_data_index);
 	ClassDB::bind_method(D_METHOD("get_entity_data_count"), &ESSResourceDB::get_entity_data_count);
 	ClassDB::bind_method(D_METHOD("get_entity_datas"), &ESSResourceDB::get_entity_datas);
-	ClassDB::bind_method(D_METHOD("set_entity_datas", "recipe"), &ESSResourceDB::set_entity_skills);
+	ClassDB::bind_method(D_METHOD("set_entity_datas", "recipe"), &ESSResourceDB::set_entity_datas);
 
 	ClassDB::bind_method(D_METHOD("get_entity_data_path", "path"), &ESSResourceDB::get_entity_data_path);
 	ClassDB::bind_method(D_METHOD("entity_data_id_to_path", "id"), &ESSResourceDB::entity_data_id_to_path);
