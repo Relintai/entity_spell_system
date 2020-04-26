@@ -323,7 +323,7 @@ void ESSResourceDB::_bind_methods() {
 	//XPData
 	ClassDB::bind_method(D_METHOD("get_xp_data"), &ESSResourceDB::get_xp_data);
 	ClassDB::bind_method(D_METHOD("set_xp_data", "data"), &ESSResourceDB::set_xp_data);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "xp_data"), "set_xp_data", "get_xp_data");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "xp_data", PROPERTY_HINT_RESOURCE_TYPE, "XPData"), "set_xp_data", "get_xp_data");
 
 	//EntityResourceData
 	ClassDB::bind_method(D_METHOD("add_entity_resource", "cls"), &ESSResourceDB::add_entity_resource);
