@@ -80,7 +80,7 @@ bool ComplexLevelStatData::_set(const StringName &p_name, const Variant &p_value
 		if (ESS::get_instance()->stat_is_property(prop)) {
 			int stat_id = ESS::get_instance()->stat_get_property_id(prop);
 
-			if (stat_id >= stat_id >= ESS::get_instance()->stat_get_main_stat_count()) {
+			if (stat_id >= ESS::get_instance()->stat_get_main_stat_count()) {
 				return false;
 			}
 
