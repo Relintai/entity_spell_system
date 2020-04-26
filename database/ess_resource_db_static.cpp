@@ -73,7 +73,7 @@ Vector<Variant> ESSResourceDBStatic::get_entity_resources() const {
 void ESSResourceDBStatic::set_entity_resources(const Vector<Variant> &data) {
 	_entity_resources.clear();
 	for (int i = 0; i < data.size(); i++) {
-		Ref<EntityResource> d = Ref<EntityResource>(data[i]);
+		Ref<EntityResourceData> d = Ref<EntityResourceData>(data[i]);
 
 		add_entity_resource(d);
 	}
