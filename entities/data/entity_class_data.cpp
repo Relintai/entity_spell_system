@@ -60,13 +60,6 @@ void EntityClassData::set_icon(Ref<Texture> value) {
 	_icon = Ref<Texture>(value);
 }
 
-int EntityClassData::get_player_resource_type() {
-	return _player_resource_type;
-}
-void EntityClassData::set_player_resource_type(int value) {
-	_player_resource_type = value;
-}
-
 int EntityClassData::get_spell_points_per_level() {
 	return _spell_points_per_level;
 }
@@ -1019,9 +1012,6 @@ void EntityClassData::con_equip_fail_bind(Node *entity, ItemEnums::EquipSlots eq
 
 EntityClassData::EntityClassData() {
 	_id = 0;
-	_player_resource_type = 0;
-
-	_player_resource_type = 0;
 	_spell_points_per_level = 1;
 	_playstyle_type = EntityEnums::ENTITY_CLASS_PLAYSTYLE_TYPE_MELEE;
 }
@@ -1213,10 +1203,6 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stat_data"), &EntityClassData::get_stat_data);
 	ClassDB::bind_method(D_METHOD("set_stat_data", "value"), &EntityClassData::set_stat_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "stat_data", PROPERTY_HINT_RESOURCE_TYPE, "StatData"), "set_stat_data", "get_stat_data");
-
-	ClassDB::bind_method(D_METHOD("get_player_resource_type"), &EntityClassData::get_player_resource_type);
-	ClassDB::bind_method(D_METHOD("set_player_resource_type", "value"), &EntityClassData::set_player_resource_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "player_resource_type", PROPERTY_HINT_ENUM, "None, Rage, Mana, Energy, Time Anomaly"), "set_player_resource_type", "get_player_resource_type");
 
 	ClassDB::bind_method(D_METHOD("get_spell_points_per_level"), &EntityClassData::get_spell_points_per_level);
 	ClassDB::bind_method(D_METHOD("set_spell_points_per_level", "value"), &EntityClassData::set_spell_points_per_level);

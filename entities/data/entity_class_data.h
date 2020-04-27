@@ -70,9 +70,6 @@ public:
 	Ref<StatData> get_stat_data();
 	void set_stat_data(Ref<StatData> value);
 
-	int get_player_resource_type();
-	void set_player_resource_type(int value);
-
 	int get_spell_points_per_level();
 	void set_spell_points_per_level(int value);
 
@@ -266,8 +263,6 @@ private:
 	Ref<EntityClassData> _inherits;
 
 	Ref<Texture> _icon;
-
-	int _player_resource_type;
 
 	int _spell_points_per_level;
 
