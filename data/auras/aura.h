@@ -252,33 +252,14 @@ public:
 	void supdate(Ref<AuraData> aura, float delta);
 
 	//EventHandlers
-	void son_before_cast(Ref<AuraData> aura, Ref<SpellCastInfo> info);
-	void son_before_cast_target(Ref<AuraData> aura, Ref<SpellCastInfo> info);
-	void son_cast_started(Ref<AuraData> aura, Ref<SpellCastInfo> info);
-	void son_cast_failed(Ref<AuraData> aura, Ref<SpellCastInfo> info);
-	void son_cast_finished(Ref<AuraData> aura, Ref<SpellCastInfo> info);
-	void son_cast_finished_target(Ref<AuraData> aura, Ref<SpellCastInfo> info);
-	void son_spell_cast_success(Ref<AuraData> aura, Ref<SpellCastInfo> info);
-
-	void son_before_damage_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
-	void son_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
-	void son_before_damage(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
-	void son_damage_receive(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
-	void son_dealt_damage(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
-	void son_damage_dealt(Ref<AuraData> aura, Ref<SpellDamageInfo> data);
-
-	void son_before_heal_hit(Ref<AuraData> aura, Ref<SpellHealInfo> data);
-	void son_before_heal(Ref<AuraData> aura, Ref<SpellHealInfo> data);
-	void son_heal_receive(Ref<AuraData> aura, Ref<SpellHealInfo> data);
-	void son_dealt_heal(Ref<AuraData> aura, Ref<SpellHealInfo> data);
-	void son_heal_dealt(Ref<AuraData> aura, Ref<SpellHealInfo> data);
+	void notification_saura(int what, Ref<AuraData> data);
+	void notification_sheal(int what, Ref<AuraData> aura, Ref<SpellHealInfo> data);
+	void notification_scast(int what, Ref<AuraData> aura, Ref<SpellCastInfo> info);
+	void notification_sdamage(int what, Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 
 	void son_remove(Ref<AuraData> aura);
 	void son_remove_expired(Ref<AuraData> aura);
 	void son_remove_dispell(Ref<AuraData> aura);
-
-	void son_before_aura_applied(Ref<AuraData> data);
-	void son_after_aura_applied(Ref<AuraData> data);
 
 	void son_death(Ref<AuraData> data);
 

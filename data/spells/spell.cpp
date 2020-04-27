@@ -962,7 +962,7 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 
 	info->get_caster()->sspell_cast_success(info);
 
-	info->get_target()->son_cast_finished_target(info);
+	info->get_target()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED_TARGET, info);
 
 	//if (get_projectile().is_valid()) {
 	//	handle_projectile(info);
@@ -976,7 +976,7 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 }
 
 void Spell::_sfinish_cast(Ref<SpellCastInfo> info) {
-	info->get_caster()->son_cast_finished(info);
+	info->get_caster()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED, info);
 	info->get_caster()->sspell_cast_success(info);
 
 #if VERSION_MAJOR < 4
@@ -984,8 +984,7 @@ void Spell::_sfinish_cast(Ref<SpellCastInfo> info) {
 #else
 	if (info->get_target() != NULL) {
 #endif
-
-		info->get_target()->son_cast_finished_target(info);
+		info->get_target()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED_TARGET, info);
 	}
 
 	//if (get_projectile().is_valid()) {

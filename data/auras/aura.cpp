@@ -565,148 +565,32 @@ void Aura::supdate(Ref<AuraData> aura, float delta) {
 	call("_supdate", aura, delta);
 }
 
-void Aura::son_before_cast(Ref<AuraData> aura, Ref<SpellCastInfo> info) {
+void Aura::notification_saura(int what, Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_notification_saura"))
+		call("_notification_saura", what, data);
+}
+void Aura::notification_sheal(int what, Ref<AuraData> aura, Ref<SpellHealInfo> data) {
+	ERR_FAIL_COND(!aura.is_valid());
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_notification_sheal"))
+		call("_notification_sheal", what, aura, data);
+}
+void Aura::notification_scast(int what, Ref<AuraData> aura, Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!aura.is_valid());
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (has_method("_son_before_cast"))
-		call("_son_before_cast", aura, info);
+	if (has_method("_notification_scast"))
+		call("_notification_scast", what, aura, info);
 }
-
-void Aura::son_before_cast_target(Ref<AuraData> aura, Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_son_before_cast_target"))
-		call("_son_before_cast_target", aura, info);
-}
-
-void Aura::son_cast_finished(Ref<AuraData> aura, Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_son_cast_finished"))
-		call("_son_cast_finished", aura, info);
-}
-
-void Aura::son_cast_started(Ref<AuraData> aura, Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_son_cast_started"))
-		call("_son_cast_started", aura, info);
-}
-
-void Aura::son_cast_failed(Ref<AuraData> aura, Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_son_cast_failed"))
-		call("_son_cast_failed", aura, info);
-}
-
-void Aura::son_cast_finished_target(Ref<AuraData> aura, Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_son_cast_finished_target"))
-		call("_son_cast_finished_target", aura, info);
-}
-
-void Aura::son_spell_cast_success(Ref<AuraData> aura, Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_son_spell_cast_success"))
-		call("_son_spell_cast_success", aura, info);
-}
-
-void Aura::son_before_damage_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data) {
+void Aura::notification_sdamage(int what, Ref<AuraData> aura, Ref<SpellDamageInfo> data) {
 	ERR_FAIL_COND(!aura.is_valid());
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_son_before_damage_hit"))
-		call("_son_before_damage_hit", aura, data);
-}
-
-void Aura::son_hit(Ref<AuraData> aura, Ref<SpellDamageInfo> data) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_hit"))
-		call("_son_hit", aura, data);
-}
-
-void Aura::son_before_damage(Ref<AuraData> aura, Ref<SpellDamageInfo> data) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_before_damage"))
-		call("_son_before_damage", aura, data);
-}
-
-void Aura::son_damage_receive(Ref<AuraData> aura, Ref<SpellDamageInfo> data) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_damage_receive"))
-		call("_son_damage_receive", aura, data);
-}
-
-void Aura::son_dealt_damage(Ref<AuraData> aura, Ref<SpellDamageInfo> data) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_dealt_damage"))
-		call("_son_dealt_damage", aura, data);
-}
-
-void Aura::son_damage_dealt(Ref<AuraData> aura, Ref<SpellDamageInfo> data) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_damage_dealt"))
-		call("_son_damage_dealt", aura, data);
-}
-
-void Aura::son_before_heal_hit(Ref<AuraData> aura, Ref<SpellHealInfo> data) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_before_heal_hit"))
-		call("_son_before_heal_hit", aura, data);
-}
-
-void Aura::son_before_heal(Ref<AuraData> aura, Ref<SpellHealInfo> data) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_before_heal"))
-		call("_son_before_heal", aura, data);
-}
-
-void Aura::son_heal_receive(Ref<AuraData> aura, Ref<SpellHealInfo> data) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_heal_receive"))
-		call("_son_heal_receive", aura, data);
-}
-
-void Aura::son_dealt_heal(Ref<AuraData> aura, Ref<SpellHealInfo> data) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_dealt_heal"))
-		call("_son_dealt_heal", aura, data);
-}
-
-void Aura::son_heal_dealt(Ref<AuraData> aura, Ref<SpellHealInfo> data) {
-	ERR_FAIL_COND(!aura.is_valid());
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_heal_dealt"))
-		call("_son_heal_dealt", aura, data);
+	if (has_method("_notification_sdamage"))
+		call("_notification_sdamage", what, aura, data);
 }
 
 void Aura::son_remove_expired(Ref<AuraData> aura) {
@@ -728,20 +612,6 @@ void Aura::son_remove_dispell(Ref<AuraData> aura) {
 
 	if (has_method("_son_remove_dispell"))
 		call("_son_remove_dispell", aura);
-}
-
-void Aura::son_before_aura_applied(Ref<AuraData> data) {
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_before_aura_applied"))
-		call("_son_before_aura_applied", data);
-}
-
-void Aura::son_after_aura_applied(Ref<AuraData> data) {
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_son_after_aura_applied"))
-		call("_son_after_aura_applied", data);
 }
 
 void Aura::son_death(Ref<AuraData> data) {
@@ -1398,33 +1268,19 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_supdate", "aura", "delta"), &Aura::_supdate);
 
 	//EventHandlers
-	ClassDB::bind_method(D_METHOD("son_before_cast", "aura", "info"), &Aura::son_before_cast);
-	ClassDB::bind_method(D_METHOD("son_before_cast_target", "aura", "info"), &Aura::son_before_cast_target);
-	ClassDB::bind_method(D_METHOD("son_cast_started", "aura", "info"), &Aura::son_cast_started);
-	ClassDB::bind_method(D_METHOD("son_cast_failed", "aura", "info"), &Aura::son_cast_failed);
-	ClassDB::bind_method(D_METHOD("son_cast_finished", "aura", "info"), &Aura::son_cast_finished);
-	ClassDB::bind_method(D_METHOD("son_cast_finished_target", "aura", "info"), &Aura::son_cast_finished_target);
-	ClassDB::bind_method(D_METHOD("son_spell_cast_success", "aura", "info"), &Aura::son_spell_cast_success);
+	BIND_VMETHOD(MethodInfo("_notification_saura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_notification_sheal", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_scast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_sdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
-	ClassDB::bind_method(D_METHOD("son_before_damage_hit", "aura", "data"), &Aura::son_before_damage_hit);
-	ClassDB::bind_method(D_METHOD("son_hit", "aura", "data"), &Aura::son_hit);
-	ClassDB::bind_method(D_METHOD("son_before_damage", "aura", "data"), &Aura::son_before_damage);
-	ClassDB::bind_method(D_METHOD("son_damage_receive", "aura", "data"), &Aura::son_damage_receive);
-	ClassDB::bind_method(D_METHOD("son_dealt_damage", "aura", "data"), &Aura::son_dealt_damage);
-	ClassDB::bind_method(D_METHOD("son_damage_dealt", "aura", "data"), &Aura::son_damage_dealt);
-
-	ClassDB::bind_method(D_METHOD("son_before_heal_hit", "aura", "data"), &Aura::son_before_heal_hit);
-	ClassDB::bind_method(D_METHOD("son_before_heal", "aura", "data"), &Aura::son_before_heal);
-	ClassDB::bind_method(D_METHOD("son_heal_receive", "aura", "data"), &Aura::son_heal_receive);
-	ClassDB::bind_method(D_METHOD("son_dealt_heal", "aura", "data"), &Aura::son_dealt_heal);
-	ClassDB::bind_method(D_METHOD("son_heal_dealt", "aura", "data"), &Aura::son_heal_dealt);
+	ClassDB::bind_method(D_METHOD("notification_saura", "what", "data"), &Aura::notification_saura);
+	ClassDB::bind_method(D_METHOD("notification_sheal", "what", "aura", "info"), &Aura::notification_sheal);
+	ClassDB::bind_method(D_METHOD("notification_scast", "what", "aura", "info"), &Aura::notification_scast);
+	ClassDB::bind_method(D_METHOD("notification_sdamage", "what", "aura", "info"), &Aura::notification_sdamage);
 
 	ClassDB::bind_method(D_METHOD("son_remove", "aura"), &Aura::son_remove);
 	ClassDB::bind_method(D_METHOD("son_remove_expired", "aura"), &Aura::son_remove_expired);
 	ClassDB::bind_method(D_METHOD("son_remove_dispell", "aura"), &Aura::son_remove_dispell);
-
-	ClassDB::bind_method(D_METHOD("son_before_aura_applied", "data"), &Aura::son_before_aura_applied);
-	ClassDB::bind_method(D_METHOD("son_after_aura_applied", "data"), &Aura::son_after_aura_applied);
 
 	ClassDB::bind_method(D_METHOD("son_death", "data"), &Aura::son_death);
 
@@ -1446,33 +1302,9 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_entity_resource_added", "data", "value"), &Aura::son_entity_resource_added);
 	ClassDB::bind_method(D_METHOD("son_entity_resource_removed", "data", "value"), &Aura::son_entity_resource_removed);
 
-	BIND_VMETHOD(MethodInfo("_son_before_cast", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_son_before_cast_target", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_son_cast_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_son_cast_failed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_son_cast_finished", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_son_cast_finished_target", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_son_spell_cast_success", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-
-	BIND_VMETHOD(MethodInfo("_son_before_damage_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	BIND_VMETHOD(MethodInfo("_son_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	BIND_VMETHOD(MethodInfo("_son_before_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	BIND_VMETHOD(MethodInfo("_son_damage_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	BIND_VMETHOD(MethodInfo("_son_dealt_damage", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-	BIND_VMETHOD(MethodInfo("_son_damage_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
-
-	BIND_VMETHOD(MethodInfo("_son_before_heal_hit", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
-	BIND_VMETHOD(MethodInfo("_son_before_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
-	BIND_VMETHOD(MethodInfo("_son_heal_receive", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
-	BIND_VMETHOD(MethodInfo("_son_dealt_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
-	BIND_VMETHOD(MethodInfo("_son_heal_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
-
 	BIND_VMETHOD(MethodInfo("_son_remove", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_son_remove_expired", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_son_remove_dispell", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-
-	BIND_VMETHOD(MethodInfo("_son_before_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_son_after_aura_applied", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 	BIND_VMETHOD(MethodInfo("_son_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 

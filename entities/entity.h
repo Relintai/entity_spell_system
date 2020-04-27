@@ -455,29 +455,10 @@ public:
 	////    SpellSystem    ////
 
 	//EventHandlers
-	void son_before_aura_applied(Ref<AuraData> data);
-	void son_after_aura_applied(Ref<AuraData> data);
-
-	void son_before_damage_hit(Ref<SpellDamageInfo> info);
-	void son_hit(Ref<SpellDamageInfo> info);
-	void son_before_damage(Ref<SpellDamageInfo> info);
-	void son_damage_receive(Ref<SpellDamageInfo> info);
-	void son_dealt_damage(Ref<SpellDamageInfo> info);
-	void son_damage_dealt(Ref<SpellDamageInfo> info);
-
-	void son_before_heal_hit(Ref<SpellHealInfo> info);
-	void son_before_heal(Ref<SpellHealInfo> info);
-	void son_heal_receive(Ref<SpellHealInfo> info);
-	void son_dealt_heal(Ref<SpellHealInfo> info);
-	void son_heal_dealt(Ref<SpellHealInfo> info);
-
-	void son_before_cast(Ref<SpellCastInfo> info);
-	void son_before_cast_target(Ref<SpellCastInfo> info);
-	void son_cast_finished_target(Ref<SpellCastInfo> info);
-	void son_cast_finished(Ref<SpellCastInfo> info);
-	void son_cast_started(Ref<SpellCastInfo> info);
-	void son_cast_failed(Ref<SpellCastInfo> info);
-	void son_spell_cast_success(Ref<SpellCastInfo> info);
+	void notification_saura(int what, Ref<AuraData> data);
+	void notification_sheal(int what, Ref<SpellHealInfo> info);
+	void notification_scast(int what, Ref<SpellCastInfo> info);
+	void notification_sdamage(int what, Ref<SpellDamageInfo> info);
 
 	void son_death();
 
@@ -502,6 +483,11 @@ public:
 	void son_entity_resource_removed(Ref<EntityResource> resource);
 
 	//Clientside EventHandlers
+	//void notification_caura(int what, Ref<AuraData> data);
+	//void notification_cheal(int what, Ref<SpellHealInfo> info);
+	//void notification_ccast(int what, Ref<SpellCastInfo> info);
+	//void notification_cdamage(int what, Ref<SpellDamageInfo> info);
+
 	void con_cast_failed(Ref<SpellCastInfo> info);
 	void con_cast_started(Ref<SpellCastInfo> info);
 	void con_cast_state_changed(Ref<SpellCastInfo> info);

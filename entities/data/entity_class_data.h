@@ -147,29 +147,10 @@ public:
 
 	void start_casting(int spell_id, Entity *caster, float spellScale);
 
-	void son_before_cast(Ref<SpellCastInfo> info);
-	void son_before_cast_target(Ref<SpellCastInfo> info);
-	void son_cast_finished_target(Ref<SpellCastInfo> info);
-	void son_cast_finished(Ref<SpellCastInfo> info);
-	void son_cast_started(Ref<SpellCastInfo> info);
-	void son_cast_failed(Ref<SpellCastInfo> info);
-	void son_spell_cast_success(Ref<SpellCastInfo> info);
-
-	void son_before_damage_hit(Ref<SpellDamageInfo> data);
-	void son_hit(Ref<SpellDamageInfo> data);
-	void son_before_damage(Ref<SpellDamageInfo> data);
-	void son_damage_receive(Ref<SpellDamageInfo> data);
-	void son_dealt_damage(Ref<SpellDamageInfo> data);
-	void son_damage_dealt(Ref<SpellDamageInfo> data);
-
-	void son_before_heal_hit(Ref<SpellHealInfo> data);
-	void son_before_heal(Ref<SpellHealInfo> data);
-	void son_heal_receive(Ref<SpellHealInfo> data);
-	void son_dealt_heal(Ref<SpellHealInfo> data);
-	void son_heal_dealt(Ref<SpellHealInfo> data);
-
-	void son_before_aura_applied(Ref<AuraData> data);
-	void son_after_aura_applied(Ref<AuraData> data);
+	void notification_saura(int what, Ref<AuraData> data);
+	void notification_sheal(int what, Ref<SpellHealInfo> info);
+	void notification_scast(int what, Ref<SpellCastInfo> info);
+	void notification_sdamage(int what, Ref<SpellDamageInfo> info);
 
 	void son_death(Entity *entity);
 	void son_death_bind(Node *entity);
