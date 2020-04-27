@@ -44,6 +44,7 @@ public:
 	static const String BINDING_STRING_ENTITY_PLAYSTYLE_TYPE;
 	static const String BINDING_STRING_ENTITY_GENDER;
 	static const String BINDING_STRING_ENTITY_WINDOWS;
+	static const String BINDING_STRING_ENTITY_ENTITY_RESOURCE_INDICES;
 
 	enum EntityPlayerType {
 		ENTITY_PLAYER_TYPE_NONE,
@@ -268,6 +269,12 @@ public:
 		ENTITY_WINDOW_TRAINER = 2,
 	};
 
+	enum EntityResourceIndices {
+		ENTITY_RESOURCE_INDEX_HEALTH = 0,
+		ENTITY_RESOURCE_INDEX_SPEED = 1,
+		ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN = 2,
+	};
+
 	enum {
 		GENDER_COUNT = 2,
 		MAX_CHARACTER_LEVEL = 20,
@@ -295,5 +302,6 @@ VARIANT_ENUM_CAST(EntityEnums::EntityInteractionType);
 VARIANT_ENUM_CAST(EntityEnums::EntityClassPlaystyleType);
 VARIANT_ENUM_CAST(EntityEnums::EntityGender);
 VARIANT_ENUM_CAST(EntityEnums::EntityWindows);
+VARIANT_ENUM_CAST(EntityEnums::EntityResourceIndices);
 
 #endif

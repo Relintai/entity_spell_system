@@ -2373,16 +2373,16 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 
 	son_damage_receive(info);
 
-	Ref<Stat> hp = get_stat(ESS::get_instance()->stat_get_id("Health"));
+	Ref<EntityResource> hp = gets_resource_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
 	ERR_FAIL_COND(!hp.is_valid());
 
-	int h = hp->gets_current() - info->get_damage();
+	int h = hp->get_current_value() - info->get_damage();
 
 	if (h < 0) {
 		h = 0;
 	}
 
-	hp->sets_current(h);
+	hp->set_current_value(h);
 
 	son_damage_dealt(info);
 
@@ -2392,7 +2392,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	//send an event to client
 	VRPCOBJ(cdamage_dealt_rpc, JSON::print(info->to_dict()), con_damage_dealt, info);
 
-	if (hp->gets_current() <= 0) {
+	if (hp->get_current_value() <= 0) {
 		sdie();
 	}
 }
@@ -2416,10 +2416,10 @@ void Entity::sdeal_damage_to(Ref<SpellDamageInfo> info) {
 	//signal
 	emit_signal("son_damage_received", this, info);
 
-	Ref<Stat> hp = get_stat(ESS::get_instance()->stat_get_id("Health"));
+	Ref<EntityResource> hp = gets_resource_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
 	ERR_FAIL_COND(!hp.is_valid());
 
-	if (hp->gets_current() <= 0) {
+	if (hp->get_current_value() <= 0) {
 		sdie();
 	}
 }
@@ -2448,15 +2448,15 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 
 	son_heal_receive(info);
 
-	Ref<Stat> hp = get_stat(ESS::get_instance()->stat_get_id("Health"));
+	Ref<EntityResource> hp = gets_resource_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
 	ERR_FAIL_COND(!hp.is_valid());
 
-	int h = hp->gets_current() + info->get_heal();
+	int h = hp->get_current_value() + info->get_heal();
 
-	if (h > hp->gets_max()) {
-		h = hp->gets_max();
+	if (h > hp->get_max_value()) {
+		h = hp->get_max_value();
 	}
-	hp->sets_current(h);
+	hp->set_current_value(h);
 
 	//send an event to client
 	VRPCOBJ(cheal_dealt_rpc, JSON::print(info->to_dict()), con_heal_dealt, info);
