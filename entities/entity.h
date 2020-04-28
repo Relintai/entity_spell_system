@@ -353,41 +353,41 @@ public:
 
 	////    Equip Slots    ////
 
-	bool should_deny_equip(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);
+	bool equip_should_deny(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);
 
-	void son_equip_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
-	void son_equip_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void equip_son_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void equip_son_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 
-	void con_equip_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
-	void con_equip_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void equip_con_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void equip_con_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 
-	void crequest_equip(ItemEnums::EquipSlots equip_slot, int bag_slot);
-	void sequip(ItemEnums::EquipSlots equip_slot, int bag_slot);
-	void _sequip(ItemEnums::EquipSlots equip_slot, int bag_slot);
+	void equip_crequest(ItemEnums::EquipSlots equip_slot, int bag_slot);
+	void equips(ItemEnums::EquipSlots equip_slot, int bag_slot);
+	void _equips(ItemEnums::EquipSlots equip_slot, int bag_slot);
 
-	void cequip_success(ItemEnums::EquipSlots equip_slot, int bag_slot);
-	void cequip_fail(ItemEnums::EquipSlots equip_slot, int bag_slot);
+	void equip_csuccess(ItemEnums::EquipSlots equip_slot, int bag_slot);
+	void equip_cfail(ItemEnums::EquipSlots equip_slot, int bag_slot);
 
-	Ref<ItemInstance> gets_equip_slot(int index);
-	void sets_equip_slot(int index, Ref<ItemInstance> item);
+	Ref<ItemInstance> equip_gets_slot(int index);
+	void equip_sets_slot(int index, Ref<ItemInstance> item);
 
-	Ref<ItemInstance> getc_equip_slot(int index);
-	void setc_equip_slot(int index, Ref<ItemInstance> item);
+	Ref<ItemInstance> equip_getc_slot(int index);
+	void equip_setc_slot(int index, Ref<ItemInstance> item);
 
-	bool can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);
-	bool _can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);
+	bool equip_can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);
+	bool _equip_can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);
 
-	void sapply_item(Ref<ItemInstance> item);
-	void sdeapply_item(Ref<ItemInstance> item);
+	void equip_applys_item(Ref<ItemInstance> item);
+	void equip_deapplys_item(Ref<ItemInstance> item);
 
-	void _sapply_item(Ref<ItemInstance> item);
-	void _sdeapply_item(Ref<ItemInstance> item);
+	void _equip_applys_item(Ref<ItemInstance> item);
+	void _equip_deapplys_item(Ref<ItemInstance> item);
 
-	void capply_item(Ref<ItemInstance> item);
-	void cdeapply_item(Ref<ItemInstance> item);
+	void equip_applyc_item(Ref<ItemInstance> item);
+	void equip_deapplyc_item(Ref<ItemInstance> item);
 
-	void _capply_item(Ref<ItemInstance> item);
-	void _cdeapply_item(Ref<ItemInstance> item);
+	void _equip_applyc_item(Ref<ItemInstance> item);
+	void _equip_deapplyc_item(Ref<ItemInstance> item);
 
 	////    Resources    ////
 

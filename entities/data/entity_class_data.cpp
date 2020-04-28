@@ -747,14 +747,14 @@ void EntityClassData::con_entity_resource_removed(Ref<EntityResource> resource) 
 
 //Equipment
 
-bool EntityClassData::should_deny_equip(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
-	if (has_method("_should_deny_equip"))
-		if (call("_should_deny_equip", entity, equip_slot, item))
+bool EntityClassData::equip_should_deny(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
+	if (has_method("_equip_should_deny"))
+		if (call("_equip_should_deny", entity, equip_slot, item))
 			return true;
 
 	return false;
 }
-bool EntityClassData::should_deny_equip_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
+bool EntityClassData::equip_should_deny_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(entity), false);
 #else
@@ -765,14 +765,14 @@ bool EntityClassData::should_deny_equip_bind(Node *entity, ItemEnums::EquipSlots
 
 	ERR_FAIL_COND_V(e == NULL, false);
 
-	return should_deny_equip(e, equip_slot, item);
+	return equip_should_deny(e, equip_slot, item);
 }
 
-void EntityClassData::son_equip_success(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (has_method("_son_equip_success"))
-		call("_son_equip_success", entity, equip_slot, item, old_item, bag_slot);
+void EntityClassData::equip_son_success(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	if (has_method("_equip_son_success"))
+		call("_equip_son_success", entity, equip_slot, item, old_item, bag_slot);
 }
-void EntityClassData::son_equip_success_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityClassData::equip_son_success_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -783,14 +783,14 @@ void EntityClassData::son_equip_success_bind(Node *entity, ItemEnums::EquipSlots
 
 	ERR_FAIL_COND(e == NULL);
 
-	son_equip_success(e, equip_slot, item, old_item, bag_slot);
+	equip_son_success(e, equip_slot, item, old_item, bag_slot);
 }
 
-void EntityClassData::son_equip_fail(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (has_method("_son_equip_fail"))
-		call("_son_equip_fail", entity, equip_slot, item, old_item, bag_slot);
+void EntityClassData::equip_son_fail(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	if (has_method("_equip_son_fail"))
+		call("_equip_son_fail", entity, equip_slot, item, old_item, bag_slot);
 }
-void EntityClassData::son_equip_fail_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityClassData::equip_son_fail_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -801,14 +801,14 @@ void EntityClassData::son_equip_fail_bind(Node *entity, ItemEnums::EquipSlots eq
 
 	ERR_FAIL_COND(e == NULL);
 
-	son_equip_fail(e, equip_slot, item, old_item, bag_slot);
+	equip_son_fail(e, equip_slot, item, old_item, bag_slot);
 }
 
-void EntityClassData::con_equip_success(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (has_method("_con_equip_success"))
-		call("_con_equip_success", entity, equip_slot, item, old_item, bag_slot);
+void EntityClassData::equip_con_success(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	if (has_method("_equip_con_success"))
+		call("_equip_con_success", entity, equip_slot, item, old_item, bag_slot);
 }
-void EntityClassData::con_equip_success_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityClassData::equip_con_success_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -819,14 +819,14 @@ void EntityClassData::con_equip_success_bind(Node *entity, ItemEnums::EquipSlots
 
 	ERR_FAIL_COND(e == NULL);
 
-	con_equip_success(e, equip_slot, item, old_item, bag_slot);
+	equip_con_success(e, equip_slot, item, old_item, bag_slot);
 }
 
-void EntityClassData::con_equip_fail(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (has_method("_con_equip_fail"))
-		call("_con_equip_fail", entity, equip_slot, item, old_item, bag_slot);
+void EntityClassData::equip_con_fail(Entity *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	if (has_method("_equip_con_fail"))
+		call("_equip_con_fail", entity, equip_slot, item, old_item, bag_slot);
 }
-void EntityClassData::con_equip_fail_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void EntityClassData::equip_con_fail_bind(Node *entity, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -837,7 +837,7 @@ void EntityClassData::con_equip_fail_bind(Node *entity, ItemEnums::EquipSlots eq
 
 	ERR_FAIL_COND(e == NULL);
 
-	con_equip_fail(e, equip_slot, item, old_item, bag_slot);
+	equip_con_fail(e, equip_slot, item, old_item, bag_slot);
 }
 
 EntityClassData::EntityClassData() {
@@ -944,19 +944,19 @@ void EntityClassData::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_character_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
 	//Equipment
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_should_deny_equip", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_equip_should_deny", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 
-	BIND_VMETHOD(MethodInfo("_son_equip_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
-	BIND_VMETHOD(MethodInfo("_son_equip_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
-	BIND_VMETHOD(MethodInfo("_con_equip_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
-	BIND_VMETHOD(MethodInfo("_con_equip_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
+	BIND_VMETHOD(MethodInfo("_equip_son_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
+	BIND_VMETHOD(MethodInfo("_equip_son_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
+	BIND_VMETHOD(MethodInfo("_equip_con_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
+	BIND_VMETHOD(MethodInfo("_equip_con_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
 
-	ClassDB::bind_method(D_METHOD("should_deny_equip", "entity", "equip_slot", "item"), &EntityClassData::should_deny_equip_bind);
+	ClassDB::bind_method(D_METHOD("equip_should_deny", "entity", "equip_slot", "item"), &EntityClassData::equip_should_deny_bind);
 
-	ClassDB::bind_method(D_METHOD("son_equip_success", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityClassData::son_equip_success_bind);
-	ClassDB::bind_method(D_METHOD("son_equip_fail", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityClassData::son_equip_fail_bind);
-	ClassDB::bind_method(D_METHOD("con_equip_success", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityClassData::con_equip_success_bind);
-	ClassDB::bind_method(D_METHOD("con_equip_fail", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityClassData::con_equip_fail_bind);
+	ClassDB::bind_method(D_METHOD("equip_son_success", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityClassData::equip_son_success_bind);
+	ClassDB::bind_method(D_METHOD("equip_son_fail", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityClassData::equip_son_fail_bind);
+	ClassDB::bind_method(D_METHOD("equip_con_success", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityClassData::equip_con_success_bind);
+	ClassDB::bind_method(D_METHOD("equip_con_fail", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityClassData::equip_con_fail_bind);
 
 	ClassDB::bind_method(D_METHOD("get_id"), &EntityClassData::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityClassData::set_id);

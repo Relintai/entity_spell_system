@@ -148,7 +148,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_equip_fail" qualifiers="virtual">
+		<method name="_equip_con_fail" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -164,7 +164,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_equip_success" qualifiers="virtual">
+		<method name="_equip_con_success" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -268,7 +268,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_should_deny_equip" qualifiers="virtual">
+		<method name="_equip_should_deny" qualifiers="virtual">
 			<return type="bool">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -492,7 +492,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_equip_fail" qualifiers="virtual">
+		<method name="_equip_son_fail" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -508,7 +508,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_equip_success" qualifiers="virtual">
+		<method name="_equip_son_success" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -724,7 +724,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_equip_fail">
+		<method name="equip_con_fail">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -740,7 +740,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_equip_success">
+		<method name="equip_con_success">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -828,7 +828,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="should_deny_equip">
+		<method name="equip_should_deny">
 			<return type="bool">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -1052,7 +1052,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_equip_fail">
+		<method name="equip_son_fail">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -1068,7 +1068,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_equip_success">
+		<method name="equip_son_success">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
