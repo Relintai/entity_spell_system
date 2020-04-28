@@ -608,7 +608,7 @@ void Entity::_setup() {
 					sets_class_level(cp->get_level());
 
 					if (leveldiff > 0) {
-						sclass_levelup(leveldiff);
+						levelup_sclass(leveldiff);
 					}
 
 					sets_class_xp(cp->get_xp());
@@ -729,8 +729,8 @@ void Entity::_setup() {
 	_s_character_level = 1;
 	_s_class_level = 1;
 
-	scharacter_levelup(chl - 1);
-	sclass_levelup(cl - 1);
+	levelup_scharacter(chl - 1);
+	levelup_sclass(cl - 1);
 
 	sets_class_xp(clxp);
 	sets_character_xp(chxp);
@@ -2590,22 +2590,22 @@ void Entity::copen_window(int window_id) {
 }
 
 //XP Operations
-void Entity::adds_xp(int value) {
+void Entity::xp_adds(int value) {
 	_s_class_xp += value;
 	_s_character_xp += value;
 
 	son_xp_gained(value);
 
-	ORPC(addc_xp, value);
+	ORPC(xp_addc, value);
 }
-void Entity::addc_xp(int value) {
+void Entity::xp_addc(int value) {
 	_c_class_xp += value;
 	_c_character_xp += value;
 
 	con_xp_gained(value);
 }
 
-void Entity::sclass_levelup(int value) {
+void Entity::levelup_sclass(int value) {
 	if (value <= 0)
 		return;
 
@@ -2616,15 +2616,15 @@ void Entity::sclass_levelup(int value) {
 
 	son_class_level_up(value);
 
-	VRPC(cclass_levelup, value);
+	VRPC(levelup_cclass, value);
 }
-void Entity::cclass_levelup(int value) {
+void Entity::levelup_cclass(int value) {
 	_c_class_level += value;
 
 	con_class_level_up(value);
 }
 
-void Entity::scharacter_levelup(int value) {
+void Entity::levelup_scharacter(int value) {
 	if (value <= 0)
 		return;
 
@@ -2635,9 +2635,9 @@ void Entity::scharacter_levelup(int value) {
 
 	son_character_level_up(value);
 
-	VRPC(ccharacter_levelup, value);
+	VRPC(levelup_ccharacter, value);
 }
-void Entity::ccharacter_levelup(int value) {
+void Entity::levelup_ccharacter(int value) {
 	_c_character_level += value;
 
 	con_character_level_up(value);
@@ -2645,7 +2645,7 @@ void Entity::ccharacter_levelup(int value) {
 
 ////    Spell System    ////
 
-void Entity::scast_spell(int spell_id) {
+void Entity::spell_casts(int spell_id) {
 	Ref<EntityData> cc = gets_entity_data();
 
 	if (!cc.is_valid())
@@ -2654,17 +2654,17 @@ void Entity::scast_spell(int spell_id) {
 	cc->start_casting(spell_id, this, 1);
 }
 
-void Entity::crequest_spell_cast(int spell_id) {
-	RPCS(scast_spell, spell_id);
+void Entity::spell_crequest_cast(int spell_id) {
+	RPCS(spell_casts, spell_id);
 }
 
-void Entity::suse_item(int item_id) {
-	call("_suse_item", item_id);
+void Entity::item_uses(int item_id) {
+	call("_item_uses", item_id);
 }
-void Entity::crequest_use_item(int item_id) {
-	RPCS(suse_item, item_id);
+void Entity::item_crequest_use(int item_id) {
+	RPCS(item_uses, item_id);
 }
-void Entity::_suse_item(int item_id) {
+void Entity::_item_uses(int item_id) {
 	Ref<ItemTemplate> it = ESS::get_instance()->get_resource_db()->get_item_template(item_id);
 
 	ERR_FAIL_COND(!it.is_valid());
@@ -5766,8 +5766,8 @@ Entity::Entity() {
 
 	////    SpellSystem    ////
 
-	SET_RPC_REMOTE("scast_spell");
-	SET_RPC_REMOTE("suse_item");
+	SET_RPC_REMOTE("spell_casts");
+	SET_RPC_REMOTE("item_uses");
 
 	//Damage Operations
 
@@ -5794,9 +5794,9 @@ Entity::Entity() {
 
 	//XP Operations
 
-	SET_RPC_REMOTE("addc_xp");
-	SET_RPC_REMOTE("cclass_levelup");
-	SET_RPC_REMOTE("ccharacter_levelup");
+	SET_RPC_REMOTE("xp_addc");
+	SET_RPC_REMOTE("levelup_cclass");
+	SET_RPC_REMOTE("levelup_ccharacter");
 
 	//Aura Manipulation
 
@@ -5999,7 +5999,7 @@ void Entity::_son_xp_gained(int value) {
 			int xpr = ESS::get_instance()->get_resource_db()->get_xp_data()->get_class_xp(gets_class_level());
 
 			if (xpr <= gets_class_xp()) {
-				sclass_levelup(1);
+				levelup_sclass(1);
 				sets_class_xp(0);
 			}
 		}
@@ -6009,7 +6009,7 @@ void Entity::_son_xp_gained(int value) {
 		int xpr = ESS::get_instance()->get_resource_db()->get_xp_data()->get_character_xp(gets_character_level());
 
 		if (xpr <= gets_character_xp()) {
-			scharacter_levelup(1);
+			levelup_scharacter(1);
 			sets_character_xp(0);
 		}
 	}
@@ -6111,7 +6111,7 @@ void Entity::_son_death() {
 		
 	ldiff /= 10.0
 	
-	starget.adds_xp(int(5.0 * slevel * ldiff))
+	starget.xp_adds(int(5.0 * slevel * ldiff))
 		
 	starget = null
 	
@@ -7046,14 +7046,14 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_deal", "data"), &Entity::sapply_passives_damage_deal);
 
 	//Spell operations
-	ClassDB::bind_method(D_METHOD("scast_spell", "spell_id"), &Entity::scast_spell);
-	ClassDB::bind_method(D_METHOD("crequest_spell_cast", "spell_id"), &Entity::crequest_spell_cast);
+	ClassDB::bind_method(D_METHOD("spell_casts", "spell_id"), &Entity::spell_casts);
+	ClassDB::bind_method(D_METHOD("spell_crequest_cast", "spell_id"), &Entity::spell_crequest_cast);
 
-	BIND_VMETHOD(MethodInfo("_suse_item", PropertyInfo(Variant::INT, "item_id")));
+	BIND_VMETHOD(MethodInfo("_item_uses", PropertyInfo(Variant::INT, "item_id")));
 
-	ClassDB::bind_method(D_METHOD("suse_item", "item_id"), &Entity::suse_item);
-	ClassDB::bind_method(D_METHOD("crequest_use_item", "item_id"), &Entity::crequest_use_item);
-	ClassDB::bind_method(D_METHOD("_suse_item", "item_id"), &Entity::_suse_item);
+	ClassDB::bind_method(D_METHOD("item_uses", "item_id"), &Entity::item_uses);
+	ClassDB::bind_method(D_METHOD("item_crequest_use", "item_id"), &Entity::item_crequest_use);
+	ClassDB::bind_method(D_METHOD("_item_uses", "item_id"), &Entity::_item_uses);
 
 	//Damage Operations
 	ClassDB::bind_method(D_METHOD("stake_damage", "data"), &Entity::stake_damage);
@@ -7095,14 +7095,14 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("son_character_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
 	ADD_SIGNAL(MethodInfo("con_character_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
 
-	ClassDB::bind_method(D_METHOD("adds_xp", "value"), &Entity::adds_xp);
-	ClassDB::bind_method(D_METHOD("addc_xp", "value"), &Entity::addc_xp);
+	ClassDB::bind_method(D_METHOD("xp_adds", "value"), &Entity::xp_adds);
+	ClassDB::bind_method(D_METHOD("xp_addc", "value"), &Entity::xp_addc);
 
-	ClassDB::bind_method(D_METHOD("sclass_levelup", "value"), &Entity::sclass_levelup);
-	ClassDB::bind_method(D_METHOD("cclass_levelup", "value"), &Entity::cclass_levelup);
+	ClassDB::bind_method(D_METHOD("levelup_sclass", "value"), &Entity::levelup_sclass);
+	ClassDB::bind_method(D_METHOD("levelup_cclass", "value"), &Entity::levelup_cclass);
 
-	ClassDB::bind_method(D_METHOD("scharacter_levelup", "value"), &Entity::scharacter_levelup);
-	ClassDB::bind_method(D_METHOD("ccharacter_levelup", "value"), &Entity::ccharacter_levelup);
+	ClassDB::bind_method(D_METHOD("levelup_scharacter", "value"), &Entity::levelup_scharacter);
+	ClassDB::bind_method(D_METHOD("levelup_ccharacter", "value"), &Entity::levelup_ccharacter);
 
 	ClassDB::bind_method(D_METHOD("son_xp_gained", "value"), &Entity::son_xp_gained);
 	ClassDB::bind_method(D_METHOD("son_class_level_up", "value"), &Entity::son_class_level_up);

@@ -474,6 +474,9 @@ public:
 	void son_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
 	void son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
 
+	void son_entity_resource_added(Ref<EntityResource> resource);
+	void son_entity_resource_removed(Ref<EntityResource> resource);
+
 	void son_gcd_started();
 	void son_gcd_finished();
 	void con_gcd_started();
@@ -485,9 +488,6 @@ public:
 	void son_class_level_up(int value);
 	void son_character_level_up(int value);
 
-	void son_entity_resource_added(Ref<EntityResource> resource);
-	void son_entity_resource_removed(Ref<EntityResource> resource);
-
 	//Clientside EventHandlers
 	void notification_caura(int what, Ref<AuraData> data);
 	void notification_cheal(int what, Ref<SpellHealInfo> info);
@@ -498,15 +498,16 @@ public:
 
 	void con_cooldown_added(Ref<Cooldown> cooldown);
 	void con_cooldown_removed(Ref<Cooldown> cooldown);
+
 	void con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
 	void con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+
+	void con_entity_resource_added(Ref<EntityResource> resource);
+	void con_entity_resource_removed(Ref<EntityResource> resource);
 
 	void con_xp_gained(int value);
 	void con_class_level_up(int value);
 	void con_character_level_up(int value);
-
-	void con_entity_resource_added(Ref<EntityResource> resource);
-	void con_entity_resource_removed(Ref<EntityResource> resource);
 
 	//Modifiers/Requesters
 	void sapply_passives_damage_receive(Ref<SpellDamageInfo> info);
@@ -516,12 +517,12 @@ public:
 	void sapply_passives_heal_deal(Ref<SpellHealInfo> info);
 
 	//Spell operations
-	void scast_spell(int spell_id);
-	void crequest_spell_cast(int spell_id);
+	void spell_casts(int spell_id);
+	void spell_crequest_cast(int spell_id);
 
-	void suse_item(int item_id);
-	void crequest_use_item(int item_id);
-	void _suse_item(int item_id);
+	void item_uses(int item_id);
+	void item_crequest_use(int item_id);
+	void _item_uses(int item_id);
 
 	//Damage Operations
 	void stake_damage(Ref<SpellDamageInfo> info);
@@ -548,12 +549,12 @@ public:
 	void copen_window(int window_id);
 
 	//XP Operations
-	void adds_xp(int value);
-	void addc_xp(int value);
-	void sclass_levelup(int value);
-	void cclass_levelup(int value);
-	void scharacter_levelup(int value);
-	void ccharacter_levelup(int value);
+	void xp_adds(int value);
+	void xp_addc(int value);
+	void levelup_sclass(int value);
+	void levelup_cclass(int value);
+	void levelup_scharacter(int value);
+	void levelup_ccharacter(int value);
 
 	//Aura Manipulation
 	void adds_aura(Ref<AuraData> aura);

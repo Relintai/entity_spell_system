@@ -660,7 +660,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_suse_item" qualifiers="virtual">
+		<method name="_item_uses" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="item_id" type="int">
@@ -854,7 +854,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_xp">
+		<method name="xp_addc">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -986,7 +986,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_xp">
+		<method name="xp_adds">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -1036,7 +1036,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ccharacter_levelup">
+		<method name="levelup_ccharacter">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -1044,7 +1044,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cclass_levelup">
+		<method name="levelup_cclass">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -1578,7 +1578,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="crequest_spell_cast">
+		<method name="spell_crequest_cast">
 			<return type="void">
 			</return>
 			<argument index="0" name="spell_id" type="int">
@@ -1638,7 +1638,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="crequest_use_item">
+		<method name="item_crequest_use">
 			<return type="void">
 			</return>
 			<argument index="0" name="item_id" type="int">
@@ -3052,7 +3052,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="scast_spell">
+		<method name="spell_casts">
 			<return type="void">
 			</return>
 			<argument index="0" name="spell_id" type="int">
@@ -3060,7 +3060,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="scharacter_levelup">
+		<method name="levelup_scharacter">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -3068,7 +3068,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sclass_levelup">
+		<method name="levelup_sclass">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -3648,7 +3648,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="suse_item">
+		<method name="item_uses">
 			<return type="void">
 			</return>
 			<argument index="0" name="item_id" type="int">
