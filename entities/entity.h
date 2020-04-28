@@ -436,27 +436,27 @@ public:
 
 	////    Crafting System    ////
 
-	void crequest_craft(int id);
-	void scraft(int id);
+	void craft_crequest(int id);
+	void crafts(int id);
 
-	bool hass_craft_recipe(Ref<CraftRecipe> craft_recipe);
-	bool hass_craft_recipe_id(int id);
-	void adds_craft_recipe(Ref<CraftRecipe> craft_recipe);
-	void adds_craft_recipe_id(int id);
-	void removes_craft_recipe(Ref<CraftRecipe> craft_recipe);
-	void removes_craft_recipe_id(int id);
-	Ref<CraftRecipe> gets_craft_recipe(int index);
-	Ref<CraftRecipe> gets_craft_recipe_id(int id);
-	int gets_craft_recipe_count();
+	bool craft_hass_recipe(Ref<CraftRecipe> craft_recipe);
+	bool craft_hass_recipe_id(int id);
+	void craft_adds_recipe(Ref<CraftRecipe> craft_recipe);
+	void craft_adds_recipe_id(int id);
+	void craft_removes_recipe(Ref<CraftRecipe> craft_recipe);
+	void craft_removes_recipe_id(int id);
+	Ref<CraftRecipe> craft_gets_recipe(int index);
+	Ref<CraftRecipe> craft_gets_recipe_id(int id);
+	int craft_gets_recipe_count();
 
-	bool hasc_craft_recipe(Ref<CraftRecipe> craft_recipe);
-	bool hasc_craft_recipe_id(int id);
-	void addc_craft_recipe(Ref<CraftRecipe> craft_recipe);
-	void addc_craft_recipe_id(int id);
-	void removec_craft_recipe(Ref<CraftRecipe> craft_recipe);
-	void removec_craft_recipe_id(int id);
-	Ref<CraftRecipe> getc_craft_recipe(int index);
-	int getc_craft_recipe_count();
+	bool craft_hasc_recipe(Ref<CraftRecipe> craft_recipe);
+	bool craft_hasc_recipe_id(int id);
+	void craft_addc_recipe(Ref<CraftRecipe> craft_recipe);
+	void craft_addc_recipe_id(int id);
+	void craft_removec_recipe(Ref<CraftRecipe> craft_recipe);
+	void craft_removec_recipe_id(int id);
+	Ref<CraftRecipe> craft_getc_recipe(int index);
+	int craft_getc_recipe_count();
 
 	////    SpellSystem    ////
 
@@ -967,7 +967,7 @@ public:
 	~Entity();
 
 protected:
-	void _scraft(int id);
+	void _crafts(int id);
 	void _son_xp_gained(int value);
 	void _son_character_level_up(int level);
 	void _son_class_level_up(int level);

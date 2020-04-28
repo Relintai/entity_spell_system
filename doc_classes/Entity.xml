@@ -320,7 +320,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_scraft" qualifiers="virtual">
+		<method name="_crafts" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="id" type="int">
@@ -710,7 +710,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_craft_recipe">
+		<method name="craft_addc_recipe">
 			<return type="void">
 			</return>
 			<argument index="0" name="craft_recipe" type="CraftRecipe">
@@ -718,7 +718,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_craft_recipe_id">
+		<method name="craft_addc_recipe_id">
 			<return type="void">
 			</return>
 			<argument index="0" name="id" type="int">
@@ -890,7 +890,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_craft_recipe">
+		<method name="craft_adds_recipe">
 			<return type="void">
 			</return>
 			<argument index="0" name="craft_recipe" type="CraftRecipe">
@@ -898,7 +898,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_craft_recipe_id">
+		<method name="craft_adds_recipe_id">
 			<return type="void">
 			</return>
 			<argument index="0" name="id" type="int">
@@ -1528,7 +1528,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="crequest_craft">
+		<method name="craft_crequest">
 			<return type="void">
 			</return>
 			<argument index="0" name="id" type="int">
@@ -1934,7 +1934,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_craft_recipe">
+		<method name="craft_getc_recipe">
 			<return type="CraftRecipe">
 			</return>
 			<argument index="0" name="craft_recipe" type="int">
@@ -1942,7 +1942,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_craft_recipe_count">
+		<method name="craft_getc_recipe_count">
 			<return type="int">
 			</return>
 			<description>
@@ -2152,7 +2152,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_craft_recipe">
+		<method name="craft_gets_recipe">
 			<return type="CraftRecipe">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2160,13 +2160,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_craft_recipe_count">
+		<method name="craft_gets_recipe_count">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="gets_craft_recipe_id">
+		<method name="craft_gets_recipe_id">
 			<return type="CraftRecipe">
 			</return>
 			<argument index="0" name="id" type="int">
@@ -2344,7 +2344,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="hasc_craft_recipe">
+		<method name="craft_hasc_recipe">
 			<return type="bool">
 			</return>
 			<argument index="0" name="craft_recipe" type="CraftRecipe">
@@ -2352,7 +2352,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="hasc_craft_recipe_id">
+		<method name="craft_hasc_recipe_id">
 			<return type="bool">
 			</return>
 			<argument index="0" name="id" type="int">
@@ -2416,7 +2416,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="hass_craft_recipe">
+		<method name="craft_hass_recipe">
 			<return type="bool">
 			</return>
 			<argument index="0" name="craft_recipe" type="CraftRecipe">
@@ -2424,7 +2424,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="hass_craft_recipe_id">
+		<method name="craft_hass_recipe_id">
 			<return type="bool">
 			</return>
 			<argument index="0" name="id" type="int">
@@ -2740,7 +2740,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_craft_recipe">
+		<method name="craft_removec_recipe">
 			<return type="void">
 			</return>
 			<argument index="0" name="craft_recipe" type="CraftRecipe">
@@ -2748,7 +2748,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_craft_recipe_id">
+		<method name="craft_removec_recipe_id">
 			<return type="void">
 			</return>
 			<argument index="0" name="id" type="int">
@@ -2900,7 +2900,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_craft_recipe">
+		<method name="craft_removes_recipe">
 			<return type="void">
 			</return>
 			<argument index="0" name="craft_recipe" type="CraftRecipe">
@@ -2908,7 +2908,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_craft_recipe_id">
+		<method name="craft_removes_recipe_id">
 			<return type="void">
 			</return>
 			<argument index="0" name="id" type="int">
@@ -3082,7 +3082,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="scraft">
+		<method name="crafts">
 			<return type="void">
 			</return>
 			<argument index="0" name="id" type="int">
@@ -4266,7 +4266,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="scraft_recipe_added">
+		<signal name="crafts_recipe_added">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="craft_recipe" type="CraftRecipe">
@@ -4274,7 +4274,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="scraft_success">
+		<signal name="crafts_success">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="item" type="ItemInstance">

@@ -32,8 +32,8 @@ The module provides a huge number of script callbacks, usually as virtual method
 
 Do not call methods with underscores, all of them has a normal counterpart, always call that.
 
-For example entity has `scraft(int id)` and `_scraft(int id)` (virtual). Always use `scraft(int id)`, it will
-call `_scraft(int id)`.
+For example entity has `crafts(int id)` and `_crafts(int id)` (virtual). Always use `crafts(int id)`, it will
+call `_crafts(int id)`.
 
 For networked classes, every variable is broken up into clientside, and serverside. This makes it easier to 
 develop games that can also run locally, with less overhead and simpler logic. 
