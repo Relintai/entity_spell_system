@@ -32,9 +32,6 @@ class EntityResourceCostData : public Resource {
 	GDCLASS(EntityResourceCostData, Resource);
 
 public:
-	Ref<EntityResourceData> get_entity_resource_data();
-	void set_entity_resource_data(Ref<EntityResourceData> data);
-
 	int get_cost();
 	void set_cost(int value);
 
@@ -44,7 +41,6 @@ protected:
 	static void _bind_methods();
 
 private:
-	Ref<EntityResourceData> _entity_resource_data;
 	int _cost;
 };
 

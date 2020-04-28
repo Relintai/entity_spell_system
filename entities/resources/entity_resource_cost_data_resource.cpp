@@ -20,21 +20,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "entity_resource_cost_data.h"
+#include "entity_resource_cost_data_resource.h"
 
-int EntityResourceCostData::get_cost() {
-	return _cost;
+Ref<EntityResourceData> EntityResourceCostDataResource::get_entity_resource_data() {
+	return _entity_resource_data;
 }
-void EntityResourceCostData::set_cost(int value) {
-	_cost = value;
-}
-
-EntityResourceCostData::EntityResourceCostData() {
-	_cost = 0;
+void EntityResourceCostDataResource::set_entity_resource_data(Ref<EntityResourceData> data) {
+	_entity_resource_data = data;
 }
 
-void EntityResourceCostData::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_cost"), &EntityResourceCostData::get_cost);
-	ClassDB::bind_method(D_METHOD("set_cost", "value"), &EntityResourceCostData::set_cost);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cost"), "set_cost", "get_cost");
+EntityResourceCostDataResource::EntityResourceCostDataResource() {
+}
+
+void EntityResourceCostDataResource::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_entity_resource_data"), &EntityResourceCostDataResource::get_entity_resource_data);
+	ClassDB::bind_method(D_METHOD("set_entity_resource_data", "value"), &EntityResourceCostDataResource::set_entity_resource_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entity_resource_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityResourceData"), "set_entity_resource_data", "get_entity_resource_data");
 }

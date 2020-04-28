@@ -81,7 +81,11 @@ sources = [
 
     "entities/resources/entity_resource_data.cpp",
     "entities/resources/entity_resource_cost_data.cpp",
+    "entities/resources/entity_resource_cost_data_health.cpp",
+    "entities/resources/entity_resource_cost_data_resource.cpp",
     "entities/resources/entity_resource.cpp",
+    "entities/resources/entity_resource_health.cpp",
+    "entities/resources/entity_resource_speed.cpp",
 
     "drag_and_drop/es_drag_and_drop.cpp",
 

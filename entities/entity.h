@@ -398,14 +398,14 @@ public:
 	void resource_removes(int index);
 	void resource_clears();
 
-	void resource_addc_rpc(int index, String data);
-
 	Ref<EntityResource> resource_getc_index(int index);
 	Ref<EntityResource> resource_getc_id(int id);
 	void resource_addc(int index, Ref<EntityResource> resource);
 	int resource_getc_count();
 	void resource_removec(int index);
 	void resource_clearc();
+
+	void resource_addc_rpc(int index, String data);
 
 	void resource_sends_current(int index, int current);
 	void resource_sends_curr_max(int index, int current, int max);

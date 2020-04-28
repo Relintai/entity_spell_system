@@ -20,21 +20,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#ifndef ENTITY_RESOURCE_COST_DATA_HEALTH_H
+#define ENTITY_RESOURCE_COST_DATA_HEALTH_H
+
+#include "core/resource.h"
+
 #include "entity_resource_cost_data.h"
+#include "entity_resource_data.h"
 
-int EntityResourceCostData::get_cost() {
-	return _cost;
-}
-void EntityResourceCostData::set_cost(int value) {
-	_cost = value;
-}
+class EntityResourceCostDataHealth : public EntityResourceCostData {
+	GDCLASS(EntityResourceCostDataHealth, EntityResourceCostData);
 
-EntityResourceCostData::EntityResourceCostData() {
-	_cost = 0;
-}
+public:
+	EntityResourceCostDataHealth();
 
-void EntityResourceCostData::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_cost"), &EntityResourceCostData::get_cost);
-	ClassDB::bind_method(D_METHOD("set_cost", "value"), &EntityResourceCostData::set_cost);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cost"), "set_cost", "get_cost");
-}
+protected:
+	static void _bind_methods();
+};
+
+#endif

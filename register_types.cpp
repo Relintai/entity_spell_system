@@ -86,7 +86,11 @@ SOFTWARE.
 
 #include "entities/resources/entity_resource.h"
 #include "entities/resources/entity_resource_cost_data.h"
+#include "entities/resources/entity_resource_cost_data_health.h"
+#include "entities/resources/entity_resource_cost_data_resource.h"
 #include "entities/resources/entity_resource_data.h"
+#include "entities/resources/entity_resource_health.h"
+#include "entities/resources/entity_resource_speed.h"
 
 #include "entities/auras/aura_data.h"
 #include "entities/entity.h"
@@ -212,7 +216,11 @@ void register_entity_spell_system_types() {
 
 	ClassDB::register_class<EntityResourceData>();
 	ClassDB::register_class<EntityResourceCostData>();
+	ClassDB::register_class<EntityResourceCostDataHealth>();
+	ClassDB::register_class<EntityResourceCostDataResource>();
 	ClassDB::register_class<EntityResource>();
+	ClassDB::register_class<EntityResourceHealth>();
+	ClassDB::register_class<EntityResourceSpeed>();
 
 	ClassDB::register_class<AuraTriggerData>();
 
