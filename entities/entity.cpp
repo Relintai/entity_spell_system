@@ -807,13 +807,13 @@ bool Entity::getc_is_pet() {
 	return _c_pet_owner;
 }
 
-Entity *Entity::gets_pet_owner() {
+Entity *Entity::pet_gets_owner() {
 	return _s_pet_owner;
 }
-void Entity::sets_pet_owner(Entity *entity) {
+void Entity::pet_sets_owner(Entity *entity) {
 	_s_pet_owner = entity;
 }
-void Entity::sets_pet_owner_bind(Node *entity) {
+void Entity::pet_sets_owner_bind(Node *entity) {
 	if (!entity) {
 		return;
 	}
@@ -824,20 +824,20 @@ void Entity::sets_pet_owner_bind(Node *entity) {
 		return;
 	}
 
-	return sets_pet_owner(e);
+	return pet_sets_owner(e);
 }
 
-int Entity::gets_pet_formation_index() {
+int Entity::pet_gets_formation_index() {
 	return _s_pet_formation_index;
 }
-void Entity::sets_pet_formation_index(int value) {
+void Entity::pet_sets_formation_index(int value) {
 	_s_pet_formation_index = value;
 }
 
-EntityEnums::AIStates Entity::gets_pet_ai_state() {
+EntityEnums::AIStates Entity::pet_gets_ai_state() {
 	return _s_pet_ai_state;
 }
-void Entity::sets_pet_ai_state(EntityEnums::AIStates value) {
+void Entity::pet_sets_ai_state(EntityEnums::AIStates value) {
 	_s_pet_ai_state = value;
 }
 
@@ -881,7 +881,7 @@ void Entity::sets_ai(Ref<EntityAI> value) {
 
 ////    Pets    ////
 
-void Entity::adds_pet(Entity *entity) {
+void Entity::pet_adds(Entity *entity) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -889,10 +889,10 @@ void Entity::adds_pet(Entity *entity) {
 #endif
 
 	//the owner always want to see his pet, and you pet will always want to see the owner
-	adds_sees(entity);
-	entity->adds_sees(this);
+	sees_adds(entity);
+	entity->sees_adds(this);
 
-	entity->sets_pet_owner(this);
+	entity->pet_sets_owner(this);
 
 	_s_pets.push_back(entity);
 
@@ -900,30 +900,30 @@ void Entity::adds_pet(Entity *entity) {
 	entity->sets_ai_state(_s_pet_ai_state);
 	entity->sets_entity_controller(EntityEnums::ENITIY_CONTROLLER_AI);
 
-	entity->sets_pet_formation_index(_s_pets.size());
+	entity->pet_sets_formation_index(_s_pets.size());
 
 	//full callback stack spet_added
 }
-void Entity::adds_pet_bind(Node *entity) {
+void Entity::pet_adds_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(!e);
 
-	adds_pet(e);
+	pet_adds(e);
 }
-Entity *Entity::gets_pet(int index) {
+Entity *Entity::pet_gets(int index) {
 	ERR_FAIL_INDEX_V(index, _s_pets.size(), NULL);
 
 	return _s_pets.get(index);
 }
-void Entity::removes_pet_index(int index) {
+void Entity::pet_removes_index(int index) {
 	ERR_FAIL_INDEX(index, _s_pets.size());
 
 	Entity *entity = _s_pets.get(index);
 
 	_s_pets.remove(index);
 
-	removes_sees(entity);
+	sees_removes(entity);
 
 	for (int i = 0; i < _s_pets.size(); ++i) {
 		Entity *pet = _s_pets.get(index);
@@ -934,7 +934,7 @@ void Entity::removes_pet_index(int index) {
 		ERR_CONTINUE(pet == NULL);
 #endif
 
-		_s_pets.get(i)->sets_pet_formation_index(i);
+		_s_pets.get(i)->pet_sets_formation_index(i);
 	}
 
 #if VERSION_MAJOR < 4
@@ -943,33 +943,33 @@ void Entity::removes_pet_index(int index) {
 	ERR_FAIL_COND(entity == NULL);
 #endif
 
-	entity->sets_pet_owner(NULL);
+	entity->pet_sets_owner(NULL);
 
 	entity->sets_ai_state(entity->gets_ai_state_stored());
 	entity->sets_entity_controller(entity->gets_original_entity_controller());
 
 	//full callback stack spet_added
 }
-void Entity::removes_pet(Entity *entity) {
+void Entity::pet_removes(Entity *entity) {
 	for (int i = 0; i < _s_pets.size(); ++i) {
 		if (_s_pets.get(i) == entity) {
-			removes_pet_index(i);
+			pet_removes_index(i);
 			return;
 		}
 	}
 }
-void Entity::removes_pet_bind(Node *entity) {
+void Entity::pet_removes_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(!e);
 
-	removes_pet(e);
+	pet_removes(e);
 }
-int Entity::gets_pet_count() {
+int Entity::pet_gets_count() {
 	return _s_pets.size();
 }
 
-void Entity::addc_pet_path(NodePath path) {
+void Entity::pet_addc_path(NodePath path) {
 	Node *n = get_node_or_null(path);
 
 	Entity *entity = Object::cast_to<Entity>(n);
@@ -980,10 +980,10 @@ void Entity::addc_pet_path(NodePath path) {
 	ERR_FAIL_COND(entity == NULL);
 #endif
 
-	addc_pet(entity);
+	pet_addc(entity);
 }
 
-void Entity::addc_pet(Entity *entity) {
+void Entity::pet_addc(Entity *entity) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -994,19 +994,19 @@ void Entity::addc_pet(Entity *entity) {
 
 	//full callback stack spet_added
 }
-void Entity::addc_pet_bind(Node *entity) {
+void Entity::pet_addc_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(!e);
 
-	addc_pet(e);
+	pet_addc(e);
 }
-Entity *Entity::getc_pet(int index) {
+Entity *Entity::pet_getc(int index) {
 	ERR_FAIL_INDEX_V(index, _c_pets.size(), NULL);
 
 	return _c_pets.get(index);
 }
-void Entity::removec_pet_index(int index) {
+void Entity::pet_removec_index(int index) {
 	ERR_FAIL_INDEX(index, _c_pets.size());
 
 	//Entity *entity = _c_pets.get(index);
@@ -1021,22 +1021,22 @@ void Entity::removec_pet_index(int index) {
 
 	//full callback stack spet_added
 }
-void Entity::removec_pet(Entity *entity) {
+void Entity::pet_removec(Entity *entity) {
 	for (int i = 0; i < _c_pets.size(); ++i) {
 		if (_c_pets.get(i) == entity) {
-			removec_pet_index(i);
+			pet_removec_index(i);
 			return;
 		}
 	}
 }
-void Entity::removec_pet_bind(Node *entity) {
+void Entity::pet_removec_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(!e);
 
-	removec_pet(e);
+	pet_removec(e);
 }
-int Entity::getc_pet_count() {
+int Entity::pet_getc_count() {
 	return _s_pets.size();
 }
 
@@ -1405,7 +1405,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 	Vector<int> talents = dict.get("talents", Vector<int>());
 
 	for (int i = 0; i < talents.size(); ++i) {
-		adds_talent(talents[i]);
+		talent_adds(talents[i]);
 	}
 
 	////    Data    ////
@@ -4679,15 +4679,15 @@ void Entity::setc_free_talent_points(int value) {
 	_c_free_talent_points = value;
 }
 
-void Entity::crequest_talent_learn(int spec_index, int talent_row, int talent_culomn) {
-	sreceive_talent_learn_request(spec_index, talent_row, talent_culomn);
+void Entity::talent_crequest_learn(int spec_index, int talent_row, int talent_culomn) {
+	talent_sreceive_learn_request(spec_index, talent_row, talent_culomn);
 }
 
-void Entity::sreceive_talent_learn_request(int spec_index, int talent_row, int talent_culomn) {
-	call("_sreceive_talent_learn_request", spec_index, talent_row, talent_culomn);
+void Entity::talent_sreceive_learn_request(int spec_index, int talent_row, int talent_culomn) {
+	call("_talent_sreceive_learn_request", spec_index, talent_row, talent_culomn);
 }
 
-void Entity::_sreceive_talent_learn_request(int spec_index, int talent_row, int talent_culomn) {
+void Entity::_talent_sreceive_learn_request(int spec_index, int talent_row, int talent_culomn) {
 	if (gets_free_talent_points() <= 0)
 		return;
 
@@ -4713,11 +4713,11 @@ void Entity::_sreceive_talent_learn_request(int spec_index, int talent_row, int 
 
 		int talent_id = talent->get_id();
 
-		if (hass_talent(talent_id))
+		if (talent_hass(talent_id))
 			continue;
 
 		if (talent->get_talent_required_talent().is_valid()) {
-			if (!hass_talent(talent->get_talent_required_talent()->get_id())) {
+			if (!talent_hass(talent->get_talent_required_talent()->get_id())) {
 				return;
 			}
 		}
@@ -4752,23 +4752,23 @@ void Entity::_sreceive_talent_learn_request(int spec_index, int talent_row, int 
 
 		talent->sapply(info);
 
-		adds_talent(talent_id);
+		talent_adds(talent_id);
 
 		return;
 	}
 }
 
-void Entity::crequest_talent_reset() {
-	sreceive_reset_talent_request();
+void Entity::talent_crequest_reset() {
+	talent_sreceive_reset_request();
 }
-void Entity::sreceive_reset_talent_request() {
-	call("_sreceive_reset_talent_request");
+void Entity::talent_sreceive_reset_request() {
+	call("_talent_sreceive_reset_request");
 }
-void Entity::_sreceive_reset_talent_request() {
-	sreset_talents();
+void Entity::_talent_sreceive_reset_request() {
+	talent_sreset();
 }
 
-void Entity::sreset_talents() {
+void Entity::talent_sreset() {
 
 	_s_talents.clear();
 
@@ -4777,9 +4777,9 @@ void Entity::sreset_talents() {
 
 	emit_signal("stalent_reset", this);
 
-	ORPC(creset_talents);
+	ORPC(talent_creset);
 }
-void Entity::creset_talents() {
+void Entity::talent_creset() {
 	_c_talents.clear();
 
 	if (has_method("_con_talent_reset"))
@@ -4788,8 +4788,8 @@ void Entity::creset_talents() {
 	emit_signal("ctalent_reset", this);
 }
 
-void Entity::adds_talent(int talent) {
-	if (hass_talent(talent))
+void Entity::talent_adds(int talent) {
+	if (talent_hass(talent))
 		return;
 
 	_s_talents.push_back(talent);
@@ -4799,9 +4799,9 @@ void Entity::adds_talent(int talent) {
 
 	emit_signal("stalent_learned", this, talent);
 
-	ORPC(addc_talent, talent);
+	ORPC(talent_addc, talent);
 }
-void Entity::removes_talent(int talent) {
+void Entity::talent_removes(int talent) {
 	for (int i = 0; i < _s_talents.size(); ++i) {
 		if (_s_talents[i] == talent) {
 			_s_talents.remove(i);
@@ -4820,9 +4820,9 @@ void Entity::removes_talent(int talent) {
 		}
 	}
 
-	ORPC(removec_talent, talent);
+	ORPC(talent_removec, talent);
 }
-bool Entity::hass_talent(int talent) {
+bool Entity::talent_hass(int talent) {
 	for (int i = 0; i < _s_talents.size(); ++i) {
 		if (_s_talents[i] == talent) {
 			return true;
@@ -4831,22 +4831,22 @@ bool Entity::hass_talent(int talent) {
 
 	return false;
 }
-int Entity::gets_talent(int index) {
+int Entity::talent_gets(int index) {
 	ERR_FAIL_INDEX_V(index, _s_talents.size(), 0);
 
 	return _s_talents.get(index);
 }
-int Entity::gets_talent_count() {
+int Entity::talent_gets_count() {
 	return _s_talents.size();
 }
-void Entity::sclear_talents() {
+void Entity::talents_sclear() {
 	_s_talents.clear();
 
-	ORPC(cclear_talents);
+	ORPC(talent_cclear);
 }
 
-void Entity::addc_talent(int talent) {
-	if (hasc_talent(talent)) return;
+void Entity::talent_addc(int talent) {
+	if (talent_hasc(talent)) return;
 
 	_c_talents.push_back(talent);
 
@@ -4855,7 +4855,7 @@ void Entity::addc_talent(int talent) {
 
 	emit_signal("ctalent_learned", this, talent);
 }
-void Entity::removec_talent(int talent) {
+void Entity::talent_removec(int talent) {
 	for (int i = 0; i < _c_talents.size(); ++i) {
 		if (_c_talents[i] == talent) {
 			_c_talents.remove(i);
@@ -4863,7 +4863,7 @@ void Entity::removec_talent(int talent) {
 		}
 	}
 }
-bool Entity::hasc_talent(int talent) {
+bool Entity::talent_hasc(int talent) {
 	for (int i = 0; i < _c_talents.size(); ++i) {
 		if (_c_talents[i] == talent) {
 			return true;
@@ -4872,15 +4872,15 @@ bool Entity::hasc_talent(int talent) {
 
 	return false;
 }
-int Entity::getc_talent(int index) {
+int Entity::talent_getc(int index) {
 	ERR_FAIL_INDEX_V(index, _c_talents.size(), 0);
 
 	return _c_talents.get(index);
 }
-int Entity::getc_talent_count() {
+int Entity::talent_getc_count() {
 	return _c_talents.size();
 }
-void Entity::cclear_talents() {
+void Entity::talent_cclear() {
 	_c_talents.clear();
 }
 
@@ -4892,17 +4892,17 @@ Ref<Bag> Entity::gets_bag() const {
 void Entity::sets_bag(const Ref<Bag> bag) {
 	if (_s_bag.is_valid()) {
 #if VERSION_MAJOR < 4
-		_s_bag->disconnect("item_added", this, "ons_item_added");
-		_s_bag->disconnect("item_removed", this, "ons_item_removed");
-		_s_bag->disconnect("item_swapped", this, "ons_items_swapped");
-		_s_bag->disconnect("item_count_changed", this, "ons_item_count_changed");
+		_s_bag->disconnect("item_added", this, "item_ons_added");
+		_s_bag->disconnect("item_removed", this, "item_ons_removed");
+		_s_bag->disconnect("item_swapped", this, "items_ons_swapped");
+		_s_bag->disconnect("item_count_changed", this, "item_ons_count_changed");
 		_s_bag->disconnect("overburdened", this, "ons_overburdened");
 		_s_bag->disconnect("overburden_removed", this, "ons_overburden_removed");
 #else
-		_s_bag->disconnect("item_added", callable_mp(this, &Entity::ons_item_added));
-		_s_bag->disconnect("item_removed", callable_mp(this, &Entity::ons_item_removed));
-		_s_bag->disconnect("item_swapped", callable_mp(this, &Entity::ons_items_swapped));
-		_s_bag->disconnect("item_count_changed", callable_mp(this, &Entity::ons_item_count_changed));
+		_s_bag->disconnect("item_added", callable_mp(this, &Entity::item_ons_added));
+		_s_bag->disconnect("item_removed", callable_mp(this, &Entity::item_ons_removed));
+		_s_bag->disconnect("item_swapped", callable_mp(this, &Entity::items_ons_swapped));
+		_s_bag->disconnect("item_count_changed", callable_mp(this, &Entity::item_ons_count_changed));
 		_s_bag->disconnect("overburdened", callable_mp(this, &Entity::ons_overburdened));
 		_s_bag->disconnect("overburden_removed", callable_mp(this, &Entity::ons_overburden_removed));
 #endif
@@ -4912,17 +4912,17 @@ void Entity::sets_bag(const Ref<Bag> bag) {
 
 	if (_s_bag.is_valid()) {
 #if VERSION_MAJOR < 4
-		_s_bag->connect("item_added", this, "ons_item_added");
-		_s_bag->connect("item_removed", this, "ons_item_removed");
-		_s_bag->connect("item_swapped", this, "ons_items_swapped");
-		_s_bag->connect("item_count_changed", this, "ons_item_count_changed");
+		_s_bag->connect("item_added", this, "item_ons_added");
+		_s_bag->connect("item_removed", this, "item_ons_removed");
+		_s_bag->connect("item_swapped", this, "items_ons_swapped");
+		_s_bag->connect("item_count_changed", this, "item_ons_count_changed");
 		_s_bag->connect("overburdened", this, "ons_overburdened");
 		_s_bag->connect("overburden_removed", this, "ons_overburden_removed");
 #else
-		_s_bag->connect("item_added", callable_mp(this, &Entity::ons_item_added));
-		_s_bag->connect("item_removed", callable_mp(this, &Entity::ons_item_removed));
-		_s_bag->connect("item_swapped", callable_mp(this, &Entity::ons_items_swapped));
-		_s_bag->connect("item_count_changed", callable_mp(this, &Entity::ons_item_count_changed));
+		_s_bag->connect("item_added", callable_mp(this, &Entity::item_ons_added));
+		_s_bag->connect("item_removed", callable_mp(this, &Entity::item_ons_removed));
+		_s_bag->connect("item_swapped", callable_mp(this, &Entity::items_ons_swapped));
+		_s_bag->connect("item_count_changed", callable_mp(this, &Entity::item_ons_count_changed));
 		_s_bag->connect("overburdened", callable_mp(this, &Entity::ons_overburdened));
 		_s_bag->connect("overburden_removed", callable_mp(this, &Entity::ons_overburden_removed));
 #endif
@@ -4952,15 +4952,15 @@ Ref<Bag> Entity::gets_target_bag() const {
 void Entity::sets_target_bag(const Ref<Bag> bag) {
 	if (_s_target_bag.is_valid()) {
 #if VERSION_MAJOR < 4
-		_s_target_bag->disconnect("item_added", this, "ons_target_item_added");
-		_s_target_bag->disconnect("item_removed", this, "ons_target_item_removed");
-		_s_target_bag->disconnect("item_swapped", this, "ons_target_items_swapped");
-		_s_target_bag->disconnect("item_count_changed", this, "ons_target_item_count_changed");
+		_s_target_bag->disconnect("item_added", this, "target_item_ons_added");
+		_s_target_bag->disconnect("item_removed", this, "target_item_ons_removed");
+		_s_target_bag->disconnect("item_swapped", this, "target_items_ons_swapped");
+		_s_target_bag->disconnect("item_count_changed", this, "target_item_ons_count_changed");
 #else
-		_s_target_bag->disconnect("item_added", callable_mp(this, &Entity::ons_target_item_added));
-		_s_target_bag->disconnect("item_removed", callable_mp(this, &Entity::ons_target_item_removed));
-		_s_target_bag->disconnect("item_swapped", callable_mp(this, &Entity::ons_target_items_swapped));
-		_s_target_bag->disconnect("item_count_changed", callable_mp(this, &Entity::ons_target_item_count_changed));
+		_s_target_bag->disconnect("item_added", callable_mp(this, &Entity::target_item_ons_added));
+		_s_target_bag->disconnect("item_removed", callable_mp(this, &Entity::target_item_ons_removed));
+		_s_target_bag->disconnect("item_swapped", callable_mp(this, &Entity::target_items_ons_swapped));
+		_s_target_bag->disconnect("item_count_changed", callable_mp(this, &Entity::target_item_ons_count_changed));
 #endif
 	}
 
@@ -4968,15 +4968,15 @@ void Entity::sets_target_bag(const Ref<Bag> bag) {
 
 	if (_s_target_bag.is_valid()) {
 #if VERSION_MAJOR < 4
-		_s_target_bag->connect("item_added", this, "ons_target_item_added");
-		_s_target_bag->connect("item_removed", this, "ons_target_item_removed");
-		_s_target_bag->connect("item_swapped", this, "ons_target_items_swapped");
-		_s_target_bag->connect("item_count_changed", this, "ons_target_item_count_changed");
+		_s_target_bag->connect("item_added", this, "target_item_ons_added");
+		_s_target_bag->connect("item_removed", this, "target_item_ons_removed");
+		_s_target_bag->connect("item_swapped", this, "target_items_ons_swapped");
+		_s_target_bag->connect("item_count_changed", this, "target_item_ons_count_changed");
 #else
-		_s_target_bag->connect("item_added", callable_mp(this, &Entity::ons_target_item_added));
-		_s_target_bag->connect("item_removed", callable_mp(this, &Entity::ons_target_item_removed));
-		_s_target_bag->connect("item_swapped", callable_mp(this, &Entity::ons_target_items_swapped));
-		_s_target_bag->connect("item_count_changed", callable_mp(this, &Entity::ons_target_item_count_changed));
+		_s_target_bag->connect("item_added", callable_mp(this, &Entity::target_item_ons_added));
+		_s_target_bag->connect("item_removed", callable_mp(this, &Entity::target_item_ons_removed));
+		_s_target_bag->connect("item_swapped", callable_mp(this, &Entity::target_items_ons_swapped));
+		_s_target_bag->connect("item_count_changed", callable_mp(this, &Entity::target_item_ons_count_changed));
 #endif
 	}
 
@@ -5013,10 +5013,10 @@ void Entity::setc_target_bag_rpc(String data) {
 	setc_target_bag(bag);
 }
 
-void Entity::crequest_loot(int index) {
-	RPCS(sloot, index);
+void Entity::loot_crequest(int index) {
+	RPCS(loots, index);
 }
-void Entity::sloot(int index) {
+void Entity::loots(int index) {
 	ERR_FAIL_COND(!_s_bag.is_valid());
 	ERR_FAIL_COND(!_s_target_bag.is_valid());
 
@@ -5027,72 +5027,72 @@ void Entity::sloot(int index) {
 		_s_bag->add_item(ii);
 	}
 }
-void Entity::cloot(int index) {
+void Entity::lootc(int index) {
 	ERR_FAIL_COND(!_c_target_bag.is_valid());
 
 	_c_target_bag->remove_item(index);
 }
 
-void Entity::ons_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
-	ORPCOBJP(addc_item_rpc, slot_id, JSON::print(item->to_dict()), addc_item, slot_id, item);
+void Entity::item_ons_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+	ORPCOBJP(item_addc_rpc, slot_id, JSON::print(item->to_dict()), item_addc, slot_id, item);
 }
-void Entity::addc_item_rpc(int slot_id, String item_data) {
+void Entity::item_addc_rpc(int slot_id, String item_data) {
 	Ref<ItemInstance> ii;
 	ii.instance();
 	ii->from_dict(data_as_dict(item_data));
 
-	addc_item(slot_id, ii);
+	item_addc(slot_id, ii);
 }
-void Entity::addc_item(int slot_id, Ref<ItemInstance> item) {
+void Entity::item_addc(int slot_id, Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!_c_bag.is_valid());
 
 	_c_bag->add_item_at(slot_id, item);
 }
 
-void Entity::ons_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
-	ORPC(removec_item, slot_id);
+void Entity::item_ons_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+	ORPC(item_removec, slot_id);
 }
-void Entity::removes_item(const int slot_id) {
+void Entity::item_removes(const int slot_id) {
 	ERR_FAIL_COND(!_s_bag.is_valid());
 
 	_s_bag->remove_item(slot_id);
 }
-void Entity::removec_item(const int slot_id) {
+void Entity::item_removec(const int slot_id) {
 	ERR_FAIL_COND(!_c_bag.is_valid());
 
 	_c_bag->remove_item(slot_id);
 }
-void Entity::cdenyremove_item(const int slot_id) {
+void Entity::item_cdeny_remove(const int slot_id) {
 }
-void Entity::crequest_remove_item(const int slot_id) {
-	RPCS(removes_item, slot_id);
+void Entity::item_crequest_remove(const int slot_id) {
+	RPCS(item_removes, slot_id);
 }
 
-void Entity::ons_items_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
-	ORPC(cswap_items, slot_id_1, slot_id_2);
+void Entity::items_ons_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
+	ORPC(items_swapc, slot_id_1, slot_id_2);
 }
-void Entity::sswap_items(int slot_id_1, int slot_id_2) {
+void Entity::items_swaps(int slot_id_1, int slot_id_2) {
 	ERR_FAIL_COND(!_s_bag.is_valid());
 
 	_s_bag->swap_items(slot_id_1, slot_id_2);
 }
-void Entity::cswap_items(int slot_id_1, int slot_id_2) {
+void Entity::items_swapc(int slot_id_1, int slot_id_2) {
 	ERR_FAIL_COND(!_c_bag.is_valid());
 
 	_c_bag->swap_items(slot_id_1, slot_id_2);
 }
-void Entity::cdeny_item_swap(int slot_id_1, int slot_id_2) {
+void Entity::item_cdeny_swap(int slot_id_1, int slot_id_2) {
 }
-void Entity::crequest_item_swap(int slot_id_1, int slot_id_2) {
-	RPCS(sswap_items, slot_id_1, slot_id_2);
+void Entity::item_crequest_swap(int slot_id_1, int slot_id_2) {
+	RPCS(items_swaps, slot_id_1, slot_id_2);
 }
 
-void Entity::ons_item_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+void Entity::item_ons_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
 	ERR_FAIL_COND(!item.is_valid());
 
-	ORPC(cchange_item_count, slot_id, item->get_stack_size());
+	ORPC(item_cchange_count, slot_id, item->get_stack_size());
 }
-void Entity::cchange_item_count(int slot_id, int new_count) {
+void Entity::item_cchange_count(int slot_id, int new_count) {
 	ERR_FAIL_COND(!_c_bag.is_valid());
 
 	_c_bag->set_item_count(slot_id, new_count);
@@ -5105,66 +5105,66 @@ void Entity::ons_overburden_removed(Ref<Bag> bag) {
 
 //Target Bag
 
-void Entity::ons_target_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
-	ORPCOBJP(addc_target_item_rpc, slot_id, JSON::print(item->to_dict()), addc_target_item, slot_id, item);
+void Entity::target_item_ons_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+	ORPCOBJP(target_item_addc_rpc, slot_id, JSON::print(item->to_dict()), target_item_addc, slot_id, item);
 }
-void Entity::addc_target_item_rpc(int slot_id, String item_data) {
+void Entity::target_item_addc_rpc(int slot_id, String item_data) {
 	Ref<ItemInstance> ii;
 	ii.instance();
 	ii->from_dict(data_as_dict(item_data));
 
-	addc_target_item(slot_id, ii);
+	target_item_addc(slot_id, ii);
 }
-void Entity::addc_target_item(int slot_id, Ref<ItemInstance> item) {
+void Entity::target_item_addc(int slot_id, Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!_c_target_bag.is_valid());
 
 	_c_target_bag->add_item_at(slot_id, item);
 }
 
-void Entity::ons_target_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
-	ORPC(removec_target_item, slot_id);
+void Entity::target_item_ons_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+	ORPC(target_item_removec, slot_id);
 }
-void Entity::removes_target_item(const int slot_id) {
+void Entity::target_item_removes(const int slot_id) {
 	ERR_FAIL_COND(!_s_target_bag.is_valid());
 
 	_s_target_bag->remove_item(slot_id);
 }
-void Entity::removec_target_item(const int slot_id) {
+void Entity::target_item_removec(const int slot_id) {
 	ERR_FAIL_COND(!_c_target_bag.is_valid());
 
 	_c_target_bag->remove_item(slot_id);
 }
-void Entity::cdenyremove_target_item(const int slot_id) {
+void Entity::target_item_cdeny_remove(const int slot_id) {
 }
-void Entity::crequest_target_remove_item(const int slot_id) {
-	RPCS(removes_target_item, slot_id);
+void Entity::target_remove_crequest_item(const int slot_id) {
+	RPCS(target_item_removes, slot_id);
 }
 
-void Entity::ons_target_items_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
-	ORPC(cswap_target_items, slot_id_1, slot_id_2);
+void Entity::target_items_ons_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
+	ORPC(target_items_cswap, slot_id_1, slot_id_2);
 }
-void Entity::sswap_target_items(int slot_id_1, int slot_id_2) {
+void Entity::target_items_sswap(int slot_id_1, int slot_id_2) {
 	ERR_FAIL_COND(!_s_target_bag.is_valid());
 
 	_s_target_bag->swap_items(slot_id_1, slot_id_2);
 }
-void Entity::cswap_target_items(int slot_id_1, int slot_id_2) {
+void Entity::target_items_cswap(int slot_id_1, int slot_id_2) {
 	ERR_FAIL_COND(!_c_target_bag.is_valid());
 
 	_c_target_bag->swap_items(slot_id_1, slot_id_2);
 }
-void Entity::cdeny_target_item_swap(int slot_id_1, int slot_id_2) {
+void Entity::target_item_cdeny_swap(int slot_id_1, int slot_id_2) {
 }
-void Entity::crequest_target_item_swap(int slot_id_1, int slot_id_2) {
-	RPCS(sswap_target_items, slot_id_1, slot_id_2);
+void Entity::target_item_crequest_swap(int slot_id_1, int slot_id_2) {
+	RPCS(target_items_sswap, slot_id_1, slot_id_2);
 }
 
-void Entity::ons_target_item_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+void Entity::target_item_ons_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
 	ERR_FAIL_COND(!item.is_valid());
 
-	ORPC(cchange_target_item_count, slot_id, item->get_stack_size());
+	ORPC(target_item_cchange_count, slot_id, item->get_stack_size());
 }
-void Entity::cchange_target_item_count(int slot_id, int new_count) {
+void Entity::target_item_cchange_count(int slot_id, int new_count) {
 	ERR_FAIL_COND(!_c_target_bag.is_valid());
 
 	Ref<ItemInstance> ii = _c_target_bag->get_item(slot_id);
@@ -5175,37 +5175,37 @@ void Entity::cchange_target_item_count(int slot_id, int new_count) {
 }
 
 ////    DATA    ////
-void Entity::adds_data(Ref<EntityDataContainer> data) {
+void Entity::data_adds(Ref<EntityDataContainer> data) {
 	_s_data.push_back(data);
 }
-void Entity::removes_data(int index) {
+void Entity::data_removes(int index) {
 	ERR_FAIL_INDEX(index, _s_data.size());
 
 	_s_data.remove(index);
 }
-Ref<EntityDataContainer> Entity::gets_data(int index) {
+Ref<EntityDataContainer> Entity::data_gets(int index) {
 	ERR_FAIL_INDEX_V(index, _s_data.size(), Ref<EntityDataContainer>());
 
 	return _s_data.get(index);
 }
-int Entity::gets_data_count() {
+int Entity::data_gets_count() {
 	return _s_data.size();
 }
 
-void Entity::addc_data(Ref<EntityDataContainer> data) {
+void Entity::data_addc(Ref<EntityDataContainer> data) {
 	_c_data.push_back(data);
 }
-void Entity::removec_data(int index) {
+void Entity::data_removec(int index) {
 	ERR_FAIL_INDEX(index, _c_data.size());
 
 	_c_data.remove(index);
 }
-Ref<EntityDataContainer> Entity::getc_data(int index) {
+Ref<EntityDataContainer> Entity::data_getc(int index) {
 	ERR_FAIL_INDEX_V(index, _c_data.size(), Ref<EntityDataContainer>());
 
 	return _c_data.get(index);
 }
-int Entity::getc_data_count() {
+int Entity::data_getc_count() {
 	return _c_data.size();
 }
 
@@ -5365,12 +5365,12 @@ String Entity::random_name() {
 
 //Networking
 
-Entity *Entity::gets_sees(int index) {
+Entity *Entity::sees_gets(int index) {
 	ERR_FAIL_INDEX_V(index, _s_sees.size(), NULL);
 
 	return _s_sees.get(index);
 }
-void Entity::removes_sees_index(int index) {
+void Entity::sees_removes_index(int index) {
 	Entity *e = _s_sees.get(index);
 
 #if VERSION_MAJOR < 4
@@ -5383,11 +5383,11 @@ void Entity::removes_sees_index(int index) {
 		return;
 	}
 
-	e->removes_seen_by(this);
+	e->seen_by_removes(this);
 
 	_s_sees.remove(index);
 }
-void Entity::removes_sees(Entity *entity) {
+void Entity::sees_removes(Entity *entity) {
 #if VERSION_MAJOR < 4
 	if (unlikely(!ObjectDB::instance_validate(entity))) {
 #else
@@ -5398,25 +5398,25 @@ void Entity::removes_sees(Entity *entity) {
 		return;
 	}
 
-	entity->removes_seen_by(this);
+	entity->seen_by_removes(this);
 
 	_s_sees.erase(entity);
 }
-void Entity::removes_sees_bind(Node *entity) {
+void Entity::sees_removes_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(!e);
 
-	removes_sees(e);
+	sees_removes(e);
 }
-void Entity::adds_sees(Entity *entity) {
+void Entity::sees_adds(Entity *entity) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
 	ERR_FAIL_COND(entity == NULL);
 #endif
 
-	entity->adds_seen_by(this);
+	entity->seen_by_adds(this);
 
 	for (int i = 0; i < _s_sees.size(); ++i) {
 		if (_s_sees.get(i) == entity)
@@ -5425,36 +5425,36 @@ void Entity::adds_sees(Entity *entity) {
 
 	_s_sees.push_back(entity);
 }
-void Entity::adds_sees_bind(Node *entity) {
+void Entity::sees_adds_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(!e);
 
-	adds_sees(e);
+	sees_adds(e);
 }
-int Entity::gets_sees_count() {
+int Entity::sees_gets_count() {
 	return _s_sees.size();
 }
 
-Entity *Entity::gets_seen_by(int index) {
+Entity *Entity::seen_by_gets(int index) {
 	ERR_FAIL_INDEX_V(index, _s_seen_by.size(), NULL);
 
 	return _s_seen_by.get(index);
 }
-void Entity::removes_seen_by_index(int index) {
+void Entity::seen_by_removes_index(int index) {
 	_s_seen_by.remove(index);
 }
-void Entity::removes_seen_by(Entity *entity) {
+void Entity::seen_by_removes(Entity *entity) {
 	_s_seen_by.erase(entity);
 }
-void Entity::removes_seen_by_bind(Node *entity) {
+void Entity::seen_by_removes_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(!e);
 
-	removes_seen_by(e);
+	seen_by_removes(e);
 }
-void Entity::adds_seen_by(Entity *entity) {
+void Entity::seen_by_adds(Entity *entity) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -5468,15 +5468,15 @@ void Entity::adds_seen_by(Entity *entity) {
 
 	_s_seen_by.push_back(entity);
 }
-void Entity::adds_seen_by_bind(Node *entity) {
+void Entity::seen_by_adds_bind(Node *entity) {
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(!e);
 
-	adds_seen_by(e);
+	seen_by_adds(e);
 }
 
-int Entity::gets_seen_by_count() {
+int Entity::seen_by_gets_count() {
 	return _s_seen_by.size();
 }
 
@@ -5852,44 +5852,44 @@ Entity::Entity() {
 	////    Talents    ////
 
 	SET_RPC_REMOTE("setc_free_talent_points");
-	SET_RPC_REMOTE("sreceive_talent_learn_request");
-	SET_RPC_REMOTE("sreceive_reset_talent_request");
+	SET_RPC_REMOTE("talent_sreceive_learn_request");
+	SET_RPC_REMOTE("talent_sreceive_reset_request");
 
-	SET_RPC_REMOTE("sreset_talents");
+	SET_RPC_REMOTE("talent_sreset");
 
-	SET_RPC_REMOTE("addc_talent");
-	SET_RPC_REMOTE("removec_talent");
+	SET_RPC_REMOTE("talent_addc");
+	SET_RPC_REMOTE("talent_removec");
 
 	////    Inventory    ////
 
 	SET_RPC_REMOTE("setc_bag_rpc");
 	SET_RPC_REMOTE("setc_target_bag_rpc");
 
-	SET_RPC_REMOTE("sloot");
-	SET_RPC_REMOTE("cloot");
+	SET_RPC_REMOTE("loots");
+	SET_RPC_REMOTE("lootc");
 
-	SET_RPC_REMOTE("addc_item_rpc");
-	SET_RPC_REMOTE("removes_item");
-	SET_RPC_REMOTE("removec_item");
-	SET_RPC_REMOTE("cdenyremove_item");
-	SET_RPC_REMOTE("sswap_items");
-	SET_RPC_REMOTE("cswap_items");
-	SET_RPC_REMOTE("cdeny_item_swap");
-	SET_RPC_REMOTE("cchange_item_count");
+	SET_RPC_REMOTE("item_addc_rpc");
+	SET_RPC_REMOTE("item_removes");
+	SET_RPC_REMOTE("item_removec");
+	SET_RPC_REMOTE("item_cdeny_remove");
+	SET_RPC_REMOTE("items_swaps");
+	SET_RPC_REMOTE("items_swapc");
+	SET_RPC_REMOTE("item_cdeny_swap");
+	SET_RPC_REMOTE("item_cchange_count");
 
-	SET_RPC_REMOTE("addc_target_item_rpc");
-	SET_RPC_REMOTE("removes_target_item");
-	SET_RPC_REMOTE("removec_target_item");
-	SET_RPC_REMOTE("cdenyremove_target_item");
-	SET_RPC_REMOTE("sswap_target_items");
-	SET_RPC_REMOTE("cswap_target_items");
-	SET_RPC_REMOTE("cdeny_target_item_swap");
-	SET_RPC_REMOTE("cchange_target_item_count");
+	SET_RPC_REMOTE("target_item_addc_rpc");
+	SET_RPC_REMOTE("target_item_removes");
+	SET_RPC_REMOTE("target_item_removec");
+	SET_RPC_REMOTE("target_item_cdeny_remove");
+	SET_RPC_REMOTE("target_items_sswap");
+	SET_RPC_REMOTE("target_items_cswap");
+	SET_RPC_REMOTE("target_item_cdeny_swap");
+	SET_RPC_REMOTE("target_item_cchange_count");
 
 	////    Data    ////
 
-	SET_RPC_REMOTE("addc_data");
-	SET_RPC_REMOTE("removec_data");
+	SET_RPC_REMOTE("data_addc");
+	SET_RPC_REMOTE("data_removec");
 }
 
 Entity::~Entity() {
@@ -6217,10 +6217,10 @@ void Entity::_notification(int p_what) {
 
 #if VERSION_MAJOR < 4
 				if (ObjectDB::instance_validate(e))
-					e->removes_sees(this);
+					e->sees_removes(this);
 #else
 				if (e != NULL)
-					e->removes_sees(this);
+					e->sees_removes(this);
 #endif
 			}
 		} break;
@@ -6463,7 +6463,7 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 	Vector<int> talents = dict.get("talents", Vector<int>());
 
 	for (int i = 0; i < talents.size(); ++i) {
-		adds_talent(talents[i]);
+		talent_adds(talents[i]);
 	}
 
 	////    Data    ////
@@ -6959,8 +6959,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_free_talent_points", "value"), &Entity::setc_free_talent_points);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_talent_points", PROPERTY_HINT_NONE, "", 0), "setc_free_talent_points", "getc_free_talent_points");
 
-	BIND_VMETHOD(MethodInfo("_sreceive_talent_learn_request", PropertyInfo(Variant::INT, "spec_index"), PropertyInfo(Variant::INT, "talent_row"), PropertyInfo(Variant::INT, "talent_culomn")));
-	BIND_VMETHOD(MethodInfo("_sreceive_reset_talent_request"));
+	BIND_VMETHOD(MethodInfo("_talent_sreceive_learn_request", PropertyInfo(Variant::INT, "spec_index"), PropertyInfo(Variant::INT, "talent_row"), PropertyInfo(Variant::INT, "talent_culomn")));
+	BIND_VMETHOD(MethodInfo("_talent_sreceive_reset_request"));
 
 	ADD_SIGNAL(MethodInfo("stalent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "talent_id")));
 	ADD_SIGNAL(MethodInfo("ctalent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "talent_id")));
@@ -6974,30 +6974,30 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_talent_reset"));
 	BIND_VMETHOD(MethodInfo("_con_talent_reset"));
 
-	ClassDB::bind_method(D_METHOD("crequest_talent_learn", "spec_index", "talent_row", "talent_culomn"), &Entity::crequest_talent_learn);
-	ClassDB::bind_method(D_METHOD("sreceive_talent_learn_request", "spec_index", "talent_row", "talent_culomn"), &Entity::sreceive_talent_learn_request);
-	ClassDB::bind_method(D_METHOD("_sreceive_talent_learn_request", "spec_index", "talent_row", "talent_culomn"), &Entity::_sreceive_talent_learn_request);
+	ClassDB::bind_method(D_METHOD("talent_crequest_learn", "spec_index", "talent_row", "talent_culomn"), &Entity::talent_crequest_learn);
+	ClassDB::bind_method(D_METHOD("talent_sreceive_learn_request", "spec_index", "talent_row", "talent_culomn"), &Entity::talent_sreceive_learn_request);
+	ClassDB::bind_method(D_METHOD("_talent_sreceive_learn_request", "spec_index", "talent_row", "talent_culomn"), &Entity::_talent_sreceive_learn_request);
 
-	ClassDB::bind_method(D_METHOD("crequest_talent_reset"), &Entity::crequest_talent_reset);
-	ClassDB::bind_method(D_METHOD("sreceive_reset_talent_request"), &Entity::sreceive_reset_talent_request);
-	ClassDB::bind_method(D_METHOD("_sreceive_reset_talent_request"), &Entity::_sreceive_reset_talent_request);
+	ClassDB::bind_method(D_METHOD("talent_crequest_reset"), &Entity::talent_crequest_reset);
+	ClassDB::bind_method(D_METHOD("talent_sreceive_reset_request"), &Entity::talent_sreceive_reset_request);
+	ClassDB::bind_method(D_METHOD("_talent_sreceive_reset_request"), &Entity::_talent_sreceive_reset_request);
 
-	ClassDB::bind_method(D_METHOD("sreset_talents"), &Entity::sreset_talents);
-	ClassDB::bind_method(D_METHOD("creset_talents"), &Entity::creset_talents);
+	ClassDB::bind_method(D_METHOD("talent_sreset"), &Entity::talent_sreset);
+	ClassDB::bind_method(D_METHOD("talent_creset"), &Entity::talent_creset);
 
-	ClassDB::bind_method(D_METHOD("adds_talent", "talent"), &Entity::adds_talent);
-	ClassDB::bind_method(D_METHOD("removes_talent", "talent"), &Entity::removes_talent);
-	ClassDB::bind_method(D_METHOD("hass_talent", "talent"), &Entity::hass_talent);
-	ClassDB::bind_method(D_METHOD("gets_talent", "index"), &Entity::gets_talent);
-	ClassDB::bind_method(D_METHOD("gets_talent_count"), &Entity::gets_talent_count);
-	ClassDB::bind_method(D_METHOD("sclear_talents"), &Entity::sclear_talents);
+	ClassDB::bind_method(D_METHOD("talent_adds", "talent"), &Entity::talent_adds);
+	ClassDB::bind_method(D_METHOD("talent_removes", "talent"), &Entity::talent_removes);
+	ClassDB::bind_method(D_METHOD("talent_hass", "talent"), &Entity::talent_hass);
+	ClassDB::bind_method(D_METHOD("talent_gets", "index"), &Entity::talent_gets);
+	ClassDB::bind_method(D_METHOD("talent_gets_count"), &Entity::talent_gets_count);
+	ClassDB::bind_method(D_METHOD("talents_sclear"), &Entity::talents_sclear);
 
-	ClassDB::bind_method(D_METHOD("addc_talent", "talent"), &Entity::addc_talent);
-	ClassDB::bind_method(D_METHOD("removec_talent", "talent"), &Entity::removec_talent);
-	ClassDB::bind_method(D_METHOD("hasc_talent", "talent"), &Entity::hasc_talent);
-	ClassDB::bind_method(D_METHOD("getc_talent", "index"), &Entity::getc_talent);
-	ClassDB::bind_method(D_METHOD("getc_talent_count"), &Entity::getc_talent_count);
-	ClassDB::bind_method(D_METHOD("cclear_talents"), &Entity::cclear_talents);
+	ClassDB::bind_method(D_METHOD("talent_addc", "talent"), &Entity::talent_addc);
+	ClassDB::bind_method(D_METHOD("talent_removec", "talent"), &Entity::talent_removec);
+	ClassDB::bind_method(D_METHOD("talent_hasc", "talent"), &Entity::talent_hasc);
+	ClassDB::bind_method(D_METHOD("talent_getc", "index"), &Entity::talent_getc);
+	ClassDB::bind_method(D_METHOD("talent_getc_count"), &Entity::talent_getc_count);
+	ClassDB::bind_method(D_METHOD("talent_cclear"), &Entity::talent_cclear);
 
 	//Clientside EventHandlers
 	BIND_VMETHOD(MethodInfo("_con_death"));
@@ -7409,15 +7409,15 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gcd_startc", "value"), &Entity::gcd_startc);
 
 	//Data
-	ClassDB::bind_method(D_METHOD("adds_data", "data"), &Entity::adds_data);
-	ClassDB::bind_method(D_METHOD("removes_data", "index"), &Entity::removes_data);
-	ClassDB::bind_method(D_METHOD("gets_data", "index"), &Entity::gets_data);
-	ClassDB::bind_method(D_METHOD("gets_data_count"), &Entity::gets_data_count);
+	ClassDB::bind_method(D_METHOD("data_adds", "data"), &Entity::data_adds);
+	ClassDB::bind_method(D_METHOD("data_removes", "index"), &Entity::data_removes);
+	ClassDB::bind_method(D_METHOD("data_gets", "index"), &Entity::data_gets);
+	ClassDB::bind_method(D_METHOD("data_gets_count"), &Entity::data_gets_count);
 
-	ClassDB::bind_method(D_METHOD("addc_data", "data"), &Entity::addc_data);
-	ClassDB::bind_method(D_METHOD("removec_data", "index"), &Entity::removec_data);
-	ClassDB::bind_method(D_METHOD("getc_data", "index"), &Entity::getc_data);
-	ClassDB::bind_method(D_METHOD("getc_data_count"), &Entity::getc_data_count);
+	ClassDB::bind_method(D_METHOD("data_addc", "data"), &Entity::data_addc);
+	ClassDB::bind_method(D_METHOD("data_removec", "index"), &Entity::data_removec);
+	ClassDB::bind_method(D_METHOD("data_getc", "index"), &Entity::data_getc);
+	ClassDB::bind_method(D_METHOD("data_getc_count"), &Entity::data_getc_count);
 
 	//States
 	ADD_SIGNAL(MethodInfo("sstate_changed", PropertyInfo(Variant::INT, "value")));
@@ -7642,52 +7642,52 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_bag_rpc", "data"), &Entity::setc_bag_rpc);
 	ClassDB::bind_method(D_METHOD("setc_target_bag_rpc", "data"), &Entity::setc_target_bag_rpc);
 
-	ClassDB::bind_method(D_METHOD("crequest_loot"), &Entity::crequest_loot);
-	ClassDB::bind_method(D_METHOD("sloot"), &Entity::sloot);
-	ClassDB::bind_method(D_METHOD("cloot"), &Entity::cloot);
+	ClassDB::bind_method(D_METHOD("loot_crequest"), &Entity::loot_crequest);
+	ClassDB::bind_method(D_METHOD("loots"), &Entity::loots);
+	ClassDB::bind_method(D_METHOD("lootc"), &Entity::lootc);
 
 	//Bag
-	ClassDB::bind_method(D_METHOD("ons_item_added", "bag", "item", "slot_id"), &Entity::ons_item_added);
-	ClassDB::bind_method(D_METHOD("addc_item_rpc", "slot_id", "item_data"), &Entity::addc_item_rpc);
-	ClassDB::bind_method(D_METHOD("addc_item", "slot_id", "item"), &Entity::addc_item);
+	ClassDB::bind_method(D_METHOD("item_ons_added", "bag", "item", "slot_id"), &Entity::item_ons_added);
+	ClassDB::bind_method(D_METHOD("item_addc_rpc", "slot_id", "item_data"), &Entity::item_addc_rpc);
+	ClassDB::bind_method(D_METHOD("item_addc", "slot_id", "item"), &Entity::item_addc);
 
-	ClassDB::bind_method(D_METHOD("ons_item_removed", "bag", "item", "slot_id"), &Entity::ons_item_removed);
-	ClassDB::bind_method(D_METHOD("removes_item", "slot_id"), &Entity::removes_item);
-	ClassDB::bind_method(D_METHOD("removec_item", "slot_id"), &Entity::removec_item);
-	ClassDB::bind_method(D_METHOD("cdenyremove_item", "slot_id"), &Entity::cdenyremove_item);
-	ClassDB::bind_method(D_METHOD("crequest_remove_item", "slot_id"), &Entity::crequest_remove_item);
+	ClassDB::bind_method(D_METHOD("item_ons_removed", "bag", "item", "slot_id"), &Entity::item_ons_removed);
+	ClassDB::bind_method(D_METHOD("item_removes", "slot_id"), &Entity::item_removes);
+	ClassDB::bind_method(D_METHOD("item_removec", "slot_id"), &Entity::item_removec);
+	ClassDB::bind_method(D_METHOD("item_cdeny_remove", "slot_id"), &Entity::item_cdeny_remove);
+	ClassDB::bind_method(D_METHOD("item_crequest_remove", "slot_id"), &Entity::item_crequest_remove);
 
-	ClassDB::bind_method(D_METHOD("ons_items_swapped", "bag", "slot_id_1", "slot_id_2"), &Entity::ons_items_swapped);
-	ClassDB::bind_method(D_METHOD("sswap_items", "slot_id_1", "slot_id_2"), &Entity::sswap_items);
-	ClassDB::bind_method(D_METHOD("cswap_items", "slot_id_1", "slot_id_2"), &Entity::cswap_items);
-	ClassDB::bind_method(D_METHOD("cdeny_item_swap", "slot_id_1", "slot_id_2"), &Entity::cdeny_item_swap);
-	ClassDB::bind_method(D_METHOD("crequest_item_swap", "slot_id_1", "slot_id_2"), &Entity::crequest_item_swap);
+	ClassDB::bind_method(D_METHOD("items_ons_swapped", "bag", "slot_id_1", "slot_id_2"), &Entity::items_ons_swapped);
+	ClassDB::bind_method(D_METHOD("items_swaps", "slot_id_1", "slot_id_2"), &Entity::items_swaps);
+	ClassDB::bind_method(D_METHOD("items_swapc", "slot_id_1", "slot_id_2"), &Entity::items_swapc);
+	ClassDB::bind_method(D_METHOD("item_cdeny_swap", "slot_id_1", "slot_id_2"), &Entity::item_cdeny_swap);
+	ClassDB::bind_method(D_METHOD("item_crequest_swap", "slot_id_1", "slot_id_2"), &Entity::item_crequest_swap);
 
-	ClassDB::bind_method(D_METHOD("ons_item_count_changed", "bag", "item", "slot_id"), &Entity::ons_item_count_changed);
-	ClassDB::bind_method(D_METHOD("cchange_item_count", "slot_id", "new_count"), &Entity::cchange_item_count);
+	ClassDB::bind_method(D_METHOD("item_ons_count_changed", "bag", "item", "slot_id"), &Entity::item_ons_count_changed);
+	ClassDB::bind_method(D_METHOD("item_cchange_count", "slot_id", "new_count"), &Entity::item_cchange_count);
 
 	ClassDB::bind_method(D_METHOD("ons_overburdened", "bag"), &Entity::ons_overburdened);
 	ClassDB::bind_method(D_METHOD("ons_overburden_removed", "bag"), &Entity::ons_overburden_removed);
 
 	//target Bag
-	ClassDB::bind_method(D_METHOD("ons_target_item_added", "bag", "item", "slot_id"), &Entity::ons_target_item_added);
-	ClassDB::bind_method(D_METHOD("addc_target_item_rpc", "slot_id", "item_data"), &Entity::addc_target_item_rpc);
-	ClassDB::bind_method(D_METHOD("addc_target_item", "slot_id", "item"), &Entity::addc_target_item);
+	ClassDB::bind_method(D_METHOD("target_item_ons_added", "bag", "item", "slot_id"), &Entity::target_item_ons_added);
+	ClassDB::bind_method(D_METHOD("target_item_addc_rpc", "slot_id", "item_data"), &Entity::target_item_addc_rpc);
+	ClassDB::bind_method(D_METHOD("target_item_addc", "slot_id", "item"), &Entity::target_item_addc);
 
-	ClassDB::bind_method(D_METHOD("ons_target_item_removed", "bag", "item", "slot_id"), &Entity::ons_target_item_removed);
-	ClassDB::bind_method(D_METHOD("removes_target_item", "slot_id"), &Entity::removes_target_item);
-	ClassDB::bind_method(D_METHOD("removec_target_item", "slot_id"), &Entity::removec_target_item);
-	ClassDB::bind_method(D_METHOD("cdenyremove_target_item", "slot_id"), &Entity::cdenyremove_target_item);
-	ClassDB::bind_method(D_METHOD("crequest_target_remove_item", "slot_id"), &Entity::crequest_target_remove_item);
+	ClassDB::bind_method(D_METHOD("target_item_ons_removed", "bag", "item", "slot_id"), &Entity::target_item_ons_removed);
+	ClassDB::bind_method(D_METHOD("target_item_removes", "slot_id"), &Entity::target_item_removes);
+	ClassDB::bind_method(D_METHOD("target_item_removec", "slot_id"), &Entity::target_item_removec);
+	ClassDB::bind_method(D_METHOD("target_item_cdeny_remove", "slot_id"), &Entity::target_item_cdeny_remove);
+	ClassDB::bind_method(D_METHOD("target_remove_crequest_item", "slot_id"), &Entity::target_remove_crequest_item);
 
-	ClassDB::bind_method(D_METHOD("ons_target_items_swapped", "bag", "slot_id_1", "slot_id_2"), &Entity::ons_target_items_swapped);
-	ClassDB::bind_method(D_METHOD("sswap_target_items", "slot_id_1", "slot_id_2"), &Entity::sswap_target_items);
-	ClassDB::bind_method(D_METHOD("cswap_target_items", "slot_id_1", "slot_id_2"), &Entity::cswap_target_items);
-	ClassDB::bind_method(D_METHOD("cdeny_target_item_swap", "slot_id_1", "slot_id_2"), &Entity::cdeny_target_item_swap);
-	ClassDB::bind_method(D_METHOD("crequest_target_item_swap", "slot_id_1", "slot_id_2"), &Entity::crequest_target_item_swap);
+	ClassDB::bind_method(D_METHOD("target_items_ons_swapped", "bag", "slot_id_1", "slot_id_2"), &Entity::target_items_ons_swapped);
+	ClassDB::bind_method(D_METHOD("target_items_sswap", "slot_id_1", "slot_id_2"), &Entity::target_items_sswap);
+	ClassDB::bind_method(D_METHOD("target_items_cswap", "slot_id_1", "slot_id_2"), &Entity::target_items_cswap);
+	ClassDB::bind_method(D_METHOD("target_item_cdeny_swap", "slot_id_1", "slot_id_2"), &Entity::target_item_cdeny_swap);
+	ClassDB::bind_method(D_METHOD("target_item_crequest_swap", "slot_id_1", "slot_id_2"), &Entity::target_item_crequest_swap);
 
-	ClassDB::bind_method(D_METHOD("ons_target_item_count_changed", "bag", "item", "slot_id"), &Entity::ons_target_item_count_changed);
-	ClassDB::bind_method(D_METHOD("cchange_target_item_count", "slot_id", "new_count"), &Entity::cchange_target_item_count);
+	ClassDB::bind_method(D_METHOD("target_item_ons_count_changed", "bag", "item", "slot_id"), &Entity::target_item_ons_count_changed);
+	ClassDB::bind_method(D_METHOD("target_item_cchange_count", "slot_id", "new_count"), &Entity::target_item_cchange_count);
 
 	//Actionbars
 
@@ -7699,19 +7699,19 @@ void Entity::_bind_methods() {
 
 	//Pets
 
-	ClassDB::bind_method(D_METHOD("adds_pet", "entity"), &Entity::adds_pet_bind);
-	ClassDB::bind_method(D_METHOD("gets_pet", "index"), &Entity::gets_pet);
-	ClassDB::bind_method(D_METHOD("removes_pet_index", "index"), &Entity::removes_pet_index);
-	ClassDB::bind_method(D_METHOD("removes_pet", "entity"), &Entity::removes_pet_bind);
-	ClassDB::bind_method(D_METHOD("gets_pet_count"), &Entity::gets_pet_count);
+	ClassDB::bind_method(D_METHOD("pet_adds", "entity"), &Entity::pet_adds_bind);
+	ClassDB::bind_method(D_METHOD("pet_gets", "index"), &Entity::pet_gets);
+	ClassDB::bind_method(D_METHOD("pet_removes_index", "index"), &Entity::pet_removes_index);
+	ClassDB::bind_method(D_METHOD("pet_removes", "entity"), &Entity::pet_removes_bind);
+	ClassDB::bind_method(D_METHOD("pet_gets_count"), &Entity::pet_gets_count);
 
-	ClassDB::bind_method(D_METHOD("addc_pet_path"), &Entity::addc_pet_path);
+	ClassDB::bind_method(D_METHOD("pet_addc_path"), &Entity::pet_addc_path);
 
-	ClassDB::bind_method(D_METHOD("addc_pet", "entity"), &Entity::addc_pet_bind);
-	ClassDB::bind_method(D_METHOD("getc_pet", "index"), &Entity::getc_pet);
-	ClassDB::bind_method(D_METHOD("removec_pet_index", "index"), &Entity::removec_pet_index);
-	ClassDB::bind_method(D_METHOD("removec_pet", "entity"), &Entity::removec_pet_bind);
-	ClassDB::bind_method(D_METHOD("getc_pet_count"), &Entity::getc_pet_count);
+	ClassDB::bind_method(D_METHOD("pet_addc", "entity"), &Entity::pet_addc_bind);
+	ClassDB::bind_method(D_METHOD("pet_getc", "index"), &Entity::pet_getc);
+	ClassDB::bind_method(D_METHOD("pet_removec_index", "index"), &Entity::pet_removec_index);
+	ClassDB::bind_method(D_METHOD("pet_removec", "entity"), &Entity::pet_removec_bind);
+	ClassDB::bind_method(D_METHOD("pet_getc_count"), &Entity::pet_getc_count);
 
 	//ClassDB::bind_method(D_METHOD("pets_attack"), &Entity::pets_attack);
 	//ClassDB::bind_method(D_METHOD("pets_follow"), &Entity::pets_follow);
@@ -7725,17 +7725,17 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_is_pet"), &Entity::getc_is_pet);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cis_pet", PROPERTY_HINT_NONE, "", 0), "", "getc_is_pet");
 
-	ClassDB::bind_method(D_METHOD("gets_pet_owner"), &Entity::gets_pet_owner);
-	ClassDB::bind_method(D_METHOD("sets_pet_owner", "entity"), &Entity::sets_pet_owner_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spet_owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity", 0), "sets_pet_owner", "gets_pet_owner");
+	ClassDB::bind_method(D_METHOD("pet_gets_owner"), &Entity::pet_gets_owner);
+	ClassDB::bind_method(D_METHOD("pet_sets_owner", "entity"), &Entity::pet_sets_owner_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spet_owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity", 0), "pet_sets_owner", "pet_gets_owner");
 
-	ClassDB::bind_method(D_METHOD("gets_pet_formation_index"), &Entity::gets_pet_formation_index);
-	ClassDB::bind_method(D_METHOD("sets_pet_formation_index", "value"), &Entity::sets_pet_formation_index);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spet_formation_index"), "sets_pet_formation_index", "gets_pet_formation_index");
+	ClassDB::bind_method(D_METHOD("pet_gets_formation_index"), &Entity::pet_gets_formation_index);
+	ClassDB::bind_method(D_METHOD("pet_sets_formation_index", "value"), &Entity::pet_sets_formation_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spet_formation_index"), "pet_sets_formation_index", "pet_gets_formation_index");
 
-	ClassDB::bind_method(D_METHOD("gets_pet_ai_state"), &Entity::gets_pet_ai_state);
-	ClassDB::bind_method(D_METHOD("sets_pet_ai_state", "value"), &Entity::sets_pet_ai_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "gets_pet_ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES), "sets_pet_ai_state", "gets_pet_ai_state");
+	ClassDB::bind_method(D_METHOD("pet_gets_ai_state"), &Entity::pet_gets_ai_state);
+	ClassDB::bind_method(D_METHOD("pet_sets_ai_state", "value"), &Entity::pet_sets_ai_state);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "pet_gets_ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES), "pet_sets_ai_state", "pet_gets_ai_state");
 
 	ClassDB::bind_method(D_METHOD("gets_original_entity_controller"), &Entity::gets_original_entity_controller);
 	ClassDB::bind_method(D_METHOD("sets_original_entity_controller", "value"), &Entity::sets_original_entity_controller);
@@ -7768,17 +7768,17 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_to_dict"), &Entity::_to_dict);
 
 	//Networking
-	ClassDB::bind_method(D_METHOD("gets_sees", "index"), &Entity::gets_sees);
-	ClassDB::bind_method(D_METHOD("removes_sees_index", "index"), &Entity::removes_sees_index);
-	ClassDB::bind_method(D_METHOD("removes_sees", "entity"), &Entity::removes_sees_bind);
-	ClassDB::bind_method(D_METHOD("adds_sees", "entity"), &Entity::adds_sees_bind);
-	ClassDB::bind_method(D_METHOD("gets_sees_count"), &Entity::gets_sees_count);
+	ClassDB::bind_method(D_METHOD("sees_gets", "index"), &Entity::sees_gets);
+	ClassDB::bind_method(D_METHOD("sees_removes_index", "index"), &Entity::sees_removes_index);
+	ClassDB::bind_method(D_METHOD("sees_removes", "entity"), &Entity::sees_removes_bind);
+	ClassDB::bind_method(D_METHOD("sees_adds", "entity"), &Entity::sees_adds_bind);
+	ClassDB::bind_method(D_METHOD("sees_gets_count"), &Entity::sees_gets_count);
 
-	ClassDB::bind_method(D_METHOD("gets_seen_by", "index"), &Entity::gets_seen_by);
-	ClassDB::bind_method(D_METHOD("removes_seen_by_index", "index"), &Entity::removes_seen_by_index);
-	ClassDB::bind_method(D_METHOD("removes_seen_by", "entity"), &Entity::removes_seen_by_bind);
-	ClassDB::bind_method(D_METHOD("adds_seen_by", "entity"), &Entity::adds_seen_by_bind);
-	ClassDB::bind_method(D_METHOD("gets_seen_by_count"), &Entity::gets_seen_by_count);
+	ClassDB::bind_method(D_METHOD("seen_by_gets", "index"), &Entity::seen_by_gets);
+	ClassDB::bind_method(D_METHOD("seen_by_removes_index", "index"), &Entity::seen_by_removes_index);
+	ClassDB::bind_method(D_METHOD("seen_by_removes", "entity"), &Entity::seen_by_removes_bind);
+	ClassDB::bind_method(D_METHOD("seen_by_adds", "entity"), &Entity::seen_by_adds_bind);
+	ClassDB::bind_method(D_METHOD("seen_by_gets_count"), &Entity::seen_by_gets_count);
 
 	MethodInfo mi;
 

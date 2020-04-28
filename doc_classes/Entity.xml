@@ -642,13 +642,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="_sreceive_reset_talent_request" qualifiers="virtual">
+		<method name="_talent_sreceive_reset_request" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="_sreceive_talent_learn_request" qualifiers="virtual">
+		<method name="_talent_sreceive_learn_request" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="spec_index" type="int">
@@ -726,7 +726,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_data">
+		<method name="data_addc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="EntityDataContainer">
@@ -734,7 +734,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_item">
+		<method name="item_addc">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -744,7 +744,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_item_rpc">
+		<method name="item_addc_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -754,7 +754,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_pet">
+		<method name="pet_addc">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -762,7 +762,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_pet_path">
+		<method name="pet_addc_path">
 			<return type="void">
 			</return>
 			<argument index="0" name="arg0" type="NodePath">
@@ -826,7 +826,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_talent">
+		<method name="talent_addc">
 			<return type="void">
 			</return>
 			<argument index="0" name="talent" type="int">
@@ -834,7 +834,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_target_item">
+		<method name="target_item_addc">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -844,7 +844,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_target_item_rpc">
+		<method name="target_item_addc_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -906,7 +906,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_data">
+		<method name="data_adds">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="EntityDataContainer">
@@ -914,7 +914,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_pet">
+		<method name="pet_adds">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -930,7 +930,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_seen_by">
+		<method name="seen_by_adds">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -938,7 +938,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_sees">
+		<method name="sees_adds">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -978,7 +978,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_talent">
+		<method name="talent_adds">
 			<return type="void">
 			</return>
 			<argument index="0" name="talent" type="int">
@@ -1016,7 +1016,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cchange_item_count">
+		<method name="item_cchange_count">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -1026,7 +1026,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cchange_target_item_count">
+		<method name="target_item_cchange_count">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -1052,7 +1052,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cclear_talents">
+		<method name="talent_cclear">
 			<return type="void">
 			</return>
 			<description>
@@ -1096,7 +1096,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cdeny_item_swap">
+		<method name="item_cdeny_swap">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id_1" type="int">
@@ -1106,7 +1106,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cdeny_target_item_swap">
+		<method name="target_item_cdeny_swap">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id_1" type="int">
@@ -1116,7 +1116,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cdenyremove_item">
+		<method name="item_cdeny_remove">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -1124,7 +1124,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cdenyremove_target_item">
+		<method name="target_item_cdeny_remove">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -1222,7 +1222,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cloot">
+		<method name="lootc">
 			<return type="void">
 			</return>
 			<argument index="0" name="arg0" type="int">
@@ -1552,7 +1552,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="crequest_item_swap">
+		<method name="item_crequest_swap">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id_1" type="int">
@@ -1562,7 +1562,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="crequest_loot">
+		<method name="loot_crequest">
 			<return type="void">
 			</return>
 			<argument index="0" name="arg0" type="int">
@@ -1570,7 +1570,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="crequest_remove_item">
+		<method name="item_crequest_remove">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -1594,7 +1594,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="crequest_talent_learn">
+		<method name="talent_crequest_learn">
 			<return type="void">
 			</return>
 			<argument index="0" name="spec_index" type="int">
@@ -1606,7 +1606,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="crequest_talent_reset">
+		<method name="talent_crequest_reset">
 			<return type="void">
 			</return>
 			<description>
@@ -1620,7 +1620,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="crequest_target_item_swap">
+		<method name="target_item_crequest_swap">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id_1" type="int">
@@ -1630,7 +1630,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="crequest_target_remove_item">
+		<method name="target_remove_crequest_item">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -1646,7 +1646,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="creset_talents">
+		<method name="talent_creset">
 			<return type="void">
 			</return>
 			<description>
@@ -1700,7 +1700,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cswap_items">
+		<method name="items_swapc">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id_1" type="int">
@@ -1710,7 +1710,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cswap_target_items">
+		<method name="target_items_cswap">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id_1" type="int">
@@ -1948,7 +1948,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_data">
+		<method name="data_getc">
 			<return type="EntityDataContainer">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -1956,7 +1956,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_data_count">
+		<method name="data_getc_count">
 			<return type="int">
 			</return>
 			<description>
@@ -1982,7 +1982,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_pet">
+		<method name="pet_getc">
 			<return type="Entity">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -1990,7 +1990,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_pet_count">
+		<method name="pet_getc_count">
 			<return type="int">
 			</return>
 			<description>
@@ -2060,7 +2060,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_talent">
+		<method name="talent_getc">
 			<return type="int">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2068,7 +2068,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_talent_count">
+		<method name="talent_getc_count">
 			<return type="int">
 			</return>
 			<description>
@@ -2174,7 +2174,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_data">
+		<method name="data_gets">
 			<return type="EntityDataContainer">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2182,7 +2182,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_data_count">
+		<method name="data_gets_count">
 			<return type="int">
 			</return>
 			<description>
@@ -2208,7 +2208,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_pet">
+		<method name="pet_gets">
 			<return type="Entity">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2216,7 +2216,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_pet_count">
+		<method name="pet_gets_count">
 			<return type="int">
 			</return>
 			<description>
@@ -2252,7 +2252,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_seen_by">
+		<method name="seen_by_gets">
 			<return type="Entity">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2260,13 +2260,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_seen_by_count">
+		<method name="seen_by_gets_count">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="gets_sees">
+		<method name="sees_gets">
 			<return type="Entity">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2274,7 +2274,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_sees_count">
+		<method name="sees_gets_count">
 			<return type="int">
 			</return>
 			<description>
@@ -2314,7 +2314,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_talent">
+		<method name="talent_gets">
 			<return type="int">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2322,7 +2322,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_talent_count">
+		<method name="talent_gets_count">
 			<return type="int">
 			</return>
 			<description>
@@ -2392,7 +2392,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="hasc_talent">
+		<method name="talent_hasc">
 			<return type="bool">
 			</return>
 			<argument index="0" name="talent" type="int">
@@ -2464,7 +2464,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="hass_talent">
+		<method name="talent_hass">
 			<return type="bool">
 			</return>
 			<argument index="0" name="talent" type="int">
@@ -2532,7 +2532,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ons_item_added">
+		<method name="item_ons_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2544,7 +2544,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ons_item_count_changed">
+		<method name="item_ons_count_changed">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2556,7 +2556,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ons_item_removed">
+		<method name="item_ons_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2568,7 +2568,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ons_items_swapped">
+		<method name="items_ons_swapped">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2604,7 +2604,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ons_target_item_added">
+		<method name="target_item_ons_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2616,7 +2616,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ons_target_item_count_changed">
+		<method name="target_item_ons_count_changed">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2628,7 +2628,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ons_target_item_removed">
+		<method name="target_item_ons_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2640,7 +2640,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ons_target_items_swapped">
+		<method name="target_items_ons_swapped">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2756,7 +2756,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_data">
+		<method name="data_removec">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2764,7 +2764,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_item">
+		<method name="item_removec">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -2772,7 +2772,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_pet">
+		<method name="pet_removec">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -2780,7 +2780,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_pet_index">
+		<method name="pet_removec_index">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2828,7 +2828,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_talent">
+		<method name="talent_removec">
 			<return type="void">
 			</return>
 			<argument index="0" name="talent" type="int">
@@ -2836,7 +2836,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_target_item">
+		<method name="target_item_removec">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -2916,7 +2916,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_data">
+		<method name="data_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2924,7 +2924,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_item">
+		<method name="item_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -2932,7 +2932,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_pet">
+		<method name="pet_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -2940,7 +2940,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_pet_index">
+		<method name="pet_removes_index">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2956,7 +2956,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_seen_by">
+		<method name="seen_by_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -2964,7 +2964,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_seen_by_index">
+		<method name="seen_by_removes_index">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2972,7 +2972,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_sees">
+		<method name="sees_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -2980,7 +2980,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_sees_index">
+		<method name="sees_removes_index">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -3012,7 +3012,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_talent">
+		<method name="talent_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="talent" type="int">
@@ -3020,7 +3020,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_target_item">
+		<method name="target_item_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id" type="int">
@@ -3076,7 +3076,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sclear_talents">
+		<method name="talents_sclear">
 			<return type="void">
 			</return>
 			<description>
@@ -3290,7 +3290,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sloot">
+		<method name="loots">
 			<return type="void">
 			</return>
 			<argument index="0" name="arg0" type="int">
@@ -3544,13 +3544,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="sreceive_reset_talent_request">
+		<method name="talent_sreceive_reset_request">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="sreceive_talent_learn_request">
+		<method name="talent_sreceive_learn_request">
 			<return type="void">
 			</return>
 			<argument index="0" name="spec_index" type="int">
@@ -3562,7 +3562,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sreset_talents">
+		<method name="talent_sreset">
 			<return type="void">
 			</return>
 			<description>
@@ -3612,7 +3612,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sswap_items">
+		<method name="items_swaps">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id_1" type="int">
@@ -3622,7 +3622,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sswap_target_items">
+		<method name="target_items_sswap">
 			<return type="void">
 			</return>
 			<argument index="0" name="slot_id_1" type="int">
@@ -3734,7 +3734,7 @@
 		</member>
 		<member name="entity_data_id" type="int" setter="setc_entity_data_id" getter="getc_entity_data_id" default="0">
 		</member>
-		<member name="gets_pet_ai_state" type="int" setter="sets_pet_ai_state" getter="gets_pet_ai_state" enum="EntityEnums.AIStates" default="0">
+		<member name="pet_gets_ai_state" type="int" setter="pet_sets_ai_state" getter="pet_gets_ai_state" enum="EntityEnums.AIStates" default="0">
 		</member>
 		<member name="sai" type="EntityAI" setter="sets_ai" getter="gets_ai">
 		</member>
@@ -3778,9 +3778,9 @@
 		</member>
 		<member name="soriginal_entity_controller" type="int" setter="sets_original_entity_controller" getter="gets_original_entity_controller" enum="EntityEnums.EntityController" default="0">
 		</member>
-		<member name="spet_formation_index" type="int" setter="sets_pet_formation_index" getter="gets_pet_formation_index" default="0">
+		<member name="spet_formation_index" type="int" setter="pet_sets_formation_index" getter="pet_gets_formation_index" default="0">
 		</member>
-		<member name="spet_owner" type="Entity" setter="sets_pet_owner" getter="gets_pet_owner">
+		<member name="spet_owner" type="Entity" setter="pet_sets_owner" getter="pet_gets_owner">
 		</member>
 		<member name="sseed" type="int" setter="sets_seed" getter="gets_seed" default="0">
 		</member>

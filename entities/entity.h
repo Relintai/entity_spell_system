@@ -750,30 +750,30 @@ public:
 	int getc_free_talent_points();
 	void setc_free_talent_points(int value);
 
-	void crequest_talent_learn(int spec_index, int talent_row, int talent_culomn);
-	void sreceive_talent_learn_request(int spec_index, int talent_row, int talent_culomn);
-	void _sreceive_talent_learn_request(int spec_index, int talent_row, int talent_culomn);
+	void talent_crequest_learn(int spec_index, int talent_row, int talent_culomn);
+	void talent_sreceive_learn_request(int spec_index, int talent_row, int talent_culomn);
+	void _talent_sreceive_learn_request(int spec_index, int talent_row, int talent_culomn);
 
-	void crequest_talent_reset();
-	void sreceive_reset_talent_request();
-	void _sreceive_reset_talent_request();
+	void talent_crequest_reset();
+	void talent_sreceive_reset_request();
+	void _talent_sreceive_reset_request();
 
-	void sreset_talents();
-	void creset_talents();
+	void talent_sreset();
+	void talent_creset();
 
-	void adds_talent(int talent);
-	void removes_talent(int talent);
-	bool hass_talent(int talent);
-	int gets_talent(int index);
-	int gets_talent_count();
-	void sclear_talents();
+	void talent_adds(int talent);
+	void talent_removes(int talent);
+	bool talent_hass(int talent);
+	int talent_gets(int index);
+	int talent_gets_count();
+	void talents_sclear();
 
-	void addc_talent(int talent);
-	void removec_talent(int talent);
-	bool hasc_talent(int talent);
-	int getc_talent(int index);
-	int getc_talent_count();
-	void cclear_talents();
+	void talent_addc(int talent);
+	void talent_removec(int talent);
+	bool talent_hasc(int talent);
+	int talent_getc(int index);
+	int talent_getc_count();
+	void talent_cclear();
 
 	////    Inventory    ////
 
@@ -792,64 +792,64 @@ public:
 	void setc_bag_rpc(String data);
 	void setc_target_bag_rpc(String data);
 
-	void crequest_loot(int index);
-	void sloot(int index);
-	void cloot(int index);
+	void loot_crequest(int index);
+	void loots(int index);
+	void lootc(int index);
 
-	void ons_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
-	void addc_item_rpc(int slot_id, String item_data);
-	void addc_item(int slot_id, Ref<ItemInstance> item);
+	void item_ons_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void item_addc_rpc(int slot_id, String item_data);
+	void item_addc(int slot_id, Ref<ItemInstance> item);
 
 	//Bag
-	void ons_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
-	void removes_item(const int slot_id);
-	void removec_item(const int slot_id);
-	void cdenyremove_item(const int slot_id);
-	void crequest_remove_item(const int slot_id);
+	void item_ons_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void item_removes(const int slot_id);
+	void item_removec(const int slot_id);
+	void item_cdeny_remove(const int slot_id);
+	void item_crequest_remove(const int slot_id);
 
-	void ons_items_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2);
-	void sswap_items(int slot_id_1, int slot_id_2);
-	void cswap_items(int slot_id_1, int slot_id_2);
-	void cdeny_item_swap(int slot_id_1, int slot_id_2);
-	void crequest_item_swap(int slot_id_1, int slot_id_2);
+	void items_ons_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2);
+	void items_swaps(int slot_id_1, int slot_id_2);
+	void items_swapc(int slot_id_1, int slot_id_2);
+	void item_cdeny_swap(int slot_id_1, int slot_id_2);
+	void item_crequest_swap(int slot_id_1, int slot_id_2);
 
-	void ons_item_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
-	void cchange_item_count(int slot_id, int new_count);
+	void item_ons_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void item_cchange_count(int slot_id, int new_count);
 
 	void ons_overburdened(Ref<Bag> bag);
 	void ons_overburden_removed(Ref<Bag> bag);
 
 	//Target Bag
-	void ons_target_item_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
-	void addc_target_item_rpc(int slot_id, String item_data);
-	void addc_target_item(int slot_id, Ref<ItemInstance> item);
+	void target_item_ons_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void target_item_addc_rpc(int slot_id, String item_data);
+	void target_item_addc(int slot_id, Ref<ItemInstance> item);
 
-	void ons_target_item_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
-	void removes_target_item(const int slot_id);
-	void removec_target_item(const int slot_id);
-	void cdenyremove_target_item(const int slot_id);
-	void crequest_target_remove_item(const int slot_id);
+	void target_item_ons_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void target_item_removes(const int slot_id);
+	void target_item_removec(const int slot_id);
+	void target_item_cdeny_remove(const int slot_id);
+	void target_remove_crequest_item(const int slot_id);
 
-	void ons_target_items_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2);
-	void sswap_target_items(int slot_id_1, int slot_id_2);
-	void cswap_target_items(int slot_id_1, int slot_id_2);
-	void cdeny_target_item_swap(int slot_id_1, int slot_id_2);
-	void crequest_target_item_swap(int slot_id_1, int slot_id_2);
+	void target_items_ons_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2);
+	void target_items_sswap(int slot_id_1, int slot_id_2);
+	void target_items_cswap(int slot_id_1, int slot_id_2);
+	void target_item_cdeny_swap(int slot_id_1, int slot_id_2);
+	void target_item_crequest_swap(int slot_id_1, int slot_id_2);
 
-	void ons_target_item_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
-	void cchange_target_item_count(int slot_id, int new_count);
+	void target_item_ons_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void target_item_cchange_count(int slot_id, int new_count);
 
 	////    Data    ////
 
-	void adds_data(Ref<EntityDataContainer> data);
-	void removes_data(int index);
-	Ref<EntityDataContainer> gets_data(int index);
-	int gets_data_count();
+	void data_adds(Ref<EntityDataContainer> data);
+	void data_removes(int index);
+	Ref<EntityDataContainer> data_gets(int index);
+	int data_gets_count();
 
-	void addc_data(Ref<EntityDataContainer> data);
-	void removec_data(int index);
-	Ref<EntityDataContainer> getc_data(int index);
-	int getc_data_count();
+	void data_addc(Ref<EntityDataContainer> data);
+	void data_removec(int index);
+	Ref<EntityDataContainer> data_getc(int index);
+	int data_getc_count();
 
 	////    Actionbars    ////
 
@@ -871,15 +871,15 @@ public:
 	bool gets_is_pet();
 	bool getc_is_pet();
 
-	Entity *gets_pet_owner();
-	void sets_pet_owner(Entity *entity);
-	void sets_pet_owner_bind(Node *entity);
+	Entity *pet_gets_owner();
+	void pet_sets_owner(Entity *entity);
+	void pet_sets_owner_bind(Node *entity);
 
-	int gets_pet_formation_index();
-	void sets_pet_formation_index(int value);
+	int pet_gets_formation_index();
+	void pet_sets_formation_index(int value);
 
-	EntityEnums::AIStates gets_pet_ai_state();
-	void sets_pet_ai_state(EntityEnums::AIStates value);
+	EntityEnums::AIStates pet_gets_ai_state();
+	void pet_sets_ai_state(EntityEnums::AIStates value);
 
 	EntityEnums::EntityController gets_original_entity_controller();
 	void sets_original_entity_controller(EntityEnums::EntityController value);
@@ -895,23 +895,23 @@ public:
 
 	////    Pets    ////
 
-	void adds_pet(Entity *entity);
-	void adds_pet_bind(Node *entity);
-	Entity *gets_pet(int index);
-	void removes_pet_index(int index);
-	void removes_pet(Entity *entity);
-	void removes_pet_bind(Node *entity);
-	int gets_pet_count();
+	void pet_adds(Entity *entity);
+	void pet_adds_bind(Node *entity);
+	Entity *pet_gets(int index);
+	void pet_removes_index(int index);
+	void pet_removes(Entity *entity);
+	void pet_removes_bind(Node *entity);
+	int pet_gets_count();
 
-	void addc_pet_path(NodePath path);
+	void pet_addc_path(NodePath path);
 
-	void addc_pet(Entity *entity);
-	void addc_pet_bind(Node *entity);
-	Entity *getc_pet(int index);
-	void removec_pet_index(int index);
-	void removec_pet(Entity *entity);
-	void removec_pet_bind(Node *entity);
-	int getc_pet_count();
+	void pet_addc(Entity *entity);
+	void pet_addc_bind(Node *entity);
+	Entity *pet_getc(int index);
+	void pet_removec_index(int index);
+	void pet_removec(Entity *entity);
+	void pet_removec_bind(Node *entity);
+	int pet_getc_count();
 
 	//void pets_attack();
 	//void pets_follow();
@@ -932,21 +932,21 @@ public:
 	virtual void _from_dict(const Dictionary &dict);
 
 	// Networking
-	Entity *gets_sees(int index);
-	void removes_sees_index(int index);
-	void removes_sees(Entity *entity);
-	void removes_sees_bind(Node *entity);
-	void adds_sees(Entity *entity);
-	void adds_sees_bind(Node *entity);
-	int gets_sees_count();
+	Entity *sees_gets(int index);
+	void sees_removes_index(int index);
+	void sees_removes(Entity *entity);
+	void sees_removes_bind(Node *entity);
+	void sees_adds(Entity *entity);
+	void sees_adds_bind(Node *entity);
+	int sees_gets_count();
 
-	Entity *gets_seen_by(int index);
-	void removes_seen_by_index(int index);
-	void removes_seen_by(Entity *entity);
-	void removes_seen_by_bind(Node *entity);
-	void adds_seen_by(Entity *entity);
-	void adds_seen_by_bind(Node *entity);
-	int gets_seen_by_count();
+	Entity *seen_by_gets(int index);
+	void seen_by_removes_index(int index);
+	void seen_by_removes(Entity *entity);
+	void seen_by_removes_bind(Node *entity);
+	void seen_by_adds(Entity *entity);
+	void seen_by_adds_bind(Node *entity);
+	int seen_by_gets_count();
 
 	void vrpc(const StringName &p_method, VARIANT_ARG_LIST);
 #if VERSION_MAJOR < 4
