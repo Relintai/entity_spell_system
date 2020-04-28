@@ -58,8 +58,8 @@ public:
 	void ons_added(Entity *owner);
 	void onc_added(Entity *owner);
 
-	void ons_stat_changed(Ref<Stat> stat);
-	void onc_stat_changed(Ref<Stat> stat);
+	void notification_sstat_changed(Ref<Stat> stat);
+	void notification_cstat_changed(Ref<Stat> stat);
 
 	void ons_target_changed(Entity *entity, Entity *old_target);
 	void onc_target_changed(Entity *entity, Entity *old_target);

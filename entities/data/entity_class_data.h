@@ -152,29 +152,29 @@ public:
 	void notification_scast(int what, Ref<SpellCastInfo> info);
 	void notification_sdamage(int what, Ref<SpellDamageInfo> info);
 
-	void son_death(Entity *entity);
-	void son_death_bind(Node *entity);
+	void notification_sdeath(Entity *entity);
+	void notification_sdeath_bind(Node *entity);
 
-	void son_cooldown_added(Ref<Cooldown> cooldown);
-	void son_cooldown_removed(Ref<Cooldown> cooldown);
+	void notification_scooldown_added(Ref<Cooldown> cooldown);
+	void notification_scooldown_removed(Ref<Cooldown> cooldown);
 
-	void son_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
-	void son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+	void notification_scategory_cooldown_added(Ref<CategoryCooldown> category_cooldown);
+	void notification_scategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
 
-	void son_gcd_started(Entity *entity, float gcd);
-	void son_gcd_finished(Entity *entity);
-	void son_gcd_started_bind(Node *entity, float gcd);
-	void son_gcd_finished_bind(Node *entity);
+	void notification_sgcd_started(Entity *entity, float gcd);
+	void notification_sgcd_finished(Entity *entity);
+	void notification_sgcd_started_bind(Node *entity, float gcd);
+	void notification_sgcd_finished_bind(Node *entity);
 
-	void son_xp_gained(Entity *entity, int value);
-	void son_xp_gained_bind(Node *entity, int value);
-	void son_class_level_up(Entity *entity, int value);
-	void son_class_level_up_bind(Node *entity, int value);
-	void son_character_level_up(Entity *entity, int value);
-	void son_character_level_up_bind(Node *entity, int value);
+	void notification_sxp_gained(Entity *entity, int value);
+	void notification_sxp_gained_bind(Node *entity, int value);
+	void notification_sclass_level_up(Entity *entity, int value);
+	void notification_sclass_level_up_bind(Node *entity, int value);
+	void notification_scharacter_level_up(Entity *entity, int value);
+	void notification_scharacter_level_up_bind(Node *entity, int value);
 
-	void son_entity_resource_added(Ref<EntityResource> resource);
-	void son_entity_resource_removed(Ref<EntityResource> resource);
+	void notification_sentity_resource_added(Ref<EntityResource> resource);
+	void notification_sentity_resource_removed(Ref<EntityResource> resource);
 
 	//Clientside Event Handlers
 	void notification_caura(int what, Ref<AuraData> data);
@@ -182,28 +182,28 @@ public:
 	void notification_ccast(int what, Ref<SpellCastInfo> info);
 	void notification_cdamage(int what, Ref<SpellDamageInfo> info);
 
-	void con_death(Entity *entity);
-	void con_death_bind(Node *entity);
+	void notification_cdeath(Entity *entity);
+	void notification_cdeath_bind(Node *entity);
 
-	void con_cooldown_added(Ref<Cooldown> cooldown);
-	void con_cooldown_removed(Ref<Cooldown> cooldown);
-	void con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
-	void con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+	void notification_ccooldown_added(Ref<Cooldown> cooldown);
+	void notification_ccooldown_removed(Ref<Cooldown> cooldown);
+	void notification_ccategory_cooldown_added(Ref<CategoryCooldown> category_cooldown);
+	void notification_ccategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
 
-	void con_gcd_started(Entity *entity, float gcd);
-	void con_gcd_finished(Entity *entity);
-	void con_gcd_started_bind(Node *entity, float gcd);
-	void con_gcd_finished_bind(Node *entity);
+	void notification_cgcd_started(Entity *entity, float gcd);
+	void notification_cgcd_finished(Entity *entity);
+	void notification_cgcd_started_bind(Node *entity, float gcd);
+	void notification_cgcd_finished_bind(Node *entity);
 
-	void con_xp_gained(Entity *entity, int value);
-	void con_xp_gained_bind(Node *entity, int value);
-	void con_class_level_up(Entity *entity, int value);
-	void con_class_level_up_bind(Node *entity, int value);
-	void con_character_level_up(Entity *entity, int value);
-	void con_character_level_up_bind(Node *entity, int value);
+	void notification_cxp_gained(Entity *entity, int value);
+	void notification_cxp_gained_bind(Node *entity, int value);
+	void notification_cclass_level_up(Entity *entity, int value);
+	void notification_cclass_level_up_bind(Node *entity, int value);
+	void notification_ccharacter_level_up(Entity *entity, int value);
+	void notification_ccharacter_level_up_bind(Node *entity, int value);
 
-	void con_entity_resource_added(Ref<EntityResource> resource);
-	void con_entity_resource_removed(Ref<EntityResource> resource);
+	void notification_centity_resource_added(Ref<EntityResource> resource);
+	void notification_centity_resource_removed(Ref<EntityResource> resource);
 
 	//Equipment
 

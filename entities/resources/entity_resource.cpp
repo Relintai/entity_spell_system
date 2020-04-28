@@ -123,13 +123,13 @@ void EntityResource::onc_added(Entity *owner) {
 		call("_onc_added", owner);
 }
 
-void EntityResource::ons_stat_changed(Ref<Stat> stat) {
-	if (has_method("_ons_stat_changed"))
-		call("_ons_stat_changed", stat);
+void EntityResource::notification_sstat_changed(Ref<Stat> stat) {
+	if (has_method("_notification_sstat_changed"))
+		call("_notification_sstat_changed", stat);
 }
-void EntityResource::onc_stat_changed(Ref<Stat> stat) {
-	if (has_method("_onc_stat_changed"))
-		call("_onc_stat_changed", stat);
+void EntityResource::notification_cstat_changed(Ref<Stat> stat) {
+	if (has_method("_notification_cstat_changed"))
+		call("_notification_cstat_changed", stat);
 }
 
 void EntityResource::ons_target_changed(Entity *entity, Entity *old_target) {
@@ -249,8 +249,8 @@ void EntityResource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_owner", "value"), &EntityResource::set_owner_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity", 0), "set_owner", "get_owner");
 
-	BIND_VMETHOD(MethodInfo("_ons_stat_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
-	BIND_VMETHOD(MethodInfo("_onc_stat_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
+	BIND_VMETHOD(MethodInfo("_notification_sstat_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
+	BIND_VMETHOD(MethodInfo("_notification_cstat_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
 
 	BIND_VMETHOD(MethodInfo("_ons_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_onc_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));

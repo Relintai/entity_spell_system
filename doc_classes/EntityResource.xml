@@ -30,7 +30,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_onc_stat_changed" qualifiers="virtual">
+		<method name="_notification_cstat_changed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="stat" type="Stat">
@@ -56,7 +56,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_ons_stat_changed" qualifiers="virtual">
+		<method name="_notification_sstat_changed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="stat" type="Stat">

@@ -72,7 +72,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_category_cooldown_added" qualifiers="virtual">
+		<method name="_notification_ccategory_cooldown_added" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_cooldown" type="CategoryCooldown">
@@ -80,7 +80,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_category_cooldown_removed" qualifiers="virtual">
+		<method name="_notification_ccategory_cooldown_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_cooldown" type="CategoryCooldown">
@@ -88,7 +88,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_character_level_up" qualifiers="virtual">
+		<method name="_notification_ccharacter_level_up" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -98,7 +98,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_class_level_up" qualifiers="virtual">
+		<method name="_notification_cclass_level_up" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -108,7 +108,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_cooldown_added" qualifiers="virtual">
+		<method name="_notification_ccooldown_added" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -116,7 +116,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_cooldown_removed" qualifiers="virtual">
+		<method name="_notification_ccooldown_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -124,7 +124,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_death" qualifiers="virtual">
+		<method name="_notification_cdeath" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="Entity">
@@ -132,7 +132,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_entity_resource_added" qualifiers="virtual">
+		<method name="_notification_centity_resource_added" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -140,7 +140,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_entity_resource_removed" qualifiers="virtual">
+		<method name="_notification_centity_resource_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -180,7 +180,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_gcd_finished" qualifiers="virtual">
+		<method name="_notification_cgcd_finished" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -188,7 +188,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_gcd_started" qualifiers="virtual">
+		<method name="_notification_cgcd_started" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -206,7 +206,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_xp_gained" qualifiers="virtual">
+		<method name="_notification_cxp_gained" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -384,7 +384,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_category_cooldown_added" qualifiers="virtual">
+		<method name="_notification_scategory_cooldown_added" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_cooldown" type="CategoryCooldown">
@@ -392,7 +392,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_category_cooldown_removed" qualifiers="virtual">
+		<method name="_notification_scategory_cooldown_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_cooldown" type="CategoryCooldown">
@@ -400,7 +400,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_character_level_up" qualifiers="virtual">
+		<method name="_notification_scharacter_level_up" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -410,7 +410,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_class_level_up" qualifiers="virtual">
+		<method name="_notification_sclass_level_up" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -420,7 +420,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_cooldown_added" qualifiers="virtual">
+		<method name="_notification_scooldown_added" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -428,7 +428,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_cooldown_removed" qualifiers="virtual">
+		<method name="_notification_scooldown_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -468,7 +468,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_death" qualifiers="virtual">
+		<method name="_notification_sdeath" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="Entity">
@@ -476,7 +476,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_entity_resource_added" qualifiers="virtual">
+		<method name="_notification_sentity_resource_added" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -484,7 +484,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_entity_resource_removed" qualifiers="virtual">
+		<method name="_notification_sentity_resource_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -524,7 +524,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_gcd_finished" qualifiers="virtual">
+		<method name="_notification_sgcd_finished" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -532,7 +532,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_gcd_started" qualifiers="virtual">
+		<method name="_notification_sgcd_started" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -574,7 +574,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_xp_gained" qualifiers="virtual">
+		<method name="_notification_sxp_gained" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
@@ -648,7 +648,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_category_cooldown_added">
+		<method name="notification_ccategory_cooldown_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="CategoryCooldown">
@@ -656,7 +656,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_category_cooldown_removed">
+		<method name="notification_ccategory_cooldown_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="CategoryCooldown">
@@ -664,7 +664,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_character_level_up">
+		<method name="notification_ccharacter_level_up">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -674,7 +674,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_class_level_up">
+		<method name="notification_cclass_level_up">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -684,7 +684,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_cooldown_added">
+		<method name="notification_ccooldown_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -692,7 +692,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_cooldown_removed">
+		<method name="notification_ccooldown_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -700,7 +700,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_death">
+		<method name="notification_cdeath">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="Node">
@@ -708,7 +708,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_entity_resource_added">
+		<method name="notification_centity_resource_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -716,7 +716,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_entity_resource_removed">
+		<method name="notification_centity_resource_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -756,7 +756,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_gcd_finished">
+		<method name="notification_cgcd_finished">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -764,7 +764,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_gcd_started">
+		<method name="notification_cgcd_started">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -782,7 +782,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_xp_gained">
+		<method name="notification_cxp_gained">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -944,7 +944,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_category_cooldown_added">
+		<method name="notification_scategory_cooldown_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_cooldown" type="CategoryCooldown">
@@ -952,7 +952,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_category_cooldown_removed">
+		<method name="notification_scategory_cooldown_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_cooldown" type="CategoryCooldown">
@@ -960,7 +960,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_character_level_up">
+		<method name="notification_scharacter_level_up">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -970,7 +970,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_class_level_up">
+		<method name="notification_sclass_level_up">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -980,7 +980,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_cooldown_added">
+		<method name="notification_scooldown_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -988,7 +988,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_cooldown_removed">
+		<method name="notification_scooldown_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -1028,7 +1028,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_death">
+		<method name="notification_sdeath">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="Node">
@@ -1036,7 +1036,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_entity_resource_added">
+		<method name="notification_sentity_resource_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -1044,7 +1044,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_entity_resource_removed">
+		<method name="notification_sentity_resource_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -1084,7 +1084,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_gcd_finished">
+		<method name="notification_sgcd_finished">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -1092,7 +1092,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_gcd_started">
+		<method name="notification_sgcd_started">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">
@@ -1134,7 +1134,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_xp_gained">
+		<method name="notification_sxp_gained">
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Node">

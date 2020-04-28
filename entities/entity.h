@@ -345,8 +345,8 @@ public:
 	void dies();
 	void diec();
 
-	void ons_stat_changed(Ref<Stat> stat);
-	void onc_stat_changed(Ref<Stat> stat);
+	void notification_sstat_changed(Ref<Stat> stat);
+	void notification_cstat_changed(Ref<Stat> stat);
 
 	void ssend_stat(int id, int ccurrent, int cmax);
 	void creceive_stat(int id, int ccurrent, int cmax);
@@ -466,27 +466,22 @@ public:
 	void notification_scast(int what, Ref<SpellCastInfo> info);
 	void notification_sdamage(int what, Ref<SpellDamageInfo> info);
 
-	void son_death();
+	void notification_scooldown_added(Ref<Cooldown> cooldown);
+	void notification_scooldown_removed(Ref<Cooldown> cooldown);
 
-	void son_cooldown_added(Ref<Cooldown> cooldown);
-	void son_cooldown_removed(Ref<Cooldown> cooldown);
+	void notification_scategory_cooldown_added(Ref<CategoryCooldown> category_cooldown);
+	void notification_scategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
 
-	void son_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
-	void son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+	void notification_sentity_resource_added(Ref<EntityResource> resource);
+	void notification_sentity_resource_removed(Ref<EntityResource> resource);
 
-	void son_entity_resource_added(Ref<EntityResource> resource);
-	void son_entity_resource_removed(Ref<EntityResource> resource);
+	void notification_sxp_gained(int value);
+	void notification_sclass_level_up(int value);
+	void notification_scharacter_level_up(int value);
 
-	void son_gcd_started();
-	void son_gcd_finished();
-	void con_gcd_started();
-	void con_gcd_finished();
+	void notification_sdeath();
 
 	void son_physics_process(float delta);
-
-	void son_xp_gained(int value);
-	void son_class_level_up(int value);
-	void son_character_level_up(int value);
 
 	//Clientside EventHandlers
 	void notification_caura(int what, Ref<AuraData> data);
@@ -494,20 +489,26 @@ public:
 	void notification_ccast(int what, Ref<SpellCastInfo> info);
 	void notification_cdamage(int what, Ref<SpellDamageInfo> info);
 
-	void con_death();
+	void notification_ccooldown_added(Ref<Cooldown> cooldown);
+	void notification_ccooldown_removed(Ref<Cooldown> cooldown);
 
-	void con_cooldown_added(Ref<Cooldown> cooldown);
-	void con_cooldown_removed(Ref<Cooldown> cooldown);
+	void notification_ccategory_cooldown_added(Ref<CategoryCooldown> category_cooldown);
+	void notification_ccategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
 
-	void con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
-	void con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+	void notification_centity_resource_added(Ref<EntityResource> resource);
+	void notification_centity_resource_removed(Ref<EntityResource> resource);
 
-	void con_entity_resource_added(Ref<EntityResource> resource);
-	void con_entity_resource_removed(Ref<EntityResource> resource);
+	void notification_cxp_gained(int value);
+	void notification_cclass_level_up(int value);
+	void notification_ccharacter_level_up(int value);
 
-	void con_xp_gained(int value);
-	void con_class_level_up(int value);
-	void con_character_level_up(int value);
+	void notification_cdeath();
+
+	//gcd
+	void notification_sgcd_started();
+	void notification_sgcd_finished();
+	void notification_cgcd_started();
+	void notification_cgcd_finished();
 
 	//Modifiers/Requesters
 	void sapply_passives_damage_receive(Ref<SpellDamageInfo> info);
@@ -595,11 +596,11 @@ public:
 	//Hooks
 	void moved();
 
-	void onc_mouse_enter();
-	void onc_mouse_exit();
+	void notification_cmouse_enter();
+	void notification_cmouse_exit();
 
-	void onc_targeted();
-	void onc_untargeted();
+	void notification_ctargeted();
+	void notification_cuntargeted();
 
 	//Update
 	void update_auras(float delta);
@@ -796,48 +797,50 @@ public:
 	void loots(int index);
 	void lootc(int index);
 
-	void item_ons_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
 	void item_addc_rpc(int slot_id, String item_data);
 	void item_addc(int slot_id, Ref<ItemInstance> item);
 
 	//Bag
-	void item_ons_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
 	void item_removes(const int slot_id);
 	void item_removec(const int slot_id);
 	void item_cdeny_remove(const int slot_id);
 	void item_crequest_remove(const int slot_id);
 
-	void items_ons_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2);
 	void items_swaps(int slot_id_1, int slot_id_2);
 	void items_swapc(int slot_id_1, int slot_id_2);
 	void item_cdeny_swap(int slot_id_1, int slot_id_2);
 	void item_crequest_swap(int slot_id_1, int slot_id_2);
 
-	void item_ons_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
 	void item_cchange_count(int slot_id, int new_count);
 
-	void ons_overburdened(Ref<Bag> bag);
-	void ons_overburden_removed(Ref<Bag> bag);
+	void notification_item_sadded(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void notification_item_sremoved(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void notification_items_sswapped(Ref<Bag> bag, int slot_id_1, int slot_id_2);
+	void notification_item_sscount_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void notification_soverburdened(Ref<Bag> bag);
+	void notification_soverburden_removed(Ref<Bag> bag);
 
 	//Target Bag
-	void target_item_ons_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+
 	void target_item_addc_rpc(int slot_id, String item_data);
 	void target_item_addc(int slot_id, Ref<ItemInstance> item);
 
-	void target_item_ons_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
 	void target_item_removes(const int slot_id);
 	void target_item_removec(const int slot_id);
 	void target_item_cdeny_remove(const int slot_id);
 	void target_remove_crequest_item(const int slot_id);
 
-	void target_items_ons_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2);
 	void target_items_sswap(int slot_id_1, int slot_id_2);
 	void target_items_cswap(int slot_id_1, int slot_id_2);
 	void target_item_cdeny_swap(int slot_id_1, int slot_id_2);
 	void target_item_crequest_swap(int slot_id_1, int slot_id_2);
 
-	void target_item_ons_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
 	void target_item_cchange_count(int slot_id, int new_count);
+
+	void notification_target_item_sadded(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void notification_target_item_sremoved(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
+	void notification_target_items_sswapped(Ref<Bag> bag, int slot_id_1, int slot_id_2);
+	void notification_target_item_sscount_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
 
 	////    Data    ////
 
@@ -969,12 +972,12 @@ public:
 
 protected:
 	void _crafts(int id);
-	void _son_xp_gained(int value);
-	void _son_character_level_up(int level);
-	void _son_class_level_up(int level);
+	void _notification_sxp_gained(int value);
+	void _notification_scharacter_level_up(int level);
+	void _notification_sclass_level_up(int level);
 	void _moved();
 	void _con_target_changed(Node *p_entity, Node *p_old_target);
-	void _son_death();
+	void _notification_sdeath();
 	void _spell_learns(int id);
 
 	bool _set(const StringName &p_name, const Variant &p_value);

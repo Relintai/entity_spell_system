@@ -1542,7 +1542,7 @@ float Entity::gcd_gets() {
 void Entity::gcd_starts(float value) {
 	_s_gcd = value;
 
-	void son_gcd_started();
+	void notification_sgcd_started();
 
 	emit_signal("sgcd_started", _s_gcd);
 
@@ -1552,7 +1552,7 @@ void Entity::gcd_starts(float value) {
 void Entity::gcd_startc(float value) {
 	_c_gcd = value;
 
-	void con_gcd_started();
+	void notification_cgcd_started();
 
 	emit_signal("cgcd_started", _c_gcd);
 }
@@ -1824,7 +1824,7 @@ void Entity::set_stat(int index, Ref<Stat> entry) {
 void Entity::dies() {
 	//serverside
 
-	son_death();
+	notification_sdeath();
 
 	//send an event to client
 	VRPC(diec);
@@ -1834,19 +1834,19 @@ void Entity::dies() {
 }
 
 void Entity::diec() {
-	con_death();
+	notification_cdeath();
 
 	emit_signal("diecd", this);
 }
 
-void Entity::ons_stat_changed(Ref<Stat> stat) {
+void Entity::notification_sstat_changed(Ref<Stat> stat) {
 	for (int i = 0; i < _s_resources.size(); ++i) {
-		_s_resources.get(i)->ons_stat_changed(stat);
+		_s_resources.get(i)->notification_sstat_changed(stat);
 	}
 }
-void Entity::onc_stat_changed(Ref<Stat> stat) {
+void Entity::notification_cstat_changed(Ref<Stat> stat) {
 	for (int i = 0; i < _c_resources.size(); ++i) {
-		_c_resources.get(i)->onc_stat_changed(stat);
+		_c_resources.get(i)->notification_cstat_changed(stat);
 	}
 }
 
@@ -2193,7 +2193,7 @@ void Entity::resource_adds(Ref<EntityResource> resource) {
 
 	resource->ons_added(this);
 
-	son_entity_resource_added(resource);
+	notification_sentity_resource_added(resource);
 
 	VRPCOBJP(resource_addc_rpc, _s_resources.size() - 1, JSON::print(resource->to_dict()), resource_addc, _s_resources.size() - 1, resource);
 }
@@ -2206,7 +2206,7 @@ void Entity::resource_removes(int index) {
 	Ref<EntityResource> res = _s_resources.get(index);
 	_s_resources.remove(index);
 
-	son_entity_resource_removed(res);
+	notification_sentity_resource_removed(res);
 
 	VRPC(resource_removec, index);
 }
@@ -2290,7 +2290,7 @@ void Entity::resource_addc(int index, Ref<EntityResource> resource) {
 
 	resource->onc_added(this);
 
-	con_entity_resource_added(resource);
+	notification_centity_resource_added(resource);
 }
 int Entity::resource_getc_count() {
 	return _c_resources.size();
@@ -2301,7 +2301,7 @@ void Entity::resource_removec(int index) {
 	Ref<EntityResource> res = _c_resources.get(index);
 	_c_resources.remove(index);
 
-	con_entity_resource_removed(res);
+	notification_centity_resource_removed(res);
 }
 void Entity::resource_clearc() {
 	_s_resources.clear();
@@ -2594,7 +2594,7 @@ void Entity::xp_adds(int value) {
 	_s_class_xp += value;
 	_s_character_xp += value;
 
-	son_xp_gained(value);
+	notification_sxp_gained(value);
 
 	ORPC(xp_addc, value);
 }
@@ -2602,7 +2602,7 @@ void Entity::xp_addc(int value) {
 	_c_class_xp += value;
 	_c_character_xp += value;
 
-	con_xp_gained(value);
+	notification_cxp_gained(value);
 }
 
 void Entity::levelup_sclass(int value) {
@@ -2614,14 +2614,14 @@ void Entity::levelup_sclass(int value) {
 
 	_s_class_level += value;
 
-	son_class_level_up(value);
+	notification_sclass_level_up(value);
 
 	VRPC(levelup_cclass, value);
 }
 void Entity::levelup_cclass(int value) {
 	_c_class_level += value;
 
-	con_class_level_up(value);
+	notification_cclass_level_up(value);
 }
 
 void Entity::levelup_scharacter(int value) {
@@ -2633,14 +2633,14 @@ void Entity::levelup_scharacter(int value) {
 
 	_s_character_level += value;
 
-	son_character_level_up(value);
+	notification_scharacter_level_up(value);
 
 	VRPC(levelup_ccharacter, value);
 }
 void Entity::levelup_ccharacter(int value) {
 	_c_character_level += value;
 
-	con_character_level_up(value);
+	notification_ccharacter_level_up(value);
 }
 
 ////    Spell System    ////
@@ -2837,141 +2837,141 @@ void Entity::notification_sdamage(int what, Ref<SpellDamageInfo> info) {
 	}
 }
 
-void Entity::son_death() {
+void Entity::notification_sdeath() {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_death(this);
+		_s_entity_data->notification_sdeath(this);
 	}
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_death(ad);
+		ad->get_aura()->notification_sdeath(ad);
 	}
 
-	if (has_method("_son_death"))
-		call("_son_death");
+	if (has_method("_notification_sdeath"))
+		call("_notification_sdeath");
 }
 
-void Entity::son_cooldown_added(Ref<Cooldown> cooldown) {
+void Entity::notification_scooldown_added(Ref<Cooldown> cooldown) {
 	ERR_FAIL_COND(!cooldown.is_valid());
 
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_cooldown_added(cooldown);
+		_s_entity_data->notification_scooldown_added(cooldown);
 	}
 
-	if (has_method("_son_cooldown_added"))
-		call("_son_cooldown_added", cooldown);
+	if (has_method("_notification_scooldown_added"))
+		call("_notification_scooldown_added", cooldown);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_cooldown_added(ad, cooldown);
+		ad->get_aura()->notification_scooldown_added(ad, cooldown);
 	}
 }
-void Entity::son_cooldown_removed(Ref<Cooldown> cooldown) {
+void Entity::notification_scooldown_removed(Ref<Cooldown> cooldown) {
 	ERR_FAIL_COND(!cooldown.is_valid());
 
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_cooldown_removed(cooldown);
+		_s_entity_data->notification_scooldown_removed(cooldown);
 	}
 
-	if (has_method("_son_cooldown_removed"))
-		call("_son_cooldown_removed", cooldown);
+	if (has_method("_notification_scooldown_removed"))
+		call("_notification_scooldown_removed", cooldown);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_cooldown_removed(ad, cooldown);
+		ad->get_aura()->notification_scooldown_removed(ad, cooldown);
 	}
 }
 
-void Entity::son_category_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
+void Entity::notification_scategory_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
 	ERR_FAIL_COND(!category_cooldown.is_valid());
 
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_category_cooldown_added(category_cooldown);
+		_s_entity_data->notification_scategory_cooldown_added(category_cooldown);
 	}
 
-	if (has_method("_son_category_cooldown_added"))
-		call("_son_category_cooldown_added", category_cooldown);
+	if (has_method("_notification_scategory_cooldown_added"))
+		call("_notification_scategory_cooldown_added", category_cooldown);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_category_cooldown_added(ad, category_cooldown);
+		ad->get_aura()->notification_scategory_cooldown_added(ad, category_cooldown);
 	}
 }
-void Entity::son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
+void Entity::notification_scategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
 	ERR_FAIL_COND(!category_cooldown.is_valid());
 
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_category_cooldown_removed(category_cooldown);
+		_s_entity_data->notification_scategory_cooldown_removed(category_cooldown);
 	}
 
-	if (has_method("_son_category_cooldown_removed"))
-		call("_son_category_cooldown_removed", category_cooldown);
+	if (has_method("_notification_scategory_cooldown_removed"))
+		call("_notification_scategory_cooldown_removed", category_cooldown);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_category_cooldown_removed(ad, category_cooldown);
+		ad->get_aura()->notification_scategory_cooldown_removed(ad, category_cooldown);
 	}
 }
 
-void Entity::son_gcd_started() {
+void Entity::notification_sgcd_started() {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_gcd_started(this, _s_gcd);
+		_s_entity_data->notification_sgcd_started(this, _s_gcd);
 	}
 
-	if (has_method("_son_gcd_started"))
-		call("_son_gcd_started", _s_gcd);
+	if (has_method("_notification_sgcd_started"))
+		call("_notification_sgcd_started", _s_gcd);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_gcd_started(ad, _s_gcd);
+		ad->get_aura()->notification_sgcd_started(ad, _s_gcd);
 	}
 }
-void Entity::son_gcd_finished() {
+void Entity::notification_sgcd_finished() {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_gcd_finished(this);
+		_s_entity_data->notification_sgcd_finished(this);
 	}
 
-	if (has_method("_son_gcd_finished"))
-		call("_son_gcd_finished");
+	if (has_method("_notification_sgcd_finished"))
+		call("_notification_sgcd_finished");
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_gcd_finished(ad);
+		ad->get_aura()->notification_sgcd_finished(ad);
 	}
 }
-void Entity::con_gcd_started() {
+void Entity::notification_cgcd_started() {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->con_gcd_started(this, _c_gcd);
+		_s_entity_data->notification_cgcd_started(this, _c_gcd);
 	}
 
-	if (has_method("_con_gcd_started"))
-		call("_con_gcd_started", _c_gcd);
+	if (has_method("_notification_cgcd_started"))
+		call("_notification_cgcd_started", _c_gcd);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->con_gcd_started(ad, _c_gcd);
+		ad->get_aura()->notification_cgcd_started(ad, _c_gcd);
 	}
 }
-void Entity::con_gcd_finished() {
+void Entity::notification_cgcd_finished() {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->con_gcd_finished(this);
+		_s_entity_data->notification_cgcd_finished(this);
 	}
 
-	if (has_method("_con_gcd_finished"))
-		call("_con_gcd_finished");
+	if (has_method("_notification_cgcd_finished"))
+		call("_notification_cgcd_finished");
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->con_gcd_finished(ad);
+		ad->get_aura()->notification_cgcd_finished(ad);
 	}
 }
 
@@ -2995,86 +2995,86 @@ void Entity::son_physics_process(float delta) {
 	}
 }
 
-void Entity::son_xp_gained(int value) {
+void Entity::notification_sxp_gained(int value) {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_xp_gained(this, value);
+		_s_entity_data->notification_sxp_gained(this, value);
 	}
 
-	if (has_method("_son_xp_gained"))
-		call("_son_xp_gained", value);
+	if (has_method("_notification_sxp_gained"))
+		call("_notification_sxp_gained", value);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_xp_gained(ad, value);
+		ad->get_aura()->notification_sxp_gained(ad, value);
 	}
 
-	emit_signal("son_xp_gained", this, value);
+	emit_signal("notification_sxp_gained", this, value);
 }
 
-void Entity::son_class_level_up(int value) {
+void Entity::notification_sclass_level_up(int value) {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_class_level_up(this, value);
+		_s_entity_data->notification_sclass_level_up(this, value);
 	}
 
-	if (has_method("_son_class_level_up"))
-		call("_son_class_level_up", value);
+	if (has_method("_notification_sclass_level_up"))
+		call("_notification_sclass_level_up", value);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_class_level_up(ad, value);
+		ad->get_aura()->notification_sclass_level_up(ad, value);
 	}
 
-	emit_signal("son_class_level_up", this, value);
+	emit_signal("notification_sclass_level_up", this, value);
 }
 
-void Entity::son_character_level_up(int value) {
+void Entity::notification_scharacter_level_up(int value) {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_character_level_up(this, value);
+		_s_entity_data->notification_scharacter_level_up(this, value);
 	}
 
-	if (has_method("_son_character_level_up"))
-		call("_son_character_level_up", value);
+	if (has_method("_notification_scharacter_level_up"))
+		call("_notification_scharacter_level_up", value);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_character_level_up(ad, value);
+		ad->get_aura()->notification_scharacter_level_up(ad, value);
 	}
 
-	emit_signal("son_character_level_up", this, value);
+	emit_signal("notification_scharacter_level_up", this, value);
 }
 
-void Entity::son_entity_resource_added(Ref<EntityResource> resource) {
+void Entity::notification_sentity_resource_added(Ref<EntityResource> resource) {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_entity_resource_added(resource);
+		_s_entity_data->notification_sentity_resource_added(resource);
 	}
 
-	if (has_method("_son_entity_resource_added"))
-		call("_son_entity_resource_added", resource);
+	if (has_method("_notification_sentity_resource_added"))
+		call("_notification_sentity_resource_added", resource);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_entity_resource_added(ad, resource);
+		ad->get_aura()->notification_sentity_resource_added(ad, resource);
 	}
 
 	emit_signal("sentity_resource_added", resource);
 }
 
-void Entity::son_entity_resource_removed(Ref<EntityResource> resource) {
+void Entity::notification_sentity_resource_removed(Ref<EntityResource> resource) {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->son_entity_resource_removed(resource);
+		_s_entity_data->notification_sentity_resource_removed(resource);
 	}
 
-	if (has_method("_son_entity_resource_removed"))
-		call("_son_entity_resource_removed", resource);
+	if (has_method("_notification_sentity_resource_removed"))
+		call("_notification_sentity_resource_removed", resource);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_entity_resource_removed(ad, resource);
+		ad->get_aura()->notification_sentity_resource_removed(ad, resource);
 	}
 
 	emit_signal("sentity_resource_removed", resource);
@@ -3417,30 +3417,30 @@ void Entity::moved() {
 		call("_moved");
 }
 
-void Entity::onc_mouse_enter() {
-	if (has_method("_onc_mouse_enter"))
-		call("_onc_mouse_enter");
+void Entity::notification_cmouse_enter() {
+	if (has_method("_notification_cmouse_enter"))
+		call("_notification_cmouse_enter");
 
-	emit_signal("onc_mouse_entered");
+	emit_signal("notification_cmouse_entered");
 }
-void Entity::onc_mouse_exit() {
-	if (has_method("_onc_mouse_exit"))
-		call("_onc_mouse_exit");
+void Entity::notification_cmouse_exit() {
+	if (has_method("_notification_cmouse_exit"))
+		call("_notification_cmouse_exit");
 
-	emit_signal("onc_mouse_exited");
+	emit_signal("notification_cmouse_exited");
 }
 
-void Entity::onc_targeted() {
-	if (has_method("_onc_targeted"))
-		call("_onc_targeted");
+void Entity::notification_ctargeted() {
+	if (has_method("_notification_ctargeted"))
+		call("_notification_ctargeted");
 
-	emit_signal("onc_targeted");
+	emit_signal("notification_ctargeted");
 }
-void Entity::onc_untargeted() {
-	if (has_method("_onc_untargeted"))
-		call("_onc_untargeted");
+void Entity::notification_cuntargeted() {
+	if (has_method("_notification_cuntargeted"))
+		call("_notification_cuntargeted");
 
-	emit_signal("onc_untargeted");
+	emit_signal("notification_cuntargeted");
 }
 
 void Entity::notification_caura(int what, Ref<AuraData> data) {
@@ -3520,166 +3520,166 @@ void Entity::notification_cdamage(int what, Ref<SpellDamageInfo> info) {
 	emit_signal("notification_cdamage", this, what, info);
 }
 
-void Entity::con_death() {
+void Entity::notification_cdeath() {
 	if (_c_entity_data.is_valid()) {
-		_c_entity_data->con_death(this);
+		_c_entity_data->notification_cdeath(this);
 	}
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
-		ad->get_aura()->con_death(ad);
+		ad->get_aura()->notification_cdeath(ad);
 	}
 
-	if (has_method("_con_death"))
-		call("_con_death");
+	if (has_method("_notification_cdeath"))
+		call("_notification_cdeath");
 }
 
-void Entity::con_cooldown_added(Ref<Cooldown> cooldown) {
+void Entity::notification_ccooldown_added(Ref<Cooldown> cooldown) {
 	ERR_FAIL_COND(!cooldown.is_valid());
 
 	if (_c_entity_data.is_valid()) {
-		_c_entity_data->con_cooldown_added(cooldown);
+		_c_entity_data->notification_ccooldown_added(cooldown);
 	}
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
-		ad->get_aura()->con_cooldown_added(ad, cooldown);
+		ad->get_aura()->notification_ccooldown_added(ad, cooldown);
 	}
 
-	if (has_method("_con_cooldown_added"))
-		call("_con_cooldown_added", cooldown);
+	if (has_method("_notification_ccooldown_added"))
+		call("_notification_ccooldown_added", cooldown);
 }
-void Entity::con_cooldown_removed(Ref<Cooldown> cooldown) {
+void Entity::notification_ccooldown_removed(Ref<Cooldown> cooldown) {
 	ERR_FAIL_COND(!cooldown.is_valid());
 
 	if (_c_entity_data.is_valid()) {
-		_c_entity_data->con_cooldown_removed(cooldown);
+		_c_entity_data->notification_ccooldown_removed(cooldown);
 	}
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
-		ad->get_aura()->con_cooldown_removed(ad, cooldown);
+		ad->get_aura()->notification_ccooldown_removed(ad, cooldown);
 	}
 
-	if (has_method("_con_cooldown_removed"))
-		call("_con_cooldown_removed", cooldown);
+	if (has_method("_notification_ccooldown_removed"))
+		call("_notification_ccooldown_removed", cooldown);
 }
-void Entity::con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
+void Entity::notification_ccategory_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
 	ERR_FAIL_COND(!category_cooldown.is_valid());
 
 	if (_c_entity_data.is_valid()) {
-		_c_entity_data->con_category_cooldown_added(category_cooldown);
+		_c_entity_data->notification_ccategory_cooldown_added(category_cooldown);
 	}
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
-		ad->get_aura()->con_category_cooldown_added(ad, category_cooldown);
+		ad->get_aura()->notification_ccategory_cooldown_added(ad, category_cooldown);
 	}
 
-	if (has_method("_con_category_cooldown_added"))
-		call("_con_category_cooldown_added", category_cooldown);
+	if (has_method("_notification_ccategory_cooldown_added"))
+		call("_notification_ccategory_cooldown_added", category_cooldown);
 }
-void Entity::con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
+void Entity::notification_ccategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
 	ERR_FAIL_COND(!category_cooldown.is_valid());
 
 	if (_c_entity_data.is_valid()) {
-		_c_entity_data->con_category_cooldown_removed(category_cooldown);
+		_c_entity_data->notification_ccategory_cooldown_removed(category_cooldown);
 	}
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
-		ad->get_aura()->con_category_cooldown_removed(ad, category_cooldown);
+		ad->get_aura()->notification_ccategory_cooldown_removed(ad, category_cooldown);
 	}
 
-	if (has_method("_con_category_cooldown_removed"))
-		call("_con_category_cooldown_removed", category_cooldown);
+	if (has_method("_notification_ccategory_cooldown_removed"))
+		call("_notification_ccategory_cooldown_removed", category_cooldown);
 }
 
-void Entity::con_xp_gained(int value) {
+void Entity::notification_cxp_gained(int value) {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->con_xp_gained(this, value);
+		_s_entity_data->notification_cxp_gained(this, value);
 	}
 
-	if (has_method("_con_xp_gained"))
-		call("_con_xp_gained", value);
+	if (has_method("_notification_cxp_gained"))
+		call("_notification_cxp_gained", value);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->con_xp_gained(ad, value);
+		ad->get_aura()->notification_cxp_gained(ad, value);
 	}
 
-	emit_signal("con_xp_gained", this, value);
+	emit_signal("notification_cxp_gained", this, value);
 }
 
-void Entity::con_class_level_up(int value) {
+void Entity::notification_cclass_level_up(int value) {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->con_class_level_up(this, value);
+		_s_entity_data->notification_cclass_level_up(this, value);
 	}
 
-	if (has_method("_con_class_level_up"))
-		call("_con_class_level_up", value);
+	if (has_method("_notification_cclass_level_up"))
+		call("_notification_cclass_level_up", value);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->con_class_level_up(ad, value);
+		ad->get_aura()->notification_cclass_level_up(ad, value);
 	}
 
-	emit_signal("con_class_level_up", this, value);
+	emit_signal("notification_cclass_level_up", this, value);
 }
 
-void Entity::con_character_level_up(int value) {
+void Entity::notification_ccharacter_level_up(int value) {
 	if (_s_entity_data.is_valid()) {
-		_s_entity_data->con_character_level_up(this, value);
+		_s_entity_data->notification_ccharacter_level_up(this, value);
 	}
 
-	if (has_method("_con_character_level_up"))
-		call("_con_character_level_up", value);
+	if (has_method("_notification_ccharacter_level_up"))
+		call("_notification_ccharacter_level_up", value);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->con_character_level_up(ad, value);
+		ad->get_aura()->notification_ccharacter_level_up(ad, value);
 	}
 
-	emit_signal("con_character_level_up", this, value);
+	emit_signal("notification_ccharacter_level_up", this, value);
 }
 
-void Entity::con_entity_resource_added(Ref<EntityResource> resource) {
+void Entity::notification_centity_resource_added(Ref<EntityResource> resource) {
 	if (_c_entity_data.is_valid()) {
-		_c_entity_data->con_entity_resource_added(resource);
+		_c_entity_data->notification_centity_resource_added(resource);
 	}
 
-	if (has_method("_con_entity_resource_added"))
-		call("_con_entity_resource_added", resource);
+	if (has_method("_notification_centity_resource_added"))
+		call("_notification_centity_resource_added", resource);
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
-		ad->get_aura()->con_entity_resource_added(ad, resource);
+		ad->get_aura()->notification_centity_resource_added(ad, resource);
 	}
 
 	emit_signal("centity_resource_added", resource);
 }
 
-void Entity::con_entity_resource_removed(Ref<EntityResource> resource) {
+void Entity::notification_centity_resource_removed(Ref<EntityResource> resource) {
 	if (_c_entity_data.is_valid()) {
-		_c_entity_data->con_entity_resource_removed(resource);
+		_c_entity_data->notification_centity_resource_removed(resource);
 	}
 
-	if (has_method("_con_entity_resource_removed"))
-		call("_con_entity_resource_removed", resource);
+	if (has_method("_notification_centity_resource_removed"))
+		call("_notification_centity_resource_removed", resource);
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
-		ad->get_aura()->con_entity_resource_removed(ad, resource);
+		ad->get_aura()->notification_centity_resource_removed(ad, resource);
 	}
 
 	emit_signal("centity_resource_removed", resource);
@@ -3818,7 +3818,7 @@ void Entity::cooldown_adds(int spell_id, float value) {
 
 		cd->set_remaining(value);
 
-		son_cooldown_added(cd);
+		notification_scooldown_added(cd);
 
 		emit_signal("scooldown_added", cd);
 
@@ -3836,7 +3836,7 @@ void Entity::cooldown_adds(int spell_id, float value) {
 	_s_cooldown_map.set(spell_id, cd);
 	_s_cooldowns.push_back(cd);
 
-	son_cooldown_added(cd);
+	notification_scooldown_added(cd);
 
 	emit_signal("scooldown_added", cd);
 
@@ -3859,7 +3859,7 @@ void Entity::cooldown_removes(int spell_id) {
 		}
 	}
 
-	son_cooldown_removed(cd);
+	notification_scooldown_removed(cd);
 
 	emit_signal("scooldown_removed", cd);
 
@@ -3890,7 +3890,7 @@ void Entity::cooldown_addc(int spell_id, float value) {
 
 		cd->set_remaining(value);
 
-		con_cooldown_added(cd);
+		notification_ccooldown_added(cd);
 
 		emit_signal("ccooldown_added", cd);
 
@@ -3906,7 +3906,7 @@ void Entity::cooldown_addc(int spell_id, float value) {
 	_c_cooldown_map.set(spell_id, cd);
 	_c_cooldowns.push_back(cd);
 
-	con_cooldown_added(cd);
+	notification_ccooldown_added(cd);
 
 	emit_signal("ccooldown_added", cd);
 }
@@ -3928,7 +3928,7 @@ void Entity::cooldown_removec(int spell_id) {
 	if (!cd.is_valid())
 		cd.instance();
 
-	con_cooldown_removed(cd);
+	notification_ccooldown_removed(cd);
 
 	emit_signal("ccooldown_removed", cd);
 }
@@ -3967,7 +3967,7 @@ void Entity::category_cooldown_adds(int category_id, float value) {
 			if (cc->get_category_id() == category_id) {
 				cc->set_remaining(value);
 
-				son_category_cooldown_added(cc);
+				notification_scategory_cooldown_added(cc);
 
 				emit_signal("scategory_cooldown_added", cc);
 
@@ -3988,7 +3988,7 @@ void Entity::category_cooldown_adds(int category_id, float value) {
 
 	_s_active_category_cooldowns |= category_id;
 
-	son_category_cooldown_added(cc);
+	notification_scategory_cooldown_added(cc);
 
 	emit_signal("scategory_cooldown_added", cc);
 
@@ -4010,7 +4010,7 @@ void Entity::category_cooldown_removes(int category_id) {
 
 	_s_active_category_cooldowns ^= category_id;
 
-	son_category_cooldown_removed(cc);
+	notification_scategory_cooldown_removed(cc);
 
 	emit_signal("scategory_cooldown_removed", cc);
 
@@ -4051,7 +4051,7 @@ void Entity::category_cooldown_addc(int category_id, float value) {
 			if (cc->get_category_id() == category_id) {
 				cc->set_remaining(value);
 
-				con_category_cooldown_added(cc);
+				notification_ccategory_cooldown_added(cc);
 
 				emit_signal("ccategory_cooldown_added", cc);
 				return;
@@ -4069,7 +4069,7 @@ void Entity::category_cooldown_addc(int category_id, float value) {
 
 	_c_active_category_cooldowns |= category_id;
 
-	con_category_cooldown_added(cc);
+	notification_ccategory_cooldown_added(cc);
 
 	emit_signal("ccategory_cooldown_added", cc);
 }
@@ -4091,7 +4091,7 @@ void Entity::category_cooldown_removec(int category_id) {
 
 	_c_active_category_cooldowns ^= category_id;
 
-	con_category_cooldown_removed(cc);
+	notification_ccategory_cooldown_removed(cc);
 
 	emit_signal("ccategory_cooldown_removed", cc);
 }
@@ -4892,19 +4892,19 @@ Ref<Bag> Entity::gets_bag() const {
 void Entity::sets_bag(const Ref<Bag> bag) {
 	if (_s_bag.is_valid()) {
 #if VERSION_MAJOR < 4
-		_s_bag->disconnect("item_added", this, "item_ons_added");
-		_s_bag->disconnect("item_removed", this, "item_ons_removed");
-		_s_bag->disconnect("item_swapped", this, "items_ons_swapped");
-		_s_bag->disconnect("item_count_changed", this, "item_ons_count_changed");
-		_s_bag->disconnect("overburdened", this, "ons_overburdened");
-		_s_bag->disconnect("overburden_removed", this, "ons_overburden_removed");
+		_s_bag->disconnect("item_added", this, "notification_item_sadded");
+		_s_bag->disconnect("item_removed", this, "notification_item_sremoved");
+		_s_bag->disconnect("item_swapped", this, "notification_items_sswapped");
+		_s_bag->disconnect("item_count_changed", this, "notification_item_sscount_changed");
+		_s_bag->disconnect("overburdened", this, "notification_soverburdened");
+		_s_bag->disconnect("overburden_removed", this, "notification_soverburden_removed");
 #else
-		_s_bag->disconnect("item_added", callable_mp(this, &Entity::item_ons_added));
-		_s_bag->disconnect("item_removed", callable_mp(this, &Entity::item_ons_removed));
-		_s_bag->disconnect("item_swapped", callable_mp(this, &Entity::items_ons_swapped));
-		_s_bag->disconnect("item_count_changed", callable_mp(this, &Entity::item_ons_count_changed));
-		_s_bag->disconnect("overburdened", callable_mp(this, &Entity::ons_overburdened));
-		_s_bag->disconnect("overburden_removed", callable_mp(this, &Entity::ons_overburden_removed));
+		_s_bag->disconnect("item_added", callable_mp(this, &Entity::notification_item_sadded));
+		_s_bag->disconnect("item_removed", callable_mp(this, &Entity::notification_item_sremoved));
+		_s_bag->disconnect("item_swapped", callable_mp(this, &Entity::notification_items_sswapped));
+		_s_bag->disconnect("item_count_changed", callable_mp(this, &Entity::notification_item_sscount_changed));
+		_s_bag->disconnect("overburdened", callable_mp(this, &Entity::notification_soverburdened));
+		_s_bag->disconnect("overburden_removed", callable_mp(this, &Entity::notification_soverburden_removed));
 #endif
 	}
 
@@ -4912,19 +4912,19 @@ void Entity::sets_bag(const Ref<Bag> bag) {
 
 	if (_s_bag.is_valid()) {
 #if VERSION_MAJOR < 4
-		_s_bag->connect("item_added", this, "item_ons_added");
-		_s_bag->connect("item_removed", this, "item_ons_removed");
-		_s_bag->connect("item_swapped", this, "items_ons_swapped");
-		_s_bag->connect("item_count_changed", this, "item_ons_count_changed");
-		_s_bag->connect("overburdened", this, "ons_overburdened");
-		_s_bag->connect("overburden_removed", this, "ons_overburden_removed");
+		_s_bag->connect("item_added", this, "notification_item_sadded");
+		_s_bag->connect("item_removed", this, "notification_item_sremoved");
+		_s_bag->connect("item_swapped", this, "notification_items_sswapped");
+		_s_bag->connect("item_count_changed", this, "notification_item_sscount_changed");
+		_s_bag->connect("overburdened", this, "notification_soverburdened");
+		_s_bag->connect("overburden_removed", this, "notification_soverburden_removed");
 #else
-		_s_bag->connect("item_added", callable_mp(this, &Entity::item_ons_added));
-		_s_bag->connect("item_removed", callable_mp(this, &Entity::item_ons_removed));
-		_s_bag->connect("item_swapped", callable_mp(this, &Entity::items_ons_swapped));
-		_s_bag->connect("item_count_changed", callable_mp(this, &Entity::item_ons_count_changed));
-		_s_bag->connect("overburdened", callable_mp(this, &Entity::ons_overburdened));
-		_s_bag->connect("overburden_removed", callable_mp(this, &Entity::ons_overburden_removed));
+		_s_bag->connect("item_added", callable_mp(this, &Entity::notification_item_sadded));
+		_s_bag->connect("item_removed", callable_mp(this, &Entity::notification_item_sremoved));
+		_s_bag->connect("item_swapped", callable_mp(this, &Entity::notification_items_sswapped));
+		_s_bag->connect("item_count_changed", callable_mp(this, &Entity::notification_item_sscount_changed));
+		_s_bag->connect("overburdened", callable_mp(this, &Entity::notification_soverburdened));
+		_s_bag->connect("overburden_removed", callable_mp(this, &Entity::notification_soverburden_removed));
 #endif
 	}
 
@@ -4952,15 +4952,15 @@ Ref<Bag> Entity::gets_target_bag() const {
 void Entity::sets_target_bag(const Ref<Bag> bag) {
 	if (_s_target_bag.is_valid()) {
 #if VERSION_MAJOR < 4
-		_s_target_bag->disconnect("item_added", this, "target_item_ons_added");
-		_s_target_bag->disconnect("item_removed", this, "target_item_ons_removed");
-		_s_target_bag->disconnect("item_swapped", this, "target_items_ons_swapped");
-		_s_target_bag->disconnect("item_count_changed", this, "target_item_ons_count_changed");
+		_s_target_bag->disconnect("item_added", this, "notification_target_item_sadded");
+		_s_target_bag->disconnect("item_removed", this, "notification_target_item_sremoved");
+		_s_target_bag->disconnect("item_swapped", this, "notification_target_items_sswapped");
+		_s_target_bag->disconnect("item_count_changed", this, "notification_target_item_sscount_changed");
 #else
-		_s_target_bag->disconnect("item_added", callable_mp(this, &Entity::target_item_ons_added));
-		_s_target_bag->disconnect("item_removed", callable_mp(this, &Entity::target_item_ons_removed));
-		_s_target_bag->disconnect("item_swapped", callable_mp(this, &Entity::target_items_ons_swapped));
-		_s_target_bag->disconnect("item_count_changed", callable_mp(this, &Entity::target_item_ons_count_changed));
+		_s_target_bag->disconnect("item_added", callable_mp(this, &Entity::notification_target_item_sadded));
+		_s_target_bag->disconnect("item_removed", callable_mp(this, &Entity::notification_target_item_sremoved));
+		_s_target_bag->disconnect("item_swapped", callable_mp(this, &Entity::notification_target_items_sswapped));
+		_s_target_bag->disconnect("item_count_changed", callable_mp(this, &Entity::notification_target_item_sscount_changed));
 #endif
 	}
 
@@ -4968,15 +4968,15 @@ void Entity::sets_target_bag(const Ref<Bag> bag) {
 
 	if (_s_target_bag.is_valid()) {
 #if VERSION_MAJOR < 4
-		_s_target_bag->connect("item_added", this, "target_item_ons_added");
-		_s_target_bag->connect("item_removed", this, "target_item_ons_removed");
-		_s_target_bag->connect("item_swapped", this, "target_items_ons_swapped");
-		_s_target_bag->connect("item_count_changed", this, "target_item_ons_count_changed");
+		_s_target_bag->connect("item_added", this, "notification_target_item_sadded");
+		_s_target_bag->connect("item_removed", this, "notification_target_item_sremoved");
+		_s_target_bag->connect("item_swapped", this, "notification_target_items_sswapped");
+		_s_target_bag->connect("item_count_changed", this, "notification_target_item_sscount_changed");
 #else
-		_s_target_bag->connect("item_added", callable_mp(this, &Entity::target_item_ons_added));
-		_s_target_bag->connect("item_removed", callable_mp(this, &Entity::target_item_ons_removed));
-		_s_target_bag->connect("item_swapped", callable_mp(this, &Entity::target_items_ons_swapped));
-		_s_target_bag->connect("item_count_changed", callable_mp(this, &Entity::target_item_ons_count_changed));
+		_s_target_bag->connect("item_added", callable_mp(this, &Entity::notification_target_item_sadded));
+		_s_target_bag->connect("item_removed", callable_mp(this, &Entity::notification_target_item_sremoved));
+		_s_target_bag->connect("item_swapped", callable_mp(this, &Entity::notification_target_items_sswapped));
+		_s_target_bag->connect("item_count_changed", callable_mp(this, &Entity::notification_target_item_sscount_changed));
 #endif
 	}
 
@@ -5033,7 +5033,7 @@ void Entity::lootc(int index) {
 	_c_target_bag->remove_item(index);
 }
 
-void Entity::item_ons_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+void Entity::notification_item_sadded(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
 	ORPCOBJP(item_addc_rpc, slot_id, JSON::print(item->to_dict()), item_addc, slot_id, item);
 }
 void Entity::item_addc_rpc(int slot_id, String item_data) {
@@ -5049,7 +5049,7 @@ void Entity::item_addc(int slot_id, Ref<ItemInstance> item) {
 	_c_bag->add_item_at(slot_id, item);
 }
 
-void Entity::item_ons_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+void Entity::notification_item_sremoved(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
 	ORPC(item_removec, slot_id);
 }
 void Entity::item_removes(const int slot_id) {
@@ -5068,7 +5068,7 @@ void Entity::item_crequest_remove(const int slot_id) {
 	RPCS(item_removes, slot_id);
 }
 
-void Entity::items_ons_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
+void Entity::notification_items_sswapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
 	ORPC(items_swapc, slot_id_1, slot_id_2);
 }
 void Entity::items_swaps(int slot_id_1, int slot_id_2) {
@@ -5087,7 +5087,7 @@ void Entity::item_crequest_swap(int slot_id_1, int slot_id_2) {
 	RPCS(items_swaps, slot_id_1, slot_id_2);
 }
 
-void Entity::item_ons_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+void Entity::notification_item_sscount_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
 	ERR_FAIL_COND(!item.is_valid());
 
 	ORPC(item_cchange_count, slot_id, item->get_stack_size());
@@ -5098,14 +5098,14 @@ void Entity::item_cchange_count(int slot_id, int new_count) {
 	_c_bag->set_item_count(slot_id, new_count);
 }
 
-void Entity::ons_overburdened(Ref<Bag> bag) {
+void Entity::notification_soverburdened(Ref<Bag> bag) {
 }
-void Entity::ons_overburden_removed(Ref<Bag> bag) {
+void Entity::notification_soverburden_removed(Ref<Bag> bag) {
 }
 
 //Target Bag
 
-void Entity::target_item_ons_added(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+void Entity::notification_target_item_sadded(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
 	ORPCOBJP(target_item_addc_rpc, slot_id, JSON::print(item->to_dict()), target_item_addc, slot_id, item);
 }
 void Entity::target_item_addc_rpc(int slot_id, String item_data) {
@@ -5121,7 +5121,7 @@ void Entity::target_item_addc(int slot_id, Ref<ItemInstance> item) {
 	_c_target_bag->add_item_at(slot_id, item);
 }
 
-void Entity::target_item_ons_removed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+void Entity::notification_target_item_sremoved(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
 	ORPC(target_item_removec, slot_id);
 }
 void Entity::target_item_removes(const int slot_id) {
@@ -5140,7 +5140,7 @@ void Entity::target_remove_crequest_item(const int slot_id) {
 	RPCS(target_item_removes, slot_id);
 }
 
-void Entity::target_items_ons_swapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
+void Entity::notification_target_items_sswapped(Ref<Bag> bag, int slot_id_1, int slot_id_2) {
 	ORPC(target_items_cswap, slot_id_1, slot_id_2);
 }
 void Entity::target_items_sswap(int slot_id_1, int slot_id_2) {
@@ -5159,7 +5159,7 @@ void Entity::target_item_crequest_swap(int slot_id_1, int slot_id_2) {
 	RPCS(target_items_sswap, slot_id_1, slot_id_2);
 }
 
-void Entity::target_item_ons_count_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
+void Entity::notification_target_item_sscount_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
 	ERR_FAIL_COND(!item.is_valid());
 
 	ORPC(target_item_cchange_count, slot_id, item->get_stack_size());
@@ -5251,7 +5251,7 @@ void Entity::update(float delta) {
 		if (_s_gcd <= 0) {
 			_s_gcd = 0;
 
-			void son_gcd_finished();
+			void notification_sgcd_finished();
 
 			emit_signal("sgcd_finished");
 		}
@@ -5263,7 +5263,7 @@ void Entity::update(float delta) {
 		if (_c_gcd <= 0) {
 			_c_gcd = 0;
 
-			void con_gcd_finished();
+			void notification_cgcd_finished();
 
 			emit_signal("cgcd_finished");
 		}
@@ -5993,7 +5993,7 @@ void Entity::_crafts(int id) {
 	gets_bag()->add_item(item);
 }
 
-void Entity::_son_xp_gained(int value) {
+void Entity::_notification_sxp_gained(int value) {
 	if (ESS::get_instance()->get_use_class_xp() && ESS::get_instance()->get_automatic_class_levelups()) {
 		if (ESS::get_instance()->get_resource_db()->get_xp_data()->can_class_level_up(gets_class_level())) {
 			int xpr = ESS::get_instance()->get_resource_db()->get_xp_data()->get_class_xp(gets_class_level());
@@ -6015,7 +6015,7 @@ void Entity::_son_xp_gained(int value) {
 	}
 }
 
-void Entity::_son_character_level_up(int level) {
+void Entity::_notification_scharacter_level_up(int level) {
 	if (!gets_entity_data().is_valid())
 		return;
 
@@ -6041,7 +6041,7 @@ void Entity::_son_character_level_up(int level) {
 	}
 }
 
-void Entity::_son_class_level_up(int level) {
+void Entity::_notification_sclass_level_up(int level) {
 	if (!gets_entity_data().is_valid())
 		return;
 
@@ -6067,24 +6067,24 @@ void Entity::_con_target_changed(Node *p_entity, Node *p_old_target) {
 
 #if VERSION_MAJOR < 4
 	if (ObjectDB::instance_validate(old_target))
-		old_target->onc_untargeted();
+		old_target->notification_cuntargeted();
 
 	if (ObjectDB::instance_validate(getc_target())) {
 #else
 	if (old_target != NULL)
-		old_target->onc_untargeted();
+		old_target->notification_cuntargeted();
 
 	if (getc_target() != NULL) {
 #endif
 
-		getc_target()->onc_targeted();
+		getc_target()->notification_ctargeted();
 
 		if (canc_interact())
 			crequest_interact();
 	}
 }
 
-void Entity::_son_death() {
+void Entity::_notification_sdeath() {
 
 	//only if mob
 	/*
@@ -6890,21 +6890,21 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("dies"), &Entity::dies);
 	ClassDB::bind_method(D_METHOD("diec"), &Entity::diec);
 
-	ClassDB::bind_method(D_METHOD("ons_stat_changed", "stat"), &Entity::ons_stat_changed);
-	ClassDB::bind_method(D_METHOD("onc_stat_changed", "stat"), &Entity::onc_stat_changed);
+	ClassDB::bind_method(D_METHOD("notification_sstat_changed", "stat"), &Entity::notification_sstat_changed);
+	ClassDB::bind_method(D_METHOD("notification_cstat_changed", "stat"), &Entity::notification_cstat_changed);
 
 	//EventHandlers
-	BIND_VMETHOD(MethodInfo("_son_death"));
+	BIND_VMETHOD(MethodInfo("_notification_sdeath"));
 
-	BIND_VMETHOD(MethodInfo("_son_gcd_started", PropertyInfo(Variant::REAL, "gcd")));
-	BIND_VMETHOD(MethodInfo("_son_gcd_finished"));
+	BIND_VMETHOD(MethodInfo("_notification_sgcd_started", PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_notification_sgcd_finished"));
 
-	BIND_VMETHOD(MethodInfo("_son_xp_gained", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_son_class_level_up", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_son_character_level_up", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_sxp_gained", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_sclass_level_up", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_scharacter_level_up", PropertyInfo(Variant::INT, "value")));
 
-	BIND_VMETHOD(MethodInfo("_son_entity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
-	BIND_VMETHOD(MethodInfo("_son_entity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
 
 	BIND_VMETHOD(MethodInfo("_son_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	BIND_VMETHOD(MethodInfo("_con_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
@@ -6941,13 +6941,13 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_ccast", "what", "info"), &Entity::notification_ccast);
 	ClassDB::bind_method(D_METHOD("notification_cdamage", "what", "info"), &Entity::notification_cdamage);
 
-	ClassDB::bind_method(D_METHOD("son_death"), &Entity::son_death);
+	ClassDB::bind_method(D_METHOD("notification_sdeath"), &Entity::notification_sdeath);
 
-	ClassDB::bind_method(D_METHOD("son_gcd_started"), &Entity::son_gcd_started);
-	ClassDB::bind_method(D_METHOD("son_gcd_finished"), &Entity::son_gcd_finished);
+	ClassDB::bind_method(D_METHOD("notification_sgcd_started"), &Entity::notification_sgcd_started);
+	ClassDB::bind_method(D_METHOD("notification_sgcd_finished"), &Entity::notification_sgcd_finished);
 
-	ClassDB::bind_method(D_METHOD("son_entity_resource_added", "resource"), &Entity::son_entity_resource_added);
-	ClassDB::bind_method(D_METHOD("son_entity_resource_removed", "resource"), &Entity::son_entity_resource_removed);
+	ClassDB::bind_method(D_METHOD("notification_sentity_resource_added", "resource"), &Entity::notification_sentity_resource_added);
+	ClassDB::bind_method(D_METHOD("notification_sentity_resource_removed", "resource"), &Entity::notification_sentity_resource_removed);
 
 	//Talents
 
@@ -7000,22 +7000,22 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("talent_cclear"), &Entity::talent_cclear);
 
 	//Clientside EventHandlers
-	BIND_VMETHOD(MethodInfo("_con_death"));
+	BIND_VMETHOD(MethodInfo("_notification_cdeath"));
 
-	BIND_VMETHOD(MethodInfo("con_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	BIND_VMETHOD(MethodInfo("con_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	BIND_VMETHOD(MethodInfo("con_category_cooldown_added", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
-	BIND_VMETHOD(MethodInfo("con_category_cooldown_removed", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+	BIND_VMETHOD(MethodInfo("notification_ccooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	BIND_VMETHOD(MethodInfo("notification_ccooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	BIND_VMETHOD(MethodInfo("notification_ccategory_cooldown_added", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+	BIND_VMETHOD(MethodInfo("notification_ccategory_cooldown_removed", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 
-	BIND_VMETHOD(MethodInfo("_con_gcd_started", PropertyInfo(Variant::REAL, "gcd")));
-	BIND_VMETHOD(MethodInfo("_con_gcd_finished"));
+	BIND_VMETHOD(MethodInfo("_notification_cgcd_started", PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_notification_cgcd_finished"));
 
-	BIND_VMETHOD(MethodInfo("_con_xp_gained", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_con_class_level_up", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_con_character_level_up", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_cxp_gained", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_cclass_level_up", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_ccharacter_level_up", PropertyInfo(Variant::INT, "value")));
 
-	BIND_VMETHOD(MethodInfo("_con_entity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
-	BIND_VMETHOD(MethodInfo("_con_entity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_notification_centity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_notification_centity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_canc_interact"));
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_cans_interact"));
@@ -7024,22 +7024,22 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("cast_spell_successc", "info"), &Entity::cast_spell_successc);
 	ClassDB::bind_method(D_METHOD("cast_spell_successc_rpc", "data"), &Entity::cast_spell_successc_rpc);
 
-	ClassDB::bind_method(D_METHOD("con_death"), &Entity::con_death);
+	ClassDB::bind_method(D_METHOD("notification_cdeath"), &Entity::notification_cdeath);
 
-	ClassDB::bind_method(D_METHOD("con_cooldown_added", "cooldown"), &Entity::con_cooldown_added);
-	ClassDB::bind_method(D_METHOD("con_cooldown_removed", "cooldown"), &Entity::con_cooldown_removed);
-	ClassDB::bind_method(D_METHOD("con_category_cooldown_added", "category_cooldown"), &Entity::con_category_cooldown_added);
-	ClassDB::bind_method(D_METHOD("con_category_cooldown_removed", "category_cooldown"), &Entity::con_category_cooldown_removed);
+	ClassDB::bind_method(D_METHOD("notification_ccooldown_added", "cooldown"), &Entity::notification_ccooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_ccooldown_removed", "cooldown"), &Entity::notification_ccooldown_removed);
+	ClassDB::bind_method(D_METHOD("notification_ccategory_cooldown_added", "category_cooldown"), &Entity::notification_ccategory_cooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_ccategory_cooldown_removed", "category_cooldown"), &Entity::notification_ccategory_cooldown_removed);
 
-	ClassDB::bind_method(D_METHOD("con_gcd_started"), &Entity::con_gcd_started);
-	ClassDB::bind_method(D_METHOD("con_gcd_finished"), &Entity::con_gcd_finished);
+	ClassDB::bind_method(D_METHOD("notification_cgcd_started"), &Entity::notification_cgcd_started);
+	ClassDB::bind_method(D_METHOD("notification_cgcd_finished"), &Entity::notification_cgcd_finished);
 
-	ClassDB::bind_method(D_METHOD("con_xp_gained", "value"), &Entity::con_xp_gained);
-	ClassDB::bind_method(D_METHOD("con_class_level_up", "value"), &Entity::con_class_level_up);
-	ClassDB::bind_method(D_METHOD("con_character_level_up", "value"), &Entity::con_character_level_up);
+	ClassDB::bind_method(D_METHOD("notification_cxp_gained", "value"), &Entity::notification_cxp_gained);
+	ClassDB::bind_method(D_METHOD("notification_cclass_level_up", "value"), &Entity::notification_cclass_level_up);
+	ClassDB::bind_method(D_METHOD("notification_ccharacter_level_up", "value"), &Entity::notification_ccharacter_level_up);
 
-	ClassDB::bind_method(D_METHOD("con_entity_resource_added", "resource"), &Entity::con_entity_resource_added);
-	ClassDB::bind_method(D_METHOD("con_entity_resource_removed", "resource"), &Entity::con_entity_resource_removed);
+	ClassDB::bind_method(D_METHOD("notification_centity_resource_added", "resource"), &Entity::notification_centity_resource_added);
+	ClassDB::bind_method(D_METHOD("notification_centity_resource_removed", "resource"), &Entity::notification_centity_resource_removed);
 
 	//Modifiers/Requesters
 	ClassDB::bind_method(D_METHOD("sapply_passives_damage_receive", "data"), &Entity::sapply_passives_damage_receive);
@@ -7080,14 +7080,14 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("copen_window", "window_id"), &Entity::copen_window);
 
 	//XP Operations
-	ADD_SIGNAL(MethodInfo("son_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	ADD_SIGNAL(MethodInfo("con_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("notification_sxp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("notification_cxp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
-	ADD_SIGNAL(MethodInfo("con_class_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	ADD_SIGNAL(MethodInfo("son_class_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("notification_cclass_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("notification_sclass_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
-	ADD_SIGNAL(MethodInfo("con_character_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	ADD_SIGNAL(MethodInfo("son_character_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("notification_ccharacter_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("notification_scharacter_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
 	ADD_SIGNAL(MethodInfo("son_class_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
 	ADD_SIGNAL(MethodInfo("con_class_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
@@ -7104,9 +7104,9 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("levelup_scharacter", "value"), &Entity::levelup_scharacter);
 	ClassDB::bind_method(D_METHOD("levelup_ccharacter", "value"), &Entity::levelup_ccharacter);
 
-	ClassDB::bind_method(D_METHOD("son_xp_gained", "value"), &Entity::son_xp_gained);
-	ClassDB::bind_method(D_METHOD("son_class_level_up", "value"), &Entity::son_class_level_up);
-	ClassDB::bind_method(D_METHOD("son_character_level_up", "value"), &Entity::son_character_level_up);
+	ClassDB::bind_method(D_METHOD("notification_sxp_gained", "value"), &Entity::notification_sxp_gained);
+	ClassDB::bind_method(D_METHOD("notification_sclass_level_up", "value"), &Entity::notification_sclass_level_up);
+	ClassDB::bind_method(D_METHOD("notification_scharacter_level_up", "value"), &Entity::notification_scharacter_level_up);
 
 	//Aura Manipulation
 	ClassDB::bind_method(D_METHOD("aura_adds", "aura"), &Entity::aura_adds);
@@ -7143,23 +7143,23 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_moved"));
 	ClassDB::bind_method(D_METHOD("moved"), &Entity::moved);
 
-	ADD_SIGNAL(MethodInfo("onc_mouse_entered"));
-	ADD_SIGNAL(MethodInfo("onc_mouse_exited"));
+	ADD_SIGNAL(MethodInfo("notification_cmouse_entered"));
+	ADD_SIGNAL(MethodInfo("notification_cmouse_exited"));
 
-	BIND_VMETHOD(MethodInfo("_onc_mouse_enter"));
-	BIND_VMETHOD(MethodInfo("_onc_mouse_exit"));
+	BIND_VMETHOD(MethodInfo("_notification_cmouse_enter"));
+	BIND_VMETHOD(MethodInfo("_notification_cmouse_exit"));
 
-	ClassDB::bind_method(D_METHOD("onc_mouse_enter"), &Entity::onc_mouse_enter);
-	ClassDB::bind_method(D_METHOD("onc_mouse_exit"), &Entity::onc_mouse_exit);
+	ClassDB::bind_method(D_METHOD("notification_cmouse_enter"), &Entity::notification_cmouse_enter);
+	ClassDB::bind_method(D_METHOD("notification_cmouse_exit"), &Entity::notification_cmouse_exit);
 
-	ADD_SIGNAL(MethodInfo("onc_targeted"));
-	ADD_SIGNAL(MethodInfo("onc_untargeted"));
+	ADD_SIGNAL(MethodInfo("notification_ctargeted"));
+	ADD_SIGNAL(MethodInfo("notification_cuntargeted"));
 
-	BIND_VMETHOD(MethodInfo("_onc_targeted"));
-	BIND_VMETHOD(MethodInfo("_onc_untargeted"));
+	BIND_VMETHOD(MethodInfo("_notification_ctargeted"));
+	BIND_VMETHOD(MethodInfo("_notification_cuntargeted"));
 
-	ClassDB::bind_method(D_METHOD("onc_targeted"), &Entity::onc_targeted);
-	ClassDB::bind_method(D_METHOD("onc_untargeted"), &Entity::onc_untargeted);
+	ClassDB::bind_method(D_METHOD("notification_ctargeted"), &Entity::notification_ctargeted);
+	ClassDB::bind_method(D_METHOD("notification_cuntargeted"), &Entity::notification_cuntargeted);
 
 	//Properties
 	ClassDB::bind_method(D_METHOD("get_body_path"), &Entity::get_body_path);
@@ -7647,46 +7647,46 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("lootc"), &Entity::lootc);
 
 	//Bag
-	ClassDB::bind_method(D_METHOD("item_ons_added", "bag", "item", "slot_id"), &Entity::item_ons_added);
+	ClassDB::bind_method(D_METHOD("notification_item_sadded", "bag", "item", "slot_id"), &Entity::notification_item_sadded);
 	ClassDB::bind_method(D_METHOD("item_addc_rpc", "slot_id", "item_data"), &Entity::item_addc_rpc);
 	ClassDB::bind_method(D_METHOD("item_addc", "slot_id", "item"), &Entity::item_addc);
 
-	ClassDB::bind_method(D_METHOD("item_ons_removed", "bag", "item", "slot_id"), &Entity::item_ons_removed);
+	ClassDB::bind_method(D_METHOD("notification_item_sremoved", "bag", "item", "slot_id"), &Entity::notification_item_sremoved);
 	ClassDB::bind_method(D_METHOD("item_removes", "slot_id"), &Entity::item_removes);
 	ClassDB::bind_method(D_METHOD("item_removec", "slot_id"), &Entity::item_removec);
 	ClassDB::bind_method(D_METHOD("item_cdeny_remove", "slot_id"), &Entity::item_cdeny_remove);
 	ClassDB::bind_method(D_METHOD("item_crequest_remove", "slot_id"), &Entity::item_crequest_remove);
 
-	ClassDB::bind_method(D_METHOD("items_ons_swapped", "bag", "slot_id_1", "slot_id_2"), &Entity::items_ons_swapped);
+	ClassDB::bind_method(D_METHOD("notification_items_sswapped", "bag", "slot_id_1", "slot_id_2"), &Entity::notification_items_sswapped);
 	ClassDB::bind_method(D_METHOD("items_swaps", "slot_id_1", "slot_id_2"), &Entity::items_swaps);
 	ClassDB::bind_method(D_METHOD("items_swapc", "slot_id_1", "slot_id_2"), &Entity::items_swapc);
 	ClassDB::bind_method(D_METHOD("item_cdeny_swap", "slot_id_1", "slot_id_2"), &Entity::item_cdeny_swap);
 	ClassDB::bind_method(D_METHOD("item_crequest_swap", "slot_id_1", "slot_id_2"), &Entity::item_crequest_swap);
 
-	ClassDB::bind_method(D_METHOD("item_ons_count_changed", "bag", "item", "slot_id"), &Entity::item_ons_count_changed);
+	ClassDB::bind_method(D_METHOD("notification_item_sscount_changed", "bag", "item", "slot_id"), &Entity::notification_item_sscount_changed);
 	ClassDB::bind_method(D_METHOD("item_cchange_count", "slot_id", "new_count"), &Entity::item_cchange_count);
 
-	ClassDB::bind_method(D_METHOD("ons_overburdened", "bag"), &Entity::ons_overburdened);
-	ClassDB::bind_method(D_METHOD("ons_overburden_removed", "bag"), &Entity::ons_overburden_removed);
+	ClassDB::bind_method(D_METHOD("notification_soverburdened", "bag"), &Entity::notification_soverburdened);
+	ClassDB::bind_method(D_METHOD("notification_soverburden_removed", "bag"), &Entity::notification_soverburden_removed);
 
 	//target Bag
-	ClassDB::bind_method(D_METHOD("target_item_ons_added", "bag", "item", "slot_id"), &Entity::target_item_ons_added);
+	ClassDB::bind_method(D_METHOD("notification_target_item_sadded", "bag", "item", "slot_id"), &Entity::notification_target_item_sadded);
 	ClassDB::bind_method(D_METHOD("target_item_addc_rpc", "slot_id", "item_data"), &Entity::target_item_addc_rpc);
 	ClassDB::bind_method(D_METHOD("target_item_addc", "slot_id", "item"), &Entity::target_item_addc);
 
-	ClassDB::bind_method(D_METHOD("target_item_ons_removed", "bag", "item", "slot_id"), &Entity::target_item_ons_removed);
+	ClassDB::bind_method(D_METHOD("notification_target_item_sremoved", "bag", "item", "slot_id"), &Entity::notification_target_item_sremoved);
 	ClassDB::bind_method(D_METHOD("target_item_removes", "slot_id"), &Entity::target_item_removes);
 	ClassDB::bind_method(D_METHOD("target_item_removec", "slot_id"), &Entity::target_item_removec);
 	ClassDB::bind_method(D_METHOD("target_item_cdeny_remove", "slot_id"), &Entity::target_item_cdeny_remove);
 	ClassDB::bind_method(D_METHOD("target_remove_crequest_item", "slot_id"), &Entity::target_remove_crequest_item);
 
-	ClassDB::bind_method(D_METHOD("target_items_ons_swapped", "bag", "slot_id_1", "slot_id_2"), &Entity::target_items_ons_swapped);
+	ClassDB::bind_method(D_METHOD("notification_target_items_sswapped", "bag", "slot_id_1", "slot_id_2"), &Entity::notification_target_items_sswapped);
 	ClassDB::bind_method(D_METHOD("target_items_sswap", "slot_id_1", "slot_id_2"), &Entity::target_items_sswap);
 	ClassDB::bind_method(D_METHOD("target_items_cswap", "slot_id_1", "slot_id_2"), &Entity::target_items_cswap);
 	ClassDB::bind_method(D_METHOD("target_item_cdeny_swap", "slot_id_1", "slot_id_2"), &Entity::target_item_cdeny_swap);
 	ClassDB::bind_method(D_METHOD("target_item_crequest_swap", "slot_id_1", "slot_id_2"), &Entity::target_item_crequest_swap);
 
-	ClassDB::bind_method(D_METHOD("target_item_ons_count_changed", "bag", "item", "slot_id"), &Entity::target_item_ons_count_changed);
+	ClassDB::bind_method(D_METHOD("notification_target_item_sscount_changed", "bag", "item", "slot_id"), &Entity::notification_target_item_sscount_changed);
 	ClassDB::bind_method(D_METHOD("target_item_cchange_count", "slot_id", "new_count"), &Entity::target_item_cchange_count);
 
 	//Actionbars
@@ -7795,10 +7795,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("update", "delta"), &Entity::update);
 
 	ClassDB::bind_method(D_METHOD("_crafts", "id"), &Entity::_crafts);
-	ClassDB::bind_method(D_METHOD("_son_xp_gained", "value"), &Entity::_son_xp_gained);
-	ClassDB::bind_method(D_METHOD("_son_character_level_up", "level"), &Entity::_son_character_level_up);
-	ClassDB::bind_method(D_METHOD("_son_class_level_up", "level"), &Entity::_son_class_level_up);
+	ClassDB::bind_method(D_METHOD("_notification_sxp_gained", "value"), &Entity::_notification_sxp_gained);
+	ClassDB::bind_method(D_METHOD("_notification_scharacter_level_up", "level"), &Entity::_notification_scharacter_level_up);
+	ClassDB::bind_method(D_METHOD("_notification_sclass_level_up", "level"), &Entity::_notification_sclass_level_up);
 	ClassDB::bind_method(D_METHOD("_moved"), &Entity::_moved);
 	ClassDB::bind_method(D_METHOD("_con_target_changed", "entity", "old_target"), &Entity::_con_target_changed);
-	ClassDB::bind_method(D_METHOD("_son_death"), &Entity::_son_death);
+	ClassDB::bind_method(D_METHOD("_notification_sdeath"), &Entity::_notification_sdeath);
 }

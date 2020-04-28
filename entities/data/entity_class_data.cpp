@@ -461,71 +461,71 @@ void EntityClassData::notification_sdamage(int what, Ref<SpellDamageInfo> info) 
 		call("_notification_sdamage", what, info);
 }
 
-void EntityClassData::son_death(Entity *entity) {
-	if (has_method("_son_death"))
-		call("_son_death", entity);
+void EntityClassData::notification_sdeath(Entity *entity) {
+	if (has_method("_notification_sdeath"))
+		call("_notification_sdeath", entity);
 }
 
-void EntityClassData::son_death_bind(Node *entity) {
+void EntityClassData::notification_sdeath_bind(Node *entity) {
 	ERR_FAIL_COND(entity == NULL);
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(e == NULL);
 
-	son_death(e);
+	notification_sdeath(e);
 }
 
-void EntityClassData::son_cooldown_added(Ref<Cooldown> cooldown) {
-	if (has_method("_son_cooldown_added"))
-		call("_son_cooldown_added", cooldown);
+void EntityClassData::notification_scooldown_added(Ref<Cooldown> cooldown) {
+	if (has_method("_notification_scooldown_added"))
+		call("_notification_scooldown_added", cooldown);
 }
-void EntityClassData::son_cooldown_removed(Ref<Cooldown> cooldown) {
-	if (has_method("_son_cooldown_removed"))
-		call("_son_cooldown_removed", cooldown);
-}
-
-void EntityClassData::son_category_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
-	if (has_method("_son_category_cooldown_added"))
-		call("_son_category_cooldown_added", category_cooldown);
-}
-void EntityClassData::son_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
-	if (has_method("_son_category_cooldown_removed"))
-		call("_son_category_cooldown_removed", category_cooldown);
+void EntityClassData::notification_scooldown_removed(Ref<Cooldown> cooldown) {
+	if (has_method("_notification_scooldown_removed"))
+		call("_notification_scooldown_removed", cooldown);
 }
 
-void EntityClassData::son_gcd_started(Entity *entity, float gcd) {
-	if (has_method("_son_gcd_started"))
-		call("_son_gcd_started", entity, gcd);
+void EntityClassData::notification_scategory_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
+	if (has_method("_notification_scategory_cooldown_added"))
+		call("_notification_scategory_cooldown_added", category_cooldown);
 }
-void EntityClassData::son_gcd_finished(Entity *entity) {
-	if (has_method("_son_gcd_finished"))
-		call("_son_gcd_finished", entity);
+void EntityClassData::notification_scategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
+	if (has_method("_notification_scategory_cooldown_removed"))
+		call("_notification_scategory_cooldown_removed", category_cooldown);
 }
-void EntityClassData::son_gcd_started_bind(Node *entity, float gcd) {
+
+void EntityClassData::notification_sgcd_started(Entity *entity, float gcd) {
+	if (has_method("_notification_sgcd_started"))
+		call("_notification_sgcd_started", entity, gcd);
+}
+void EntityClassData::notification_sgcd_finished(Entity *entity) {
+	if (has_method("_notification_sgcd_finished"))
+		call("_notification_sgcd_finished", entity);
+}
+void EntityClassData::notification_sgcd_started_bind(Node *entity, float gcd) {
 	ERR_FAIL_COND(entity == NULL);
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(e == NULL);
 
-	son_gcd_started(e, gcd);
+	notification_sgcd_started(e, gcd);
 }
-void EntityClassData::son_gcd_finished_bind(Node *entity) {
+void EntityClassData::notification_sgcd_finished_bind(Node *entity) {
 	ERR_FAIL_COND(entity == NULL);
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(e == NULL);
 
-	son_gcd_finished(e);
+	notification_sgcd_finished(e);
 }
 
-void EntityClassData::son_xp_gained(Entity *entity, int value) {
-	if (has_method("_son_xp_gained"))
-		call("_son_xp_gained", entity, value);
+void EntityClassData::notification_sxp_gained(Entity *entity, int value) {
+	if (has_method("_notification_sxp_gained"))
+		call("_notification_sxp_gained", entity, value);
 }
-void EntityClassData::son_xp_gained_bind(Node *entity, int value) {
+void EntityClassData::notification_sxp_gained_bind(Node *entity, int value) {
 
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
@@ -537,14 +537,14 @@ void EntityClassData::son_xp_gained_bind(Node *entity, int value) {
 
 	ERR_FAIL_COND(e == NULL);
 
-	son_xp_gained(e, value);
+	notification_sxp_gained(e, value);
 }
 
-void EntityClassData::son_class_level_up(Entity *entity, int value) {
-	if (has_method("_son_class_level_up"))
-		call("_son_class_level_up", entity);
+void EntityClassData::notification_sclass_level_up(Entity *entity, int value) {
+	if (has_method("_notification_sclass_level_up"))
+		call("_notification_sclass_level_up", entity);
 }
-void EntityClassData::son_class_level_up_bind(Node *entity, int value) {
+void EntityClassData::notification_sclass_level_up_bind(Node *entity, int value) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -555,14 +555,14 @@ void EntityClassData::son_class_level_up_bind(Node *entity, int value) {
 
 	ERR_FAIL_COND(e == NULL);
 
-	son_class_level_up(e, value);
+	notification_sclass_level_up(e, value);
 }
 
-void EntityClassData::son_character_level_up(Entity *entity, int value) {
-	if (has_method("_son_character_level_up"))
-		call("_son_character_level_up", entity);
+void EntityClassData::notification_scharacter_level_up(Entity *entity, int value) {
+	if (has_method("_notification_scharacter_level_up"))
+		call("_notification_scharacter_level_up", entity);
 }
-void EntityClassData::son_character_level_up_bind(Node *entity, int value) {
+void EntityClassData::notification_scharacter_level_up_bind(Node *entity, int value) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -573,17 +573,17 @@ void EntityClassData::son_character_level_up_bind(Node *entity, int value) {
 
 	ERR_FAIL_COND(e == NULL);
 
-	son_character_level_up(e, value);
+	notification_scharacter_level_up(e, value);
 }
 
-void EntityClassData::son_entity_resource_added(Ref<EntityResource> resource) {
-	if (has_method("_son_entity_resource_added"))
-		call("_son_entity_resource_added", resource);
+void EntityClassData::notification_sentity_resource_added(Ref<EntityResource> resource) {
+	if (has_method("_notification_sentity_resource_added"))
+		call("_notification_sentity_resource_added", resource);
 }
 
-void EntityClassData::son_entity_resource_removed(Ref<EntityResource> resource) {
-	if (has_method("_son_entity_resource_removed"))
-		call("_son_entity_resource_removed", resource);
+void EntityClassData::notification_sentity_resource_removed(Ref<EntityResource> resource) {
+	if (has_method("_notification_sentity_resource_removed"))
+		call("_notification_sentity_resource_removed", resource);
 }
 
 //Clientside Event Handlers
@@ -612,80 +612,80 @@ void EntityClassData::notification_cdamage(int what, Ref<SpellDamageInfo> info) 
 		call("_notification_cdamage", what, info);
 }
 
-void EntityClassData::con_death(Entity *entity) {
+void EntityClassData::notification_cdeath(Entity *entity) {
 	ERR_FAIL_COND(entity == NULL);
 
-	if (has_method("_con_death"))
-		call("_con_death", entity);
+	if (has_method("_notification_cdeath"))
+		call("_notification_cdeath", entity);
 }
 
-void EntityClassData::con_death_bind(Node *entity) {
+void EntityClassData::notification_cdeath_bind(Node *entity) {
 	ERR_FAIL_COND(entity == NULL);
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(e == NULL);
 
-	con_death(e);
+	notification_cdeath(e);
 }
 
-void EntityClassData::con_cooldown_added(Ref<Cooldown> cooldown) {
+void EntityClassData::notification_ccooldown_added(Ref<Cooldown> cooldown) {
 	ERR_FAIL_COND(!cooldown.is_valid());
 
-	if (has_method("_con_cooldown_added"))
-		call("_con_cooldown_added", cooldown);
+	if (has_method("_notification_ccooldown_added"))
+		call("_notification_ccooldown_added", cooldown);
 }
-void EntityClassData::con_cooldown_removed(Ref<Cooldown> cooldown) {
+void EntityClassData::notification_ccooldown_removed(Ref<Cooldown> cooldown) {
 	ERR_FAIL_COND(!cooldown.is_valid());
 
-	if (has_method("_con_cooldown_removed"))
-		call("_con_cooldown_removed", cooldown);
+	if (has_method("_notification_ccooldown_removed"))
+		call("_notification_ccooldown_removed", cooldown);
 }
-void EntityClassData::con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
+void EntityClassData::notification_ccategory_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
 	ERR_FAIL_COND(!category_cooldown.is_valid());
 
-	if (has_method("_con_category_cooldown_added"))
-		call("_con_category_cooldown_added", category_cooldown);
+	if (has_method("_notification_ccategory_cooldown_added"))
+		call("_notification_ccategory_cooldown_added", category_cooldown);
 }
-void EntityClassData::con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
+void EntityClassData::notification_ccategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
 	ERR_FAIL_COND(!category_cooldown.is_valid());
 
-	if (has_method("_con_category_cooldown_removed"))
-		call("_con_category_cooldown_removed", category_cooldown);
+	if (has_method("_notification_ccategory_cooldown_removed"))
+		call("_notification_ccategory_cooldown_removed", category_cooldown);
 }
 
-void EntityClassData::con_gcd_started(Entity *entity, float gcd) {
-	if (has_method("_con_gcd_started"))
-		call("_con_gcd_started", entity, gcd);
+void EntityClassData::notification_cgcd_started(Entity *entity, float gcd) {
+	if (has_method("_notification_cgcd_started"))
+		call("_notification_cgcd_started", entity, gcd);
 }
-void EntityClassData::con_gcd_finished(Entity *entity) {
-	if (has_method("_con_gcd_finished"))
-		call("_con_gcd_finished", entity);
+void EntityClassData::notification_cgcd_finished(Entity *entity) {
+	if (has_method("_notification_cgcd_finished"))
+		call("_notification_cgcd_finished", entity);
 }
-void EntityClassData::con_gcd_started_bind(Node *entity, float gcd) {
+void EntityClassData::notification_cgcd_started_bind(Node *entity, float gcd) {
 	ERR_FAIL_COND(entity == NULL);
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(e == NULL);
 
-	con_gcd_started(e, gcd);
+	notification_cgcd_started(e, gcd);
 }
-void EntityClassData::con_gcd_finished_bind(Node *entity) {
+void EntityClassData::notification_cgcd_finished_bind(Node *entity) {
 	ERR_FAIL_COND(entity == NULL);
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(e == NULL);
 
-	con_gcd_finished(e);
+	notification_cgcd_finished(e);
 }
 
-void EntityClassData::con_xp_gained(Entity *entity, int value) {
-	if (has_method("_con_xp_gained"))
-		call("_con_xp_gained", entity, value);
+void EntityClassData::notification_cxp_gained(Entity *entity, int value) {
+	if (has_method("_notification_cxp_gained"))
+		call("_notification_cxp_gained", entity, value);
 }
-void EntityClassData::con_xp_gained_bind(Node *entity, int value) {
+void EntityClassData::notification_cxp_gained_bind(Node *entity, int value) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -696,14 +696,14 @@ void EntityClassData::con_xp_gained_bind(Node *entity, int value) {
 
 	ERR_FAIL_COND(e == NULL);
 
-	con_xp_gained(e, value);
+	notification_cxp_gained(e, value);
 }
 
-void EntityClassData::con_class_level_up(Entity *entity, int value) {
-	if (has_method("_con_class_level_up"))
-		call("_con_class_level_up", entity);
+void EntityClassData::notification_cclass_level_up(Entity *entity, int value) {
+	if (has_method("_notification_cclass_level_up"))
+		call("_notification_cclass_level_up", entity);
 }
-void EntityClassData::con_class_level_up_bind(Node *entity, int value) {
+void EntityClassData::notification_cclass_level_up_bind(Node *entity, int value) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -714,14 +714,14 @@ void EntityClassData::con_class_level_up_bind(Node *entity, int value) {
 
 	ERR_FAIL_COND(e == NULL);
 
-	con_class_level_up(e, value);
+	notification_cclass_level_up(e, value);
 }
 
-void EntityClassData::con_character_level_up(Entity *entity, int value) {
-	if (has_method("_con_character_level_up"))
-		call("_con_character_level_up", entity);
+void EntityClassData::notification_ccharacter_level_up(Entity *entity, int value) {
+	if (has_method("_notification_ccharacter_level_up"))
+		call("_notification_ccharacter_level_up", entity);
 }
-void EntityClassData::con_character_level_up_bind(Node *entity, int value) {
+void EntityClassData::notification_ccharacter_level_up_bind(Node *entity, int value) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
 #else
@@ -732,17 +732,17 @@ void EntityClassData::con_character_level_up_bind(Node *entity, int value) {
 
 	ERR_FAIL_COND(e == NULL);
 
-	con_character_level_up(e, value);
+	notification_ccharacter_level_up(e, value);
 }
 
-void EntityClassData::con_entity_resource_added(Ref<EntityResource> resource) {
-	if (has_method("_con_entity_resource_added"))
-		call("_con_entity_resource_added", resource);
+void EntityClassData::notification_centity_resource_added(Ref<EntityResource> resource) {
+	if (has_method("_notification_centity_resource_added"))
+		call("_notification_centity_resource_added", resource);
 }
 
-void EntityClassData::con_entity_resource_removed(Ref<EntityResource> resource) {
-	if (has_method("_con_entity_resource_removed"))
-		call("_con_entity_resource_removed", resource);
+void EntityClassData::notification_centity_resource_removed(Ref<EntityResource> resource) {
+	if (has_method("_notification_centity_resource_removed"))
+		call("_notification_centity_resource_removed", resource);
 }
 
 //Equipment
@@ -875,73 +875,73 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_ccast", "what", "info"), &EntityClassData::notification_ccast);
 	ClassDB::bind_method(D_METHOD("notification_cdamage", "what", "info"), &EntityClassData::notification_cdamage);
 
-	ClassDB::bind_method(D_METHOD("son_death", "data"), &EntityClassData::son_death_bind);
+	ClassDB::bind_method(D_METHOD("notification_sdeath", "data"), &EntityClassData::notification_sdeath_bind);
 
-	ClassDB::bind_method(D_METHOD("son_cooldown_added", "cooldown"), &EntityClassData::son_cooldown_added);
-	ClassDB::bind_method(D_METHOD("son_cooldown_removed", "cooldown"), &EntityClassData::son_cooldown_removed);
+	ClassDB::bind_method(D_METHOD("notification_scooldown_added", "cooldown"), &EntityClassData::notification_scooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_scooldown_removed", "cooldown"), &EntityClassData::notification_scooldown_removed);
 
-	ClassDB::bind_method(D_METHOD("son_category_cooldown_added", "category_cooldown"), &EntityClassData::son_category_cooldown_added);
-	ClassDB::bind_method(D_METHOD("son_category_cooldown_removed", "category_cooldown"), &EntityClassData::son_category_cooldown_removed);
+	ClassDB::bind_method(D_METHOD("notification_scategory_cooldown_added", "category_cooldown"), &EntityClassData::notification_scategory_cooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_scategory_cooldown_removed", "category_cooldown"), &EntityClassData::notification_scategory_cooldown_removed);
 
-	ClassDB::bind_method(D_METHOD("son_gcd_started", "entity", "gcd"), &EntityClassData::son_gcd_started_bind);
-	ClassDB::bind_method(D_METHOD("son_gcd_finished", "entity"), &EntityClassData::son_gcd_finished_bind);
+	ClassDB::bind_method(D_METHOD("notification_sgcd_started", "entity", "gcd"), &EntityClassData::notification_sgcd_started_bind);
+	ClassDB::bind_method(D_METHOD("notification_sgcd_finished", "entity"), &EntityClassData::notification_sgcd_finished_bind);
 
-	ClassDB::bind_method(D_METHOD("son_xp_gained", "entity", "value"), &EntityClassData::son_xp_gained_bind);
-	ClassDB::bind_method(D_METHOD("son_class_level_up", "entity", "value"), &EntityClassData::son_class_level_up_bind);
-	ClassDB::bind_method(D_METHOD("son_character_level_up", "entity", "value"), &EntityClassData::son_character_level_up_bind);
+	ClassDB::bind_method(D_METHOD("notification_sxp_gained", "entity", "value"), &EntityClassData::notification_sxp_gained_bind);
+	ClassDB::bind_method(D_METHOD("notification_sclass_level_up", "entity", "value"), &EntityClassData::notification_sclass_level_up_bind);
+	ClassDB::bind_method(D_METHOD("notification_scharacter_level_up", "entity", "value"), &EntityClassData::notification_scharacter_level_up_bind);
 
-	ClassDB::bind_method(D_METHOD("son_entity_resource_added", "resource"), &EntityClassData::son_entity_resource_added);
-	ClassDB::bind_method(D_METHOD("son_entity_resource_removed", "resource"), &EntityClassData::son_entity_resource_removed);
+	ClassDB::bind_method(D_METHOD("notification_sentity_resource_added", "resource"), &EntityClassData::notification_sentity_resource_added);
+	ClassDB::bind_method(D_METHOD("notification_sentity_resource_removed", "resource"), &EntityClassData::notification_sentity_resource_removed);
 
-	BIND_VMETHOD(MethodInfo("_son_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_notification_sdeath", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	BIND_VMETHOD(MethodInfo("_son_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	BIND_VMETHOD(MethodInfo("_son_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_scooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_scooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 
-	BIND_VMETHOD(MethodInfo("_son_category_cooldown_added", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
-	BIND_VMETHOD(MethodInfo("_son_category_cooldown_removed", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_scategory_cooldown_added", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_scategory_cooldown_removed", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 
-	BIND_VMETHOD(MethodInfo("_son_gcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
-	BIND_VMETHOD(MethodInfo("_son_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_notification_sgcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_notification_sgcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	BIND_VMETHOD(MethodInfo("_son_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_son_class_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_son_character_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_sxp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_sclass_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_scharacter_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
-	BIND_VMETHOD(MethodInfo("_son_entity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
-	BIND_VMETHOD(MethodInfo("_son_entity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
 
-	BIND_VMETHOD(MethodInfo("_con_entity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
-	BIND_VMETHOD(MethodInfo("_con_entity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_notification_centity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_notification_centity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
 
 	BIND_VMETHOD(MethodInfo("_setup_resources", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	//Clientside Event Handlers
-	ClassDB::bind_method(D_METHOD("con_death", "data"), &EntityClassData::con_death_bind);
+	ClassDB::bind_method(D_METHOD("notification_cdeath", "data"), &EntityClassData::notification_cdeath_bind);
 
-	ClassDB::bind_method(D_METHOD("con_cooldown_added", "cooldown"), &EntityClassData::con_cooldown_added);
-	ClassDB::bind_method(D_METHOD("con_cooldown_removed", "cooldown"), &EntityClassData::con_cooldown_removed);
-	ClassDB::bind_method(D_METHOD("con_category_cooldown_added", "cooldown"), &EntityClassData::con_category_cooldown_added);
-	ClassDB::bind_method(D_METHOD("con_category_cooldown_removed", "cooldown"), &EntityClassData::con_category_cooldown_removed);
+	ClassDB::bind_method(D_METHOD("notification_ccooldown_added", "cooldown"), &EntityClassData::notification_ccooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_ccooldown_removed", "cooldown"), &EntityClassData::notification_ccooldown_removed);
+	ClassDB::bind_method(D_METHOD("notification_ccategory_cooldown_added", "cooldown"), &EntityClassData::notification_ccategory_cooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_ccategory_cooldown_removed", "cooldown"), &EntityClassData::notification_ccategory_cooldown_removed);
 
-	ClassDB::bind_method(D_METHOD("con_gcd_started", "entity", "gcd"), &EntityClassData::con_gcd_started_bind);
-	ClassDB::bind_method(D_METHOD("con_gcd_finished", "entity"), &EntityClassData::con_gcd_finished_bind);
+	ClassDB::bind_method(D_METHOD("notification_cgcd_started", "entity", "gcd"), &EntityClassData::notification_cgcd_started_bind);
+	ClassDB::bind_method(D_METHOD("notification_cgcd_finished", "entity"), &EntityClassData::notification_cgcd_finished_bind);
 
-	ClassDB::bind_method(D_METHOD("con_xp_gained", "entity", "value"), &EntityClassData::con_xp_gained_bind);
-	ClassDB::bind_method(D_METHOD("con_class_level_up", "entity", "value"), &EntityClassData::con_class_level_up_bind);
-	ClassDB::bind_method(D_METHOD("con_character_level_up", "entity", "value"), &EntityClassData::con_character_level_up_bind);
+	ClassDB::bind_method(D_METHOD("notification_cxp_gained", "entity", "value"), &EntityClassData::notification_cxp_gained_bind);
+	ClassDB::bind_method(D_METHOD("notification_cclass_level_up", "entity", "value"), &EntityClassData::notification_cclass_level_up_bind);
+	ClassDB::bind_method(D_METHOD("notification_ccharacter_level_up", "entity", "value"), &EntityClassData::notification_ccharacter_level_up_bind);
 
-	ClassDB::bind_method(D_METHOD("con_entity_resource_added", "resource"), &EntityClassData::con_entity_resource_added);
-	ClassDB::bind_method(D_METHOD("con_entity_resource_removed", "resource"), &EntityClassData::con_entity_resource_removed);
+	ClassDB::bind_method(D_METHOD("notification_centity_resource_added", "resource"), &EntityClassData::notification_centity_resource_added);
+	ClassDB::bind_method(D_METHOD("notification_centity_resource_removed", "resource"), &EntityClassData::notification_centity_resource_removed);
 
-	BIND_VMETHOD(MethodInfo("_con_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_notification_cdeath", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	BIND_VMETHOD(MethodInfo("_con_gcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
-	BIND_VMETHOD(MethodInfo("_con_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	BIND_VMETHOD(MethodInfo("_notification_cgcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_notification_cgcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	BIND_VMETHOD(MethodInfo("_con_xp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_con_class_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_con_character_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_cxp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_cclass_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_ccharacter_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
 	//Equipment
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_equip_should_deny", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));

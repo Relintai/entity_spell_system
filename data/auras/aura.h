@@ -261,25 +261,25 @@ public:
 	void son_remove_expired(Ref<AuraData> aura);
 	void son_remove_dispell(Ref<AuraData> aura);
 
-	void son_death(Ref<AuraData> data);
+	void notification_sdeath(Ref<AuraData> data);
 
-	void son_cooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown);
-	void son_cooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown);
+	void notification_scooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown);
+	void notification_scooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown);
 
-	void son_category_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
-	void son_category_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
+	void notification_scategory_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
+	void notification_scategory_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
 
-	void son_gcd_started(Ref<AuraData> data, float gcd);
-	void son_gcd_finished(Ref<AuraData> data);
+	void notification_sgcd_started(Ref<AuraData> data, float gcd);
+	void notification_sgcd_finished(Ref<AuraData> data);
 
 	void son_physics_process(Ref<AuraData> data);
 
-	void son_xp_gained(Ref<AuraData> data, int value);
-	void son_class_level_up(Ref<AuraData> data, int value);
-	void son_character_level_up(Ref<AuraData> data, int value);
+	void notification_sxp_gained(Ref<AuraData> data, int value);
+	void notification_sclass_level_up(Ref<AuraData> data, int value);
+	void notification_scharacter_level_up(Ref<AuraData> data, int value);
 
-	void son_entity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource);
-	void son_entity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource);
+	void notification_sentity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource);
+	void notification_sentity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource);
 
 	//Clientside Event Handlers
 	void notification_caura(int what, Ref<AuraData> data);
@@ -287,22 +287,22 @@ public:
 	void notification_ccast(int what, Ref<AuraData> aura, Ref<SpellCastInfo> info);
 	void notification_cdamage(int what, Ref<AuraData> aura, Ref<SpellDamageInfo> data);
 
-	void con_death(Ref<AuraData> data);
+	void notification_cdeath(Ref<AuraData> data);
 
-	void con_cooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown);
-	void con_cooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown);
-	void con_category_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
-	void con_category_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
+	void notification_ccooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown);
+	void notification_ccooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown);
+	void notification_ccategory_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
+	void notification_ccategory_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
 
-	void con_gcd_started(Ref<AuraData> data, float gcd);
-	void con_gcd_finished(Ref<AuraData> data);
+	void notification_cgcd_started(Ref<AuraData> data, float gcd);
+	void notification_cgcd_finished(Ref<AuraData> data);
 
-	void con_xp_gained(Ref<AuraData> data, int value);
-	void con_class_level_up(Ref<AuraData> data, int value);
-	void con_character_level_up(Ref<AuraData> data, int value);
+	void notification_cxp_gained(Ref<AuraData> data, int value);
+	void notification_cclass_level_up(Ref<AuraData> data, int value);
+	void notification_ccharacter_level_up(Ref<AuraData> data, int value);
 
-	void con_entity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource);
-	void con_entity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource);
+	void notification_centity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource);
+	void notification_centity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource);
 
 	//Equipment
 	bool equip_should_deny(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);

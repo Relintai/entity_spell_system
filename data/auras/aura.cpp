@@ -614,82 +614,82 @@ void Aura::son_remove_dispell(Ref<AuraData> aura) {
 		call("_son_remove_dispell", aura);
 }
 
-void Aura::son_death(Ref<AuraData> data) {
-	if (has_method("_son_death"))
-		call("_son_death", data);
+void Aura::notification_sdeath(Ref<AuraData> data) {
+	if (has_method("_notification_sdeath"))
+		call("_notification_sdeath", data);
 }
 
-void Aura::son_cooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown) {
-	if (has_method("_son_cooldown_added"))
-		call("_son_cooldown_added", data, cooldown);
+void Aura::notification_scooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown) {
+	if (has_method("_notification_scooldown_added"))
+		call("_notification_scooldown_added", data, cooldown);
 }
-void Aura::son_cooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown) {
-	if (has_method("_son_cooldown_removed"))
-		call("_son_cooldown_removed", data, cooldown);
-}
-
-void Aura::son_category_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
-	if (has_method("_son_category_cooldown_added"))
-		call("_son_category_cooldown_added", data, category_cooldown);
-}
-void Aura::son_category_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
-	if (has_method("_son_category_cooldown_removed"))
-		call("_son_category_cooldown_removed", data, category_cooldown);
+void Aura::notification_scooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown) {
+	if (has_method("_notification_scooldown_removed"))
+		call("_notification_scooldown_removed", data, cooldown);
 }
 
-void Aura::son_gcd_started(Ref<AuraData> data, float gcd) {
+void Aura::notification_scategory_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
+	if (has_method("_notification_scategory_cooldown_added"))
+		call("_notification_scategory_cooldown_added", data, category_cooldown);
+}
+void Aura::notification_scategory_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
+	if (has_method("_notification_scategory_cooldown_removed"))
+		call("_notification_scategory_cooldown_removed", data, category_cooldown);
+}
+
+void Aura::notification_sgcd_started(Ref<AuraData> data, float gcd) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_son_gcd_started"))
-		call("_son_gcd_started", data, gcd);
+	if (has_method("_notification_sgcd_started"))
+		call("_notification_sgcd_started", data, gcd);
 }
-void Aura::son_gcd_finished(Ref<AuraData> data) {
+void Aura::notification_sgcd_finished(Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_son_gcd_finished"))
-		call("_son_gcd_finished", data);
+	if (has_method("_notification_sgcd_finished"))
+		call("_notification_sgcd_finished", data);
 }
 
 void Aura::son_physics_process(Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_son_gcd_finished"))
-		call("_son_gcd_finished", data);
+	if (has_method("_notification_sgcd_finished"))
+		call("_notification_sgcd_finished", data);
 }
 
-void Aura::son_xp_gained(Ref<AuraData> data, int value) {
+void Aura::notification_sxp_gained(Ref<AuraData> data, int value) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_son_xp_gained"))
-		call("_son_xp_gained", data, value);
+	if (has_method("_notification_sxp_gained"))
+		call("_notification_sxp_gained", data, value);
 }
 
-void Aura::son_class_level_up(Ref<AuraData> data, int value) {
+void Aura::notification_sclass_level_up(Ref<AuraData> data, int value) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_son_class_level_up"))
-		call("_son_class_level_up", data, value);
+	if (has_method("_notification_sclass_level_up"))
+		call("_notification_sclass_level_up", data, value);
 }
 
-void Aura::son_character_level_up(Ref<AuraData> data, int value) {
+void Aura::notification_scharacter_level_up(Ref<AuraData> data, int value) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_son_character_level_up"))
-		call("_son_character_level_up", data, value);
+	if (has_method("_notification_scharacter_level_up"))
+		call("_notification_scharacter_level_up", data, value);
 }
-void Aura::son_entity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource) {
-	ERR_FAIL_COND(!data.is_valid());
-	ERR_FAIL_COND(!resource.is_valid());
-
-	if (has_method("_son_entity_resource_added"))
-		call("_son_entity_resource_added", data, resource);
-}
-void Aura::son_entity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource) {
+void Aura::notification_sentity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource) {
 	ERR_FAIL_COND(!data.is_valid());
 	ERR_FAIL_COND(!resource.is_valid());
 
-	if (has_method("_son_entity_resource_removed"))
-		call("_son_entity_resource_removed", data, resource);
+	if (has_method("_notification_sentity_resource_added"))
+		call("_notification_sentity_resource_added", data, resource);
+}
+void Aura::notification_sentity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource) {
+	ERR_FAIL_COND(!data.is_valid());
+	ERR_FAIL_COND(!resource.is_valid());
+
+	if (has_method("_notification_sentity_resource_removed"))
+		call("_notification_sentity_resource_removed", data, resource);
 }
 
 void Aura::notification_caura(int what, Ref<AuraData> data) {
@@ -720,75 +720,75 @@ void Aura::notification_cdamage(int what, Ref<AuraData> aura, Ref<SpellDamageInf
 		call("_notification_cdamage", what, aura, data);
 }
 
-void Aura::con_death(Ref<AuraData> data) {
-	if (has_method("_con_death"))
-		call("_con_death", data);
+void Aura::notification_cdeath(Ref<AuraData> data) {
+	if (has_method("_notification_cdeath"))
+		call("_notification_cdeath", data);
 }
 
-void Aura::con_cooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown) {
-	if (has_method("_con_cooldown_added"))
-		call("_con_cooldown_added", data, cooldown);
+void Aura::notification_ccooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown) {
+	if (has_method("_notification_ccooldown_added"))
+		call("_notification_ccooldown_added", data, cooldown);
 }
-void Aura::con_cooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown) {
-	if (has_method("_con_cooldown_removed"))
-		call("_con_cooldown_removed", data, cooldown);
+void Aura::notification_ccooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown) {
+	if (has_method("_notification_ccooldown_removed"))
+		call("_notification_ccooldown_removed", data, cooldown);
 }
-void Aura::con_category_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
-	if (has_method("_con_category_cooldown_added"))
-		call("_con_category_cooldown_added", data, category_cooldown);
+void Aura::notification_ccategory_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
+	if (has_method("_notification_ccategory_cooldown_added"))
+		call("_notification_ccategory_cooldown_added", data, category_cooldown);
 }
-void Aura::con_category_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
-	if (has_method("_con_category_cooldown_removed"))
-		call("_con_category_cooldown_removed", data, category_cooldown);
+void Aura::notification_ccategory_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
+	if (has_method("_notification_ccategory_cooldown_removed"))
+		call("_notification_ccategory_cooldown_removed", data, category_cooldown);
 }
 
-void Aura::con_gcd_started(Ref<AuraData> data, float gcd) {
+void Aura::notification_cgcd_started(Ref<AuraData> data, float gcd) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_con_gcd_started"))
-		call("_con_gcd_started", data, gcd);
+	if (has_method("_notification_cgcd_started"))
+		call("_notification_cgcd_started", data, gcd);
 }
-void Aura::con_gcd_finished(Ref<AuraData> data) {
+void Aura::notification_cgcd_finished(Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_con_gcd_finished"))
-		call("_con_gcd_finished", data);
+	if (has_method("_notification_cgcd_finished"))
+		call("_notification_cgcd_finished", data);
 }
 
-void Aura::con_xp_gained(Ref<AuraData> data, int value) {
+void Aura::notification_cxp_gained(Ref<AuraData> data, int value) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_con_xp_gained"))
-		call("_con_xp_gained", data, value);
+	if (has_method("_notification_cxp_gained"))
+		call("_notification_cxp_gained", data, value);
 }
 
-void Aura::con_class_level_up(Ref<AuraData> data, int value) {
+void Aura::notification_cclass_level_up(Ref<AuraData> data, int value) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_con_class_level_up"))
-		call("_con_class_level_up", data, value);
+	if (has_method("_notification_cclass_level_up"))
+		call("_notification_cclass_level_up", data, value);
 }
 
-void Aura::con_character_level_up(Ref<AuraData> data, int value) {
+void Aura::notification_ccharacter_level_up(Ref<AuraData> data, int value) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_con_character_level_up"))
-		call("_con_character_level_up", data, value);
+	if (has_method("_notification_ccharacter_level_up"))
+		call("_notification_ccharacter_level_up", data, value);
 }
 
-void Aura::con_entity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource) {
-	ERR_FAIL_COND(!data.is_valid());
-	ERR_FAIL_COND(!resource.is_valid());
-
-	if (has_method("_con_entity_resource_added"))
-		call("_con_entity_resource_added", data, resource);
-}
-void Aura::con_entity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource) {
+void Aura::notification_centity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource) {
 	ERR_FAIL_COND(!data.is_valid());
 	ERR_FAIL_COND(!resource.is_valid());
 
-	if (has_method("_con_entity_resource_removed"))
-		call("_con_entity_resource_removed", data, resource);
+	if (has_method("_notification_centity_resource_added"))
+		call("_notification_centity_resource_added", data, resource);
+}
+void Aura::notification_centity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource) {
+	ERR_FAIL_COND(!data.is_valid());
+	ERR_FAIL_COND(!resource.is_valid());
+
+	if (has_method("_notification_centity_resource_removed"))
+		call("_notification_centity_resource_removed", data, resource);
 }
 
 //Equipment
@@ -1237,48 +1237,48 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_remove_expired", "aura"), &Aura::son_remove_expired);
 	ClassDB::bind_method(D_METHOD("son_remove_dispell", "aura"), &Aura::son_remove_dispell);
 
-	ClassDB::bind_method(D_METHOD("son_death", "data"), &Aura::son_death);
+	ClassDB::bind_method(D_METHOD("notification_sdeath", "data"), &Aura::notification_sdeath);
 
-	ClassDB::bind_method(D_METHOD("son_cooldown_added", "data", "cooldown"), &Aura::son_cooldown_added);
-	ClassDB::bind_method(D_METHOD("son_cooldown_removed", "data", "cooldown"), &Aura::son_cooldown_removed);
+	ClassDB::bind_method(D_METHOD("notification_scooldown_added", "data", "cooldown"), &Aura::notification_scooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_scooldown_removed", "data", "cooldown"), &Aura::notification_scooldown_removed);
 
-	ClassDB::bind_method(D_METHOD("son_category_cooldown_added", "data", "category_cooldown"), &Aura::son_category_cooldown_added);
-	ClassDB::bind_method(D_METHOD("son_category_cooldown_removed", "data", "category_cooldown"), &Aura::son_category_cooldown_removed);
+	ClassDB::bind_method(D_METHOD("notification_scategory_cooldown_added", "data", "category_cooldown"), &Aura::notification_scategory_cooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_scategory_cooldown_removed", "data", "category_cooldown"), &Aura::notification_scategory_cooldown_removed);
 
-	ClassDB::bind_method(D_METHOD("son_gcd_started", "data", "gcd"), &Aura::son_gcd_started);
-	ClassDB::bind_method(D_METHOD("son_gcd_finished", "data"), &Aura::son_gcd_finished);
+	ClassDB::bind_method(D_METHOD("notification_sgcd_started", "data", "gcd"), &Aura::notification_sgcd_started);
+	ClassDB::bind_method(D_METHOD("notification_sgcd_finished", "data"), &Aura::notification_sgcd_finished);
 
 	ClassDB::bind_method(D_METHOD("son_physics_process", "data"), &Aura::son_physics_process);
 
-	ClassDB::bind_method(D_METHOD("son_xp_gained", "data", "value"), &Aura::son_xp_gained);
-	ClassDB::bind_method(D_METHOD("son_class_level_up", "data", "value"), &Aura::son_class_level_up);
-	ClassDB::bind_method(D_METHOD("son_character_level_up", "data", "value"), &Aura::son_character_level_up);
+	ClassDB::bind_method(D_METHOD("notification_sxp_gained", "data", "value"), &Aura::notification_sxp_gained);
+	ClassDB::bind_method(D_METHOD("notification_sclass_level_up", "data", "value"), &Aura::notification_sclass_level_up);
+	ClassDB::bind_method(D_METHOD("notification_scharacter_level_up", "data", "value"), &Aura::notification_scharacter_level_up);
 
-	ClassDB::bind_method(D_METHOD("son_entity_resource_added", "data", "value"), &Aura::son_entity_resource_added);
-	ClassDB::bind_method(D_METHOD("son_entity_resource_removed", "data", "value"), &Aura::son_entity_resource_removed);
+	ClassDB::bind_method(D_METHOD("notification_sentity_resource_added", "data", "value"), &Aura::notification_sentity_resource_added);
+	ClassDB::bind_method(D_METHOD("notification_sentity_resource_removed", "data", "value"), &Aura::notification_sentity_resource_removed);
 
 	BIND_VMETHOD(MethodInfo("_son_remove", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_son_remove_expired", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_son_remove_dispell", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
-	BIND_VMETHOD(MethodInfo("_son_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_notification_sdeath", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
-	BIND_VMETHOD(MethodInfo("_son_cooldown_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	BIND_VMETHOD(MethodInfo("_son_cooldown_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	BIND_VMETHOD(MethodInfo("_son_category_cooldown_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
-	BIND_VMETHOD(MethodInfo("_son_category_cooldown_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_scooldown_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_scooldown_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_scategory_cooldown_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_scategory_cooldown_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 
-	BIND_VMETHOD(MethodInfo("_son_gcd_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::REAL, "gcd")));
-	BIND_VMETHOD(MethodInfo("_son_gcd_finished", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_notification_sgcd_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_notification_sgcd_finished", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 	BIND_VMETHOD(MethodInfo("_son_physics_process", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
-	BIND_VMETHOD(MethodInfo("_son_xp_gained", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_son_class_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_son_character_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_sxp_gained", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_sclass_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_scharacter_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 
-	BIND_VMETHOD(MethodInfo("_son_entity_resource_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_son_entity_resource_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 
 	//Clientside Event Handlers
 	BIND_VMETHOD(MethodInfo("_notification_caura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
@@ -1291,22 +1291,22 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_ccast", "what", "aura", "info"), &Aura::notification_ccast);
 	ClassDB::bind_method(D_METHOD("notification_cdamage", "what", "aura", "info"), &Aura::notification_cdamage);
 
-	ClassDB::bind_method(D_METHOD("con_death", "data"), &Aura::con_death);
+	ClassDB::bind_method(D_METHOD("notification_cdeath", "data"), &Aura::notification_cdeath);
 
-	ClassDB::bind_method(D_METHOD("con_cooldown_added", "data", "info"), &Aura::con_cooldown_added);
-	ClassDB::bind_method(D_METHOD("con_cooldown_removed", "data", "info"), &Aura::con_cooldown_removed);
-	ClassDB::bind_method(D_METHOD("con_category_cooldown_added", "data", "info"), &Aura::con_category_cooldown_added);
-	ClassDB::bind_method(D_METHOD("con_category_cooldown_removed", "data", "info"), &Aura::con_category_cooldown_removed);
+	ClassDB::bind_method(D_METHOD("notification_ccooldown_added", "data", "info"), &Aura::notification_ccooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_ccooldown_removed", "data", "info"), &Aura::notification_ccooldown_removed);
+	ClassDB::bind_method(D_METHOD("notification_ccategory_cooldown_added", "data", "info"), &Aura::notification_ccategory_cooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_ccategory_cooldown_removed", "data", "info"), &Aura::notification_ccategory_cooldown_removed);
 
-	ClassDB::bind_method(D_METHOD("con_gcd_started", "data", "info"), &Aura::con_gcd_started);
-	ClassDB::bind_method(D_METHOD("con_gcd_finished", "data"), &Aura::con_gcd_finished);
+	ClassDB::bind_method(D_METHOD("notification_cgcd_started", "data", "info"), &Aura::notification_cgcd_started);
+	ClassDB::bind_method(D_METHOD("notification_cgcd_finished", "data"), &Aura::notification_cgcd_finished);
 
-	ClassDB::bind_method(D_METHOD("con_xp_gained", "data", "value"), &Aura::con_xp_gained);
-	ClassDB::bind_method(D_METHOD("con_class_level_up", "data", "value"), &Aura::con_class_level_up);
-	ClassDB::bind_method(D_METHOD("con_character_level_up", "data", "value"), &Aura::con_character_level_up);
+	ClassDB::bind_method(D_METHOD("notification_cxp_gained", "data", "value"), &Aura::notification_cxp_gained);
+	ClassDB::bind_method(D_METHOD("notification_cclass_level_up", "data", "value"), &Aura::notification_cclass_level_up);
+	ClassDB::bind_method(D_METHOD("notification_ccharacter_level_up", "data", "value"), &Aura::notification_ccharacter_level_up);
 
-	ClassDB::bind_method(D_METHOD("con_entity_resource_added", "data", "value"), &Aura::con_entity_resource_added);
-	ClassDB::bind_method(D_METHOD("con_entity_resource_removed", "data", "value"), &Aura::con_entity_resource_removed);
+	ClassDB::bind_method(D_METHOD("notification_centity_resource_added", "data", "value"), &Aura::notification_centity_resource_added);
+	ClassDB::bind_method(D_METHOD("notification_centity_resource_removed", "data", "value"), &Aura::notification_centity_resource_removed);
 
 	BIND_VMETHOD(MethodInfo("_con_cast_failed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_cast_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
@@ -1314,12 +1314,12 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_cast_finished", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	BIND_VMETHOD(MethodInfo("_con_spell_cast_success", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
-	BIND_VMETHOD(MethodInfo("_con_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_notification_cdeath", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
-	BIND_VMETHOD(MethodInfo("_con_cooldown_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	BIND_VMETHOD(MethodInfo("_con_cooldown_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	BIND_VMETHOD(MethodInfo("_con_category_cooldown_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
-	BIND_VMETHOD(MethodInfo("_con_category_cooldown_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_ccooldown_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_ccooldown_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_ccategory_cooldown_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_ccategory_cooldown_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 
 	BIND_VMETHOD(MethodInfo("_con_aura_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 	BIND_VMETHOD(MethodInfo("_con_aura_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
@@ -1330,15 +1330,15 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_heal_dealt", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	BIND_VMETHOD(MethodInfo("_con_dealt_heal", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 
-	BIND_VMETHOD(MethodInfo("_con_gcd_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::REAL, "gcd")));
-	BIND_VMETHOD(MethodInfo("_con_gcd_finished", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_notification_cgcd_started", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_notification_cgcd_finished", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
-	BIND_VMETHOD(MethodInfo("_con_xp_gained", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_con_class_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_con_character_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_cxp_gained", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_cclass_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_ccharacter_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 
-	BIND_VMETHOD(MethodInfo("_con_entity_resource_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_con_entity_resource_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_centity_resource_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_centity_resource_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 
 	//Equipment
 

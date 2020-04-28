@@ -152,7 +152,7 @@ void Stat::setc_current(float value) {
 
 	_c_current = value;
 
-	_owner->onc_stat_changed(Ref<Stat>(this));
+	_owner->notification_cstat_changed(Ref<Stat>(this));
 
 	emit_signal("c_changed", Ref<Stat>(this));
 }
@@ -165,7 +165,7 @@ void Stat::setc_max(float value) {
 
 	_s_current = value;
 
-	_owner->onc_stat_changed(Ref<Stat>(this));
+	_owner->notification_cstat_changed(Ref<Stat>(this));
 
 	emit_signal("c_changed", Ref<Stat>(this));
 }
@@ -176,7 +176,7 @@ void Stat::setc_values(int ccurrent, int cmax) {
 	_c_current = ccurrent;
 	_c_max = cmax;
 
-	_owner->onc_stat_changed(Ref<Stat>(this));
+	_owner->notification_cstat_changed(Ref<Stat>(this));
 	emit_signal("c_changed", Ref<Stat>(this));
 }
 
@@ -298,7 +298,7 @@ void Stat::apply_modifiers() {
 		sm->set_base_mod(_s_current * curve->interpolate(_s_current / max_value));
 	}
 
-	_owner->ons_stat_changed(Ref<Stat>(this));
+	_owner->notification_sstat_changed(Ref<Stat>(this));
 	emit_signal("s_changed", Ref<Stat>(this));
 }
 
@@ -337,7 +337,7 @@ void Stat::set_to_max() {
 
 	_dirty = true;
 
-	_owner->ons_stat_changed(Ref<Stat>(this));
+	_owner->notification_sstat_changed(Ref<Stat>(this));
 	emit_signal("s_changed", Ref<Stat>(this));
 }
 

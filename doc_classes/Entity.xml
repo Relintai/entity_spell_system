@@ -106,7 +106,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_character_level_up" qualifiers="virtual">
+		<method name="_notification_ccharacter_level_up" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -114,7 +114,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_class_level_up" qualifiers="virtual">
+		<method name="_notification_cclass_level_up" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -146,13 +146,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_death" qualifiers="virtual">
+		<method name="_notification_cdeath" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="_con_entity_resource_added" qualifiers="virtual">
+		<method name="_notification_centity_resource_added" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -160,7 +160,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_entity_resource_removed" qualifiers="virtual">
+		<method name="_notification_centity_resource_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -196,13 +196,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_gcd_finished" qualifiers="virtual">
+		<method name="_notification_cgcd_finished" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="_con_gcd_started" qualifiers="virtual">
+		<method name="_notification_cgcd_started" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="gcd" type="float">
@@ -250,7 +250,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_xp_gained" qualifiers="virtual">
+		<method name="_notification_cxp_gained" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -288,25 +288,25 @@
 			<description>
 			</description>
 		</method>
-		<method name="_onc_mouse_enter" qualifiers="virtual">
+		<method name="_notification_cmouse_enter" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="_onc_mouse_exit" qualifiers="virtual">
+		<method name="_notification_cmouse_exit" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="_onc_targeted" qualifiers="virtual">
+		<method name="_notification_ctargeted" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="_onc_untargeted" qualifiers="virtual">
+		<method name="_notification_cuntargeted" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<description>
@@ -466,7 +466,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_character_level_up" qualifiers="virtual">
+		<method name="_notification_scharacter_level_up" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -474,7 +474,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_class_level_up" qualifiers="virtual">
+		<method name="_notification_sclass_level_up" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -514,13 +514,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_death" qualifiers="virtual">
+		<method name="_notification_sdeath" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="_son_entity_resource_added" qualifiers="virtual">
+		<method name="_notification_sentity_resource_added" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -528,7 +528,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_entity_resource_removed" qualifiers="virtual">
+		<method name="_notification_sentity_resource_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -564,13 +564,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_gcd_finished" qualifiers="virtual">
+		<method name="_notification_sgcd_finished" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="_son_gcd_started" qualifiers="virtual">
+		<method name="_notification_sgcd_started" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="gcd" type="float">
@@ -634,7 +634,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_xp_gained" qualifiers="virtual">
+		<method name="_notification_sxp_gained" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -1286,7 +1286,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_category_cooldown_added">
+		<method name="notification_ccategory_cooldown_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_cooldown" type="CategoryCooldown">
@@ -1294,7 +1294,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_category_cooldown_added" qualifiers="virtual">
+		<method name="notification_ccategory_cooldown_added" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_cooldown" type="CategoryCooldown">
@@ -1302,7 +1302,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_category_cooldown_removed">
+		<method name="notification_ccategory_cooldown_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_cooldown" type="CategoryCooldown">
@@ -1310,7 +1310,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_category_cooldown_removed" qualifiers="virtual">
+		<method name="notification_ccategory_cooldown_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_cooldown" type="CategoryCooldown">
@@ -1318,7 +1318,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_character_level_up">
+		<method name="notification_ccharacter_level_up">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -1326,7 +1326,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_class_level_up">
+		<method name="notification_cclass_level_up">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -1334,7 +1334,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_cooldown_added" qualifiers="virtual">
+		<method name="notification_ccooldown_added" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -1342,7 +1342,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_cooldown_added">
+		<method name="notification_ccooldown_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -1350,7 +1350,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_cooldown_removed" qualifiers="virtual">
+		<method name="notification_ccooldown_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -1358,7 +1358,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_cooldown_removed">
+		<method name="notification_ccooldown_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="cooldown" type="Cooldown">
@@ -1390,13 +1390,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_death">
+		<method name="notification_cdeath">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="con_entity_resource_added">
+		<method name="notification_centity_resource_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -1404,7 +1404,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_entity_resource_removed">
+		<method name="notification_centity_resource_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -1440,13 +1440,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_gcd_finished">
+		<method name="notification_cgcd_finished">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="con_gcd_started">
+		<method name="notification_cgcd_started">
 			<return type="void">
 			</return>
 			<description>
@@ -1468,7 +1468,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_xp_gained">
+		<method name="notification_cxp_gained">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -2500,19 +2500,19 @@
 			<description>
 			</description>
 		</method>
-		<method name="onc_mouse_enter">
+		<method name="notification_cmouse_enter">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="onc_mouse_exit">
+		<method name="notification_cmouse_exit">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="onc_stat_changed">
+		<method name="notification_cstat_changed">
 			<return type="void">
 			</return>
 			<argument index="0" name="stat" type="Stat">
@@ -2520,31 +2520,19 @@
 			<description>
 			</description>
 		</method>
-		<method name="onc_targeted">
+		<method name="notification_ctargeted">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="onc_untargeted">
+		<method name="notification_cuntargeted">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="item_ons_added">
-			<return type="void">
-			</return>
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="item_ons_count_changed">
+		<method name="notification_item_sadded">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2556,7 +2544,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="item_ons_removed">
+		<method name="notification_item_sscount_changed">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2568,7 +2556,19 @@
 			<description>
 			</description>
 		</method>
-		<method name="items_ons_swapped">
+		<method name="notification_item_sremoved">
+			<return type="void">
+			</return>
+			<argument index="0" name="bag" type="Bag">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<argument index="2" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_items_sswapped">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2580,7 +2580,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ons_overburden_removed">
+		<method name="notification_soverburden_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2588,7 +2588,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ons_overburdened">
+		<method name="notification_soverburdened">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2596,7 +2596,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="ons_stat_changed">
+		<method name="notification_sstat_changed">
 			<return type="void">
 			</return>
 			<argument index="0" name="stat" type="Stat">
@@ -2604,7 +2604,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="target_item_ons_added">
+		<method name="notification_target_item_sadded">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2616,7 +2616,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="target_item_ons_count_changed">
+		<method name="notification_target_item_sscount_changed">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2628,7 +2628,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="target_item_ons_removed">
+		<method name="notification_target_item_sremoved">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -2640,7 +2640,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="target_items_ons_swapped">
+		<method name="notification_target_items_sswapped">
 			<return type="void">
 			</return>
 			<argument index="0" name="bag" type="Bag">
@@ -3394,7 +3394,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_character_level_up">
+		<method name="notification_scharacter_level_up">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -3402,7 +3402,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_class_level_up">
+		<method name="notification_sclass_level_up">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -3442,13 +3442,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_death">
+		<method name="notification_sdeath">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="son_entity_resource_added">
+		<method name="notification_sentity_resource_added">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -3456,7 +3456,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_entity_resource_removed">
+		<method name="notification_sentity_resource_removed">
 			<return type="void">
 			</return>
 			<argument index="0" name="resource" type="EntityResource">
@@ -3492,13 +3492,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_gcd_finished">
+		<method name="notification_sgcd_finished">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="son_gcd_started">
+		<method name="notification_sgcd_started">
 			<return type="void">
 			</return>
 			<description>
@@ -3536,7 +3536,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="son_xp_gained">
+		<method name="notification_sxp_gained">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="int">
@@ -3950,7 +3950,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="con_character_level_up">
+		<signal name="notification_ccharacter_level_up">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="value" type="int">
@@ -3966,7 +3966,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="con_class_level_up">
+		<signal name="notification_cclass_level_up">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="value" type="int">
@@ -4050,7 +4050,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="con_xp_gained">
+		<signal name="notification_cxp_gained">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="value" type="int">
@@ -4152,11 +4152,11 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="onc_mouse_entered">
+		<signal name="notification_cmouse_entered">
 			<description>
 			</description>
 		</signal>
-		<signal name="onc_mouse_exited">
+		<signal name="notification_cmouse_exited">
 			<description>
 			</description>
 		</signal>
@@ -4172,11 +4172,11 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="onc_targeted">
+		<signal name="notification_ctargeted">
 			<description>
 			</description>
 		</signal>
-		<signal name="onc_untargeted">
+		<signal name="notification_cuntargeted">
 			<description>
 			</description>
 		</signal>
@@ -4338,7 +4338,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="son_character_level_up">
+		<signal name="notification_scharacter_level_up">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="value" type="int">
@@ -4354,7 +4354,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="son_class_level_up">
+		<signal name="notification_sclass_level_up">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="value" type="int">
@@ -4422,7 +4422,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="son_xp_gained">
+		<signal name="notification_sxp_gained">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="value" type="int">
