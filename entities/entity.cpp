@@ -526,6 +526,22 @@ void Entity::setc_seed(int value) {
 	_c_seed = value;
 }
 
+void Entity::_initialize() {
+	_s_resources.resize(EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN);
+	_c_resources.resize(EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN);
+
+	_s_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH, Ref<EntityResourceHealth>(memnew(EntityResourceHealth)));
+	_s_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED, Ref<EntityResourceSpeed>(memnew(EntityResourceSpeed)));
+
+	_c_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH, Ref<EntityResourceHealth>(memnew(EntityResourceHealth)));
+	_c_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED, Ref<EntityResourceSpeed>(memnew(EntityResourceSpeed)));
+
+	for (int i = 0; i < EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN; ++i) {
+		_s_resources.get(i)->set_owner(this);
+		_c_resources.get(i)->set_owner(this);
+	}
+}
+
 void Entity::setup(Ref<EntityCreateInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
@@ -5725,20 +5741,6 @@ Entity::Entity() {
 	_s_pet_formation_index = 0;
 	_s_pet_ai_state = EntityEnums::AI_STATE_OFF;
 
-	_s_resources.resize(EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN);
-	_c_resources.resize(EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN);
-
-	_s_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH, Ref<EntityResourceHealth>(memnew(EntityResourceHealth)));
-	_s_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED, Ref<EntityResourceSpeed>(memnew(EntityResourceSpeed)));
-
-	_c_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH, Ref<EntityResourceHealth>(memnew(EntityResourceHealth)));
-	_c_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED, Ref<EntityResourceSpeed>(memnew(EntityResourceSpeed)));
-
-	for (int i = 0; i < EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN; ++i) {
-		_s_resources.get(i)->set_owner(this);
-		_c_resources.get(i)->set_owner(this);
-	}
-
 	SET_RPC_REMOTE("csend_request_rank_increase");
 	SET_RPC_REMOTE("csend_request_rank_decrease");
 
@@ -6198,6 +6200,9 @@ void Entity::_spell_learns(int id) {
 
 void Entity::_notification(int p_what) {
 	switch (p_what) {
+		case NOTIFICATION_POSTINITIALIZE: {
+			call("_initialize");
+		} break;
 		case NOTIFICATION_INSTANCED: {
 			set_body(get_node_or_null(_body_path));
 
@@ -6907,14 +6912,16 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("cskill_removed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
 	ADD_SIGNAL(MethodInfo("cskill_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
 
-	//setup
-	BIND_VMETHOD(MethodInfo("_setup"));
-
 	//Windows
 	ADD_SIGNAL(MethodInfo("onc_open_loot_winow_request"));
 	ADD_SIGNAL(MethodInfo("onc_open_container_winow_request"));
 	ADD_SIGNAL(MethodInfo("onc_open_vendor_winow_request"));
 
+	//setup
+	BIND_VMETHOD(MethodInfo("_setup"));
+	BIND_VMETHOD(MethodInfo("_initialize"));
+
+	ClassDB::bind_method(D_METHOD("_initialize"), &Entity::_initialize);
 	ClassDB::bind_method(D_METHOD("setup", "info"), &Entity::setup);
 	ClassDB::bind_method(D_METHOD("_setup"), &Entity::_setup);
 	ClassDB::bind_method(D_METHOD("setup_actionbars"), &Entity::setup_actionbars);
