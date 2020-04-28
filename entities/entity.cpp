@@ -2783,6 +2783,8 @@ void Entity::notification_saura(int what, Ref<AuraData> data) {
 
 		ad->get_aura()->notification_saura(what, data);
 	}
+
+	emit_signal("notification_saura", what, data);
 }
 void Entity::notification_sheal(int what, Ref<SpellHealInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
@@ -2815,6 +2817,8 @@ void Entity::notification_scast(int what, Ref<SpellCastInfo> info) {
 
 		ad->get_aura()->notification_scast(what, ad, info);
 	}
+
+	emit_signal("notification_scast", what, info);
 }
 void Entity::notification_sdamage(int what, Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
@@ -3087,7 +3091,7 @@ void Entity::adds_aura(Ref<AuraData> aura) {
 
 	notification_saura(SpellEnums::NOTIFICATION_AURA_AFTER_APPLIED, aura);
 
-	emit_signal("saura_added", aura);
+	notification_saura(SpellEnums::NOTIFICATION_AURA_ADDED, aura);
 
 	if (!aura->get_aura()->get_hide())
 		VRPCOBJ(addc_aura_rpc, JSON::print(aura->to_dict()), addc_aura, aura);
@@ -3696,15 +3700,13 @@ void Entity::sstart_casting(Ref<SpellCastInfo> info) {
 
 	_s_spell_cast_info->set_is_casting(true);
 
-	emit_signal("notification_scast", SpellEnums::NOTIFICATION_CAST_STARTED, info);
+	notification_scast(SpellEnums::NOTIFICATION_CAST_STARTED, info);
 
 	VRPCOBJ(cstart_casting_rpc, JSON::print(info->to_dict()), cstart_casting, info);
 }
 
 void Entity::sfail_cast() {
 	notification_scast(SpellEnums::NOTIFICATION_CAST_FAILED, _s_spell_cast_info);
-
-	emit_signal("notification_scast", SpellEnums::NOTIFICATION_CAST_FAILED, _s_spell_cast_info);
 
 	_s_spell_cast_info.unref();
 
@@ -3722,21 +3724,13 @@ void Entity::sfinish_cast() {
 
 	notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED, _s_spell_cast_info);
 
-	emit_signal("notification_scast", SpellEnums::NOTIFICATION_CAST_FINISHED, _s_spell_cast_info);
-
 	_s_spell_cast_info.unref();
 
 	VRPC(cfinish_cast);
 }
 
 void Entity::sinterrupt_cast() {
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_scast(SpellEnums::NOTIFICATION_CAST_BEFORE, ad, _s_spell_cast_info);
-	}
-
-	emit_signal("notification_scast", SpellEnums::NOTIFICATION_CAST_INTERRUPTED, _s_spell_cast_info);
+	notification_scast(SpellEnums::NOTIFICATION_CAST_INTERRUPTED, _s_spell_cast_info);
 
 	_s_spell_cast_info.unref();
 
@@ -3756,14 +3750,10 @@ void Entity::cstart_casting(Ref<SpellCastInfo> info) {
 	_c_spell_cast_info = Ref<SpellCastInfo>(info);
 
 	notification_ccast(SpellEnums::NOTIFICATION_CAST_STARTED, _c_spell_cast_info);
-
-	emit_signal("ccast_started", _c_spell_cast_info);
 }
 
 void Entity::cfail_cast() {
 	notification_ccast(SpellEnums::NOTIFICATION_CAST_FAILED, _c_spell_cast_info);
-
-	emit_signal("ccast_failed", _c_spell_cast_info);
 
 	_c_spell_cast_info.unref();
 }
@@ -3772,18 +3762,18 @@ void Entity::cdelay_cast() {
 
 	//c_on_cast_
 
-	emit_signal("ccast_delayed", _c_spell_cast_info);
+	notification_scast(SpellEnums::NOTIFICATION_CAST_DELAYED, _c_spell_cast_info);
 }
 
 void Entity::cfinish_cast() {
 	notification_ccast(SpellEnums::NOTIFICATION_CAST_FINISHED, _c_spell_cast_info);
-	emit_signal("ccast_finished", _c_spell_cast_info);
+
 	_c_spell_cast_info.unref();
 }
 
 void Entity::cinterrupt_cast() {
-	notification_ccast(SpellEnums::NOTIFICATION_CAST_FAILED, _c_spell_cast_info);
-	emit_signal("ccast_interrupted", _c_spell_cast_info);
+	notification_ccast(SpellEnums::NOTIFICATION_CAST_INTERRUPTED, _c_spell_cast_info);
+
 	_c_spell_cast_info.unref();
 }
 
@@ -6874,19 +6864,6 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("centity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
 	ADD_SIGNAL(MethodInfo("centity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
 
-	//Aura signals
-	ADD_SIGNAL(MethodInfo("saura_added", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	ADD_SIGNAL(MethodInfo("saura_removed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	ADD_SIGNAL(MethodInfo("saura_removed_expired", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	ADD_SIGNAL(MethodInfo("saura_removed_dispelled", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	//ADD_SIGNAL(MethodInfo("saura_refreshed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-
-	ADD_SIGNAL(MethodInfo("caura_added", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	ADD_SIGNAL(MethodInfo("caura_removed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	ADD_SIGNAL(MethodInfo("caura_removed_dispelled", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	ADD_SIGNAL(MethodInfo("caura_removed_expired", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	//ADD_SIGNAL(MethodInfo("caura_refreshed", PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-
 	//Skills
 	ADD_SIGNAL(MethodInfo("sskill_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
 	ADD_SIGNAL(MethodInfo("sskill_removed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
@@ -6935,6 +6912,8 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	//Serverside
+	ADD_SIGNAL(MethodInfo("notification_sdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	ADD_SIGNAL(MethodInfo("notification_sheal", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	ADD_SIGNAL(MethodInfo("notification_scast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("notification_saura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
@@ -6949,6 +6928,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_sdamage", "what", "info"), &Entity::notification_sdamage);
 
 	//Clientside
+	ADD_SIGNAL(MethodInfo("notification_cdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	ADD_SIGNAL(MethodInfo("notification_cheal", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
 	ADD_SIGNAL(MethodInfo("notification_ccast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("notification_caura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
