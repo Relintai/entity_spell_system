@@ -573,7 +573,7 @@ void Spell::set_training_required_skill_level(const int value) {
 
 ////    Spell System    ////
 
-void Spell::sstart_casting_simple(Entity *caster, float spell_scale) {
+void Spell::cast_starts_simple(Entity *caster, float spell_scale) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
 #else
@@ -589,10 +589,10 @@ void Spell::sstart_casting_simple(Entity *caster, float spell_scale) {
 	info->set_spell_scale(spell_scale);
 	info->set_spell(Ref<Spell>(this));
 
-	sstart_casting(info);
+	cast_starts(info);
 }
 
-void Spell::sinterrupt_cast_simple(Entity *caster) {
+void Spell::cast_interrupts_simple(Entity *caster) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
 #else
@@ -604,10 +604,10 @@ void Spell::sinterrupt_cast_simple(Entity *caster) {
 	info->set_caster(caster);
 	info->set_spell(Ref<Spell>(this));
 
-	sinterrupt_cast(info);
+	cast_interrupts(info);
 }
 
-void Spell::sstart_casting_triggered_simple(Entity *caster) {
+void Spell::cast_starts_triggered_simple(Entity *caster) {
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!caster || !ObjectDB::instance_validate(caster));
 #else
@@ -619,12 +619,12 @@ void Spell::sstart_casting_triggered_simple(Entity *caster) {
 	info->set_caster(caster);
 	info->set_spell(Ref<Spell>(this));
 
-	sstart_casting_triggered(info);
+	cast_starts_triggered(info);
 }
 
 //Script methods
 
-void Spell::sstart_casting(Ref<SpellCastInfo> info) {
+void Spell::cast_starts(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
 	//Auto self cast. Note: Remove needs_target, and skip this if spell should only target enemies.
@@ -632,32 +632,32 @@ void Spell::sstart_casting(Ref<SpellCastInfo> info) {
 		info->set_target(info->get_caster());
 	}
 
-	if (has_method("_sstart_casting")) {
-		call("_sstart_casting", info);
+	if (has_method("_cast_starts")) {
+		call("_cast_starts", info);
 	}
 }
 
-void Spell::sstart_casting_triggered(Ref<SpellCastInfo> info) {
+void Spell::cast_starts_triggered(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (has_method("_sstart_casting_triggered")) {
-		call("_sstart_casting_triggered", info);
+	if (has_method("_cast_starts_triggered")) {
+		call("_cast_starts_triggered", info);
 	}
 }
 
-void Spell::sinterrupt_cast(Ref<SpellCastInfo> info) {
+void Spell::cast_interrupts(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (has_method("_sinterrupt_cast")) {
-		call("_sinterrupt_cast", info);
+	if (has_method("_cast_interrupts")) {
+		call("_cast_interrupts", info);
 	}
 }
 
-void Spell::sfinish_cast(Ref<SpellCastInfo> info) {
+void Spell::cast_finishs(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (has_method("_sfinish_cast")) {
-		call("_sfinish_cast", info);
+	if (has_method("_cast_finishs")) {
+		call("_cast_finishs", info);
 	}
 }
 
@@ -916,8 +916,8 @@ Spell::~Spell() {
 	_projectile_scene.unref();
 }
 
-void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
-	if (info->get_caster()->sis_casting()) {
+void Spell::_cast_starts(Ref<SpellCastInfo> info) {
+	if (info->get_caster()->cast_is_castings()) {
 		return;
 	}
 
@@ -932,11 +932,11 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 	}
 
 	if (get_cast_time_enabled()) {
-		info->get_caster()->sstart_casting(info);
+		info->get_caster()->cast_starts(info);
 		return;
 	}
 
-	info->get_caster()->sspell_cast_success(info);
+	info->get_caster()->cast_spell_successs(info);
 
 	info->get_target()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED_TARGET, info);
 
@@ -951,9 +951,9 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 	handle_gcd(info);
 }
 
-void Spell::_sfinish_cast(Ref<SpellCastInfo> info) {
+void Spell::_cast_finishs(Ref<SpellCastInfo> info) {
 	info->get_caster()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED, info);
-	info->get_caster()->sspell_cast_success(info);
+	info->get_caster()->cast_spell_successs(info);
 
 #if VERSION_MAJOR < 4
 	if (ObjectDB::instance_validate(info->get_target())) {
@@ -974,7 +974,7 @@ void Spell::_sfinish_cast(Ref<SpellCastInfo> info) {
 
 void Spell::_son_cast_player_moved(Ref<SpellCastInfo> info) {
 	if (get_can_move_while_casting()) {
-		info->get_caster()->sfail_cast();
+		info->get_caster()->cast_fails();
 	}
 }
 
@@ -1116,15 +1116,15 @@ void Spell::_validate_property(PropertyInfo &property) const {
 
 void Spell::_bind_methods() {
 	//Commands
-	ClassDB::bind_method(D_METHOD("sstart_casting", "info"), &Spell::sstart_casting);
-	ClassDB::bind_method(D_METHOD("sstart_casting_triggered", "info"), &Spell::sstart_casting_triggered);
-	ClassDB::bind_method(D_METHOD("sinterrupt_cast", "info"), &Spell::sinterrupt_cast);
-	ClassDB::bind_method(D_METHOD("sfinish_cast", "info"), &Spell::sfinish_cast);
+	ClassDB::bind_method(D_METHOD("cast_starts", "info"), &Spell::cast_starts);
+	ClassDB::bind_method(D_METHOD("cast_starts_triggered", "info"), &Spell::cast_starts_triggered);
+	ClassDB::bind_method(D_METHOD("cast_interrupts", "info"), &Spell::cast_interrupts);
+	ClassDB::bind_method(D_METHOD("cast_finishs", "info"), &Spell::cast_finishs);
 
-	BIND_VMETHOD(MethodInfo("_sstart_casting", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_sstart_casting_triggered", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_sinterrupt_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_sfinish_cast", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_cast_starts", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_cast_starts_triggered", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_cast_interrupts", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_cast_finishs", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 
 	//Eventhandlers
 	ClassDB::bind_method(D_METHOD("son_cast_player_moved", "info"), &Spell::son_cast_player_moved);
@@ -1167,8 +1167,8 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("handle_cooldown", "info"), &Spell::handle_cooldown);
 
 	//Implementations
-	ClassDB::bind_method(D_METHOD("_sstart_casting", "info"), &Spell::_sstart_casting);
-	ClassDB::bind_method(D_METHOD("_sfinish_cast", "info"), &Spell::_sfinish_cast);
+	ClassDB::bind_method(D_METHOD("_cast_starts", "info"), &Spell::_cast_starts);
+	ClassDB::bind_method(D_METHOD("_cast_finishs", "info"), &Spell::_cast_finishs);
 
 	ClassDB::bind_method(D_METHOD("_son_cast_player_moved", "info"), &Spell::_son_cast_player_moved);
 	ClassDB::bind_method(D_METHOD("_son_spell_hit", "info"), &Spell::_son_spell_hit);

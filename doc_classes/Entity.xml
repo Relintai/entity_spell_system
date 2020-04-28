@@ -1090,7 +1090,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cdelay_cast">
+		<method name="cast_delayc">
 			<return type="void">
 			</return>
 			<description>
@@ -1158,13 +1158,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="cfail_cast">
+		<method name="cast_failc">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="cfinish_cast">
+		<method name="cast_finishc">
 			<return type="void">
 			</return>
 			<description>
@@ -1198,13 +1198,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="cinterrupt_cast">
+		<method name="cast_interruptc">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="cis_casting">
+		<method name="cast_is_castingc">
 			<return type="bool">
 			</return>
 			<description>
@@ -1660,7 +1660,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cspell_cast_success">
+		<method name="cast_spell_successc">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -1668,7 +1668,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cspell_cast_success_rpc">
+		<method name="cast_spell_successc_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -1676,7 +1676,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cstart_casting">
+		<method name="cast_startc">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -1684,7 +1684,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cstart_casting_rpc">
+		<method name="cast_startc_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -3114,7 +3114,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sdelay_cast">
+		<method name="cast_delays">
 			<return type="void">
 			</return>
 			<description>
@@ -3242,13 +3242,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="sfail_cast">
+		<method name="cast_fails">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="sfinish_cast">
+		<method name="cast_finishs">
 			<return type="void">
 			</return>
 			<description>
@@ -3270,13 +3270,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="sinterrupt_cast">
+		<method name="cast_interrupts">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="sis_casting">
+		<method name="cast_is_castings">
 			<return type="bool">
 			</return>
 			<description>
@@ -3588,7 +3588,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sspell_cast_success">
+		<method name="cast_spell_successs">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -3596,7 +3596,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sstart_casting">
+		<method name="cast_starts">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -4090,7 +4090,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="cspell_cast_success">
+		<signal name="cast_spell_successc">
 			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
 			</argument>
 			<description>
@@ -4454,7 +4454,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="sspell_cast_success">
+		<signal name="cast_spell_successs">
 			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
 			</argument>
 			<description>

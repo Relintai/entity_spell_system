@@ -106,7 +106,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_sfinish_cast" qualifiers="virtual">
+		<method name="_cast_finishs" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -114,7 +114,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_sinterrupt_cast" qualifiers="virtual">
+		<method name="_cast_interrupts" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -156,7 +156,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_sstart_casting" qualifiers="virtual">
+		<method name="_cast_starts" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -164,7 +164,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_sstart_casting_triggered" qualifiers="virtual">
+		<method name="_cast_starts_triggered" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -388,7 +388,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sfinish_cast">
+		<method name="cast_finishs">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -396,7 +396,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sinterrupt_cast">
+		<method name="cast_interrupts">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -438,7 +438,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sstart_casting">
+		<method name="cast_starts">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -446,7 +446,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sstart_casting_triggered">
+		<method name="cast_starts_triggered">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">

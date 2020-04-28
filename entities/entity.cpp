@@ -2696,9 +2696,9 @@ void Entity::_item_uses(int item_id) {
 		info->set_source_item(ii);
 		info->set_source_template(it);
 
-		sstart_casting(info);
+		cast_starts(info);
 
-		sp->sstart_casting(info);
+		sp->cast_starts(info);
 	} else {
 		if (!gets_bag()->has_item(it, 1))
 			return;
@@ -2714,9 +2714,9 @@ void Entity::_item_uses(int item_id) {
 		info->set_spell(sp);
 		info->set_source_template(it);
 
-		sstart_casting(info);
+		cast_starts(info);
 
-		sp->sstart_casting(info);
+		sp->cast_starts(info);
 	}
 }
 
@@ -3687,7 +3687,7 @@ void Entity::con_entity_resource_removed(Ref<EntityResource> resource) {
 
 ////    Casting System    ////
 
-void Entity::sstart_casting(Ref<SpellCastInfo> info) {
+void Entity::cast_starts(Ref<SpellCastInfo> info) {
 	_s_spell_cast_info = Ref<SpellCastInfo>(info);
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
@@ -3700,97 +3700,97 @@ void Entity::sstart_casting(Ref<SpellCastInfo> info) {
 
 	notification_scast(SpellEnums::NOTIFICATION_CAST_STARTED, info);
 
-	VRPCOBJ(cstart_casting_rpc, JSON::print(info->to_dict()), cstart_casting, info);
+	VRPCOBJ(cast_startc_rpc, JSON::print(info->to_dict()), cast_startc, info);
 }
 
-void Entity::sfail_cast() {
+void Entity::cast_fails() {
 	notification_scast(SpellEnums::NOTIFICATION_CAST_FAILED, _s_spell_cast_info);
 
 	_s_spell_cast_info.unref();
 
-	VRPC(cfail_cast);
+	VRPC(cast_failc);
 }
 
-void Entity::sdelay_cast() {
+void Entity::cast_delays() {
 	emit_signal("notification_scast", SpellEnums::NOTIFICATION_CAST_DELAYED, _s_spell_cast_info);
 
-	VRPC(cdelay_cast);
+	VRPC(cast_delayc);
 }
 
-void Entity::sfinish_cast() {
-	_s_spell_cast_info->get_spell()->sfinish_cast(_s_spell_cast_info);
+void Entity::cast_finishs() {
+	_s_spell_cast_info->get_spell()->cast_finishs(_s_spell_cast_info);
 
 	notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED, _s_spell_cast_info);
 
 	_s_spell_cast_info.unref();
 
-	VRPC(cfinish_cast);
+	VRPC(cast_finishc);
 }
 
-void Entity::sinterrupt_cast() {
+void Entity::cast_interrupts() {
 	notification_scast(SpellEnums::NOTIFICATION_CAST_INTERRUPTED, _s_spell_cast_info);
 
 	_s_spell_cast_info.unref();
 
-	VRPC(cinterrupt_cast);
+	VRPC(cast_interruptc);
 }
 
-void Entity::cstart_casting_rpc(String data) {
+void Entity::cast_startc_rpc(String data) {
 	Ref<SpellCastInfo> info;
 	info.instance();
 	info->from_dict(data_as_dict(data));
 	info->resolve_references(this);
 
-	cstart_casting(info);
+	cast_startc(info);
 }
 
-void Entity::cstart_casting(Ref<SpellCastInfo> info) {
+void Entity::cast_startc(Ref<SpellCastInfo> info) {
 	_c_spell_cast_info = Ref<SpellCastInfo>(info);
 
 	notification_ccast(SpellEnums::NOTIFICATION_CAST_STARTED, _c_spell_cast_info);
 }
 
-void Entity::cfail_cast() {
+void Entity::cast_failc() {
 	notification_ccast(SpellEnums::NOTIFICATION_CAST_FAILED, _c_spell_cast_info);
 
 	_c_spell_cast_info.unref();
 }
 
-void Entity::cdelay_cast() {
+void Entity::cast_delayc() {
 
 	//c_on_cast_
 
 	notification_scast(SpellEnums::NOTIFICATION_CAST_DELAYED, _c_spell_cast_info);
 }
 
-void Entity::cfinish_cast() {
+void Entity::cast_finishc() {
 	notification_ccast(SpellEnums::NOTIFICATION_CAST_FINISHED, _c_spell_cast_info);
 
 	_c_spell_cast_info.unref();
 }
 
-void Entity::cinterrupt_cast() {
+void Entity::cast_interruptc() {
 	notification_ccast(SpellEnums::NOTIFICATION_CAST_INTERRUPTED, _c_spell_cast_info);
 
 	_c_spell_cast_info.unref();
 }
 
-void Entity::sspell_cast_success(Ref<SpellCastInfo> info) {
+void Entity::cast_spell_successs(Ref<SpellCastInfo> info) {
 	notification_scast(SpellEnums::NOTIFICATION_CAST_SUCCESS, info);
 
-	VRPCOBJ(cspell_cast_success_rpc, JSON::print(info->to_dict()), cspell_cast_success, info);
+	VRPCOBJ(cast_spell_successc_rpc, JSON::print(info->to_dict()), cast_spell_successc, info);
 }
 
-void Entity::cspell_cast_success_rpc(String data) {
+void Entity::cast_spell_successc_rpc(String data) {
 	Ref<SpellCastInfo> info;
 	info.instance();
 	info->from_dict(data_as_dict(data));
 	info->resolve_references(this);
 
-	cspell_cast_success(info);
+	cast_spell_successc(info);
 }
 
-void Entity::cspell_cast_success(Ref<SpellCastInfo> info) {
+void Entity::cast_spell_successc(Ref<SpellCastInfo> info) {
 	notification_ccast(SpellEnums::NOTIFICATION_CAST_SUCCESS, info);
 }
 
@@ -4484,10 +4484,10 @@ void Entity::changec_skill_max(int skill_id, int value) {
 
 ////    Casting System    ////
 
-bool Entity::sis_casting() {
+bool Entity::cast_is_castings() {
 	return _s_spell_cast_info.is_valid();
 }
-bool Entity::cis_casting() {
+bool Entity::cast_is_castingc() {
 	return _c_spell_cast_info.is_valid();
 }
 
@@ -5304,7 +5304,7 @@ void Entity::update(float delta) {
 	if (ISSERVER()) {
 		if (_s_spell_cast_info.is_valid() && _s_spell_cast_info->get_is_casting()) {
 			if (_s_spell_cast_info->update_cast_time(delta)) {
-				sfinish_cast();
+				cast_finishs();
 			}
 		}
 
@@ -5811,13 +5811,13 @@ Entity::Entity() {
 
 	SET_RPC_REMOTE("setc_spell_cast_info");
 
-	SET_RPC_REMOTE("cstart_casting_rpc");
-	SET_RPC_REMOTE("cfail_cast");
-	SET_RPC_REMOTE("cdelay_cast");
-	SET_RPC_REMOTE("cfinish_cast");
-	SET_RPC_REMOTE("cinterrupt_cast");
+	SET_RPC_REMOTE("cast_startc_rpc");
+	SET_RPC_REMOTE("cast_failc");
+	SET_RPC_REMOTE("cast_delayc");
+	SET_RPC_REMOTE("cast_finishc");
+	SET_RPC_REMOTE("cast_interruptc");
 
-	SET_RPC_REMOTE("cspell_cast_success_rpc");
+	SET_RPC_REMOTE("cast_spell_successc_rpc");
 
 	////    Cooldowns    ////
 
@@ -6057,8 +6057,8 @@ void Entity::_son_class_level_up(int level) {
 }
 
 void Entity::_moved() {
-	if (sis_casting())
-		sfail_cast();
+	if (cast_is_castings())
+		cast_fails();
 }
 
 void Entity::_con_target_changed(Node *p_entity, Node *p_old_target) {
@@ -7021,8 +7021,8 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_cans_interact"));
 	BIND_VMETHOD(MethodInfo("_sinteract"));
 
-	ClassDB::bind_method(D_METHOD("cspell_cast_success", "info"), &Entity::cspell_cast_success);
-	ClassDB::bind_method(D_METHOD("cspell_cast_success_rpc", "data"), &Entity::cspell_cast_success_rpc);
+	ClassDB::bind_method(D_METHOD("cast_spell_successc", "info"), &Entity::cast_spell_successc);
+	ClassDB::bind_method(D_METHOD("cast_spell_successc_rpc", "data"), &Entity::cast_spell_successc_rpc);
 
 	ClassDB::bind_method(D_METHOD("con_death"), &Entity::con_death);
 
@@ -7432,8 +7432,8 @@ void Entity::_bind_methods() {
 
 	//Casting System
 
-	ClassDB::bind_method(D_METHOD("sis_casting"), &Entity::sis_casting);
-	ClassDB::bind_method(D_METHOD("cis_casting"), &Entity::cis_casting);
+	ClassDB::bind_method(D_METHOD("cast_is_castings"), &Entity::cast_is_castings);
+	ClassDB::bind_method(D_METHOD("cast_is_castingc"), &Entity::cast_is_castingc);
 
 	ClassDB::bind_method(D_METHOD("gets_spell_cast_info"), &Entity::gets_spell_cast_info);
 	ClassDB::bind_method(D_METHOD("sets_spell_cast_info", "value"), &Entity::sets_spell_cast_info);
@@ -7443,19 +7443,19 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_spell_cast_info", "value"), &Entity::setc_spell_cast_info);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cspell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo", 0), "setc_spell_cast_info", "getc_spell_cast_info");
 
-	ClassDB::bind_method(D_METHOD("sstart_casting", "info"), &Entity::sstart_casting);
-	ClassDB::bind_method(D_METHOD("sfail_cast"), &Entity::sfail_cast);
-	ClassDB::bind_method(D_METHOD("sdelay_cast"), &Entity::sdelay_cast);
-	ClassDB::bind_method(D_METHOD("sfinish_cast"), &Entity::sfinish_cast);
-	ClassDB::bind_method(D_METHOD("sinterrupt_cast"), &Entity::sinterrupt_cast);
+	ClassDB::bind_method(D_METHOD("cast_starts", "info"), &Entity::cast_starts);
+	ClassDB::bind_method(D_METHOD("cast_fails"), &Entity::cast_fails);
+	ClassDB::bind_method(D_METHOD("cast_delays"), &Entity::cast_delays);
+	ClassDB::bind_method(D_METHOD("cast_finishs"), &Entity::cast_finishs);
+	ClassDB::bind_method(D_METHOD("cast_interrupts"), &Entity::cast_interrupts);
 
-	ClassDB::bind_method(D_METHOD("cstart_casting_rpc", "data"), &Entity::cstart_casting_rpc);
-	ClassDB::bind_method(D_METHOD("cstart_casting", "info"), &Entity::cstart_casting);
-	ClassDB::bind_method(D_METHOD("cfail_cast"), &Entity::cfail_cast);
-	ClassDB::bind_method(D_METHOD("cdelay_cast"), &Entity::cdelay_cast);
-	ClassDB::bind_method(D_METHOD("cfinish_cast"), &Entity::cfinish_cast);
-	ClassDB::bind_method(D_METHOD("cinterrupt_cast"), &Entity::cinterrupt_cast);
-	ClassDB::bind_method(D_METHOD("sspell_cast_success", "info"), &Entity::sspell_cast_success);
+	ClassDB::bind_method(D_METHOD("cast_startc_rpc", "data"), &Entity::cast_startc_rpc);
+	ClassDB::bind_method(D_METHOD("cast_startc", "info"), &Entity::cast_startc);
+	ClassDB::bind_method(D_METHOD("cast_failc"), &Entity::cast_failc);
+	ClassDB::bind_method(D_METHOD("cast_delayc"), &Entity::cast_delayc);
+	ClassDB::bind_method(D_METHOD("cast_finishc"), &Entity::cast_finishc);
+	ClassDB::bind_method(D_METHOD("cast_interruptc"), &Entity::cast_interruptc);
+	ClassDB::bind_method(D_METHOD("cast_spell_successs", "info"), &Entity::cast_spell_successs);
 
 	//Cooldowns
 	ADD_SIGNAL(MethodInfo("scooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));

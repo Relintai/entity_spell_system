@@ -297,15 +297,15 @@ public:
 	float PLAYER_HIT_RADIUS;
 
 	//Commands, c++ only
-	void sstart_casting_simple(Entity *caster, float spell_scale);
-	void sinterrupt_cast_simple(Entity *caster);
-	void sstart_casting_triggered_simple(Entity *caster);
+	void cast_starts_simple(Entity *caster, float spell_scale);
+	void cast_interrupts_simple(Entity *caster);
+	void cast_starts_triggered_simple(Entity *caster);
 
 	//Commands
-	void sstart_casting(Ref<SpellCastInfo> info);
-	void sstart_casting_triggered(Ref<SpellCastInfo> info);
-	void sinterrupt_cast(Ref<SpellCastInfo> info);
-	void sfinish_cast(Ref<SpellCastInfo> info);
+	void cast_starts(Ref<SpellCastInfo> info);
+	void cast_starts_triggered(Ref<SpellCastInfo> info);
+	void cast_interrupts(Ref<SpellCastInfo> info);
+	void cast_finishs(Ref<SpellCastInfo> info);
 
 	//eventhandlers
 	void son_cast_player_moved(Ref<SpellCastInfo> info);
@@ -338,8 +338,8 @@ public:
 	~Spell();
 
 protected:
-	virtual void _sstart_casting(Ref<SpellCastInfo> info);
-	virtual void _sfinish_cast(Ref<SpellCastInfo> info);
+	virtual void _cast_starts(Ref<SpellCastInfo> info);
+	virtual void _cast_finishs(Ref<SpellCastInfo> info);
 
 	virtual void _son_cast_player_moved(Ref<SpellCastInfo> info);
 	virtual void _son_spell_hit(Ref<SpellCastInfo> info);

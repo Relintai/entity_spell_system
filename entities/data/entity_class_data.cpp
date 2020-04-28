@@ -430,7 +430,7 @@ void EntityClassData::start_casting(int spell_id, Entity *caster, float spellSca
 		}
 
 		if (s->get_id() == spell_id) {
-			s->sstart_casting_simple(caster, spellScale);
+			s->cast_starts_simple(caster, spellScale);
 			return;
 		}
 	}

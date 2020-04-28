@@ -609,8 +609,8 @@ public:
 
 	////    Casting System    ////
 
-	bool sis_casting();
-	bool cis_casting();
+	bool cast_is_castings();
+	bool cast_is_castingc();
 
 	Ref<SpellCastInfo> gets_spell_cast_info();
 	void sets_spell_cast_info(Ref<SpellCastInfo> info);
@@ -618,23 +618,23 @@ public:
 	Ref<SpellCastInfo> getc_spell_cast_info();
 	void setc_spell_cast_info(Ref<SpellCastInfo> info);
 
-	void sstart_casting(Ref<SpellCastInfo> info);
-	void sfail_cast();
-	void sdelay_cast();
-	void sfinish_cast();
-	void sinterrupt_cast();
+	void cast_starts(Ref<SpellCastInfo> info);
+	void cast_fails();
+	void cast_delays();
+	void cast_finishs();
+	void cast_interrupts();
 
-	void cstart_casting_rpc(String data);
-	void cstart_casting(Ref<SpellCastInfo> info);
-	void cfail_cast();
-	void cdelay_cast();
-	void cfinish_cast();
-	void cinterrupt_cast();
+	void cast_startc_rpc(String data);
+	void cast_startc(Ref<SpellCastInfo> info);
+	void cast_failc();
+	void cast_delayc();
+	void cast_finishc();
+	void cast_interruptc();
 
-	void sspell_cast_success(Ref<SpellCastInfo> info);
+	void cast_spell_successs(Ref<SpellCastInfo> info);
 
-	void cspell_cast_success_rpc(String data);
-	void cspell_cast_success(Ref<SpellCastInfo> info);
+	void cast_spell_successc_rpc(String data);
+	void cast_spell_successc(Ref<SpellCastInfo> info);
 
 	////    Cooldowns    ////
 
