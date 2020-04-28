@@ -1086,13 +1086,13 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 			Ref<AuraData> ad;
 
 			if (aura->get_aura_group().is_valid()) {
-				ad = info->get_target()->gets_aura_with_group_by_bind(info->get_caster(), aura->get_aura_group());
+				ad = info->get_target()->aura_gets_with_group_by_bind(info->get_caster(), aura->get_aura_group());
 			} else {
-				ad = info->get_target()->gets_aura_by(info->get_caster(), aura->get_id());
+				ad = info->get_target()->aura_gets_by(info->get_caster(), aura->get_id());
 			}
 
 			if (ad.is_valid()) {
-				info->get_target()->removes_aura_exact(ad);
+				info->get_target()->aura_removes_exact(ad);
 			}
 
 			Ref<AuraApplyInfo> aai;

@@ -960,7 +960,7 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 
 	Ref<Aura> aura = info->get_aura();
 
-	Ref<AuraData> ad = info->get_target()->gets_aura_by(info->get_caster(), _id);
+	Ref<AuraData> ad = info->get_target()->aura_gets_by(info->get_caster(), _id);
 
 	if (!ad.is_valid()) {
 		ad.instance();
@@ -984,7 +984,7 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 			}
 		}
 
-		info->get_target()->adds_aura(ad);
+		info->get_target()->aura_adds(ad);
 	} else {
 		ad->set_remaining_time(_time);
 	}
@@ -1016,8 +1016,8 @@ void Aura::_sadd(Ref<AuraData> aura) {
 
 	//sapply(aura);
 
-	aura->get_owner()->removes_aura(aura);
-	aura->get_owner()->adds_aura(aura);
+	aura->get_owner()->aura_removes(aura);
+	aura->get_owner()->aura_adds(aura);
 }
 
 void Aura::_sremove(Ref<AuraData> aura) {
@@ -1025,7 +1025,7 @@ void Aura::_sremove(Ref<AuraData> aura) {
 
 	sdeapply(aura);
 
-	aura->get_owner()->removes_aura(aura);
+	aura->get_owner()->aura_removes(aura);
 }
 
 void Aura::_removes_expired(Ref<AuraData> aura) {
@@ -1033,7 +1033,7 @@ void Aura::_removes_expired(Ref<AuraData> aura) {
 
 	sdeapply(aura);
 
-	aura->get_owner()->removes_aura_expired(aura);
+	aura->get_owner()->aura_removes_expired(aura);
 }
 
 void Aura::_removes_dispell(Ref<AuraData> aura) {
@@ -1041,7 +1041,7 @@ void Aura::_removes_dispell(Ref<AuraData> aura) {
 
 	sdeapply(aura);
 
-	aura->get_owner()->removes_aura_dispelled(aura);
+	aura->get_owner()->aura_removes_dispelled(aura);
 }
 
 void Aura::_supdate(Ref<AuraData> aura, float delta) {

@@ -674,7 +674,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_aura">
+		<method name="aura_addc">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -682,7 +682,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_aura_rpc">
+		<method name="aura_addc_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -862,7 +862,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_aura">
+		<method name="aura_adds">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -1876,7 +1876,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_aura">
+		<method name="aura_getc">
 			<return type="AuraData">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -1884,7 +1884,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_aura_count">
+		<method name="aura_getc_count">
 			<return type="int">
 			</return>
 			<description>
@@ -2074,7 +2074,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_aura">
+		<method name="aura_gets">
 			<return type="AuraData">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2082,7 +2082,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_aura_by">
+		<method name="aura_gets_by">
 			<return type="AuraData">
 			</return>
 			<argument index="0" name="caster" type="Node">
@@ -2092,13 +2092,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_aura_count">
+		<method name="aura_gets_count">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="gets_aura_with_group_by">
+		<method name="aura_gets_with_group_by">
 			<return type="AuraData">
 			</return>
 			<argument index="0" name="caster" type="Node">
@@ -2660,7 +2660,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_aura">
+		<method name="aura_removec">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -2668,7 +2668,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_aura_dispelled">
+		<method name="aura_removec_dispelled">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -2676,7 +2676,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_aura_dispelled_rpc">
+		<method name="aura_removec_dispelled_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -2684,7 +2684,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_aura_exact">
+		<method name="aura_removec_exact">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -2692,7 +2692,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_aura_exact_rpc">
+		<method name="aura_removec_exact_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -2700,7 +2700,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_aura_expired">
+		<method name="aura_removec_expired">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -2708,7 +2708,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_aura_expired_rpc">
+		<method name="aura_removec_expired_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -2716,7 +2716,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_aura_rpc">
+		<method name="aura_removec_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
@@ -2844,7 +2844,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_aura">
+		<method name="aura_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -2852,7 +2852,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_aura_dispelled">
+		<method name="aura_removes_dispelled">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -2860,7 +2860,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_aura_exact">
+		<method name="aura_removes_exact">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -2868,7 +2868,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_aura_expired">
+		<method name="aura_removes_expired">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
@@ -2876,7 +2876,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_auras_with_group">
+		<method name="aura_removess_with_group">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura_group" type="AuraGroup">

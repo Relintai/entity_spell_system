@@ -557,40 +557,40 @@ public:
 	void levelup_ccharacter(int value);
 
 	//Aura Manipulation
-	void adds_aura(Ref<AuraData> aura);
-	void removes_aura(Ref<AuraData> aura);
-	void removes_aura_exact(Ref<AuraData> aura);
-	void removes_aura_expired(Ref<AuraData> aura);
-	void removes_aura_dispelled(Ref<AuraData> aura);
-	void saura_refreshed(Ref<AuraData> aura);
+	void aura_adds(Ref<AuraData> aura);
+	void aura_removes(Ref<AuraData> aura);
+	void aura_removes_exact(Ref<AuraData> aura);
+	void aura_removes_expired(Ref<AuraData> aura);
+	void aura_removes_dispelled(Ref<AuraData> aura);
+	void aura_refresheds(Ref<AuraData> aura);
 
-	void addc_aura_rpc(String data);
-	void removec_aura_rpc(String data);
-	void removec_aura_exact_rpc(String data);
-	void removec_aura_expired_rpc(String data);
-	void removec_aura_dispelled_rpc(String data);
-	void caura_refreshed_rpc(String data);
+	void aura_addc_rpc(String data);
+	void aura_removec_rpc(String data);
+	void aura_removec_exact_rpc(String data);
+	void aura_removec_expired_rpc(String data);
+	void aura_removec_dispelled_rpc(String data);
+	void aura_refreshedc_rpc(String data);
 
-	void addc_aura(Ref<AuraData> aura);
-	void removec_aura(Ref<AuraData> aura);
-	void removec_aura_exact(Ref<AuraData> aura);
-	void removec_aura_expired(Ref<AuraData> aura);
-	void removec_aura_dispelled(Ref<AuraData> aura);
-	void caura_refreshed(Ref<AuraData> aura);
+	void aura_addc(Ref<AuraData> aura);
+	void aura_removec(Ref<AuraData> aura);
+	void aura_removec_exact(Ref<AuraData> aura);
+	void aura_removec_expired(Ref<AuraData> aura);
+	void aura_removec_dispelled(Ref<AuraData> aura);
+	void aura_refreshedc(Ref<AuraData> aura);
 
-	void removes_auras_with_group(Ref<AuraGroup> aura_group);
+	void aura_removess_with_group(Ref<AuraGroup> aura_group);
 
 	//NOTE: No reason for shas_aura_by, just query it, and check for null.
-	int gets_aura_count();
-	Ref<AuraData> gets_aura(int index);
-	Ref<AuraData> gets_aura_by(Entity *caster, int aura_id);
-	Ref<AuraData> gets_aura_by_bind(Node *caster, int aura_id);
+	int aura_gets_count();
+	Ref<AuraData> aura_gets(int index);
+	Ref<AuraData> aura_gets_by(Entity *caster, int aura_id);
+	Ref<AuraData> aura_gets_by_bind(Node *caster, int aura_id);
 
-	Ref<AuraData> gets_aura_with_group_by(Entity *caster, Ref<AuraGroup> aura_group);
-	Ref<AuraData> gets_aura_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group);
+	Ref<AuraData> aura_gets_with_group_by(Entity *caster, Ref<AuraGroup> aura_group);
+	Ref<AuraData> aura_gets_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group);
 
-	int getc_aura_count();
-	Ref<AuraData> getc_aura(int index);
+	int aura_getc_count();
+	Ref<AuraData> aura_getc(int index);
 
 	//Hooks
 	void moved();
