@@ -177,11 +177,10 @@ public:
 	void son_entity_resource_removed(Ref<EntityResource> resource);
 
 	//Clientside Event Handlers
-	void con_cast_failed(Ref<SpellCastInfo> info);
-	void con_cast_started(Ref<SpellCastInfo> info);
-	void con_cast_state_changed(Ref<SpellCastInfo> info);
-	void con_cast_finished(Ref<SpellCastInfo> info);
-	void con_spell_cast_success(Ref<SpellCastInfo> info);
+	void notification_caura(int what, Ref<AuraData> data);
+	void notification_cheal(int what, Ref<SpellHealInfo> info);
+	void notification_ccast(int what, Ref<SpellCastInfo> info);
+	void notification_cdamage(int what, Ref<SpellDamageInfo> info);
 
 	void con_death(Entity *entity);
 	void con_death_bind(Node *entity);
@@ -190,15 +189,6 @@ public:
 	void con_cooldown_removed(Ref<Cooldown> cooldown);
 	void con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
 	void con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
-
-	void con_aura_added(Ref<AuraData> data);
-	void con_aura_removed(Ref<AuraData> data);
-	void con_aura_refresh(Ref<AuraData> data);
-
-	void con_damage_dealt(Ref<SpellDamageInfo> info);
-	void con_dealt_damage(Ref<SpellDamageInfo> info);
-	void con_heal_dealt(Ref<SpellHealInfo> info);
-	void con_dealt_heal(Ref<SpellHealInfo> info);
 
 	void con_gcd_started(Entity *entity, float gcd);
 	void con_gcd_finished(Entity *entity);

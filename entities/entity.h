@@ -154,6 +154,12 @@ enum PlayerSendFlags {
 	}                                                         \
 	normalfunc(normal_var);
 
+#define VRPCOBJ12(rpcfunc, rpc_var, normalfunc, normal_var1, normal_var2) \
+	if (is_inside_tree() && get_tree()->has_network_peer()) {             \
+		vrpc(#rpcfunc, rpc_var);                                          \
+	}                                                                     \
+	normalfunc(normal_var1, normal_var2);
+
 #define VRPCOBJP(rpcfunc, rpc_var1, rpc_var2, normalfunc, normal_var1, normal_var2) \
 	if (is_inside_tree() && get_tree()->has_network_peer()) {                       \
 		vrpc(#rpcfunc, rpc_var1, rpc_var2);                                         \
@@ -483,16 +489,10 @@ public:
 	void son_entity_resource_removed(Ref<EntityResource> resource);
 
 	//Clientside EventHandlers
-	//void notification_caura(int what, Ref<AuraData> data);
-	//void notification_cheal(int what, Ref<SpellHealInfo> info);
-	//void notification_ccast(int what, Ref<SpellCastInfo> info);
-	//void notification_cdamage(int what, Ref<SpellDamageInfo> info);
-
-	void con_cast_failed(Ref<SpellCastInfo> info);
-	void con_cast_started(Ref<SpellCastInfo> info);
-	void con_cast_state_changed(Ref<SpellCastInfo> info);
-	void con_cast_finished(Ref<SpellCastInfo> info);
-	void con_spell_cast_success(Ref<SpellCastInfo> info);
+	void notification_caura(int what, Ref<AuraData> data);
+	void notification_cheal(int what, Ref<SpellHealInfo> info);
+	void notification_ccast(int what, Ref<SpellCastInfo> info);
+	void notification_cdamage(int what, Ref<SpellDamageInfo> info);
 
 	void con_death();
 
@@ -500,15 +500,6 @@ public:
 	void con_cooldown_removed(Ref<Cooldown> cooldown);
 	void con_category_cooldown_added(Ref<CategoryCooldown> category_cooldown);
 	void con_category_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
-
-	void con_aura_added(Ref<AuraData> data);
-	void con_aura_removed(Ref<AuraData> data);
-	void con_aura_refresh(Ref<AuraData> data);
-
-	void con_damage_dealt(Ref<SpellDamageInfo> info);
-	void con_dealt_damage(Ref<SpellDamageInfo> info);
-	void con_heal_dealt(Ref<SpellHealInfo> info);
-	void con_dealt_heal(Ref<SpellHealInfo> info);
 
 	void con_xp_gained(int value);
 	void con_class_level_up(int value);

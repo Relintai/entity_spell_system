@@ -314,11 +314,8 @@ public:
 	void son_physics_process(Ref<SpellCastInfo> info, float delta);
 
 	//Clientside Event Handlers
-	void con_spell_cast_started(Ref<SpellCastInfo> info);
-	void con_spell_cast_success(Ref<SpellCastInfo> info);
-	void con_spell_cast_failed(Ref<SpellCastInfo> info);
-	void con_spell_cast_ended(Ref<SpellCastInfo> info);
-	void con_spell_cast_interrupted(Ref<SpellCastInfo> info);
+	void notification_scast(int what, Ref<SpellCastInfo> info);
+	void notification_ccast(int what, Ref<SpellCastInfo> info);
 
 	//Calculations / Queries
 	void calculate_initial_damage(Ref<SpellDamageInfo> data);

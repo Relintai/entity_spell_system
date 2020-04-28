@@ -693,43 +693,19 @@ void Spell::son_physics_process(Ref<SpellCastInfo> info, float delta) {
 	}
 }
 
-void Spell::con_spell_cast_started(Ref<SpellCastInfo> info) {
+void Spell::notification_scast(int what, Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (has_method("_con_spell_cast_started")) {
-		call("_con_spell_cast_started", info);
+	if (has_method("_notification_scast")) {
+		call("_notification_scast", what, info);
 	}
 }
 
-void Spell::con_spell_cast_success(Ref<SpellCastInfo> info) {
+void Spell::notification_ccast(int what, Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (has_method("_con_spell_cast_success")) {
-		call("_con_spell_cast_success", info);
-	}
-}
-
-void Spell::con_spell_cast_failed(Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_con_spell_cast_failed")) {
-		call("_con_spell_cast_failed", info);
-	}
-}
-
-void Spell::con_spell_cast_ended(Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_con_spell_cast_ended")) {
-		call("_con_spell_cast_ended", info);
-	}
-}
-
-void Spell::con_spell_cast_interrupted(Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_con_spell_cast_interrupted")) {
-		call("_con_spell_cast_interrupted", info);
+	if (has_method("_notification_ccast")) {
+		call("_notification_ccast", what, info);
 	}
 }
 
@@ -1162,17 +1138,11 @@ void Spell::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_physics_process", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo"), PropertyInfo(Variant::REAL, "delta")));
 
 	//Clientside Event Handlers
-	ClassDB::bind_method(D_METHOD("con_spell_cast_started", "info"), &Spell::con_spell_cast_started);
-	ClassDB::bind_method(D_METHOD("con_spell_cast_success", "info"), &Spell::con_spell_cast_success);
-	ClassDB::bind_method(D_METHOD("con_spell_cast_failed", "info"), &Spell::con_spell_cast_failed);
-	ClassDB::bind_method(D_METHOD("con_spell_cast_ended", "info"), &Spell::con_spell_cast_ended);
-	ClassDB::bind_method(D_METHOD("con_spell_cast_interrupted", "info"), &Spell::con_spell_cast_interrupted);
+	BIND_VMETHOD(MethodInfo("_notification_scast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	ClassDB::bind_method(D_METHOD("notification_scast", "what", "info"), &Spell::notification_scast);
 
-	BIND_VMETHOD(MethodInfo("_con_spell_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_con_spell_cast_success", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_con_spell_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_con_spell_cast_ended", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_con_spell_cast_interrupted", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_ccast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	ClassDB::bind_method(D_METHOD("notification_ccast", "what", "info"), &Spell::notification_scast);
 
 	//Calculations / Queries
 	ClassDB::bind_method(D_METHOD("calculate_initial_damage", "data"), &Spell::calculate_initial_damage);

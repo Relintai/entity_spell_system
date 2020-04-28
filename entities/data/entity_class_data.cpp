@@ -587,35 +587,29 @@ void EntityClassData::son_entity_resource_removed(Ref<EntityResource> resource) 
 }
 
 //Clientside Event Handlers
-void EntityClassData::con_cast_failed(Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!info.is_valid());
+void EntityClassData::notification_caura(int what, Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_con_cast_failed"))
-		call("_con_cast_failed", info);
+	if (has_method("_notification_caura"))
+		call("_notification_caura", what, data);
 }
-void EntityClassData::con_cast_started(Ref<SpellCastInfo> info) {
+void EntityClassData::notification_cheal(int what, Ref<SpellHealInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (has_method("_con_cast_started"))
-		call("_con_cast_started", info);
+	if (has_method("_notification_cheal"))
+		call("_notification_cheal", what, info);
 }
-void EntityClassData::con_cast_state_changed(Ref<SpellCastInfo> info) {
+void EntityClassData::notification_ccast(int what, Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (has_method("_con_cast_state_changed"))
-		call("_con_cast_state_changed", info);
+	if (has_method("_notification_ccast"))
+		call("_notification_ccast", what, info);
 }
-void EntityClassData::con_cast_finished(Ref<SpellCastInfo> info) {
+void EntityClassData::notification_cdamage(int what, Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (has_method("_con_cast_finished"))
-		call("_con_cast_finished", info);
-}
-void EntityClassData::con_spell_cast_success(Ref<SpellCastInfo> info) {
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_con_spell_cast_success"))
-		call("_con_spell_cast_success", info);
+	if (has_method("_notification_cdamage"))
+		call("_notification_cdamage", what, info);
 }
 
 void EntityClassData::con_death(Entity *entity) {
@@ -658,55 +652,6 @@ void EntityClassData::con_category_cooldown_removed(Ref<CategoryCooldown> catego
 
 	if (has_method("_con_category_cooldown_removed"))
 		call("_con_category_cooldown_removed", category_cooldown);
-}
-
-void EntityClassData::con_aura_added(Ref<AuraData> data) {
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_con_aura_added"))
-		call("_con_aura_added", data);
-}
-
-void EntityClassData::con_aura_removed(Ref<AuraData> data) {
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_con_aura_removed"))
-		call("_con_aura_removed", data);
-}
-
-void EntityClassData::con_aura_refresh(Ref<AuraData> data) {
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_con_aura_refresh"))
-		call("_con_aura_refresh", data);
-}
-
-void EntityClassData::con_damage_dealt(Ref<SpellDamageInfo> info) {
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_con_damage_dealt"))
-		call("_con_damage_dealt", info);
-}
-
-void EntityClassData::con_dealt_damage(Ref<SpellDamageInfo> info) {
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_con_dealt_damage"))
-		call("_con_dealt_damage", info);
-}
-
-void EntityClassData::con_heal_dealt(Ref<SpellHealInfo> info) {
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_con_heal_dealt"))
-		call("_con_heal_dealt", info);
-}
-
-void EntityClassData::con_dealt_heal(Ref<SpellHealInfo> info) {
-	ERR_FAIL_COND(!info.is_valid());
-
-	if (has_method("_con_dealt_heal"))
-		call("_con_dealt_heal", info);
 }
 
 void EntityClassData::con_gcd_started(Entity *entity, float gcd) {
@@ -920,6 +865,16 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_scast", "what", "info"), &EntityClassData::notification_scast);
 	ClassDB::bind_method(D_METHOD("notification_sdamage", "what", "info"), &EntityClassData::notification_sdamage);
 
+	BIND_VMETHOD(MethodInfo("_notification_caura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_notification_cheal", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_ccast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_cdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	ClassDB::bind_method(D_METHOD("notification_caura", "what", "data"), &EntityClassData::notification_caura);
+	ClassDB::bind_method(D_METHOD("notification_cheal", "what", "info"), &EntityClassData::notification_cheal);
+	ClassDB::bind_method(D_METHOD("notification_ccast", "what", "info"), &EntityClassData::notification_ccast);
+	ClassDB::bind_method(D_METHOD("notification_cdamage", "what", "info"), &EntityClassData::notification_cdamage);
+
 	ClassDB::bind_method(D_METHOD("son_death", "data"), &EntityClassData::son_death_bind);
 
 	ClassDB::bind_method(D_METHOD("son_cooldown_added", "cooldown"), &EntityClassData::son_cooldown_added);
@@ -962,22 +917,12 @@ void EntityClassData::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_setup_resources", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	//Clientside Event Handlers
-	ClassDB::bind_method(D_METHOD("con_cast_failed", "info"), &EntityClassData::con_cast_failed);
-	ClassDB::bind_method(D_METHOD("con_cast_started", "info"), &EntityClassData::con_cast_started);
-	ClassDB::bind_method(D_METHOD("con_cast_state_changed", "info"), &EntityClassData::con_cast_state_changed);
-	ClassDB::bind_method(D_METHOD("con_cast_finished", "info"), &EntityClassData::con_cast_finished);
-	ClassDB::bind_method(D_METHOD("con_spell_cast_success", "info"), &EntityClassData::con_spell_cast_success);
-
 	ClassDB::bind_method(D_METHOD("con_death", "data"), &EntityClassData::con_death_bind);
 
 	ClassDB::bind_method(D_METHOD("con_cooldown_added", "cooldown"), &EntityClassData::con_cooldown_added);
 	ClassDB::bind_method(D_METHOD("con_cooldown_removed", "cooldown"), &EntityClassData::con_cooldown_removed);
 	ClassDB::bind_method(D_METHOD("con_category_cooldown_added", "cooldown"), &EntityClassData::con_category_cooldown_added);
 	ClassDB::bind_method(D_METHOD("con_category_cooldown_removed", "cooldown"), &EntityClassData::con_category_cooldown_removed);
-
-	ClassDB::bind_method(D_METHOD("con_aura_added", "data"), &EntityClassData::con_aura_added);
-	ClassDB::bind_method(D_METHOD("con_aura_removed", "data"), &EntityClassData::con_aura_removed);
-	ClassDB::bind_method(D_METHOD("con_aura_refresh", "data"), &EntityClassData::con_aura_refresh);
 
 	ClassDB::bind_method(D_METHOD("con_gcd_started", "entity", "gcd"), &EntityClassData::con_gcd_started_bind);
 	ClassDB::bind_method(D_METHOD("con_gcd_finished", "entity"), &EntityClassData::con_gcd_finished_bind);
@@ -989,22 +934,7 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("con_entity_resource_added", "resource"), &EntityClassData::con_entity_resource_added);
 	ClassDB::bind_method(D_METHOD("con_entity_resource_removed", "resource"), &EntityClassData::con_entity_resource_removed);
 
-	BIND_VMETHOD(MethodInfo("_con_cast_failed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_con_cast_started", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_con_cast_state_changed", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_con_cast_finished", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_con_spell_cast_success", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-
 	BIND_VMETHOD(MethodInfo("_con_death", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-
-	BIND_VMETHOD(MethodInfo("_con_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	BIND_VMETHOD(MethodInfo("_con_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	BIND_VMETHOD(MethodInfo("_con_category_cooldown_added", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
-	BIND_VMETHOD(MethodInfo("_con_category_cooldown_removed", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
-
-	BIND_VMETHOD(MethodInfo("_con_aura_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_con_aura_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_con_aura_refresh", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 	BIND_VMETHOD(MethodInfo("_con_gcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
 	BIND_VMETHOD(MethodInfo("_con_gcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
@@ -1014,7 +944,6 @@ void EntityClassData::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_con_character_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
 	//Equipment
-
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_should_deny_equip", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 
 	BIND_VMETHOD(MethodInfo("_son_equip_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
