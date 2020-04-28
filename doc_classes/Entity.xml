@@ -1692,7 +1692,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cstart_global_cooldown">
+		<method name="gcd_startc">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="float">
@@ -1970,13 +1970,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_global_cooldown">
+		<method name="gcd_getc">
 			<return type="bool">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="getc_has_global_cooldown">
+		<method name="gcd_hasc">
 			<return type="bool">
 			</return>
 			<description>
@@ -2196,13 +2196,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_global_cooldown">
+		<method name="gcd_gets">
 			<return type="bool">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="gets_has_global_cooldown">
+		<method name="gcd_hass">
 			<return type="bool">
 			</return>
 			<description>
@@ -3604,7 +3604,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sstart_global_cooldown">
+		<method name="gcd_starts">
 			<return type="void">
 			</return>
 			<argument index="0" name="value" type="float">

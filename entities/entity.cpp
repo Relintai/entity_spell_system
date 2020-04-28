@@ -1523,33 +1523,33 @@ bool Entity::getc_is_dead() {
 	return _c_is_dead;
 }
 
-bool Entity::getc_has_global_cooldown() {
+bool Entity::gcd_hasc() {
 	return _c_gcd >= 0.000000001;
 }
 
-bool Entity::gets_has_global_cooldown() {
+bool Entity::gcd_hass() {
 	return _s_gcd >= 0.000000001;
 }
 
-bool Entity::getc_global_cooldown() {
+float Entity::gcd_getc() {
 	return _c_gcd;
 }
 
-bool Entity::gets_global_cooldown() {
+float Entity::gcd_gets() {
 	return _s_gcd;
 }
 
-void Entity::sstart_global_cooldown(float value) {
+void Entity::gcd_starts(float value) {
 	_s_gcd = value;
 
 	void son_gcd_started();
 
 	emit_signal("sgcd_started", _s_gcd);
 
-	ORPC(cstart_global_cooldown, value);
+	ORPC(gcd_startc, value);
 }
 
-void Entity::cstart_global_cooldown(float value) {
+void Entity::gcd_startc(float value) {
 	_c_gcd = value;
 
 	void con_gcd_started();
@@ -5751,7 +5751,7 @@ Entity::Entity() {
 
 	////    Global Cooldown    ////
 
-	SET_RPC_REMOTE("cstart_global_cooldown");
+	SET_RPC_REMOTE("gcd_startc");
 
 	////    States    ////
 
@@ -7401,12 +7401,12 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("cgcd_started", PropertyInfo(Variant::REAL, "value")));
 	ADD_SIGNAL(MethodInfo("cgcd_finished"));
 
-	ClassDB::bind_method(D_METHOD("getc_has_global_cooldown"), &Entity::getc_has_global_cooldown);
-	ClassDB::bind_method(D_METHOD("gets_has_global_cooldown"), &Entity::gets_has_global_cooldown);
-	ClassDB::bind_method(D_METHOD("getc_global_cooldown"), &Entity::getc_global_cooldown);
-	ClassDB::bind_method(D_METHOD("gets_global_cooldown"), &Entity::gets_global_cooldown);
-	ClassDB::bind_method(D_METHOD("sstart_global_cooldown", "value"), &Entity::sstart_global_cooldown);
-	ClassDB::bind_method(D_METHOD("cstart_global_cooldown", "value"), &Entity::cstart_global_cooldown);
+	ClassDB::bind_method(D_METHOD("gcd_hasc"), &Entity::gcd_hasc);
+	ClassDB::bind_method(D_METHOD("gcd_hass"), &Entity::gcd_hass);
+	ClassDB::bind_method(D_METHOD("gcd_getc"), &Entity::gcd_getc);
+	ClassDB::bind_method(D_METHOD("gcd_gets"), &Entity::gcd_gets);
+	ClassDB::bind_method(D_METHOD("gcd_starts", "value"), &Entity::gcd_starts);
+	ClassDB::bind_method(D_METHOD("gcd_startc", "value"), &Entity::gcd_startc);
 
 	//Data
 	ClassDB::bind_method(D_METHOD("adds_data", "data"), &Entity::adds_data);

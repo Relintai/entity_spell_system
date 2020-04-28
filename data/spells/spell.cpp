@@ -752,7 +752,7 @@ void Spell::handle_gcd(Ref<SpellCastInfo> info) {
 		Ref<Stat> gcd = info->get_caster()->get_stat(ESS::get_instance()->stat_get_id("Global Cooldown"));
 
 		if (gcd.is_valid())
-			info->get_caster()->sstart_global_cooldown(gcd->gets_current());
+			info->get_caster()->gcd_starts(gcd->gets_current());
 	}
 }
 void Spell::handle_cooldown(Ref<SpellCastInfo> info) {
@@ -921,7 +921,7 @@ void Spell::_sstart_casting(Ref<SpellCastInfo> info) {
 		return;
 	}
 
-	if ((get_global_cooldown_enabled() && info->get_caster()->gets_has_global_cooldown()) ||
+	if ((get_global_cooldown_enabled() && info->get_caster()->gcd_hass()) ||
 			info->get_caster()->hass_category_cooldown(get_spell_type()) ||
 			info->get_caster()->hass_cooldown(get_id())) {
 		return;

@@ -417,12 +417,12 @@ public:
 
 	////    Global Cooldown    ////
 
-	bool getc_has_global_cooldown();
-	bool gets_has_global_cooldown();
-	bool getc_global_cooldown();
-	bool gets_global_cooldown();
-	void sstart_global_cooldown(float value);
-	void cstart_global_cooldown(float value);
+	bool gcd_hasc();
+	bool gcd_hass();
+	float gcd_getc();
+	float gcd_gets();
+	void gcd_starts(float value);
+	void gcd_startc(float value);
 
 	////    States    ////
 	int getc_state();
