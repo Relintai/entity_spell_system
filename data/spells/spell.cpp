@@ -927,7 +927,7 @@ void Spell::_cast_starts(Ref<SpellCastInfo> info) {
 		return;
 	}
 
-	if (!info->get_caster()->hass_spell_id(get_id())) {
+	if (!info->get_caster()->spell_hass_id(get_id())) {
 		return;
 	}
 

@@ -612,10 +612,10 @@ public:
 	bool cast_is_castings();
 	bool cast_is_castingc();
 
-	Ref<SpellCastInfo> gets_spell_cast_info();
+	Ref<SpellCastInfo> spell_gets_cast_info();
 	void sets_spell_cast_info(Ref<SpellCastInfo> info);
 
-	Ref<SpellCastInfo> getc_spell_cast_info();
+	Ref<SpellCastInfo> spell_getc_cast_info();
 	void setc_spell_cast_info(Ref<SpellCastInfo> info);
 
 	void cast_starts(Ref<SpellCastInfo> info);
@@ -685,56 +685,56 @@ public:
 	int getc_free_spell_points();
 	void setc_free_spell_points(int value);
 
-	void crequest_spell_learn(int id);
-	void slearn_spell(int id);
+	void spell_learn_requestc(int id);
+	void spell_learns(int id);
 
-	bool hass_spell(Ref<Spell> spell);
-	bool hass_spell_id(int id);
-	void adds_spell(Ref<Spell> spell);
-	void adds_spell_id(int id);
-	void removes_spell(Ref<Spell> spell);
-	Ref<Spell> gets_spell(int index);
-	int gets_spell_count();
+	bool spell_hass(Ref<Spell> spell);
+	bool spell_hass_id(int id);
+	void spell_adds(Ref<Spell> spell);
+	void spell_adds_id(int id);
+	void spell_removes(Ref<Spell> spell);
+	Ref<Spell> spell_gets(int index);
+	int spell_gets_count();
 
-	bool hasc_spell(Ref<Spell> spell);
-	bool hasc_spell_id(int id);
-	void addc_spell(Ref<Spell> spell);
-	void removec_spell(Ref<Spell> spell);
-	Ref<Spell> getc_spell(int index);
-	int getc_spell_count();
+	bool spell_hasc(Ref<Spell> spell);
+	bool spell_hasc_id(int id);
+	void spell_addc(Ref<Spell> spell);
+	void spell_removec(Ref<Spell> spell);
+	Ref<Spell> spell_getc(int index);
+	int spell_getc_count();
 
-	void addc_spell_rpc(int id);
-	void removec_spell_rpc(int id);
+	void spell_addc_rpc(int id);
+	void spell_removec_rpc(int id);
 
 	//Skills
 
-	bool hass_skill_id(int id);
-	bool hass_skill(Ref<EntitySkill> skill);
-	void adds_skill(Ref<EntitySkill> skill);
-	void removes_skill(Ref<EntitySkill> skill);
-	Ref<EntitySkill> gets_skill(int skill);
-	int gets_skill_count();
+	bool skill_hass_id(int id);
+	bool skill_hass(Ref<EntitySkill> skill);
+	void skill_adds(Ref<EntitySkill> skill);
+	void skill_removes(Ref<EntitySkill> skill);
+	Ref<EntitySkill> skill_gets(int skill);
+	int skill_gets_count();
 
-	bool hasc_skill_id(int id);
-	bool hasc_skill(Ref<EntitySkill> skill);
-	void addc_skill(Ref<EntitySkill> skill);
-	void removec_skill(Ref<EntitySkill> skill);
-	Ref<EntitySkill> getc_skill(int index);
-	int getc_skill_count();
+	bool skill_hasc_id(int id);
+	bool skill_hasc(Ref<EntitySkill> skill);
+	void skill_addc(Ref<EntitySkill> skill);
+	void skill_removec(Ref<EntitySkill> skill);
+	Ref<EntitySkill> skill_getc(int index);
+	int skill_getc_count();
 
-	void sskill_current_changed(Ref<EntitySkill> skill);
-	void sskill_max_changed(Ref<EntitySkill> skill);
+	void skill_scurrent_changed(Ref<EntitySkill> skill);
+	void skill_smax_changed(Ref<EntitySkill> skill);
 
-	void addc_skill_id(int skill_id, int value, int max_value);
-	void removec_skill_id(int skill_id);
-	void changec_skill(int skill_id, int value);
-	void changec_skill_max(int skill_id, int value);
+	void skill_addc_id(int skill_id, int value, int max_value);
+	void skill_removec_id(int skill_id);
+	void skill_changec(int skill_id, int value);
+	void skill_changec_max(int skill_id, int value);
 
 	////    Target    ////
 
-	void crequest_target_change(NodePath path);
-	void net_sets_target(NodePath path);
-	void net_setc_target(NodePath path);
+	void target_crequest_change(NodePath path);
+	void target_net_sets(NodePath path);
+	void target_net_setc(NodePath path);
 
 	Entity *gets_target();
 	void sets_target(Node *p_target);
@@ -975,7 +975,7 @@ protected:
 	void _moved();
 	void _con_target_changed(Node *p_entity, Node *p_old_target);
 	void _son_death();
-	void _slearn_spell(int id);
+	void _spell_learns(int id);
 
 	bool _set(const StringName &p_name, const Variant &p_value);
 	bool _get(const StringName &p_name, Variant &r_ret) const;

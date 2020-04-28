@@ -673,7 +673,7 @@ void Entity::_setup() {
 
 	if (cd.is_valid()) {
 		for (int i = 0; i < cd->get_num_start_spells(); ++i) {
-			adds_spell(cd->get_start_spell(i));
+			spell_adds(cd->get_start_spell(i));
 		}
 	}
 
@@ -742,7 +742,7 @@ void Entity::_setup() {
 			Vector<String> spells = class_profile->get_custom_data("spells");
 
 			for (int i = 0; i < spells.size(); ++i) {
-				adds_spell_id(ESS::get_instance()->get_resource_db()->spell_path_to_id(spells.get(i)));
+				spell_adds_id(ESS::get_instance()->get_resource_db()->spell_path_to_id(spells.get(i)));
 			}
 		}
 	}
@@ -4141,17 +4141,17 @@ void Entity::setc_free_spell_points(int value) {
 	emit_signal("cfree_spell_points_changed", this, value);
 }
 
-void Entity::crequest_spell_learn(int id) {
-	slearn_spell(id);
+void Entity::spell_learn_requestc(int id) {
+	spell_learns(id);
 }
-void Entity::slearn_spell(int id) {
-	//if (has_method("_slearn_spell")) {
-	call("_slearn_spell", id);
+void Entity::spell_learns(int id) {
+	//if (has_method("_spell_learns")) {
+	call("_spell_learns", id);
 	//	return;
 	//	}
 }
 
-bool Entity::hass_spell(Ref<Spell> spell) {
+bool Entity::spell_hass(Ref<Spell> spell) {
 	for (int i = 0; i < _s_spells.size(); ++i) {
 		if (_s_spells.get(i) == spell) {
 			return true;
@@ -4160,7 +4160,7 @@ bool Entity::hass_spell(Ref<Spell> spell) {
 
 	return false;
 }
-bool Entity::hass_spell_id(int id) {
+bool Entity::spell_hass_id(int id) {
 	for (int i = 0; i < _s_spells.size(); ++i) {
 		Ref<Spell> spell = _s_spells.get(i);
 
@@ -4174,8 +4174,8 @@ bool Entity::hass_spell_id(int id) {
 
 	return false;
 }
-void Entity::adds_spell(Ref<Spell> spell) {
-	if (hass_spell(spell))
+void Entity::spell_adds(Ref<Spell> spell) {
+	if (spell_hass(spell))
 		return;
 
 	//int id = spell->get_id();
@@ -4211,16 +4211,16 @@ void Entity::adds_spell(Ref<Spell> spell) {
 
 	emit_signal("sspell_added", this, spell);
 
-	ORPCOBJ(addc_spell_rpc, spell->get_id(), addc_spell, spell);
+	ORPCOBJ(spell_addc_rpc, spell->get_id(), spell_addc, spell);
 }
-void Entity::adds_spell_id(int id) {
+void Entity::spell_adds_id(int id) {
 	Ref<Spell> spell = ESS::get_instance()->get_resource_db()->get_spell(id);
 
 	ERR_FAIL_COND(!spell.is_valid());
 
-	adds_spell(spell);
+	spell_adds(spell);
 }
-void Entity::removes_spell(Ref<Spell> spell) {
+void Entity::spell_removes(Ref<Spell> spell) {
 	for (int i = 0; i < _s_spells.size(); ++i) {
 		if (_s_spells.get(i) == spell) {
 			_s_spells.remove(i);
@@ -4230,18 +4230,18 @@ void Entity::removes_spell(Ref<Spell> spell) {
 
 	emit_signal("sspell_removed", this, spell);
 
-	ORPCOBJ(removec_spell_rpc, spell->get_id(), removec_spell, spell);
+	ORPCOBJ(spell_removec_rpc, spell->get_id(), spell_removec, spell);
 }
-Ref<Spell> Entity::gets_spell(int index) {
+Ref<Spell> Entity::spell_gets(int index) {
 	ERR_FAIL_INDEX_V(index, _s_spells.size(), Ref<Spell>());
 
 	return _s_spells.get(index);
 }
-int Entity::gets_spell_count() {
+int Entity::spell_gets_count() {
 	return _s_spells.size();
 }
 
-bool Entity::hasc_spell(Ref<Spell> spell) {
+bool Entity::spell_hasc(Ref<Spell> spell) {
 	for (int i = 0; i < _c_spells.size(); ++i) {
 		if (_c_spells.get(i) == spell) {
 			return true;
@@ -4250,7 +4250,7 @@ bool Entity::hasc_spell(Ref<Spell> spell) {
 
 	return false;
 }
-bool Entity::hasc_spell_id(int id) {
+bool Entity::spell_hasc_id(int id) {
 	for (int i = 0; i < _c_spells.size(); ++i) {
 		Ref<Spell> spell = _c_spells.get(i);
 
@@ -4264,15 +4264,15 @@ bool Entity::hasc_spell_id(int id) {
 
 	return false;
 }
-void Entity::addc_spell(Ref<Spell> spell) {
-	if (hasc_spell(spell))
+void Entity::spell_addc(Ref<Spell> spell) {
+	if (spell_hasc(spell))
 		return;
 
 	_c_spells.push_back(spell);
 
 	emit_signal("cspell_added", this, spell);
 }
-void Entity::removec_spell(Ref<Spell> spell) {
+void Entity::spell_removec(Ref<Spell> spell) {
 	for (int i = 0; i < _c_spells.size(); ++i) {
 		if (_c_spells.get(i) == spell) {
 			_c_spells.remove(i);
@@ -4282,28 +4282,28 @@ void Entity::removec_spell(Ref<Spell> spell) {
 
 	emit_signal("cspell_removed", this, spell);
 }
-Ref<Spell> Entity::getc_spell(int index) {
+Ref<Spell> Entity::spell_getc(int index) {
 	ERR_FAIL_INDEX_V(index, _c_spells.size(), Ref<Spell>());
 
 	return _c_spells.get(index);
 }
-int Entity::getc_spell_count() {
+int Entity::spell_getc_count() {
 	return _c_spells.size();
 }
 
-void Entity::addc_spell_rpc(int id) {
+void Entity::spell_addc_rpc(int id) {
 	ERR_FAIL_COND(ESS::get_instance() == NULL);
 
-	addc_spell(ESS::get_instance()->get_resource_db()->get_spell(id));
+	spell_addc(ESS::get_instance()->get_resource_db()->get_spell(id));
 }
-void Entity::removec_spell_rpc(int id) {
+void Entity::spell_removec_rpc(int id) {
 	ERR_FAIL_COND(ESS::get_instance() == NULL);
 
-	removec_spell(ESS::get_instance()->get_resource_db()->get_spell(id));
+	spell_removec(ESS::get_instance()->get_resource_db()->get_spell(id));
 }
 
 //Skills
-bool Entity::hass_skill_id(int id) {
+bool Entity::skill_hass_id(int id) {
 	for (int i = 0; i < _s_skills.size(); ++i) {
 		Ref<EntitySkill> skill = _s_skills.get(i);
 
@@ -4316,7 +4316,7 @@ bool Entity::hass_skill_id(int id) {
 
 	return false;
 }
-bool Entity::hass_skill(Ref<EntitySkill> skill) {
+bool Entity::skill_hass(Ref<EntitySkill> skill) {
 	for (int i = 0; i < _s_skills.size(); ++i) {
 		if (_s_skills.get(i) == skill) {
 			return true;
@@ -4325,25 +4325,25 @@ bool Entity::hass_skill(Ref<EntitySkill> skill) {
 
 	return false;
 }
-void Entity::adds_skill(Ref<EntitySkill> skill) {
-	if (hass_skill(skill))
+void Entity::skill_adds(Ref<EntitySkill> skill) {
+	if (skill_hass(skill))
 		return;
 
 #if VERSION_MAJOR < 4
-	skill->connect("current_changed", this, "sskill_current_changed");
-	skill->connect("max_changed", this, "sskill_max_changed");
+	skill->connect("current_changed", this, "skill_scurrent_changed");
+	skill->connect("max_changed", this, "skill_smax_changed");
 #else
-	skill->connect("current_changed", callable_mp(this, &Entity::sskill_current_changed));
-	skill->connect("max_changed", callable_mp(this, &Entity::sskill_max_changed));
+	skill->connect("current_changed", callable_mp(this, &Entity::skill_scurrent_changed));
+	skill->connect("max_changed", callable_mp(this, &Entity::skill_smax_changed));
 #endif
 
 	_s_skills.push_back(skill);
 
 	emit_signal("sskill_added", this, skill);
 
-	ORPC(addc_skill_id, skill->get_skill_id(), skill->get_current(), skill->get_max());
+	ORPC(skill_addc_id, skill->get_skill_id(), skill->get_current(), skill->get_max());
 }
-void Entity::removes_skill(Ref<EntitySkill> skill) {
+void Entity::skill_removes(Ref<EntitySkill> skill) {
 	for (int i = 0; i < _s_skills.size(); ++i) {
 		if (_s_skills.get(i) == skill) {
 			_s_skills.remove(i);
@@ -4353,18 +4353,18 @@ void Entity::removes_skill(Ref<EntitySkill> skill) {
 
 	emit_signal("sskill_removed", this, skill);
 
-	ORPC(removec_skill_id, skill->get_skill_id());
+	ORPC(skill_removec_id, skill->get_skill_id());
 }
-Ref<EntitySkill> Entity::gets_skill(int index) {
+Ref<EntitySkill> Entity::skill_gets(int index) {
 	ERR_FAIL_INDEX_V(index, _s_skills.size(), Ref<EntitySkill>());
 
 	return _s_skills.get(index);
 }
-int Entity::gets_skill_count() {
+int Entity::skill_gets_count() {
 	return _s_skills.size();
 }
 
-bool Entity::hasc_skill_id(int id) {
+bool Entity::skill_hasc_id(int id) {
 	for (int i = 0; i < _c_skills.size(); ++i) {
 		Ref<EntitySkill> skill = _c_skills.get(i);
 
@@ -4377,7 +4377,7 @@ bool Entity::hasc_skill_id(int id) {
 
 	return false;
 }
-bool Entity::hasc_skill(Ref<EntitySkill> skill) {
+bool Entity::skill_hasc(Ref<EntitySkill> skill) {
 	for (int i = 0; i < _c_skills.size(); ++i) {
 		if (_c_skills.get(i) == skill) {
 			return true;
@@ -4386,15 +4386,15 @@ bool Entity::hasc_skill(Ref<EntitySkill> skill) {
 
 	return false;
 }
-void Entity::addc_skill(Ref<EntitySkill> skill) {
-	if (hasc_skill(skill))
+void Entity::skill_addc(Ref<EntitySkill> skill) {
+	if (skill_hasc(skill))
 		return;
 
 	_c_skills.push_back(skill);
 
 	emit_signal("cskill_added", this, skill);
 }
-void Entity::removec_skill(Ref<EntitySkill> skill) {
+void Entity::skill_removec(Ref<EntitySkill> skill) {
 	for (int i = 0; i < _c_skills.size(); ++i) {
 		if (_c_skills.get(i) == skill) {
 			_c_skills.remove(i);
@@ -4404,28 +4404,28 @@ void Entity::removec_skill(Ref<EntitySkill> skill) {
 
 	emit_signal("cskill_removed", this, skill);
 }
-Ref<EntitySkill> Entity::getc_skill(int index) {
+Ref<EntitySkill> Entity::skill_getc(int index) {
 	ERR_FAIL_INDEX_V(index, _c_skills.size(), Ref<EntitySkill>());
 
 	return _c_skills.get(index);
 }
-int Entity::getc_skill_count() {
+int Entity::skill_getc_count() {
 	return _c_skills.size();
 }
 
-void Entity::sskill_current_changed(Ref<EntitySkill> skill) {
+void Entity::skill_scurrent_changed(Ref<EntitySkill> skill) {
 	//todo events
 
-	ORPC(changec_skill, skill->get_skill_id(), skill->get_current());
+	ORPC(skill_changec, skill->get_skill_id(), skill->get_current());
 }
-void Entity::sskill_max_changed(Ref<EntitySkill> skill) {
+void Entity::skill_smax_changed(Ref<EntitySkill> skill) {
 	//todo events
 
-	ORPC(changec_skill_max, skill->get_skill_id(), skill->get_max());
+	ORPC(skill_changec_max, skill->get_skill_id(), skill->get_max());
 }
 
-void Entity::addc_skill_id(int skill_id, int value, int max_value) {
-	ERR_FAIL_COND(hasc_skill_id(skill_id));
+void Entity::skill_addc_id(int skill_id, int value, int max_value) {
+	ERR_FAIL_COND(skill_hasc_id(skill_id));
 
 	Ref<EntitySkill> skill;
 	skill.instance();
@@ -4434,9 +4434,9 @@ void Entity::addc_skill_id(int skill_id, int value, int max_value) {
 	skill->set_current(value);
 	skill->set_max(max_value);
 
-	addc_skill(skill);
+	skill_addc(skill);
 }
-void Entity::removec_skill_id(int skill_id) {
+void Entity::skill_removec_id(int skill_id) {
 	for (int i = 0; i < _c_skills.size(); ++i) {
 		Ref<EntitySkill> skill = _c_skills.get(i);
 
@@ -4451,7 +4451,7 @@ void Entity::removec_skill_id(int skill_id) {
 		}
 	}
 }
-void Entity::changec_skill(int skill_id, int value) {
+void Entity::skill_changec(int skill_id, int value) {
 	for (int i = 0; i < _c_skills.size(); ++i) {
 		Ref<EntitySkill> skill = _c_skills.get(i);
 
@@ -4466,7 +4466,7 @@ void Entity::changec_skill(int skill_id, int value) {
 		}
 	}
 }
-void Entity::changec_skill_max(int skill_id, int value) {
+void Entity::skill_changec_max(int skill_id, int value) {
 	for (int i = 0; i < _c_skills.size(); ++i) {
 		Ref<EntitySkill> skill = _c_skills.get(i);
 
@@ -4491,7 +4491,7 @@ bool Entity::cast_is_castingc() {
 	return _c_spell_cast_info.is_valid();
 }
 
-Ref<SpellCastInfo> Entity::gets_spell_cast_info() {
+Ref<SpellCastInfo> Entity::spell_gets_cast_info() {
 	return Ref<SpellCastInfo>(_s_spell_cast_info);
 }
 
@@ -4499,7 +4499,7 @@ void Entity::sets_spell_cast_info(Ref<SpellCastInfo> info) {
 	_s_spell_cast_info = Ref<SpellCastInfo>(info);
 }
 
-Ref<SpellCastInfo> Entity::getc_spell_cast_info() {
+Ref<SpellCastInfo> Entity::spell_getc_cast_info() {
 	return Ref<SpellCastInfo>(_c_spell_cast_info);
 }
 
@@ -4526,11 +4526,11 @@ void Entity::aura_removess_with_group(Ref<AuraGroup> aura_group) {
 	}
 }
 
-void Entity::crequest_target_change(NodePath path) {
-	RPCS(net_sets_target, path);
+void Entity::target_crequest_change(NodePath path) {
+	RPCS(target_net_sets, path);
 }
 
-void Entity::net_sets_target(NodePath path) {
+void Entity::target_net_sets(NodePath path) {
 	if (!ISSERVER())
 		return;
 
@@ -4539,16 +4539,16 @@ void Entity::net_sets_target(NodePath path) {
 	sets_target(p_target);
 
 	if (p_target == NULL) {
-		VRPC(net_setc_target, NodePath());
+		VRPC(target_net_setc, NodePath());
 	} else {
 		if (gets_target() == NULL) {
-			VRPC(net_setc_target, NodePath());
+			VRPC(target_net_setc, NodePath());
 		} else {
-			VRPC(net_setc_target, gets_target()->get_path());
+			VRPC(target_net_setc, gets_target()->get_path());
 		}
 	}
 }
-void Entity::net_setc_target(NodePath path) {
+void Entity::target_net_setc(NodePath path) {
 	Node *p_target = get_node_or_null(path);
 
 	setc_target(p_target);
@@ -4723,7 +4723,7 @@ void Entity::_sreceive_talent_learn_request(int spec_index, int talent_row, int 
 		}
 
 		if (talent->get_talent_required_spell().is_valid()) {
-			if (!hass_spell(talent->get_talent_required_spell())) {
+			if (!spell_hass(talent->get_talent_required_spell())) {
 				return;
 			}
 		}
@@ -5832,22 +5832,22 @@ Entity::Entity() {
 	//Known Spells
 
 	SET_RPC_REMOTE("setc_free_spell_points");
-	SET_RPC_REMOTE("slearn_spell");
+	SET_RPC_REMOTE("spell_learns");
 
-	SET_RPC_REMOTE("addc_spell_rpc");
-	SET_RPC_REMOTE("removec_spell_rpc");
+	SET_RPC_REMOTE("spell_addc_rpc");
+	SET_RPC_REMOTE("spell_removec_rpc");
 
 	//Skills
 
-	SET_RPC_REMOTE("addc_skill_id");
-	SET_RPC_REMOTE("removec_skill_id");
-	SET_RPC_REMOTE("changec_skill");
-	SET_RPC_REMOTE("changec_skill_max");
+	SET_RPC_REMOTE("skill_addc_id");
+	SET_RPC_REMOTE("skill_removec_id");
+	SET_RPC_REMOTE("skill_changec");
+	SET_RPC_REMOTE("skill_changec_max");
 
 	////    Target    ////
 
-	SET_RPC_REMOTE("net_sets_target");
-	SET_RPC_REMOTE("net_setc_target");
+	SET_RPC_REMOTE("target_net_sets");
+	SET_RPC_REMOTE("target_net_setc");
 
 	////    Talents    ////
 
@@ -6125,7 +6125,7 @@ void Entity::_son_death() {
 	*/
 }
 
-void Entity::_slearn_spell(int id) {
+void Entity::_spell_learns(int id) {
 	if (ESS::get_instance()->get_use_spell_points()) {
 		ERR_FAIL_COND(gets_free_spell_points() <= 0);
 	}
@@ -6145,11 +6145,11 @@ void Entity::_slearn_spell(int id) {
 		if (sp->get_id() == id) {
 			Ref<Spell> req_spell = sp->get_training_required_spell();
 
-			if (req_spell.is_valid() && !hass_spell(req_spell)) {
+			if (req_spell.is_valid() && !spell_hass(req_spell)) {
 				return;
 			}
 
-			adds_spell(sp);
+			spell_adds(sp);
 
 			if (ESS::get_instance()->get_use_spell_points())
 				sets_free_spell_points(_s_free_spell_points - 1);
@@ -7435,13 +7435,13 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("cast_is_castings"), &Entity::cast_is_castings);
 	ClassDB::bind_method(D_METHOD("cast_is_castingc"), &Entity::cast_is_castingc);
 
-	ClassDB::bind_method(D_METHOD("gets_spell_cast_info"), &Entity::gets_spell_cast_info);
+	ClassDB::bind_method(D_METHOD("spell_gets_cast_info"), &Entity::spell_gets_cast_info);
 	ClassDB::bind_method(D_METHOD("sets_spell_cast_info", "value"), &Entity::sets_spell_cast_info);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sspell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo"), "sets_spell_cast_info", "gets_spell_cast_info");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sspell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo"), "sets_spell_cast_info", "spell_gets_cast_info");
 
-	ClassDB::bind_method(D_METHOD("getc_spell_cast_info"), &Entity::getc_spell_cast_info);
+	ClassDB::bind_method(D_METHOD("spell_getc_cast_info"), &Entity::spell_getc_cast_info);
 	ClassDB::bind_method(D_METHOD("setc_spell_cast_info", "value"), &Entity::setc_spell_cast_info);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cspell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo", 0), "setc_spell_cast_info", "getc_spell_cast_info");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "cspell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo", 0), "setc_spell_cast_info", "spell_getc_cast_info");
 
 	ClassDB::bind_method(D_METHOD("cast_starts", "info"), &Entity::cast_starts);
 	ClassDB::bind_method(D_METHOD("cast_fails"), &Entity::cast_fails);
@@ -7514,26 +7514,26 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_free_spell_points", "value"), &Entity::setc_free_spell_points);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_spell_points", PROPERTY_HINT_NONE, "", 0), "setc_free_spell_points", "getc_free_spell_points");
 
-	ClassDB::bind_method(D_METHOD("crequest_spell_learn", "id"), &Entity::crequest_spell_learn);
-	ClassDB::bind_method(D_METHOD("slearn_spell", "id"), &Entity::slearn_spell);
+	ClassDB::bind_method(D_METHOD("spell_learn_requestc", "id"), &Entity::spell_learn_requestc);
+	ClassDB::bind_method(D_METHOD("spell_learns", "id"), &Entity::spell_learns);
 
-	ClassDB::bind_method(D_METHOD("hass_spell", "spell"), &Entity::hass_spell);
-	ClassDB::bind_method(D_METHOD("hass_spell_id", "id"), &Entity::hass_spell_id);
-	ClassDB::bind_method(D_METHOD("adds_spell", "spell"), &Entity::adds_spell);
-	ClassDB::bind_method(D_METHOD("adds_spell_id", "id"), &Entity::adds_spell_id);
-	ClassDB::bind_method(D_METHOD("removes_spell", "spell"), &Entity::removes_spell);
-	ClassDB::bind_method(D_METHOD("gets_spell", "spell"), &Entity::gets_spell);
-	ClassDB::bind_method(D_METHOD("gets_spell_count"), &Entity::gets_spell_count);
+	ClassDB::bind_method(D_METHOD("spell_hass", "spell"), &Entity::spell_hass);
+	ClassDB::bind_method(D_METHOD("spell_hass_id", "id"), &Entity::spell_hass_id);
+	ClassDB::bind_method(D_METHOD("spell_adds", "spell"), &Entity::spell_adds);
+	ClassDB::bind_method(D_METHOD("spell_adds_id", "id"), &Entity::spell_adds_id);
+	ClassDB::bind_method(D_METHOD("spell_removes", "spell"), &Entity::spell_removes);
+	ClassDB::bind_method(D_METHOD("spell_gets", "spell"), &Entity::spell_gets);
+	ClassDB::bind_method(D_METHOD("spell_gets_count"), &Entity::spell_gets_count);
 
-	ClassDB::bind_method(D_METHOD("hasc_spell", "spell"), &Entity::hasc_spell);
-	ClassDB::bind_method(D_METHOD("hasc_spell_id", "id"), &Entity::hasc_spell_id);
-	ClassDB::bind_method(D_METHOD("addc_spell", "spell"), &Entity::addc_spell);
-	ClassDB::bind_method(D_METHOD("removec_spell", "spell"), &Entity::removec_spell);
-	ClassDB::bind_method(D_METHOD("getc_spell", "spell"), &Entity::getc_spell);
-	ClassDB::bind_method(D_METHOD("getc_spell_count"), &Entity::getc_spell_count);
+	ClassDB::bind_method(D_METHOD("spell_hasc", "spell"), &Entity::spell_hasc);
+	ClassDB::bind_method(D_METHOD("spell_hasc_id", "id"), &Entity::spell_hasc_id);
+	ClassDB::bind_method(D_METHOD("spell_addc", "spell"), &Entity::spell_addc);
+	ClassDB::bind_method(D_METHOD("spell_removec", "spell"), &Entity::spell_removec);
+	ClassDB::bind_method(D_METHOD("spell_getc", "spell"), &Entity::spell_getc);
+	ClassDB::bind_method(D_METHOD("spell_getc_count"), &Entity::spell_getc_count);
 
-	ClassDB::bind_method(D_METHOD("addc_spell_rpc", "id"), &Entity::addc_spell_rpc);
-	ClassDB::bind_method(D_METHOD("removec_spell_rpc", "id"), &Entity::removec_spell_rpc);
+	ClassDB::bind_method(D_METHOD("spell_addc_rpc", "id"), &Entity::spell_addc_rpc);
+	ClassDB::bind_method(D_METHOD("spell_removec_rpc", "id"), &Entity::spell_removec_rpc);
 
 	//Crafting
 	BIND_VMETHOD(MethodInfo("_crafts", PropertyInfo(Variant::INT, "id")));
@@ -7567,24 +7567,24 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("craft_getc_recipe_count"), &Entity::craft_getc_recipe_count);
 
 	//Skills
-	ClassDB::bind_method(D_METHOD("hass_skill_id", "id"), &Entity::hass_skill_id);
-	ClassDB::bind_method(D_METHOD("hass_skill", "skill"), &Entity::hass_skill);
-	ClassDB::bind_method(D_METHOD("adds_skill", "skill"), &Entity::adds_skill);
-	ClassDB::bind_method(D_METHOD("removes_skill", "skill"), &Entity::removes_skill);
-	ClassDB::bind_method(D_METHOD("gets_skill", "skill"), &Entity::gets_skill);
-	ClassDB::bind_method(D_METHOD("gets_skill_count"), &Entity::gets_skill_count);
+	ClassDB::bind_method(D_METHOD("skill_hass_id", "id"), &Entity::skill_hass_id);
+	ClassDB::bind_method(D_METHOD("skill_hass", "skill"), &Entity::skill_hass);
+	ClassDB::bind_method(D_METHOD("skill_adds", "skill"), &Entity::skill_adds);
+	ClassDB::bind_method(D_METHOD("skill_removes", "skill"), &Entity::skill_removes);
+	ClassDB::bind_method(D_METHOD("skill_gets", "skill"), &Entity::skill_gets);
+	ClassDB::bind_method(D_METHOD("skill_gets_count"), &Entity::skill_gets_count);
 
-	ClassDB::bind_method(D_METHOD("hasc_skill_id", "id"), &Entity::hasc_skill_id);
-	ClassDB::bind_method(D_METHOD("hasc_skill", "skill"), &Entity::hasc_skill);
-	ClassDB::bind_method(D_METHOD("addc_skill", "skill"), &Entity::addc_skill);
-	ClassDB::bind_method(D_METHOD("removec_skill", "skill"), &Entity::removec_skill);
-	ClassDB::bind_method(D_METHOD("getc_skill", "skill"), &Entity::getc_skill);
-	ClassDB::bind_method(D_METHOD("getc_skill_count"), &Entity::getc_skill_count);
+	ClassDB::bind_method(D_METHOD("skill_hasc_id", "id"), &Entity::skill_hasc_id);
+	ClassDB::bind_method(D_METHOD("skill_hasc", "skill"), &Entity::skill_hasc);
+	ClassDB::bind_method(D_METHOD("skill_addc", "skill"), &Entity::skill_addc);
+	ClassDB::bind_method(D_METHOD("skill_removec", "skill"), &Entity::skill_removec);
+	ClassDB::bind_method(D_METHOD("skill_getc", "skill"), &Entity::skill_getc);
+	ClassDB::bind_method(D_METHOD("skill_getc_count"), &Entity::skill_getc_count);
 
-	ClassDB::bind_method(D_METHOD("addc_skill_id", "skill_id", "value", "max_value"), &Entity::addc_skill_id);
-	ClassDB::bind_method(D_METHOD("removec_skill_id", "skill_id"), &Entity::removec_skill_id);
-	ClassDB::bind_method(D_METHOD("changec_skill", "skill_id", "value"), &Entity::changec_skill);
-	ClassDB::bind_method(D_METHOD("changec_skill_max", "skill_id", "value"), &Entity::changec_skill_max);
+	ClassDB::bind_method(D_METHOD("skill_addc_id", "skill_id", "value", "max_value"), &Entity::skill_addc_id);
+	ClassDB::bind_method(D_METHOD("skill_removec_id", "skill_id"), &Entity::skill_removec_id);
+	ClassDB::bind_method(D_METHOD("skill_changec", "skill_id", "value"), &Entity::skill_changec);
+	ClassDB::bind_method(D_METHOD("skill_changec_max", "skill_id", "value"), &Entity::skill_changec_max);
 
 	//skeleton
 	ClassDB::bind_method(D_METHOD("get_body"), &Entity::get_body);
@@ -7603,9 +7603,9 @@ void Entity::_bind_methods() {
 
 	////    Targeting System    ////
 
-	ClassDB::bind_method(D_METHOD("crequest_target_change", "path"), &Entity::crequest_target_change);
-	ClassDB::bind_method(D_METHOD("net_sets_target", "path"), &Entity::net_sets_target);
-	ClassDB::bind_method(D_METHOD("net_setc_target", "path"), &Entity::net_setc_target);
+	ClassDB::bind_method(D_METHOD("target_crequest_change", "path"), &Entity::target_crequest_change);
+	ClassDB::bind_method(D_METHOD("target_net_sets", "path"), &Entity::target_net_sets);
+	ClassDB::bind_method(D_METHOD("target_net_setc", "path"), &Entity::target_net_setc);
 
 	ClassDB::bind_method(D_METHOD("gets_target"), &Entity::gets_target);
 	ClassDB::bind_method(D_METHOD("sets_target", "target"), &Entity::sets_target);
