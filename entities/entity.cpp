@@ -3795,24 +3795,24 @@ void Entity::cast_spell_successc(Ref<SpellCastInfo> info) {
 }
 
 ////    Cooldowns    ////
-Vector<Ref<Cooldown> > *Entity::gets_cooldowns() {
+Vector<Ref<Cooldown> > *Entity::cooldowns_gets() {
 	return &_s_cooldowns;
 }
-Vector<Ref<Cooldown> > *Entity::getc_cooldowns() {
+Vector<Ref<Cooldown> > *Entity::cooldowns_getc() {
 	return &_c_cooldowns;
 }
 
-HashMap<int, Ref<Cooldown> > *Entity::gets_cooldown_map() {
+HashMap<int, Ref<Cooldown> > *Entity::cooldown_get_maps() {
 	return &_s_cooldown_map;
 }
-HashMap<int, Ref<Cooldown> > *Entity::getc_cooldown_map() {
+HashMap<int, Ref<Cooldown> > *Entity::cooldown_get_mapc() {
 	return &_c_cooldown_map;
 }
 
-bool Entity::hass_cooldown(int spell_id) {
+bool Entity::cooldown_hass(int spell_id) {
 	return _s_cooldown_map.has(spell_id);
 }
-void Entity::adds_cooldown(int spell_id, float value) {
+void Entity::cooldown_adds(int spell_id, float value) {
 	if (_s_cooldown_map.has(spell_id)) {
 		Ref<Cooldown> cd = _s_cooldown_map.get(spell_id);
 
@@ -3822,7 +3822,7 @@ void Entity::adds_cooldown(int spell_id, float value) {
 
 		emit_signal("scooldown_added", cd);
 
-		ORPC(addc_cooldown, spell_id, value);
+		ORPC(cooldown_addc, spell_id, value);
 
 		return;
 	}
@@ -3840,9 +3840,9 @@ void Entity::adds_cooldown(int spell_id, float value) {
 
 	emit_signal("scooldown_added", cd);
 
-	ORPC(addc_cooldown, spell_id, value);
+	ORPC(cooldown_addc, spell_id, value);
 }
-void Entity::removes_cooldown(int spell_id) {
+void Entity::cooldown_removes(int spell_id) {
 	Ref<Cooldown> cd;
 
 	if (_s_cooldown_map.has(spell_id)) {
@@ -3863,28 +3863,28 @@ void Entity::removes_cooldown(int spell_id) {
 
 	emit_signal("scooldown_removed", cd);
 
-	ORPC(removec_cooldown, spell_id);
+	ORPC(cooldown_removec, spell_id);
 }
-Ref<Cooldown> Entity::gets_cooldown(int spell_id) {
+Ref<Cooldown> Entity::cooldown_gets(int spell_id) {
 	if (!_s_cooldown_map.has(spell_id)) {
 		return Ref<Cooldown>();
 	}
 
 	return _s_cooldown_map.get(spell_id);
 }
-Ref<Cooldown> Entity::gets_cooldown_index(int index) {
+Ref<Cooldown> Entity::cooldown_gets_index(int index) {
 	ERR_FAIL_INDEX_V(index, _s_cooldowns.size(), Ref<Cooldown>());
 
 	return _s_cooldowns.get(index);
 }
-int Entity::gets_cooldown_count() {
+int Entity::cooldown_gets_count() {
 	return _s_cooldowns.size();
 }
 
-bool Entity::hasc_cooldown(int spell_id) {
+bool Entity::cooldown_hasc(int spell_id) {
 	return _c_cooldown_map.has(spell_id);
 }
-void Entity::addc_cooldown(int spell_id, float value) {
+void Entity::cooldown_addc(int spell_id, float value) {
 	if (_c_cooldown_map.has(spell_id)) {
 		Ref<Cooldown> cd = _c_cooldown_map.get(spell_id);
 
@@ -3910,7 +3910,7 @@ void Entity::addc_cooldown(int spell_id, float value) {
 
 	emit_signal("ccooldown_added", cd);
 }
-void Entity::removec_cooldown(int spell_id) {
+void Entity::cooldown_removec(int spell_id) {
 	Ref<Cooldown> cd;
 
 	if (_c_cooldown_map.has(spell_id)) {
@@ -3932,34 +3932,34 @@ void Entity::removec_cooldown(int spell_id) {
 
 	emit_signal("ccooldown_removed", cd);
 }
-Ref<Cooldown> Entity::getc_cooldown(int spell_id) {
+Ref<Cooldown> Entity::cooldown_getc(int spell_id) {
 	if (!_c_cooldown_map.has(spell_id)) {
 		return Ref<Cooldown>();
 	}
 
 	return _c_cooldown_map.get(spell_id);
 }
-Ref<Cooldown> Entity::getc_cooldown_index(int index) {
+Ref<Cooldown> Entity::cooldown_getc_index(int index) {
 	ERR_FAIL_INDEX_V(index, _c_cooldowns.size(), Ref<Cooldown>());
 
 	return _c_cooldowns.get(index);
 }
-int Entity::getc_cooldown_count() {
+int Entity::cooldown_getc_count() {
 	return _c_cooldowns.size();
 }
 
 //Category Cooldowns
-Vector<Ref<CategoryCooldown> > Entity::gets_category_cooldowns() {
+Vector<Ref<CategoryCooldown> > Entity::category_cooldowns_gets() {
 	return _s_category_cooldowns;
 }
-Vector<Ref<CategoryCooldown> > Entity::getc_category_cooldowns() {
+Vector<Ref<CategoryCooldown> > Entity::category_cooldowns_getc() {
 	return _c_category_cooldowns;
 }
 
-bool Entity::hass_category_cooldown(int category_id) {
+bool Entity::category_cooldown_hass(int category_id) {
 	return (category_id & _s_active_category_cooldowns) > 0;
 }
-void Entity::adds_category_cooldown(int category_id, float value) {
+void Entity::category_cooldown_adds(int category_id, float value) {
 	if ((category_id & _s_active_category_cooldowns)) {
 		for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
 			Ref<CategoryCooldown> cc = _s_category_cooldowns.get(i);
@@ -3971,7 +3971,7 @@ void Entity::adds_category_cooldown(int category_id, float value) {
 
 				emit_signal("scategory_cooldown_added", cc);
 
-				ORPC(addc_category_cooldown, category_id, value);
+				ORPC(category_cooldown_addc, category_id, value);
 
 				return;
 			}
@@ -3992,9 +3992,9 @@ void Entity::adds_category_cooldown(int category_id, float value) {
 
 	emit_signal("scategory_cooldown_added", cc);
 
-	ORPC(addc_category_cooldown, category_id, value);
+	ORPC(category_cooldown_addc, category_id, value);
 }
-void Entity::removes_category_cooldown(int category_id) {
+void Entity::category_cooldown_removes(int category_id) {
 	Ref<CategoryCooldown> cc;
 
 	for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
@@ -4014,9 +4014,9 @@ void Entity::removes_category_cooldown(int category_id) {
 
 	emit_signal("scategory_cooldown_removed", cc);
 
-	ORPC(removec_category_cooldown, category_id);
+	ORPC(category_cooldown_removec, category_id);
 }
-Ref<CategoryCooldown> Entity::gets_category_cooldown(int category_id) {
+Ref<CategoryCooldown> Entity::category_cooldown_gets(int category_id) {
 	ERR_FAIL_COND_V(!(category_id & _s_active_category_cooldowns), Ref<CategoryCooldown>());
 
 	Ref<CategoryCooldown> cc;
@@ -4031,19 +4031,19 @@ Ref<CategoryCooldown> Entity::gets_category_cooldown(int category_id) {
 
 	return cc;
 }
-Ref<CategoryCooldown> Entity::gets_category_cooldown_index(int index) {
+Ref<CategoryCooldown> Entity::category_cooldown_gets_index(int index) {
 	ERR_FAIL_INDEX_V(index, _s_category_cooldowns.size(), Ref<Cooldown>());
 
 	return _s_category_cooldowns.get(index);
 }
-int Entity::gets_category_cooldown_count() {
+int Entity::category_cooldown_gets_count() {
 	return _s_category_cooldowns.size();
 }
 
-bool Entity::hasc_category_cooldown(int category_id) {
+bool Entity::category_cooldown_hasc(int category_id) {
 	return (category_id & _c_active_category_cooldowns) > 0;
 }
-void Entity::addc_category_cooldown(int category_id, float value) {
+void Entity::category_cooldown_addc(int category_id, float value) {
 	if (category_id & _c_active_category_cooldowns) {
 		for (int i = 0; i < _c_category_cooldowns.size(); ++i) {
 			Ref<CategoryCooldown> cc = _c_category_cooldowns.get(i);
@@ -4073,7 +4073,7 @@ void Entity::addc_category_cooldown(int category_id, float value) {
 
 	emit_signal("ccategory_cooldown_added", cc);
 }
-void Entity::removec_category_cooldown(int category_id) {
+void Entity::category_cooldown_removec(int category_id) {
 	Ref<CategoryCooldown> cc;
 
 	for (int i = 0; i < _c_category_cooldowns.size(); ++i) {
@@ -4095,7 +4095,7 @@ void Entity::removec_category_cooldown(int category_id) {
 
 	emit_signal("ccategory_cooldown_removed", cc);
 }
-Ref<CategoryCooldown> Entity::getc_category_cooldown(int category_id) {
+Ref<CategoryCooldown> Entity::category_cooldown_getc(int category_id) {
 	ERR_FAIL_COND_V(!(category_id & _c_active_category_cooldowns), Ref<CategoryCooldown>());
 
 	Ref<CategoryCooldown> cc;
@@ -4110,12 +4110,12 @@ Ref<CategoryCooldown> Entity::getc_category_cooldown(int category_id) {
 
 	return cc;
 }
-Ref<CategoryCooldown> Entity::getc_category_cooldown_index(int index) {
+Ref<CategoryCooldown> Entity::category_cooldown_getc_index(int index) {
 	ERR_FAIL_INDEX_V(index, _c_category_cooldowns.size(), Ref<Cooldown>());
 
 	return _c_category_cooldowns.get(index);
 }
-int Entity::getc_category_cooldown_count() {
+int Entity::category_cooldown_getc_count() {
 	return _c_category_cooldowns.size();
 }
 
@@ -5285,7 +5285,7 @@ void Entity::update(float delta) {
 		Ref<Cooldown> cd = _s_cooldowns.get(i);
 
 		if (cd->update(delta)) {
-			removes_cooldown(cd->get_spell_id());
+			cooldown_removes(cd->get_spell_id());
 			--i;
 		}
 	}
@@ -5294,7 +5294,7 @@ void Entity::update(float delta) {
 		Ref<CategoryCooldown> cd = _s_category_cooldowns.get(i);
 
 		if (cd->update(delta)) {
-			removes_category_cooldown(cd->get_category_id());
+			category_cooldown_removes(cd->get_category_id());
 			--i;
 		}
 	}
@@ -5821,13 +5821,13 @@ Entity::Entity() {
 
 	////    Cooldowns    ////
 
-	SET_RPC_REMOTE("addc_cooldown");
-	SET_RPC_REMOTE("removec_cooldown");
+	SET_RPC_REMOTE("cooldown_addc");
+	SET_RPC_REMOTE("cooldown_removec");
 
 	//Category Cooldowns
 
-	SET_RPC_REMOTE("addc_category_cooldown");
-	SET_RPC_REMOTE("removec_category_cooldown");
+	SET_RPC_REMOTE("category_cooldown_addc");
+	SET_RPC_REMOTE("category_cooldown_removec");
 
 	//Known Spells
 
@@ -7463,19 +7463,19 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("ccooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 	ADD_SIGNAL(MethodInfo("ccooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
 
-	ClassDB::bind_method(D_METHOD("hass_cooldown", "spell_id"), &Entity::hass_cooldown);
-	ClassDB::bind_method(D_METHOD("adds_cooldown", "spell_id", "value"), &Entity::adds_cooldown);
-	ClassDB::bind_method(D_METHOD("removes_cooldown", "spell_id"), &Entity::removes_cooldown);
-	ClassDB::bind_method(D_METHOD("gets_cooldown", "spell_id"), &Entity::gets_cooldown);
-	ClassDB::bind_method(D_METHOD("gets_cooldown_index", "index"), &Entity::gets_cooldown_index);
-	ClassDB::bind_method(D_METHOD("gets_cooldown_count"), &Entity::gets_cooldown_count);
+	ClassDB::bind_method(D_METHOD("cooldown_hass", "spell_id"), &Entity::cooldown_hass);
+	ClassDB::bind_method(D_METHOD("cooldown_adds", "spell_id", "value"), &Entity::cooldown_adds);
+	ClassDB::bind_method(D_METHOD("cooldown_removes", "spell_id"), &Entity::cooldown_removes);
+	ClassDB::bind_method(D_METHOD("cooldown_gets", "spell_id"), &Entity::cooldown_gets);
+	ClassDB::bind_method(D_METHOD("cooldown_gets_index", "index"), &Entity::cooldown_gets_index);
+	ClassDB::bind_method(D_METHOD("cooldown_gets_count"), &Entity::cooldown_gets_count);
 
-	ClassDB::bind_method(D_METHOD("hasc_cooldown", "spell_id"), &Entity::hasc_cooldown);
-	ClassDB::bind_method(D_METHOD("addc_cooldown", "spell_id", "value"), &Entity::addc_cooldown);
-	ClassDB::bind_method(D_METHOD("removec_cooldown", "spell_id"), &Entity::removec_cooldown);
-	ClassDB::bind_method(D_METHOD("getc_cooldown", "spell_id"), &Entity::getc_cooldown);
-	ClassDB::bind_method(D_METHOD("getc_cooldown_index", "index"), &Entity::getc_cooldown_index);
-	ClassDB::bind_method(D_METHOD("getc_cooldown_count"), &Entity::getc_cooldown_count);
+	ClassDB::bind_method(D_METHOD("cooldown_hasc", "spell_id"), &Entity::cooldown_hasc);
+	ClassDB::bind_method(D_METHOD("cooldown_addc", "spell_id", "value"), &Entity::cooldown_addc);
+	ClassDB::bind_method(D_METHOD("cooldown_removec", "spell_id"), &Entity::cooldown_removec);
+	ClassDB::bind_method(D_METHOD("cooldown_getc", "spell_id"), &Entity::cooldown_getc);
+	ClassDB::bind_method(D_METHOD("cooldown_getc_index", "index"), &Entity::cooldown_getc_index);
+	ClassDB::bind_method(D_METHOD("cooldown_getc_count"), &Entity::cooldown_getc_count);
 
 	//Category Cooldowns
 	ADD_SIGNAL(MethodInfo("scategory_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
@@ -7483,19 +7483,19 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("ccategory_cooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 	ADD_SIGNAL(MethodInfo("ccategory_cooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
 
-	ClassDB::bind_method(D_METHOD("hass_category_cooldown", "category_id"), &Entity::hass_category_cooldown);
-	ClassDB::bind_method(D_METHOD("adds_category_cooldown", "category_id", "value"), &Entity::adds_category_cooldown);
-	ClassDB::bind_method(D_METHOD("removes_category_cooldown", "category_id"), &Entity::removes_category_cooldown);
-	ClassDB::bind_method(D_METHOD("gets_category_cooldown", "category_id"), &Entity::gets_category_cooldown);
-	ClassDB::bind_method(D_METHOD("gets_category_cooldown_index", "index"), &Entity::gets_category_cooldown_index);
-	ClassDB::bind_method(D_METHOD("gets_category_cooldown_count"), &Entity::gets_category_cooldown_count);
+	ClassDB::bind_method(D_METHOD("category_cooldown_hass", "category_id"), &Entity::category_cooldown_hass);
+	ClassDB::bind_method(D_METHOD("category_cooldown_adds", "category_id", "value"), &Entity::category_cooldown_adds);
+	ClassDB::bind_method(D_METHOD("category_cooldown_removes", "category_id"), &Entity::category_cooldown_removes);
+	ClassDB::bind_method(D_METHOD("category_cooldown_gets", "category_id"), &Entity::category_cooldown_gets);
+	ClassDB::bind_method(D_METHOD("category_cooldown_gets_index", "index"), &Entity::category_cooldown_gets_index);
+	ClassDB::bind_method(D_METHOD("category_cooldown_gets_count"), &Entity::category_cooldown_gets_count);
 
-	ClassDB::bind_method(D_METHOD("hasc_category_cooldown", "category_id"), &Entity::hasc_category_cooldown);
-	ClassDB::bind_method(D_METHOD("addc_category_cooldown", "category_id", "value"), &Entity::addc_category_cooldown);
-	ClassDB::bind_method(D_METHOD("removec_category_cooldown", "category_id"), &Entity::removec_category_cooldown);
-	ClassDB::bind_method(D_METHOD("getc_category_cooldown", "category_id"), &Entity::getc_category_cooldown);
-	ClassDB::bind_method(D_METHOD("getc_category_cooldown_index", "index"), &Entity::getc_category_cooldown_index);
-	ClassDB::bind_method(D_METHOD("getc_category_cooldown_count"), &Entity::getc_category_cooldown_count);
+	ClassDB::bind_method(D_METHOD("category_cooldown_hasc", "category_id"), &Entity::category_cooldown_hasc);
+	ClassDB::bind_method(D_METHOD("category_cooldown_addc", "category_id", "value"), &Entity::category_cooldown_addc);
+	ClassDB::bind_method(D_METHOD("category_cooldown_removec", "category_id"), &Entity::category_cooldown_removec);
+	ClassDB::bind_method(D_METHOD("category_cooldown_getc", "category_id"), &Entity::category_cooldown_getc);
+	ClassDB::bind_method(D_METHOD("category_cooldown_getc_index", "index"), &Entity::category_cooldown_getc_index);
+	ClassDB::bind_method(D_METHOD("category_cooldown_getc_count"), &Entity::category_cooldown_getc_count);
 
 	//Known Spells
 	ADD_SIGNAL(MethodInfo("sspell_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));

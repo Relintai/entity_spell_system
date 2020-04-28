@@ -759,7 +759,7 @@ void Spell::handle_cooldown(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
 	if (_cooldown > 0.00001) {
-		info->get_caster()->adds_cooldown(_id, _cooldown);
+		info->get_caster()->cooldown_adds(_id, _cooldown);
 	}
 }
 
@@ -922,8 +922,8 @@ void Spell::_cast_starts(Ref<SpellCastInfo> info) {
 	}
 
 	if ((get_global_cooldown_enabled() && info->get_caster()->gcd_hass()) ||
-			info->get_caster()->hass_category_cooldown(get_spell_type()) ||
-			info->get_caster()->hass_cooldown(get_id())) {
+			info->get_caster()->category_cooldown_hass(get_spell_type()) ||
+			info->get_caster()->cooldown_hass(get_id())) {
 		return;
 	}
 

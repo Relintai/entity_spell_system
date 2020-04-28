@@ -4,8 +4,8 @@
 		Represents an [Entity] inside the world. Entities can be players, mobs, chests, or any kind of interactable things.
 	</brief_description>
 	<description>
-		Functions starting, or having an 's' in them (like adds_cooldown, or equip_applys_item etc) are only called, or meant to be called by serverside code.
-		Functions with a 'c' in them (like addc_cooldown, equip_deapplyc_item etc) are only called, or meant to be called from clientside code.
+		Functions starting, or having an 's' in them (like cooldown_adds, or equip_applys_item etc) are only called, or meant to be called by serverside code.
+		Functions with a 'c' in them (like cooldown_addc, equip_deapplyc_item etc) are only called, or meant to be called from clientside code.
 		Functions that have a virtual variant starting with an underscore, should be called, they will call the virtual version.
 		They will check if the virtual properly exists, also usually they check if the parameters are valid, so you don't have to do it every time in gdscript.
 	</description>
@@ -690,7 +690,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_category_cooldown">
+		<method name="category_cooldown_addc">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_id" type="int">
@@ -700,7 +700,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_cooldown">
+		<method name="cooldown_addc">
 			<return type="void">
 			</return>
 			<argument index="0" name="spell_id" type="int">
@@ -870,7 +870,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_category_cooldown">
+		<method name="category_cooldown_adds">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_id" type="int">
@@ -880,7 +880,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_cooldown">
+		<method name="cooldown_adds">
 			<return type="void">
 			</return>
 			<argument index="0" name="spell_id" type="int">
@@ -1890,7 +1890,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_category_cooldown">
+		<method name="category_cooldown_getc">
 			<return type="CategoryCooldown">
 			</return>
 			<argument index="0" name="category_id" type="int">
@@ -1898,13 +1898,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_category_cooldown_count">
+		<method name="category_cooldown_getc_count">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="getc_category_cooldown_index">
+		<method name="category_cooldown_getc_index">
 			<return type="CategoryCooldown">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -1912,7 +1912,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_cooldown">
+		<method name="cooldown_getc">
 			<return type="Cooldown">
 			</return>
 			<argument index="0" name="spell_id" type="int">
@@ -1920,13 +1920,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_cooldown_count">
+		<method name="cooldown_getc_count">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="getc_cooldown_index">
+		<method name="cooldown_getc_index">
 			<return type="Cooldown">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2108,7 +2108,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_category_cooldown">
+		<method name="category_cooldown_gets">
 			<return type="CategoryCooldown">
 			</return>
 			<argument index="0" name="category_id" type="int">
@@ -2116,13 +2116,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_category_cooldown_count">
+		<method name="category_cooldown_gets_count">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="gets_category_cooldown_index">
+		<method name="category_cooldown_gets_index">
 			<return type="CategoryCooldown">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2130,7 +2130,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_cooldown">
+		<method name="cooldown_gets">
 			<return type="Cooldown">
 			</return>
 			<argument index="0" name="spell_id" type="int">
@@ -2138,13 +2138,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_cooldown_count">
+		<method name="cooldown_gets_count">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="gets_cooldown_index">
+		<method name="cooldown_gets_index">
 			<return type="Cooldown">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2328,7 +2328,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="hasc_category_cooldown">
+		<method name="category_cooldown_hasc">
 			<return type="bool">
 			</return>
 			<argument index="0" name="category_id" type="int">
@@ -2336,7 +2336,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="hasc_cooldown">
+		<method name="cooldown_hasc">
 			<return type="bool">
 			</return>
 			<argument index="0" name="spell_id" type="int">
@@ -2400,7 +2400,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="hass_category_cooldown">
+		<method name="category_cooldown_hass">
 			<return type="bool">
 			</return>
 			<argument index="0" name="category_id" type="int">
@@ -2408,7 +2408,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="hass_cooldown">
+		<method name="cooldown_hass">
 			<return type="bool">
 			</return>
 			<argument index="0" name="spell_id" type="int">
@@ -2724,7 +2724,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_category_cooldown">
+		<method name="category_cooldown_removec">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_id" type="int">
@@ -2732,7 +2732,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_cooldown">
+		<method name="cooldown_removec">
 			<return type="void">
 			</return>
 			<argument index="0" name="spell_id" type="int">
@@ -2884,7 +2884,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_category_cooldown">
+		<method name="category_cooldown_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="category_id" type="int">
@@ -2892,7 +2892,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_cooldown">
+		<method name="cooldown_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="spell_id" type="int">

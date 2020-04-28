@@ -638,44 +638,44 @@ public:
 
 	////    Cooldowns    ////
 
-	Vector<Ref<Cooldown> > *gets_cooldowns();
-	Vector<Ref<Cooldown> > *getc_cooldowns();
+	Vector<Ref<Cooldown> > *cooldowns_gets();
+	Vector<Ref<Cooldown> > *cooldowns_getc();
 
-	HashMap<int, Ref<Cooldown> > *gets_cooldown_map();
-	HashMap<int, Ref<Cooldown> > *getc_cooldown_map();
+	HashMap<int, Ref<Cooldown> > *cooldown_get_maps();
+	HashMap<int, Ref<Cooldown> > *cooldown_get_mapc();
 
-	bool hass_cooldown(int spell_id);
-	void adds_cooldown(int spell_id, float value);
-	void removes_cooldown(int spell_id);
-	Ref<Cooldown> gets_cooldown(int spell_id);
-	Ref<Cooldown> gets_cooldown_index(int index);
-	int gets_cooldown_count();
+	bool cooldown_hass(int spell_id);
+	void cooldown_adds(int spell_id, float value);
+	void cooldown_removes(int spell_id);
+	Ref<Cooldown> cooldown_gets(int spell_id);
+	Ref<Cooldown> cooldown_gets_index(int index);
+	int cooldown_gets_count();
 
-	bool hasc_cooldown(int spell_id);
-	void addc_cooldown(int spell_id, float value);
-	void removec_cooldown(int spell_id);
-	Ref<Cooldown> getc_cooldown(int spell_id);
-	Ref<Cooldown> getc_cooldown_index(int index);
-	int getc_cooldown_count();
+	bool cooldown_hasc(int spell_id);
+	void cooldown_addc(int spell_id, float value);
+	void cooldown_removec(int spell_id);
+	Ref<Cooldown> cooldown_getc(int spell_id);
+	Ref<Cooldown> cooldown_getc_index(int index);
+	int cooldown_getc_count();
 
 	//Category Cooldowns
 
-	Vector<Ref<CategoryCooldown> > gets_category_cooldowns();
-	Vector<Ref<CategoryCooldown> > getc_category_cooldowns();
+	Vector<Ref<CategoryCooldown> > category_cooldowns_gets();
+	Vector<Ref<CategoryCooldown> > category_cooldowns_getc();
 
-	bool hass_category_cooldown(int category_id);
-	void adds_category_cooldown(int category_id, float value);
-	void removes_category_cooldown(int category_id);
-	Ref<CategoryCooldown> gets_category_cooldown(int category_id);
-	Ref<CategoryCooldown> gets_category_cooldown_index(int index);
-	int gets_category_cooldown_count();
+	bool category_cooldown_hass(int category_id);
+	void category_cooldown_adds(int category_id, float value);
+	void category_cooldown_removes(int category_id);
+	Ref<CategoryCooldown> category_cooldown_gets(int category_id);
+	Ref<CategoryCooldown> category_cooldown_gets_index(int index);
+	int category_cooldown_gets_count();
 
-	bool hasc_category_cooldown(int category_id);
-	void addc_category_cooldown(int category_id, float value);
-	void removec_category_cooldown(int spell_id);
-	Ref<CategoryCooldown> getc_category_cooldown(int category_id);
-	Ref<CategoryCooldown> getc_category_cooldown_index(int index);
-	int getc_category_cooldown_count();
+	bool category_cooldown_hasc(int category_id);
+	void category_cooldown_addc(int category_id, float value);
+	void category_cooldown_removec(int spell_id);
+	Ref<CategoryCooldown> category_cooldown_getc(int category_id);
+	Ref<CategoryCooldown> category_cooldown_getc_index(int index);
+	int category_cooldown_getc_count();
 
 	//Known Spells
 
