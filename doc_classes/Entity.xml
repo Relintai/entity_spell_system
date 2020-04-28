@@ -770,7 +770,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_resource">
+		<method name="resource_addc">
 			<return type="void">
 			</return>
 			<argument index="0" name="palyer_resource" type="int">
@@ -780,7 +780,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="addc_resource_rpc">
+		<method name="resource_addc_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -922,7 +922,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="adds_resource">
+		<method name="resource_adds">
 			<return type="void">
 			</return>
 			<argument index="0" name="palyer_resource" type="EntityResource">
@@ -1210,13 +1210,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="clearc_resource">
+		<method name="resource_clearc">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="clears_resource">
+		<method name="resource_clears">
 			<return type="void">
 			</return>
 			<description>
@@ -1484,7 +1484,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="creceive_resource_curr_max">
+		<method name="resource_creceive_curr_max">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -1496,7 +1496,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="creceive_resource_current">
+		<method name="resource_creceive_current">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -1506,7 +1506,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="creceive_resource_data">
+		<method name="resource_creceive_data">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2004,13 +2004,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_resource_count">
+		<method name="resource_getc_count">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="getc_resource_id">
+		<method name="resource_getc_id">
 			<return type="EntityResource">
 			</return>
 			<argument index="0" name="type" type="int">
@@ -2018,7 +2018,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="getc_resource_index">
+		<method name="resource_getc_index">
 			<return type="EntityResource">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2230,13 +2230,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_resource_count">
+		<method name="resource_gets_count">
 			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="gets_resource_id">
+		<method name="resource_gets_id">
 			<return type="EntityResource">
 			</return>
 			<argument index="0" name="type" type="int">
@@ -2244,7 +2244,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="gets_resource_index">
+		<method name="resource_gets_index">
 			<return type="EntityResource">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2788,7 +2788,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removec_resource">
+		<method name="resource_removec">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -2948,7 +2948,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="removes_resource">
+		<method name="resource_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -3126,7 +3126,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sends_resource_curr_max">
+		<method name="resource_sends_curr_max">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -3138,7 +3138,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sends_resource_current">
+		<method name="resource_sends_current">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -3148,7 +3148,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sends_resource_data">
+		<method name="resource_sends_data">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">

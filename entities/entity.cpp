@@ -1319,7 +1319,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 		res->from_dict(ird);
 
-		adds_resource(res);
+		resource_adds(res);
 	}
 
 	////    GCD    ////
@@ -2170,12 +2170,12 @@ void Entity::_equip_deapplyc_item(Ref<ItemInstance> item) {
 
 ////    Resources    ////
 
-Ref<EntityResource> Entity::gets_resource_index(int index) {
+Ref<EntityResource> Entity::resource_gets_index(int index) {
 	ERR_FAIL_INDEX_V(index, _s_resources.size(), Ref<EntityResource>());
 
 	return _s_resources.get(index);
 }
-Ref<EntityResource> Entity::gets_resource_id(int id) {
+Ref<EntityResource> Entity::resource_gets_id(int id) {
 	for (int i = 0; i < _s_resources.size(); ++i) {
 		Ref<EntityResource> r = _s_resources.get(i);
 
@@ -2186,7 +2186,7 @@ Ref<EntityResource> Entity::gets_resource_id(int id) {
 
 	return Ref<EntityResource>();
 }
-void Entity::adds_resource(Ref<EntityResource> resource) {
+void Entity::resource_adds(Ref<EntityResource> resource) {
 	ERR_FAIL_COND(!resource.is_valid());
 
 	_s_resources.push_back(resource);
@@ -2195,12 +2195,12 @@ void Entity::adds_resource(Ref<EntityResource> resource) {
 
 	son_entity_resource_added(resource);
 
-	VRPCOBJP(addc_resource_rpc, _s_resources.size() - 1, JSON::print(resource->to_dict()), addc_resource, _s_resources.size() - 1, resource);
+	VRPCOBJP(resource_addc_rpc, _s_resources.size() - 1, JSON::print(resource->to_dict()), resource_addc, _s_resources.size() - 1, resource);
 }
-int Entity::gets_resource_count() {
+int Entity::resource_gets_count() {
 	return _s_resources.size();
 }
-void Entity::removes_resource(int index) {
+void Entity::resource_removes(int index) {
 	ERR_FAIL_INDEX(index, _s_resources.size());
 
 	Ref<EntityResource> res = _s_resources.get(index);
@@ -2208,15 +2208,15 @@ void Entity::removes_resource(int index) {
 
 	son_entity_resource_removed(res);
 
-	VRPC(removec_resource, index);
+	VRPC(resource_removec, index);
 }
-void Entity::clears_resource() {
+void Entity::resource_clears() {
 	_s_resources.clear();
 
-	VRPC(clearc_resource);
+	VRPC(resource_clearc);
 }
 
-void Entity::addc_resource_rpc(int index, String data) {
+void Entity::resource_addc_rpc(int index, String data) {
 	//Ref<EntityResource> res;
 
 	Dictionary dict = data_as_dict(data);
@@ -2260,15 +2260,15 @@ void Entity::addc_resource_rpc(int index, String data) {
 
 	res->from_dict(dict);
 
-	addc_resource(index, res);
+	resource_addc(index, res);
 }
 
-Ref<EntityResource> Entity::getc_resource_index(int index) {
+Ref<EntityResource> Entity::resource_getc_index(int index) {
 	ERR_FAIL_INDEX_V(index, _c_resources.size(), Ref<EntityResource>());
 
 	return _c_resources.get(index);
 }
-Ref<EntityResource> Entity::getc_resource_id(int id) {
+Ref<EntityResource> Entity::resource_getc_id(int id) {
 	for (int i = 0; i < _c_resources.size(); ++i) {
 		Ref<EntityResource> r = _c_resources.get(i);
 
@@ -2279,7 +2279,7 @@ Ref<EntityResource> Entity::getc_resource_id(int id) {
 
 	return Ref<EntityResource>(NULL);
 }
-void Entity::addc_resource(int index, Ref<EntityResource> resource) {
+void Entity::resource_addc(int index, Ref<EntityResource> resource) {
 	ERR_FAIL_COND(!resource.is_valid());
 
 	if (_c_resources.size() <= index) {
@@ -2292,10 +2292,10 @@ void Entity::addc_resource(int index, Ref<EntityResource> resource) {
 
 	con_entity_resource_added(resource);
 }
-int Entity::getc_resource_count() {
+int Entity::resource_getc_count() {
 	return _c_resources.size();
 }
-void Entity::removec_resource(int index) {
+void Entity::resource_removec(int index) {
 	ERR_FAIL_INDEX(index, _c_resources.size());
 
 	Ref<EntityResource> res = _c_resources.get(index);
@@ -2303,21 +2303,21 @@ void Entity::removec_resource(int index) {
 
 	con_entity_resource_removed(res);
 }
-void Entity::clearc_resource() {
+void Entity::resource_clearc() {
 	_s_resources.clear();
 }
 
-void Entity::sends_resource_current(int index, int current) {
-	VRPC(creceive_resource_current, index, current);
+void Entity::resource_sends_current(int index, int current) {
+	VRPC(resource_creceive_current, index, current);
 }
-void Entity::sends_resource_curr_max(int index, int current, int max) {
-	VRPC(creceive_resource_curr_max, index, current, max);
+void Entity::resource_sends_curr_max(int index, int current, int max) {
+	VRPC(resource_creceive_curr_max, index, current, max);
 }
-void Entity::sends_resource_data(int index, String data) {
-	VRPC(creceive_resource_data, index, data);
+void Entity::resource_sends_data(int index, String data) {
+	VRPC(resource_creceive_data, index, data);
 }
 
-void Entity::creceive_resource_current(int index, int current) {
+void Entity::resource_creceive_current(int index, int current) {
 	ERR_FAIL_INDEX(index, _c_resources.size());
 
 	Ref<EntityResource> res = _c_resources.get(index);
@@ -2326,7 +2326,7 @@ void Entity::creceive_resource_current(int index, int current) {
 
 	res->receivec_update(current);
 }
-void Entity::creceive_resource_curr_max(int index, int current, int max) {
+void Entity::resource_creceive_curr_max(int index, int current, int max) {
 	ERR_FAIL_INDEX(index, _c_resources.size());
 
 	Ref<EntityResource> res = _c_resources.get(index);
@@ -2335,7 +2335,7 @@ void Entity::creceive_resource_curr_max(int index, int current, int max) {
 
 	res->receivec_update_full(current, max);
 }
-void Entity::creceive_resource_data(int index, String data) {
+void Entity::resource_creceive_data(int index, String data) {
 	ERR_FAIL_INDEX(index, _c_resources.size());
 
 	Ref<EntityResource> res = _c_resources.get(index);
@@ -2373,7 +2373,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 
 	notification_sdamage(SpellEnums::NOTIFICATION_DAMAGE_RECEIVE, info);
 
-	Ref<EntityResource> hp = gets_resource_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
+	Ref<EntityResource> hp = resource_gets_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
 	ERR_FAIL_COND(!hp.is_valid());
 
 	int h = hp->get_current_value() - info->get_damage();
@@ -2416,7 +2416,7 @@ void Entity::sdeal_damage_to(Ref<SpellDamageInfo> info) {
 	//signal
 	emit_signal("son_damage_received", this, info);
 
-	Ref<EntityResource> hp = gets_resource_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
+	Ref<EntityResource> hp = resource_gets_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
 	ERR_FAIL_COND(!hp.is_valid());
 
 	if (hp->get_current_value() <= 0) {
@@ -2448,7 +2448,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 
 	notification_sheal(SpellEnums::NOTIFICATION_HEAL_RECEIVE, info);
 
-	Ref<EntityResource> hp = gets_resource_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
+	Ref<EntityResource> hp = resource_gets_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
 	ERR_FAIL_COND(!hp.is_valid());
 
 	int h = hp->get_current_value() + info->get_heal();
@@ -5337,7 +5337,7 @@ void Entity::update(float delta) {
 				res->process_server(delta);
 
 			if (res->get_dirty()) {
-				sends_resource_curr_max(i, res->get_current_value(), res->get_max_value());
+				resource_sends_curr_max(i, res->get_current_value(), res->get_max_value());
 				res->set_dirty(false);
 			}
 		}
@@ -5741,13 +5741,13 @@ Entity::Entity() {
 
 	////    Resources    ////
 
-	SET_RPC_REMOTE("addc_resource_rpc");
-	SET_RPC_REMOTE("removec_resource");
-	SET_RPC_REMOTE("clearc_resource");
+	SET_RPC_REMOTE("resource_addc_rpc");
+	SET_RPC_REMOTE("resource_removec");
+	SET_RPC_REMOTE("resource_clearc");
 
-	SET_RPC_REMOTE("creceive_resource_current");
-	SET_RPC_REMOTE("creceive_resource_curr_max");
-	SET_RPC_REMOTE("creceive_resource_data");
+	SET_RPC_REMOTE("resource_creceive_current");
+	SET_RPC_REMOTE("resource_creceive_curr_max");
+	SET_RPC_REMOTE("resource_creceive_data");
 
 	////    Global Cooldown    ////
 
@@ -6377,7 +6377,7 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 
 		res->from_dict(ird);
 
-		adds_resource(res);
+		resource_adds(res);
 	}
 
 	////    GCD    ////
@@ -7371,29 +7371,29 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_equip_deapplyc_item", "item"), &Entity::_equip_deapplyc_item);
 
 	//Resources
-	ClassDB::bind_method(D_METHOD("gets_resource_index", "index"), &Entity::gets_resource_index);
-	ClassDB::bind_method(D_METHOD("gets_resource_id", "type"), &Entity::gets_resource_id);
-	ClassDB::bind_method(D_METHOD("adds_resource", "palyer_resource"), &Entity::adds_resource);
-	ClassDB::bind_method(D_METHOD("gets_resource_count"), &Entity::gets_resource_count);
-	ClassDB::bind_method(D_METHOD("removes_resource", "index"), &Entity::removes_resource);
-	ClassDB::bind_method(D_METHOD("clears_resource"), &Entity::clears_resource);
+	ClassDB::bind_method(D_METHOD("resource_gets_index", "index"), &Entity::resource_gets_index);
+	ClassDB::bind_method(D_METHOD("resource_gets_id", "type"), &Entity::resource_gets_id);
+	ClassDB::bind_method(D_METHOD("resource_adds", "palyer_resource"), &Entity::resource_adds);
+	ClassDB::bind_method(D_METHOD("resource_gets_count"), &Entity::resource_gets_count);
+	ClassDB::bind_method(D_METHOD("resource_removes", "index"), &Entity::resource_removes);
+	ClassDB::bind_method(D_METHOD("resource_clears"), &Entity::resource_clears);
 
-	ClassDB::bind_method(D_METHOD("addc_resource_rpc", "index", "data"), &Entity::addc_resource_rpc);
+	ClassDB::bind_method(D_METHOD("resource_addc_rpc", "index", "data"), &Entity::resource_addc_rpc);
 
-	ClassDB::bind_method(D_METHOD("getc_resource_index", "index"), &Entity::getc_resource_index);
-	ClassDB::bind_method(D_METHOD("getc_resource_id", "type"), &Entity::getc_resource_id);
-	ClassDB::bind_method(D_METHOD("addc_resource", "palyer_resource"), &Entity::addc_resource);
-	ClassDB::bind_method(D_METHOD("getc_resource_count"), &Entity::getc_resource_count);
-	ClassDB::bind_method(D_METHOD("removec_resource", "index"), &Entity::removec_resource);
-	ClassDB::bind_method(D_METHOD("clearc_resource"), &Entity::clearc_resource);
+	ClassDB::bind_method(D_METHOD("resource_getc_index", "index"), &Entity::resource_getc_index);
+	ClassDB::bind_method(D_METHOD("resource_getc_id", "type"), &Entity::resource_getc_id);
+	ClassDB::bind_method(D_METHOD("resource_addc", "palyer_resource"), &Entity::resource_addc);
+	ClassDB::bind_method(D_METHOD("resource_getc_count"), &Entity::resource_getc_count);
+	ClassDB::bind_method(D_METHOD("resource_removec", "index"), &Entity::resource_removec);
+	ClassDB::bind_method(D_METHOD("resource_clearc"), &Entity::resource_clearc);
 
-	ClassDB::bind_method(D_METHOD("sends_resource_current", "index", "current"), &Entity::sends_resource_current);
-	ClassDB::bind_method(D_METHOD("sends_resource_curr_max", "index", "current", "max"), &Entity::sends_resource_curr_max);
-	ClassDB::bind_method(D_METHOD("sends_resource_data", "index", "data"), &Entity::sends_resource_data);
+	ClassDB::bind_method(D_METHOD("resource_sends_current", "index", "current"), &Entity::resource_sends_current);
+	ClassDB::bind_method(D_METHOD("resource_sends_curr_max", "index", "current", "max"), &Entity::resource_sends_curr_max);
+	ClassDB::bind_method(D_METHOD("resource_sends_data", "index", "data"), &Entity::resource_sends_data);
 
-	ClassDB::bind_method(D_METHOD("creceive_resource_current", "index", "current"), &Entity::creceive_resource_current);
-	ClassDB::bind_method(D_METHOD("creceive_resource_curr_max", "index", "current", "max"), &Entity::creceive_resource_curr_max);
-	ClassDB::bind_method(D_METHOD("creceive_resource_data", "index", "data"), &Entity::creceive_resource_data);
+	ClassDB::bind_method(D_METHOD("resource_creceive_current", "index", "current"), &Entity::resource_creceive_current);
+	ClassDB::bind_method(D_METHOD("resource_creceive_curr_max", "index", "current", "max"), &Entity::resource_creceive_curr_max);
+	ClassDB::bind_method(D_METHOD("resource_creceive_data", "index", "data"), &Entity::resource_creceive_data);
 
 	//GCD
 	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::REAL, "value")));

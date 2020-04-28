@@ -410,7 +410,7 @@ void EntityClassData::_setup_resources(Node *entity) {
 		Ref<EntityResourceData> res = _entity_resources.get(i);
 
 		if (res.is_valid()) {
-			ent->adds_resource(res->get_entity_resource_instance());
+			ent->resource_adds(res->get_entity_resource_instance());
 		}
 	}
 }
