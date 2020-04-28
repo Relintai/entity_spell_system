@@ -44,10 +44,18 @@ void EntityResourceSpeed::_notification_sstat_changed(Ref<Stat> stat) {
 		refresh();
 }
 void EntityResourceSpeed::refresh() {
+	ERR_FAIL_COND(get_owner() == NULL);
+
 	Ref<Stat> speed_stat = get_owner()->get_stat(speed_stat_id);
+
+	if (!speed_stat.is_valid())
+		return;
 
 	set_max_value(base_value + speed_stat->gets_current() * 0.01);
 	set_current_value(base_value + speed_stat->gets_current() * 0.01);
+}
+
+void EntityResourceSpeed::resolve_references() {
 }
 
 EntityResourceSpeed::EntityResourceSpeed() {

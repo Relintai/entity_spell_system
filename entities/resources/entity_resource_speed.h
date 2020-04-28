@@ -38,6 +38,8 @@ public:
 	void _notification_sstat_changed(Ref<Stat> stat);
 	void refresh();
 
+	void resolve_references();
+
 	EntityResourceSpeed();
 	~EntityResourceSpeed();
 

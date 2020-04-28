@@ -49,13 +49,25 @@ void EntityResourceHealth::_notification_sstat_changed(Ref<Stat> stat) {
 		refresh();
 }
 void EntityResourceHealth::refresh() {
+	ERR_FAIL_COND(get_owner() == NULL);
+
 	Ref<Stat> stamina = get_owner()->get_stat(stamina_stat_id);
+
+	if (!stamina.is_valid())
+		return;
+
 	Ref<Stat> health = get_owner()->get_stat(health_stat_id);
+
+	if (!health.is_valid())
+		return;
 
 	int val = int(stamina->gets_current()) * 10 + int(health->gets_current());
 
 	set_max_value(val);
 	set_current_value(val);
+}
+
+void EntityResourceHealth::resolve_references() {
 }
 
 EntityResourceHealth::EntityResourceHealth() {

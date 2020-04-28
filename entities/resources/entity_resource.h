@@ -74,7 +74,7 @@ public:
 	void receivec_update_full(const int current, const int max);
 	void receivec_update_string(const String str);
 
-	void resolve_references();
+	virtual void resolve_references();
 
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);

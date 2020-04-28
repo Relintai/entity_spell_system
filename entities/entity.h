@@ -415,6 +415,11 @@ public:
 	void resource_creceive_curr_max(int index, int current, int max);
 	void resource_creceive_data(int index, String data);
 
+	Ref<EntityResource> gets_health();
+	Ref<EntityResource> gets_speed();
+	Ref<EntityResource> getc_health();
+	Ref<EntityResource> getc_speed();
+
 	////    Global Cooldown    ////
 
 	bool gcd_hasc();

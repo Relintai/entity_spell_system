@@ -36,6 +36,8 @@ SOFTWARE.
 #include "../profiles/class_profile.h"
 #include "./data/character_spec.h"
 #include "./data/talent_row_data.h"
+#include "./resources/entity_resource_health.h"
+#include "./resources/entity_resource_speed.h"
 #include "./skills/entity_skill.h"
 #include "./stats/stat.h"
 #include "./stats/stat_modifier.h"
@@ -1299,12 +1301,20 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	////    Resources    ////
 
-	_s_resources.clear();
-	_c_resources.clear();
+	_s_resources.resize(EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN);
+	_c_resources.resize(EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN);
 
 	Dictionary rd = dict.get("resources", Dictionary());
 
-	for (int i = 0; i < rd.size(); ++i) {
+	Dictionary hpdict = rd.get(String::num(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH), Dictionary());
+	_s_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH)->from_dict(hpdict);
+	_c_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH)->from_dict(hpdict);
+
+	Dictionary speeddict = rd.get(String::num(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED), Dictionary());
+	_s_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED)->from_dict(speeddict);
+	_c_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED)->from_dict(speeddict);
+
+	for (int i = EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN; i < rd.size(); ++i) {
 		Dictionary ird = rd.get(String::num(i), Dictionary());
 
 		StringName data_path = ird.get("data_path", "");
@@ -2176,7 +2186,7 @@ Ref<EntityResource> Entity::resource_gets_index(int index) {
 	return _s_resources.get(index);
 }
 Ref<EntityResource> Entity::resource_gets_id(int id) {
-	for (int i = 0; i < _s_resources.size(); ++i) {
+	for (int i = EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN; i < _s_resources.size(); ++i) {
 		Ref<EntityResource> r = _s_resources.get(i);
 
 		if (r->get_resource_data()->get_id() == id) {
@@ -2211,7 +2221,7 @@ void Entity::resource_removes(int index) {
 	VRPC(resource_removec, index);
 }
 void Entity::resource_clears() {
-	_s_resources.clear();
+	_s_resources.resize(EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN);
 
 	VRPC(resource_clearc);
 }
@@ -2269,7 +2279,7 @@ Ref<EntityResource> Entity::resource_getc_index(int index) {
 	return _c_resources.get(index);
 }
 Ref<EntityResource> Entity::resource_getc_id(int id) {
-	for (int i = 0; i < _c_resources.size(); ++i) {
+	for (int i = EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN; i < _c_resources.size(); ++i) {
 		Ref<EntityResource> r = _c_resources.get(i);
 
 		if (r->get_resource_data()->get_id() == id) {
@@ -2304,7 +2314,7 @@ void Entity::resource_removec(int index) {
 	notification_centity_resource_removed(res);
 }
 void Entity::resource_clearc() {
-	_s_resources.clear();
+	_c_resources.resize(EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN);
 }
 
 void Entity::resource_sends_current(int index, int current) {
@@ -2343,6 +2353,19 @@ void Entity::resource_creceive_data(int index, String data) {
 	ERR_FAIL_COND(!res.is_valid());
 
 	res->receivec_update_string(data);
+}
+
+Ref<EntityResource> Entity::gets_health() {
+	return _s_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
+}
+Ref<EntityResource> Entity::gets_speed() {
+	return _s_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED);
+}
+Ref<EntityResource> Entity::getc_health() {
+	return _s_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
+}
+Ref<EntityResource> Entity::getc_speed() {
+	return _s_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED);
 }
 
 void Entity::stake_damage(Ref<SpellDamageInfo> info) {
@@ -5702,6 +5725,20 @@ Entity::Entity() {
 	_s_pet_formation_index = 0;
 	_s_pet_ai_state = EntityEnums::AI_STATE_OFF;
 
+	_s_resources.resize(EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN);
+	_c_resources.resize(EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN);
+
+	_s_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH, Ref<EntityResourceHealth>(memnew(EntityResourceHealth)));
+	_s_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED, Ref<EntityResourceSpeed>(memnew(EntityResourceSpeed)));
+
+	_c_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH, Ref<EntityResourceHealth>(memnew(EntityResourceHealth)));
+	_c_resources.set(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED, Ref<EntityResourceSpeed>(memnew(EntityResourceSpeed)));
+
+	for (int i = 0; i < EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN; ++i) {
+		_s_resources.get(i)->set_owner(this);
+		_c_resources.get(i)->set_owner(this);
+	}
+
 	SET_RPC_REMOTE("csend_request_rank_increase");
 	SET_RPC_REMOTE("csend_request_rank_decrease");
 
@@ -7394,6 +7431,11 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("resource_creceive_current", "index", "current"), &Entity::resource_creceive_current);
 	ClassDB::bind_method(D_METHOD("resource_creceive_curr_max", "index", "current", "max"), &Entity::resource_creceive_curr_max);
 	ClassDB::bind_method(D_METHOD("resource_creceive_data", "index", "data"), &Entity::resource_creceive_data);
+
+	ClassDB::bind_method(D_METHOD("gets_health"), &Entity::gets_health);
+	ClassDB::bind_method(D_METHOD("gets_speed"), &Entity::gets_speed);
+	ClassDB::bind_method(D_METHOD("getc_health"), &Entity::getc_health);
+	ClassDB::bind_method(D_METHOD("getc_speed"), &Entity::getc_speed);
 
 	//GCD
 	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::REAL, "value")));
