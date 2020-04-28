@@ -3116,7 +3116,7 @@ void Entity::removes_aura(Ref<AuraData> aura) {
 	}
 
 	if (removed) {
-		emit_signal("saura_removed", a);
+		notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, a);
 
 		if (!aura->get_aura()->get_hide())
 			VRPCOBJ(removec_aura_rpc, JSON::print(aura->to_dict()), removec_aura, aura);
@@ -3138,7 +3138,7 @@ void Entity::removes_aura_exact(Ref<AuraData> aura) {
 		}
 	}
 
-	emit_signal("saura_removed", aura);
+	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
 	if (!aura->get_aura()->get_hide())
 		VRPCOBJ(removec_aura_rpc, JSON::print(aura->to_dict()), removec_aura, aura);
@@ -3159,7 +3159,7 @@ void Entity::removes_aura_expired(Ref<AuraData> aura) {
 		}
 	}
 
-	emit_signal("saura_removed_expired", aura);
+	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
 	if (!aura->get_aura()->get_hide())
 		VRPCOBJ(removec_aura_rpc, JSON::print(aura->to_dict()), removec_aura, aura);
@@ -3180,7 +3180,7 @@ void Entity::removes_aura_dispelled(Ref<AuraData> aura) {
 		}
 	}
 
-	emit_signal("saura_removed_dispelled", aura);
+	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
 	if (!aura->get_aura()->get_hide())
 		VRPCOBJ(removec_aura_rpc, JSON::print(aura->to_dict()), removec_aura, aura);
@@ -3192,7 +3192,7 @@ void Entity::saura_refreshed(Ref<AuraData> aura) {
 
 	ERR_FAIL_COND(!aura.is_valid());
 
-	emit_signal("caura_refreshed", aura);
+	notification_saura(SpellEnums::NOTIFICATION_AURA_REFRESHED, aura);
 
 	if (!aura->get_aura()->get_hide())
 		VRPCOBJ(caura_refreshed_rpc, JSON::print(aura->to_dict()), caura_refreshed, aura);
@@ -3321,7 +3321,7 @@ void Entity::caura_refreshed(Ref<AuraData> aura) {
 
 	ERR_FAIL_COND(!aura.is_valid());
 
-	emit_signal("caura_refreshed", aura);
+	notification_caura(SpellEnums::NOTIFICATION_AURA_REFRESHED, aura);
 }
 
 void Entity::removec_aura_expired(Ref<AuraData> aura) {
@@ -3335,8 +3335,6 @@ void Entity::removec_aura_expired(Ref<AuraData> aura) {
 	}
 
 	notification_caura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
-
-	emit_signal("caura_removed_expired", aura);
 }
 
 int Entity::gets_aura_count() {
