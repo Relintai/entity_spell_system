@@ -1132,7 +1132,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="cdie">
+		<method name="diec">
 			<return type="void">
 			</return>
 			<description>
@@ -3120,7 +3120,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="sdie">
+		<method name="dies">
 			<return type="void">
 			</return>
 			<description>
@@ -3894,7 +3894,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="cdied">
+		<signal name="diecd">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<description>
@@ -4282,7 +4282,7 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="sdied">
+		<signal name="diesd">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<description>

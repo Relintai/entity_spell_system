@@ -1821,22 +1821,22 @@ void Entity::set_stat(int index, Ref<Stat> entry) {
 	_stats.set(index, entry);
 }
 
-void Entity::sdie() {
+void Entity::dies() {
 	//serverside
 
 	son_death();
 
 	//send an event to client
-	VRPC(cdie);
+	VRPC(diec);
 
 	//signal
-	emit_signal("sdied", this);
+	emit_signal("diesd", this);
 }
 
-void Entity::cdie() {
+void Entity::diec() {
 	con_death();
 
-	emit_signal("cdied", this);
+	emit_signal("diecd", this);
 }
 
 void Entity::ons_stat_changed(Ref<Stat> stat) {
@@ -2393,7 +2393,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	VRPCOBJ12(cdamage_dealt_rpc, JSON::print(info->to_dict()), notification_cdamage, SpellEnums::NOTIFICATION_DAMAGE_DAMAGE_DEALT, info);
 
 	if (hp->get_current_value() <= 0) {
-		sdie();
+		dies();
 	}
 }
 
@@ -2420,7 +2420,7 @@ void Entity::sdeal_damage_to(Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!hp.is_valid());
 
 	if (hp->get_current_value() <= 0) {
-		sdie();
+		dies();
 	}
 }
 
@@ -5729,7 +5729,7 @@ Entity::Entity() {
 
 	SET_RPC_REMOTE("creceive_stat");
 
-	SET_RPC_REMOTE("cdie");
+	SET_RPC_REMOTE("diec");
 
 	//send_stat
 
@@ -6854,8 +6854,8 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("sentity_data_changed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData")));
 	ADD_SIGNAL(MethodInfo("centity_data_changed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData")));
 
-	ADD_SIGNAL(MethodInfo("sdied", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	ADD_SIGNAL(MethodInfo("cdied", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	ADD_SIGNAL(MethodInfo("diesd", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	ADD_SIGNAL(MethodInfo("diecd", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	ADD_SIGNAL(MethodInfo("sentity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
 	ADD_SIGNAL(MethodInfo("sentity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
@@ -6887,8 +6887,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("ssend_stat", "id", "ccurrent", "cmax"), &Entity::ssend_stat);
 	ClassDB::bind_method(D_METHOD("creceive_stat", "id", "ccurrent", "cmax"), &Entity::creceive_stat);
 
-	ClassDB::bind_method(D_METHOD("sdie"), &Entity::sdie);
-	ClassDB::bind_method(D_METHOD("cdie"), &Entity::cdie);
+	ClassDB::bind_method(D_METHOD("dies"), &Entity::dies);
+	ClassDB::bind_method(D_METHOD("diec"), &Entity::diec);
 
 	ClassDB::bind_method(D_METHOD("ons_stat_changed", "stat"), &Entity::ons_stat_changed);
 	ClassDB::bind_method(D_METHOD("onc_stat_changed", "stat"), &Entity::onc_stat_changed);

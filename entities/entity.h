@@ -342,8 +342,8 @@ public:
 	Ref<Stat> get_stat(int index);
 	void set_stat(int index, Ref<Stat> entry);
 
-	void sdie();
-	void cdie();
+	void dies();
+	void diec();
 
 	void ons_stat_changed(Ref<Stat> stat);
 	void onc_stat_changed(Ref<Stat> stat);
