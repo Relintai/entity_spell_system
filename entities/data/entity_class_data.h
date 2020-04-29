@@ -67,9 +67,6 @@ public:
 	Ref<Texture> get_icon();
 	void set_icon(Ref<Texture> value);
 
-	Ref<StatData> get_stat_data();
-	void set_stat_data(Ref<StatData> value);
-
 	int get_spell_points_per_level();
 	void set_spell_points_per_level(int value);
 
@@ -238,8 +235,6 @@ private:
 	int _spell_points_per_level;
 
 	EntityEnums::EntityClassPlaystyleType _playstyle_type;
-
-	Ref<StatData> _stat_data;
 
 	Vector<Ref<EntityResourceData> > _entity_resources;
 	Vector<Ref<CharacterSpec> > _specs;

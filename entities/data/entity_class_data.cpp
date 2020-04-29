@@ -74,21 +74,6 @@ void EntityClassData::set_playstyle_type(EntityEnums::EntityClassPlaystyleType p
 	_playstyle_type = playstyle_type;
 }
 
-Ref<StatData> EntityClassData::get_stat_data() {
-	if (!_stat_data.is_valid() && _inherits.is_valid()) {
-		return _inherits->get_stat_data();
-	}
-
-	if (!_stat_data.is_valid())
-		return Ref<StatData>();
-
-	return _stat_data;
-}
-
-void EntityClassData::set_stat_data(Ref<StatData> value) {
-	_stat_data = value;
-}
-
 ////    Entity Resources    ////
 
 int EntityClassData::get_num_entity_resources() {
@@ -975,10 +960,6 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_icon"), &EntityClassData::get_icon);
 	ClassDB::bind_method(D_METHOD("set_icon", "value"), &EntityClassData::set_icon);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "icon", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_icon", "get_icon");
-
-	ClassDB::bind_method(D_METHOD("get_stat_data"), &EntityClassData::get_stat_data);
-	ClassDB::bind_method(D_METHOD("set_stat_data", "value"), &EntityClassData::set_stat_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "stat_data", PROPERTY_HINT_RESOURCE_TYPE, "StatData"), "set_stat_data", "get_stat_data");
 
 	ClassDB::bind_method(D_METHOD("get_spell_points_per_level"), &EntityClassData::get_spell_points_per_level);
 	ClassDB::bind_method(D_METHOD("set_spell_points_per_level", "value"), &EntityClassData::set_spell_points_per_level);

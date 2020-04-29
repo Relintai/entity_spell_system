@@ -581,7 +581,7 @@ void Entity::_setup() {
 		Ref<EntityClassData> cc = gets_entity_data()->get_entity_class_data();
 		ERR_FAIL_COND(!cc.is_valid());
 
-		Ref<StatData> stat_data = cc->get_stat_data();
+		Ref<StatData> stat_data = _s_entity_data->get_stat_data();
 
 		ERR_FAIL_COND(!stat_data.is_valid());
 
@@ -650,7 +650,7 @@ void Entity::_setup() {
 	ERR_FAIL_COND(!cc.is_valid());
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-		cc->get_stat_data()->get_stat_for_stat(_stats[i]);
+		_s_entity_data->get_stat_data()->get_stat_for_stat(_stats[i]);
 	}
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
@@ -6064,7 +6064,7 @@ void Entity::_notification_scharacter_level_up(int level) {
 		return;
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_main_stat_count(); ++i) {
-		int st = gets_entity_data()->get_entity_class_data()->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_character_level() - level, gets_character_level());
+		int st = gets_entity_data()->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_character_level() - level, gets_character_level());
 
 		Ref<Stat> stat = get_stat(i);
 

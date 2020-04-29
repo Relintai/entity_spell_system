@@ -97,6 +97,9 @@ public:
 	int get_bag_size() const;
 	void set_bag_size(const int value);
 
+	Ref<StatData> get_stat_data();
+	void set_stat_data(Ref<StatData> value);
+
 	Ref<EntitySpeciesData> get_entity_species_data() const;
 	void set_entity_species_data(const Ref<EntitySpeciesData> &value);
 
@@ -250,6 +253,7 @@ private:
 	int _money;
 	int _bag_size;
 
+	Ref<StatData> _stat_data;
 	Ref<EntityClassData> _entity_class_data;
 	Ref<EntitySpeciesData> _entity_species_data;
 	Ref<EquipmentData> _equipment_data;
