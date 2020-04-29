@@ -33,23 +33,8 @@ class StatDataEntry : public Resource {
 	GDCLASS(StatDataEntry, Resource);
 
 public:
-	int get_stat_id();
-	void set_stat_id(int value);
-
-	bool get_public();
-	void set_public(bool value);
-
 	float get_base();
 	void set_base(float value);
-
-	float get_bonus();
-	void set_bonus(float value);
-
-	float get_percent();
-	void set_percent(float value);
-
-	Stat::StatModifierApplyType get_modifier_apply_type();
-	void set_modifier_apply_type(Stat::StatModifierApplyType value);
 
 	bool has_mod_stats();
 
@@ -59,11 +44,8 @@ public:
 	int get_mod_stat_id(int index);
 	void set_mod_stat_id(int index, int value);
 
-	Ref<Curve> get_mod_stat_curve(int index);
-	void set_mod_stat_curve(int index, Ref<Curve> curve);
-
-	float get_mod_stat_max_value(int index);
-	void set_mod_stat_max_value(int index, float value);
+	float get_mod_stat_multiplier(int index);
+	void set_mod_stat_multiplier(int index, float value);
 
 	void get_stats_for_stat(Ref<Stat> stat);
 
@@ -77,8 +59,7 @@ protected:
 public:
 	struct ModStat {
 		int stat_id;
-		Ref<Curve> curve;
-		float max_value;
+		float multiplier;
 	};
 
 	enum {
@@ -86,11 +67,7 @@ public:
 	};
 
 private:
-	int _stat_id;
-	bool _public;
 	float _base;
-	float _bonus;
-	float _percent;
 
 	int _mod_stat_count;
 	ModStat _mod_stats[MAX_MOD_STATS];

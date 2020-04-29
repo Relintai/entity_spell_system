@@ -30,49 +30,11 @@ SOFTWARE.
 #define REAL FLOAT
 #endif
 
-int StatDataEntry::get_stat_id() {
-	return _stat_id;
-}
-void StatDataEntry::set_stat_id(int value) {
-	_stat_id = value;
-
-	//if (value < Stat::STAT_ID_GLOBAL_COOLDOWN) TODO
-	_public = true;
-}
-
-bool StatDataEntry::get_public() {
-	return _public;
-}
-void StatDataEntry::set_public(bool value) {
-	_public = value;
-}
-
 float StatDataEntry::get_base() {
 	return _base;
 }
 void StatDataEntry::set_base(float value) {
 	_base = value;
-}
-
-float StatDataEntry::get_bonus() {
-	return _bonus;
-}
-void StatDataEntry::set_bonus(float value) {
-	_bonus = value;
-}
-
-float StatDataEntry::get_percent() {
-	return _percent;
-}
-void StatDataEntry::set_percent(float value) {
-	_percent = value;
-}
-
-Stat::StatModifierApplyType StatDataEntry::get_modifier_apply_type() {
-	return _modifier_apply_type;
-}
-void StatDataEntry::set_modifier_apply_type(Stat::StatModifierApplyType value) {
-	_modifier_apply_type = value;
 }
 
 bool StatDataEntry::has_mod_stats() {
@@ -97,59 +59,37 @@ void StatDataEntry::set_mod_stat_id(int index, int value) {
 	_mod_stats[index].stat_id = value;
 }
 
-Ref<Curve> StatDataEntry::get_mod_stat_curve(int index) {
-	ERR_FAIL_INDEX_V(index, MAX_MOD_STATS, Ref<Curve>());
-
-	return _mod_stats[index].curve;
-}
-void StatDataEntry::set_mod_stat_curve(int index, Ref<Curve> curve) {
-	ERR_FAIL_INDEX(index, MAX_MOD_STATS);
-
-	_mod_stats[index].curve = curve;
-}
-
-float StatDataEntry::get_mod_stat_max_value(int index) {
+float StatDataEntry::get_mod_stat_multiplier(int index) {
 	ERR_FAIL_INDEX_V(index, MAX_MOD_STATS, 1);
 
-	return _mod_stats[index].max_value;
+	return _mod_stats[index].multiplier;
 }
-void StatDataEntry::set_mod_stat_max_value(int index, float value) {
+void StatDataEntry::set_mod_stat_multiplier(int index, float value) {
 	ERR_FAIL_INDEX(index, 1);
 
-	_mod_stats[index].max_value = value;
+	_mod_stats[index].multiplier = value;
 }
 
 void StatDataEntry::get_stats_for_stat(Ref<Stat> stat) {
-	stat->set_stat_modifier_type(get_modifier_apply_type());
-
 	stat->clear_modifiers();
 
-	stat->set_public(_public);
-	stat->add_modifier(0, get_base(), get_bonus(), get_percent());
+	stat->add_modifier(0, get_base(), 0, 0);
 	stat->set_stat_data_entry(Ref<StatDataEntry>(this));
 }
 
 StatDataEntry::StatDataEntry() {
-	_stat_id = 0;
-
-	_public = false;
 	_base = 0;
-	_bonus = 0;
-	_percent = 100;
 	_mod_stat_count = 0;
 
 	_modifier_apply_type = Stat::MODIFIER_APPLY_TYPE_STANDARD;
 
 	for (int i = 0; i < MAX_MOD_STATS; ++i) {
 		_mod_stats[i].stat_id = 0;
-		_mod_stats[i].max_value = 1000;
+		_mod_stats[i].multiplier = 0;
 	}
 }
 
 StatDataEntry::~StatDataEntry() {
-	for (int i = 0; i < MAX_MOD_STATS; ++i) {
-		_mod_stats[i].curve.unref();
-	}
 }
 
 void StatDataEntry::_validate_property(PropertyInfo &property) const {
@@ -167,25 +107,9 @@ void StatDataEntry::_validate_property(PropertyInfo &property) const {
 }
 
 void StatDataEntry::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_stat_id"), &StatDataEntry::get_stat_id);
-	ClassDB::bind_method(D_METHOD("set_stat_id", "value"), &StatDataEntry::set_stat_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_id", PROPERTY_HINT_ENUM, ""), "set_stat_id", "get_stat_id");
-
 	ClassDB::bind_method(D_METHOD("get_base"), &StatDataEntry::get_base);
 	ClassDB::bind_method(D_METHOD("set_base", "value"), &StatDataEntry::set_base);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "base"), "set_base", "get_base");
-
-	ClassDB::bind_method(D_METHOD("get_bonus"), &StatDataEntry::get_bonus);
-	ClassDB::bind_method(D_METHOD("set_bonus", "value"), &StatDataEntry::set_bonus);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "bonus"), "set_bonus", "get_bonus");
-
-	ClassDB::bind_method(D_METHOD("get_percent"), &StatDataEntry::get_percent);
-	ClassDB::bind_method(D_METHOD("set_percent", "value"), &StatDataEntry::set_percent);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "percent"), "set_percent", "get_percent");
-
-	ClassDB::bind_method(D_METHOD("get_modifier_apply_type"), &StatDataEntry::get_modifier_apply_type);
-	ClassDB::bind_method(D_METHOD("set_modifier_apply_type", "value"), &StatDataEntry::set_modifier_apply_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "modifier_apply_type", PROPERTY_HINT_ENUM, Stat::MODIFIER_APPLY_TYPE_BINDING_STRING), "set_modifier_apply_type", "get_modifier_apply_type");
 
 	ClassDB::bind_method(D_METHOD("has_mod_stats"), &StatDataEntry::has_mod_stats);
 
@@ -196,16 +120,12 @@ void StatDataEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_mod_stat_id", "index"), &StatDataEntry::get_mod_stat_id);
 	ClassDB::bind_method(D_METHOD("set_mod_stat_id", "index", "value"), &StatDataEntry::set_mod_stat_id);
 
-	ClassDB::bind_method(D_METHOD("get_mod_stat_curve", "index"), &StatDataEntry::get_mod_stat_curve);
-	ClassDB::bind_method(D_METHOD("set_mod_stat_curve", "index", "value"), &StatDataEntry::set_mod_stat_curve);
-
-	ClassDB::bind_method(D_METHOD("get_mod_stat_max_value", "index"), &StatDataEntry::get_mod_stat_max_value);
-	ClassDB::bind_method(D_METHOD("set_mod_stat_max_value", "index", "value"), &StatDataEntry::set_mod_stat_max_value);
+	ClassDB::bind_method(D_METHOD("get_mod_stat_multiplier", "index"), &StatDataEntry::get_mod_stat_multiplier);
+	ClassDB::bind_method(D_METHOD("set_mod_stat_multiplier", "index", "value"), &StatDataEntry::set_mod_stat_multiplier);
 
 	for (int i = 0; i < MAX_MOD_STATS; i++) {
 		ADD_PROPERTYI(PropertyInfo(Variant::INT, "ModStat_" + itos(i) + "/stat_id", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_id", "get_mod_stat_id", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "ModStat_" + itos(i) + "/curve", PROPERTY_HINT_RESOURCE_TYPE, "Curve", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_curve", "get_mod_stat_curve", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "ModStat_" + itos(i) + "/max_value", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_max_value", "get_mod_stat_max_value", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "ModStat_" + itos(i) + "/multiplier", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_multiplier", "get_mod_stat_multiplier", i);
 	}
 
 	ClassDB::bind_method(D_METHOD("get_stats_for_stat", "stat"), &StatDataEntry::get_stats_for_stat);

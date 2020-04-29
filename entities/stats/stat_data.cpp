@@ -58,25 +58,8 @@ StatData::StatData() {
 
 	for (int i = 0; i < _entries.size(); ++i) {
 		Ref<StatDataEntry> entry(memnew(StatDataEntry()));
-		entry->set_stat_id(i);
 		_entries.set(i, Ref<StatDataEntry>(entry));
 	}
-
-	/*
-	TODO Add something equivalent to this into project settings
-	get_stat_data_enum(Stat::STAT_ID_HEALTH)->set_base(100);
-	get_stat_data_enum(Stat::STAT_ID_MANA)->set_base(100);
-	get_stat_data_enum(Stat::STAT_ID_SPEED)->set_base(4.2);
-	get_stat_data_enum(Stat::STAT_ID_GLOBAL_COOLDOWN)->set_base(1.5);
-	get_stat_data_enum(Stat::STAT_ID_MELEE_CRIT)->set_base(5);
-	get_stat_data_enum(Stat::STAT_ID_MELEE_CRIT_BONUS)->set_base(50);
-	get_stat_data_enum(Stat::STAT_ID_SPELL_CRIT)->set_base(5);
-	get_stat_data_enum(Stat::STAT_ID_SPELL_CRIT_BONUS)->set_base(50);
-	get_stat_data_enum(Stat::STAT_ID_BLOCK)->set_base(10);
-	get_stat_data_enum(Stat::STAT_ID_PARRY)->set_base(15);
-	get_stat_data_enum(Stat::STAT_ID_MELEE_DAMAGE_REDUCTION)->set_base(15);
-	get_stat_data_enum(Stat::STAT_ID_XP_RATE)->set_base(1);
-	*/
 }
 
 StatData::~StatData() {
