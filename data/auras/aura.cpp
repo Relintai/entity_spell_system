@@ -971,7 +971,9 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 			Ref<AuraStatAttribute> stat_attribute = _aura_stat_attributes[i];
 
 			Ref<Stat> stat = info->get_target()->get_stat(stat_attribute->get_stat());
-			stat->add_modifier(_id, stat_attribute->get_base_mod(), stat_attribute->get_bonus_mod(), stat_attribute->get_percent_mod());
+			stat->mod_base(stat_attribute->get_base_mod());
+			stat->mod_bonus(stat_attribute->get_bonus_mod());
+			stat->mod_percent(stat_attribute->get_percent_mod());
 		}
 
 		if (_add_states != 0) {
@@ -997,7 +999,9 @@ void Aura::_sdeapply(Ref<AuraData> data) {
 		Ref<AuraStatAttribute> stat_attribute = _aura_stat_attributes[i];
 
 		Ref<Stat> stat = data->get_owner()->get_stat(stat_attribute->get_stat());
-		stat->remove_modifier(_id);
+		stat->mod_base(-stat_attribute->get_base_mod());
+		stat->mod_bonus(-stat_attribute->get_bonus_mod());
+		stat->mod_percent(-stat_attribute->get_percent_mod());
 	}
 
 	if (_add_states != 0) {

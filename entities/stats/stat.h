@@ -28,8 +28,6 @@ SOFTWARE.
 #include "core/vector.h"
 #include "scene/resources/curve.h"
 
-#include "stat_modifier.h"
-
 class StatDataEntry;
 class Entity;
 
@@ -50,58 +48,31 @@ public:
 	void set_owner(Entity *value);
 	void set_owner_bind(Node *value);
 
-	bool get_public();
-	void set_public(bool value);
-
-	bool get_locked();
-	void set_locked(bool value);
-
 	bool get_dirty();
 	void set_dirty(bool value);
 
-	bool get_dirty_mods();
-	void set_dirty_mods(bool value);
-
 	float get_base();
 	void set_base(float value);
+	void mod_base(float value);
+
+	float get_base_calculated();
+	void set_base_calculated(float value);
 
 	float get_bonus();
 	void set_bonus(float value);
+	void mod_bonus(float value);
 
 	float get_percent();
 	void set_percent(float value);
+	void mod_percent(float value);
 
 	float gets_current();
 	void sets_current(float value);
-	float gets_max();
-	void sets_max(float value);
 
 	float getc_current();
 	void setc_current(float value);
-	float getc_max();
-	void setc_max(float value);
 
-	void setc_values(int ccurrent, int cmax);
-
-	Vector<Ref<StatModifier> > *get_modifiers();
-	Ref<StatModifier> add_modifier(int id, float base_mod, float bonus_mod, float percent_mod);
-	Ref<StatModifier> get_or_add_modifier(int id);
-	void remove_modifier(int id);
-	void remove_modifier_index(int index);
-	int get_modifier_count();
-	void clear_modifiers();
-	Ref<StatModifier> get_modifier(int index);
-
-	void apply_modifiers();
-
-	void reset_values();
-	void refresh_currmax();
-	bool iss_current_zero();
-	bool isc_current_zero();
-
-	void set_to_max();
-
-	void modifier_changed(Ref<StatModifier> modifier);
+	void refresh();
 
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
@@ -120,22 +91,16 @@ protected:
 private:
 	int _id;
 
-	Vector<Ref<StatModifier> > _modifiers;
-
-	bool _public;
-	bool _locked;
 	bool _dirty;
-	bool _dirty_mods;
 
 	float _base;
+	float _base_calculated;
 	float _bonus;
 	float _percent;
 
 	float _s_current;
-	float _s_max;
 
 	float _c_current;
-	float _c_max;
 
 	Entity *_owner;
 	Ref<StatDataEntry> _stat_data_entry;

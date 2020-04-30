@@ -40,7 +40,6 @@ SOFTWARE.
 #include "./resources/entity_resource_speed.h"
 #include "./skills/entity_skill.h"
 #include "./stats/stat.h"
-#include "./stats/stat_modifier.h"
 #include "scene/2d/node_2d.h"
 #include "scene/3d/spatial.h"
 
@@ -656,9 +655,7 @@ void Entity::_setup() {
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
 		Ref<Stat> s = _stats[i];
 
-		s->apply_modifiers();
-
-		s->setc_values(s->gets_current(), s->gets_max());
+		s->setc_current(s->gets_current());
 		s->set_dirty(false);
 	}
 
@@ -1876,24 +1873,17 @@ void Entity::notification_cstat_changed(Ref<Stat> stat) {
 	}
 }
 
-void Entity::ssend_stat(int id, int ccurrent, int cmax) {
+void Entity::ssend_stat(int id, int ccurrent) {
 	ERR_FAIL_INDEX(id, ESS::get_instance()->stat_get_count());
 
-	//TODO, mark stats that should be sent to all clients like health
-	//if (id <= ESS::get_instance()->stat_get_main_stat_count()) {
-	//	VRPC(creceive_stat, id, ccurrent, cmax);
-	//	return;
-	//}
-
-	VRPC(creceive_stat, id, ccurrent, cmax);
-
-	//ORPC(creceive_stat, id, ccurrent, cmax);
+	//Only the owner needs access to stats
+	ORPC(creceive_stat, id, ccurrent);
 }
 
-void Entity::creceive_stat(int id, int ccurrent, int cmax) {
+void Entity::creceive_stat(int id, int ccurrent) {
 	ERR_FAIL_INDEX(id, ESS::get_instance()->stat_get_count());
 
-	_stats.get(id)->setc_values(ccurrent, cmax);
+	_stats.get(id)->setc_current(ccurrent);
 }
 
 ////    Equip Slots    ////
@@ -2116,13 +2106,9 @@ void Entity::_equip_applys_item(Ref<ItemInstance> item) {
 
 		ERR_CONTINUE(!stat.is_valid());
 
-		Ref<StatModifier> sm = stat->get_modifier(0);
-
-		ERR_CONTINUE(!sm.is_valid());
-
-		sm->set_base_mod(sm->get_base_mod() + mod->get_base_mod());
-		sm->set_bonus_mod(sm->get_bonus_mod() + mod->get_bonus_mod());
-		sm->set_percent_mod(sm->get_percent_mod() + mod->get_percent_mod());
+		stat->mod_base(mod->get_base_mod());
+		stat->mod_bonus(mod->get_bonus_mod());
+		stat->mod_percent(mod->get_percent_mod());
 	}
 }
 void Entity::_equip_deapplys_item(Ref<ItemInstance> item) {
@@ -2142,13 +2128,9 @@ void Entity::_equip_deapplys_item(Ref<ItemInstance> item) {
 
 		ERR_CONTINUE(!stat.is_valid());
 
-		Ref<StatModifier> sm = stat->get_modifier(0);
-
-		ERR_CONTINUE(!sm.is_valid());
-
-		sm->set_base_mod(sm->get_base_mod() - mod->get_base_mod());
-		sm->set_bonus_mod(sm->get_bonus_mod() - mod->get_bonus_mod());
-		sm->set_percent_mod(sm->get_percent_mod() - mod->get_percent_mod());
+		stat->mod_base(-mod->get_base_mod());
+		stat->mod_bonus(-mod->get_bonus_mod());
+		stat->mod_percent(-mod->get_percent_mod());
 	}
 }
 
@@ -5350,11 +5332,8 @@ void Entity::update(float delta) {
 		for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
 			Ref<Stat> s = _stats[i];
 
-			if (s->get_dirty_mods())
-				s->apply_modifiers();
-
 			if (s->get_dirty()) {
-				ssend_stat(s->get_id(), s->gets_current(), s->gets_max());
+				ssend_stat(s->get_id(), s->gets_current());
 
 				s->set_dirty(false);
 			}
@@ -6068,8 +6047,7 @@ void Entity::_notification_scharacter_level_up(int level) {
 
 		Ref<Stat> stat = get_stat(i);
 
-		Ref<StatModifier> sm = stat->get_modifier(0);
-		sm->set_base_mod(sm->get_base_mod() + st);
+		stat->mod_base(st);
 	}
 
 	if (!ESS::get_instance()->get_use_class_xp()) {
@@ -6284,15 +6262,7 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 			_stats.set(stat_id, stat);
 		}
 
-		if (stat_prop_name == "public") {
-			stat->set_public(p_value);
-
-			return true;
-		} else if (stat_prop_name == "locked") {
-			stat->set_locked(p_value);
-
-			return true;
-		} else if (stat_prop_name == "base") {
+		if (stat_prop_name == "base") {
 			stat->set_base(p_value);
 
 			return true;
@@ -6308,45 +6278,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 			stat->sets_current(p_value);
 
 			return true;
-		} else if (stat_prop_name == "smax") {
-			stat->sets_max(p_value);
-
-			return true;
-		} else if (stat_prop_name == "modifier") {
-			int modifier_index = name.get_slicec('/', 3).to_int();
-			String modifier_prop_name = name.get_slicec('/', 4);
-
-			if (stat->get_modifier_count() <= modifier_index) {
-				stat->get_modifiers()->resize(modifier_index + 1);
-			}
-
-			Ref<StatModifier> modifier = stat->get_modifier(modifier_index);
-
-			if (!modifier.is_valid()) {
-				modifier.instance();
-				modifier->set_owner(stat);
-				stat->get_modifiers()->set(modifier_index, modifier);
-			}
-
-			if (modifier_prop_name == "id") {
-				modifier->set_id(p_value);
-
-				return true;
-			} else if (modifier_prop_name == "base_mod") {
-				modifier->set_base_mod(p_value);
-
-				return true;
-			} else if (modifier_prop_name == "bonus_mod") {
-				modifier->set_bonus_mod(p_value);
-
-				return true;
-			} else if (modifier_prop_name == "percent_mod") {
-				modifier->set_percent_mod(p_value);
-
-				return true;
-			} else {
-				return false;
-			}
 		} else {
 			return false;
 		}
@@ -6622,15 +6553,7 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 
 		Ref<Stat> stat = _stats[stat_id];
 
-		if (stat_prop_name == "public") {
-			r_ret = stat->get_public();
-
-			return true;
-		} else if (stat_prop_name == "locked") {
-			r_ret = stat->get_locked();
-
-			return true;
-		} else if (stat_prop_name == "base") {
+		if (stat_prop_name == "base") {
 			r_ret = stat->get_base();
 
 			return true;
@@ -6646,39 +6569,9 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 			r_ret = stat->gets_current();
 
 			return true;
-		} else if (stat_prop_name == "smax") {
-			r_ret = stat->gets_max();
-
-			return true;
-		} else if (stat_prop_name == "modifier") {
-			int modifier_index = name.get_slicec('/', 3).to_int();
-			String modifier_prop_name = name.get_slicec('/', 4);
-
-			Ref<StatModifier> modifier = stat->get_modifier(modifier_index);
-
-			if (modifier_prop_name == "id") {
-				r_ret = modifier->get_id();
-
-				return true;
-			} else if (modifier_prop_name == "base_mod") {
-				r_ret = modifier->get_base_mod();
-
-				return true;
-			} else if (modifier_prop_name == "bonus_mod") {
-				r_ret = modifier->get_bonus_mod();
-
-				return true;
-			} else if (modifier_prop_name == "percent_mod") {
-				r_ret = modifier->get_percent_mod();
-
-				return true;
-			} else {
-				return false;
-			}
 		} else {
 			return false;
 		}
-
 	} else {
 		return false;
 	}
@@ -6842,24 +6735,9 @@ void Entity::_get_property_list(List<PropertyInfo> *p_list) const {
 		if (!stat.is_valid())
 			continue;
 
-		p_list->push_back(PropertyInfo(Variant::BOOL, "stat/" + itos(i) + "/public", PROPERTY_HINT_NONE, "", property_usange));
-		p_list->push_back(PropertyInfo(Variant::BOOL, "stat/" + itos(i) + "/locked", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/base", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/percent", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/scurrent", PROPERTY_HINT_NONE, "", property_usange));
-		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/smax", PROPERTY_HINT_NONE, "", property_usange));
-
-		for (int j = 0; j < stat->get_modifier_count(); ++j) {
-			Ref<StatModifier> modifier = stat->get_modifier(j);
-
-			if (!modifier.is_valid())
-				continue;
-
-			p_list->push_back(PropertyInfo(Variant::INT, "stat/" + itos(i) + "/modifier/" + itos(j) + "id", PROPERTY_HINT_NONE, "", property_usange));
-			p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/modifier/" + itos(j) + "base_mod", PROPERTY_HINT_NONE, "", property_usange));
-			p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/modifier/" + itos(j) + "bonus_mod", PROPERTY_HINT_NONE, "", property_usange));
-			p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/modifier/" + itos(j) + "percent_mod", PROPERTY_HINT_NONE, "", property_usange));
-		}
 	}
 }
 
@@ -6923,8 +6801,8 @@ void Entity::_bind_methods() {
 
 	//binds
 
-	ClassDB::bind_method(D_METHOD("ssend_stat", "id", "ccurrent", "cmax"), &Entity::ssend_stat);
-	ClassDB::bind_method(D_METHOD("creceive_stat", "id", "ccurrent", "cmax"), &Entity::creceive_stat);
+	ClassDB::bind_method(D_METHOD("ssend_stat", "id", "ccurrent"), &Entity::ssend_stat);
+	ClassDB::bind_method(D_METHOD("creceive_stat", "id", "ccurrent"), &Entity::creceive_stat);
 
 	ClassDB::bind_method(D_METHOD("dies"), &Entity::dies);
 	ClassDB::bind_method(D_METHOD("diec"), &Entity::diec);

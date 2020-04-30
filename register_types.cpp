@@ -70,7 +70,6 @@ SOFTWARE.
 #include "entities/stats/stat.h"
 #include "entities/stats/stat_data.h"
 #include "entities/stats/stat_data_entry.h"
-#include "entities/stats/stat_modifier.h"
 
 #include "inventory/bag.h"
 //#include "inventory/inventory.h"
@@ -197,7 +196,6 @@ void register_entity_spell_system_types() {
 	//entity data
 	ClassDB::register_class<EntityEnums>();
 
-	ClassDB::register_class<StatModifier>();
 	ClassDB::register_class<Stat>();
 	ClassDB::register_class<StatDataEntry>();
 	ClassDB::register_class<StatData>();

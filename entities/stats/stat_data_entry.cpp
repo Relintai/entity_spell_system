@@ -71,9 +71,7 @@ void StatDataEntry::set_mod_stat_multiplier(int index, float value) {
 }
 
 void StatDataEntry::get_stats_for_stat(Ref<Stat> stat) {
-	stat->clear_modifiers();
-
-	stat->add_modifier(0, get_base(), 0, 0);
+	stat->mod_base(get_base());
 	stat->set_stat_data_entry(Ref<StatDataEntry>(this));
 }
 
