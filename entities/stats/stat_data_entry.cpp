@@ -81,8 +81,6 @@ StatDataEntry::StatDataEntry() {
 	_base = 0;
 	_mod_stat_count = 0;
 
-	_modifier_apply_type = Stat::MODIFIER_APPLY_TYPE_STANDARD;
-
 	for (int i = 0; i < MAX_MOD_STATS; ++i) {
 		_mod_stats[i].stat_id = 0;
 		_mod_stats[i].multiplier = 0;

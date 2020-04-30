@@ -6622,11 +6622,7 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 
 		Ref<Stat> stat = _stats[stat_id];
 
-		if (stat_prop_name == "modifier_apply_type") {
-			r_ret = stat->get_stat_modifier_type();
-
-			return true;
-		} else if (stat_prop_name == "public") {
+		if (stat_prop_name == "public") {
 			r_ret = stat->get_public();
 
 			return true;
@@ -6846,7 +6842,6 @@ void Entity::_get_property_list(List<PropertyInfo> *p_list) const {
 		if (!stat.is_valid())
 			continue;
 
-		p_list->push_back(PropertyInfo(Variant::INT, "stat/" + itos(i) + "/modifier_apply_type", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::BOOL, "stat/" + itos(i) + "/public", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::BOOL, "stat/" + itos(i) + "/locked", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/base", PROPERTY_HINT_NONE, "", property_usange));

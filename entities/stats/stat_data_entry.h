@@ -71,8 +71,6 @@ private:
 
 	int _mod_stat_count;
 	ModStat _mod_stats[MAX_MOD_STATS];
-
-	Stat::StatModifierApplyType _modifier_apply_type;
 };
 
 #endif

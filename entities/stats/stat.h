@@ -37,15 +37,6 @@ class Stat : public Reference {
 	GDCLASS(Stat, Reference);
 
 public:
-	static const String MAIN_STAT_BINDING_STRING;
-	static const String MODIFIER_APPLY_TYPE_BINDING_STRING;
-
-	enum StatModifierApplyType {
-		MODIFIER_APPLY_TYPE_STANDARD,
-		MODIFIER_APPLY_TYPE_ONLY_MIN_MODIFIER,
-		MODIFIER_APPLY_TYPE_ONLY_MAX_MODIFIER,
-	};
-
 	static String stat_id_name(int stat_id);
 
 public:
@@ -58,9 +49,6 @@ public:
 	Entity *get_owner();
 	void set_owner(Entity *value);
 	void set_owner_bind(Node *value);
-
-	StatModifierApplyType get_stat_modifier_type();
-	void set_stat_modifier_type(StatModifierApplyType value);
 
 	bool get_public();
 	void set_public(bool value);
@@ -123,7 +111,6 @@ public:
 
 	Stat();
 	Stat(int id, Entity *owner);
-	Stat(int id, StatModifierApplyType modifier_apply_type, Entity *owner);
 	~Stat();
 
 protected:
@@ -132,8 +119,6 @@ protected:
 
 private:
 	int _id;
-
-	StatModifierApplyType _modifier_apply_type;
 
 	Vector<Ref<StatModifier> > _modifiers;
 
@@ -155,7 +140,5 @@ private:
 	Entity *_owner;
 	Ref<StatDataEntry> _stat_data_entry;
 };
-
-VARIANT_ENUM_CAST(Stat::StatModifierApplyType);
 
 #endif

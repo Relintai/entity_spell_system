@@ -28,10 +28,6 @@ SOFTWARE.
 
 #include "core/version.h"
 
-const String Stat::MAIN_STAT_BINDING_STRING = "Agility,Strength,Stamina,Intellect,Spirit";
-
-const String Stat::MODIFIER_APPLY_TYPE_BINDING_STRING = "Standard,Only min modifier,Only Max modifier";
-
 int Stat::get_id() {
 	return _id;
 }
@@ -64,13 +60,6 @@ void Stat::set_owner_bind(Node *value) {
 	}
 
 	_owner = e;
-}
-
-Stat::StatModifierApplyType Stat::get_stat_modifier_type() {
-	return _modifier_apply_type;
-}
-void Stat::set_stat_modifier_type(Stat::StatModifierApplyType value) {
-	_modifier_apply_type = value;
 }
 
 bool Stat::get_public() {
@@ -251,35 +240,12 @@ void Stat::apply_modifiers() {
 
 	reset_values();
 
-	if (_modifier_apply_type == MODIFIER_APPLY_TYPE_STANDARD) {
-		for (int i = 0; i < _modifiers.size(); ++i) {
-			Ref<StatModifier> mod = _modifiers.get(i);
+	for (int i = 0; i < _modifiers.size(); ++i) {
+		Ref<StatModifier> mod = _modifiers.get(i);
 
-			_base += mod->get_base_mod();
-			_bonus += mod->get_bonus_mod();
-			_percent += mod->get_percent_mod();
-		}
-	} else {
-		for (int i = 0; i < _modifiers.size(); ++i) {
-			Ref<StatModifier> modifier = _modifiers.get(i);
-
-			_base += modifier->get_base_mod();
-			_bonus += modifier->get_bonus_mod();
-
-			if (modifier->get_percent_mod() >= 0) {
-				_percent += modifier->get_percent_mod();
-			}
-		}
-
-		float p = 0;
-		for (int i = 0; i < _modifiers.size(); ++i) {
-			Ref<StatModifier> modifier = _modifiers.get(i);
-
-			if (modifier->get_percent_mod() < p)
-				p = modifier->get_percent_mod();
-		}
-
-		_percent += p;
+		_base += mod->get_base_mod();
+		_bonus += mod->get_bonus_mod();
+		_percent += mod->get_percent_mod();
 	}
 
 	refresh_currmax();
@@ -354,7 +320,6 @@ Dictionary Stat::_to_dict() {
 	Dictionary dict;
 
 	dict["id"] = _id;
-	dict["modifier_apply_type"] = _modifier_apply_type;
 
 	dict["public"] = _public;
 	dict["locked"] = _locked;
@@ -382,7 +347,6 @@ void Stat::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
 	_id = dict.get("id", 0);
-	_modifier_apply_type = (StatModifierApplyType)((int)dict.get("modifier_apply_type", 0));
 
 	_public = dict.get("public", false);
 	_locked = dict.get("locked", false);
@@ -421,8 +385,6 @@ Stat::Stat() {
 	_id = 0;
 	_owner = NULL;
 
-	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
-
 	_public = false;
 	_dirty_mods = false;
 
@@ -443,31 +405,6 @@ Stat::Stat() {
 Stat::Stat(int id, Entity *owner) {
 	_id = id;
 	_owner = owner;
-
-	_modifier_apply_type = MODIFIER_APPLY_TYPE_STANDARD;
-
-	_public = false;
-	_dirty_mods = false;
-
-	_locked = false;
-	_dirty = true;
-
-	_base = 0;
-	_bonus = 0;
-	_percent = 0;
-
-	_s_current = 0;
-	_s_max = 0;
-
-	_c_current = 0;
-	_c_max = 0;
-}
-
-Stat::Stat(int id, StatModifierApplyType modifier_apply_type, Entity *owner) {
-	_id = id;
-	_owner = owner;
-
-	_modifier_apply_type = modifier_apply_type;
 
 	_public = false;
 	_dirty_mods = false;
@@ -513,10 +450,6 @@ void Stat::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_owner"), &Stat::get_owner);
 	ClassDB::bind_method(D_METHOD("set_owner", "value"), &Stat::set_owner_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity", 0), "set_owner", "get_owner");
-
-	ClassDB::bind_method(D_METHOD("get_stat_modifier_type"), &Stat::get_stat_modifier_type);
-	ClassDB::bind_method(D_METHOD("set_stat_modifier_type", "value"), &Stat::set_stat_modifier_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_type", PROPERTY_HINT_ENUM, "Standard, Min Modifier, Max modifier"), "set_stat_modifier_type", "get_stat_modifier_type");
 
 	ClassDB::bind_method(D_METHOD("get_public"), &Stat::get_public);
 	ClassDB::bind_method(D_METHOD("set_public", "value"), &Stat::set_public);
@@ -592,8 +525,4 @@ void Stat::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &Stat::_from_dict);
 	ClassDB::bind_method(D_METHOD("_to_dict"), &Stat::_to_dict);
-
-	BIND_ENUM_CONSTANT(MODIFIER_APPLY_TYPE_STANDARD);
-	BIND_ENUM_CONSTANT(MODIFIER_APPLY_TYPE_ONLY_MIN_MODIFIER);
-	BIND_ENUM_CONSTANT(MODIFIER_APPLY_TYPE_ONLY_MAX_MODIFIER);
 }
