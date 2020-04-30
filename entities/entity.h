@@ -348,8 +348,8 @@ public:
 	void notification_sstat_changed(Ref<Stat> stat);
 	void notification_cstat_changed(Ref<Stat> stat);
 
-	void ssend_stat(int id, int ccurrent, int cmax);
-	void creceive_stat(int id, int ccurrent, int cmax);
+	void ssend_stat(int id, int ccurrent);
+	void creceive_stat(int id, int ccurrent);
 
 	////    Equip Slots    ////
 
