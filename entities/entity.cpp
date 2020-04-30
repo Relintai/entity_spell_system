@@ -582,14 +582,6 @@ void Entity::_setup() {
 
 		Ref<StatData> stat_data = _s_entity_data->get_stat_data();
 
-		ERR_FAIL_COND(!stat_data.is_valid());
-
-		for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-			Ref<StatDataEntry> sde = stat_data->get_stat_data(i);
-
-			_stats.get(i)->set_stat_data_entry(sde);
-		}
-
 		sets_ai(_s_entity_data->get_ai_instance());
 
 		for (int i = 0; i < _s_auras.size(); ++i) {

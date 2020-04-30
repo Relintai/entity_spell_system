@@ -28,40 +28,6 @@ SOFTWARE.
 
 #include "core/version.h"
 
-int Stat::get_id() {
-	return _id;
-}
-void Stat::set_id(int id) {
-	_id = id;
-}
-
-Ref<StatDataEntry> Stat::get_stat_data_entry() {
-	return _stat_data_entry;
-}
-void Stat::set_stat_data_entry(Ref<StatDataEntry> entry) {
-	_stat_data_entry = entry;
-}
-
-Entity *Stat::get_owner() {
-	return _owner;
-}
-void Stat::set_owner(Entity *value) {
-	_owner = value;
-}
-void Stat::set_owner_bind(Node *value) {
-	if (!value) {
-		return;
-	}
-
-	Entity *e = cast_to<Entity>(value);
-
-	if (!e) {
-		return;
-	}
-
-	_owner = e;
-}
-
 bool Stat::get_dirty() {
 	return _dirty;
 }
@@ -127,11 +93,11 @@ float Stat::getc_current() {
 	return _c_current;
 }
 void Stat::setc_current(float value) {
-	ERR_FAIL_COND(_owner == NULL);
+	//ERR_FAIL_COND(_owner == NULL);
 
 	_c_current = value;
 
-	_owner->notification_cstat_changed(Ref<Stat>(this));
+	//_owner->notification_cstat_changed(Ref<Stat>(this));
 	emit_signal("c_changed", Ref<Stat>(this));
 }
 
@@ -140,7 +106,7 @@ void Stat::refresh() {
 
 	_dirty = true;
 
-	_owner->notification_sstat_changed(Ref<Stat>(this));
+	//_owner->notification_sstat_changed(Ref<Stat>(this));
 	emit_signal("s_changed", Ref<Stat>(this));
 }
 
@@ -153,8 +119,6 @@ void Stat::from_dict(const Dictionary &dict) {
 
 Dictionary Stat::_to_dict() {
 	Dictionary dict;
-
-	dict["id"] = _id;
 
 	dict["dirty"] = _dirty;
 
@@ -170,8 +134,6 @@ Dictionary Stat::_to_dict() {
 void Stat::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
-	_id = dict.get("id", 0);
-
 	_dirty = dict.get("dirty", false);
 
 	_base = dict.get("base", 0);
@@ -186,24 +148,6 @@ void Stat::_from_dict(const Dictionary &dict) {
 }
 
 Stat::Stat() {
-	_id = 0;
-	_owner = NULL;
-
-	_dirty = true;
-
-	_base = 0;
-	_base_calculated = 0;
-	_bonus = 0;
-	_percent = 0;
-
-	_s_current = 0;
-	_c_current = 0;
-}
-
-Stat::Stat(int id, Entity *owner) {
-	_id = id;
-	_owner = owner;
-
 	_dirty = true;
 
 	_base = 0;
@@ -216,31 +160,11 @@ Stat::Stat(int id, Entity *owner) {
 }
 
 Stat::~Stat() {
-	_owner = NULL;
-	_stat_data_entry.unref();
-}
-
-void Stat::_validate_property(PropertyInfo &property) const {
-	if (property.name == "id") {
-		property.hint_string = ESS::get_instance()->stat_get_string();
-	}
 }
 
 void Stat::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("s_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
 	ADD_SIGNAL(MethodInfo("c_changed", PropertyInfo(Variant::OBJECT, "stat", PROPERTY_HINT_RESOURCE_TYPE, "Stat")));
-
-	ClassDB::bind_method(D_METHOD("get_id"), &Stat::get_id);
-	ClassDB::bind_method(D_METHOD("set_id", "id"), &Stat::set_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "id", PROPERTY_HINT_ENUM, ""), "set_id", "get_id");
-
-	ClassDB::bind_method(D_METHOD("get_stat_data_entry"), &Stat::get_stat_data_entry);
-	ClassDB::bind_method(D_METHOD("set_stat_data_entry", "value"), &Stat::set_stat_data_entry);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "stat_data_entry", PROPERTY_HINT_RESOURCE_TYPE, "StatDataEntry"), "set_stat_data_entry", "get_stat_data_entry");
-
-	ClassDB::bind_method(D_METHOD("get_owner"), &Stat::get_owner);
-	ClassDB::bind_method(D_METHOD("set_owner", "value"), &Stat::set_owner_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity", 0), "set_owner", "get_owner");
 
 	ClassDB::bind_method(D_METHOD("get_dirty"), &Stat::get_dirty);
 	ClassDB::bind_method(D_METHOD("set_dirty", "value"), &Stat::set_dirty);

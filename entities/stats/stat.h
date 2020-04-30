@@ -35,19 +35,6 @@ class Stat : public Reference {
 	GDCLASS(Stat, Reference);
 
 public:
-	static String stat_id_name(int stat_id);
-
-public:
-	int get_id();
-	void set_id(int id);
-
-	Ref<StatDataEntry> get_stat_data_entry();
-	void set_stat_data_entry(Ref<StatDataEntry> entry);
-
-	Entity *get_owner();
-	void set_owner(Entity *value);
-	void set_owner_bind(Node *value);
-
 	bool get_dirty();
 	void set_dirty(bool value);
 
@@ -81,16 +68,12 @@ public:
 	void _from_dict(const Dictionary &dict);
 
 	Stat();
-	Stat(int id, Entity *owner);
 	~Stat();
 
 protected:
-	virtual void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 
 private:
-	int _id;
-
 	bool _dirty;
 
 	float _base;
@@ -101,9 +84,6 @@ private:
 	float _s_current;
 
 	float _c_current;
-
-	Entity *_owner;
-	Ref<StatDataEntry> _stat_data_entry;
 };
 
 #endif

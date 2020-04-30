@@ -45,7 +45,8 @@ void StatData::set_level_stat_data(Ref<LevelStatData> value) {
 }
 
 void StatData::get_stat_for_stat(Ref<Stat> stat) {
-	Ref<StatDataEntry> sd = get_stat_data(stat->get_id());
+	//Ref<StatDataEntry> sd = get_stat_data(stat->get_id());
+	Ref<StatDataEntry> sd = get_stat_data(0);
 
 	ERR_FAIL_COND(!sd.is_valid());
 
