@@ -362,34 +362,34 @@ public:
 	void setc_seed(int value);
 
 	////     Stats    ////
-	EntityStat get_stat(const int index) const;
-	void set_stat(const int index, const EntityStat &entry);
+	EntityStat get_stat(const int stat_id) const;
+	void set_stat(const int stat_id, const EntityStat &entry);
 
-	bool stat_get_dirty(const int index) const;
-	void stat_set_dirty(const int index, const bool value);
+	bool stat_get_dirty(const int stat_id) const;
+	void stat_set_dirty(const int stat_id, const bool value);
 
-	float stat_get_base(const int index) const;
-	void stat_set_base(const int index, const float value);
-	void stat_mod_base(const int index, const float value);
+	float stat_get_base(const int stat_id) const;
+	void stat_set_base(const int stat_id, const float value);
+	void stat_mod_base(const int stat_id, const float value);
 
-	float stat_get_base_calculated(const int index) const;
-	void stat_set_base_calculated(const int index, const float value);
+	float stat_get_base_calculated(const int stat_id) const;
+	void stat_set_base_calculated(const int stat_id, const float value);
 
-	float stat_get_bonus(const int index) const;
-	void stat_set_bonus(const int index, const float value);
-	void stat_mod_bonus(const int index, const float value);
+	float stat_get_bonus(const int stat_id) const;
+	void stat_set_bonus(const int stat_id, const float value);
+	void stat_mod_bonus(const int stat_id, const float value);
 
-	float stat_get_percent(const int index) const;
-	void stat_set_percent(const int index, const float value);
-	void stat_mod_percent(const int index, const float value);
+	float stat_get_percent(const int stat_id) const;
+	void stat_set_percent(const int stat_id, const float value);
+	void stat_mod_percent(const int stat_id, const float value);
 
-	float stat_gets_current(const int index) const;
-	void stat_sets_current(const int index, const float value);
+	float stat_gets_current(const int stat_id) const;
+	void stat_sets_current(const int stat_id, const float value);
 
-	float stat_getc_current(const int index) const;
-	void stat_setc_current(const int index, const float value);
+	float stat_getc_current(const int stat_id) const;
+	void stat_setc_current(const int stat_id, const float value);
 
-	void stat_recalculate(const int index);
+	void stat_recalculate(const int stat_id);
 
 	void notification_sstat_changed(const int statid, const float current);
 	void notification_cstat_changed(const int statid, const float current);

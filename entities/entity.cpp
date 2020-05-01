@@ -1836,92 +1836,134 @@ int Entity::craft_getc_recipe_count() {
 
 ////    Stat System    ////
 
-EntityStat Entity::get_stat(const int index) const {
-	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), EntityStat());
+EntityStat Entity::get_stat(const int stat_id) const {
+	ERR_FAIL_INDEX_V(stat_id, ESS::get_instance()->stat_get_count(), EntityStat());
 
-	return _stats[index];
-}
-
-void Entity::set_stat(const int index, const EntityStat &entry) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
-
-	_stats.set(index, entry);
+	return _stats[stat_id];
 }
 
-bool Entity::stat_get_dirty(const int index) const {
-	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), false);
+void Entity::set_stat(const int stat_id, const EntityStat &entry) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
 
-	return _stats[index].dirty;
-}
-void Entity::stat_set_dirty(const int index, const bool value) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+	_stats.set(stat_id, entry);
 }
 
-float Entity::stat_get_base(const int index) const {
-	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
+bool Entity::stat_get_dirty(const int stat_id) const {
+	ERR_FAIL_INDEX_V(stat_id, ESS::get_instance()->stat_get_count(), false);
 
-	return _stats[index].base;
+	return _stats[stat_id].dirty;
 }
-void Entity::stat_set_base(const int index, const float value) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
-}
-void Entity::stat_mod_base(const int index, const float value) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
-}
+void Entity::stat_set_dirty(const int stat_id, const bool value) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
 
-float Entity::stat_get_base_calculated(const int index) const {
-	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
-
-	return _stats[index].base_calculated;
-}
-void Entity::stat_set_base_calculated(const int index, const float value) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+	_stats.write[stat_id].dirty = value;
 }
 
-float Entity::stat_get_bonus(const int index) const {
-	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
+float Entity::stat_get_base(const int stat_id) const {
+	ERR_FAIL_INDEX_V(stat_id, ESS::get_instance()->stat_get_count(), 0);
 
-	return _stats[index].bonus;
+	return _stats[stat_id].base;
 }
-void Entity::stat_set_bonus(const int index, const float value) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
-}
-void Entity::stat_mod_bonus(const int index, const float value) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
-}
+void Entity::stat_set_base(const int stat_id, const float value) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
 
-float Entity::stat_get_percent(const int index) const {
-	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
+	_stats.write[stat_id].base = value;
 
-	return _stats[index].percent;
+	stat_recalculate(stat_id);
 }
-void Entity::stat_set_percent(const int index, const float value) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
-}
-void Entity::stat_mod_percent(const int index, const float value) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+void Entity::stat_mod_base(const int stat_id, const float value) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
+
+	_stats.write[stat_id].base += value;
+
+	stat_recalculate(stat_id);
 }
 
-float Entity::stat_gets_current(const int index) const {
-	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
+float Entity::stat_get_base_calculated(const int stat_id) const {
+	ERR_FAIL_INDEX_V(stat_id, ESS::get_instance()->stat_get_count(), 0);
 
-	return _stats[index].scurrent;
+	return _stats[stat_id].base_calculated;
 }
-void Entity::stat_sets_current(const int index, const float value) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
-}
+void Entity::stat_set_base_calculated(const int stat_id, const float value) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
 
-float Entity::stat_getc_current(const int index) const {
-	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
+	_stats.write[stat_id].base_calculated = value;
 
-	return _stats[index].ccurrent;
-}
-void Entity::stat_setc_current(const int index, const float value) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+	stat_recalculate(stat_id);
 }
 
-void Entity::stat_recalculate(const int index) {
-	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+float Entity::stat_get_bonus(const int stat_id) const {
+	ERR_FAIL_INDEX_V(stat_id, ESS::get_instance()->stat_get_count(), 0);
+
+	return _stats[stat_id].bonus;
+}
+void Entity::stat_set_bonus(const int stat_id, const float value) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
+
+	_stats.write[stat_id].bonus = value;
+
+	stat_recalculate(stat_id);
+}
+void Entity::stat_mod_bonus(const int stat_id, const float value) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
+
+	_stats.write[stat_id].bonus += value;
+
+	stat_recalculate(stat_id);
+}
+
+float Entity::stat_get_percent(const int stat_id) const {
+	ERR_FAIL_INDEX_V(stat_id, ESS::get_instance()->stat_get_count(), 0);
+
+	return _stats[stat_id].percent;
+}
+void Entity::stat_set_percent(const int stat_id, const float value) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
+
+	_stats.write[stat_id].percent = value;
+
+	stat_recalculate(stat_id);
+}
+void Entity::stat_mod_percent(const int stat_id, const float value) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
+
+	_stats.write[stat_id].percent += value;
+
+	stat_recalculate(stat_id);
+}
+
+float Entity::stat_gets_current(const int stat_id) const {
+	ERR_FAIL_INDEX_V(stat_id, ESS::get_instance()->stat_get_count(), 0);
+
+	return _stats[stat_id].scurrent;
+}
+void Entity::stat_sets_current(const int stat_id, const float value) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
+
+	_stats.write[stat_id].scurrent = value;
+}
+
+float Entity::stat_getc_current(const int stat_id) const {
+	ERR_FAIL_INDEX_V(stat_id, ESS::get_instance()->stat_get_count(), 0);
+
+	return _stats[stat_id].ccurrent;
+}
+void Entity::stat_setc_current(const int stat_id, const float value) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
+
+	_stats.write[stat_id].ccurrent = value;
+
+	notification_cstat_changed(stat_id, value);
+}
+
+void Entity::stat_recalculate(const int stat_id) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
+
+	stat_sets_current(stat_id, (stat_get_base(stat_id) + stat_get_base_calculated(stat_id) + stat_get_bonus(stat_id)) * (stat_get_percent(stat_id) / 100.0));
+
+	stat_set_dirty(stat_id, true);
+
+	notification_sstat_changed(stat_id, stat_gets_current(stat_id));
 }
 
 void Entity::dies() {
@@ -6843,6 +6885,32 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setup_actionbars"), &Entity::setup_actionbars);
 
 	//binds
+
+	ClassDB::bind_method(D_METHOD("stat_get_dirty", "stat_id"), &Entity::stat_get_dirty);
+	ClassDB::bind_method(D_METHOD("stat_set_dirty", "stat_id", "value"), &Entity::stat_set_dirty);
+
+	ClassDB::bind_method(D_METHOD("stat_get_base", "stat_id"), &Entity::stat_get_base);
+	ClassDB::bind_method(D_METHOD("stat_set_base", "stat_id", "value"), &Entity::stat_set_base);
+	ClassDB::bind_method(D_METHOD("stat_mod_base", "stat_id", "value"), &Entity::stat_mod_base);
+
+	ClassDB::bind_method(D_METHOD("stat_get_base_calculated", "stat_id"), &Entity::stat_get_base_calculated);
+	ClassDB::bind_method(D_METHOD("stat_set_base_calculated", "stat_id", "value"), &Entity::stat_set_base_calculated);
+
+	ClassDB::bind_method(D_METHOD("stat_get_bonus", "stat_id"), &Entity::stat_get_bonus);
+	ClassDB::bind_method(D_METHOD("stat_set_bonus", "stat_id", "value"), &Entity::stat_set_bonus);
+	ClassDB::bind_method(D_METHOD("stat_mod_bonus", "stat_id", "value"), &Entity::stat_mod_bonus);
+
+	ClassDB::bind_method(D_METHOD("stat_get_percent", "stat_id"), &Entity::stat_get_percent);
+	ClassDB::bind_method(D_METHOD("stat_set_percent", "stat_id", "value"), &Entity::stat_set_percent);
+	ClassDB::bind_method(D_METHOD("stat_mod_percent", "stat_id", "value"), &Entity::stat_mod_percent);
+
+	ClassDB::bind_method(D_METHOD("stat_gets_current", "stat_id"), &Entity::stat_gets_current);
+	ClassDB::bind_method(D_METHOD("stat_sets_current", "stat_id", "value"), &Entity::stat_sets_current);
+
+	ClassDB::bind_method(D_METHOD("stat_getc_current", "stat_id"), &Entity::stat_getc_current);
+	ClassDB::bind_method(D_METHOD("stat_setc_current", "stat_id", "value"), &Entity::stat_setc_current);
+
+	ClassDB::bind_method(D_METHOD("stat_recalculate", "stat_id"), &Entity::stat_recalculate);
 
 	ClassDB::bind_method(D_METHOD("ssend_stat", "id", "ccurrent"), &Entity::ssend_stat);
 	ClassDB::bind_method(D_METHOD("creceive_stat", "id", "ccurrent"), &Entity::creceive_stat);
