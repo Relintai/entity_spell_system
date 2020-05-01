@@ -640,7 +640,7 @@ void Entity::_setup() {
 	ERR_FAIL_COND(!cc.is_valid());
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-		stat_set_base(i, _s_entity_data->get_stat_data()->get_stat_for_stat(i));
+		stat_set_base(i, _s_entity_data->get_stat_data()->get_base(i));
 	}
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
