@@ -1932,6 +1932,16 @@ void Entity::stat_mod_percent(const int stat_id, const float value) {
 	stat_recalculate(stat_id);
 }
 
+void Entity::stat_mod(const int stat_id, const float base, const float bonus, const float percent) {
+	ERR_FAIL_INDEX(stat_id, ESS::get_instance()->stat_get_count());
+
+	_stats.write[stat_id].base += base;
+	_stats.write[stat_id].bonus += bonus;
+	_stats.write[stat_id].percent += percent;
+
+	stat_recalculate(stat_id);
+}
+
 float Entity::stat_gets_current(const int stat_id) const {
 	ERR_FAIL_INDEX_V(stat_id, ESS::get_instance()->stat_get_count(), 0);
 
@@ -6903,6 +6913,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("stat_get_percent", "stat_id"), &Entity::stat_get_percent);
 	ClassDB::bind_method(D_METHOD("stat_set_percent", "stat_id", "value"), &Entity::stat_set_percent);
 	ClassDB::bind_method(D_METHOD("stat_mod_percent", "stat_id", "value"), &Entity::stat_mod_percent);
+
+	ClassDB::bind_method(D_METHOD("stat_mod", "stat_id", "base", "bonus", "percent"), &Entity::stat_mod);
 
 	ClassDB::bind_method(D_METHOD("stat_gets_current", "stat_id"), &Entity::stat_gets_current);
 	ClassDB::bind_method(D_METHOD("stat_sets_current", "stat_id", "value"), &Entity::stat_sets_current);

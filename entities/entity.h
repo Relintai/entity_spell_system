@@ -383,6 +383,8 @@ public:
 	void stat_set_percent(const int stat_id, const float value);
 	void stat_mod_percent(const int stat_id, const float value);
 
+	void stat_mod(const int stat_id, const float base, const float bonus, const float percent);
+
 	float stat_gets_current(const int stat_id) const;
 	void stat_sets_current(const int stat_id, const float value);
 
