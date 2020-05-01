@@ -967,13 +967,15 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 
 		setup_aura_data(ad, info);
 
+		Entity *owner = ad->get_owner();
+
 		for (int i = 0; i < _aura_stat_attribute_count; ++i) {
 			Ref<AuraStatAttribute> stat_attribute = _aura_stat_attributes[i];
 
-			Ref<Stat> stat = info->get_target()->get_stat(stat_attribute->get_stat());
-			stat->mod_base(stat_attribute->get_base_mod());
-			stat->mod_bonus(stat_attribute->get_bonus_mod());
-			stat->mod_percent(stat_attribute->get_percent_mod());
+			int stat_index = stat_attribute->get_stat();
+			owner->stat_mod_base(stat_index, stat_attribute->get_base_mod());
+			owner->stat_mod_bonus(stat_index, stat_attribute->get_bonus_mod());
+			owner->stat_mod_percent(stat_index, stat_attribute->get_percent_mod());
 		}
 
 		if (_add_states != 0) {
@@ -995,13 +997,15 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 void Aura::_sdeapply(Ref<AuraData> data) {
 	ERR_FAIL_COND(data->get_owner() == NULL || data->get_caster() == NULL || !data->get_aura().is_valid());
 
+	Entity *owner = data->get_owner();
+
 	for (int i = 0; i < _aura_stat_attribute_count; ++i) {
 		Ref<AuraStatAttribute> stat_attribute = _aura_stat_attributes[i];
 
-		Ref<Stat> stat = data->get_owner()->get_stat(stat_attribute->get_stat());
-		stat->mod_base(-stat_attribute->get_base_mod());
-		stat->mod_bonus(-stat_attribute->get_bonus_mod());
-		stat->mod_percent(-stat_attribute->get_percent_mod());
+		int stat_index = stat_attribute->get_stat();
+		owner->stat_mod_base(stat_index, -stat_attribute->get_base_mod());
+		owner->stat_mod_bonus(stat_index, -stat_attribute->get_bonus_mod());
+		owner->stat_mod_percent(stat_index, -stat_attribute->get_percent_mod());
 	}
 
 	if (_add_states != 0) {

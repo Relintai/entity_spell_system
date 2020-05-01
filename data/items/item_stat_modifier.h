@@ -23,7 +23,6 @@ SOFTWARE.
 #ifndef ITEM_STAT_MODIFIER_H
 #define ITEM_STAT_MODIFIER_H
 
-#include "../../entities/stats/stat.h"
 #include "core/reference.h"
 
 #include "core/version.h"

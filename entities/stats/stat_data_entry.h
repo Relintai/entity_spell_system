@@ -27,7 +27,6 @@ SOFTWARE.
 #include "scene/resources/curve.h"
 
 #include "level_stat_data.h"
-#include "stat.h"
 
 class StatDataEntry : public Resource {
 	GDCLASS(StatDataEntry, Resource);
@@ -46,8 +45,6 @@ public:
 
 	float get_mod_stat_multiplier(int index);
 	void set_mod_stat_multiplier(int index, float value);
-
-	void get_stats_for_stat(Ref<Stat> stat);
 
 	StatDataEntry();
 	~StatDataEntry();

@@ -42,7 +42,6 @@ SOFTWARE.
 
 #include "../data/spells/spell.h"
 #include "./resources/entity_resource.h"
-#include "stats/stat.h"
 
 #include "../entity_enums.h"
 #include "../utility/entity_create_info.h"
@@ -96,6 +95,30 @@ enum PlayerSendFlags {
 	SEND_FLAG_INVENTORY,
 	SEND_FLAG_SPELL_DATA,
 	SEND_FLAG_AURAS,
+};
+
+struct EntityStat {
+	bool dirty;
+
+	float base;
+	float base_calculated;
+	float bonus;
+	float percent;
+
+	float scurrent;
+	float ccurrent;
+
+	EntityStat() {
+		dirty = false;
+
+		base = 0;
+		base_calculated = 0;
+		bonus = 0;
+		percent = 0;
+
+		scurrent = 0;
+		ccurrent = 0;
+	}
 };
 
 #define ISSERVER() (is_inside_tree() && (!get_tree()->has_network_peer() || (get_tree()->has_network_peer() && get_tree()->is_network_server())))
@@ -339,17 +362,43 @@ public:
 	void setc_seed(int value);
 
 	////     Stats    ////
-	Ref<Stat> get_stat(int index);
-	void set_stat(int index, Ref<Stat> entry);
+	EntityStat get_stat(const int index) const;
+	void set_stat(const int index, const EntityStat &entry);
 
-	void dies();
-	void diec();
+	bool stat_get_dirty(const int index) const;
+	void stat_set_dirty(const int index, const bool value);
 
-	void notification_sstat_changed(Ref<Stat> stat);
-	void notification_cstat_changed(Ref<Stat> stat);
+	float stat_get_base(const int index) const;
+	void stat_set_base(const int index, const float value);
+	void stat_mod_base(const int index, const float value);
+
+	float stat_get_base_calculated(const int index) const;
+	void stat_set_base_calculated(const int index, const float value);
+
+	float stat_get_bonus(const int index) const;
+	void stat_set_bonus(const int index, const float value);
+	void stat_mod_bonus(const int index, const float value);
+
+	float stat_get_percent(const int index) const;
+	void stat_set_percent(const int index, const float value);
+	void stat_mod_percent(const int index, const float value);
+
+	float stat_gets_current(const int index) const;
+	void stat_sets_current(const int index, const float value);
+
+	float stat_getc_current(const int index) const;
+	void stat_setc_current(const int index, const float value);
+
+	void stat_recalculate(const int index);
+
+	void notification_sstat_changed(const int statid, const float current);
+	void notification_cstat_changed(const int statid, const float current);
 
 	void ssend_stat(int id, int ccurrent);
 	void creceive_stat(int id, int ccurrent);
+
+	void dies();
+	void diec();
 
 	////    Equip Slots    ////
 
@@ -1066,7 +1115,7 @@ private:
 
 	////     Stats    ////
 
-	Vector<Ref<Stat> > _stats;
+	Vector<EntityStat> _stats;
 
 	////    Equipment    ////
 

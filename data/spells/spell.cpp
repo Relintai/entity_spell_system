@@ -749,10 +749,9 @@ void Spell::handle_gcd(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
 	if (_global_cooldown_enabled && _cast_time_enabled) {
-		Ref<Stat> gcd = info->get_caster()->get_stat(ESS::get_instance()->stat_get_id("Global Cooldown"));
+		float gcd = info->get_caster()->stat_gets_current(ESS::get_instance()->stat_get_id("Global Cooldown"));
 
-		if (gcd.is_valid())
-			info->get_caster()->gcd_starts(gcd->gets_current());
+		info->get_caster()->gcd_starts(gcd);
 	}
 }
 void Spell::handle_cooldown(Ref<SpellCastInfo> info) {

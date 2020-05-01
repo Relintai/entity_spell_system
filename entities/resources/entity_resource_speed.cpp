@@ -25,7 +25,6 @@ SOFTWARE.
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
 #include "../entity.h"
-#include "../stats/stat.h"
 #include "entity_resource_data.h"
 
 void EntityResourceSpeed::_init() {
@@ -39,20 +38,17 @@ void EntityResourceSpeed::_init() {
 void EntityResourceSpeed::_ons_added(Node *entity) {
 	refresh();
 }
-void EntityResourceSpeed::_notification_sstat_changed(Ref<Stat> stat) {
-	if (stat->get_id() == speed_stat_id)
+void EntityResourceSpeed::_notification_sstat_changed(int statid, float current) {
+	if (statid == speed_stat_id)
 		refresh();
 }
 void EntityResourceSpeed::refresh() {
 	ERR_FAIL_COND(get_owner() == NULL);
 
-	Ref<Stat> speed_stat = get_owner()->get_stat(speed_stat_id);
+	float speed_stat = get_owner()->stat_gets_current(speed_stat_id);
 
-	if (!speed_stat.is_valid())
-		return;
-
-	set_max_value(base_value + speed_stat->gets_current() * 0.01);
-	set_current_value(base_value + speed_stat->gets_current() * 0.01);
+	set_max_value(base_value + speed_stat * 0.01);
+	set_current_value(base_value + speed_stat * 0.01);
 }
 
 void EntityResourceSpeed::resolve_references() {
@@ -69,6 +65,6 @@ EntityResourceSpeed::~EntityResourceSpeed() {
 void EntityResourceSpeed::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_init"), &EntityResourceSpeed::_init);
 	ClassDB::bind_method(D_METHOD("_ons_added", "entity"), &EntityResourceSpeed::_ons_added);
-	ClassDB::bind_method(D_METHOD("_notification_sstat_changed", "stat"), &EntityResourceSpeed::_notification_sstat_changed);
+	ClassDB::bind_method(D_METHOD("_notification_sstat_changed", "statid", "current"), &EntityResourceSpeed::_notification_sstat_changed);
 	ClassDB::bind_method(D_METHOD("refresh"), &EntityResourceSpeed::refresh);
 }

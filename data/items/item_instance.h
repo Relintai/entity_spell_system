@@ -26,7 +26,6 @@ SOFTWARE.
 #include "core/reference.h"
 #include "core/vector.h"
 
-#include "../../entities/stats/stat.h"
 #include "../../item_enums.h"
 #include "item_stat_modifier.h"
 

@@ -70,10 +70,6 @@ void StatDataEntry::set_mod_stat_multiplier(int index, float value) {
 	_mod_stats[index].multiplier = value;
 }
 
-void StatDataEntry::get_stats_for_stat(Ref<Stat> stat) {
-	stat->mod_base(get_base());
-}
-
 StatDataEntry::StatDataEntry() {
 	_base = 0;
 	_mod_stat_count = 0;
@@ -122,6 +118,4 @@ void StatDataEntry::_bind_methods() {
 		ADD_PROPERTYI(PropertyInfo(Variant::INT, "ModStat_" + itos(i) + "/stat_id", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_id", "get_mod_stat_id", i);
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "ModStat_" + itos(i) + "/multiplier", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_mod_stat_multiplier", "get_mod_stat_multiplier", i);
 	}
-
-	ClassDB::bind_method(D_METHOD("get_stats_for_stat", "stat"), &StatDataEntry::get_stats_for_stat);
 }

@@ -25,7 +25,6 @@ SOFTWARE.
 
 #include "entity_resource.h"
 
-class Stat;
 class Entity;
 class EntityResourceData;
 
@@ -35,7 +34,7 @@ class EntityResourceHealth : public EntityResource {
 public:
 	void _init();
 	void _ons_added(Node *entity);
-	void _notification_sstat_changed(Ref<Stat> stat);
+	void _notification_sstat_changed(int statid, float current);
 	void refresh();
 
 	void resolve_references();

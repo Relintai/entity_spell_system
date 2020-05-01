@@ -25,8 +25,6 @@ SOFTWARE.
 
 #include "core/resource.h"
 
-#include "stat.h"
-
 class LevelStatData : public Resource {
 	GDCLASS(LevelStatData, Resource);
 

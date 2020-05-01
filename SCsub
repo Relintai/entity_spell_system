@@ -60,7 +60,6 @@ sources = [
 
     "skeleton/character_bones.cpp",
 
-    "entities/stats/stat.cpp",
     "entities/stats/stat_data.cpp",
     "entities/stats/stat_data_entry.cpp",
     "entities/stats/level_stat_data.cpp",

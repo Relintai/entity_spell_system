@@ -27,7 +27,6 @@ SOFTWARE.
 #include "scene/resources/curve.h"
 
 #include "level_stat_data.h"
-#include "stat.h"
 #include "stat_data_entry.h"
 
 class StatData : public Resource {
@@ -40,7 +39,7 @@ public:
 	Ref<LevelStatData> get_level_stat_data();
 	void set_level_stat_data(Ref<LevelStatData> value);
 
-	void get_stat_for_stat(Ref<Stat> stat);
+	float get_stat_for_stat(int index);
 
 	StatData();
 	~StatData();

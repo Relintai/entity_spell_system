@@ -25,7 +25,6 @@ SOFTWARE.
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
 #include "../entity.h"
-#include "../stats/stat.h"
 #include "entity_resource_data.h"
 
 void EntityResourceHealth::_init() {
@@ -44,24 +43,17 @@ void EntityResourceHealth::_init() {
 void EntityResourceHealth::_ons_added(Node *entity) {
 	refresh();
 }
-void EntityResourceHealth::_notification_sstat_changed(Ref<Stat> stat) {
-	if (stat->get_id() == stamina_stat_id || stat->get_id() == health_stat_id)
+void EntityResourceHealth::_notification_sstat_changed(int statid, float current) {
+	if (statid == stamina_stat_id || statid == health_stat_id)
 		refresh();
 }
 void EntityResourceHealth::refresh() {
 	ERR_FAIL_COND(get_owner() == NULL);
 
-	Ref<Stat> stamina = get_owner()->get_stat(stamina_stat_id);
+	float stamina = get_owner()->stat_gets_current(stamina_stat_id);
+	float health = get_owner()->stat_gets_current(health_stat_id);
 
-	if (!stamina.is_valid())
-		return;
-
-	Ref<Stat> health = get_owner()->get_stat(health_stat_id);
-
-	if (!health.is_valid())
-		return;
-
-	int val = int(stamina->gets_current()) * 10 + int(health->gets_current());
+	int val = int(stamina) * 10 + int(health);
 
 	set_max_value(val);
 	set_current_value(val);
@@ -81,6 +73,6 @@ EntityResourceHealth::~EntityResourceHealth() {
 void EntityResourceHealth::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_init"), &EntityResourceHealth::_init);
 	ClassDB::bind_method(D_METHOD("_ons_added", "entity"), &EntityResourceHealth::_ons_added);
-	ClassDB::bind_method(D_METHOD("_notification_sstat_changed", "stat"), &EntityResourceHealth::_notification_sstat_changed);
+	ClassDB::bind_method(D_METHOD("_notification_sstat_changed", "statid", "current"), &EntityResourceHealth::_notification_sstat_changed);
 	ClassDB::bind_method(D_METHOD("refresh"), &EntityResourceHealth::refresh);
 }

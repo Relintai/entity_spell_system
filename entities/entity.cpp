@@ -39,7 +39,6 @@ SOFTWARE.
 #include "./resources/entity_resource_health.h"
 #include "./resources/entity_resource_speed.h"
 #include "./skills/entity_skill.h"
-#include "./stats/stat.h"
 #include "scene/2d/node_2d.h"
 #include "scene/3d/spatial.h"
 
@@ -641,14 +640,12 @@ void Entity::_setup() {
 	ERR_FAIL_COND(!cc.is_valid());
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-		_s_entity_data->get_stat_data()->get_stat_for_stat(_stats[i]);
+		stat_set_base(i, _s_entity_data->get_stat_data()->get_stat_for_stat(i));
 	}
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-		Ref<Stat> s = _stats[i];
-
-		s->setc_current(s->gets_current());
-		s->set_dirty(false);
+		stat_setc_current(i, stat_gets_current(i));
+		stat_set_dirty(i, false);
 	}
 
 	for (int i = 0; i < cc->get_num_auras(); ++i) {
@@ -1100,9 +1097,15 @@ Dictionary Entity::_to_dict() {
 	Dictionary sd;
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-		Ref<Stat> s = _stats[i];
+		Dictionary sdict;
 
-		sd[i] = s->to_dict();
+		sdict["base"] = stat_get_base(i);
+		sdict["base_calculated"] = stat_get_base_calculated(i);
+		sdict["bonus"] = stat_get_bonus(i);
+		sdict["percent"] = stat_get_percent(i);
+		sdict["current"] = stat_gets_current(i);
+
+		sd[i] = sdict;
 	}
 
 	dict["stats"] = sd;
@@ -1280,9 +1283,18 @@ void Entity::_from_dict(const Dictionary &dict) {
 	Dictionary stats = dict.get("stats", Dictionary());
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-		Ref<Stat> s = _stats[i];
+		Dictionary sd = stats.get(String::num(i), Dictionary());
 
-		s->from_dict(stats.get(String::num(i), Dictionary()));
+		stat_set_base(i, sd.get("base", 0));
+		stat_set_base_calculated(i, sd.get("base_calculated", 0));
+		stat_set_bonus(i, sd.get("bonus", 0));
+		stat_set_percent(i, sd.get("percent", 1));
+
+		float curr = sd.get("current", 0);
+		stat_sets_current(i, curr);
+		stat_setc_current(i, curr);
+
+		stat_set_dirty(i, true);
 	}
 
 	////    Equipment    ////
@@ -1824,16 +1836,92 @@ int Entity::craft_getc_recipe_count() {
 
 ////    Stat System    ////
 
-Ref<Stat> Entity::get_stat(int index) {
-	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), Ref<Stat>());
+EntityStat Entity::get_stat(const int index) const {
+	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), EntityStat());
 
 	return _stats[index];
 }
 
-void Entity::set_stat(int index, Ref<Stat> entry) {
+void Entity::set_stat(const int index, const EntityStat &entry) {
 	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
 
 	_stats.set(index, entry);
+}
+
+bool Entity::stat_get_dirty(const int index) const {
+	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), false);
+
+	return _stats[index].dirty;
+}
+void Entity::stat_set_dirty(const int index, const bool value) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+}
+
+float Entity::stat_get_base(const int index) const {
+	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
+
+	return _stats[index].base;
+}
+void Entity::stat_set_base(const int index, const float value) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+}
+void Entity::stat_mod_base(const int index, const float value) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+}
+
+float Entity::stat_get_base_calculated(const int index) const {
+	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
+
+	return _stats[index].base_calculated;
+}
+void Entity::stat_set_base_calculated(const int index, const float value) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+}
+
+float Entity::stat_get_bonus(const int index) const {
+	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
+
+	return _stats[index].bonus;
+}
+void Entity::stat_set_bonus(const int index, const float value) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+}
+void Entity::stat_mod_bonus(const int index, const float value) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+}
+
+float Entity::stat_get_percent(const int index) const {
+	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
+
+	return _stats[index].percent;
+}
+void Entity::stat_set_percent(const int index, const float value) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+}
+void Entity::stat_mod_percent(const int index, const float value) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+}
+
+float Entity::stat_gets_current(const int index) const {
+	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
+
+	return _stats[index].scurrent;
+}
+void Entity::stat_sets_current(const int index, const float value) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+}
+
+float Entity::stat_getc_current(const int index) const {
+	ERR_FAIL_INDEX_V(index, ESS::get_instance()->stat_get_count(), 0);
+
+	return _stats[index].ccurrent;
+}
+void Entity::stat_setc_current(const int index, const float value) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
+}
+
+void Entity::stat_recalculate(const int index) {
+	ERR_FAIL_INDEX(index, ESS::get_instance()->stat_get_count());
 }
 
 void Entity::dies() {
@@ -1854,14 +1942,14 @@ void Entity::diec() {
 	emit_signal("diecd", this);
 }
 
-void Entity::notification_sstat_changed(Ref<Stat> stat) {
+void Entity::notification_sstat_changed(const int statid, const float current) {
 	for (int i = 0; i < _s_resources.size(); ++i) {
-		_s_resources.get(i)->notification_sstat_changed(stat);
+		_s_resources.get(i)->notification_sstat_changed(statid, current);
 	}
 }
-void Entity::notification_cstat_changed(Ref<Stat> stat) {
+void Entity::notification_cstat_changed(const int statid, const float current) {
 	for (int i = 0; i < _c_resources.size(); ++i) {
-		_c_resources.get(i)->notification_cstat_changed(stat);
+		_c_resources.get(i)->notification_cstat_changed(statid, current);
 	}
 }
 
@@ -1875,7 +1963,7 @@ void Entity::ssend_stat(int id, int ccurrent) {
 void Entity::creceive_stat(int id, int ccurrent) {
 	ERR_FAIL_INDEX(id, ESS::get_instance()->stat_get_count());
 
-	_stats.get(id)->setc_current(ccurrent);
+	stat_setc_current(id, ccurrent);
 }
 
 ////    Equip Slots    ////
@@ -1901,7 +1989,6 @@ bool Entity::equip_should_deny(ItemEnums::EquipSlots equip_slot, Ref<ItemInstanc
 }
 
 void Entity::equip_son_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-
 	if (_s_entity_data.is_valid()) {
 		_s_entity_data->equip_son_success(this, equip_slot, item, old_item, bag_slot);
 	}
@@ -1919,7 +2006,6 @@ void Entity::equip_son_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstanc
 }
 
 void Entity::equip_son_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-
 	if (_s_entity_data.is_valid()) {
 		_s_entity_data->equip_son_fail(this, equip_slot, item, old_item, bag_slot);
 	}
@@ -1937,7 +2023,6 @@ void Entity::equip_son_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> 
 }
 
 void Entity::equip_con_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-
 	if (_c_entity_data.is_valid()) {
 		_c_entity_data->equip_con_success(this, equip_slot, item, old_item, bag_slot);
 	}
@@ -1955,7 +2040,6 @@ void Entity::equip_con_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstanc
 }
 
 void Entity::equip_con_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-
 	if (_c_entity_data.is_valid()) {
 		_c_entity_data->equip_con_fail(this, equip_slot, item, old_item, bag_slot);
 	}
@@ -2094,13 +2178,11 @@ void Entity::_equip_applys_item(Ref<ItemInstance> item) {
 		if (!mod.is_valid())
 			continue;
 
-		Ref<Stat> stat = get_stat(mod->get_stat_id());
+		int sid = mod->get_stat_id();
 
-		ERR_CONTINUE(!stat.is_valid());
-
-		stat->mod_base(mod->get_base_mod());
-		stat->mod_bonus(mod->get_bonus_mod());
-		stat->mod_percent(mod->get_percent_mod());
+		stat_mod_base(sid, mod->get_base_mod());
+		stat_mod_bonus(sid, mod->get_bonus_mod());
+		stat_mod_percent(sid, mod->get_percent_mod());
 	}
 }
 void Entity::_equip_deapplys_item(Ref<ItemInstance> item) {
@@ -2116,13 +2198,11 @@ void Entity::_equip_deapplys_item(Ref<ItemInstance> item) {
 		if (!mod.is_valid())
 			continue;
 
-		Ref<Stat> stat = get_stat(mod->get_stat_id());
+		int sid = mod->get_stat_id();
 
-		ERR_CONTINUE(!stat.is_valid());
-
-		stat->mod_base(-mod->get_base_mod());
-		stat->mod_bonus(-mod->get_bonus_mod());
-		stat->mod_percent(-mod->get_percent_mod());
+		stat_mod_base(sid, -mod->get_base_mod());
+		stat_mod_bonus(sid, -mod->get_bonus_mod());
+		stat_mod_percent(sid, -mod->get_percent_mod());
 	}
 }
 
@@ -3770,7 +3850,6 @@ void Entity::cast_failc() {
 }
 
 void Entity::cast_delayc() {
-
 	//c_on_cast_
 
 	notification_scast(SpellEnums::NOTIFICATION_CAST_DELAYED, _c_spell_cast_info);
@@ -4782,7 +4861,6 @@ void Entity::_talent_sreceive_reset_request() {
 }
 
 void Entity::talent_sreset() {
-
 	_s_talents.clear();
 
 	if (has_method("_son_talent_reset"))
@@ -5322,12 +5400,10 @@ void Entity::update(float delta) {
 		}
 
 		for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-			Ref<Stat> s = _stats[i];
+			if (stat_get_dirty(i)) {
+				ssend_stat(i, stat_gets_current(i));
 
-			if (s->get_dirty()) {
-				ssend_stat(s->get_id(), s->gets_current());
-
-				s->set_dirty(false);
+				stat_set_dirty(i, false);
 			}
 		}
 
@@ -5491,7 +5567,6 @@ int Entity::seen_by_gets_count() {
 }
 
 void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
-
 	VARIANT_ARGPTRS;
 
 	int argc = 0;
@@ -5530,7 +5605,6 @@ Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Variant::Call
 #else
 Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Callable::CallError &r_error) {
 #endif
-
 	if (p_argcount < 1) {
 #if VERSION_MAJOR < 4
 		r_error.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
@@ -5694,11 +5768,6 @@ Entity::Entity() {
 	_actionbar_locked = false;
 
 	_stats.resize(ESS::get_instance()->stat_get_count());
-	for (int i = 0; i < _stats.size(); ++i) {
-		Ref<Stat> s = Ref<Stat>(memnew(Stat(i, this)));
-
-		_stats.set(i, s);
-	}
 
 	_sai_state = EntityEnums::AI_STATE_OFF;
 	_sai_state_stored = EntityEnums::AI_STATE_OFF;
@@ -6037,9 +6106,7 @@ void Entity::_notification_scharacter_level_up(int level) {
 	for (int i = 0; i < ESS::get_instance()->stat_get_main_stat_count(); ++i) {
 		int st = gets_entity_data()->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_character_level() - level, gets_character_level());
 
-		Ref<Stat> stat = get_stat(i);
-
-		stat->mod_base(st);
+		stat_mod_base(i, st);
 	}
 
 	if (!ESS::get_instance()->get_use_class_xp()) {
@@ -6094,7 +6161,6 @@ void Entity::_con_target_changed(Node *p_entity, Node *p_old_target) {
 }
 
 void Entity::_notification_sdeath() {
-
 	//only if mob
 	/*
 	if dead:
@@ -6246,28 +6312,20 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 		int stat_id = name.get_slicec('/', 1).to_int();
 		String stat_prop_name = name.get_slicec('/', 2);
 
-		Ref<Stat> stat = _stats[stat_id];
-
-		if (!stat.is_valid()) {
-			stat.instance();
-			stat->set_owner(this);
-			_stats.set(stat_id, stat);
-		}
-
 		if (stat_prop_name == "base") {
-			stat->set_base(p_value);
+			stat_set_base(stat_id, p_value);
 
 			return true;
 		} else if (stat_prop_name == "bonus") {
-			stat->set_bonus(p_value);
+			stat_set_bonus(stat_id, p_value);
 
 			return true;
 		} else if (stat_prop_name == "percent") {
-			stat->set_percent(p_value);
+			stat_set_percent(stat_id, p_value);
 
 			return true;
 		} else if (stat_prop_name == "scurrent") {
-			stat->sets_current(p_value);
+			stat_sets_current(stat_id, p_value);
 
 			return true;
 		} else {
@@ -6543,22 +6601,20 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 		int stat_id = name.get_slicec('/', 1).to_int();
 		String stat_prop_name = name.get_slicec('/', 2);
 
-		Ref<Stat> stat = _stats[stat_id];
-
 		if (stat_prop_name == "base") {
-			r_ret = stat->get_base();
+			r_ret = stat_get_base(stat_id);
 
 			return true;
 		} else if (stat_prop_name == "bonus") {
-			r_ret = stat->get_bonus();
+			r_ret = stat_get_bonus(stat_id);
 
 			return true;
 		} else if (stat_prop_name == "percent") {
-			r_ret = stat->get_percent();
+			r_ret = stat_get_percent(stat_id);
 
 			return true;
 		} else if (stat_prop_name == "scurrent") {
-			r_ret = stat->gets_current();
+			r_ret = stat_gets_current(stat_id);
 
 			return true;
 		} else {
@@ -6722,11 +6778,6 @@ void Entity::_get_property_list(List<PropertyInfo> *p_list) const {
 	int property_usange = PROPERTY_USAGE_DEFAULT;
 
 	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-		Ref<Stat> stat = _stats[i];
-
-		if (!stat.is_valid())
-			continue;
-
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/base", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/percent", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/scurrent", PROPERTY_HINT_NONE, "", property_usange));
@@ -7212,9 +7263,6 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_entity_data"), &Entity::getc_entity_data);
 	ClassDB::bind_method(D_METHOD("setc_entity_data", "value"), &Entity::setc_entity_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "centity_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityData", 0), "setc_entity_data", "getc_entity_data");
-
-	ClassDB::bind_method(D_METHOD("get_stat", "index"), &Entity::get_stat);
-	ClassDB::bind_method(D_METHOD("set_stat", "index", "entry"), &Entity::set_stat);
 
 	//todo
 	//for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {

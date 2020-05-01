@@ -32,7 +32,6 @@ SOFTWARE.
 #include "../../infos/spell_cast_info.h"
 
 #include "../../entities/entity.h"
-#include "../../entities/stats/stat.h"
 
 #include "../../infos/aura_infos.h"
 

@@ -23,7 +23,6 @@ SOFTWARE.
 #ifndef AURA_STAT_ATTRIBUTE_H
 #define AURA_STAT_ATTRIBUTE_H
 
-#include "../../entities/stats/stat.h"
 #include "core/reference.h"
 
 #include "../../singletons/ess.h"

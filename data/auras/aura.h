@@ -33,7 +33,6 @@ SOFTWARE.
 #include "../../spell_enums.h"
 
 #include "../../entities/entity.h"
-#include "../../entities/stats/stat.h"
 #include "../../infos/aura_infos.h"
 
 #include "aura_stat_attribute.h"
