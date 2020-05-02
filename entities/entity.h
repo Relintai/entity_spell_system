@@ -114,7 +114,7 @@ struct EntityStat {
 		base = 0;
 		base_calculated = 0;
 		bonus = 0;
-		percent = 0;
+		percent = 100;
 
 		scurrent = 0;
 		ccurrent = 0;

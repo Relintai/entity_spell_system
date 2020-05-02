@@ -579,7 +579,7 @@ void Entity::_setup() {
 		Ref<EntityClassData> cc = gets_entity_data()->get_entity_class_data();
 		ERR_FAIL_COND(!cc.is_valid());
 
-		Ref<StatData> stat_data = _s_entity_data->get_stat_data();
+		//Ref<StatData> stat_data = _s_entity_data->get_stat_data();
 
 		sets_ai(_s_entity_data->get_ai_instance());
 
