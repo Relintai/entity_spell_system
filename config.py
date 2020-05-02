@@ -60,10 +60,8 @@ def get_doc_classes():
         "ComplexLevelStatData",
         "LevelStatData",
         "SimpleLevelStatData",
-        "StatDataEntry",
         "StatData",
         "StatModifier",
-        "Stat",
         "Entity",
 
         "AIFormation",
