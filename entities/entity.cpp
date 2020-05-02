@@ -5459,7 +5459,7 @@ void Entity::update(float delta) {
 			}
 		}
 
-		if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai->get_enabled()) {
+		if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid() && _s_ai->get_enabled()) {
 			if (_s_pet_owner)
 				_s_ai->pet_update(delta);
 			else
