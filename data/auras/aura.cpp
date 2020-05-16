@@ -27,6 +27,12 @@ SOFTWARE.
 
 #include "core/version.h"
 
+#if VERSION_MAJOR >= 4
+#define PoolStringArray PackedStringArray
+
+#define POOL_STRING_ARRAY PACKED_STRING_ARRAY
+#endif
+
 int Aura::get_id() const {
 	return _id;
 }
@@ -1053,14 +1059,12 @@ void Aura::_removes_dispell(Ref<AuraData> aura) {
 }
 
 void Aura::_supdate(Ref<AuraData> aura, float delta) {
-
 	bool remove = false;
 
 	remove = aura->update(delta);
 
 	//ontick
 	while (aura->get_unhandled_ticks() > 0) {
-
 		if (aura->get_damage() != 0) {
 			Ref<SpellDamageInfo> dpd = Ref<SpellDamageInfo>(memnew(SpellDamageInfo()));
 
@@ -1090,7 +1094,6 @@ void Aura::_supdate(Ref<AuraData> aura, float delta) {
 }
 
 void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
-
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_caster()));
 #else
@@ -1131,7 +1134,6 @@ void Aura::_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo>
 }
 
 void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> info) {
-
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_dealer()));
 #else
@@ -1186,7 +1188,6 @@ void Aura::_handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info) {
 }
 
 void Aura::_validate_property(PropertyInfo &property) const {
-
 	String prop = property.name;
 	if (prop.begins_with("StatModAttribute_")) {
 		int frame = prop.get_slicec('/', 0).get_slicec('_', 1).to_int();

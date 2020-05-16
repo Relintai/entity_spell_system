@@ -40,7 +40,6 @@ SOFTWARE.
 #include "./resources/entity_resource_speed.h"
 #include "./skills/entity_skill.h"
 #include "scene/2d/node_2d.h"
-#include "scene/3d/spatial.h"
 
 #include "core/script_language.h"
 
@@ -114,7 +113,11 @@ void Entity::setc_guid(int value) {
 //Transforms
 Transform Entity::get_transform_3d(bool only_stored) const {
 	if (!only_stored && _body_3d) {
+#if VERSION_MAJOR < 4
 		ERR_FAIL_COND_V(!ObjectDB::instance_validate(_body_3d), _transform);
+#else
+		ERR_FAIL_COND_V(!_body_3d, _transform);
+#endif
 
 		return _body_3d->get_transform();
 	}
@@ -123,7 +126,11 @@ Transform Entity::get_transform_3d(bool only_stored) const {
 }
 void Entity::set_transform_3d(const Transform &transform, bool only_stored) {
 	if (!only_stored && _body_3d) {
+#if VERSION_MAJOR < 4
 		ERR_FAIL_COND(!ObjectDB::instance_validate(_body_3d));
+#else
+		ERR_FAIL_COND(!_body_3d);
+#endif
 
 		return _body_3d->set_transform(transform);
 	}
@@ -133,7 +140,11 @@ void Entity::set_transform_3d(const Transform &transform, bool only_stored) {
 
 Transform2D Entity::get_transform_2d(bool only_stored) const {
 	if (!only_stored && _body_2d) {
+#if VERSION_MAJOR < 4
 		ERR_FAIL_COND_V(!ObjectDB::instance_validate(_body_2d), _transform_2d);
+#else
+		ERR_FAIL_COND_V(!_body_2d, _transform_2d);
+#endif
 
 		return _body_2d->get_transform();
 	}
@@ -142,7 +153,11 @@ Transform2D Entity::get_transform_2d(bool only_stored) const {
 }
 void Entity::set_transform_2d(const Transform2D &transform, bool only_stored) {
 	if (!only_stored && _body_2d) {
+#if VERSION_MAJOR < 4
 		ERR_FAIL_COND(!ObjectDB::instance_validate(_body_2d));
+#else
+		ERR_FAIL_COND(!_body_2d);
+#endif
 
 		return _body_2d->set_transform(_transform_2d);
 	}
@@ -225,7 +240,6 @@ EntityEnums::EntityRelationType Entity::getc_relation_to_bind(Node *to) {
 	return getc_relation_to(e);
 }
 EntityEnums::EntityRelationType Entity::getc_relation_to(Entity *to) {
-
 #if VERSION_MAJOR < 4
 	ERR_FAIL_COND_V(!ObjectDB::instance_validate(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
 #else
@@ -462,7 +476,6 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 	if (get_body() == NULL && value.is_valid() && value->get_entity_species_data().is_valid() &&
 			value->get_entity_species_data()->get_model_data().is_valid() &&
 			value->get_entity_species_data()->get_model_data()->get_body().is_valid()) {
-
 		Node *node = value->get_entity_species_data()->get_model_data()->get_body()->instance();
 
 		add_child(node);
@@ -484,7 +497,6 @@ void Entity::setc_entity_data(Ref<EntityData> value) {
 	if (get_body() == NULL && value.is_valid() && value->get_entity_species_data().is_valid() &&
 			value->get_entity_species_data()->get_model_data().is_valid() &&
 			value->get_entity_species_data()->get_model_data()->get_body().is_valid()) {
-
 		Node *node = value->get_entity_species_data()->get_model_data()->get_body()->instance();
 
 		add_child(node);
@@ -769,7 +781,6 @@ void Entity::setup_actionbars() {
 		return;
 
 	if (is_deserialized()) {
-
 		return;
 	}
 
@@ -791,7 +802,6 @@ void Entity::setup_actionbars() {
 	//}
 
 	if (!gets_bag().is_valid()) {
-
 		Ref<Bag> bag;
 		bag.instance();
 
@@ -3939,17 +3949,17 @@ void Entity::cast_spell_successc(Ref<SpellCastInfo> info) {
 }
 
 ////    Cooldowns    ////
-Vector<Ref<Cooldown> > *Entity::cooldowns_gets() {
+Vector<Ref<Cooldown>> *Entity::cooldowns_gets() {
 	return &_s_cooldowns;
 }
-Vector<Ref<Cooldown> > *Entity::cooldowns_getc() {
+Vector<Ref<Cooldown>> *Entity::cooldowns_getc() {
 	return &_c_cooldowns;
 }
 
-HashMap<int, Ref<Cooldown> > *Entity::cooldown_get_maps() {
+HashMap<int, Ref<Cooldown>> *Entity::cooldown_get_maps() {
 	return &_s_cooldown_map;
 }
-HashMap<int, Ref<Cooldown> > *Entity::cooldown_get_mapc() {
+HashMap<int, Ref<Cooldown>> *Entity::cooldown_get_mapc() {
 	return &_c_cooldown_map;
 }
 
@@ -4093,10 +4103,10 @@ int Entity::cooldown_getc_count() {
 }
 
 //Category Cooldowns
-Vector<Ref<CategoryCooldown> > Entity::category_cooldowns_gets() {
+Vector<Ref<CategoryCooldown>> Entity::category_cooldowns_gets() {
 	return _s_category_cooldowns;
 }
-Vector<Ref<CategoryCooldown> > Entity::category_cooldowns_getc() {
+Vector<Ref<CategoryCooldown>> Entity::category_cooldowns_getc() {
 	return _c_category_cooldowns;
 }
 
@@ -4656,7 +4666,6 @@ void Entity::aura_removess_with_group(Ref<AuraGroup> aura_group) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
 		if (ad->get_aura()->get_aura_group() == aura_group) {
-
 			aura_removec(ad);
 
 			_s_auras.remove(i);
@@ -4989,7 +4998,8 @@ void Entity::talents_sclear() {
 }
 
 void Entity::talent_addc(int talent) {
-	if (talent_hasc(talent)) return;
+	if (talent_hasc(talent))
+		return;
 
 	_c_talents.push_back(talent);
 

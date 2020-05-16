@@ -28,6 +28,12 @@ SOFTWARE.
 
 #include "level_stat_data.h"
 
+#include "core/version.h"
+
+#if VERSION_MAJOR >= 4
+#define REAL FLOAT
+#endif
+
 class StatData : public Resource {
 	GDCLASS(StatData, Resource);
 
