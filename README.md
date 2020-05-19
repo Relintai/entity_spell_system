@@ -24,7 +24,7 @@ Mesh Data Resource
 
 https://github.com/Relintai/mesh_data_resource.git
 
-Adds mesh support to ItemVisuals. This is exists because in gles2 mesh data cannot be accessed directly from ArrayMeshes.
+Adds mesh support to ModelVisuals. This is exists because in gles2 mesh data cannot be accessed directly from ArrayMeshes.
 
 ## Overview
 

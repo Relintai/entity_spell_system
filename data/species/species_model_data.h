@@ -30,11 +30,11 @@ SOFTWARE.
 #include "core/vector.h"
 #include "scene/resources/packed_scene.h"
 
-#include "../items/item_visual_entry.h"
+#include "../items/model_visual_entry.h"
 
 #include "../../entity_enums.h"
 
-class ItemVisual;
+class ModelVisual;
 
 class SpeciesModelData : public Resource {
 	GDCLASS(SpeciesModelData, Resource);
@@ -47,9 +47,9 @@ public:
 	void set_body(Ref<PackedScene> value);
 
 	//Entries
-	Ref<ItemVisualEntry> get_visual(const int bone_index, const int index) const;
-	void set_visual(const int bone_index, const int index, const Ref<ItemVisualEntry> visual);
-	void add_visual(const int bone_index, const Ref<ItemVisualEntry> visual);
+	Ref<ModelVisualEntry> get_visual(const int bone_index, const int index) const;
+	void set_visual(const int bone_index, const int index, const Ref<ModelVisualEntry> visual);
+	void add_visual(const int bone_index, const Ref<ModelVisualEntry> visual);
 	void remove_visual(const int bone_index, const int index);
 
 	int get_visual_count(const int bone_index) const;
@@ -69,9 +69,9 @@ public:
 	void set_skin_colors(const Vector<Variant> &skin_colors);
 
 	//HairStyles
-	Ref<ItemVisualEntry> get_hair_style(const int index) const;
-	void set_hair_style(const int index, const Ref<ItemVisualEntry> hair_style);
-	void add_hair_style(const Ref<ItemVisualEntry> hair_style);
+	Ref<ModelVisualEntry> get_hair_style(const int index) const;
+	void set_hair_style(const int index, const Ref<ModelVisualEntry> hair_style);
+	void add_hair_style(const Ref<ModelVisualEntry> hair_style);
 	void remove_hair_style(const int index);
 
 	int get_hair_style_count() const;
@@ -91,9 +91,9 @@ public:
 	void set_hair_colors(const Vector<Variant> &hair_colors);
 
 	//Heads
-	Ref<ItemVisualEntry> get_head(const int index) const;
-	void set_head(const int index, const Ref<ItemVisualEntry> head);
-	void add_head(const Ref<ItemVisualEntry> head);
+	Ref<ModelVisualEntry> get_head(const int index) const;
+	void set_head(const int index, const Ref<ModelVisualEntry> head);
+	void add_head(const Ref<ModelVisualEntry> head);
 	void remove_head(const int index);
 
 	int get_head_count() const;
@@ -112,11 +112,11 @@ private:
 
 	Ref<PackedScene> _body;
 
-	Vector<Ref<ItemVisualEntry> > _visuals[EntityEnums::SKELETON_POINTS_MAX];
+	Vector<Ref<ModelVisualEntry> > _visuals[EntityEnums::SKELETON_POINTS_MAX];
 	Vector<Color> _skin_colors;
-	Vector<Ref<ItemVisualEntry> > _hair_styles;
+	Vector<Ref<ModelVisualEntry> > _hair_styles;
 	Vector<Color> _hair_colors;
-	Vector<Ref<ItemVisualEntry> > _heads;
+	Vector<Ref<ModelVisualEntry> > _heads;
 };
 
 #endif

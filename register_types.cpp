@@ -51,8 +51,8 @@ SOFTWARE.
 #include "entities/data/character_spec.h"
 #include "entities/data/talent_row_data.h"
 
-#include "data/items/item_visual.h"
-#include "data/items/item_visual_entry.h"
+#include "data/items/model_visual.h"
+#include "data/items/model_visual_entry.h"
 
 #include "data/atlases/character_atlas.h"
 #include "data/atlases/character_atlas_entry.h"
@@ -181,8 +181,8 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<EntitySkill>();
 	ClassDB::register_class<EntitySkillData>();
 
-	ClassDB::register_class<ItemVisual>();
-	ClassDB::register_class<ItemVisualEntry>();
+	ClassDB::register_class<ModelVisual>();
+	ClassDB::register_class<ModelVisualEntry>();
 
 	ClassDB::register_class<CharacterAtlas>();
 	ClassDB::register_class<CharacterAtlasEntry>();

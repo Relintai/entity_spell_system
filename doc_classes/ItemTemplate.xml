@@ -330,7 +330,7 @@
 		</member>
 		<member name="item_type" type="int" setter="set_item_type" getter="get_item_type" enum="ItemEnums.ItemType" default="0">
 		</member>
-		<member name="item_visual" type="ItemVisual" setter="set_item_visual" getter="get_item_visual">
+		<member name="model_visual" type="ModelVisual" setter="set_model_visual" getter="get_model_visual">
 		</member>
 		<member name="price" type="int" setter="set_price" getter="get_price" default="0">
 		</member>

@@ -43,10 +43,10 @@ void SkeletonModelEntry::set_color(const Color value) {
 	_color = value;
 }
 
-Ref<ItemVisualEntry> SkeletonModelEntry::get_entry() {
+Ref<ModelVisualEntry> SkeletonModelEntry::get_entry() {
 	return _entry;
 }
-void SkeletonModelEntry::set_entry(Ref<ItemVisualEntry> entry) {
+void SkeletonModelEntry::set_entry(Ref<ModelVisualEntry> entry) {
 	_entry = entry;
 }
 
@@ -75,5 +75,5 @@ void SkeletonModelEntry::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_entry"), &SkeletonModelEntry::get_entry);
 	ClassDB::bind_method(D_METHOD("set_entry", "path"), &SkeletonModelEntry::set_entry);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entry", PROPERTY_HINT_RESOURCE_TYPE, "ItemVisualEntry"), "set_entry", "get_entry");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entry", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_entry", "get_entry");
 }

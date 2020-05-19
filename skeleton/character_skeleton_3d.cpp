@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "character_skeleton_3d.h"
 
-#include "../data/items/item_visual.h"
+#include "../data/items/model_visual.h"
 
 #include "core/version.h"
 
@@ -119,62 +119,62 @@ void CharacterSkeleton3D::update_nodes() {
 	set_animation_tree_path(_animation_tree_path);
 }
 
-void CharacterSkeleton3D::add_item_visual(Ref<ItemVisual> vis) {
+void CharacterSkeleton3D::add_model_visual(Ref<ModelVisual> vis) {
 	ERR_FAIL_COND(!vis.is_valid());
 
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		Ref<ItemVisualEntry> e = vis->get_visual(i);
+		Ref<ModelVisualEntry> e = vis->get_visual(i);
 
 		if (e.is_valid())
-			add_item_visual_entry(vis, e, i);
+			add_model_visual_entry(vis, e, i);
 	}
 
-	_item_visuals.push_back(vis);
+	_model_visuals.push_back(vis);
 
 	set_process(true);
 	_model_dirty = true;
 }
-void CharacterSkeleton3D::remove_item_visual(Ref<ItemVisual> vis) {
+void CharacterSkeleton3D::remove_model_visual(Ref<ModelVisual> vis) {
 	ERR_FAIL_COND(!vis.is_valid());
 
-	int index = _item_visuals.find(vis);
+	int index = _model_visuals.find(vis);
 
 	if (index == -1)
 		return;
 
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		Ref<ItemVisualEntry> e = vis->get_visual(i);
+		Ref<ModelVisualEntry> e = vis->get_visual(i);
 
 		if (e.is_valid())
-			remove_item_visual_entry(vis, e, i);
+			remove_model_visual_entry(vis, e, i);
 	}
 
-	_item_visuals.remove(index);
+	_model_visuals.remove(index);
 
 	set_process(true);
 	_model_dirty = true;
 }
-void CharacterSkeleton3D::remove_item_visual_index(int index) {
-	ERR_FAIL_INDEX(index, _item_visuals.size());
+void CharacterSkeleton3D::remove_model_visual_index(int index) {
+	ERR_FAIL_INDEX(index, _model_visuals.size());
 
 	set_process(true);
 	_model_dirty = true;
 
-	_item_visuals.remove(index);
+	_model_visuals.remove(index);
 }
-Ref<ItemVisual> CharacterSkeleton3D::get_item_visual(int index) {
-	ERR_FAIL_INDEX_V(index, _item_visuals.size(), Ref<ItemVisual>());
+Ref<ModelVisual> CharacterSkeleton3D::get_model_visual(int index) {
+	ERR_FAIL_INDEX_V(index, _model_visuals.size(), Ref<ModelVisual>());
 
 	set_process(true);
 	_model_dirty = true;
 
-	return _item_visuals.get(index);
+	return _model_visuals.get(index);
 }
-int CharacterSkeleton3D::get_item_visual_count() {
-	return _item_visuals.size();
+int CharacterSkeleton3D::get_model_visual_count() {
+	return _model_visuals.size();
 }
-void CharacterSkeleton3D::clear_item_visuals() {
-	_item_visuals.clear();
+void CharacterSkeleton3D::clear_model_visuals() {
+	_model_visuals.clear();
 
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
 		_entries[i].clear();
@@ -184,7 +184,7 @@ void CharacterSkeleton3D::clear_item_visuals() {
 	set_process(true);
 }
 
-void CharacterSkeleton3D::add_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive, int target_bone) {
+void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive, int target_bone) {
 	ERR_FAIL_COND(!vis.is_valid());
 	ERR_FAIL_COND(!ive.is_valid());
 
@@ -212,7 +212,7 @@ void CharacterSkeleton3D::add_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVis
 	_model_dirty = true;
 	set_process(true);
 }
-void CharacterSkeleton3D::remove_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive, int target_bone) {
+void CharacterSkeleton3D::remove_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive, int target_bone) {
 	ERR_FAIL_COND(!vis.is_valid());
 	ERR_FAIL_COND(!ive.is_valid());
 
@@ -378,7 +378,7 @@ CharacterSkeleton3D::~CharacterSkeleton3D() {
 		_entries[i].clear();
 	}
 
-	_item_visuals.clear();
+	_model_visuals.clear();
 }
 
 void CharacterSkeleton3D::_notification(int p_what) {
@@ -401,12 +401,12 @@ void CharacterSkeleton3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_gender", "value"), &CharacterSkeleton3D::set_gender);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "gender", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_GENDER), "set_gender", "get_gender");
 
-	ClassDB::bind_method(D_METHOD("add_item_visual", "vis"), &CharacterSkeleton3D::add_item_visual);
-	ClassDB::bind_method(D_METHOD("remove_item_visual", "vis"), &CharacterSkeleton3D::remove_item_visual);
-	ClassDB::bind_method(D_METHOD("remove_item_visual_index", "index"), &CharacterSkeleton3D::remove_item_visual_index);
-	ClassDB::bind_method(D_METHOD("get_item_visual", "index"), &CharacterSkeleton3D::get_item_visual);
-	ClassDB::bind_method(D_METHOD("get_item_visual_count"), &CharacterSkeleton3D::get_item_visual_count);
-	ClassDB::bind_method(D_METHOD("clear_item_visuals"), &CharacterSkeleton3D::clear_item_visuals);
+	ClassDB::bind_method(D_METHOD("add_model_visual", "vis"), &CharacterSkeleton3D::add_model_visual);
+	ClassDB::bind_method(D_METHOD("remove_model_visual", "vis"), &CharacterSkeleton3D::remove_model_visual);
+	ClassDB::bind_method(D_METHOD("remove_model_visual_index", "index"), &CharacterSkeleton3D::remove_model_visual_index);
+	ClassDB::bind_method(D_METHOD("get_model_visual", "index"), &CharacterSkeleton3D::get_model_visual);
+	ClassDB::bind_method(D_METHOD("get_model_visual_count"), &CharacterSkeleton3D::get_model_visual_count);
+	ClassDB::bind_method(D_METHOD("clear_model_visuals"), &CharacterSkeleton3D::clear_model_visuals);
 
 	BIND_VMETHOD(MethodInfo("_build_model"));
 
@@ -422,8 +422,8 @@ void CharacterSkeleton3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_animation_tree_path", "path"), &CharacterSkeleton3D::set_animation_tree_path);
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "animation_tree_path"), "set_animation_tree_path", "get_animation_tree_path");
 
-	ClassDB::bind_method(D_METHOD("add_item_visual_entry", "vis", "ive"), &CharacterSkeleton3D::add_item_visual_entry);
-	ClassDB::bind_method(D_METHOD("remove_item_visual_entry", "vis", "ive"), &CharacterSkeleton3D::remove_item_visual_entry);
+	ClassDB::bind_method(D_METHOD("add_model_visual_entry", "vis", "ive"), &CharacterSkeleton3D::add_model_visual_entry);
+	ClassDB::bind_method(D_METHOD("remove_model_visual_entry", "vis", "ive"), &CharacterSkeleton3D::remove_model_visual_entry);
 	ClassDB::bind_method(D_METHOD("get_model_entry", "bone_index", "index"), &CharacterSkeleton3D::get_model_entry);
 	ClassDB::bind_method(D_METHOD("get_model_entry_count", "bone_index"), &CharacterSkeleton3D::get_model_entry_count);
 

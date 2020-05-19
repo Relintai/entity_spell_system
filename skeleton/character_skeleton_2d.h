@@ -31,18 +31,18 @@ SOFTWARE.
 
 #include "../entity_enums.h"
 
-#include "../data/items/item_visual.h"
+#include "../data/items/model_visual.h"
 
 class CharacterSkeleton2D : public Node2D {
 	GDCLASS(CharacterSkeleton2D, Node2D);
 
 public:
-	virtual void add_item_visual(Ref<ItemVisual> vis);
-	virtual void remove_item_visual(Ref<ItemVisual> vis);
-	virtual void remove_item_visual_index(int index);
-	virtual Ref<ItemVisual> get_item_visual(int index);
-	virtual int get_item_visual_count();
-	virtual void clear_item_visuals();
+	virtual void add_model_visual(Ref<ModelVisual> vis);
+	virtual void remove_model_visual(Ref<ModelVisual> vis);
+	virtual void remove_model_visual_index(int index);
+	virtual Ref<ModelVisual> get_model_visual(int index);
+	virtual int get_model_visual_count();
+	virtual void clear_model_visuals();
 
 	EntityEnums::EntityGender get_gender();
 	void set_gender(EntityEnums::EntityGender value);

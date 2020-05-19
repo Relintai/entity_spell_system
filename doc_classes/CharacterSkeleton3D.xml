@@ -16,20 +16,20 @@
 			<description>
 			</description>
 		</method>
-		<method name="add_item_visual">
+		<method name="add_model_visual">
 			<return type="void">
 			</return>
-			<argument index="0" name="vis" type="ItemVisual">
+			<argument index="0" name="vis" type="ModelVisual">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="add_item_visual_entry">
+		<method name="add_model_visual_entry">
 			<return type="void">
 			</return>
-			<argument index="0" name="vis" type="ItemVisual">
+			<argument index="0" name="vis" type="ModelVisual">
 			</argument>
-			<argument index="1" name="ive" type="ItemVisualEntry">
+			<argument index="1" name="ive" type="ModelVisualEntry">
 			</argument>
 			<argument index="2" name="arg2" type="int">
 			</argument>
@@ -54,7 +54,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="clear_item_visuals">
+		<method name="clear_model_visuals">
 			<return type="void">
 			</return>
 			<description>
@@ -88,15 +88,15 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_visual">
-			<return type="ItemVisual">
+		<method name="get_model_visual">
+			<return type="ModelVisual">
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="get_item_visual_count">
+		<method name="get_model_visual_count">
 			<return type="int">
 			</return>
 			<description>
@@ -128,27 +128,27 @@
 			<description>
 			</description>
 		</method>
-		<method name="remove_item_visual">
+		<method name="remove_model_visual">
 			<return type="void">
 			</return>
-			<argument index="0" name="vis" type="ItemVisual">
+			<argument index="0" name="vis" type="ModelVisual">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="remove_item_visual_entry">
+		<method name="remove_model_visual_entry">
 			<return type="void">
 			</return>
-			<argument index="0" name="vis" type="ItemVisual">
+			<argument index="0" name="vis" type="ModelVisual">
 			</argument>
-			<argument index="1" name="ive" type="ItemVisualEntry">
+			<argument index="1" name="ive" type="ModelVisualEntry">
 			</argument>
 			<argument index="2" name="arg2" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="remove_item_visual_index">
+		<method name="remove_model_visual_index">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">

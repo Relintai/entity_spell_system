@@ -20,33 +20,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef ITEM_VISUAL_H
-#define ITEM_VISUAL_H
+#ifndef MODEL_VISUAL_H
+#define MODEL_VISUAL_H
 
 #include "core/resource.h"
 
 #include "../../item_enums.h"
-#include "item_visual_entry.h"
+#include "model_visual_entry.h"
 
-class ItemVisual : public Resource {
-	GDCLASS(ItemVisual, Resource);
+class ModelVisual : public Resource {
+	GDCLASS(ModelVisual, Resource);
 
 public:
 	ItemEnums::EntityTextureLayers get_layer();
 	void set_layer(ItemEnums::EntityTextureLayers layer);
 
-	Ref<ItemVisualEntry> get_visual(int index);
-	void set_visual(int index, Ref<ItemVisualEntry> entry);
+	Ref<ModelVisualEntry> get_visual(int index);
+	void set_visual(int index, Ref<ModelVisualEntry> entry);
 
-	ItemVisual();
-	~ItemVisual();
+	ModelVisual();
+	~ModelVisual();
 
 protected:
 	static void _bind_methods();
 
 private:
 	ItemEnums::EntityTextureLayers _layer;
-	Ref<ItemVisualEntry> _entries[EntityEnums::SKELETON_POINTS_MAX];
+	Ref<ModelVisualEntry> _entries[EntityEnums::SKELETON_POINTS_MAX];
 };
 
 #endif

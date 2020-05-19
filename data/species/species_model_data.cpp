@@ -40,19 +40,19 @@ void SpeciesModelData::set_body(Ref<PackedScene> value) {
 
 //Entries
 
-Ref<ItemVisualEntry> SpeciesModelData::get_visual(const int bone_index, const int index) const {
-	ERR_FAIL_INDEX_V(bone_index, EntityEnums::SKELETON_POINTS_MAX, Ref<ItemVisualEntry>());
-	ERR_FAIL_INDEX_V(index, _visuals[bone_index].size(), Ref<ItemVisualEntry>());
+Ref<ModelVisualEntry> SpeciesModelData::get_visual(const int bone_index, const int index) const {
+	ERR_FAIL_INDEX_V(bone_index, EntityEnums::SKELETON_POINTS_MAX, Ref<ModelVisualEntry>());
+	ERR_FAIL_INDEX_V(index, _visuals[bone_index].size(), Ref<ModelVisualEntry>());
 
 	return _visuals[bone_index].get(index);
 }
-void SpeciesModelData::set_visual(const int bone_index, const int index, const Ref<ItemVisualEntry> visual) {
+void SpeciesModelData::set_visual(const int bone_index, const int index, const Ref<ModelVisualEntry> visual) {
 	ERR_FAIL_INDEX(bone_index, EntityEnums::SKELETON_POINTS_MAX);
 	ERR_FAIL_INDEX(index, _visuals[bone_index].size());
 
 	_visuals[bone_index].set(index, visual);
 }
-void SpeciesModelData::add_visual(const int bone_index, const Ref<ItemVisualEntry> visual) {
+void SpeciesModelData::add_visual(const int bone_index, const Ref<ModelVisualEntry> visual) {
 	ERR_FAIL_INDEX(bone_index, EntityEnums::SKELETON_POINTS_MAX);
 
 	_visuals[bone_index].push_back(visual);
@@ -88,7 +88,7 @@ void SpeciesModelData::set_visuals(const int bone_index, const Vector<Variant> &
 
 	_visuals[bone_index].clear();
 	for (int i = 0; i < visuals.size(); i++) {
-		Ref<ItemVisualEntry> visual = Ref<ItemVisualEntry>(visuals[i]);
+		Ref<ModelVisualEntry> visual = Ref<ModelVisualEntry>(visuals[i]);
 
 		_visuals[bone_index].push_back(visual);
 	}
@@ -137,17 +137,17 @@ void SpeciesModelData::set_skin_colors(const Vector<Variant> &skin_colors) {
 
 //HairStyles
 
-Ref<ItemVisualEntry> SpeciesModelData::get_hair_style(const int index) const {
-	ERR_FAIL_INDEX_V(index, _hair_styles.size(), Ref<ItemVisualEntry>());
+Ref<ModelVisualEntry> SpeciesModelData::get_hair_style(const int index) const {
+	ERR_FAIL_INDEX_V(index, _hair_styles.size(), Ref<ModelVisualEntry>());
 
 	return _hair_styles.get(index);
 }
-void SpeciesModelData::set_hair_style(const int index, const Ref<ItemVisualEntry> hair_style) {
+void SpeciesModelData::set_hair_style(const int index, const Ref<ModelVisualEntry> hair_style) {
 	ERR_FAIL_INDEX(index, _hair_styles.size());
 
 	_hair_styles.set(index, hair_style);
 }
-void SpeciesModelData::add_hair_style(const Ref<ItemVisualEntry> hair_style) {
+void SpeciesModelData::add_hair_style(const Ref<ModelVisualEntry> hair_style) {
 	_hair_styles.push_back(hair_style);
 }
 void SpeciesModelData::remove_hair_style(const int index) {
@@ -174,7 +174,7 @@ Vector<Variant> SpeciesModelData::get_hair_styles() {
 void SpeciesModelData::set_hair_styles(const Vector<Variant> &hair_styles) {
 	_hair_styles.clear();
 	for (int i = 0; i < hair_styles.size(); i++) {
-		Ref<ItemVisualEntry> hair_style = Ref<ItemVisualEntry>(hair_styles[i]);
+		Ref<ModelVisualEntry> hair_style = Ref<ModelVisualEntry>(hair_styles[i]);
 
 		_hair_styles.push_back(hair_style);
 	}
@@ -223,17 +223,17 @@ void SpeciesModelData::set_hair_colors(const Vector<Variant> &hair_colors) {
 
 //Heads
 
-Ref<ItemVisualEntry> SpeciesModelData::get_head(const int index) const {
-	ERR_FAIL_INDEX_V(index, _heads.size(), Ref<ItemVisualEntry>());
+Ref<ModelVisualEntry> SpeciesModelData::get_head(const int index) const {
+	ERR_FAIL_INDEX_V(index, _heads.size(), Ref<ModelVisualEntry>());
 
 	return _heads.get(index);
 }
-void SpeciesModelData::set_head(const int index, const Ref<ItemVisualEntry> head) {
+void SpeciesModelData::set_head(const int index, const Ref<ModelVisualEntry> head) {
 	ERR_FAIL_INDEX(index, _heads.size());
 
 	_heads.set(index, head);
 }
-void SpeciesModelData::add_head(const Ref<ItemVisualEntry> head) {
+void SpeciesModelData::add_head(const Ref<ModelVisualEntry> head) {
 	_heads.push_back(head);
 }
 void SpeciesModelData::remove_head(const int index) {
@@ -260,7 +260,7 @@ Vector<Variant> SpeciesModelData::get_heads() {
 void SpeciesModelData::set_heads(const Vector<Variant> &heads) {
 	_heads.clear();
 	for (int i = 0; i < heads.size(); i++) {
-		Ref<ItemVisualEntry> head = Ref<ItemVisualEntry>(heads[i]);
+		Ref<ModelVisualEntry> head = Ref<ModelVisualEntry>(heads[i]);
 
 		_heads.push_back(head);
 	}
@@ -305,39 +305,39 @@ void SpeciesModelData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_visuals", "bone_index", "visuals"), &SpeciesModelData::set_visuals);
 
 	ADD_GROUP("Visuals", "visual_");
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_root", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_ROOT);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_pelvis", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_PELVIS);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_spine", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_SPINE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_spine_1", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_SPINE_1);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_spine_2", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_SPINE_2);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_neck", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_NECK);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_head", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_HEAD);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_root", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_ROOT);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_pelvis", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_PELVIS);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_spine", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_SPINE);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_spine_1", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_SPINE_1);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_spine_2", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_SPINE_2);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_neck", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_NECK);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_head", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_HEAD);
 
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_clavicle", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_CLAVICLE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_upper_arm", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_UPPER_ARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_forearm", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FOREARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_hand", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_HAND);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_thumb_base", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_THUMB_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_thumb_end", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_THUMB_END);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_fingers_base", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FINGERS_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_fingers_end", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FINGERS_END);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_clavicle", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_CLAVICLE);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_upper_arm", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_UPPER_ARM);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_forearm", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FOREARM);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_hand", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_HAND);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_thumb_base", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_THUMB_BASE);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_thumb_end", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_THUMB_END);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_fingers_base", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FINGERS_BASE);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_fingers_end", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FINGERS_END);
 
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_clavicle", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_CLAVICLE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_upper_arm", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_UPPER_ARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_forearm", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FOREARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_hand", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_HAND);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_thumb_base", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_THUMB_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_thumb_end", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_THUMB_END);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_fingers_base", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FINGERS_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_fingers_end", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FINGERS_END);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_clavicle", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_CLAVICLE);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_upper_arm", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_UPPER_ARM);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_forearm", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FOREARM);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_hand", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_HAND);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_thumb_base", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_THUMB_BASE);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_thumb_end", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_THUMB_END);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_fingers_base", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FINGERS_BASE);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_fingers_end", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FINGERS_END);
 
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_thigh", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_THIGH);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_calf", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_CALF);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_foot", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FOOT);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_thigh", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_THIGH);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_calf", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_CALF);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_foot", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FOOT);
 
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_thigh", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_THIGH);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_calf", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_CALF);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_foot", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FOOT);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_thigh", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_THIGH);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_calf", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_CALF);
+	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_foot", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FOOT);
 
 	//DungeonDatas
 	ClassDB::bind_method(D_METHOD("get_skin_color", "index"), &SpeciesModelData::get_skin_color);
@@ -361,7 +361,7 @@ void SpeciesModelData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_hair_styles"), &SpeciesModelData::get_hair_styles);
 	ClassDB::bind_method(D_METHOD("set_hair_styles", "hair_styles"), &SpeciesModelData::set_hair_styles);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "hair_styles", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_hair_styles", "get_hair_styles");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "hair_styles", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_hair_styles", "get_hair_styles");
 
 	//DungeonDatas
 	ClassDB::bind_method(D_METHOD("get_hair_color", "index"), &SpeciesModelData::get_hair_color);
@@ -385,5 +385,5 @@ void SpeciesModelData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_heads"), &SpeciesModelData::get_heads);
 	ClassDB::bind_method(D_METHOD("set_heads", "heads"), &SpeciesModelData::set_heads);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "heads", PROPERTY_HINT_NONE, "17/17:ItemVisualEntry", PROPERTY_USAGE_DEFAULT, "ItemVisualEntry"), "set_heads", "get_heads");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "heads", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_heads", "get_heads");
 }

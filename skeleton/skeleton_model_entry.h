@@ -23,7 +23,7 @@ SOFTWARE.
 #ifndef SKELETON_MODEL_ENTRY_H
 #define SKELETON_MODEL_ENTRY_H
 
-#include "../data/items/item_visual_entry.h"
+#include "../data/items/model_visual_entry.h"
 #include "core/reference.h"
 
 class SkeletonModelEntry : public Reference {
@@ -39,8 +39,8 @@ public:
 	Color get_color() const;
 	void set_color(const Color value);
 
-	Ref<ItemVisualEntry> get_entry();
-	void set_entry(Ref<ItemVisualEntry> entry);
+	Ref<ModelVisualEntry> get_entry();
+	void set_entry(Ref<ModelVisualEntry> entry);
 
 	SkeletonModelEntry();
 	~SkeletonModelEntry();
@@ -52,7 +52,7 @@ private:
 	int _count;
 	int _priority;
 	Color _color;
-	Ref<ItemVisualEntry> _entry;
+	Ref<ModelVisualEntry> _entry;
 };
 
 #endif

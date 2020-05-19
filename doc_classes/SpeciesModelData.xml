@@ -19,7 +19,7 @@
 		<method name="add_hair_style">
 			<return type="void">
 			</return>
-			<argument index="0" name="hair_style" type="ItemVisualEntry">
+			<argument index="0" name="hair_style" type="ModelVisualEntry">
 			</argument>
 			<description>
 			</description>
@@ -27,7 +27,7 @@
 		<method name="add_head">
 			<return type="void">
 			</return>
-			<argument index="0" name="head" type="ItemVisualEntry">
+			<argument index="0" name="head" type="ModelVisualEntry">
 			</argument>
 			<description>
 			</description>
@@ -45,7 +45,7 @@
 			</return>
 			<argument index="0" name="bone_index" type="int">
 			</argument>
-			<argument index="1" name="visual" type="ItemVisualEntry">
+			<argument index="1" name="visual" type="ModelVisualEntry">
 			</argument>
 			<description>
 			</description>
@@ -65,7 +65,7 @@
 			</description>
 		</method>
 		<method name="get_hair_style" qualifiers="const">
-			<return type="ItemVisualEntry">
+			<return type="ModelVisualEntry">
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
@@ -79,7 +79,7 @@
 			</description>
 		</method>
 		<method name="get_head" qualifiers="const">
-			<return type="ItemVisualEntry">
+			<return type="ModelVisualEntry">
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
@@ -107,7 +107,7 @@
 			</description>
 		</method>
 		<method name="get_visual" qualifiers="const">
-			<return type="ItemVisualEntry">
+			<return type="ModelVisualEntry">
 			</return>
 			<argument index="0" name="bone_index" type="int">
 			</argument>
@@ -189,7 +189,7 @@
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
-			<argument index="1" name="data" type="ItemVisualEntry">
+			<argument index="1" name="data" type="ModelVisualEntry">
 			</argument>
 			<description>
 			</description>
@@ -199,7 +199,7 @@
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
-			<argument index="1" name="data" type="ItemVisualEntry">
+			<argument index="1" name="data" type="ModelVisualEntry">
 			</argument>
 			<description>
 			</description>
@@ -221,7 +221,7 @@
 			</argument>
 			<argument index="1" name="index" type="int">
 			</argument>
-			<argument index="2" name="data" type="ItemVisualEntry">
+			<argument index="2" name="data" type="ModelVisualEntry">
 			</argument>
 			<description>
 			</description>

@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef ITEM_VISUAL_ENTRY_H
-#define ITEM_VISUAL_ENTRY_H
+#ifndef MODEL_VISUAL_ENTRY_H
+#define MODEL_VISUAL_ENTRY_H
 
 #include "core/color.h"
 #include "core/resource.h"
@@ -38,8 +38,8 @@ SOFTWARE.
 #include "../../../mesh_data_resource/mesh_data_resource.h"
 #endif
 
-class ItemVisualEntry : public Resource {
-	GDCLASS(ItemVisualEntry, Resource);
+class ModelVisualEntry : public Resource {
+	GDCLASS(ModelVisualEntry, Resource);
 
 public:
 	ItemEnums::EntityTextureLayers get_override_layer();
@@ -62,8 +62,8 @@ public:
 	Vector3 get_effect_offset(int index);
 	void set_effect_offset(int index, Vector3 offset);
 
-	ItemVisualEntry();
-	~ItemVisualEntry();
+	ModelVisualEntry();
+	~ModelVisualEntry();
 
 protected:
 	static void _bind_methods();

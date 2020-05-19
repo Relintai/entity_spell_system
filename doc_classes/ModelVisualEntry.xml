@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ItemVisualEntry" inherits="Resource" version="3.2">
+<class name="ModelVisualEntry" inherits="Resource" version="3.2">
 	<brief_description>
-		One Entry for [ItemVisual].
+		One Entry for [ModelVisual].
 	</brief_description>
 	<description>
 	</description>

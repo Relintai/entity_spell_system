@@ -35,7 +35,7 @@ SOFTWARE.
 #include "../entity_enums.h"
 #include "skeleton_model_entry.h"
 
-#include "../data/items/item_visual_entry.h"
+#include "../data/items/model_visual_entry.h"
 
 #include "core/version.h"
 
@@ -47,7 +47,7 @@ SOFTWARE.
 #define Texture Texture2D
 #endif
 
-class ItemVisual;
+class ModelVisual;
 
 //Rename to HumanoidCharSkeleton -> maybe make that a subclass?
 class CharacterSkeleton3D : public Spatial {
@@ -77,15 +77,15 @@ public:
 
 	void update_nodes();
 
-	void add_item_visual(Ref<ItemVisual> vis);
-	void remove_item_visual(Ref<ItemVisual> vis);
-	void remove_item_visual_index(int index);
-	Ref<ItemVisual> get_item_visual(int index);
-	int get_item_visual_count();
-	void clear_item_visuals();
+	void add_model_visual(Ref<ModelVisual> vis);
+	void remove_model_visual(Ref<ModelVisual> vis);
+	void remove_model_visual_index(int index);
+	Ref<ModelVisual> get_model_visual(int index);
+	int get_model_visual_count();
+	void clear_model_visuals();
 
-	void add_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive, int target_bone);
-	void remove_item_visual_entry(Ref<ItemVisual> vis, Ref<ItemVisualEntry> ive, int target_bone);
+	void add_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive, int target_bone);
+	void remove_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive, int target_bone);
 
 	Ref<SkeletonModelEntry> get_model_entry(const int bone_index, const int index);
 	int get_model_entry_count(const int bone_index);
@@ -129,7 +129,7 @@ private:
 	Node *_bone_nodes[EntityEnums::SKELETON_POINTS_MAX];
 
 	bool _model_dirty;
-	Vector<Ref<ItemVisual> > _item_visuals;
+	Vector<Ref<ModelVisual> > _model_visuals;
 	Vector<Ref<SkeletonModelEntry> > _entries[EntityEnums::SKELETON_POINTS_MAX];
 };
 

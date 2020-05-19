@@ -22,19 +22,19 @@ SOFTWARE.
 
 #include "character_skeleton_2d.h"
 
-void CharacterSkeleton2D::add_item_visual(Ref<ItemVisual> vis) {
+void CharacterSkeleton2D::add_model_visual(Ref<ModelVisual> vis) {
 }
-void CharacterSkeleton2D::remove_item_visual(Ref<ItemVisual> vis) {
+void CharacterSkeleton2D::remove_model_visual(Ref<ModelVisual> vis) {
 }
-void CharacterSkeleton2D::remove_item_visual_index(int index) {
+void CharacterSkeleton2D::remove_model_visual_index(int index) {
 }
-Ref<ItemVisual> CharacterSkeleton2D::get_item_visual(int index) {
-	return Ref<ItemVisual>();
+Ref<ModelVisual> CharacterSkeleton2D::get_model_visual(int index) {
+	return Ref<ModelVisual>();
 }
-int CharacterSkeleton2D::get_item_visual_count() {
+int CharacterSkeleton2D::get_model_visual_count() {
 	return 0;
 }
-void CharacterSkeleton2D::clear_item_visuals() {
+void CharacterSkeleton2D::clear_model_visuals() {
 }
 
 EntityEnums::EntityGender CharacterSkeleton2D::get_gender() {
@@ -56,10 +56,10 @@ void CharacterSkeleton2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_gender", "value"), &CharacterSkeleton2D::set_gender);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "gender", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_GENDER), "set_gender", "get_gender");
 
-	ClassDB::bind_method(D_METHOD("add_item_visual", "vis"), &CharacterSkeleton2D::add_item_visual);
-	ClassDB::bind_method(D_METHOD("remove_item_visual", "vis"), &CharacterSkeleton2D::remove_item_visual);
-	ClassDB::bind_method(D_METHOD("remove_item_visual_index", "index"), &CharacterSkeleton2D::remove_item_visual_index);
-	ClassDB::bind_method(D_METHOD("get_item_visual", "index"), &CharacterSkeleton2D::get_item_visual);
-	ClassDB::bind_method(D_METHOD("get_item_visual_count"), &CharacterSkeleton2D::get_item_visual_count);
-	ClassDB::bind_method(D_METHOD("clear_item_visuals"), &CharacterSkeleton2D::clear_item_visuals);
+	ClassDB::bind_method(D_METHOD("add_model_visual", "vis"), &CharacterSkeleton2D::add_model_visual);
+	ClassDB::bind_method(D_METHOD("remove_model_visual", "vis"), &CharacterSkeleton2D::remove_model_visual);
+	ClassDB::bind_method(D_METHOD("remove_model_visual_index", "index"), &CharacterSkeleton2D::remove_model_visual_index);
+	ClassDB::bind_method(D_METHOD("get_model_visual", "index"), &CharacterSkeleton2D::get_model_visual);
+	ClassDB::bind_method(D_METHOD("get_model_visual_count"), &CharacterSkeleton2D::get_model_visual_count);
+	ClassDB::bind_method(D_METHOD("clear_model_visuals"), &CharacterSkeleton2D::clear_model_visuals);
 }

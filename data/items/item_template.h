@@ -29,7 +29,7 @@ SOFTWARE.
 
 #include "../../item_enums.h"
 #include "item_template_stat_modifier.h"
-#include "item_visual.h"
+#include "model_visual.h"
 
 class ItemInstance;
 class Aura;
@@ -61,8 +61,8 @@ public:
 	int get_equip_slot() const;
 	void set_equip_slot(const int value);
 
-	Ref<ItemVisual> get_item_visual() const;
-	void set_item_visual(const Ref<ItemVisual> &value);
+	Ref<ModelVisual> get_model_visual() const;
+	void set_model_visual(const Ref<ModelVisual> &value);
 
 	Ref<EntityClassData> get_required_character_class() const;
 	void set_required_character_class(const Ref<EntityClassData> &value);
@@ -200,7 +200,7 @@ private:
 	int _price;
 
 	Ref<EntityClassData> _required_character_class;
-	Ref<ItemVisual> _item_visual;
+	Ref<ModelVisual> _model_visual;
 
 	int _stack_size;
 

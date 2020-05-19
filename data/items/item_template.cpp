@@ -80,11 +80,11 @@ void ItemTemplate::set_equip_slot(const int value) {
 	_equip_slot = value;
 }
 
-Ref<ItemVisual> ItemTemplate::get_item_visual() const {
-	return _item_visual;
+Ref<ModelVisual> ItemTemplate::get_model_visual() const {
+	return _model_visual;
 }
-void ItemTemplate::set_item_visual(const Ref<ItemVisual> &value) {
-	_item_visual = value;
+void ItemTemplate::set_model_visual(const Ref<ModelVisual> &value) {
+	_model_visual = value;
 }
 
 Ref<EntityClassData> ItemTemplate::get_required_character_class() const {
@@ -539,9 +539,9 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_price", "count"), &ItemTemplate::set_price);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "price"), "set_price", "get_price");
 
-	ClassDB::bind_method(D_METHOD("get_item_visual"), &ItemTemplate::get_item_visual);
-	ClassDB::bind_method(D_METHOD("set_item_visual", "value"), &ItemTemplate::set_item_visual);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "item_visual", PROPERTY_HINT_RESOURCE_TYPE, "ItemVisual"), "set_item_visual", "get_item_visual");
+	ClassDB::bind_method(D_METHOD("get_model_visual"), &ItemTemplate::get_model_visual);
+	ClassDB::bind_method(D_METHOD("set_model_visual", "value"), &ItemTemplate::set_model_visual);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "model_visual", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisual"), "set_model_visual", "get_model_visual");
 
 	ClassDB::bind_method(D_METHOD("get_stack_size"), &ItemTemplate::get_stack_size);
 	ClassDB::bind_method(D_METHOD("set_stack_size", "value"), &ItemTemplate::set_stack_size);

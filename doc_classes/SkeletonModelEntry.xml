@@ -14,7 +14,7 @@
 		</member>
 		<member name="count" type="int" setter="set_count" getter="get_count" default="1">
 		</member>
-		<member name="entry" type="ItemVisualEntry" setter="set_entry" getter="get_entry">
+		<member name="entry" type="ModelVisualEntry" setter="set_entry" getter="get_entry">
 		</member>
 		<member name="priority" type="int" setter="set_priority" getter="get_priority" default="0">
 		</member>

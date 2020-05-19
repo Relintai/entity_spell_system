@@ -2283,13 +2283,13 @@ void Entity::_equip_applyc_item(Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!it.is_valid());
 
 #if VERSION_MAJOR < 4
-	if (it->get_item_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
+	if (it->get_model_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
 #else
-	if (it->get_item_visual().is_valid() && _character_skeleton == NULL) {
+	if (it->get_model_visual().is_valid() && _character_skeleton == NULL) {
 #endif
 
-		if (_character_skeleton->has_method("add_item_visual"))
-			_character_skeleton->call("add_item_visual", it->get_item_visual());
+		if (_character_skeleton->has_method("add_model_visual"))
+			_character_skeleton->call("add_model_visual", it->get_model_visual());
 	}
 }
 void Entity::_equip_deapplyc_item(Ref<ItemInstance> item) {
@@ -2300,13 +2300,13 @@ void Entity::_equip_deapplyc_item(Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!it.is_valid());
 
 #if VERSION_MAJOR < 4
-	if (it->get_item_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
+	if (it->get_model_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
 #else
-	if (it->get_item_visual().is_valid() && _character_skeleton == NULL) {
+	if (it->get_model_visual().is_valid() && _character_skeleton == NULL) {
 #endif
 
-		if (_character_skeleton->has_method("remove_item_visual"))
-			_character_skeleton->call("remove_item_visual", it->get_item_visual());
+		if (_character_skeleton->has_method("remove_model_visual"))
+			_character_skeleton->call("remove_model_visual", it->get_model_visual());
 	}
 }
 

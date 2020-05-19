@@ -25,7 +25,7 @@ SOFTWARE.
 
 #include "core/resource.h"
 
-#include "../items/item_visual_entry.h"
+#include "../items/model_visual_entry.h"
 
 class EntitySpeciesData;
 
