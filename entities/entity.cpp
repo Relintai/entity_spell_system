@@ -700,11 +700,11 @@ void Entity::_setup() {
 	if (_s_entity_data->get_equipment_data().is_valid()) {
 		Ref<EquipmentData> eqd = _s_entity_data->get_equipment_data();
 
-		for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+		for (int i = 0; i < ESS::get_instance()->equip_slot_get_count(); ++i) {
 			Ref<ItemInstance> ii = eqd->get_item(i);
 
 			if (ii.is_valid())
-				_s_equipment[i] = ii;
+				_s_equipment.write[i] = ii;
 		}
 	}
 
@@ -1124,7 +1124,7 @@ Dictionary Entity::_to_dict() {
 
 	Dictionary equipment;
 
-	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+	for (int i = 0; i < ESS::get_instance()->equip_slot_get_count(); ++i) {
 		Ref<ItemInstance> ii = _s_equipment[i];
 
 		if (ii.is_valid())
@@ -1311,7 +1311,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	Dictionary equipment = dict.get("equipment", Dictionary());
 
-	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+	for (int i = 0; i < ESS::get_instance()->equip_slot_get_count(); ++i) {
 		if (equipment.has(String::num(i))) {
 			Ref<ItemInstance> ii = _s_equipment[i];
 
@@ -1321,8 +1321,8 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 			ii->from_dict(dict[String::num(i)]);
 
-			_s_equipment[i] = ii;
-			_c_equipment[i] = ii;
+			_s_equipment.write[i] = ii;
+			_c_equipment.write[i] = ii;
 		}
 	}
 
@@ -2030,7 +2030,7 @@ void Entity::creceive_stat(int id, int ccurrent) {
 
 ////    Equip Slots    ////
 
-bool Entity::equip_should_deny(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
+bool Entity::equip_should_deny(int equip_slot, Ref<ItemInstance> item) {
 	if (_s_entity_data.is_valid()) {
 		if (_s_entity_data->equip_should_deny(this, equip_slot, item))
 			return true;
@@ -2050,7 +2050,7 @@ bool Entity::equip_should_deny(ItemEnums::EquipSlots equip_slot, Ref<ItemInstanc
 	return false;
 }
 
-void Entity::equip_son_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void Entity::equip_son_success(int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	if (_s_entity_data.is_valid()) {
 		_s_entity_data->equip_son_success(this, equip_slot, item, old_item, bag_slot);
 	}
@@ -2067,7 +2067,7 @@ void Entity::equip_son_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstanc
 	emit_signal("equip_son_success", this, equip_slot, item, old_item, bag_slot);
 }
 
-void Entity::equip_son_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void Entity::equip_son_fail(int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	if (_s_entity_data.is_valid()) {
 		_s_entity_data->equip_son_fail(this, equip_slot, item, old_item, bag_slot);
 	}
@@ -2084,7 +2084,7 @@ void Entity::equip_son_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> 
 	emit_signal("equip_son_fail", this, equip_slot, item, old_item, bag_slot);
 }
 
-void Entity::equip_con_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void Entity::equip_con_success(int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	if (_c_entity_data.is_valid()) {
 		_c_entity_data->equip_con_success(this, equip_slot, item, old_item, bag_slot);
 	}
@@ -2101,7 +2101,7 @@ void Entity::equip_con_success(ItemEnums::EquipSlots equip_slot, Ref<ItemInstanc
 	emit_signal("equip_con_success", this, equip_slot, item, old_item, bag_slot);
 }
 
-void Entity::equip_con_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void Entity::equip_con_fail(int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	if (_c_entity_data.is_valid()) {
 		_c_entity_data->equip_con_fail(this, equip_slot, item, old_item, bag_slot);
 	}
@@ -2118,14 +2118,14 @@ void Entity::equip_con_fail(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> 
 	emit_signal("equip_con_fail", this, equip_slot, item, old_item, bag_slot);
 }
 
-void Entity::equip_crequest(ItemEnums::EquipSlots equip_slot, int bag_slot) {
+void Entity::equip_crequest(int equip_slot, int bag_slot) {
 	RPCS(equips, equip_slot, bag_slot)
 }
-void Entity::equips(ItemEnums::EquipSlots equip_slot, int bag_slot) {
+void Entity::equips(int equip_slot, int bag_slot) {
 	call("_equips", equip_slot, bag_slot);
 }
-void Entity::_equips(ItemEnums::EquipSlots equip_slot, int bag_slot) {
-	ERR_FAIL_INDEX(equip_slot, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
+void Entity::_equips(int equip_slot, int bag_slot) {
+	ERR_FAIL_INDEX(equip_slot, ESS::get_instance()->equip_slot_get_count());
 	ERR_FAIL_COND(!_s_bag.is_valid());
 
 	Ref<ItemInstance> bag_item = _s_bag->get_item(bag_slot);
@@ -2155,8 +2155,8 @@ void Entity::_equips(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 
 	ORPC(equip_csuccess, equip_slot, bag_slot);
 }
-void Entity::equip_csuccess(ItemEnums::EquipSlots equip_slot, int bag_slot) {
-	ERR_FAIL_INDEX(equip_slot, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
+void Entity::equip_csuccess(int equip_slot, int bag_slot) {
+	ERR_FAIL_INDEX(equip_slot, ESS::get_instance()->equip_slot_get_count());
 	ERR_FAIL_COND(!_c_bag.is_valid());
 
 	Ref<ItemInstance> old_bag_item = _c_bag->get_item(bag_slot);
@@ -2173,8 +2173,8 @@ void Entity::equip_csuccess(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 
 	equip_con_success(equip_slot, old_bag_item, old_equipped_item, bag_slot);
 }
-void Entity::equip_cfail(ItemEnums::EquipSlots equip_slot, int bag_slot) {
-	ERR_FAIL_INDEX(equip_slot, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
+void Entity::equip_cfail(int equip_slot, int bag_slot) {
+	ERR_FAIL_INDEX(equip_slot, ESS::get_instance()->equip_slot_get_count());
 	ERR_FAIL_COND(!_c_bag.is_valid());
 
 	Ref<ItemInstance> bag_item = _c_bag->get_item(bag_slot);
@@ -2184,31 +2184,31 @@ void Entity::equip_cfail(ItemEnums::EquipSlots equip_slot, int bag_slot) {
 }
 
 Ref<ItemInstance> Entity::equip_gets_slot(int index) {
-	ERR_FAIL_INDEX_V(index, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX, Ref<ItemInstance>());
+	ERR_FAIL_INDEX_V(index, ESS::get_instance()->equip_slot_get_count(), Ref<ItemInstance>());
 
 	return _s_equipment[index];
 }
 void Entity::equip_sets_slot(int index, Ref<ItemInstance> item) {
-	ERR_FAIL_INDEX(index, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
+	ERR_FAIL_INDEX(index, ESS::get_instance()->equip_slot_get_count());
 
-	_s_equipment[index] = item;
+	_s_equipment.write[index] = item;
 }
 
 Ref<ItemInstance> Entity::equip_getc_slot(int index) {
-	ERR_FAIL_INDEX_V(index, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX, Ref<ItemInstance>());
+	ERR_FAIL_INDEX_V(index, ESS::get_instance()->equip_slot_get_count(), Ref<ItemInstance>());
 
 	return _c_equipment[index];
 }
 void Entity::equip_setc_slot(int index, Ref<ItemInstance> item) {
-	ERR_FAIL_INDEX(index, ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX);
+	ERR_FAIL_INDEX(index, ESS::get_instance()->equip_slot_get_count());
 
-	_c_equipment[index] = item;
+	_c_equipment.write[index] = item;
 }
 
-bool Entity::equip_can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
+bool Entity::equip_can_equip_item(int equip_slot, Ref<ItemInstance> item) {
 	return call("_equip_can_equip_item", equip_slot, item);
 }
-bool Entity::_equip_can_equip_item(ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
+bool Entity::_equip_can_equip_item(int equip_slot, Ref<ItemInstance> item) {
 	//deequip
 	if (!item.is_valid())
 		return true;
@@ -5843,6 +5843,9 @@ Entity::Entity() {
 	_s_pet_formation_index = 0;
 	_s_pet_ai_state = EntityEnums::AI_STATE_OFF;
 
+	_s_equipment.resize(ESS::get_instance()->equip_slot_get_count());
+	_c_equipment.resize(ESS::get_instance()->equip_slot_get_count());
+
 	SET_RPC_REMOTE("csend_request_rank_increase");
 	SET_RPC_REMOTE("csend_request_rank_decrease");
 
@@ -6072,10 +6075,8 @@ Entity::~Entity() {
 
 	_stats.clear();
 
-	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
-		_s_equipment[i].unref();
-		_c_equipment[i].unref();
-	}
+	_s_equipment.clear();
+	_c_equipment.clear();
 
 	_action_bar_profile.unref();
 
@@ -6425,7 +6426,7 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 
 	Dictionary equipment = dict.get("equipment", Dictionary());
 
-	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+	for (int i = 0; i < ESS::get_instance()->equip_slot_get_count(); ++i) {
 		if (equipment.has(String::num(i))) {
 			Ref<ItemInstance> ii = _s_equipment[i];
 
@@ -6694,7 +6695,7 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 
 	Dictionary equipment;
 
-	for (int i = 0; i < ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX; ++i) {
+	for (int i = 0; i < ESS::get_instance()->equip_slot_get_count(); ++i) {
 		Ref<ItemInstance> ii = _s_equipment[i];
 
 		if (ii.is_valid())
@@ -7394,7 +7395,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("equip_gets_slot", "index"), &Entity::equip_gets_slot);
 	ClassDB::bind_method(D_METHOD("equip_getc_slot", "index"), &Entity::equip_getc_slot);
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "can"), "_equip_can_equip_item", PropertyInfo(Variant::INT, "equip_slot", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_EQUIP_SLOTS), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "can"), "_equip_can_equip_item", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 
 	ClassDB::bind_method(D_METHOD("equip_can_equip_item", "equip_slot", "item"), &Entity::equip_can_equip_item);
 	ClassDB::bind_method(D_METHOD("_equip_can_equip_item", "equip_slot", "item"), &Entity::_equip_can_equip_item);

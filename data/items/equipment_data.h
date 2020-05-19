@@ -25,15 +25,15 @@ SOFTWARE.
 
 #include "core/resource.h"
 
-#include "../../item_enums.h"
-#include "equipment_data_entry.h"
+class ItemInstance;
+class ItemTemplate;
 
 class EquipmentData : public Resource {
 	GDCLASS(EquipmentData, Resource);
 
 public:
-	Ref<EquipmentDataEntry> get_slot(int index);
-	void set_slot(int index, Ref<EquipmentDataEntry> entry);
+	Ref<ItemTemplate> get_slot(int index);
+	void set_slot(int index, Ref<ItemTemplate> entry);
 
 	Ref<ItemInstance> get_item(int index);
 
@@ -41,10 +41,13 @@ public:
 	~EquipmentData();
 
 protected:
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
 	static void _bind_methods();
 
 private:
-	Ref<EquipmentDataEntry> _entries[ItemEnums::EQUIP_SLOT_EQUIP_SLOT_MAX];
+	Vector<Ref<ItemTemplate> > _entries;
 };
 
 #endif

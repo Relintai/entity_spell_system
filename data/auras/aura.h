@@ -304,13 +304,13 @@ public:
 	void notification_centity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource);
 
 	//Equipment
-	bool equip_should_deny(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item);
+	bool equip_should_deny(Ref<AuraData> data, int equip_slot, Ref<ItemInstance> item);
 
-	void equip_son_success(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
-	void equip_son_fail(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void equip_son_success(Ref<AuraData> data, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void equip_son_fail(Ref<AuraData> data, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 
-	void equip_con_success(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
-	void equip_con_fail(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void equip_con_success(Ref<AuraData> data, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
+	void equip_con_fail(Ref<AuraData> data, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot);
 
 	//Calculations / Queries
 	void setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);

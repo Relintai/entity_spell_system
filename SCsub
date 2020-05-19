@@ -24,7 +24,6 @@ sources = [
     "data/items/item_instance.cpp",
     "data/items/item_template.cpp",
     "data/items/equipment_data.cpp",
-    "data/items/equipment_data_entry.cpp",
     "data/items/craft_recipe_helper.cpp",
     "data/items/craft_recipe.cpp",
     "data/items/item_visual.cpp",

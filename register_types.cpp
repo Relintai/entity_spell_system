@@ -33,7 +33,6 @@ SOFTWARE.
 
 #include "data/entities/xp_data.h"
 #include "data/items/equipment_data.h"
-#include "data/items/equipment_data_entry.h"
 #include "data/items/item_stat_modifier.h"
 #include "data/items/item_template_stat_modifier.h"
 #include "data/spells/spell_cooldown_manipulation_data.h"
@@ -178,7 +177,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<TalentRowData>();
 
 	ClassDB::register_class<EquipmentData>();
-	ClassDB::register_class<EquipmentDataEntry>();
 
 	ClassDB::register_class<EntitySkill>();
 	ClassDB::register_class<EntitySkillData>();

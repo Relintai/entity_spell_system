@@ -306,6 +306,114 @@ void ESS::stat_set_main_stat_count(const int index) {
 	_stat_main_stat_count = index;
 }
 
+//Equipslots
+void ESS::equip_slot_set_string(const String &equip_slot_enum_string) {
+	_equip_slot_id_to_name.clear();
+	_equip_slot_name_to_id.clear();
+
+	_equip_slot_id_to_property.clear();
+	_equip_slot_property_to_id.clear();
+
+	int slicec = equip_slot_enum_string.get_slice_count(",");
+	_equip_slot_id_to_name.resize(slicec);
+	_equip_slot_id_to_property.resize(slicec);
+
+	for (int i = 0; i < slicec; ++i) {
+		String slice = equip_slot_enum_string.get_slicec(',', i);
+		StringName s = StringName(slice);
+
+		_equip_slot_id_to_name.set(i, s);
+		_equip_slot_name_to_id.set(s, i);
+
+		String st = slice;
+		st = st.to_lower();
+		st = st.replace(" ", "_");
+		StringName stp = StringName(st);
+
+		_equip_slot_id_to_property.set(i, stp);
+		_equip_slot_property_to_id.set(stp, i);
+	}
+
+	_equip_slot_enum_string = equip_slot_enum_string + ",None";
+}
+String ESS::equip_slot_get_string() const {
+	return _equip_slot_enum_string;
+}
+
+int ESS::equip_slot_get_id(const StringName &name) const {
+	ERR_FAIL_COND_V(!_equip_slot_name_to_id.has(name), 0);
+
+	return _equip_slot_name_to_id[name];
+}
+StringName ESS::equip_slot_get_name(const int id) const {
+	ERR_FAIL_INDEX_V(id, _equip_slot_id_to_name.size(), StringName());
+
+	return _equip_slot_id_to_name[id];
+}
+
+int ESS::equip_slot_get_property_id(const StringName &name) const {
+	ERR_FAIL_COND_V(!_equip_slot_property_to_id.has(name), 0);
+
+	return _equip_slot_property_to_id[name];
+}
+StringName ESS::equip_slot_get_property_name(const int id) const {
+	ERR_FAIL_INDEX_V(id, _equip_slot_id_to_property.size(), StringName());
+
+	return _equip_slot_id_to_property[id];
+}
+bool ESS::equip_slot_is_property(const StringName &name) const {
+	return _equip_slot_property_to_id.has(name);
+}
+
+int ESS::equip_slot_get_count() const {
+	return _equip_slot_id_to_name.size();
+}
+
+PoolStringArray ESS::equip_slots_get() const {
+	PoolStringArray arr;
+	arr.resize(_equip_slot_id_to_name.size());
+
+	for (int i = 0; i < _equip_slot_id_to_name.size(); ++i) {
+		arr.set(i, _equip_slot_id_to_name[i]);
+	}
+
+	return arr;
+}
+
+void ESS::equip_slots_set(const PoolStringArray &array) {
+	_equip_slot_enum_string = "";
+
+	_equip_slot_id_to_name.clear();
+	_equip_slot_name_to_id.clear();
+
+	_equip_slot_id_to_property.clear();
+	_equip_slot_property_to_id.clear();
+
+	_equip_slot_id_to_name.resize(array.size());
+	_equip_slot_id_to_property.resize(array.size());
+
+	if (array.size() > 0)
+		_equip_slot_enum_string += array[0];
+
+	for (int i = 0; i < array.size(); ++i) {
+		StringName s = StringName(array[i]);
+
+		_equip_slot_id_to_name.set(i, s);
+		_equip_slot_name_to_id.set(s, i);
+
+		String st = array[i];
+		st = st.to_lower();
+		st = st.replace(" ", "_");
+		StringName stp = StringName(st);
+
+		_equip_slot_id_to_property.set(i, stp);
+		_equip_slot_property_to_id.set(stp, i);
+
+		_equip_slot_enum_string += ",";
+		_equip_slot_enum_string += array[i];
+	}
+}
+
 void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_use_spell_points"), &ESS::get_use_spell_points);
 	ClassDB::bind_method(D_METHOD("set_use_spell_points", "value"), &ESS::set_use_spell_points);
@@ -397,6 +505,24 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("stat_get_main_stat_count"), &ESS::stat_get_main_stat_count);
 	ClassDB::bind_method(D_METHOD("stat_set_main_stat_count", "index"), &ESS::stat_set_main_stat_count);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "main_stat_count"), "stat_set_main_stat_count", "stat_get_main_stat_count");
+
+	//Equipslots
+	ClassDB::bind_method(D_METHOD("equip_slot_get_string"), &ESS::equip_slot_get_string);
+	ClassDB::bind_method(D_METHOD("equip_slot_set_string", "equip_slot_enum_string"), &ESS::equip_slot_set_string);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "equip_slot_string"), "equip_slot_set_string", "equip_slot_get_string");
+
+	ClassDB::bind_method(D_METHOD("equip_slot_get_id", "name"), &ESS::equip_slot_get_id);
+	ClassDB::bind_method(D_METHOD("equip_slot_get_name", "id"), &ESS::equip_slot_get_name);
+
+	ClassDB::bind_method(D_METHOD("equip_slot_get_property_id", "name"), &ESS::equip_slot_get_property_id);
+	ClassDB::bind_method(D_METHOD("equip_slot_get_property_name", "id"), &ESS::equip_slot_get_property_name);
+	ClassDB::bind_method(D_METHOD("equip_slot_is_property", "name"), &ESS::equip_slot_is_property);
+
+	ClassDB::bind_method(D_METHOD("equip_slot_get_count"), &ESS::equip_slot_get_count);
+
+	ClassDB::bind_method(D_METHOD("equip_slots_get"), &ESS::equip_slots_get);
+	ClassDB::bind_method(D_METHOD("equip_slots_set", "array"), &ESS::equip_slots_set);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "equip_slots"), "equip_slots_set", "equip_slots_get");
 }
 
 ESS::ESS() {
@@ -422,6 +548,8 @@ ESS::ESS() {
 	stat_set_string(GLOBAL_DEF("ess/enums/stats", "Agility,Strength,Stamina,Intellect,Spirit,Health,Speed,Global Cooldown,Haste"));
 	_stat_main_stat_count = GLOBAL_DEF("ess/enums/main_stat_count", 5);
 
+	equip_slot_set_string(GLOBAL_DEF("ess/enums/equip_slots", "Head,Neck,Shoulder,Chest,Gloves,Belt,Legs,Feet,Ring_1,Ring_2,Trinket_1,Trinket_2,Main_Hand,Off_Hand"));
+
 	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load) {
 		call_deferred("load_all");
 	}
@@ -438,4 +566,10 @@ ESS::~ESS() {
 
 	_stat_id_to_property.clear();
 	_stat_property_to_id.clear();
+
+	_equip_slot_id_to_name.clear();
+	_equip_slot_name_to_id.clear();
+
+	_equip_slot_id_to_property.clear();
+	_equip_slot_property_to_id.clear();
 }

@@ -58,8 +58,8 @@ public:
 	ItemEnums::ArmorType get_armor_type() const;
 	void set_armor_type(const ItemEnums::ArmorType value);
 
-	ItemEnums::EquipSlots get_equip_slot() const;
-	void set_equip_slot(const ItemEnums::EquipSlots value);
+	int get_equip_slot() const;
+	void set_equip_slot(const int value);
 
 	Ref<ItemVisual> get_item_visual() const;
 	void set_item_visual(const Ref<ItemVisual> &value);
@@ -195,7 +195,7 @@ private:
 	ItemEnums::ItemSubtype _item_sub_type;
 	ItemEnums::ItemSubSubtype _item_sub_sub_type;
 	ItemEnums::ArmorType _armor_type;
-	ItemEnums::EquipSlots _equip_slot;
+	int _equip_slot;
 
 	int _price;
 

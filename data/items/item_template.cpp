@@ -73,10 +73,10 @@ void ItemTemplate::set_armor_type(const ItemEnums::ArmorType value) {
 	_armor_type = value;
 }
 
-ItemEnums::EquipSlots ItemTemplate::get_equip_slot() const {
+int ItemTemplate::get_equip_slot() const {
 	return _equip_slot;
 }
-void ItemTemplate::set_equip_slot(const ItemEnums::EquipSlots value) {
+void ItemTemplate::set_equip_slot(const int value) {
 	_equip_slot = value;
 }
 
@@ -461,7 +461,7 @@ ItemTemplate::ItemTemplate() {
 	_item_sub_sub_type = ItemEnums::ITEM_SUB_SUB_TYPE_NONE;
 	_rarity = ItemEnums::ITEM_RARITY_NONE;
 	_armor_type = ItemEnums::ARMOR_TYPE_NONE;
-	_equip_slot = ItemEnums::EQUIP_SLOT_NONE;
+	_equip_slot = ESS::get_instance()->equip_slot_get_count();
 	_price = 0;
 
 	_scale_x = 0;
@@ -497,6 +497,8 @@ void ItemTemplate::_validate_property(PropertyInfo &property) const {
 
 		if (property.name.ends_with("stat_id"))
 			property.hint_string = ESS::get_instance()->stat_get_string();
+	} else if (prop == "equip_slot") {
+		property.hint_string = ESS::get_instance()->equip_slot_get_string();
 	}
 }
 
@@ -531,7 +533,7 @@ void ItemTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_equip_slot"), &ItemTemplate::get_equip_slot);
 	ClassDB::bind_method(D_METHOD("set_equip_slot", "count"), &ItemTemplate::set_equip_slot);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "equip_slot", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_EQUIP_SLOTS), "set_equip_slot", "get_equip_slot");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "equip_slot", PROPERTY_HINT_ENUM, ""), "set_equip_slot", "get_equip_slot");
 
 	ClassDB::bind_method(D_METHOD("get_price"), &ItemTemplate::get_price);
 	ClassDB::bind_method(D_METHOD("set_price", "count"), &ItemTemplate::set_price);

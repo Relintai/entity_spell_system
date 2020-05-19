@@ -126,6 +126,22 @@ public:
 	int stat_get_main_stat_count() const;
 	void stat_set_main_stat_count(const int index);
 
+	//Equipslots
+	String equip_slot_get_string() const;
+	void equip_slot_set_string(const String &equip_slot_enum_string);
+
+	int equip_slot_get_id(const StringName &name) const;
+	StringName equip_slot_get_name(const int id) const;
+
+	int equip_slot_get_property_id(const StringName &name) const;
+	StringName equip_slot_get_property_name(const int id) const;
+	bool equip_slot_is_property(const StringName &name) const;
+
+	int equip_slot_get_count() const;
+
+	PoolStringArray equip_slots_get() const;
+	void equip_slots_set(const PoolStringArray &array);
+
 	ESS();
 	~ESS();
 
@@ -162,6 +178,15 @@ private:
 
 	String _stat_enum_string;
 	int _stat_main_stat_count;
+
+	//Equipslots
+	Vector<StringName> _equip_slot_id_to_name;
+	HashMap<StringName, int> _equip_slot_name_to_id;
+
+	Vector<StringName> _equip_slot_id_to_property;
+	HashMap<StringName, int> _equip_slot_property_to_id;
+
+	String _equip_slot_enum_string;
 };
 
 #endif

@@ -21,7 +21,6 @@ def get_doc_classes():
         "Aura",
         "CraftRecipeHelper",
         "CraftRecipe",
-        "EquipmentDataEntry",
         "EquipmentData",
         "ItemInstance",
         "ItemStatModifier",

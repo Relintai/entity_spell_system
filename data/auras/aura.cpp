@@ -799,7 +799,7 @@ void Aura::notification_centity_resource_removed(Ref<AuraData> data, Ref<EntityR
 
 //Equipment
 
-bool Aura::equip_should_deny(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item) {
+bool Aura::equip_should_deny(Ref<AuraData> data, int equip_slot, Ref<ItemInstance> item) {
 	ERR_FAIL_COND_V(!data.is_valid(), false);
 
 	if (has_method("_equip_should_deny"))
@@ -809,26 +809,26 @@ bool Aura::equip_should_deny(Ref<AuraData> data, ItemEnums::EquipSlots equip_slo
 	return false;
 }
 
-void Aura::equip_son_success(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void Aura::equip_son_success(Ref<AuraData> data, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	ERR_FAIL_COND(!data.is_valid());
 
 	if (has_method("_equip_son_success"))
 		call("_equip_son_success", data, equip_slot, item, old_item, bag_slot);
 }
-void Aura::equip_son_fail(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void Aura::equip_son_fail(Ref<AuraData> data, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	ERR_FAIL_COND(!data.is_valid());
 
 	if (has_method("_equip_son_fail"))
 		call("_equip_son_fail", data, equip_slot, item, old_item, bag_slot);
 }
 
-void Aura::equip_con_success(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void Aura::equip_con_success(Ref<AuraData> data, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	ERR_FAIL_COND(!data.is_valid());
 
 	if (has_method("_equip_con_success"))
 		call("_equip_con_success", data, equip_slot, item, old_item, bag_slot);
 }
-void Aura::equip_con_fail(Ref<AuraData> data, ItemEnums::EquipSlots equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+void Aura::equip_con_fail(Ref<AuraData> data, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
 	ERR_FAIL_COND(!data.is_valid());
 
 	if (has_method("_equip_con_fail"))
