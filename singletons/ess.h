@@ -187,6 +187,10 @@ private:
 	HashMap<StringName, int> _equip_slot_property_to_id;
 
 	String _equip_slot_enum_string;
+
+	//Entity Types
+	String _entity_types;
+	PoolStringArray _entity_type_skeletons;
 };
 
 #endif
