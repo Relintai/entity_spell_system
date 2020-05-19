@@ -25,16 +25,16 @@ SOFTWARE.
 #include "../../singletons/ess.h"
 
 int ComplexLevelStatData::get_stat_for_level(int main_stat, int level) {
-	ERR_FAIL_INDEX_V(level, EntityEnums::MAX_CHARACTER_LEVEL, 0);
+	ERR_FAIL_INDEX_V(level, ESS::get_instance()->get_max_character_level(), 0);
 	ERR_FAIL_INDEX_V(main_stat, ESS::get_instance()->stat_get_main_stat_count(), 0);
 
 	return _stat_per_level[level][main_stat];
 }
 void ComplexLevelStatData::set_stat_for_level(int main_stat, int level, int value) {
-	ERR_FAIL_INDEX(level, EntityEnums::MAX_CHARACTER_LEVEL);
+	ERR_FAIL_INDEX(level, ESS::get_instance()->get_max_character_level());
 	ERR_FAIL_INDEX(main_stat, ESS::get_instance()->stat_get_main_stat_count());
 
-	_stat_per_level[level].set(main_stat, value);
+	_stat_per_level.write[level].set(main_stat, value);
 }
 
 int ComplexLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_level) {
@@ -48,20 +48,22 @@ int ComplexLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_l
 }
 
 ComplexLevelStatData::ComplexLevelStatData() {
+	_stat_per_level.resize(ESS::get_instance()->get_max_character_level());
+
 	int msc = ESS::get_instance()->stat_get_main_stat_count();
 
-	for (int i = 0; i < EntityEnums::MAX_CHARACTER_LEVEL; ++i) {
-		_stat_per_level[i].resize(msc);
+	for (int i = 0; i < ESS::get_instance()->get_max_character_level(); ++i) {
+		_stat_per_level.write[i].resize(msc);
 
 		for (int j = 0; j < msc; ++j) {
-			_stat_per_level[i].set(j, 0);
+			_stat_per_level.write[i].set(j, 0);
 		}
 	}
 }
 
 ComplexLevelStatData::~ComplexLevelStatData() {
-	for (int i = 0; i < EntityEnums::MAX_CHARACTER_LEVEL; ++i) {
-		_stat_per_level[i].clear();
+	for (int i = 0; i < ESS::get_instance()->get_max_character_level(); ++i) {
+		_stat_per_level.write[i].clear();
 	}
 }
 
@@ -72,7 +74,7 @@ bool ComplexLevelStatData::_set(const StringName &p_name, const Variant &p_value
 		String level_prop = prop_name.get_slice("/", 0);
 		int level = level_prop.get_slice("_", 1).to_int();
 
-		if (level >= EntityEnums::MAX_CHARACTER_LEVEL)
+		if (level >= ESS::get_instance()->get_max_character_level())
 			return false;
 
 		String prop = prop_name.get_slice("/", 1);
@@ -84,7 +86,7 @@ bool ComplexLevelStatData::_set(const StringName &p_name, const Variant &p_value
 				return false;
 			}
 
-			_stat_per_level[level].set(stat_id, p_value);
+			_stat_per_level.write[level].set(stat_id, p_value);
 
 			return true;
 		} else {
@@ -102,7 +104,7 @@ bool ComplexLevelStatData::_get(const StringName &p_name, Variant &r_ret) const 
 		String level_prop = prop_name.get_slice("/", 0);
 		int level = level_prop.get_slice("_", 1).to_int();
 
-		if (level >= EntityEnums::MAX_CHARACTER_LEVEL)
+		if (level >= ESS::get_instance()->get_max_character_level())
 			return false;
 
 		String prop = prop_name.get_slice("/", 1);
@@ -131,7 +133,7 @@ void ComplexLevelStatData::_get_property_list(List<PropertyInfo> *p_list) const 
 
 	int msc = ESS::get_instance()->stat_get_main_stat_count();
 
-	for (int i = 0; i < EntityEnums::MAX_CHARACTER_LEVEL; ++i) {
+	for (int i = 0; i < ESS::get_instance()->get_max_character_level(); ++i) {
 		for (int j = 0; j < msc; ++j) {
 			p_list->push_back(PropertyInfo(Variant::INT, "level_" + String::num(i + 1) + "/" + ESS::get_instance()->stat_get_property_name(j), PROPERTY_HINT_NONE, "", property_usange));
 		}

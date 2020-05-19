@@ -78,6 +78,12 @@ public:
 	bool get_allow_class_recipe_learning() const;
 	void set_allow_class_recipe_learning(const bool value);
 
+	int get_max_character_level() const;
+	void set_max_character_level(const int value);
+
+	int get_max_class_level() const;
+	void set_max_class_level(const int value);
+
 	Ref<ESSResourceDB> get_resource_db();
 	void set_resource_db(const Ref<ESSResourceDB> &resource_db);
 
@@ -144,6 +150,8 @@ private:
 	bool _use_class_xp;
 	bool _allow_class_spell_learning;
 	bool _allow_class_recipe_learning;
+	int _max_character_level;
+	int _max_class_level;
 
 	//Stats
 	Vector<StringName> _stat_id_to_name;

@@ -2764,7 +2764,7 @@ void Entity::levelup_sclass(int value) {
 	if (value <= 0)
 		return;
 
-	if (_s_class_level == EntityEnums::MAX_CLASS_LEVEL)
+	if (_s_class_level == ESS::get_instance()->get_max_class_level())
 		return;
 
 	_s_class_level += value;
@@ -2783,7 +2783,7 @@ void Entity::levelup_scharacter(int value) {
 	if (value <= 0)
 		return;
 
-	if (_s_character_level == EntityEnums::MAX_CHARACTER_LEVEL)
+	if (_s_character_level == ESS::get_instance()->get_max_character_level())
 		return;
 
 	_s_character_level += value;
@@ -3949,17 +3949,17 @@ void Entity::cast_spell_successc(Ref<SpellCastInfo> info) {
 }
 
 ////    Cooldowns    ////
-Vector<Ref<Cooldown>> *Entity::cooldowns_gets() {
+Vector<Ref<Cooldown> > *Entity::cooldowns_gets() {
 	return &_s_cooldowns;
 }
-Vector<Ref<Cooldown>> *Entity::cooldowns_getc() {
+Vector<Ref<Cooldown> > *Entity::cooldowns_getc() {
 	return &_c_cooldowns;
 }
 
-HashMap<int, Ref<Cooldown>> *Entity::cooldown_get_maps() {
+HashMap<int, Ref<Cooldown> > *Entity::cooldown_get_maps() {
 	return &_s_cooldown_map;
 }
-HashMap<int, Ref<Cooldown>> *Entity::cooldown_get_mapc() {
+HashMap<int, Ref<Cooldown> > *Entity::cooldown_get_mapc() {
 	return &_c_cooldown_map;
 }
 
@@ -4103,10 +4103,10 @@ int Entity::cooldown_getc_count() {
 }
 
 //Category Cooldowns
-Vector<Ref<CategoryCooldown>> Entity::category_cooldowns_gets() {
+Vector<Ref<CategoryCooldown> > Entity::category_cooldowns_gets() {
 	return _s_category_cooldowns;
 }
-Vector<Ref<CategoryCooldown>> Entity::category_cooldowns_getc() {
+Vector<Ref<CategoryCooldown> > Entity::category_cooldowns_getc() {
 	return _c_category_cooldowns;
 }
 

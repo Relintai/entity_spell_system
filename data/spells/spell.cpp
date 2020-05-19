@@ -804,13 +804,13 @@ String Spell::_get_description(const int class_level, const int character_level)
 
 			if (valid) {
 				if (o == '#') {
-					value = Variant::evaluate(Variant::OP_MULTIPLY, value, class_level / static_cast<float>(EntityEnums::MAX_CLASS_LEVEL));
+					value = Variant::evaluate(Variant::OP_MULTIPLY, value, class_level / static_cast<float>(ESS::get_instance()->get_max_class_level()));
 
 					value = static_cast<int>(value);
 				}
 
 				if (o == '$') {
-					value = Variant::evaluate(Variant::OP_MULTIPLY, value, character_level / static_cast<float>(EntityEnums::MAX_CHARACTER_LEVEL));
+					value = Variant::evaluate(Variant::OP_MULTIPLY, value, character_level / static_cast<float>(ESS::get_instance()->get_max_character_level()));
 
 					value = static_cast<int>(value);
 				}

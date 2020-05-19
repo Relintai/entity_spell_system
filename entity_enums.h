@@ -277,8 +277,6 @@ public:
 
 	enum {
 		GENDER_COUNT = 2,
-		MAX_CHARACTER_LEVEL = 20,
-		MAX_CLASS_LEVEL = 60,
 		BASE_XP = 50,
 	};
 

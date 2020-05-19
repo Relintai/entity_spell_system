@@ -88,6 +88,20 @@ void ESS::set_allow_class_recipe_learning(const bool value) {
 	_allow_class_recipe_learning = value;
 }
 
+int ESS::get_max_character_level() const {
+	return _max_character_level;
+}
+void ESS::set_max_character_level(const int value) {
+	_max_character_level = value;
+}
+
+int ESS::get_max_class_level() const {
+	return _max_class_level;
+}
+void ESS::set_max_class_level(const int value) {
+	_max_class_level = value;
+}
+
 Ref<ESSResourceDB> ESS::get_resource_db() {
 	return _ess_resource_db;
 }
@@ -325,6 +339,14 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_allow_class_recipe_learning", "value"), &ESS::set_allow_class_recipe_learning);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_class_recipe_learning"), "set_allow_class_recipe_learning", "get_allow_class_recipe_learning");
 
+	ClassDB::bind_method(D_METHOD("get_max_character_level"), &ESS::get_max_character_level);
+	ClassDB::bind_method(D_METHOD("set_max_character_level", "value"), &ESS::set_max_character_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_character_level"), "set_max_character_level", "get_max_character_level");
+
+	ClassDB::bind_method(D_METHOD("get_max_class_level"), &ESS::get_max_class_level);
+	ClassDB::bind_method(D_METHOD("set_max_class_level", "value"), &ESS::set_max_class_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_class_level"), "set_max_class_level", "get_max_class_level");
+
 	ClassDB::bind_method(D_METHOD("get_resource_db"), &ESS::get_resource_db);
 	ClassDB::bind_method(D_METHOD("set_resource_db"), &ESS::set_resource_db);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_db", PROPERTY_HINT_RESOURCE_TYPE, "ESSResourceDB"), "set_resource_db", "get_resource_db");
@@ -388,6 +410,9 @@ ESS::ESS() {
 	_use_class_xp = GLOBAL_DEF("ess/level/use_class_xp", false);
 	_automatic_class_levelups = GLOBAL_DEF("ess/level/automatic_class_levelups", false);
 	_use_global_class_level = GLOBAL_DEF("ess/level/use_global_class_level", false);
+
+	_max_character_level = GLOBAL_DEF("ess/level/max_character_level", 20);
+	_max_class_level = GLOBAL_DEF("ess/level/max_class_level", 40);
 
 	_automatic_load = GLOBAL_DEF("ess/data/automatic_load", false);
 

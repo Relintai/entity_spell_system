@@ -47,7 +47,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	Vector<int> _stat_per_level[EntityEnums::MAX_CHARACTER_LEVEL];
+	Vector<Vector<int> > _stat_per_level;
 };
 
 #endif
