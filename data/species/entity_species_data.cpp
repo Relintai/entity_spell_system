@@ -34,10 +34,10 @@ void EntitySpeciesData::set_id(const int value) {
 	_id = value;
 }
 
-EntityEnums::EntityType EntitySpeciesData::get_type() const {
+int EntitySpeciesData::get_type() const {
 	return _type;
 }
-void EntitySpeciesData::set_type(const EntityEnums::EntityType value) {
+void EntitySpeciesData::set_type(const int value) {
 	_type = value;
 }
 
@@ -155,13 +155,19 @@ String EntitySpeciesData::generate_name(int seed) {
 
 EntitySpeciesData::EntitySpeciesData() {
 	_id = 0;
-	_type = EntityEnums::ENITIY_TYPE_NONE;
+	_type = 0;
 }
 EntitySpeciesData::~EntitySpeciesData() {
 	_model_data.unref();
 
 	_spells.clear();
 	_auras.clear();
+}
+
+void EntitySpeciesData::_validate_property(PropertyInfo &property) const {
+	if (property.name == "type") {
+		property.hint_string = ESS::get_instance()->entity_types_get();
+	}
 }
 
 void EntitySpeciesData::_bind_methods() {
@@ -175,7 +181,7 @@ void EntitySpeciesData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_type"), &EntitySpeciesData::get_type);
 	ClassDB::bind_method(D_METHOD("set_type", "value"), &EntitySpeciesData::set_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "set_type", "get_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "type", PROPERTY_HINT_ENUM, ""), "set_type", "get_type");
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 

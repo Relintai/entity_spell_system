@@ -183,19 +183,19 @@ void Entity::setc_entity_player_type(int value) {
 }
 
 //EntityType
-EntityEnums::EntityType Entity::gets_entity_type() {
+int Entity::gets_entity_type() {
 	return _s_entity_type;
 }
-void Entity::sets_entity_type(EntityEnums::EntityType value) {
+void Entity::sets_entity_type(int value) {
 	_s_entity_type = value;
 
 	VRPC(setc_entity_type, value);
 }
 
-EntityEnums::EntityType Entity::getc_entity_type() {
+int Entity::getc_entity_type() {
 	return _c_entity_type;
 }
-void Entity::setc_entity_type(EntityEnums::EntityType value) {
+void Entity::setc_entity_type(int value) {
 	_c_entity_type = value;
 }
 
@@ -1267,7 +1267,7 @@ Dictionary Entity::_to_dict() {
 void Entity::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
-	sets_entity_type((EntityEnums::EntityType)((int)dict.get("type", 0)));
+	sets_entity_type((int)((int)dict.get("type", 0)));
 
 	sets_gender(static_cast<EntityEnums::EntityGender>(static_cast<int>(dict.get("gender", 0))));
 
@@ -1394,7 +1394,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 		//_c_auras.push_back(r);
 	}
 
-	sets_entity_type((EntityEnums::EntityType)((int)dict.get("entity_type", 0)));
+	sets_entity_type((int)((int)dict.get("entity_type", 0)));
 	sets_immunity_flags(dict.get("immunity_flags", 0));
 	sets_entity_flags(dict.get("entity_flags", 0));
 	EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
@@ -5809,8 +5809,8 @@ Entity::Entity() {
 	_s_active_category_cooldowns = 0;
 	_c_active_category_cooldowns = 0;
 
-	_s_entity_type = EntityEnums::ENITIY_TYPE_NONE;
-	_c_entity_type = EntityEnums::ENITIY_TYPE_NONE;
+	_s_entity_type = 0;
+	_c_entity_type = 0;
 
 	_s_immunity_flags = 0;
 
@@ -6401,7 +6401,7 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 	return true;
 
 	/*
-	sets_entity_type((EntityEnums::EntityType)((int)dict.get("type", 0)));
+	sets_entity_type((int)((int)dict.get("type", 0)));
 
 	sets_gender(static_cast<EntityEnums::EntityGender>(static_cast<int>(dict.get("gender", 0))));
 
@@ -6501,7 +6501,7 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 		//_c_auras.push_back(r);
 	}
 
-	sets_entity_type((EntityEnums::EntityType)((int)dict.get("entity_type", 0)));
+	sets_entity_type((int)((int)dict.get("entity_type", 0)));
 	sets_immunity_flags(dict.get("immunity_flags", 0));
 	sets_entity_flags(dict.get("entity_flags", 0));
 	EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
@@ -6844,6 +6844,14 @@ void Entity::_get_property_list(List<PropertyInfo> *p_list) const {
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/base", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/percent", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/scurrent", PROPERTY_HINT_NONE, "", property_usange));
+	}
+}
+
+void Entity::_validate_property(PropertyInfo &property) const {
+	String name = property.name;
+
+	if (name == "sentity_player_type" || name == "centity_player_type") {
+		property.hint_string = ESS::get_instance()->entity_types_get();
 	}
 }
 
@@ -7247,11 +7255,11 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_entity_type"), &Entity::gets_entity_type);
 	ClassDB::bind_method(D_METHOD("sets_entity_type", "value"), &Entity::sets_entity_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "sets_entity_type", "gets_entity_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_type", PROPERTY_HINT_ENUM, ""), "sets_entity_type", "gets_entity_type");
 
 	ClassDB::bind_method(D_METHOD("getc_entity_type"), &Entity::getc_entity_type);
 	ClassDB::bind_method(D_METHOD("setc_entity_type", "value"), &Entity::sets_entity_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES, 0), "setc_entity_type", "getc_entity_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_type", PROPERTY_HINT_ENUM, "", 0), "setc_entity_type", "getc_entity_type");
 
 	ClassDB::bind_method(D_METHOD("gets_ai_state"), &Entity::gets_ai_state);
 	ClassDB::bind_method(D_METHOD("sets_ai_state", "value"), &Entity::sets_ai_state);

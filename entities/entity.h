@@ -268,11 +268,11 @@ public:
 	void setc_entity_player_type(int value);
 
 	//EntityType
-	EntityEnums::EntityType gets_entity_type();
-	void sets_entity_type(EntityEnums::EntityType value);
+	int gets_entity_type();
+	void sets_entity_type(int value);
 
-	EntityEnums::EntityType getc_entity_type();
-	void setc_entity_type(EntityEnums::EntityType value);
+	int getc_entity_type();
+	void setc_entity_type(int value);
 
 	//Relations
 	EntityEnums::EntityRelationType gets_relation_to_bind(Node *to);
@@ -1047,6 +1047,7 @@ protected:
 	bool _set(const StringName &p_name, const Variant &p_value);
 	bool _get(const StringName &p_name, Variant &r_ret) const;
 	void _get_property_list(List<PropertyInfo> *p_list) const;
+	void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 	virtual void _notification(int p_what);
 
@@ -1158,8 +1159,8 @@ private:
 	Vector<Ref<AuraData> > _s_auras;
 	Vector<Ref<AuraData> > _c_auras;
 
-	EntityEnums::EntityType _s_entity_type;
-	EntityEnums::EntityType _c_entity_type;
+	int _s_entity_type;
+	int _c_entity_type;
 
 	int _s_immunity_flags;
 

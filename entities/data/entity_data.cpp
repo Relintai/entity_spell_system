@@ -53,10 +53,10 @@ void EntityData::set_inherits(const Ref<EntityData> &value) {
 	_inherits = value;
 }
 
-EntityEnums::EntityType EntityData::get_entity_type() const {
+int EntityData::get_entity_type() const {
 	return _entity_type;
 }
-void EntityData::set_entity_type(const EntityEnums::EntityType value) {
+void EntityData::set_entity_type(const int value) {
 	_entity_type = value;
 }
 
@@ -885,7 +885,7 @@ EntityData::EntityData() {
 	_bag_size = 0;
 	_is_playable = false;
 
-	_entity_type = EntityEnums::ENITIY_TYPE_NONE;
+	_entity_type = 0;
 	_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
 	_immunity_flags = 0;
 	_entity_flags = 0;
@@ -907,6 +907,12 @@ EntityData::~EntityData() {
 	_item_container_data.unref();
 
 	_craft_recipes.clear();
+}
+
+void EntityData::_validate_property(PropertyInfo &property) const {
+	if (property.name == "entity_type") {
+		property.hint_string = ESS::get_instance()->entity_types_get();
+	}
 }
 
 void EntityData::_bind_methods() {
@@ -1038,7 +1044,7 @@ void EntityData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_entity_type"), &EntityData::get_entity_type);
 	ClassDB::bind_method(D_METHOD("set_entity_type", "value"), &EntityData::set_entity_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_TYPES), "set_entity_type", "get_entity_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_type", PROPERTY_HINT_ENUM, ""), "set_entity_type", "get_entity_type");
 
 	ClassDB::bind_method(D_METHOD("get_entity_interaction_type"), &EntityData::get_entity_interaction_type);
 	ClassDB::bind_method(D_METHOD("set_entity_interaction_type", "value"), &EntityData::set_entity_interaction_type);

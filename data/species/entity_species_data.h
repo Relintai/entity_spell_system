@@ -41,8 +41,8 @@ public:
 	int get_id() const;
 	void set_id(const int value);
 
-	EntityEnums::EntityType get_type() const;
-	void set_type(const EntityEnums::EntityType value);
+	int get_type() const;
+	void set_type(const int value);
 
 	String get_text_description() const;
 	void set_text_description(const String &value);
@@ -78,11 +78,12 @@ public:
 	~EntitySpeciesData();
 
 protected:
+	void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 
 private:
 	int _id;
-	EntityEnums::EntityType _type;
+	int _type;
 	String _text_description;
 
 	Ref<SpeciesModelData> _model_data;

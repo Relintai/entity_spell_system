@@ -73,8 +73,8 @@ public:
 	Ref<EntityData> get_inherits() const;
 	void set_inherits(const Ref<EntityData> &value);
 
-	EntityEnums::EntityType get_entity_type() const;
-	void set_entity_type(const EntityEnums::EntityType value);
+	int get_entity_type() const;
+	void set_entity_type(const int value);
 
 	EntityEnums::EntityInteractionType get_entity_interaction_type() const;
 	void set_entity_interaction_type(const EntityEnums::EntityInteractionType value);
@@ -231,6 +231,7 @@ public:
 	~EntityData();
 
 protected:
+	void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 
 private:
@@ -238,7 +239,7 @@ private:
 
 	Ref<EntityData> _inherits;
 
-	EntityEnums::EntityType _entity_type;
+	int _entity_type;
 
 	EntityEnums::EntityInteractionType _interaction_type;
 

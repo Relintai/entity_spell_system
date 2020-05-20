@@ -31,7 +31,6 @@ class EntityEnums : public Object {
 
 public:
 	static const String BINDING_STRING_ENTITY_PLAYER_TYPES;
-	static const String BINDING_STRING_ENTITY_TYPES;
 	static const String BINDING_STRING_ENTITY_CONTOLLER;
 	static const String BINDING_STRING_ENTITY_FLAGS;
 	static const String BINDING_STRING_ENTITY_STATE_TYPES;
@@ -52,23 +51,6 @@ public:
 		ENTITY_PLAYER_TYPE_NETWORKED,
 		ENTITY_PLAYER_TYPE_AI,
 		ENTITY_PLAYER_TYPE_DISPLAY,
-	};
-
-	enum EntityType {
-		ENITIY_TYPE_NONE,
-		ENITIY_TYPE_CREATURE,
-		ENITIY_TYPE_TOTEM,
-		ENITIY_TYPE_IDOL,
-		ENITIY_TYPE_HUMANOID,
-		ENITIY_TYPE_MECHANICAL,
-		ENITIY_TYPE_BEAST,
-		ENITIY_TYPE_DRAGONKIN,
-		ENITIY_TYPE_ELEMENTAL,
-		ENITIY_TYPE_GHOST,
-		ENITIY_TYPE_ENERGY,
-		ENITIY_TYPE_ANOMALY,
-		ENITIY_TYPE_DEMON,
-		ENITIY_TYPE_OBJECT,
 	};
 
 	enum EntityController {
@@ -287,7 +269,6 @@ protected:
 };
 
 VARIANT_ENUM_CAST(EntityEnums::EntityPlayerType);
-VARIANT_ENUM_CAST(EntityEnums::EntityType);
 VARIANT_ENUM_CAST(EntityEnums::EntityController);
 VARIANT_ENUM_CAST(EntityEnums::EntityFlags);
 VARIANT_ENUM_CAST(EntityEnums::EntityStateTypeFlags);
