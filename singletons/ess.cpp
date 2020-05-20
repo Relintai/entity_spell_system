@@ -414,6 +414,30 @@ void ESS::equip_slots_set(const PoolStringArray &array) {
 	}
 }
 
+//Skeletons
+String ESS::entity_types_get() const {
+	return _entity_types;
+}
+void ESS::entity_types_set(const String &value) {
+	_entity_types = value;
+}
+
+String ESS::skeletons_bones_index_get(const int index) const {
+	ERR_FAIL_INDEX_V(index, _skeletons_bones.size(), String());
+
+	return _skeletons_bones[index];
+}
+int ESS::skeletons_bones_count() {
+	return _skeletons_bones.size();
+}
+
+PoolStringArray ESS::skeletons_bones_get() const {
+	return _skeletons_bones;
+}
+void ESS::skeletons_bones_set(const PoolStringArray &value) {
+	_skeletons_bones = value;
+}
+
 void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_use_spell_points"), &ESS::get_use_spell_points);
 	ClassDB::bind_method(D_METHOD("set_use_spell_points", "value"), &ESS::set_use_spell_points);
@@ -523,6 +547,18 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("equip_slots_get"), &ESS::equip_slots_get);
 	ClassDB::bind_method(D_METHOD("equip_slots_set", "array"), &ESS::equip_slots_set);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "equip_slots"), "equip_slots_set", "equip_slots_get");
+
+	//Skeletons
+	ClassDB::bind_method(D_METHOD("entity_types_get"), &ESS::entity_types_get);
+	ClassDB::bind_method(D_METHOD("entity_types_set", "value"), &ESS::entity_types_set);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_types"), "entity_types_set", "entity_types_get");
+
+	ClassDB::bind_method(D_METHOD("skeletons_bones_index_get", "index"), &ESS::skeletons_bones_index_get);
+	ClassDB::bind_method(D_METHOD("skeletons_bones_count"), &ESS::skeletons_bones_count);
+
+	ClassDB::bind_method(D_METHOD("skeletons_bones_get"), &ESS::skeletons_bones_get);
+	ClassDB::bind_method(D_METHOD("skeletons_bones_set", "value"), &ESS::skeletons_bones_set);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "skeletons_bones"), "skeletons_bones_set", "skeletons_bones_get");
 }
 
 ESS::ESS() {
@@ -551,7 +587,7 @@ ESS::ESS() {
 	equip_slot_set_string(GLOBAL_DEF("ess/enums/equip_slots", "Head,Neck,Shoulder,Chest,Gloves,Belt,Legs,Feet,Ring_1,Ring_2,Trinket_1,Trinket_2,Main_Hand,Off_Hand"));
 
 	_entity_types = GLOBAL_DEF("ess/enums/entity_types", "None,Creature,Totem,Idol,Humanoid,Mechanical,Beast,Dragonkin,Elemental,Ghost,Energy,Anomaly,Demon,Object");
-	_entity_type_skeletons = GLOBAL_DEF("ess/enums/entity_type_skeletons", PoolStringArray());
+	_skeletons_bones = GLOBAL_DEF("ess/enums/skeletons_bones", PoolStringArray());
 
 	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load) {
 		call_deferred("load_all");
@@ -575,4 +611,6 @@ ESS::~ESS() {
 
 	_equip_slot_id_to_property.clear();
 	_equip_slot_property_to_id.clear();
+
+	_skeletons_bones.resize(0);
 }

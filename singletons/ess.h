@@ -142,6 +142,16 @@ public:
 	PoolStringArray equip_slots_get() const;
 	void equip_slots_set(const PoolStringArray &array);
 
+	//Skeletons
+	String entity_types_get() const;
+	void entity_types_set(const String &value);
+
+	String skeletons_bones_index_get(const int index) const;
+	int skeletons_bones_count();
+
+	PoolStringArray skeletons_bones_get() const;
+	void skeletons_bones_set(const PoolStringArray &value);
+
 	ESS();
 	~ESS();
 
@@ -190,7 +200,7 @@ private:
 
 	//Entity Types
 	String _entity_types;
-	PoolStringArray _entity_type_skeletons;
+	PoolStringArray _skeletons_bones;
 };
 
 #endif
