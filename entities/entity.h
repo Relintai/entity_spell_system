@@ -307,11 +307,11 @@ public:
 	String getc_entity_name();
 	void setc_entity_name(String value);
 
-	EntityEnums::EntityGender gets_gender();
-	void sets_gender(EntityEnums::EntityGender value);
+	int gets_model_index();
+	void sets_model_index(int value);
 
-	EntityEnums::EntityGender getc_gender();
-	void setc_gender(EntityEnums::EntityGender value);
+	int getc_model_index();
+	void setc_model_index(int value);
 
 	int gets_class_level();
 	void sets_class_level(int value);
@@ -1088,8 +1088,8 @@ private:
 	int _s_type;
 	int _c_type;
 
-	EntityEnums::EntityGender _s_gender;
-	EntityEnums::EntityGender _c_gender;
+	int _s_model_index;
+	int _c_model_index;
 
 	int _s_class_level;
 	int _c_class_level;

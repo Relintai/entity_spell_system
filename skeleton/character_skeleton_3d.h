@@ -54,8 +54,8 @@ class CharacterSkeleton3D : public Spatial {
 	GDCLASS(CharacterSkeleton3D, Spatial);
 
 public:
-	EntityEnums::EntityGender get_gender();
-	void set_gender(EntityEnums::EntityGender value);
+	int get_model_index();
+	void set_model_index(int value);
 
 	bool get_model_dirty() const;
 	void set_model_dirty(bool value);
@@ -117,7 +117,7 @@ protected:
 	};
 
 private:
-	EntityEnums::EntityGender _gender;
+	int _model_index;
 	NodePath _animation_player_path;
 	NodePath _animation_tree_path;
 

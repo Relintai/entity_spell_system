@@ -41,7 +41,6 @@ public:
 	static const String BINDING_STRING_ENTITY_RELATION_TYPE;
 	static const String BINDING_STRING_ENTITY_INTERACTION_TYPE;
 	static const String BINDING_STRING_ENTITY_PLAYSTYLE_TYPE;
-	static const String BINDING_STRING_ENTITY_GENDER;
 	static const String BINDING_STRING_ENTITY_WINDOWS;
 	static const String BINDING_STRING_ENTITY_ENTITY_RESOURCE_INDICES;
 
@@ -239,11 +238,6 @@ public:
 		ENTITY_CLASS_PLAYSTYLE_TYPE_NONE,
 	};
 
-	enum EntityGender {
-		GENDER_MALE = 0,
-		GENDER_FEMALE = 1,
-	};
-
 	enum EntityWindows {
 		ENTITY_WINDOW_LOOT = 0,
 		ENTITY_WINDOW_CONTAINER = 1,
@@ -258,7 +252,6 @@ public:
 	};
 
 	enum {
-		GENDER_COUNT = 2,
 		BASE_XP = 50,
 	};
 
@@ -279,7 +272,6 @@ VARIANT_ENUM_CAST(EntityEnums::EntityImmunityFlags);
 VARIANT_ENUM_CAST(EntityEnums::EntityRelationType);
 VARIANT_ENUM_CAST(EntityEnums::EntityInteractionType);
 VARIANT_ENUM_CAST(EntityEnums::EntityClassPlaystyleType);
-VARIANT_ENUM_CAST(EntityEnums::EntityGender);
 VARIANT_ENUM_CAST(EntityEnums::EntityWindows);
 VARIANT_ENUM_CAST(EntityEnums::EntityResourceIndices);
 

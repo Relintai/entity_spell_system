@@ -3712,7 +3712,7 @@
 		</member>
 		<member name="cfree_talent_points" type="int" setter="setc_free_talent_points" getter="getc_free_talent_points" default="0">
 		</member>
-		<member name="cgender" type="int" setter="setc_gender" getter="getc_gender" enum="EntityEnums.EntityGender" default="0">
+		<member name="cmodel_index" type="int" setter="setc_model_index" getter="getc_model_index" enum="EntityEnums.EntityGender" default="0">
 		</member>
 		<member name="cguid" type="int" setter="setc_guid" getter="getc_guid" default="0">
 		</member>
@@ -3766,7 +3766,7 @@
 		</member>
 		<member name="sfree_talent_points" type="int" setter="sets_free_talent_points" getter="gets_free_talent_points" default="0">
 		</member>
-		<member name="sgender" type="int" setter="sets_gender" getter="gets_gender" enum="EntityEnums.EntityGender" default="0">
+		<member name="smodel_index" type="int" setter="sets_model_index" getter="gets_model_index" enum="EntityEnums.EntityGender" default="0">
 		</member>
 		<member name="sguid" type="int" setter="sets_guid" getter="gets_guid" default="0">
 		</member>

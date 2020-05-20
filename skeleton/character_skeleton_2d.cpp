@@ -37,24 +37,24 @@ int CharacterSkeleton2D::get_model_visual_count() {
 void CharacterSkeleton2D::clear_model_visuals() {
 }
 
-EntityEnums::EntityGender CharacterSkeleton2D::get_gender() {
-	return _gender;
+int CharacterSkeleton2D::get_model_index() {
+	return _model_index;
 }
-void CharacterSkeleton2D::set_gender(EntityEnums::EntityGender value) {
-	_gender = value;
+void CharacterSkeleton2D::set_model_index(int value) {
+	_model_index = value;
 }
 
 CharacterSkeleton2D::CharacterSkeleton2D() {
-	_gender = EntityEnums::GENDER_MALE;
+	_model_index = 0;
 }
 
 CharacterSkeleton2D::~CharacterSkeleton2D() {
 }
 
 void CharacterSkeleton2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_gender"), &CharacterSkeleton2D::get_gender);
-	ClassDB::bind_method(D_METHOD("set_gender", "value"), &CharacterSkeleton2D::set_gender);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "gender", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_GENDER), "set_gender", "get_gender");
+	ClassDB::bind_method(D_METHOD("get_model_index"), &CharacterSkeleton2D::get_model_index);
+	ClassDB::bind_method(D_METHOD("set_model_index", "value"), &CharacterSkeleton2D::set_model_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "model_index"), "set_model_index", "get_model_index");
 
 	ClassDB::bind_method(D_METHOD("add_model_visual", "vis"), &CharacterSkeleton2D::add_model_visual);
 	ClassDB::bind_method(D_METHOD("remove_model_visual", "vis"), &CharacterSkeleton2D::remove_model_visual);

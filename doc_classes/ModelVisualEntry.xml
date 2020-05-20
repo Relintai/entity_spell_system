@@ -74,13 +74,13 @@
 		</member>
 		<member name="mesh_female" type="MeshDataResource" setter="set_mesh" getter="get_mesh">
 		</member>
-		<member name="mesh_male" type="MeshDataResource" setter="set_mesh" getter="get_mesh">
+		<member name="mesh" type="MeshDataResource" setter="set_mesh" getter="get_mesh">
 		</member>
 		<member name="override_layer" type="int" setter="set_override_layer" getter="get_override_layer" enum="ItemEnums.EntityTextureLayers" default="0">
 		</member>
 		<member name="texture_female" type="Texture" setter="set_texture" getter="get_texture">
 		</member>
-		<member name="texture_male" type="Texture" setter="set_texture" getter="get_texture">
+		<member name="texture" type="Texture" setter="set_texture" getter="get_texture">
 		</member>
 	</members>
 	<constants>

@@ -186,7 +186,7 @@
 		</member>
 		<member name="bone_path_root" type="NodePath" setter="set_bone_path" getter="get_bone_path" default="NodePath(&quot;&quot;)">
 		</member>
-		<member name="gender" type="int" setter="set_gender" getter="get_gender" enum="EntityEnums.EntityGender" default="0">
+		<member name="model_index" type="int" setter="set_model_index" getter="get_model_index" enum="EntityEnums.EntityGender" default="0">
 		</member>
 		<member name="model_dirty" type="bool" setter="set_model_dirty" getter="get_model_dirty" default="false">
 		</member>

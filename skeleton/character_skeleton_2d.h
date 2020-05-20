@@ -44,8 +44,8 @@ public:
 	virtual int get_model_visual_count();
 	virtual void clear_model_visuals();
 
-	EntityEnums::EntityGender get_gender();
-	void set_gender(EntityEnums::EntityGender value);
+	int get_model_index();
+	void set_model_index(int value);
 
 	CharacterSkeleton2D();
 	~CharacterSkeleton2D();
@@ -54,7 +54,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	EntityEnums::EntityGender _gender;
+	int _model_index;
 };
 
 #endif

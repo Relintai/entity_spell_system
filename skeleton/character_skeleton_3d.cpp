@@ -39,11 +39,11 @@ typedef class RenderingServer VS;
 #define PoolRealArray PackedFloat32Array
 #endif
 
-EntityEnums::EntityGender CharacterSkeleton3D::get_gender() {
-	return _gender;
+int CharacterSkeleton3D::get_model_index() {
+	return _model_index;
 }
-void CharacterSkeleton3D::set_gender(EntityEnums::EntityGender value) {
-	_gender = value;
+void CharacterSkeleton3D::set_model_index(int value) {
+	_model_index = value;
 }
 
 bool CharacterSkeleton3D::get_model_dirty() const {
@@ -364,7 +364,7 @@ Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 
 CharacterSkeleton3D::CharacterSkeleton3D() {
 	_model_dirty = false;
-	_gender = EntityEnums::GENDER_MALE;
+	_model_index = 0;
 
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
 		_bone_nodes[i] = NULL;
@@ -397,9 +397,9 @@ void CharacterSkeleton3D::_notification(int p_what) {
 }
 
 void CharacterSkeleton3D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_gender"), &CharacterSkeleton3D::get_gender);
-	ClassDB::bind_method(D_METHOD("set_gender", "value"), &CharacterSkeleton3D::set_gender);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "gender", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_GENDER), "set_gender", "get_gender");
+	ClassDB::bind_method(D_METHOD("get_model_index"), &CharacterSkeleton3D::get_model_index);
+	ClassDB::bind_method(D_METHOD("set_model_index", "value"), &CharacterSkeleton3D::set_model_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "model_index"), "set_model_index", "get_model_index");
 
 	ClassDB::bind_method(D_METHOD("add_model_visual", "vis"), &CharacterSkeleton3D::add_model_visual);
 	ClassDB::bind_method(D_METHOD("remove_model_visual", "vis"), &CharacterSkeleton3D::remove_model_visual);

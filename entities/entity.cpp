@@ -316,20 +316,20 @@ void Entity::setc_entity_name(String value) {
 	emit_signal("cname_changed", this);
 }
 
-EntityEnums::EntityGender Entity::gets_gender() {
-	return _s_gender;
+int Entity::gets_model_index() {
+	return _s_model_index;
 }
-void Entity::sets_gender(EntityEnums::EntityGender value) {
-	_s_gender = value;
+void Entity::sets_model_index(int value) {
+	_s_model_index = value;
 
-	VRPC(setc_gender, value);
+	VRPC(setc_model_index, value);
 }
 
-EntityEnums::EntityGender Entity::getc_gender() {
-	return _c_gender;
+int Entity::getc_model_index() {
+	return _c_model_index;
 }
-void Entity::setc_gender(EntityEnums::EntityGender value) {
-	_c_gender = value;
+void Entity::setc_model_index(int value) {
+	_c_model_index = value;
 
 #if VERSION_MAJOR < 4
 	if (ObjectDB::instance_validate(_character_skeleton)) {
@@ -337,8 +337,8 @@ void Entity::setc_gender(EntityEnums::EntityGender value) {
 	if (_character_skeleton != NULL) {
 #endif
 
-		if (_character_skeleton->has_method("set_gender"))
-			_character_skeleton->call("set_gender", _c_gender);
+		if (_character_skeleton->has_method("set_model_index"))
+			_character_skeleton->call("set_model_index", _c_model_index);
 	}
 }
 
@@ -474,10 +474,10 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 	//setup();
 
 	if (get_body() == NULL && value.is_valid() && value->get_entity_species_data().is_valid() &&
-			value->get_entity_species_data()->get_model_data_count() > _s_gender &&
-			value->get_entity_species_data()->get_model_data(_s_gender).is_valid() &&
-			value->get_entity_species_data()->get_model_data(_s_gender)->get_body().is_valid()) {
-		Node *node = value->get_entity_species_data()->get_model_data(_s_gender)->get_body()->instance();
+			value->get_entity_species_data()->get_model_data_count() > _s_model_index &&
+			value->get_entity_species_data()->get_model_data(_s_model_index).is_valid() &&
+			value->get_entity_species_data()->get_model_data(_s_model_index)->get_body().is_valid()) {
+		Node *node = value->get_entity_species_data()->get_model_data(_s_model_index)->get_body()->instance();
 
 		add_child(node);
 		set_body(node);
@@ -496,10 +496,10 @@ void Entity::setc_entity_data(Ref<EntityData> value) {
 	_c_entity_data = value;
 
 	if (get_body() == NULL && value.is_valid() && value->get_entity_species_data().is_valid() &&
-			value->get_entity_species_data()->get_model_data_count() > _c_gender &&
-			value->get_entity_species_data()->get_model_data(_c_gender).is_valid() &&
-			value->get_entity_species_data()->get_model_data(_c_gender)->get_body().is_valid()) {
-		Node *node = value->get_entity_species_data()->get_model_data(_c_gender)->get_body()->instance();
+			value->get_entity_species_data()->get_model_data_count() > _c_model_index &&
+			value->get_entity_species_data()->get_model_data(_c_model_index).is_valid() &&
+			value->get_entity_species_data()->get_model_data(_c_model_index)->get_body().is_valid()) {
+		Node *node = value->get_entity_species_data()->get_model_data(_c_model_index)->get_body()->instance();
 
 		add_child(node);
 		set_body(node);
@@ -1087,7 +1087,7 @@ Dictionary Entity::_to_dict() {
 	dict["guid"] = _s_guid;
 	//dict["entity_data_id"] = _s_class_id;
 	dict["type"] = _s_type;
-	dict["gender"] = _s_gender;
+	dict["model_index"] = _s_model_index;
 	dict["class_level"] = gets_class_level();
 	dict["class_xp"] = gets_class_xp();
 
@@ -1271,7 +1271,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	sets_entity_type((int)((int)dict.get("type", 0)));
 
-	sets_gender(static_cast<EntityEnums::EntityGender>(static_cast<int>(dict.get("gender", 0))));
+	sets_model_index(static_cast<int>(static_cast<int>(dict.get("model_index", 0))));
 
 	if (ESS::get_instance()->get_use_global_class_level()) {
 		_s_class_level = (dict.get("class_level", 0));
@@ -5763,8 +5763,8 @@ Entity::Entity() {
 	_s_entity_player_type = 0;
 	_c_entity_player_type = 0;
 
-	_s_gender = EntityEnums::GENDER_MALE;
-	_c_gender = EntityEnums::GENDER_MALE;
+	_s_model_index = 0;
+	_c_model_index = 0;
 
 	_s_class_level = 1;
 	_c_class_level = 1;
@@ -5855,7 +5855,7 @@ Entity::Entity() {
 	SET_RPC_REMOTE("setc_entity_data_id");
 	SET_RPC_REMOTE("setc_entity_type");
 	SET_RPC_REMOTE("setc_entity_name");
-	SET_RPC_REMOTE("setc_gender");
+	SET_RPC_REMOTE("setc_model_index");
 	SET_RPC_REMOTE("setc_class_level");
 	SET_RPC_REMOTE("setc_character_level");
 	SET_RPC_REMOTE("setc_class_xp");
@@ -6318,8 +6318,8 @@ void Entity::_notification(int p_what) {
 			_character_skeleton = get_node_or_null(_character_skeleton_path);
 
 			if (_character_skeleton != NULL) {
-				if (_character_skeleton->has_method("set_gender"))
-					_character_skeleton->call("set_gender", _c_gender);
+				if (_character_skeleton->has_method("set_model_index"))
+					_character_skeleton->call("set_model_index", _c_model_index);
 			}
 		} break;
 		case NOTIFICATION_ENTER_TREE: {
@@ -6342,8 +6342,8 @@ void Entity::_notification(int p_what) {
 				_character_skeleton = get_node_or_null(_character_skeleton_path);
 
 				if (_character_skeleton != NULL) {
-					if (_character_skeleton->has_method("set_gender"))
-						_character_skeleton->call("set_gender", _c_gender);
+					if (_character_skeleton->has_method("set_model_index"))
+						_character_skeleton->call("set_model_index", _c_model_index);
 				}
 			}
 		} break;
@@ -6405,7 +6405,7 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 	/*
 	sets_entity_type((int)((int)dict.get("type", 0)));
 
-	sets_gender(static_cast<EntityEnums::EntityGender>(static_cast<int>(dict.get("gender", 0))));
+	sets_model_index(static_cast<int>(static_cast<int>(dict.get("model_index", 0))));
 
 	if (ESS::get_instance()->get_use_global_class_level()) {
 		_s_class_level = (dict.get("class_level", 0));
@@ -7313,13 +7313,13 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_entity_name", "value"), &Entity::setc_entity_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "centity_name", PROPERTY_HINT_NONE, "", 0), "setc_entity_name", "getc_entity_name");
 
-	ClassDB::bind_method(D_METHOD("gets_gender"), &Entity::gets_gender);
-	ClassDB::bind_method(D_METHOD("sets_gender", "value"), &Entity::sets_gender);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sgender"), "sets_gender", "gets_gender");
+	ClassDB::bind_method(D_METHOD("gets_model_index"), &Entity::gets_model_index);
+	ClassDB::bind_method(D_METHOD("sets_model_index", "value"), &Entity::sets_model_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "smodel_index"), "sets_model_index", "gets_model_index");
 
-	ClassDB::bind_method(D_METHOD("getc_gender"), &Entity::getc_gender);
-	ClassDB::bind_method(D_METHOD("setc_gender", "value"), &Entity::setc_gender);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cgender", PROPERTY_HINT_NONE, "", 0), "setc_gender", "getc_gender");
+	ClassDB::bind_method(D_METHOD("getc_model_index"), &Entity::getc_model_index);
+	ClassDB::bind_method(D_METHOD("setc_model_index", "value"), &Entity::setc_model_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cmodel_index", PROPERTY_HINT_NONE, "", 0), "setc_model_index", "getc_model_index");
 
 	ClassDB::bind_method(D_METHOD("gets_class_level"), &Entity::gets_class_level);
 	ClassDB::bind_method(D_METHOD("sets_class_level", "value"), &Entity::sets_class_level);

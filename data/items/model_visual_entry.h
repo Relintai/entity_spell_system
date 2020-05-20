@@ -72,14 +72,14 @@ private:
 	ItemEnums::EntityTextureLayers _override_layer;
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
-	Ref<MeshDataResource> _mesh[EntityEnums::GENDER_COUNT];
+	Ref<MeshDataResource> _mesh[1];
 #endif
 
-	Ref<Texture> _texture[EntityEnums::GENDER_COUNT];
+	Ref<Texture> _texture[1];
 	Color _color;
 
 	Ref<PackedScene> _effect;
-	Vector3 _effect_offset[EntityEnums::GENDER_COUNT];
+	Vector3 _effect_offset[1];
 };
 
 #endif

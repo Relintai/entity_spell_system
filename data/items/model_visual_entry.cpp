@@ -73,7 +73,7 @@ ModelVisualEntry::ModelVisualEntry() {
 }
 
 ModelVisualEntry::~ModelVisualEntry() {
-	for (int i = 0; i < EntityEnums::GENDER_COUNT; ++i) {
+	for (int i = 0; i < 1; ++i) {
 #ifdef MESH_DATA_RESOURCE_PRESENT
 		_mesh[i].unref();
 #endif
@@ -92,14 +92,12 @@ void ModelVisualEntry::_bind_methods() {
 #ifdef MESH_DATA_RESOURCE_PRESENT
 	ClassDB::bind_method(D_METHOD("get_mesh", "index"), &ModelVisualEntry::get_mesh);
 	ClassDB::bind_method(D_METHOD("set_mesh", "index", "value"), &ModelVisualEntry::set_mesh);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "mesh_male", PROPERTY_HINT_RESOURCE_TYPE, "MeshDataResource"), "set_mesh", "get_mesh", EntityEnums::GENDER_MALE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "mesh_female", PROPERTY_HINT_RESOURCE_TYPE, "MeshDataResource"), "set_mesh", "get_mesh", EntityEnums::GENDER_FEMALE);
+	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "mesh", PROPERTY_HINT_RESOURCE_TYPE, "MeshDataResource"), "set_mesh", "get_mesh", 0);
 #endif
 
 	ClassDB::bind_method(D_METHOD("get_texture", "index"), &ModelVisualEntry::get_texture);
 	ClassDB::bind_method(D_METHOD("set_texture", "index", "value"), &ModelVisualEntry::set_texture);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "texture_male", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_texture", "get_texture", EntityEnums::GENDER_MALE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "texture_female", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_texture", "get_texture", EntityEnums::GENDER_FEMALE);
+	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_texture", "get_texture", 0);
 
 	ClassDB::bind_method(D_METHOD("get_color"), &ModelVisualEntry::get_color);
 	ClassDB::bind_method(D_METHOD("set_color", "value"), &ModelVisualEntry::set_color);
@@ -107,10 +105,9 @@ void ModelVisualEntry::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_effect"), &ModelVisualEntry::get_effect);
 	ClassDB::bind_method(D_METHOD("set_effect", "value"), &ModelVisualEntry::set_effect);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect_male", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_effect", "get_effect");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_effect", "get_effect");
 
 	ClassDB::bind_method(D_METHOD("get_effect_offset", "index"), &ModelVisualEntry::get_effect_offset);
 	ClassDB::bind_method(D_METHOD("set_effect_offset", "index", "value"), &ModelVisualEntry::set_effect_offset);
-	ADD_PROPERTYI(PropertyInfo(Variant::VECTOR3, "effect_offset_male"), "set_effect_offset", "get_effect_offset", EntityEnums::GENDER_MALE);
-	ADD_PROPERTYI(PropertyInfo(Variant::VECTOR3, "effect_offset_female"), "set_effect_offset", "get_effect_offset", EntityEnums::GENDER_FEMALE);
+	ADD_PROPERTYI(PropertyInfo(Variant::VECTOR3, "effect_offset"), "set_effect_offset", "get_effect_offset", 0);
 }
