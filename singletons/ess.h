@@ -152,6 +152,10 @@ public:
 	PoolStringArray skeletons_bones_get() const;
 	void skeletons_bones_set(const PoolStringArray &value);
 
+	//ModelVisualGroups
+	String model_visual_groups_get() const;
+	void model_visual_groups_set(const String &value);
+
 	ESS();
 	~ESS();
 
@@ -201,6 +205,9 @@ private:
 	//Entity Types
 	String _entity_types;
 	PoolStringArray _skeletons_bones;
+
+	//ModelVisualGroups
+	String _model_visual_groups;
 };
 
 #endif

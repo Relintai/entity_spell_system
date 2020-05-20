@@ -48,11 +48,49 @@ void EntitySpeciesData::set_text_description(const String &value) {
 	_text_description = value;
 }
 
-Ref<SpeciesModelData> EntitySpeciesData::get_model_data() {
-	return _model_data;
+//ModelData
+
+Ref<SpeciesModelData> EntitySpeciesData::get_model_data(const int index) const {
+	ERR_FAIL_INDEX_V(index, _model_datas.size(), Ref<SpeciesModelData>());
+
+	return _model_datas.get(index);
 }
-void EntitySpeciesData::set_model_data(const Ref<SpeciesModelData> &data) {
-	_model_data = data;
+void EntitySpeciesData::set_model_data(const int index, const Ref<SpeciesModelData> &model_data) {
+	ERR_FAIL_INDEX(index, _model_datas.size());
+
+	_model_datas.set(index, model_data);
+}
+void EntitySpeciesData::add_model_data(const Ref<SpeciesModelData> &model_data) {
+	_model_datas.push_back(model_data);
+}
+void EntitySpeciesData::remove_model_data(const int index) {
+	ERR_FAIL_INDEX(index, _model_datas.size());
+
+	_model_datas.remove(index);
+}
+
+int EntitySpeciesData::get_model_data_count() const {
+	return _model_datas.size();
+}
+
+Vector<Variant> EntitySpeciesData::get_model_datas() {
+	Vector<Variant> r;
+	for (int i = 0; i < _model_datas.size(); i++) {
+#if VERSION_MAJOR < 4
+		r.push_back(_model_datas[i].get_ref_ptr());
+#else
+		r.push_back(_model_datas[i]);
+#endif
+	}
+	return r;
+}
+void EntitySpeciesData::set_model_datas(const Vector<Variant> &model_datas) {
+	_model_datas.clear();
+	for (int i = 0; i < model_datas.size(); i++) {
+		Ref<SpeciesModelData> model_data = Ref<SpeciesModelData>(model_datas[i]);
+
+		_model_datas.push_back(model_data);
+	}
 }
 
 //Spells
@@ -158,7 +196,7 @@ EntitySpeciesData::EntitySpeciesData() {
 	_type = 0;
 }
 EntitySpeciesData::~EntitySpeciesData() {
-	_model_data.unref();
+	_model_datas.clear();
 
 	_spells.clear();
 	_auras.clear();
@@ -189,9 +227,17 @@ void EntitySpeciesData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_text_description", "value"), &EntitySpeciesData::set_text_description);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_description"), "set_text_description", "get_text_description");
 
-	ClassDB::bind_method(D_METHOD("get_model_data"), &EntitySpeciesData::get_model_data);
-	ClassDB::bind_method(D_METHOD("set_model_data", "value"), &EntitySpeciesData::set_model_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "model_data", PROPERTY_HINT_RESOURCE_TYPE, "SpeciesModelData"), "set_model_data", "get_model_data");
+	//ModelData
+	ClassDB::bind_method(D_METHOD("get_model_data", "index"), &EntitySpeciesData::get_model_data);
+	ClassDB::bind_method(D_METHOD("set_model_data", "index", "data"), &EntitySpeciesData::set_model_data);
+	ClassDB::bind_method(D_METHOD("add_model_data", "model_data"), &EntitySpeciesData::add_model_data);
+	ClassDB::bind_method(D_METHOD("remove_model_data", "index"), &EntitySpeciesData::remove_model_data);
+
+	ClassDB::bind_method(D_METHOD("get_model_data_count"), &EntitySpeciesData::get_model_data_count);
+
+	ClassDB::bind_method(D_METHOD("get_model_datas"), &EntitySpeciesData::get_model_datas);
+	ClassDB::bind_method(D_METHOD("set_model_datas", "model_datas"), &EntitySpeciesData::set_model_datas);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "model_datas", PROPERTY_HINT_NONE, "17/17:SpeciesModelData", PROPERTY_USAGE_DEFAULT, "SpeciesModelData"), "set_model_datas", "get_model_datas");
 
 	//Spells
 	ClassDB::bind_method(D_METHOD("get_spell", "index"), &EntitySpeciesData::get_spell);

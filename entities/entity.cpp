@@ -474,9 +474,10 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 	//setup();
 
 	if (get_body() == NULL && value.is_valid() && value->get_entity_species_data().is_valid() &&
-			value->get_entity_species_data()->get_model_data().is_valid() &&
-			value->get_entity_species_data()->get_model_data()->get_body().is_valid()) {
-		Node *node = value->get_entity_species_data()->get_model_data()->get_body()->instance();
+			value->get_entity_species_data()->get_model_data_count() > _s_gender &&
+			value->get_entity_species_data()->get_model_data(_s_gender).is_valid() &&
+			value->get_entity_species_data()->get_model_data(_s_gender)->get_body().is_valid()) {
+		Node *node = value->get_entity_species_data()->get_model_data(_s_gender)->get_body()->instance();
 
 		add_child(node);
 		set_body(node);
@@ -495,9 +496,10 @@ void Entity::setc_entity_data(Ref<EntityData> value) {
 	_c_entity_data = value;
 
 	if (get_body() == NULL && value.is_valid() && value->get_entity_species_data().is_valid() &&
-			value->get_entity_species_data()->get_model_data().is_valid() &&
-			value->get_entity_species_data()->get_model_data()->get_body().is_valid()) {
-		Node *node = value->get_entity_species_data()->get_model_data()->get_body()->instance();
+			value->get_entity_species_data()->get_model_data_count() > _c_gender &&
+			value->get_entity_species_data()->get_model_data(_c_gender).is_valid() &&
+			value->get_entity_species_data()->get_model_data(_c_gender)->get_body().is_valid()) {
+		Node *node = value->get_entity_species_data()->get_model_data(_c_gender)->get_body()->instance();
 
 		add_child(node);
 		set_body(node);

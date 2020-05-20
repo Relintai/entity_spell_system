@@ -438,6 +438,14 @@ void ESS::skeletons_bones_set(const PoolStringArray &value) {
 	_skeletons_bones = value;
 }
 
+//ModelVisualGroups
+String ESS::model_visual_groups_get() const {
+	return _model_visual_groups;
+}
+void ESS::model_visual_groups_set(const String &value) {
+	_model_visual_groups = value;
+}
+
 void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_use_spell_points"), &ESS::get_use_spell_points);
 	ClassDB::bind_method(D_METHOD("set_use_spell_points", "value"), &ESS::set_use_spell_points);
@@ -559,6 +567,11 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("skeletons_bones_get"), &ESS::skeletons_bones_get);
 	ClassDB::bind_method(D_METHOD("skeletons_bones_set", "value"), &ESS::skeletons_bones_set);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "skeletons_bones"), "skeletons_bones_set", "skeletons_bones_get");
+
+	//ModelVisualGroups
+	ClassDB::bind_method(D_METHOD("model_visual_groups_get"), &ESS::model_visual_groups_get);
+	ClassDB::bind_method(D_METHOD("model_visual_groups_set", "value"), &ESS::model_visual_groups_set);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "model_visual_groups"), "model_visual_groups_set", "model_visual_groups_get");
 }
 
 ESS::ESS() {
@@ -588,6 +601,8 @@ ESS::ESS() {
 
 	_entity_types = GLOBAL_DEF("ess/enums/entity_types", "None,Creature,Totem,Idol,Humanoid,Mechanical,Beast,Dragonkin,Elemental,Ghost,Energy,Anomaly,Demon,Object");
 	_skeletons_bones = GLOBAL_DEF("ess/enums/skeletons_bones", PoolStringArray());
+
+	_model_visual_groups = GLOBAL_DEF("ess/enums/model_visual_groups", "None,Bodypart,Alt Bodypart,Attachment");
 
 	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load) {
 		call_deferred("load_all");

@@ -47,8 +47,16 @@ public:
 	String get_text_description() const;
 	void set_text_description(const String &value);
 
-	Ref<SpeciesModelData> get_model_data();
-	void set_model_data(const Ref<SpeciesModelData> &data);
+	//ModelData
+	Ref<SpeciesModelData> get_model_data(const int index) const;
+	void set_model_data(const int index, const Ref<SpeciesModelData> &data);
+	void add_model_data(const Ref<SpeciesModelData> &data);
+	void remove_model_data(const int index);
+
+	int get_model_data_count() const;
+
+	Vector<Variant> get_model_datas();
+	void set_model_datas(const Vector<Variant> &datas);
 
 	//Spells
 	Ref<Spell> get_spell(const int index) const;
@@ -86,8 +94,7 @@ private:
 	int _type;
 	String _text_description;
 
-	Ref<SpeciesModelData> _model_data;
-
+	Vector<Ref<SpeciesModelData> > _model_datas;
 	Vector<Ref<Spell> > _spells;
 	Vector<Ref<Aura> > _auras;
 };
