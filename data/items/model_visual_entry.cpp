@@ -22,11 +22,34 @@ SOFTWARE.
 
 #include "model_visual_entry.h"
 
+#include "../../singletons/ess.h"
+
 ItemEnums::EntityTextureLayers ModelVisualEntry::get_override_layer() {
 	return _override_layer;
 }
 void ModelVisualEntry::set_override_layer(ItemEnums::EntityTextureLayers layer) {
 	_override_layer = layer;
+}
+
+int ModelVisualEntry::get_entity_type() {
+	return _entity_type;
+}
+void ModelVisualEntry::set_entity_type(int value) {
+	_entity_type = value;
+}
+
+int ModelVisualEntry::get_bone() {
+	return _bone;
+}
+void ModelVisualEntry::set_bone(int value) {
+	_bone = value;
+}
+
+int ModelVisualEntry::get_group() {
+	return _group;
+}
+void ModelVisualEntry::set_group(int value) {
+	_group = value;
 }
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
@@ -70,6 +93,10 @@ ModelVisualEntry::ModelVisualEntry() {
 	_override_layer = ItemEnums::ENTITY_TEXTURE_LAYER_NONE;
 
 	_color = Color(1, 1, 1, 1);
+
+	_entity_type = 0;
+	_bone = 0;
+	_group = 0;
 }
 
 ModelVisualEntry::~ModelVisualEntry() {
@@ -84,10 +111,38 @@ ModelVisualEntry::~ModelVisualEntry() {
 	_effect.unref();
 }
 
+void ModelVisualEntry::_validate_property(PropertyInfo &property) const {
+	String name = property.name;
+
+	if (name == "group") {
+		property.hint_string = ESS::get_instance()->model_visual_groups_get();
+	} else if (name == "bone") {
+		if (ESS::get_instance()->skeletons_bones_count() > _entity_type) {
+			property.hint_string = ESS::get_instance()->skeletons_bones_index_get(_entity_type);
+		} else {
+			property.hint_string = "";
+		}
+	} else if (name == "entity_type") {
+		property.hint_string = ESS::get_instance()->entity_types_get();
+	}
+}
+
 void ModelVisualEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_override_layer"), &ModelVisualEntry::get_override_layer);
 	ClassDB::bind_method(D_METHOD("set_override_layer", "value"), &ModelVisualEntry::set_override_layer);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "override_layer", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_ENTITY_TEXTURE_LAYERS), "set_override_layer", "get_override_layer");
+
+	ClassDB::bind_method(D_METHOD("get_entity_type"), &ModelVisualEntry::get_entity_type);
+	ClassDB::bind_method(D_METHOD("set_entity_type", "value"), &ModelVisualEntry::set_entity_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_type", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_entity_type", "get_entity_type");
+
+	ClassDB::bind_method(D_METHOD("get_bone"), &ModelVisualEntry::get_bone);
+	ClassDB::bind_method(D_METHOD("set_bone", "value"), &ModelVisualEntry::set_bone);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "bone", PROPERTY_HINT_ENUM), "set_bone", "get_bone");
+
+	ClassDB::bind_method(D_METHOD("get_group"), &ModelVisualEntry::get_group);
+	ClassDB::bind_method(D_METHOD("set_group", "value"), &ModelVisualEntry::set_group);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "group", PROPERTY_HINT_ENUM), "set_group", "get_group");
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
 	ClassDB::bind_method(D_METHOD("get_mesh", "index"), &ModelVisualEntry::get_mesh);

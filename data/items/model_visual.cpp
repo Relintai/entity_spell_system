@@ -29,15 +29,49 @@ void ModelVisual::set_layer(ItemEnums::EntityTextureLayers layer) {
 	_layer = layer;
 }
 
-Ref<ModelVisualEntry> ModelVisual::get_visual(int index) {
-	ERR_FAIL_INDEX_V(index, EntityEnums::SKELETON_POINTS_MAX, Ref<ModelVisualEntry>());
+//ModelVisualEntries
 
-	return _entries[index];
+Ref<ModelVisualEntry> ModelVisual::get_visual_entry(const int index) const {
+	ERR_FAIL_INDEX_V(index, _visual_entries.size(), Ref<ModelVisualEntry>());
+
+	return _visual_entries.get(index);
 }
-void ModelVisual::set_visual(int index, Ref<ModelVisualEntry> entry) {
-	ERR_FAIL_INDEX(index, EntityEnums::SKELETON_POINTS_MAX);
+void ModelVisual::set_visual_entry(const int index, const Ref<ModelVisualEntry> visual_entry) {
+	ERR_FAIL_INDEX(index, _visual_entries.size());
 
-	_entries[index] = entry;
+	_visual_entries.set(index, visual_entry);
+}
+void ModelVisual::add_visual_entry(const Ref<ModelVisualEntry> visual_entry) {
+	_visual_entries.push_back(visual_entry);
+}
+void ModelVisual::remove_visual_entry(const int index) {
+	ERR_FAIL_INDEX(index, _visual_entries.size());
+
+	_visual_entries.remove(index);
+}
+
+int ModelVisual::get_visual_entry_count() const {
+	return _visual_entries.size();
+}
+
+Vector<Variant> ModelVisual::get_visual_entries() {
+	Vector<Variant> r;
+	for (int i = 0; i < _visual_entries.size(); i++) {
+#if VERSION_MAJOR < 4
+		r.push_back(_visual_entries[i].get_ref_ptr());
+#else
+		r.push_back(_visual_entries[i]);
+#endif
+	}
+	return r;
+}
+void ModelVisual::set_visual_entries(const Vector<Variant> &visual_entries) {
+	_visual_entries.clear();
+	for (int i = 0; i < visual_entries.size(); i++) {
+		Ref<ModelVisualEntry> visual_entry = Ref<ModelVisualEntry>(visual_entries[i]);
+
+		_visual_entries.push_back(visual_entry);
+	}
 }
 
 ModelVisual::ModelVisual() {
@@ -45,9 +79,7 @@ ModelVisual::ModelVisual() {
 }
 
 ModelVisual::~ModelVisual() {
-	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		_entries[i].unref();
-	}
+	_visual_entries.clear();
 }
 
 void ModelVisual::_bind_methods() {
@@ -55,41 +87,15 @@ void ModelVisual::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_layer", "layer"), &ModelVisual::set_layer);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "layer", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_ENTITY_TEXTURE_LAYERS), "set_layer", "get_layer");
 
-	ClassDB::bind_method(D_METHOD("get_visual", "index"), &ModelVisual::get_visual);
-	ClassDB::bind_method(D_METHOD("set_visual", "index", "entry"), &ModelVisual::set_visual);
+	//ModelVisualEntry
+	ClassDB::bind_method(D_METHOD("get_visual_entry", "index"), &ModelVisual::get_visual_entry);
+	ClassDB::bind_method(D_METHOD("set_visual_entry", "index", "data"), &ModelVisual::set_visual_entry);
+	ClassDB::bind_method(D_METHOD("add_visual_entry", "visual_entry"), &ModelVisual::add_visual_entry);
+	ClassDB::bind_method(D_METHOD("remove_visual_entry", "index"), &ModelVisual::remove_visual_entry);
 
-	ADD_GROUP("Visuals", "visual_");
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_root", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_ROOT);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_pelvis", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_PELVIS);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_spine", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_SPINE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_spine_1", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_SPINE_1);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_spine_2", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_SPINE_2);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_neck", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_NECK);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_head", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_HEAD);
+	ClassDB::bind_method(D_METHOD("get_visual_entry_count"), &ModelVisual::get_visual_entry_count);
 
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_clavicle", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_CLAVICLE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_upper_arm", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_UPPER_ARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_forearm", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_FOREARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_hand", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_HAND);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_thumb_base", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_THUMB_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_thumb_end", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_THUMB_END);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_fingers_base", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_FINGERS_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_fingers_end", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_FINGERS_END);
-
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_clavicle", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_CLAVICLE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_upper_arm", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_UPPER_ARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_forearm", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_FOREARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_hand", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_HAND);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_thumb_base", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_THUMB_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_thumb_end", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_THUMB_END);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_fingers_base", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_FINGERS_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_fingers_end", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_FINGERS_END);
-
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_thigh", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_THIGH);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_calf", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_CALF);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_foot", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_FOOT);
-
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_thigh", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_THIGH);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_calf", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_CALF);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_foot", PROPERTY_HINT_RESOURCE_TYPE, "ModelVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_FOOT);
+	ClassDB::bind_method(D_METHOD("get_visual_entries"), &ModelVisual::get_visual_entries);
+	ClassDB::bind_method(D_METHOD("set_visual_entries", "visual_entrys"), &ModelVisual::set_visual_entries);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "get_visual_entries", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visual_entries", "get_visual_entries");
 }

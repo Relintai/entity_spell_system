@@ -35,8 +35,16 @@ public:
 	ItemEnums::EntityTextureLayers get_layer();
 	void set_layer(ItemEnums::EntityTextureLayers layer);
 
-	Ref<ModelVisualEntry> get_visual(int index);
-	void set_visual(int index, Ref<ModelVisualEntry> entry);
+	//ModelVisualEntry
+	Ref<ModelVisualEntry> get_visual_entry(const int index) const;
+	void set_visual_entry(const int index, const Ref<ModelVisualEntry> visual_entry);
+	void add_visual_entry(const Ref<ModelVisualEntry> visual_entry);
+	void remove_visual_entry(const int index);
+
+	int get_visual_entry_count() const;
+
+	Vector<Variant> get_visual_entries();
+	void set_visual_entries(const Vector<Variant> &visual_entries);
 
 	ModelVisual();
 	~ModelVisual();
@@ -46,7 +54,8 @@ protected:
 
 private:
 	ItemEnums::EntityTextureLayers _layer;
-	Ref<ModelVisualEntry> _entries[EntityEnums::SKELETON_POINTS_MAX];
+
+	Vector<Ref<ModelVisualEntry> > _visual_entries;
 };
 
 #endif

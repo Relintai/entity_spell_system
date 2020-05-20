@@ -123,7 +123,7 @@ void CharacterSkeleton3D::add_model_visual(Ref<ModelVisual> vis) {
 	ERR_FAIL_COND(!vis.is_valid());
 
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		Ref<ModelVisualEntry> e = vis->get_visual(i);
+		Ref<ModelVisualEntry> e = vis->get_visual_entry(i);
 
 		if (e.is_valid())
 			add_model_visual_entry(vis, e, i);
@@ -143,7 +143,7 @@ void CharacterSkeleton3D::remove_model_visual(Ref<ModelVisual> vis) {
 		return;
 
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		Ref<ModelVisualEntry> e = vis->get_visual(i);
+		Ref<ModelVisualEntry> e = vis->get_visual_entry(i);
 
 		if (e.is_valid())
 			remove_model_visual_entry(vis, e, i);

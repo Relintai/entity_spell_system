@@ -45,6 +45,15 @@ public:
 	ItemEnums::EntityTextureLayers get_override_layer();
 	void set_override_layer(ItemEnums::EntityTextureLayers layer);
 
+	int get_entity_type();
+	void set_entity_type(int value);
+
+	int get_bone();
+	void set_bone(int value);
+
+	int get_group();
+	void set_group(int value);
+
 #ifdef MESH_DATA_RESOURCE_PRESENT
 	Ref<MeshDataResource> get_mesh(int index);
 	void set_mesh(int index, Ref<MeshDataResource> mesh);
@@ -66,10 +75,15 @@ public:
 	~ModelVisualEntry();
 
 protected:
+	void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 
 private:
 	ItemEnums::EntityTextureLayers _override_layer;
+
+	int _entity_type;
+	int _bone;
+	int _group;
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
 	Ref<MeshDataResource> _mesh[1];
