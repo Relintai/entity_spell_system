@@ -57,6 +57,17 @@ public:
 	Vector<Variant> get_visuals(const int bone_index);
 	void set_visuals(const int bone_index, const Vector<Variant> &visuals);
 
+	//Layer Colors
+	Color get_layer_color(const int index) const;
+	void set_layer_color(const int index, const Color &layer_color);
+	void add_layer_color(const Color &layer_color);
+	void remove_layer_color(const int index);
+
+	int get_layer_color_count() const;
+
+	Vector<Variant> get_layer_colors();
+	void set_layer_colors(const Vector<Variant> &layer_colors);
+
 	//SkinColors
 	Color get_skin_color(const int index) const;
 	void set_skin_color(const int index, const Color skin_color);
@@ -113,6 +124,8 @@ private:
 	Ref<PackedScene> _body;
 
 	Vector<Ref<ModelVisualEntry> > _visuals[EntityEnums::SKELETON_POINTS_MAX];
+	Vector<Color> _layer_colors;
+
 	Vector<Color> _skin_colors;
 	Vector<Ref<ModelVisualEntry> > _hair_styles;
 	Vector<Color> _hair_colors;

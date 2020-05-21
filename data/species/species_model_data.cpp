@@ -24,6 +24,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
+#include "../../singletons/ess.h"
+
 int SpeciesModelData::get_id() {
 	return _id;
 }
@@ -91,6 +93,47 @@ void SpeciesModelData::set_visuals(const int bone_index, const Vector<Variant> &
 		Ref<ModelVisualEntry> visual = Ref<ModelVisualEntry>(visuals[i]);
 
 		_visuals[bone_index].push_back(visual);
+	}
+}
+
+//Layer Colors
+
+Color SpeciesModelData::get_layer_color(const int index) const {
+	ERR_FAIL_INDEX_V(index, _layer_colors.size(), Color());
+
+	return _layer_colors.get(index);
+}
+void SpeciesModelData::set_layer_color(const int index, const Color &layer_color) {
+	ERR_FAIL_INDEX(index, _layer_colors.size());
+
+	_layer_colors.set(index, layer_color);
+}
+void SpeciesModelData::add_layer_color(const Color &layer_color) {
+	_layer_colors.push_back(layer_color);
+}
+void SpeciesModelData::remove_layer_color(const int index) {
+	ERR_FAIL_INDEX(index, _layer_colors.size());
+
+	_layer_colors.remove(index);
+}
+
+int SpeciesModelData::get_layer_color_count() const {
+	return _layer_colors.size();
+}
+
+Vector<Variant> SpeciesModelData::get_layer_colors() {
+	Vector<Variant> r;
+	for (int i = 0; i < _layer_colors.size(); i++) {
+		r.push_back(_layer_colors[i]);
+	}
+	return r;
+}
+void SpeciesModelData::set_layer_colors(const Vector<Variant> &layer_colors) {
+	_layer_colors.clear();
+	for (int i = 0; i < layer_colors.size(); i++) {
+		Color layer_color = Color(layer_colors[i]);
+
+		_layer_colors.push_back(layer_color);
 	}
 }
 
@@ -292,6 +335,18 @@ void SpeciesModelData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_body"), &SpeciesModelData::get_body);
 	ClassDB::bind_method(D_METHOD("set_body", "value"), &SpeciesModelData::set_body);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "body", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_body", "get_body");
+
+	//Layer Colors
+	ClassDB::bind_method(D_METHOD("get_layer_color", "index"), &SpeciesModelData::get_layer_color);
+	ClassDB::bind_method(D_METHOD("set_layer_color", "index", "data"), &SpeciesModelData::set_layer_color);
+	ClassDB::bind_method(D_METHOD("add_layer_color", "layer_color"), &SpeciesModelData::add_layer_color);
+	ClassDB::bind_method(D_METHOD("remove_layer_color", "index"), &SpeciesModelData::remove_layer_color);
+
+	ClassDB::bind_method(D_METHOD("get_layer_color_count"), &SpeciesModelData::get_layer_color_count);
+
+	ClassDB::bind_method(D_METHOD("get_layer_colors"), &SpeciesModelData::get_layer_colors);
+	ClassDB::bind_method(D_METHOD("set_layer_colors", "layer_colors"), &SpeciesModelData::set_layer_colors);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "layer_colors", PROPERTY_HINT_NONE, "17/17:Color", PROPERTY_USAGE_DEFAULT, "Color"), "set_layer_colors", "get_layer_colors");
 
 	//Entries
 	ClassDB::bind_method(D_METHOD("get_visual", "bone_index", "index"), &SpeciesModelData::get_visual);
