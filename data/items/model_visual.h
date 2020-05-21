@@ -32,8 +32,8 @@ class ModelVisual : public Resource {
 	GDCLASS(ModelVisual, Resource);
 
 public:
-	ItemEnums::EntityTextureLayers get_layer();
-	void set_layer(ItemEnums::EntityTextureLayers layer);
+	int get_layer();
+	void set_layer(int layer);
 
 	//ModelVisualEntry
 	Ref<ModelVisualEntry> get_visual_entry(const int index) const;
@@ -50,10 +50,11 @@ public:
 	~ModelVisual();
 
 protected:
+	void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 
 private:
-	ItemEnums::EntityTextureLayers _layer;
+	int _layer;
 
 	Vector<Ref<ModelVisualEntry> > _visual_entries;
 };

@@ -152,9 +152,12 @@ public:
 	PoolStringArray skeletons_bones_get() const;
 	void skeletons_bones_set(const PoolStringArray &value);
 
-	//ModelVisualGroups
+	//Other
 	String model_visual_groups_get() const;
 	void model_visual_groups_set(const String &value);
+
+	String texture_layers_get() const;
+	void texture_layers_set(const String &value);
 
 	ESS();
 	~ESS();
@@ -206,8 +209,9 @@ private:
 	String _entity_types;
 	PoolStringArray _skeletons_bones;
 
-	//ModelVisualGroups
+	//Other
 	String _model_visual_groups;
+	String _texture_layers;
 };
 
 #endif

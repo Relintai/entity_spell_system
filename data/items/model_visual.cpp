@@ -22,10 +22,12 @@ SOFTWARE.
 
 #include "model_visual.h"
 
-ItemEnums::EntityTextureLayers ModelVisual::get_layer() {
+#include "../../singletons/ess.h"
+
+int ModelVisual::get_layer() {
 	return _layer;
 }
-void ModelVisual::set_layer(ItemEnums::EntityTextureLayers layer) {
+void ModelVisual::set_layer(int layer) {
 	_layer = layer;
 }
 
@@ -75,17 +77,25 @@ void ModelVisual::set_visual_entries(const Vector<Variant> &visual_entries) {
 }
 
 ModelVisual::ModelVisual() {
-	_layer = ItemEnums::ENTITY_TEXTURE_LAYER_NONE;
+	_layer = 0;
 }
 
 ModelVisual::~ModelVisual() {
 	_visual_entries.clear();
 }
 
+void ModelVisual::_validate_property(PropertyInfo &property) const {
+	String name = property.name;
+
+	if (name == "layer") {
+		property.hint_string = ESS::get_instance()->texture_layers_get();
+	}
+}
+
 void ModelVisual::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_layer"), &ModelVisual::get_layer);
 	ClassDB::bind_method(D_METHOD("set_layer", "layer"), &ModelVisual::set_layer);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "layer", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_ENTITY_TEXTURE_LAYERS), "set_layer", "get_layer");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "layer", PROPERTY_HINT_ENUM, ""), "set_layer", "get_layer");
 
 	//ModelVisualEntry
 	ClassDB::bind_method(D_METHOD("get_visual_entry", "index"), &ModelVisual::get_visual_entry);

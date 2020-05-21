@@ -29,7 +29,6 @@ const String ItemEnums::BINDING_STRING_ITEM_TYPE_FLAGS = "Equipment,Potion,Herb,
 const String ItemEnums::BINDING_STRING_ITEM_SUB_TYPE = "None,Sword,Axe,Mace,Dagger,Bow,Crossbow,Gun,Wand,Quest Item";
 const String ItemEnums::BINDING_STRING_ITEM_SUB_SUB_TYPE = "None,Two Hand,One Hand,Left Hand,Right Hand";
 const String ItemEnums::BINDING_STRING_ARMOR_TYPE = "None,Cloth,Leather,Mail,Plate";
-const String ItemEnums::BINDING_STRING_ENTITY_TEXTURE_LAYERS = "None,Skin,Underwear,Shirt,Clothes Base,Clothes 1,Clothes 2,Clothes 3,Clothes 4,Clothes 5,Belt,Tabard,Overlay";
 
 String ItemEnums::get_armor_type_string(int type) {
 	switch (type) {

@@ -42,8 +42,8 @@ class ModelVisualEntry : public Resource {
 	GDCLASS(ModelVisualEntry, Resource);
 
 public:
-	ItemEnums::EntityTextureLayers get_override_layer() const;
-	void set_override_layer(const ItemEnums::EntityTextureLayers layer);
+	int get_override_layer() const;
+	void set_override_layer(const int layer);
 
 	int get_entity_type() const;
 	void set_entity_type(const int value);
@@ -109,7 +109,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	ItemEnums::EntityTextureLayers _override_layer;
+	int _override_layer;
 
 	int _entity_type;
 	int _bone;

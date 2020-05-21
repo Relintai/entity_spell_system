@@ -438,12 +438,19 @@ void ESS::skeletons_bones_set(const PoolStringArray &value) {
 	_skeletons_bones = value;
 }
 
-//ModelVisualGroups
+//Other
 String ESS::model_visual_groups_get() const {
 	return _model_visual_groups;
 }
 void ESS::model_visual_groups_set(const String &value) {
 	_model_visual_groups = value;
+}
+
+String ESS::texture_layers_get() const {
+	return _texture_layers;
+}
+void ESS::texture_layers_set(const String &value) {
+	_texture_layers = value;
 }
 
 void ESS::_bind_methods() {
@@ -568,10 +575,14 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("skeletons_bones_set", "value"), &ESS::skeletons_bones_set);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "skeletons_bones"), "skeletons_bones_set", "skeletons_bones_get");
 
-	//ModelVisualGroups
+	//Other
 	ClassDB::bind_method(D_METHOD("model_visual_groups_get"), &ESS::model_visual_groups_get);
 	ClassDB::bind_method(D_METHOD("model_visual_groups_set", "value"), &ESS::model_visual_groups_set);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "model_visual_groups"), "model_visual_groups_set", "model_visual_groups_get");
+
+	ClassDB::bind_method(D_METHOD("texture_layers_get"), &ESS::texture_layers_get);
+	ClassDB::bind_method(D_METHOD("texture_layers_set", "value"), &ESS::texture_layers_set);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "texture_layers"), "texture_layers_set", "texture_layers_get");
 }
 
 ESS::ESS() {
@@ -603,6 +614,8 @@ ESS::ESS() {
 	_skeletons_bones = GLOBAL_DEF("ess/enums/skeletons_bones", PoolStringArray());
 
 	_model_visual_groups = GLOBAL_DEF("ess/enums/model_visual_groups", "None,Bodypart,Alt Bodypart,Attachment");
+
+	_texture_layers = GLOBAL_DEF("ess/enums/texture_layers", "None,Skin,Underwear,Shirt,Clothes Base,Clothes 1,Clothes 2,Clothes 3,Clothes 4,Clothes 5,Belt,Tabard,Overlay");
 
 	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load) {
 		call_deferred("load_all");

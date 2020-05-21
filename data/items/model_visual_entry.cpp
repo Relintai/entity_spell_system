@@ -24,10 +24,10 @@ SOFTWARE.
 
 #include "../../singletons/ess.h"
 
-ItemEnums::EntityTextureLayers ModelVisualEntry::get_override_layer() const {
+int ModelVisualEntry::get_override_layer() const {
 	return _override_layer;
 }
-void ModelVisualEntry::set_override_layer(const ItemEnums::EntityTextureLayers layer) {
+void ModelVisualEntry::set_override_layer(const int layer) {
 	_override_layer = layer;
 }
 
@@ -116,7 +116,7 @@ void ModelVisualEntry::set_size(const int value) {
 }
 
 ModelVisualEntry::ModelVisualEntry() {
-	_override_layer = ItemEnums::ENTITY_TEXTURE_LAYER_NONE;
+	_override_layer = 0;
 
 	_entity_type = 0;
 	_bone = 0;
@@ -232,13 +232,15 @@ void ModelVisualEntry::_validate_property(PropertyInfo &property) const {
 		}
 	} else if (name == "entity_type") {
 		property.hint_string = ESS::get_instance()->entity_types_get();
+	} else if (name == "override_layer") {
+		property.hint_string = ESS::get_instance()->texture_layers_get();
 	}
 }
 
 void ModelVisualEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_override_layer"), &ModelVisualEntry::get_override_layer);
 	ClassDB::bind_method(D_METHOD("set_override_layer", "value"), &ModelVisualEntry::set_override_layer);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "override_layer", PROPERTY_HINT_ENUM, ItemEnums::BINDING_STRING_ENTITY_TEXTURE_LAYERS), "set_override_layer", "get_override_layer");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "override_layer", PROPERTY_HINT_ENUM, ""), "set_override_layer", "get_override_layer");
 
 	ClassDB::bind_method(D_METHOD("get_entity_type"), &ModelVisualEntry::get_entity_type);
 	ClassDB::bind_method(D_METHOD("set_entity_type", "value"), &ModelVisualEntry::set_entity_type);
