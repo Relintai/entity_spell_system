@@ -205,7 +205,7 @@ void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 	e.instance();
 
 	e->set_priority(static_cast<int>(vis->get_layer()));
-	e->set_color(ive->get_color());
+	//e->set_color(ive->get_color());
 	e->set_entry(ive);
 
 	entries.push_back(e);

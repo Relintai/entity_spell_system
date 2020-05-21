@@ -24,91 +24,199 @@ SOFTWARE.
 
 #include "../../singletons/ess.h"
 
-ItemEnums::EntityTextureLayers ModelVisualEntry::get_override_layer() {
+ItemEnums::EntityTextureLayers ModelVisualEntry::get_override_layer() const {
 	return _override_layer;
 }
-void ModelVisualEntry::set_override_layer(ItemEnums::EntityTextureLayers layer) {
+void ModelVisualEntry::set_override_layer(const ItemEnums::EntityTextureLayers layer) {
 	_override_layer = layer;
 }
 
-int ModelVisualEntry::get_entity_type() {
+int ModelVisualEntry::get_entity_type() const {
 	return _entity_type;
 }
-void ModelVisualEntry::set_entity_type(int value) {
+void ModelVisualEntry::set_entity_type(const int value) {
 	_entity_type = value;
 }
 
-int ModelVisualEntry::get_bone() {
+int ModelVisualEntry::get_bone() const {
 	return _bone;
 }
-void ModelVisualEntry::set_bone(int value) {
+void ModelVisualEntry::set_bone(const int value) {
 	_bone = value;
 }
 
-int ModelVisualEntry::get_group() {
+int ModelVisualEntry::get_group() const {
 	return _group;
 }
-void ModelVisualEntry::set_group(int value) {
+void ModelVisualEntry::set_group(const int value) {
 	_group = value;
 }
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
-Ref<MeshDataResource> ModelVisualEntry::get_mesh(int index) {
-	return _mesh[index];
+Ref<MeshDataResource> ModelVisualEntry::get_mesh(const int index) {
+	ERR_FAIL_INDEX_V(index, _entries.size(), Ref<MeshDataResource>());
+
+	return _entries[index].mesh;
 }
-void ModelVisualEntry::set_mesh(int index, Ref<MeshDataResource> mesh) {
-	_mesh[index] = mesh;
+void ModelVisualEntry::set_mesh(const int index, const Ref<MeshDataResource> &mesh) {
+	ERR_FAIL_INDEX(index, _entries.size());
+
+	_entries.write[index].mesh = mesh;
 }
 #endif
 
-Ref<Texture> ModelVisualEntry::get_texture(int index) {
-	return _texture[index];
+Ref<Texture> ModelVisualEntry::get_texture(const int index) {
+	ERR_FAIL_INDEX_V(index, _entries.size(), Ref<Texture>());
+
+	return _entries[index].texture;
 }
-void ModelVisualEntry::set_texture(int index, Ref<Texture> texture) {
-	_texture[index] = texture;
+void ModelVisualEntry::set_texture(const int index, const Ref<Texture> &texture) {
+	ERR_FAIL_INDEX(index, _entries.size());
+
+	_entries.write[index].texture = texture;
 }
 
-Color ModelVisualEntry::get_color() {
-	return _color;
+Color ModelVisualEntry::get_color(const int index) const {
+	ERR_FAIL_INDEX_V(index, _entries.size(), Color());
+
+	return _entries[index].color;
 }
-void ModelVisualEntry::set_color(Color color) {
-	_color = color;
+void ModelVisualEntry::set_color(const int index, const Color &color) {
+	ERR_FAIL_INDEX(index, _entries.size());
+
+	_entries.write[index].color = color;
 }
 
-Ref<PackedScene> ModelVisualEntry::get_effect() {
-	return _effect;
+Ref<PackedScene> ModelVisualEntry::get_attachment(const int index) {
+	ERR_FAIL_INDEX_V(index, _entries.size(), Ref<PackedScene>());
+
+	return _entries[index].attachment;
 }
-void ModelVisualEntry::set_effect(Ref<PackedScene> effect) {
-	_effect = effect;
+void ModelVisualEntry::set_attachment(const int index, const Ref<PackedScene> &attachment) {
+	ERR_FAIL_INDEX(index, _entries.size());
+	_entries.write[index].attachment = attachment;
 }
 
-Vector3 ModelVisualEntry::get_effect_offset(int index) {
-	return _effect_offset[index];
+Transform ModelVisualEntry::get_transform(const int index) const {
+	ERR_FAIL_INDEX_V(index, _entries.size(), Transform());
+
+	return _entries[index].transform;
 }
-void ModelVisualEntry::set_effect_offset(int index, Vector3 offset) {
-	_effect_offset[index] = offset;
+void ModelVisualEntry::set_transform(const int index, const Transform &transform) {
+	ERR_FAIL_INDEX(index, _entries.size());
+
+	_entries.write[index].transform = transform;
+}
+
+int ModelVisualEntry::get_size() const {
+	return _entries.size();
+}
+void ModelVisualEntry::set_size(const int value) {
+	_entries.resize(value);
 }
 
 ModelVisualEntry::ModelVisualEntry() {
 	_override_layer = ItemEnums::ENTITY_TEXTURE_LAYER_NONE;
 
-	_color = Color(1, 1, 1, 1);
-
 	_entity_type = 0;
 	_bone = 0;
 	_group = 0;
+
+	_entries.resize(1);
 }
 
 ModelVisualEntry::~ModelVisualEntry() {
-	for (int i = 0; i < 1; ++i) {
-#ifdef MESH_DATA_RESOURCE_PRESENT
-		_mesh[i].unref();
-#endif
+	_entries.clear();
+}
 
-		_texture[i].unref();
+bool ModelVisualEntry::_set(const StringName &p_name, const Variant &p_value) {
+	String name = p_name;
+
+	if (name.begins_with("entry_")) {
+		int index = name.get_slicec('_', 1).to_int();
+
+		if (index >= _entries.size()) {
+			_entries.resize(index + 1);
+		}
+
+		StringName p = name.get_slicec('/', 1);
+
+		if (p == "texture") {
+			_entries.write[index].texture = p_value;
+
+			return true;
+#ifdef MESH_DATA_RESOURCE_PRESENT
+		} else if (p == "mesh") {
+			_entries.write[index].mesh = p_value;
+
+			return true;
+#endif
+		} else if (p == "color") {
+			_entries.write[index].color = p_value;
+
+			return true;
+		} else if (p == "attachment") {
+			_entries.write[index].attachment = p_value;
+
+			return true;
+		} else if (p == "transform") {
+			_entries.write[index].transform = p_value;
+
+			return true;
+		}
 	}
 
-	_effect.unref();
+	return false;
+}
+bool ModelVisualEntry::_get(const StringName &p_name, Variant &r_ret) const {
+	String name = p_name;
+
+	if (name.begins_with("entry_")) {
+		int index = name.get_slicec('_', 1).to_int();
+
+		if (index >= _entries.size()) {
+			return false;
+		}
+
+		StringName p = name.get_slicec('/', 1);
+
+		if (p == "texture") {
+			r_ret = _entries[index].texture;
+
+			return true;
+#ifdef MESH_DATA_RESOURCE_PRESENT
+		} else if (p == "mesh") {
+			r_ret = _entries[index].mesh;
+
+			return true;
+#endif
+		} else if (p == "color") {
+			r_ret = _entries[index].color;
+
+			return true;
+		} else if (p == "attachment") {
+			r_ret = _entries[index].attachment;
+
+			return true;
+		} else if (p == "transform") {
+			r_ret = _entries[index].transform;
+
+			return true;
+		}
+	}
+
+	return false;
+}
+void ModelVisualEntry::_get_property_list(List<PropertyInfo> *p_list) const {
+	for (int i = 0; i < _entries.size(); ++i) {
+#ifdef MESH_DATA_RESOURCE_PRESENT
+		p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/mesh", PROPERTY_HINT_RESOURCE_TYPE, "MeshDataResource"));
+#endif
+		p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture"));
+		p_list->push_back(PropertyInfo(Variant::COLOR, "entry_" + itos(i) + "/color"));
+		p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/attachment", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"));
+		p_list->push_back(PropertyInfo(Variant::TRANSFORM, "entry_" + itos(i) + "/transform"));
+	}
 }
 
 void ModelVisualEntry::_validate_property(PropertyInfo &property) const {
@@ -147,22 +255,21 @@ void ModelVisualEntry::_bind_methods() {
 #ifdef MESH_DATA_RESOURCE_PRESENT
 	ClassDB::bind_method(D_METHOD("get_mesh", "index"), &ModelVisualEntry::get_mesh);
 	ClassDB::bind_method(D_METHOD("set_mesh", "index", "value"), &ModelVisualEntry::set_mesh);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "mesh", PROPERTY_HINT_RESOURCE_TYPE, "MeshDataResource"), "set_mesh", "get_mesh", 0);
 #endif
 
 	ClassDB::bind_method(D_METHOD("get_texture", "index"), &ModelVisualEntry::get_texture);
 	ClassDB::bind_method(D_METHOD("set_texture", "index", "value"), &ModelVisualEntry::set_texture);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_texture", "get_texture", 0);
 
 	ClassDB::bind_method(D_METHOD("get_color"), &ModelVisualEntry::get_color);
 	ClassDB::bind_method(D_METHOD("set_color", "value"), &ModelVisualEntry::set_color);
-	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "color"), "set_color", "get_color");
 
-	ClassDB::bind_method(D_METHOD("get_effect"), &ModelVisualEntry::get_effect);
-	ClassDB::bind_method(D_METHOD("set_effect", "value"), &ModelVisualEntry::set_effect);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "effect", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_effect", "get_effect");
+	ClassDB::bind_method(D_METHOD("get_attachment"), &ModelVisualEntry::get_attachment);
+	ClassDB::bind_method(D_METHOD("set_attachment", "value"), &ModelVisualEntry::set_attachment);
 
-	ClassDB::bind_method(D_METHOD("get_effect_offset", "index"), &ModelVisualEntry::get_effect_offset);
-	ClassDB::bind_method(D_METHOD("set_effect_offset", "index", "value"), &ModelVisualEntry::set_effect_offset);
-	ADD_PROPERTYI(PropertyInfo(Variant::VECTOR3, "effect_offset"), "set_effect_offset", "get_effect_offset", 0);
+	ClassDB::bind_method(D_METHOD("get_transform", "index"), &ModelVisualEntry::get_transform);
+	ClassDB::bind_method(D_METHOD("set_transform", "index", "value"), &ModelVisualEntry::set_transform);
+
+	ClassDB::bind_method(D_METHOD("get_size"), &ModelVisualEntry::get_size);
+	ClassDB::bind_method(D_METHOD("set_size", "value"), &ModelVisualEntry::set_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_size", "get_size");
 }

@@ -42,39 +42,69 @@ class ModelVisualEntry : public Resource {
 	GDCLASS(ModelVisualEntry, Resource);
 
 public:
-	ItemEnums::EntityTextureLayers get_override_layer();
-	void set_override_layer(ItemEnums::EntityTextureLayers layer);
+	ItemEnums::EntityTextureLayers get_override_layer() const;
+	void set_override_layer(const ItemEnums::EntityTextureLayers layer);
 
-	int get_entity_type();
-	void set_entity_type(int value);
+	int get_entity_type() const;
+	void set_entity_type(const int value);
 
-	int get_bone();
-	void set_bone(int value);
+	int get_bone() const;
+	void set_bone(const int value);
 
-	int get_group();
-	void set_group(int value);
+	int get_group() const;
+	void set_group(const int value);
 
 #ifdef MESH_DATA_RESOURCE_PRESENT
-	Ref<MeshDataResource> get_mesh(int index);
-	void set_mesh(int index, Ref<MeshDataResource> mesh);
+	Ref<MeshDataResource> get_mesh(const int index);
+	void set_mesh(const int index, const Ref<MeshDataResource> &mesh);
 #endif
 
-	Ref<Texture> get_texture(int index);
-	void set_texture(int index, Ref<Texture> texture);
+	Ref<Texture> get_texture(const int index);
+	void set_texture(const int index, const Ref<Texture> &texture);
 
-	Color get_color();
-	void set_color(Color color);
+	Color get_color(const int index) const;
+	void set_color(const int index, const Color &color);
 
-	Ref<PackedScene> get_effect();
-	void set_effect(Ref<PackedScene> effect);
+	Ref<PackedScene> get_attachment(const int index);
+	void set_attachment(const int index, const Ref<PackedScene> &attachment);
 
-	Vector3 get_effect_offset(int index);
-	void set_effect_offset(int index, Vector3 offset);
+	Transform get_transform(const int index) const;
+	void set_transform(const int index, const Transform &transform);
+
+	int get_size() const;
+	void set_size(const int value);
 
 	ModelVisualEntry();
 	~ModelVisualEntry();
 
 protected:
+	struct MVEE {
+#ifdef MESH_DATA_RESOURCE_PRESENT
+		Ref<MeshDataResource> mesh;
+#endif
+		Ref<Texture> texture;
+		Color color;
+
+		Ref<PackedScene> attachment;
+		Transform transform;
+
+		MVEE() {
+			color = Color(1, 1, 1, 1);
+		}
+
+		~MVEE() {
+#ifdef MESH_DATA_RESOURCE_PRESENT
+			mesh.unref();
+#endif
+			texture.unref();
+			attachment.unref();
+		}
+	};
+
+protected:
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
 	void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 
@@ -85,15 +115,7 @@ private:
 	int _bone;
 	int _group;
 
-#ifdef MESH_DATA_RESOURCE_PRESENT
-	Ref<MeshDataResource> _mesh[1];
-#endif
-
-	Ref<Texture> _texture[1];
-	Color _color;
-
-	Ref<PackedScene> _effect;
-	Vector3 _effect_offset[1];
+	Vector<MVEE> _entries;
 };
 
 #endif
