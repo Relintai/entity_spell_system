@@ -23,15 +23,9 @@ SOFTWARE.
 #ifndef SPELL_PROJECTILE_3D
 #define SPELL_PROJECTILE_3D
 
-#include "core/version.h"
+#include "../../defines.h"
 
-#if VERSION_MAJOR < 4
-#include "scene/3d/spatial.h"
-#else
-#include "scene/3d/node_3d.h"
-
-typedef class Node3D Spatial;
-#endif
+#include spatial_h_path
 
 class SpellCastInfo;
 

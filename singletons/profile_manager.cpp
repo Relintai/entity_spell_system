@@ -27,7 +27,7 @@ SOFTWARE.
 
 #include "core/engine.h"
 
-#include "core/version.h"
+#include "../defines.h"
 
 ProfileManager *ProfileManager::_instance;
 
@@ -63,7 +63,6 @@ int ProfileManager::gets_player_profile_count() const {
 	return _s_player_profiles.size();
 }
 Ref<PlayerProfile> ProfileManager::gets_player_profile_index(const int index) {
-
 	return _s_player_profiles.get(index);
 }
 void ProfileManager::adds_player_profile(const Ref<PlayerProfile> &profile) {
@@ -168,15 +167,9 @@ void ProfileManager::from_dict(const Dictionary &dict) {
 
 	clears_player_profiles();
 
-#if VERSION_MAJOR < 4
-	_c_player_profile->disconnect("changed", this, "_on_player_profile_changed");
+	_c_player_profile->DISCONNECT("changed", this, ProfileManager, _on_player_profile_changed);
 	_c_player_profile->from_dict(dict.get("cplayer_profile", Dictionary()));
-	_c_player_profile->connect("changed", this, "_on_player_profile_changed");
-#else
-	_c_player_profile->disconnect("changed", callable_mp(this, &ProfileManager::_on_player_profile_changed));
-	_c_player_profile->from_dict(dict.get("cplayer_profile", Dictionary()));
-	_c_player_profile->connect("changed", callable_mp(this, &ProfileManager::_on_player_profile_changed));
-#endif
+	_c_player_profile->CONNECT("changed", this, ProfileManager, _on_player_profile_changed);
 
 	Array arr = dict.get("splayer_profiles", Array());
 
@@ -186,11 +179,7 @@ void ProfileManager::from_dict(const Dictionary &dict) {
 
 		c->from_dict(arr.get(i));
 
-#if VERSION_MAJOR < 4
-		c->connect("changed", this, "_on_player_profile_changed");
-#else
-		c->connect("changed", callable_mp(this, &ProfileManager::_on_player_profile_changed));
-#endif
+		c->CONNECT("changed", this, ProfileManager, _on_player_profile_changed);
 
 		_s_player_profiles.push_back(c);
 	}
@@ -205,11 +194,7 @@ ProfileManager::ProfileManager() {
 
 	_c_player_profile.instance();
 
-#if VERSION_MAJOR < 4
-	_c_player_profile->connect("changed", this, "_on_player_profile_changed");
-#else
-	_c_player_profile->connect("changed", callable_mp(this, &ProfileManager::_on_player_profile_changed));
-#endif
+	_c_player_profile->CONNECT("changed", this, ProfileManager, _on_player_profile_changed);
 
 	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load)
 		call_deferred("load");
@@ -218,11 +203,7 @@ ProfileManager::ProfileManager() {
 ProfileManager::~ProfileManager() {
 	_instance = NULL;
 
-#if VERSION_MAJOR < 4
-	_c_player_profile->disconnect("changed", this, "_on_player_profile_changed");
-#else
-	_c_player_profile->disconnect("changed", callable_mp(this, &ProfileManager::_on_player_profile_changed));
-#endif
+	_c_player_profile->DISCONNECT("changed", this, ProfileManager, _on_player_profile_changed);
 
 	_s_player_profiles.clear();
 }

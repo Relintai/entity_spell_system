@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "item_container_data.h"
 
-#include "core/version.h"
+#include "../../defines.h"
 
 int ItemContainerData::get_num_container_datas() {
 	return _container_datas.size();
@@ -43,15 +43,7 @@ void ItemContainerData::set_container_data(int index, Ref<ItemContainerDataEntry
 }
 
 Vector<Variant> ItemContainerData::get_container_datas() {
-	Vector<Variant> r;
-	for (int i = 0; i < _container_datas.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_container_datas[i].get_ref_ptr());
-#else
-		r.push_back(_container_datas[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_container_datas);
 }
 void ItemContainerData::set_container_datas(const Vector<Variant> &container_datas) {
 	_container_datas.clear();

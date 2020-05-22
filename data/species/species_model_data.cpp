@@ -26,6 +26,8 @@ SOFTWARE.
 
 #include "../../singletons/ess.h"
 
+#include "../../defines.h"
+
 int SpeciesModelData::get_id() {
 	return _id;
 }
@@ -75,15 +77,7 @@ int SpeciesModelData::get_visual_count(const int bone_index) const {
 Vector<Variant> SpeciesModelData::get_visuals(const int bone_index) {
 	ERR_FAIL_INDEX_V(bone_index, EntityEnums::SKELETON_POINTS_MAX, Vector<Variant>());
 
-	Vector<Variant> r;
-	for (int i = 0; i < _visuals[bone_index].size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_visuals[bone_index][i].get_ref_ptr());
-#else
-		r.push_back(_visuals[bone_index][i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_visuals[bone_index]);
 }
 void SpeciesModelData::set_visuals(const int bone_index, const Vector<Variant> &visuals) {
 	ERR_FAIL_INDEX(bone_index, EntityEnums::SKELETON_POINTS_MAX);
@@ -204,23 +198,10 @@ int SpeciesModelData::get_hair_style_count() const {
 }
 
 Vector<Variant> SpeciesModelData::get_hair_styles() {
-	Vector<Variant> r;
-	for (int i = 0; i < _hair_styles.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_hair_styles[i].get_ref_ptr());
-#else
-		r.push_back(_hair_styles[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_hair_styles);
 }
 void SpeciesModelData::set_hair_styles(const Vector<Variant> &hair_styles) {
-	_hair_styles.clear();
-	for (int i = 0; i < hair_styles.size(); i++) {
-		Ref<ModelVisualEntry> hair_style = Ref<ModelVisualEntry>(hair_styles[i]);
-
-		_hair_styles.push_back(hair_style);
-	}
+	VARIANT_ARRAY_SET(hair_styles, _hair_styles, ModelVisualEntry);
 }
 
 //HairColors
@@ -290,23 +271,10 @@ int SpeciesModelData::get_head_count() const {
 }
 
 Vector<Variant> SpeciesModelData::get_heads() {
-	Vector<Variant> r;
-	for (int i = 0; i < _heads.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_heads[i].get_ref_ptr());
-#else
-		r.push_back(_heads[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_heads);
 }
 void SpeciesModelData::set_heads(const Vector<Variant> &heads) {
-	_heads.clear();
-	for (int i = 0; i < heads.size(); i++) {
-		Ref<ModelVisualEntry> head = Ref<ModelVisualEntry>(heads[i]);
-
-		_heads.push_back(head);
-	}
+	VARIANT_ARRAY_SET(heads, _heads, ModelVisualEntry);
 }
 
 SpeciesModelData::SpeciesModelData() {

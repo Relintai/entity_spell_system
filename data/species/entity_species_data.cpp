@@ -74,23 +74,10 @@ int EntitySpeciesData::get_model_data_count() const {
 }
 
 Vector<Variant> EntitySpeciesData::get_model_datas() {
-	Vector<Variant> r;
-	for (int i = 0; i < _model_datas.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_model_datas[i].get_ref_ptr());
-#else
-		r.push_back(_model_datas[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_model_datas);
 }
 void EntitySpeciesData::set_model_datas(const Vector<Variant> &model_datas) {
-	_model_datas.clear();
-	for (int i = 0; i < model_datas.size(); i++) {
-		Ref<SpeciesModelData> model_data = Ref<SpeciesModelData>(model_datas[i]);
-
-		_model_datas.push_back(model_data);
-	}
+	VARIANT_ARRAY_SET(model_datas, _model_datas, SpeciesModelData);
 }
 
 //Spells
@@ -119,23 +106,10 @@ int EntitySpeciesData::get_spell_count() const {
 }
 
 Vector<Variant> EntitySpeciesData::get_spells() {
-	Vector<Variant> r;
-	for (int i = 0; i < _spells.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_spells[i].get_ref_ptr());
-#else
-		r.push_back(_spells[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_spells);
 }
 void EntitySpeciesData::set_spells(const Vector<Variant> &spells) {
-	_spells.clear();
-	for (int i = 0; i < spells.size(); i++) {
-		Ref<Spell> spell = Ref<Spell>(spells[i]);
-
-		_spells.push_back(spell);
-	}
+	VARIANT_ARRAY_SET(spells, _spells, Spell);
 }
 
 //Auras
@@ -164,15 +138,7 @@ int EntitySpeciesData::get_aura_count() const {
 }
 
 Vector<Variant> EntitySpeciesData::get_auras() {
-	Vector<Variant> r;
-	for (int i = 0; i < _auras.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_auras[i].get_ref_ptr());
-#else
-		r.push_back(_auras[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_auras);
 }
 void EntitySpeciesData::set_auras(const Vector<Variant> &auras) {
 	_auras.clear();

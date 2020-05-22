@@ -29,7 +29,7 @@ SOFTWARE.
 
 #include "../../singletons/ess.h"
 
-#include "core/version.h"
+#include "../../defines.h"
 
 int ItemTemplate::get_id() const {
 	return _id;
@@ -178,23 +178,10 @@ void ItemTemplate::set_teaches_spell(const int index, const Ref<Spell> &spell) {
 }
 
 Vector<Variant> ItemTemplate::get_teaches_spells() {
-	Vector<Variant> r;
-	for (int i = 0; i < _teaches_spells.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_teaches_spells[i].get_ref_ptr());
-#else
-		r.push_back(_teaches_spells[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_teaches_spells);
 }
 void ItemTemplate::set_teaches_spells(const Vector<Variant> &spells) {
-	_teaches_spells.clear();
-	for (int i = 0; i < spells.size(); i++) {
-		Ref<Spell> spell = Ref<Spell>(spells[i]);
-
-		_teaches_spells.push_back(spell);
-	}
+	VARIANT_ARRAY_SET(spells, _teaches_spells, Spell);
 }
 
 ////    GRANTS SPELLS    ////
@@ -218,23 +205,10 @@ void ItemTemplate::set_grants_spell(const int index, const Ref<Spell> &spell) {
 }
 
 Vector<Variant> ItemTemplate::get_grants_spells() {
-	Vector<Variant> r;
-	for (int i = 0; i < _grants_spells.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_grants_spells[i].get_ref_ptr());
-#else
-		r.push_back(_grants_spells[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_grants_spells);
 }
 void ItemTemplate::set_grants_spells(const Vector<Variant> &spells) {
-	_grants_spells.clear();
-	for (int i = 0; i < spells.size(); i++) {
-		Ref<Spell> spell = Ref<Spell>(spells[i]);
-
-		_grants_spells.push_back(spell);
-	}
+	VARIANT_ARRAY_SET(spells, _grants_spells, Spell);
 }
 
 ////    AURAS    ////
@@ -258,23 +232,10 @@ void ItemTemplate::set_aura(const int index, const Ref<Aura> &aura) {
 }
 
 Vector<Variant> ItemTemplate::get_auras() {
-	Vector<Variant> r;
-	for (int i = 0; i < _auras.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_auras[i].get_ref_ptr());
-#else
-		r.push_back(_auras[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_auras);
 }
 void ItemTemplate::set_auras(const Vector<Variant> &auras) {
-	_auras.clear();
-	for (int i = 0; i < auras.size(); i++) {
-		Ref<Aura> spell = Ref<Aura>(auras[i]);
-
-		_auras.push_back(spell);
-	}
+	VARIANT_ARRAY_SET(auras, _auras, Aura);
 }
 
 //Required Skills
@@ -294,23 +255,10 @@ void ItemTemplate::set_required_skill(const int index, const Ref<Aura> &aura) {
 }
 
 Vector<Variant> ItemTemplate::get_required_skills() {
-	Vector<Variant> r;
-	for (int i = 0; i < _required_skills.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_required_skills[i].get_ref_ptr());
-#else
-		r.push_back(_required_skills[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_required_skills);
 }
 void ItemTemplate::set_required_skills(const Vector<Variant> &skills) {
-	_required_skills.clear();
-	for (int i = 0; i < skills.size(); i++) {
-		Ref<Aura> skill = Ref<Aura>(skills[i]);
-
-		_required_skills.push_back(skill);
-	}
+	VARIANT_ARRAY_SET(skills, _required_skills, Aura);
 }
 
 //use spell

@@ -24,20 +24,7 @@ SOFTWARE.
 
 #include "../data/items/model_visual.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR >= 4
-#include "servers/rendering_server.h"
-
-typedef class RenderingServer VisualServer;
-typedef class RenderingServer VS;
-
-#define PoolVector3Array PackedVector3Array
-#define PoolVector2Array PackedVector2Array
-#define PoolColorArray PackedColorArray
-#define PoolIntArray PackedInt32Array
-#define PoolRealArray PackedFloat32Array
-#endif
+#include "../defines.h"
 
 int CharacterSkeleton3D::get_model_index() {
 	return _model_index;
@@ -190,7 +177,7 @@ void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 
 	int target_bone_idx = target_bone;
 
-	Vector<Ref<SkeletonModelEntry> > &entries = _entries[target_bone_idx];
+	Vector<Ref<SkeletonModelEntry>> &entries = _entries[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {
 		Ref<SkeletonModelEntry> e = entries.get(i);
@@ -218,7 +205,7 @@ void CharacterSkeleton3D::remove_model_visual_entry(Ref<ModelVisual> vis, Ref<Mo
 
 	int target_bone_idx = target_bone;
 
-	Vector<Ref<SkeletonModelEntry> > &entries = _entries[target_bone_idx];
+	Vector<Ref<SkeletonModelEntry>> &entries = _entries[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {
 		Ref<SkeletonModelEntry> e = entries.get(i);
@@ -252,7 +239,7 @@ int CharacterSkeleton3D::get_model_entry_count(const int bone_index) {
 
 void CharacterSkeleton3D::sort_layers() {
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		Vector<Ref<SkeletonModelEntry> > &entries = _entries[i];
+		Vector<Ref<SkeletonModelEntry>> &entries = _entries[i];
 
 		entries.sort_custom<_ModelEntryComparator>();
 	}
@@ -340,7 +327,7 @@ Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 	PoolVector2Array uvs = arr[VisualServer::ARRAY_TEX_UV];
 	PoolColorArray colors = arr[VisualServer::ARRAY_COLOR];
 
-#if VERSION_MAJOR < 4
+#if !GODOT4
 	img->lock();
 #endif
 
@@ -353,7 +340,7 @@ Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 		colors.set(i, colors[i] * c * mul_color);
 	}
 
-#if VERSION_MAJOR < 4
+#if !GODOT4
 	img->unlock();
 #endif
 
@@ -391,7 +378,6 @@ void CharacterSkeleton3D::_notification(int p_what) {
 				build_model();
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
-
 		} break;
 	}
 }

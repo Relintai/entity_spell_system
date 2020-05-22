@@ -60,15 +60,7 @@ void ESSResourceDBStatic::add_entity_resource(Ref<EntityResourceData> cls) {
 	ESSResourceDB::add_entity_resource(cls);
 }
 Vector<Variant> ESSResourceDBStatic::get_entity_resources() const {
-	Vector<Variant> r;
-	for (int i = 0; i < _entity_resources.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_entity_resources[i].get_ref_ptr());
-#else
-		r.push_back(_entity_resources[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_entity_resources);
 }
 void ESSResourceDBStatic::set_entity_resources(const Vector<Variant> &data) {
 	_entity_resources.clear();
@@ -102,15 +94,7 @@ void ESSResourceDBStatic::add_entity_skill(Ref<EntitySkillData> cls) {
 	ESSResourceDB::add_entity_skill(cls);
 }
 Vector<Variant> ESSResourceDBStatic::get_entity_skills() const {
-	Vector<Variant> r;
-	for (int i = 0; i < _entity_skills.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_entity_skills[i].get_ref_ptr());
-#else
-		r.push_back(_entity_skills[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_entity_skills);
 }
 void ESSResourceDBStatic::set_entity_skills(const Vector<Variant> &data) {
 	_entity_skills.clear();
@@ -144,15 +128,7 @@ void ESSResourceDBStatic::add_entity_data(Ref<EntityData> cls) {
 	ESSResourceDB::add_entity_data(cls);
 }
 Vector<Variant> ESSResourceDBStatic::get_entity_datas() const {
-	Vector<Variant> r;
-	for (int i = 0; i < _entity_datas.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_entity_datas[i].get_ref_ptr());
-#else
-		r.push_back(_entity_datas[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_entity_datas);
 }
 void ESSResourceDBStatic::set_entity_datas(const Vector<Variant> &data) {
 	_entity_datas.clear();
@@ -187,15 +163,7 @@ void ESSResourceDBStatic::add_spell(Ref<Spell> spell) {
 	ESSResourceDB::add_spell(spell);
 }
 Vector<Variant> ESSResourceDBStatic::get_spells() const {
-	Vector<Variant> r;
-	for (int i = 0; i < _spells.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_spells[i].get_ref_ptr());
-#else
-		r.push_back(_spells[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_spells);
 }
 void ESSResourceDBStatic::set_spells(const Vector<Variant> &data) {
 	_spells.clear();
@@ -233,15 +201,7 @@ int ESSResourceDBStatic::get_aura_count() {
 }
 
 Vector<Variant> ESSResourceDBStatic::get_auras() const {
-	Vector<Variant> r;
-	for (int i = 0; i < _auras.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_auras[i].get_ref_ptr());
-#else
-		r.push_back(_auras[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_auras);
 }
 void ESSResourceDBStatic::set_auras(const Vector<Variant> &data) {
 	_auras.clear();
@@ -280,15 +240,7 @@ int ESSResourceDBStatic::get_craft_recipe_count() {
 }
 
 Vector<Variant> ESSResourceDBStatic::get_craft_recipes() const {
-	Vector<Variant> r;
-	for (int i = 0; i < _craft_recipes.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_craft_recipes[i].get_ref_ptr());
-#else
-		r.push_back(_craft_recipes[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_craft_recipes);
 }
 void ESSResourceDBStatic::set_craft_recipes(const Vector<Variant> &data) {
 	_craft_recipes.clear();
@@ -325,15 +277,7 @@ int ESSResourceDBStatic::get_item_template_count() {
 	return _item_templates.size();
 }
 Vector<Variant> ESSResourceDBStatic::get_item_templates() const {
-	Vector<Variant> r;
-	for (int i = 0; i < _item_templates.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_item_templates[i].get_ref_ptr());
-#else
-		r.push_back(_item_templates[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_item_templates);
 }
 void ESSResourceDBStatic::set_item_templates(const Vector<Variant> &data) {
 	_item_templates.clear();
@@ -367,15 +311,7 @@ int ESSResourceDBStatic::get_entity_species_data_count() {
 	return _entity_species_datas.size();
 }
 Vector<Variant> ESSResourceDBStatic::get_entity_species_datas() const {
-	Vector<Variant> r;
-	for (int i = 0; i < _entity_species_datas.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_entity_species_datas[i].get_ref_ptr());
-#else
-		r.push_back(_entity_species_datas[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_entity_species_datas);
 }
 void ESSResourceDBStatic::set_entity_species_datas(const Vector<Variant> &data) {
 	_entity_species_datas.clear();

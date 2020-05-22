@@ -31,13 +31,7 @@ SOFTWARE.
 
 #include "../data/entities/xp_data.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR >= 4
-#define PoolStringArray PackedStringArray
-
-#define POOL_STRING_ARRAY PACKED_STRING_ARRAY
-#endif
+#include "../defines.h"
 
 class Aura;
 class Spell;
@@ -130,14 +124,14 @@ protected:
 private:
 	bool _remap_ids;
 
-	Vector<Ref<EntityResourceData> > _entity_resources;
-	Vector<Ref<EntitySkillData> > _entity_skills;
-	Vector<Ref<EntityData> > _entity_datas;
-	Vector<Ref<Spell> > _spells;
-	Vector<Ref<Aura> > _auras;
-	Vector<Ref<CraftRecipe> > _craft_recipes;
-	Vector<Ref<ItemTemplate> > _item_templates;
-	Vector<Ref<EntitySpeciesData> > _entity_species_datas;
+	Vector<Ref<EntityResourceData>> _entity_resources;
+	Vector<Ref<EntitySkillData>> _entity_skills;
+	Vector<Ref<EntityData>> _entity_datas;
+	Vector<Ref<Spell>> _spells;
+	Vector<Ref<Aura>> _auras;
+	Vector<Ref<CraftRecipe>> _craft_recipes;
+	Vector<Ref<ItemTemplate>> _item_templates;
+	Vector<Ref<EntitySpeciesData>> _entity_species_datas;
 };
 
 #endif

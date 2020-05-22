@@ -33,13 +33,7 @@ SOFTWARE.
 
 #include "core/bind/core_bind.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR >= 4
-#define PoolStringArray PackedStringArray
-
-#define POOL_STRING_ARRAY PACKED_STRING_ARRAY
-#endif
+#include "../defines.h"
 
 class ESSResourceDB;
 class ESSEntitySpawner;

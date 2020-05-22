@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "player_profile.h"
 
-#include "core/version.h"
+#include "../defines.h"
 
 const String PlayerProfile::DEFAULT_PROFILE_FILE_NAME = "default.profile";
 
@@ -61,11 +61,7 @@ Ref<ClassProfile> PlayerProfile::get_class_profile_index(const int index) {
 }
 
 void PlayerProfile::add_class_profile(Ref<ClassProfile> profile) {
-#if VERSION_MAJOR < 4
-	profile->connect("changed", this, "_on_class_profile_changed");
-#else
-	profile->connect("changed", callable_mp(this, &PlayerProfile::_on_class_profile_changed));
-#endif
+	profile->CONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
 
 	_class_profiles.push_back(profile);
 
@@ -74,11 +70,7 @@ void PlayerProfile::add_class_profile(Ref<ClassProfile> profile) {
 
 void PlayerProfile::clear_class_profiles() {
 	for (int i = 0; i < _class_profiles.size(); ++i) {
-#if VERSION_MAJOR < 4
-		_class_profiles.get(i)->disconnect("changed", this, "_on_class_profile_changed");
-#else
-		_class_profiles.get(i)->disconnect("changed", callable_mp(this, &PlayerProfile::_on_class_profile_changed));
-#endif
+		_class_profiles.get(i)->DISCONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
 	}
 
 	_class_profiles.clear();
@@ -87,19 +79,14 @@ void PlayerProfile::clear_class_profiles() {
 }
 
 void PlayerProfile::remove_class_profile(const int index) {
-
-#if VERSION_MAJOR < 4
-	_class_profiles.get(index)->disconnect("changed", this, "_on_class_profile_changed");
-#else
-	_class_profiles.get(index)->disconnect("changed", callable_mp(this, &PlayerProfile::_on_class_profile_changed));
-#endif
+	_class_profiles.get(index)->DISCONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
 
 	_class_profiles.remove(index);
 
 	emit_change();
 }
 
-Vector<Ref<ClassProfile> > &PlayerProfile::get_class_profiles() {
+Vector<Ref<ClassProfile>> &PlayerProfile::get_class_profiles() {
 	return _class_profiles;
 }
 
@@ -114,11 +101,7 @@ Ref<ClassProfile> PlayerProfile::get_class_profile(const StringName &class_path)
 
 	class_profile->load_defaults();
 
-#if VERSION_MAJOR < 4
-	class_profile->connect("changed", this, "_on_class_profile_changed");
-#else
-	class_profile->connect("changed", callable_mp(this, &PlayerProfile::_on_class_profile_changed));
-#endif
+	class_profile->CONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
 
 	_class_profiles.push_back(Ref<ClassProfile>(class_profile));
 
@@ -176,11 +159,7 @@ void PlayerProfile::from_dict(const Dictionary &dict) {
 
 		c->from_dict(arr.get(i));
 
-#if VERSION_MAJOR < 4
-		c->connect("changed", this, "_on_class_profile_changed");
-#else
-		c->connect("changed", callable_mp(this, &PlayerProfile::_on_class_profile_changed));
-#endif
+		c->CONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
 
 		_class_profiles.push_back(c);
 	}
@@ -208,11 +187,7 @@ void PlayerProfile::load_defaults() {
 	for (int i = 0; i < _class_profiles.size(); ++i) {
 		_class_profiles.get(i)->load_defaults();
 
-#if VERSION_MAJOR < 4
-		_class_profiles.get(i)->connect("changed", this, "_on_class_profile_changed");
-#else
-		_class_profiles.get(i)->connect("changed", callable_mp(this, &PlayerProfile::_on_class_profile_changed));
-#endif
+		_class_profiles.get(i)->CONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
 	}
 
 	emit_change();

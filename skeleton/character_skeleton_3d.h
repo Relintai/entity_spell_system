@@ -37,13 +37,11 @@ SOFTWARE.
 
 #include "../data/items/model_visual_entry.h"
 
-#include "core/version.h"
+#include "../defines.h"
 
-#if VERSION_MAJOR < 4
-#include "scene/3d/spatial.h"
-#else
-#include "scene/3d/node_3d.h"
-#define Spatial Node3D
+#include spatial_h_path
+
+#if GODOT4
 #define Texture Texture2D
 #endif
 
@@ -129,8 +127,8 @@ private:
 	Node *_bone_nodes[EntityEnums::SKELETON_POINTS_MAX];
 
 	bool _model_dirty;
-	Vector<Ref<ModelVisual> > _model_visuals;
-	Vector<Ref<SkeletonModelEntry> > _entries[EntityEnums::SKELETON_POINTS_MAX];
+	Vector<Ref<ModelVisual>> _model_visuals;
+	Vector<Ref<SkeletonModelEntry>> _entries[EntityEnums::SKELETON_POINTS_MAX];
 };
 
 #endif

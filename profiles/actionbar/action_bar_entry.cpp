@@ -24,11 +24,7 @@ SOFTWARE.
 
 #include "action_bar_profile.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR >= 4
-#define REAL FLOAT
-#endif
+#include "../../defines.h"
 
 Ref<ActionBarProfile> ActionBarEntry::get_owner() {
 	return Ref<ActionBarProfile>(_owner);

@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "vendor_item_data.h"
 
-#include "core/version.h"
+#include "../../defines.h"
 
 int VendorItemData::get_num_vendor_datas() {
 	return _vendor_datas.size();
@@ -40,15 +40,7 @@ void VendorItemData::set_vendor_data(int index, Ref<VendorItemDataEntry> vendor_
 }
 
 Vector<Variant> VendorItemData::get_vendor_datas() {
-	Vector<Variant> r;
-	for (int i = 0; i < _vendor_datas.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_vendor_datas[i].get_ref_ptr());
-#else
-		r.push_back(_vendor_datas[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_vendor_datas);
 }
 void VendorItemData::set_vendor_datas(const Vector<Variant> &vendor_datas) {
 	_vendor_datas.clear();

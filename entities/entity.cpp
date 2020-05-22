@@ -45,6 +45,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
+#include "../defines.h"
+
 NodePath Entity::get_body_path() {
 	return _body_path;
 }
@@ -53,13 +55,8 @@ void Entity::set_body_path(NodePath value) {
 
 	set_body(get_node_or_null(_body_path));
 
-#if VERSION_MAJOR < 4
-	if (ObjectDB::instance_validate(_body))
+	if (INSTANCE_VALIDATE(_body))
 		_body->set_owner(this);
-#else
-	if (_body == NULL)
-		_body->set_owner(this);
-#endif
 }
 Node *Entity::get_body() {
 	return _body;
@@ -113,11 +110,7 @@ void Entity::setc_guid(int value) {
 //Transforms
 Transform Entity::get_transform_3d(bool only_stored) const {
 	if (!only_stored && _body_3d) {
-#if VERSION_MAJOR < 4
-		ERR_FAIL_COND_V(!ObjectDB::instance_validate(_body_3d), _transform);
-#else
-		ERR_FAIL_COND_V(!_body_3d, _transform);
-#endif
+		ERR_FAIL_COND_V(!INSTANCE_VALIDATE(_body_3d), _transform);
 
 		return _body_3d->get_transform();
 	}
@@ -126,11 +119,7 @@ Transform Entity::get_transform_3d(bool only_stored) const {
 }
 void Entity::set_transform_3d(const Transform &transform, bool only_stored) {
 	if (!only_stored && _body_3d) {
-#if VERSION_MAJOR < 4
-		ERR_FAIL_COND(!ObjectDB::instance_validate(_body_3d));
-#else
-		ERR_FAIL_COND(!_body_3d);
-#endif
+		ERR_FAIL_COND(!INSTANCE_VALIDATE(_body_3d));
 
 		return _body_3d->set_transform(transform);
 	}
@@ -140,11 +129,7 @@ void Entity::set_transform_3d(const Transform &transform, bool only_stored) {
 
 Transform2D Entity::get_transform_2d(bool only_stored) const {
 	if (!only_stored && _body_2d) {
-#if VERSION_MAJOR < 4
-		ERR_FAIL_COND_V(!ObjectDB::instance_validate(_body_2d), _transform_2d);
-#else
-		ERR_FAIL_COND_V(!_body_2d, _transform_2d);
-#endif
+		ERR_FAIL_COND_V(!INSTANCE_VALIDATE(_body_2d), _transform_2d);
 
 		return _body_2d->get_transform();
 	}
@@ -153,11 +138,7 @@ Transform2D Entity::get_transform_2d(bool only_stored) const {
 }
 void Entity::set_transform_2d(const Transform2D &transform, bool only_stored) {
 	if (!only_stored && _body_2d) {
-#if VERSION_MAJOR < 4
-		ERR_FAIL_COND(!ObjectDB::instance_validate(_body_2d));
-#else
-		ERR_FAIL_COND(!_body_2d);
-#endif
+		ERR_FAIL_COND(!INSTANCE_VALIDATE(_body_2d));
 
 		return _body_2d->set_transform(_transform_2d);
 	}
@@ -203,20 +184,12 @@ void Entity::setc_entity_type(int value) {
 EntityEnums::EntityRelationType Entity::gets_relation_to_bind(Node *to) {
 	Entity *e = Object::cast_to<Entity>(to);
 
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND_V(!ObjectDB::instance_validate(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
-#else
-	ERR_FAIL_COND_V(e == NULL, EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
-#endif
+	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
 
 	return gets_relation_to(e);
 }
 EntityEnums::EntityRelationType Entity::gets_relation_to(Entity *to) {
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND_V(!ObjectDB::instance_validate(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
-#else
-	ERR_FAIL_COND_V(to == NULL, EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
-#endif
+	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
 
 	return static_cast<EntityEnums::EntityRelationType>(static_cast<int>(call("_gets_relation_to", to)));
 }
@@ -231,20 +204,12 @@ EntityEnums::EntityRelationType Entity::_gets_relation_to(Node *to) {
 EntityEnums::EntityRelationType Entity::getc_relation_to_bind(Node *to) {
 	Entity *e = Object::cast_to<Entity>(to);
 
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND_V(!ObjectDB::instance_validate(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
-#else
-	ERR_FAIL_COND_V(e == NULL, EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
-#endif
+	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(e), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
 
 	return getc_relation_to(e);
 }
 EntityEnums::EntityRelationType Entity::getc_relation_to(Entity *to) {
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND_V(!ObjectDB::instance_validate(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
-#else
-	ERR_FAIL_COND_V(to == NULL, EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
-#endif
+	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(to), EntityEnums::ENTITY_RELATION_TYPE_NEUTRAL);
 
 	return static_cast<EntityEnums::EntityRelationType>(static_cast<int>(call("_getc_relation_to", to)));
 }
@@ -331,12 +296,7 @@ int Entity::getc_model_index() {
 void Entity::setc_model_index(int value) {
 	_c_model_index = value;
 
-#if VERSION_MAJOR < 4
-	if (ObjectDB::instance_validate(_character_skeleton)) {
-#else
-	if (_character_skeleton != NULL) {
-#endif
-
+	if (INSTANCE_VALIDATE(_character_skeleton)) {
 		if (_character_skeleton->has_method("set_model_index"))
 			_character_skeleton->call("set_model_index", _c_model_index);
 	}
@@ -898,11 +858,7 @@ void Entity::sets_ai(Ref<EntityAI> value) {
 ////    Pets    ////
 
 void Entity::pet_adds(Entity *entity) {
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
-#else
-	ERR_FAIL_COND(entity == NULL);
-#endif
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
 
 	//the owner always want to see his pet, and you pet will always want to see the owner
 	sees_adds(entity);
@@ -944,20 +900,12 @@ void Entity::pet_removes_index(int index) {
 	for (int i = 0; i < _s_pets.size(); ++i) {
 		Entity *pet = _s_pets.get(index);
 
-#if VERSION_MAJOR < 4
-		ERR_CONTINUE(!ObjectDB::instance_validate(pet));
-#else
-		ERR_CONTINUE(pet == NULL);
-#endif
+		ERR_CONTINUE(!INSTANCE_VALIDATE(pet));
 
 		_s_pets.get(i)->pet_sets_formation_index(i);
 	}
 
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
-#else
-	ERR_FAIL_COND(entity == NULL);
-#endif
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
 
 	entity->pet_sets_owner(NULL);
 
@@ -990,21 +938,13 @@ void Entity::pet_addc_path(NodePath path) {
 
 	Entity *entity = Object::cast_to<Entity>(n);
 
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
-#else
-	ERR_FAIL_COND(entity == NULL);
-#endif
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
 
 	pet_addc(entity);
 }
 
 void Entity::pet_addc(Entity *entity) {
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
-#else
-	ERR_FAIL_COND(entity == NULL);
-#endif
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
 
 	_c_pets.push_back(entity);
 
@@ -2284,12 +2224,7 @@ void Entity::_equip_applyc_item(Ref<ItemInstance> item) {
 
 	ERR_FAIL_COND(!it.is_valid());
 
-#if VERSION_MAJOR < 4
-	if (it->get_model_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
-#else
-	if (it->get_model_visual().is_valid() && _character_skeleton == NULL) {
-#endif
-
+	if (it->get_model_visual().is_valid() && INSTANCE_VALIDATE(_character_skeleton)) {
 		if (_character_skeleton->has_method("add_model_visual"))
 			_character_skeleton->call("add_model_visual", it->get_model_visual());
 	}
@@ -2301,12 +2236,7 @@ void Entity::_equip_deapplyc_item(Ref<ItemInstance> item) {
 
 	ERR_FAIL_COND(!it.is_valid());
 
-#if VERSION_MAJOR < 4
-	if (it->get_model_visual().is_valid() && ObjectDB::instance_validate(_character_skeleton)) {
-#else
-	if (it->get_model_visual().is_valid() && _character_skeleton == NULL) {
-#endif
-
+	if (it->get_model_visual().is_valid() && INSTANCE_VALIDATE(_character_skeleton)) {
 		if (_character_skeleton->has_method("remove_model_visual"))
 			_character_skeleton->call("remove_model_visual", it->get_model_visual());
 	}
@@ -2707,12 +2637,7 @@ bool Entity::canc_interact() {
 		return call("_canc_interact");
 	}
 
-#if VERSION_MAJOR < 4
-	if (!ObjectDB::instance_validate(_c_target)) {
-#else
-	if (_c_target == NULL) {
-#endif
-
+	if (!INSTANCE_VALIDATE(_c_target)) {
 		return false;
 	}
 
@@ -3541,12 +3466,7 @@ Ref<AuraData> Entity::aura_gets_with_group_by(Entity *caster, Ref<AuraGroup> aur
 	return Ref<AuraData>();
 }
 Ref<AuraData> Entity::aura_gets_with_group_by_bind(Node *caster, Ref<AuraGroup> aura_group) {
-#if VERSION_MAJOR < 4
-	if (!ObjectDB::instance_validate(caster)) {
-#else
-	if (caster == NULL) {
-#endif
-
+	if (!INSTANCE_VALIDATE(caster)) {
 		return Ref<AuraData>();
 	}
 
@@ -3951,17 +3871,17 @@ void Entity::cast_spell_successc(Ref<SpellCastInfo> info) {
 }
 
 ////    Cooldowns    ////
-Vector<Ref<Cooldown> > *Entity::cooldowns_gets() {
+Vector<Ref<Cooldown>> *Entity::cooldowns_gets() {
 	return &_s_cooldowns;
 }
-Vector<Ref<Cooldown> > *Entity::cooldowns_getc() {
+Vector<Ref<Cooldown>> *Entity::cooldowns_getc() {
 	return &_c_cooldowns;
 }
 
-HashMap<int, Ref<Cooldown> > *Entity::cooldown_get_maps() {
+HashMap<int, Ref<Cooldown>> *Entity::cooldown_get_maps() {
 	return &_s_cooldown_map;
 }
-HashMap<int, Ref<Cooldown> > *Entity::cooldown_get_mapc() {
+HashMap<int, Ref<Cooldown>> *Entity::cooldown_get_mapc() {
 	return &_c_cooldown_map;
 }
 
@@ -4105,10 +4025,10 @@ int Entity::cooldown_getc_count() {
 }
 
 //Category Cooldowns
-Vector<Ref<CategoryCooldown> > Entity::category_cooldowns_gets() {
+Vector<Ref<CategoryCooldown>> Entity::category_cooldowns_gets() {
 	return _s_category_cooldowns;
 }
-Vector<Ref<CategoryCooldown> > Entity::category_cooldowns_getc() {
+Vector<Ref<CategoryCooldown>> Entity::category_cooldowns_getc() {
 	return _c_category_cooldowns;
 }
 
@@ -4485,13 +4405,8 @@ void Entity::skill_adds(Ref<EntitySkill> skill) {
 	if (skill_hass(skill))
 		return;
 
-#if VERSION_MAJOR < 4
-	skill->connect("current_changed", this, "skill_scurrent_changed");
-	skill->connect("max_changed", this, "skill_smax_changed");
-#else
-	skill->connect("current_changed", callable_mp(this, &Entity::skill_scurrent_changed));
-	skill->connect("max_changed", callable_mp(this, &Entity::skill_smax_changed));
-#endif
+	skill->CONNECT("current_changed", this, Entity, skill_scurrent_changed);
+	skill->CONNECT("max_changed", this, Entity, skill_smax_changed);
 
 	_s_skills.push_back(skill);
 
@@ -4716,12 +4631,7 @@ Entity *Entity::gets_target() {
 void Entity::sets_target(Node *p_target) {
 	Entity *original_target = _s_target;
 
-#if VERSION_MAJOR < 4
-	if (!ObjectDB::instance_validate(original_target)) {
-#else
-	if (original_target == NULL) {
-#endif
-
+	if (!INSTANCE_VALIDATE(original_target)) {
 		original_target = NULL;
 		_s_target = NULL;
 	}
@@ -4771,12 +4681,7 @@ Entity *Entity::getc_target() {
 void Entity::setc_target(Node *p_target) {
 	Entity *original_target = _c_target;
 
-#if VERSION_MAJOR < 4
-	if (!ObjectDB::instance_validate(original_target)) {
-#else
-	if (original_target == NULL) {
-#endif
-
+	if (!INSTANCE_VALIDATE(original_target)) {
 		original_target = NULL;
 		_c_target = NULL;
 	}
@@ -5046,41 +4951,23 @@ Ref<Bag> Entity::gets_bag() const {
 }
 void Entity::sets_bag(const Ref<Bag> bag) {
 	if (_s_bag.is_valid()) {
-#if VERSION_MAJOR < 4
-		_s_bag->disconnect("item_added", this, "notification_item_sadded");
-		_s_bag->disconnect("item_removed", this, "notification_item_sremoved");
-		_s_bag->disconnect("item_swapped", this, "notification_items_sswapped");
-		_s_bag->disconnect("item_count_changed", this, "notification_item_sscount_changed");
-		_s_bag->disconnect("overburdened", this, "notification_soverburdened");
-		_s_bag->disconnect("overburden_removed", this, "notification_soverburden_removed");
-#else
-		_s_bag->disconnect("item_added", callable_mp(this, &Entity::notification_item_sadded));
-		_s_bag->disconnect("item_removed", callable_mp(this, &Entity::notification_item_sremoved));
-		_s_bag->disconnect("item_swapped", callable_mp(this, &Entity::notification_items_sswapped));
-		_s_bag->disconnect("item_count_changed", callable_mp(this, &Entity::notification_item_sscount_changed));
-		_s_bag->disconnect("overburdened", callable_mp(this, &Entity::notification_soverburdened));
-		_s_bag->disconnect("overburden_removed", callable_mp(this, &Entity::notification_soverburden_removed));
-#endif
+		_s_bag->DISCONNECT("item_added", this, Entity, notification_item_sadded);
+		_s_bag->DISCONNECT("item_removed", this, Entity, notification_item_sremoved);
+		_s_bag->DISCONNECT("item_swapped", this, Entity, notification_items_sswapped);
+		_s_bag->DISCONNECT("item_count_changed", this, Entity, notification_item_sscount_changed);
+		_s_bag->DISCONNECT("overburdened", this, Entity, notification_soverburdened);
+		_s_bag->DISCONNECT("overburden_removed", this, Entity, notification_soverburden_removed);
 	}
 
 	_s_bag = bag;
 
 	if (_s_bag.is_valid()) {
-#if VERSION_MAJOR < 4
-		_s_bag->connect("item_added", this, "notification_item_sadded");
-		_s_bag->connect("item_removed", this, "notification_item_sremoved");
-		_s_bag->connect("item_swapped", this, "notification_items_sswapped");
-		_s_bag->connect("item_count_changed", this, "notification_item_sscount_changed");
-		_s_bag->connect("overburdened", this, "notification_soverburdened");
-		_s_bag->connect("overburden_removed", this, "notification_soverburden_removed");
-#else
-		_s_bag->connect("item_added", callable_mp(this, &Entity::notification_item_sadded));
-		_s_bag->connect("item_removed", callable_mp(this, &Entity::notification_item_sremoved));
-		_s_bag->connect("item_swapped", callable_mp(this, &Entity::notification_items_sswapped));
-		_s_bag->connect("item_count_changed", callable_mp(this, &Entity::notification_item_sscount_changed));
-		_s_bag->connect("overburdened", callable_mp(this, &Entity::notification_soverburdened));
-		_s_bag->connect("overburden_removed", callable_mp(this, &Entity::notification_soverburden_removed));
-#endif
+		_s_bag->CONNECT("item_added", this, Entity, notification_item_sadded);
+		_s_bag->CONNECT("item_removed", this, Entity, notification_item_sremoved);
+		_s_bag->CONNECT("item_swapped", this, Entity, notification_items_sswapped);
+		_s_bag->CONNECT("item_count_changed", this, Entity, notification_item_sscount_changed);
+		_s_bag->CONNECT("overburdened", this, Entity, notification_soverburdened);
+		_s_bag->CONNECT("overburden_removed", this, Entity, notification_soverburden_removed);
 	}
 
 	emit_signal("sbag_changed", this, _s_bag);
@@ -5106,33 +4993,19 @@ Ref<Bag> Entity::gets_target_bag() const {
 }
 void Entity::sets_target_bag(const Ref<Bag> bag) {
 	if (_s_target_bag.is_valid()) {
-#if VERSION_MAJOR < 4
-		_s_target_bag->disconnect("item_added", this, "notification_target_item_sadded");
-		_s_target_bag->disconnect("item_removed", this, "notification_target_item_sremoved");
-		_s_target_bag->disconnect("item_swapped", this, "notification_target_items_sswapped");
-		_s_target_bag->disconnect("item_count_changed", this, "notification_target_item_sscount_changed");
-#else
-		_s_target_bag->disconnect("item_added", callable_mp(this, &Entity::notification_target_item_sadded));
-		_s_target_bag->disconnect("item_removed", callable_mp(this, &Entity::notification_target_item_sremoved));
-		_s_target_bag->disconnect("item_swapped", callable_mp(this, &Entity::notification_target_items_sswapped));
-		_s_target_bag->disconnect("item_count_changed", callable_mp(this, &Entity::notification_target_item_sscount_changed));
-#endif
+		_s_target_bag->DISCONNECT("item_added", this, Entity, notification_target_item_sadded);
+		_s_target_bag->DISCONNECT("item_removed", this, Entity, notification_target_item_sremoved);
+		_s_target_bag->DISCONNECT("item_swapped", this, Entity, notification_target_items_sswapped);
+		_s_target_bag->DISCONNECT("item_count_changed", this, Entity, notification_target_item_sscount_changed);
 	}
 
 	_s_target_bag = bag;
 
 	if (_s_target_bag.is_valid()) {
-#if VERSION_MAJOR < 4
-		_s_target_bag->connect("item_added", this, "notification_target_item_sadded");
-		_s_target_bag->connect("item_removed", this, "notification_target_item_sremoved");
-		_s_target_bag->connect("item_swapped", this, "notification_target_items_sswapped");
-		_s_target_bag->connect("item_count_changed", this, "notification_target_item_sscount_changed");
-#else
-		_s_target_bag->connect("item_added", callable_mp(this, &Entity::notification_target_item_sadded));
-		_s_target_bag->connect("item_removed", callable_mp(this, &Entity::notification_target_item_sremoved));
-		_s_target_bag->connect("item_swapped", callable_mp(this, &Entity::notification_target_items_sswapped));
-		_s_target_bag->connect("item_count_changed", callable_mp(this, &Entity::notification_target_item_sscount_changed));
-#endif
+		_s_target_bag->CONNECT("item_added", this, Entity, notification_target_item_sadded);
+		_s_target_bag->CONNECT("item_removed", this, Entity, notification_target_item_sremoved);
+		_s_target_bag->CONNECT("item_swapped", this, Entity, notification_target_items_sswapped);
+		_s_target_bag->CONNECT("item_count_changed", this, Entity, notification_target_item_sscount_changed);
 	}
 
 	emit_signal("starget_bag_changed", this, _s_target_bag);
@@ -5523,12 +5396,7 @@ Entity *Entity::sees_gets(int index) {
 void Entity::sees_removes_index(int index) {
 	Entity *e = _s_sees.get(index);
 
-#if VERSION_MAJOR < 4
-	if (unlikely(!ObjectDB::instance_validate(e))) {
-#else
-	if (e == NULL) {
-#endif
-
+	if (unlikely(!INSTANCE_VALIDATE(e))) {
 		_s_sees.remove(index);
 		return;
 	}
@@ -5538,12 +5406,7 @@ void Entity::sees_removes_index(int index) {
 	_s_sees.remove(index);
 }
 void Entity::sees_removes(Entity *entity) {
-#if VERSION_MAJOR < 4
-	if (unlikely(!ObjectDB::instance_validate(entity))) {
-#else
-	if (entity == NULL) {
-#endif
-
+	if (unlikely(!INSTANCE_VALIDATE(entity))) {
 		_s_sees.erase(entity);
 		return;
 	}
@@ -5560,11 +5423,7 @@ void Entity::sees_removes_bind(Node *entity) {
 	sees_removes(e);
 }
 void Entity::sees_adds(Entity *entity) {
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
-#else
-	ERR_FAIL_COND(entity == NULL);
-#endif
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
 
 	entity->seen_by_adds(this);
 
@@ -5605,11 +5464,7 @@ void Entity::seen_by_removes_bind(Node *entity) {
 	seen_by_removes(e);
 }
 void Entity::seen_by_adds(Entity *entity) {
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
-#else
-	ERR_FAIL_COND(entity == NULL);
-#endif
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
 
 	for (int i = 0; i < _s_seen_by.size(); ++i) {
 		if (_s_seen_by.get(i) == entity)
@@ -5643,12 +5498,7 @@ void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
 	for (int i = 0; i < _s_seen_by.size(); ++i) {
 		Entity *e = _s_seen_by.get(i);
 
-#if VERSION_MAJOR < 4
-		if (unlikely(!ObjectDB::instance_validate(e))) {
-#else
-		if (e == NULL) {
-#endif
-
+		if (unlikely(!INSTANCE_VALIDATE(e))) {
 			_s_seen_by.remove(i);
 			--i;
 			continue;
@@ -6206,18 +6056,10 @@ void Entity::_con_target_changed(Node *p_entity, Node *p_old_target) {
 	//Entity *entity = Object::cast_to<Entity>(p_entity);
 	Entity *old_target = Object::cast_to<Entity>(p_old_target);
 
-#if VERSION_MAJOR < 4
-	if (ObjectDB::instance_validate(old_target))
+	if (INSTANCE_VALIDATE(old_target))
 		old_target->notification_cuntargeted();
 
-	if (ObjectDB::instance_validate(getc_target())) {
-#else
-	if (old_target != NULL)
-		old_target->notification_cuntargeted();
-
-	if (getc_target() != NULL) {
-#endif
-
+	if (INSTANCE_VALIDATE(getc_target())) {
 		getc_target()->notification_ctargeted();
 
 		if (canc_interact())
@@ -6307,13 +6149,8 @@ void Entity::_notification(int p_what) {
 		case NOTIFICATION_INSTANCED: {
 			set_body(get_node_or_null(_body_path));
 
-#if VERSION_MAJOR < 4
-			if (ObjectDB::instance_validate(_body))
+			if (INSTANCE_VALIDATE(_body))
 				_body->set_owner(this);
-#else
-			if (_body != NULL)
-				_body->set_owner(this);
-#endif
 
 			_character_skeleton = get_node_or_null(_character_skeleton_path);
 
@@ -6329,13 +6166,8 @@ void Entity::_notification(int p_what) {
 			if (!_body) {
 				set_body(get_node_or_null(_body_path));
 
-#if VERSION_MAJOR < 4
-				if (ObjectDB::instance_validate(_body))
+				if (INSTANCE_VALIDATE(_body))
 					_body->set_owner(this);
-#else
-				if (_body != NULL)
-					_body->set_owner(this);
-#endif
 			}
 
 			if (!_character_skeleton) {
@@ -6358,13 +6190,8 @@ void Entity::_notification(int p_what) {
 			for (int i = 0; i < _s_seen_by.size(); ++i) {
 				Entity *e = _s_seen_by.get(i);
 
-#if VERSION_MAJOR < 4
-				if (ObjectDB::instance_validate(e))
+				if (INSTANCE_VALIDATE(e))
 					e->sees_removes(this);
-#else
-				if (e != NULL)
-					e->sees_removes(this);
-#endif
 			}
 		} break;
 	}

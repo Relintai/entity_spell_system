@@ -25,11 +25,7 @@ SOFTWARE.
 #include "../database/ess_resource_db.h"
 #include "../singletons/ess.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR >= 4
-#define REAL FLOAT
-#endif
+#include "../defines.h"
 
 int Cooldown::get_spell_id() const {
 	return _spell_id;

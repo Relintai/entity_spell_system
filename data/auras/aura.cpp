@@ -25,13 +25,7 @@ SOFTWARE.
 #include "../../entities/resources/entity_resource_cost_data.h"
 #include "../../singletons/ess.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR >= 4
-#define PoolStringArray PackedStringArray
-
-#define POOL_STRING_ARRAY PACKED_STRING_ARRAY
-#endif
+#include "../../defines.h"
 
 int Aura::get_id() const {
 	return _id;
@@ -1094,11 +1088,7 @@ void Aura::_supdate(Ref<AuraData> aura, float delta) {
 }
 
 void Aura::_setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info) {
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_caster()));
-#else
-	ERR_FAIL_COND(info->get_caster() == NULL);
-#endif
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(info->get_caster()));
 
 	data->set_aura(Ref<Aura>(this));
 	data->set_aura_id(get_id());
@@ -1134,22 +1124,14 @@ void Aura::_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo>
 }
 
 void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> info) {
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_dealer()));
-#else
-	ERR_FAIL_COND(info->get_dealer() == NULL);
-#endif
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(info->get_dealer()));
 
 	Math::randomize();
 
 	info->set_damage(_damage_min + (Math::rand() % (_damage_max = _damage_min)));
 	info->set_damage_source_type(SpellDamageInfo::DAMAGE_SOURCE_AURA);
 
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_dealer()));
-#else
-	ERR_FAIL_COND(info->get_dealer() == NULL);
-#endif
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(info->get_dealer()));
 
 	info->get_dealer()->sdeal_damage_to(info);
 }
@@ -1167,22 +1149,14 @@ void Aura::_calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> i
 }
 
 void Aura::_handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info) {
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_dealer()));
-#else
-	ERR_FAIL_COND(info->get_dealer() == NULL);
-#endif
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(info->get_dealer()));
 
 	Math::randomize();
 
 	info->set_heal(_heal_min + (Math::rand() % (_heal_max = _heal_min)));
 	info->set_heal_source_type(SpellHealInfo::HEAL_SOURCE_AURA);
 
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND(!ObjectDB::instance_validate(info->get_dealer()));
-#else
-	ERR_FAIL_COND(info->get_dealer() == NULL);
-#endif
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(info->get_dealer()));
 
 	info->get_dealer()->sdeal_heal_to(info);
 }

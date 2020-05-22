@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "../entities/entity.h"
 
-#include "core/version.h"
+#include "../defines.h"
 
 void AIFormation::set_owner(Entity *entity) {
 	_owner = entity;
@@ -62,11 +62,7 @@ String AIFormation::get_editor_description() const {
 }
 
 Vector3 AIFormation::get_position(int slot_index) {
-#if VERSION_MAJOR < 4
-	ERR_FAIL_COND_V(!ObjectDB::instance_validate(_owner), Vector3());
-#else
-	ERR_FAIL_COND_V(_owner == NULL, Vector3());
-#endif
+	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(_owner), Vector3());
 
 	if (has_method("_get_position"))
 		return call("_get_position", slot_index);

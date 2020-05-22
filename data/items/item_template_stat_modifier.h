@@ -25,11 +25,7 @@ SOFTWARE.
 
 #include "core/reference.h"
 
-#include "core/version.h"
-
-#if VERSION_MAJOR >= 4
-#define REAL FLOAT
-#endif
+#include "../../defines.h"
 
 class ItemTemplateStatModifier : public Reference {
 	GDCLASS(ItemTemplateStatModifier, Reference);

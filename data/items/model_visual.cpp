@@ -24,6 +24,8 @@ SOFTWARE.
 
 #include "../../singletons/ess.h"
 
+#include "../../defines.h"
+
 int ModelVisual::get_layer() {
 	return _layer;
 }
@@ -57,23 +59,10 @@ int ModelVisual::get_visual_entry_count() const {
 }
 
 Vector<Variant> ModelVisual::get_visual_entries() {
-	Vector<Variant> r;
-	for (int i = 0; i < _visual_entries.size(); i++) {
-#if VERSION_MAJOR < 4
-		r.push_back(_visual_entries[i].get_ref_ptr());
-#else
-		r.push_back(_visual_entries[i]);
-#endif
-	}
-	return r;
+	VARIANT_ARRAY_GET(_visual_entries);
 }
 void ModelVisual::set_visual_entries(const Vector<Variant> &visual_entries) {
-	_visual_entries.clear();
-	for (int i = 0; i < visual_entries.size(); i++) {
-		Ref<ModelVisualEntry> visual_entry = Ref<ModelVisualEntry>(visual_entries[i]);
-
-		_visual_entries.push_back(visual_entry);
-	}
+	VARIANT_ARRAY_SET(visual_entries, _visual_entries, ModelVisualEntry);
 }
 
 ModelVisual::ModelVisual() {
