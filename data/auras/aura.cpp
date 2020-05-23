@@ -328,7 +328,7 @@ Aura::Aura() {
 	_is_debuff = false;
 	_hide = false;
 	_rank = 0;
-	_scale_with_level = ESS::get_instance()->get_scale_spells_by_default();
+	_scale_with_level = ESS::get_singleton()->get_scale_spells_by_default();
 
 	_damage_enabled = false;
 	_damage_type = 0;
@@ -934,13 +934,13 @@ String Aura::_get_description(const int class_level, const int character_level) 
 
 			if (valid) {
 				if (o == '#') {
-					value = Variant::evaluate(Variant::OP_MULTIPLY, value, class_level / static_cast<float>(ESS::get_instance()->get_max_class_level()));
+					value = Variant::evaluate(Variant::OP_MULTIPLY, value, class_level / static_cast<float>(ESS::get_singleton()->get_max_class_level()));
 
 					value = static_cast<int>(value);
 				}
 
 				if (o == '$') {
-					value = Variant::evaluate(Variant::OP_MULTIPLY, value, character_level / static_cast<float>(ESS::get_instance()->get_max_character_level()));
+					value = Variant::evaluate(Variant::OP_MULTIPLY, value, character_level / static_cast<float>(ESS::get_singleton()->get_max_character_level()));
 
 					value = static_cast<int>(value);
 				}
@@ -1170,7 +1170,7 @@ void Aura::_validate_property(PropertyInfo &property) const {
 		}
 
 		if (property.name.ends_with("stat"))
-			property.hint_string = ESS::get_instance()->stat_get_string();
+			property.hint_string = ESS::get_singleton()->stat_get_string();
 	} else if (prop.begins_with("Trigger_")) {
 		int frame = prop.get_slicec('/', 0).get_slicec('_', 1).to_int();
 		if (frame >= _trigger_count) {

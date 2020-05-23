@@ -699,11 +699,11 @@ public:
 
 	////    Cooldowns    ////
 
-	Vector<Ref<Cooldown>> *cooldowns_gets();
-	Vector<Ref<Cooldown>> *cooldowns_getc();
+	Vector<Ref<Cooldown> > *cooldowns_gets();
+	Vector<Ref<Cooldown> > *cooldowns_getc();
 
-	HashMap<int, Ref<Cooldown>> *cooldown_get_maps();
-	HashMap<int, Ref<Cooldown>> *cooldown_get_mapc();
+	HashMap<int, Ref<Cooldown> > *cooldown_get_maps();
+	HashMap<int, Ref<Cooldown> > *cooldown_get_mapc();
 
 	bool cooldown_hass(int spell_id);
 	void cooldown_adds(int spell_id, float value);
@@ -721,8 +721,8 @@ public:
 
 	//Category Cooldowns
 
-	Vector<Ref<CategoryCooldown>> category_cooldowns_gets();
-	Vector<Ref<CategoryCooldown>> category_cooldowns_getc();
+	Vector<Ref<CategoryCooldown> > category_cooldowns_gets();
+	Vector<Ref<CategoryCooldown> > category_cooldowns_getc();
 
 	bool category_cooldown_hass(int category_id);
 	void category_cooldown_adds(int category_id, float value);
@@ -1126,13 +1126,13 @@ private:
 
 	////    Equipment    ////
 
-	Vector<Ref<ItemInstance>> _s_equipment;
-	Vector<Ref<ItemInstance>> _c_equipment;
+	Vector<Ref<ItemInstance> > _s_equipment;
+	Vector<Ref<ItemInstance> > _c_equipment;
 
 	////    Resources    ////
 
-	Vector<Ref<EntityResource>> _s_resources;
-	Vector<Ref<EntityResource>> _c_resources;
+	Vector<Ref<EntityResource> > _s_resources;
+	Vector<Ref<EntityResource> > _c_resources;
 
 	////    GCD    ////
 
@@ -1153,8 +1153,8 @@ private:
 
 	//// AuraComponent    ////
 
-	Vector<Ref<AuraData>> _s_auras;
-	Vector<Ref<AuraData>> _c_auras;
+	Vector<Ref<AuraData> > _s_auras;
+	Vector<Ref<AuraData> > _c_auras;
 
 	int _s_entity_type;
 	int _c_entity_type;
@@ -1165,14 +1165,14 @@ private:
 	int _c_entity_flags;
 
 	////    Cooldowns    ////
-	Vector<Ref<Cooldown>> _s_cooldowns;
-	Vector<Ref<Cooldown>> _c_cooldowns;
+	Vector<Ref<Cooldown> > _s_cooldowns;
+	Vector<Ref<Cooldown> > _c_cooldowns;
 
-	HashMap<int, Ref<Cooldown>> _s_cooldown_map;
-	HashMap<int, Ref<Cooldown>> _c_cooldown_map;
+	HashMap<int, Ref<Cooldown> > _s_cooldown_map;
+	HashMap<int, Ref<Cooldown> > _c_cooldown_map;
 
-	Vector<Ref<CategoryCooldown>> _s_category_cooldowns;
-	Vector<Ref<CategoryCooldown>> _c_category_cooldowns;
+	Vector<Ref<CategoryCooldown> > _s_category_cooldowns;
+	Vector<Ref<CategoryCooldown> > _c_category_cooldowns;
 
 	int _s_active_category_cooldowns;
 	int _c_active_category_cooldowns;
@@ -1192,8 +1192,8 @@ private:
 
 	////    Data    ////
 
-	Vector<Ref<EntityDataContainer>> _s_data;
-	Vector<Ref<EntityDataContainer>> _c_data;
+	Vector<Ref<EntityDataContainer> > _s_data;
+	Vector<Ref<EntityDataContainer> > _c_data;
 
 	////    Actionbars    ////
 
@@ -1202,26 +1202,26 @@ private:
 
 	////    Crafting System    ////
 
-	Vector<Ref<CraftRecipe>> _s_craft_recipes;
-	Vector<Ref<CraftRecipe>> _c_craft_recipes;
+	Vector<Ref<CraftRecipe> > _s_craft_recipes;
+	Vector<Ref<CraftRecipe> > _c_craft_recipes;
 
 	////    Known Spells    ////
 
 	int _s_free_spell_points;
 	int _c_free_spell_points;
 
-	Vector<Ref<Spell>> _s_spells;
-	Vector<Ref<Spell>> _c_spells;
+	Vector<Ref<Spell> > _s_spells;
+	Vector<Ref<Spell> > _c_spells;
 
 	////    Skills    ////
 
-	Vector<Ref<EntitySkill>> _s_skills;
-	Vector<Ref<EntitySkill>> _c_skills;
+	Vector<Ref<EntitySkill> > _s_skills;
+	Vector<Ref<EntitySkill> > _c_skills;
 
 	////    Stat Allocations    ////
 
 	//int _unallocated_stats;
-	//int _stat_allocations[ESS::get_instance()->stat_get_count()];
+	//int _stat_allocations[ESS::get_singleton()->stat_get_count()];
 
 	////    Inventory    ////
 
@@ -1260,7 +1260,7 @@ private:
 
 	// Callbacks
 
-	Vector<Ref<SpellCastInfo>> _physics_process_scis;
+	Vector<Ref<SpellCastInfo> > _physics_process_scis;
 };
 
 #endif

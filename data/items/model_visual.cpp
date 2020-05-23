@@ -77,7 +77,7 @@ void ModelVisual::_validate_property(PropertyInfo &property) const {
 	String name = property.name;
 
 	if (name == "layer") {
-		property.hint_string = ESS::get_instance()->texture_layers_get();
+		property.hint_string = ESS::get_singleton()->texture_layers_get();
 	}
 }
 

@@ -66,18 +66,18 @@ Dictionary Cooldown::_to_dict() {
 	Dictionary dict;
 
 	//dict["spell_id"] = _spell_id;
-	dict["spell_path"] = ESS::get_instance()->get_resource_db()->spell_id_to_path(_spell_id);
+	dict["spell_path"] = ESS::get_singleton()->get_resource_db()->spell_id_to_path(_spell_id);
 	dict["remaining"] = _remaining;
 
 	return dict;
 }
 void Cooldown::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
-	ERR_FAIL_COND(!ESS::get_instance()->get_resource_db().is_valid());
+	ERR_FAIL_COND(!ESS::get_singleton()->get_resource_db().is_valid());
 
 	StringName spell_path = dict.get("spell_path", "");
 	//_spell_id = dict.get("spell_id", 0);
-	_spell_id = ESS::get_instance()->get_resource_db()->spell_path_to_id(spell_path);
+	_spell_id = ESS::get_singleton()->get_resource_db()->spell_path_to_id(spell_path);
 	_remaining = dict.get("remaining", 0);
 }
 

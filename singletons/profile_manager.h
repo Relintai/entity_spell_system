@@ -33,7 +33,7 @@ class ProfileManager : public Object {
 	GDCLASS(ProfileManager, Object);
 
 public:
-	static ProfileManager *get_instance();
+	static ProfileManager *get_singleton();
 
 	bool get_automatic_load() const;
 	void set_automatic_load(const bool load);

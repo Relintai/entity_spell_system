@@ -165,7 +165,7 @@ void EntityResource::receivec_update_string(const String str) {
 }
 
 void EntityResource::resolve_references() {
-	set_resource_data(ESS::get_instance()->get_resource_db()->get_entity_resource_path(_data_path));
+	set_resource_data(ESS::get_singleton()->get_resource_db()->get_entity_resource_path(_data_path));
 }
 
 Dictionary EntityResource::to_dict() {
@@ -192,13 +192,13 @@ Dictionary EntityResource::_to_dict() {
 }
 void EntityResource::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
-	ERR_FAIL_COND(!ESS::get_instance()->get_resource_db().is_valid());
+	ERR_FAIL_COND(!ESS::get_singleton()->get_resource_db().is_valid());
 
 	_dirty = dict.get("dirty", false);
 	_should_process = dict.get("should_process", false);
 
 	_data_path = dict.get("data_path", "");
-	//_data_id = ESS::get_instance()->get_resource_db()->entity_data_path_to_id(_data_path);
+	//_data_id = ESS::get_singleton()->get_resource_db()->entity_data_path_to_id(_data_path);
 
 	//_data_id = dict.get("data_id", 0);
 	_current = dict.get("current", 0);

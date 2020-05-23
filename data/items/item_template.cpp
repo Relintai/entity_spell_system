@@ -409,7 +409,7 @@ ItemTemplate::ItemTemplate() {
 	_item_sub_sub_type = ItemEnums::ITEM_SUB_SUB_TYPE_NONE;
 	_rarity = ItemEnums::ITEM_RARITY_NONE;
 	_armor_type = ItemEnums::ARMOR_TYPE_NONE;
-	_equip_slot = ESS::get_instance()->equip_slot_get_count();
+	_equip_slot = ESS::get_singleton()->equip_slot_get_count();
 	_price = 0;
 
 	_scale_x = 0;
@@ -444,9 +444,9 @@ void ItemTemplate::_validate_property(PropertyInfo &property) const {
 		}
 
 		if (property.name.ends_with("stat_id"))
-			property.hint_string = ESS::get_instance()->stat_get_string();
+			property.hint_string = ESS::get_singleton()->stat_get_string();
 	} else if (prop == "equip_slot") {
-		property.hint_string = ESS::get_instance()->equip_slot_get_string();
+		property.hint_string = ESS::get_singleton()->equip_slot_get_string();
 	}
 }
 

@@ -113,8 +113,8 @@ void ItemInstance::_from_dict(const Dictionary &dict) {
 
 	_item_template_path = dict.get("item_path", 0);
 
-	if (ESS::get_instance() != NULL) {
-		_item_template = ESS::get_instance()->get_resource_db()->get_item_template_path(_item_template_path);
+	if (ESS::get_singleton() != NULL) {
+		_item_template = ESS::get_singleton()->get_resource_db()->get_item_template_path(_item_template_path);
 	}
 
 	_stack_size = dict.get("stack_size", 0);

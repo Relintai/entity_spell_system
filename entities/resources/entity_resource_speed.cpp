@@ -32,8 +32,8 @@ void EntityResourceSpeed::_init() {
 
 	speed_stat_id = 0;
 
-	if (ESS::get_instance()->stat_is_property("Speed"))
-		speed_stat_id = ESS::get_instance()->stat_get_id("Speed");
+	if (ESS::get_singleton()->stat_is_property("Speed"))
+		speed_stat_id = ESS::get_singleton()->stat_get_id("Speed");
 }
 void EntityResourceSpeed::_ons_added(Node *entity) {
 	refresh();

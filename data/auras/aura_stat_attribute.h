@@ -53,7 +53,7 @@ public:
 protected:
 	void validate_property(PropertyInfo &property) const {
 		if (property.name == "stat") {
-			property.hint_string = ESS::get_instance()->stat_get_string();
+			property.hint_string = ESS::get_singleton()->stat_get_string();
 		}
 	}
 

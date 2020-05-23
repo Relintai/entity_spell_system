@@ -31,7 +31,7 @@ SOFTWARE.
 
 ProfileManager *ProfileManager::_instance;
 
-ProfileManager *ProfileManager::get_instance() {
+ProfileManager *ProfileManager::get_singleton() {
 	return _instance;
 }
 

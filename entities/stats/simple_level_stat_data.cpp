@@ -25,18 +25,18 @@ SOFTWARE.
 #include "../../singletons/ess.h"
 
 int SimpleLevelStatData::get_stat_per_level(int main_stat) {
-	ERR_FAIL_INDEX_V(main_stat, ESS::get_instance()->stat_get_main_stat_count(), 0);
+	ERR_FAIL_INDEX_V(main_stat, ESS::get_singleton()->stat_get_main_stat_count(), 0);
 
 	return _stat_per_level[main_stat];
 }
 void SimpleLevelStatData::set_stat_per_level(int main_stat, int value) {
-	ERR_FAIL_INDEX(main_stat, ESS::get_instance()->stat_get_main_stat_count());
+	ERR_FAIL_INDEX(main_stat, ESS::get_singleton()->stat_get_main_stat_count());
 
 	_stat_per_level.set(main_stat, value);
 }
 
 int SimpleLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_level) {
-	ERR_FAIL_INDEX_V(main_stat, ESS::get_instance()->stat_get_main_stat_count(), 0);
+	ERR_FAIL_INDEX_V(main_stat, ESS::get_singleton()->stat_get_main_stat_count(), 0);
 
 	int s = _stat_per_level[main_stat];
 
@@ -46,7 +46,7 @@ int SimpleLevelStatData::_get_stat_diff(int main_stat, int old_level, int new_le
 }
 
 SimpleLevelStatData::SimpleLevelStatData() {
-	_stat_per_level.resize(ESS::get_instance()->stat_get_main_stat_count());
+	_stat_per_level.resize(ESS::get_singleton()->stat_get_main_stat_count());
 
 	for (int i = 0; i < _stat_per_level.size(); ++i) {
 		_stat_per_level.set(i, 0);
@@ -58,10 +58,10 @@ SimpleLevelStatData::~SimpleLevelStatData() {
 }
 
 bool SimpleLevelStatData::_set(const StringName &p_name, const Variant &p_value) {
-	if (ESS::get_instance()->stat_is_property(p_name)) {
-		int stat_id = ESS::get_instance()->stat_get_property_id(p_name);
+	if (ESS::get_singleton()->stat_is_property(p_name)) {
+		int stat_id = ESS::get_singleton()->stat_get_property_id(p_name);
 
-		if (stat_id >= ESS::get_instance()->stat_get_main_stat_count()) {
+		if (stat_id >= ESS::get_singleton()->stat_get_main_stat_count()) {
 			return false;
 		}
 
@@ -74,10 +74,10 @@ bool SimpleLevelStatData::_set(const StringName &p_name, const Variant &p_value)
 }
 
 bool SimpleLevelStatData::_get(const StringName &p_name, Variant &r_ret) const {
-	if (ESS::get_instance()->stat_is_property(p_name)) {
-		int stat_id = ESS::get_instance()->stat_get_property_id(p_name);
+	if (ESS::get_singleton()->stat_is_property(p_name)) {
+		int stat_id = ESS::get_singleton()->stat_get_property_id(p_name);
 
-		if (stat_id >= ESS::get_instance()->stat_get_main_stat_count()) {
+		if (stat_id >= ESS::get_singleton()->stat_get_main_stat_count()) {
 			return false;
 		}
 
@@ -93,8 +93,8 @@ void SimpleLevelStatData::_get_property_list(List<PropertyInfo> *p_list) const {
 	//int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
 	int property_usange = PROPERTY_USAGE_DEFAULT;
 
-	for (int i = 0; i < ESS::get_instance()->stat_get_main_stat_count(); ++i) {
-		p_list->push_back(PropertyInfo(Variant::INT, ESS::get_instance()->stat_get_property_name(i), PROPERTY_HINT_NONE, "", property_usange));
+	for (int i = 0; i < ESS::get_singleton()->stat_get_main_stat_count(); ++i) {
+		p_list->push_back(PropertyInfo(Variant::INT, ESS::get_singleton()->stat_get_property_name(i), PROPERTY_HINT_NONE, "", property_usange));
 	}
 }
 

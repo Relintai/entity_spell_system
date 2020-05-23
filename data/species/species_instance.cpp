@@ -40,7 +40,7 @@ int SpeciesInstance::get_species_id() const {
 void SpeciesInstance::set_species_id(int value) {
 	_id = value;
 
-	_species = ESS::get_instance()->get_resource_db()->get_entity_species_data(_id);
+	_species = ESS::get_singleton()->get_resource_db()->get_entity_species_data(_id);
 }
 
 StringName SpeciesInstance::get_species_path() const {
@@ -49,7 +49,7 @@ StringName SpeciesInstance::get_species_path() const {
 void SpeciesInstance::set_species_path(const StringName &value) {
 	_path = value;
 
-	_species = ESS::get_instance()->get_resource_db()->get_entity_species_data_path(_path);
+	_species = ESS::get_singleton()->get_resource_db()->get_entity_species_data_path(_path);
 }
 
 Ref<EntitySpeciesData> SpeciesInstance::get_species() {

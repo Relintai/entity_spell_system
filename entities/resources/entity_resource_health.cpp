@@ -32,12 +32,12 @@ void EntityResourceHealth::_init() {
 	stamina_stat_id = 0;
 	health_stat_id = 0;
 
-	if (ESS::get_instance()->stat_is_property("Stamina")) {
-		stamina_stat_id = ESS::get_instance()->stat_get_id("Stamina");
+	if (ESS::get_singleton()->stat_is_property("Stamina")) {
+		stamina_stat_id = ESS::get_singleton()->stat_get_id("Stamina");
 	}
 
-	if (ESS::get_instance()->stat_is_property("Health")) {
-		health_stat_id = ESS::get_instance()->stat_get_id("Health");
+	if (ESS::get_singleton()->stat_is_property("Health")) {
+		health_stat_id = ESS::get_singleton()->stat_get_id("Health");
 	}
 }
 void EntityResourceHealth::_ons_added(Node *entity) {

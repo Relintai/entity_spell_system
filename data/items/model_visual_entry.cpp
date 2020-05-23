@@ -223,17 +223,17 @@ void ModelVisualEntry::_validate_property(PropertyInfo &property) const {
 	String name = property.name;
 
 	if (name == "group") {
-		property.hint_string = ESS::get_instance()->model_visual_groups_get();
+		property.hint_string = ESS::get_singleton()->model_visual_groups_get();
 	} else if (name == "bone") {
-		if (ESS::get_instance()->skeletons_bones_count() > _entity_type) {
-			property.hint_string = ESS::get_instance()->skeletons_bones_index_get(_entity_type);
+		if (ESS::get_singleton()->skeletons_bones_count() > _entity_type) {
+			property.hint_string = ESS::get_singleton()->skeletons_bones_index_get(_entity_type);
 		} else {
 			property.hint_string = "";
 		}
 	} else if (name == "entity_type") {
-		property.hint_string = ESS::get_instance()->entity_types_get();
+		property.hint_string = ESS::get_singleton()->entity_types_get();
 	} else if (name == "override_layer") {
-		property.hint_string = ESS::get_instance()->texture_layers_get();
+		property.hint_string = ESS::get_singleton()->texture_layers_get();
 	}
 }
 

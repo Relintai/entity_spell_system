@@ -307,7 +307,7 @@ Dictionary AuraData::_to_dict() {
 }
 void AuraData::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
-	ERR_FAIL_COND(!ESS::get_instance()->get_resource_db().is_valid());
+	ERR_FAIL_COND(!ESS::get_singleton()->get_resource_db().is_valid());
 
 	_aura_id = dict.get("aura_id", 0);
 	_aura_path = dict.get("aura_path", "");
@@ -319,7 +319,7 @@ void AuraData::_from_dict(const Dictionary &dict) {
 	_aura_group = dict.get("aura_group", 0);
 	//int aura_id = dict.get("aura_id", 0);
 
-	_aura = ESS::get_instance()->get_resource_db()->get_aura_path(_aura_path);
+	_aura = ESS::get_singleton()->get_resource_db()->get_aura_path(_aura_path);
 
 	_is_timed = dict.get("is_timed", true);
 	_damage = dict.get("damage", 0);

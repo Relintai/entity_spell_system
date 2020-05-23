@@ -43,7 +43,7 @@ class ESS : public Object {
 	GDCLASS(ESS, Object);
 
 public:
-	static ESS *get_instance();
+	static ESS *get_singleton();
 
 	bool get_use_spell_points() const;
 	void set_use_spell_points(const bool value);

@@ -27,53 +27,53 @@ SOFTWARE.
 #include "../../singletons/ess.h"
 
 int XPData::get_character_max_level() {
-	return ESS::get_instance()->get_max_character_level();
+	return ESS::get_singleton()->get_max_character_level();
 }
 
 int XPData::get_character_xp(int level) {
-	ERR_FAIL_INDEX_V(level - 1, ESS::get_instance()->get_max_character_level(), 9999999);
+	ERR_FAIL_INDEX_V(level - 1, ESS::get_singleton()->get_max_character_level(), 9999999);
 
 	return _character_xps.get(level - 1);
 }
 
 void XPData::set_character_xp(int level, int value) {
-	ERR_FAIL_INDEX(level - 1, ESS::get_instance()->get_max_character_level());
+	ERR_FAIL_INDEX(level - 1, ESS::get_singleton()->get_max_character_level());
 
 	_character_xps.set(level - 1, value);
 }
 
 bool XPData::can_character_level_up(int level) {
-	return level < ESS::get_instance()->get_max_character_level();
+	return level < ESS::get_singleton()->get_max_character_level();
 }
 
 int XPData::get_class_max_level() {
-	return ESS::get_instance()->get_max_class_level();
+	return ESS::get_singleton()->get_max_class_level();
 }
 
 int XPData::get_class_xp(int level) {
-	ERR_FAIL_INDEX_V(level - 1, ESS::get_instance()->get_max_class_level(), 9999999);
+	ERR_FAIL_INDEX_V(level - 1, ESS::get_singleton()->get_max_class_level(), 9999999);
 
 	return _class_xps.get(level - 1);
 }
 
 void XPData::set_class_xp(int level, int value) {
-	ERR_FAIL_INDEX(level - 1, ESS::get_instance()->get_max_class_level());
+	ERR_FAIL_INDEX(level - 1, ESS::get_singleton()->get_max_class_level());
 
 	_class_xps.set(level - 1, value);
 }
 
 bool XPData::can_class_level_up(int level) {
-	return level < ESS::get_instance()->get_max_class_level();
+	return level < ESS::get_singleton()->get_max_class_level();
 }
 
 XPData::XPData() {
-	_character_xps.resize(ESS::get_instance()->get_max_character_level());
+	_character_xps.resize(ESS::get_singleton()->get_max_character_level());
 
 	for (int i = 0; i < _character_xps.size(); ++i) {
 		_character_xps.set(i, 0);
 	}
 
-	_class_xps.resize(ESS::get_instance()->get_max_class_level());
+	_class_xps.resize(ESS::get_singleton()->get_max_class_level());
 
 	for (int i = 0; i < _class_xps.size(); ++i) {
 		_class_xps.set(i, 0);
@@ -89,7 +89,7 @@ bool XPData::_set(const StringName &p_name, const Variant &p_value) {
 	if (prop_name.begins_with("level_")) {
 		int level = prop_name.get_slice("/", 1).to_int();
 
-		if (level >= ESS::get_instance()->get_max_character_level())
+		if (level >= ESS::get_singleton()->get_max_character_level())
 			return false;
 
 		_character_xps.write[level] = p_value;
@@ -98,7 +98,7 @@ bool XPData::_set(const StringName &p_name, const Variant &p_value) {
 	} else if (prop_name.begins_with("class_level_")) {
 		int level = prop_name.get_slice("/", 1).to_int();
 
-		if (level >= ESS::get_instance()->get_max_class_level())
+		if (level >= ESS::get_singleton()->get_max_class_level())
 			return false;
 
 		_class_xps.write[level] = p_value;
@@ -115,7 +115,7 @@ bool XPData::_get(const StringName &p_name, Variant &r_ret) const {
 	if (prop_name.begins_with("character_level")) {
 		int level = prop_name.get_slice("/", 1).to_int();
 
-		if (level >= ESS::get_instance()->get_max_character_level())
+		if (level >= ESS::get_singleton()->get_max_character_level())
 			return false;
 
 		r_ret = _character_xps[level];
@@ -124,7 +124,7 @@ bool XPData::_get(const StringName &p_name, Variant &r_ret) const {
 	} else if (prop_name.begins_with("class_level")) {
 		int level = prop_name.get_slice("/", 1).to_int();
 
-		if (level >= ESS::get_instance()->get_max_class_level())
+		if (level >= ESS::get_singleton()->get_max_class_level())
 			return false;
 
 		r_ret = _class_xps[level];
@@ -139,11 +139,11 @@ void XPData::_get_property_list(List<PropertyInfo> *p_list) const {
 	//int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
 	//int property_usange = PROPERTY_USAGE_DEFAULT;
 
-	for (int i = 1; i <= ESS::get_instance()->get_max_character_level(); ++i) {
+	for (int i = 1; i <= ESS::get_singleton()->get_max_character_level(); ++i) {
 		p_list->push_back(PropertyInfo(Variant::INT, "character_level/" + String::num(i)));
 	}
 
-	for (int i = 1; i <= ESS::get_instance()->get_max_class_level(); ++i) {
+	for (int i = 1; i <= ESS::get_singleton()->get_max_class_level(); ++i) {
 		p_list->push_back(PropertyInfo(Variant::INT, "class_level/" + String::num(i)));
 	}
 }

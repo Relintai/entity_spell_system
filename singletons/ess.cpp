@@ -28,7 +28,7 @@ SOFTWARE.
 
 ESS *ESS::instance;
 
-ESS *ESS::get_instance() {
+ESS *ESS::get_singleton() {
 	return instance;
 }
 

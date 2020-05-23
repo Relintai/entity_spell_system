@@ -48,8 +48,8 @@ int EntitySkill::get_skill_id() {
 void EntitySkill::set_skill_id(int value) {
 	_skill_id = value;
 
-	if (ESS::get_instance() != NULL) {
-		_skill = ESS::get_instance()->get_resource_db()->get_entity_skill(_skill_id);
+	if (ESS::get_singleton() != NULL) {
+		_skill = ESS::get_singleton()->get_resource_db()->get_entity_skill(_skill_id);
 	}
 
 	emit_signal("skill_changed", Ref<EntitySkill>(this));

@@ -90,7 +90,7 @@ void StatData::set_mod_stat_multiplier(int index, float value) {
 
 StatData::StatData() {
 	//TODO remove? let properties handle this?
-	_entries.resize(ESS::get_instance()->stat_get_count());
+	_entries.resize(ESS::get_singleton()->stat_get_count());
 
 	for (int i = 0; i < _entries.size(); ++i) {
 		_entries.set(i, 0);
@@ -116,8 +116,8 @@ bool StatData::_set(const StringName &p_name, const Variant &p_value) {
 	if (name.get_slicec('/', 0) == "stat") {
 		StringName prop = name.get_slicec('/', 1);
 
-		if (ESS::get_instance()->stat_is_property(prop)) {
-			int stat_id = ESS::get_instance()->stat_get_property_id(prop);
+		if (ESS::get_singleton()->stat_is_property(prop)) {
+			int stat_id = ESS::get_singleton()->stat_get_property_id(prop);
 
 			if (_entries.size() < stat_id) {
 				_entries.resize(stat_id + 1);
@@ -142,8 +142,8 @@ bool StatData::_get(const StringName &p_name, Variant &r_ret) const {
 	if (name.get_slicec('/', 0) == "stat") {
 		StringName prop = name.get_slicec('/', 1);
 
-		if (ESS::get_instance()->stat_is_property(prop)) {
-			int stat_id = ESS::get_instance()->stat_get_property_id(prop);
+		if (ESS::get_singleton()->stat_is_property(prop)) {
+			int stat_id = ESS::get_singleton()->stat_get_property_id(prop);
 
 			if (_entries.size() < stat_id) {
 				r_ret = 0;
@@ -168,8 +168,8 @@ void StatData::_get_property_list(List<PropertyInfo> *p_list) const {
 	//int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
 	int property_usange = PROPERTY_USAGE_DEFAULT;
 
-	for (int i = 0; i < ESS::get_instance()->stat_get_count(); ++i) {
-		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + ESS::get_instance()->stat_get_property_name(i), PROPERTY_HINT_NONE, "", property_usange));
+	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
+		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + ESS::get_singleton()->stat_get_property_name(i), PROPERTY_HINT_NONE, "", property_usange));
 	}
 }
 
@@ -183,9 +183,9 @@ void StatData::_validate_property(PropertyInfo &property) const {
 	}
 
 	if (prop.ends_with("stat_id")) {
-		property.hint_string = ESS::get_instance()->stat_get_string();
+		property.hint_string = ESS::get_singleton()->stat_get_string();
 	} else if (prop.ends_with("target_stat_id")) {
-		property.hint_string = ESS::get_instance()->stat_get_string();
+		property.hint_string = ESS::get_singleton()->stat_get_string();
 	}
 }
 

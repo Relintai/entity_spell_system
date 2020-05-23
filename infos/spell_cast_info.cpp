@@ -173,7 +173,7 @@ void SpellCastInfo::resolve_references(Node *owner) {
 		_target = Object::cast_to<Entity>(owner->get_node_or_null(_target_path));
 	}
 
-	Ref<Spell> spell = ESS::get_instance()->get_resource_db()->get_spell(_spell_id);
+	Ref<Spell> spell = ESS::get_singleton()->get_resource_db()->get_spell(_spell_id);
 
 	if (spell.is_valid()) {
 		_spell = spell;

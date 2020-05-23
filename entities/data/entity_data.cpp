@@ -839,7 +839,7 @@ EntityData::~EntityData() {
 
 void EntityData::_validate_property(PropertyInfo &property) const {
 	if (property.name == "entity_type") {
-		property.hint_string = ESS::get_instance()->entity_types_get();
+		property.hint_string = ESS::get_singleton()->entity_types_get();
 	}
 }
 

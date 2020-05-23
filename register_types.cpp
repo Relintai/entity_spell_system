@@ -279,11 +279,11 @@ void register_entity_spell_system_types() {
 
 	entity_data_manager = memnew(ESS);
 	ClassDB::register_class<ESS>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("ESS", ESS::get_instance()));
+	Engine::get_singleton()->add_singleton(Engine::Singleton("ESS", ESS::get_singleton()));
 
 	profile_manager = memnew(ProfileManager);
 	ClassDB::register_class<ProfileManager>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("ProfileManager", ProfileManager::get_instance()));
+	Engine::get_singleton()->add_singleton(Engine::Singleton("ProfileManager", ProfileManager::get_singleton()));
 
 #ifdef TOOLS_ENABLED
 	//EditorPlugins::add_by_type<ESSEditorPlugin>();
