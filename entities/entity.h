@@ -803,38 +803,71 @@ public:
 	Entity *getc_target();
 	void setc_target(Node *p_target);
 
-	////    Talents    ////
+	////    Class Talents    ////
 
-	int gets_free_talent_points();
-	void sets_free_talent_points(int value);
+	int gets_free_class_talent_points();
+	void sets_free_class_talent_points(int value);
 
-	int getc_free_talent_points();
-	void setc_free_talent_points(int value);
+	int getc_free_class_talent_points();
+	void setc_free_class_talent_points(int value);
 
-	void talent_crequest_learn(int spec_index, int talent_row, int talent_culomn);
-	void talent_sreceive_learn_request(int spec_index, int talent_row, int talent_culomn);
-	void _talent_sreceive_learn_request(int spec_index, int talent_row, int talent_culomn);
+	void class_talent_crequest_learn(int spec_index, int class_talent_row, int class_talent_culomn);
+	void class_talent_sreceive_learn_request(int spec_index, int class_talent_row, int class_talent_culomn);
+	void _class_talent_sreceive_learn_request(int spec_index, int class_talent_row, int class_talent_culomn);
 
-	void talent_crequest_reset();
-	void talent_sreceive_reset_request();
-	void _talent_sreceive_reset_request();
+	void class_talent_crequest_reset();
+	void class_talent_sreceive_reset_request();
+	void _class_talent_sreceive_reset_request();
 
-	void talent_sreset();
-	void talent_creset();
+	void class_talent_sreset();
+	void class_talent_creset();
 
-	void talent_adds(int talent);
-	void talent_removes(int talent);
-	bool talent_hass(int talent);
-	int talent_gets(int index);
-	int talent_gets_count();
-	void talents_sclear();
+	void class_talent_adds(int class_talent);
+	void class_talent_removes(int class_talent);
+	bool class_talent_hass(int class_talent);
+	int class_talent_gets(int index);
+	int class_talent_gets_count();
+	void class_talents_sclear();
 
-	void talent_addc(int talent);
-	void talent_removec(int talent);
-	bool talent_hasc(int talent);
-	int talent_getc(int index);
-	int talent_getc_count();
-	void talent_cclear();
+	void class_talent_addc(int class_talent);
+	void class_talent_removec(int class_talent);
+	bool class_talent_hasc(int class_talent);
+	int class_talent_getc(int index);
+	int class_talent_getc_count();
+	void class_talent_cclear();
+
+	////    Character Talents    ////
+
+	int gets_free_character_talent_points();
+	void sets_free_character_talent_points(int value);
+
+	int getc_free_character_talent_points();
+	void setc_free_character_talent_points(int value);
+
+	void character_talent_crequest_learn(int spec_index, int character_talent_row, int character_talent_culomn);
+	void character_talent_sreceive_learn_request(int spec_index, int character_talent_row, int character_talent_culomn);
+	void _character_talent_sreceive_learn_request(int spec_index, int character_talent_row, int character_talent_culomn);
+
+	void character_talent_crequest_reset();
+	void character_talent_sreceive_reset_request();
+	void _character_talent_sreceive_reset_request();
+
+	void character_talent_sreset();
+	void character_talent_creset();
+
+	void character_talent_adds(int character_talent);
+	void character_talent_removes(int character_talent);
+	bool character_talent_hass(int character_talent);
+	int character_talent_gets(int index);
+	int character_talent_gets_count();
+	void character_talents_sclear();
+
+	void character_talent_addc(int character_talent);
+	void character_talent_removec(int character_talent);
+	bool character_talent_hasc(int character_talent);
+	int character_talent_getc(int index);
+	int character_talent_getc_count();
+	void character_talent_cclear();
 
 	////    Inventory    ////
 
@@ -1182,13 +1215,21 @@ private:
 	Entity *_s_target;
 	Entity *_c_target;
 
-	////    Talents    ////
+	////    Class Talents    ////
 
-	int _s_free_talent_points;
-	int _c_free_talent_points;
+	int _s_free_class_talent_points;
+	int _c_free_class_talent_points;
 
-	Vector<int> _s_talents;
-	Vector<int> _c_talents;
+	Vector<int> _s_class_talents;
+	Vector<int> _c_class_talents;
+
+	////    Character Talents    ////
+
+	int _s_free_character_talent_points;
+	int _c_free_character_talent_points;
+
+	Vector<int> _s_character_talents;
+	Vector<int> _c_character_talents;
 
 	////    Data    ////
 

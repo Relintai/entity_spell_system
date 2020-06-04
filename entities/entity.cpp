@@ -1148,8 +1148,11 @@ Dictionary Entity::_to_dict() {
 
 	////    Talents    ////
 
-	dict["free_talent_points"] = _s_free_talent_points;
-	dict["talents"] = _s_talents;
+	dict["free_class_talent_points"] = _s_free_class_talent_points;
+	dict["class_talents"] = _s_class_talents;
+
+	dict["free_character_talent_points"] = _s_free_character_talent_points;
+	dict["character_talents"] = _s_character_talents;
 
 	////    Data    ////
 
@@ -1376,15 +1379,26 @@ void Entity::_from_dict(const Dictionary &dict) {
 	_s_active_category_cooldowns = dict.get("active_category_cooldowns", 0);
 	_c_active_category_cooldowns = _s_active_category_cooldowns;
 
-	////    Talents    ////
+	////    Class Talents    ////
 
-	_s_free_talent_points = dict.get("free_talent_points", 0);
-	_c_free_talent_points = _s_free_talent_points;
+	_s_free_class_talent_points = dict.get("free_class_talent_points", 0);
+	_c_free_class_talent_points = _s_free_class_talent_points;
 
-	Vector<int> talents = dict.get("talents", Vector<int>());
+	Vector<int> class_talents = dict.get("class_talents", Vector<int>());
 
-	for (int i = 0; i < talents.size(); ++i) {
-		talent_adds(talents[i]);
+	for (int i = 0; i < class_talents.size(); ++i) {
+		class_talent_adds(class_talents[i]);
+	}
+
+	////    Character Talents    ////
+
+	_s_free_character_talent_points = dict.get("free_character_talent_points", 0);
+	_c_free_character_talent_points = _s_free_character_talent_points;
+
+	Vector<int> character_talents = dict.get("character_talents", Vector<int>());
+
+	for (int i = 0; i < character_talents.size(); ++i) {
+		character_talent_adds(character_talents[i]);
 	}
 
 	////    Data    ////
@@ -4721,34 +4735,34 @@ void Entity::setc_target(Node *p_target) {
 	emit_signal("ctarget_changed", this, original_target);
 }
 
-////    Talents    ////
+////    Class Talents    ////
 
-int Entity::gets_free_talent_points() {
-	return _s_free_talent_points;
+int Entity::gets_free_class_talent_points() {
+	return _s_free_class_talent_points;
 }
-void Entity::sets_free_talent_points(int value) {
-	_s_free_talent_points = value;
+void Entity::sets_free_class_talent_points(int value) {
+	_s_free_class_talent_points = value;
 
-	ORPC(setc_free_talent_points, value);
-}
-
-int Entity::getc_free_talent_points() {
-	return _c_free_talent_points;
-}
-void Entity::setc_free_talent_points(int value) {
-	_c_free_talent_points = value;
+	ORPC(setc_free_class_talent_points, value);
 }
 
-void Entity::talent_crequest_learn(int spec_index, int talent_row, int talent_culomn) {
-	talent_sreceive_learn_request(spec_index, talent_row, talent_culomn);
+int Entity::getc_free_class_talent_points() {
+	return _c_free_class_talent_points;
+}
+void Entity::setc_free_class_talent_points(int value) {
+	_c_free_class_talent_points = value;
 }
 
-void Entity::talent_sreceive_learn_request(int spec_index, int talent_row, int talent_culomn) {
-	call("_talent_sreceive_learn_request", spec_index, talent_row, talent_culomn);
+void Entity::class_talent_crequest_learn(int spec_index, int class_talent_row, int class_talent_culomn) {
+	class_talent_sreceive_learn_request(spec_index, class_talent_row, class_talent_culomn);
 }
 
-void Entity::_talent_sreceive_learn_request(int spec_index, int talent_row, int talent_culomn) {
-	if (gets_free_talent_points() <= 0)
+void Entity::class_talent_sreceive_learn_request(int spec_index, int class_talent_row, int class_talent_culomn) {
+	call("_class_talent_sreceive_learn_request", spec_index, class_talent_row, class_talent_culomn);
+}
+
+void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_talent_row, int class_talent_culomn) {
+	if (gets_free_class_talent_points() <= 0)
 		return;
 
 	ERR_FAIL_COND(!_s_entity_data.is_valid());
@@ -4761,35 +4775,35 @@ void Entity::_talent_sreceive_learn_request(int spec_index, int talent_row, int 
 
 	ERR_FAIL_COND(!spec.is_valid());
 
-	Ref<TalentRowData> tr = spec->get_talent_row(talent_row);
+	Ref<TalentRowData> tr = spec->get_talent_row(class_talent_row);
 
 	ERR_FAIL_COND(!tr.is_valid());
 
 	for (int i = 0; i < TalentRowData::MAX_TALENTS_PER_ENTRY; ++i) {
-		Ref<Aura> talent = tr->get_talent(talent_culomn, i);
+		Ref<Aura> class_talent = tr->get_talent(class_talent_culomn, i);
 
-		if (!talent.is_valid())
+		if (!class_talent.is_valid())
 			return;
 
-		int talent_id = talent->get_id();
+		int class_talent_id = class_talent->get_id();
 
-		if (talent_hass(talent_id))
+		if (class_talent_hass(class_talent_id))
 			continue;
 
-		if (talent->get_talent_required_talent().is_valid()) {
-			if (!talent_hass(talent->get_talent_required_talent()->get_id())) {
+		if (class_talent->get_talent_required_talent().is_valid()) {
+			if (!class_talent_hass(class_talent->get_talent_required_talent()->get_id())) {
 				return;
 			}
 		}
 
-		if (talent->get_talent_required_spell().is_valid()) {
-			if (!spell_hass(talent->get_talent_required_spell())) {
+		if (class_talent->get_talent_required_spell().is_valid()) {
+			if (!spell_hass(class_talent->get_talent_required_spell())) {
 				return;
 			}
 		}
 
 		if (i > 0) {
-			Ref<Aura> pt = tr->get_talent(talent_culomn, i - 1);
+			Ref<Aura> pt = tr->get_talent(class_talent_culomn, i - 1);
 
 			for (int j = 0; j < aura_gets_count(); ++j) {
 				Ref<AuraData> ad = aura_gets(j);
@@ -4808,67 +4822,67 @@ void Entity::_talent_sreceive_learn_request(int spec_index, int talent_row, int 
 		info->set_caster(this);
 		info->set_target(this);
 		info->set_spell_scale(1);
-		info->set_aura(talent);
+		info->set_aura(class_talent);
 
-		talent->sapply(info);
+		class_talent->sapply(info);
 
-		talent_adds(talent_id);
+		class_talent_adds(class_talent_id);
 
 		return;
 	}
 }
 
-void Entity::talent_crequest_reset() {
-	talent_sreceive_reset_request();
+void Entity::class_talent_crequest_reset() {
+	class_talent_sreceive_reset_request();
 }
-void Entity::talent_sreceive_reset_request() {
-	call("_talent_sreceive_reset_request");
+void Entity::class_talent_sreceive_reset_request() {
+	call("_class_talent_sreceive_reset_request");
 }
-void Entity::_talent_sreceive_reset_request() {
-	talent_sreset();
-}
-
-void Entity::talent_sreset() {
-	_s_talents.clear();
-
-	if (has_method("_son_talent_reset"))
-		call("_son_talent_reset", this);
-
-	emit_signal("stalent_reset", this);
-
-	ORPC(talent_creset);
-}
-void Entity::talent_creset() {
-	_c_talents.clear();
-
-	if (has_method("_con_talent_reset"))
-		call("_con_talent_reset", this);
-
-	emit_signal("ctalent_reset", this);
+void Entity::_class_talent_sreceive_reset_request() {
+	class_talent_sreset();
 }
 
-void Entity::talent_adds(int talent) {
-	if (talent_hass(talent))
+void Entity::class_talent_sreset() {
+	_s_class_talents.clear();
+
+	if (has_method("_son_class_talent_reset"))
+		call("_son_class_talent_reset", this);
+
+	emit_signal("sclass_talent_reset", this);
+
+	ORPC(class_talent_creset);
+}
+void Entity::class_talent_creset() {
+	_c_class_talents.clear();
+
+	if (has_method("_con_class_talent_reset"))
+		call("_con_class_talent_reset", this);
+
+	emit_signal("cclass_talent_reset", this);
+}
+
+void Entity::class_talent_adds(int class_talent) {
+	if (class_talent_hass(class_talent))
 		return;
 
-	_s_talents.push_back(talent);
+	_s_class_talents.push_back(class_talent);
 
-	if (has_method("_son_talent_learned"))
-		call("_son_talent_learned", talent);
+	if (has_method("_son_class_talent_learned"))
+		call("_son_class_talent_learned", class_talent);
 
-	emit_signal("stalent_learned", this, talent);
+	emit_signal("sclass_talent_learned", this, class_talent);
 
-	ORPC(talent_addc, talent);
+	ORPC(class_talent_addc, class_talent);
 }
-void Entity::talent_removes(int talent) {
-	for (int i = 0; i < _s_talents.size(); ++i) {
-		if (_s_talents[i] == talent) {
-			_s_talents.remove(i);
+void Entity::class_talent_removes(int class_talent) {
+	for (int i = 0; i < _s_class_talents.size(); ++i) {
+		if (_s_class_talents[i] == class_talent) {
+			_s_class_talents.remove(i);
 
 			for (int j = 0; j < aura_gets_count(); ++j) {
 				Ref<AuraData> ad = aura_gets(j);
 
-				if (ad->get_aura_id() == talent) {
+				if (ad->get_aura_id() == class_talent) {
 					aura_removes(ad);
 
 					break;
@@ -4879,69 +4893,292 @@ void Entity::talent_removes(int talent) {
 		}
 	}
 
-	ORPC(talent_removec, talent);
+	ORPC(class_talent_removec, class_talent);
 }
-bool Entity::talent_hass(int talent) {
-	for (int i = 0; i < _s_talents.size(); ++i) {
-		if (_s_talents[i] == talent) {
+bool Entity::class_talent_hass(int class_talent) {
+	for (int i = 0; i < _s_class_talents.size(); ++i) {
+		if (_s_class_talents[i] == class_talent) {
 			return true;
 		}
 	}
 
 	return false;
 }
-int Entity::talent_gets(int index) {
-	ERR_FAIL_INDEX_V(index, _s_talents.size(), 0);
+int Entity::class_talent_gets(int index) {
+	ERR_FAIL_INDEX_V(index, _s_class_talents.size(), 0);
 
-	return _s_talents.get(index);
+	return _s_class_talents.get(index);
 }
-int Entity::talent_gets_count() {
-	return _s_talents.size();
+int Entity::class_talent_gets_count() {
+	return _s_class_talents.size();
 }
-void Entity::talents_sclear() {
-	_s_talents.clear();
+void Entity::class_talents_sclear() {
+	_s_class_talents.clear();
 
-	ORPC(talent_cclear);
+	ORPC(class_talent_cclear);
 }
 
-void Entity::talent_addc(int talent) {
-	if (talent_hasc(talent))
+void Entity::class_talent_addc(int class_talent) {
+	if (class_talent_hasc(class_talent))
 		return;
 
-	_c_talents.push_back(talent);
+	_c_class_talents.push_back(class_talent);
 
-	if (has_method("_con_talent_learned"))
-		call("_con_talent_learned", talent);
+	if (has_method("_con_class_talent_learned"))
+		call("_con_class_talent_learned", class_talent);
 
-	emit_signal("ctalent_learned", this, talent);
+	emit_signal("cclass_talent_learned", this, class_talent);
 }
-void Entity::talent_removec(int talent) {
-	for (int i = 0; i < _c_talents.size(); ++i) {
-		if (_c_talents[i] == talent) {
-			_c_talents.remove(i);
+void Entity::class_talent_removec(int class_talent) {
+	for (int i = 0; i < _c_class_talents.size(); ++i) {
+		if (_c_class_talents[i] == class_talent) {
+			_c_class_talents.remove(i);
 			return;
 		}
 	}
 }
-bool Entity::talent_hasc(int talent) {
-	for (int i = 0; i < _c_talents.size(); ++i) {
-		if (_c_talents[i] == talent) {
+bool Entity::class_talent_hasc(int class_talent) {
+	for (int i = 0; i < _c_class_talents.size(); ++i) {
+		if (_c_class_talents[i] == class_talent) {
 			return true;
 		}
 	}
 
 	return false;
 }
-int Entity::talent_getc(int index) {
-	ERR_FAIL_INDEX_V(index, _c_talents.size(), 0);
+int Entity::class_talent_getc(int index) {
+	ERR_FAIL_INDEX_V(index, _c_class_talents.size(), 0);
 
-	return _c_talents.get(index);
+	return _c_class_talents.get(index);
 }
-int Entity::talent_getc_count() {
-	return _c_talents.size();
+int Entity::class_talent_getc_count() {
+	return _c_class_talents.size();
 }
-void Entity::talent_cclear() {
-	_c_talents.clear();
+void Entity::class_talent_cclear() {
+	_c_class_talents.clear();
+}
+
+////    Character Talents    ////
+
+int Entity::gets_free_character_talent_points() {
+	return _s_free_character_talent_points;
+}
+void Entity::sets_free_character_talent_points(int value) {
+	_s_free_character_talent_points = value;
+
+	ORPC(setc_free_character_talent_points, value);
+}
+
+int Entity::getc_free_character_talent_points() {
+	return _c_free_character_talent_points;
+}
+void Entity::setc_free_character_talent_points(int value) {
+	_c_free_character_talent_points = value;
+}
+
+void Entity::character_talent_crequest_learn(int spec_index, int character_talent_row, int character_talent_culomn) {
+	character_talent_sreceive_learn_request(spec_index, character_talent_row, character_talent_culomn);
+}
+
+void Entity::character_talent_sreceive_learn_request(int spec_index, int character_talent_row, int character_talent_culomn) {
+	call("_character_talent_sreceive_learn_request", spec_index, character_talent_row, character_talent_culomn);
+}
+
+void Entity::_character_talent_sreceive_learn_request(int spec_index, int character_talent_row, int character_talent_culomn) {
+	if (gets_free_character_talent_points() <= 0)
+		return;
+
+	ERR_FAIL_COND(!_s_entity_data.is_valid());
+
+	Ref<EntityClassData> class_data = _s_entity_data->get_entity_class_data();
+
+	ERR_FAIL_COND(!class_data.is_valid());
+
+	Ref<CharacterSpec> spec = class_data->get_spec(spec_index);
+
+	ERR_FAIL_COND(!spec.is_valid());
+
+	Ref<TalentRowData> tr = spec->get_talent_row(character_talent_row);
+
+	ERR_FAIL_COND(!tr.is_valid());
+
+	for (int i = 0; i < TalentRowData::MAX_TALENTS_PER_ENTRY; ++i) {
+		Ref<Aura> character_talent = tr->get_talent(character_talent_culomn, i);
+
+		if (!character_talent.is_valid())
+			return;
+
+		int character_talent_id = character_talent->get_id();
+
+		if (character_talent_hass(character_talent_id))
+			continue;
+
+		if (character_talent->get_talent_required_talent().is_valid()) {
+			if (!character_talent_hass(character_talent->get_talent_required_talent()->get_id())) {
+				return;
+			}
+		}
+
+		if (character_talent->get_talent_required_spell().is_valid()) {
+			if (!spell_hass(character_talent->get_talent_required_spell())) {
+				return;
+			}
+		}
+
+		if (i > 0) {
+			Ref<Aura> pt = tr->get_talent(character_talent_culomn, i - 1);
+
+			for (int j = 0; j < aura_gets_count(); ++j) {
+				Ref<AuraData> ad = aura_gets(j);
+
+				if (ad->get_aura_id() == pt->get_id()) {
+					aura_removes(ad);
+
+					break;
+				}
+			}
+		}
+
+		Ref<AuraApplyInfo> info;
+		info.instance();
+
+		info->set_caster(this);
+		info->set_target(this);
+		info->set_spell_scale(1);
+		info->set_aura(character_talent);
+
+		character_talent->sapply(info);
+
+		character_talent_adds(character_talent_id);
+
+		return;
+	}
+}
+
+void Entity::character_talent_crequest_reset() {
+	character_talent_sreceive_reset_request();
+}
+void Entity::character_talent_sreceive_reset_request() {
+	call("_character_talent_sreceive_reset_request");
+}
+void Entity::_character_talent_sreceive_reset_request() {
+	character_talent_sreset();
+}
+
+void Entity::character_talent_sreset() {
+	_s_character_talents.clear();
+
+	if (has_method("_son_character_talent_reset"))
+		call("_son_character_talent_reset", this);
+
+	emit_signal("scharacter_talent_reset", this);
+
+	ORPC(character_talent_creset);
+}
+void Entity::character_talent_creset() {
+	_c_character_talents.clear();
+
+	if (has_method("_con_character_talent_reset"))
+		call("_con_character_talent_reset", this);
+
+	emit_signal("ccharacter_talent_reset", this);
+}
+
+void Entity::character_talent_adds(int character_talent) {
+	if (character_talent_hass(character_talent))
+		return;
+
+	_s_character_talents.push_back(character_talent);
+
+	if (has_method("_son_character_talent_learned"))
+		call("_son_character_talent_learned", character_talent);
+
+	emit_signal("scharacter_talent_learned", this, character_talent);
+
+	ORPC(character_talent_addc, character_talent);
+}
+void Entity::character_talent_removes(int character_talent) {
+	for (int i = 0; i < _s_character_talents.size(); ++i) {
+		if (_s_character_talents[i] == character_talent) {
+			_s_character_talents.remove(i);
+
+			for (int j = 0; j < aura_gets_count(); ++j) {
+				Ref<AuraData> ad = aura_gets(j);
+
+				if (ad->get_aura_id() == character_talent) {
+					aura_removes(ad);
+
+					break;
+				}
+			}
+
+			break;
+		}
+	}
+
+	ORPC(character_talent_removec, character_talent);
+}
+bool Entity::character_talent_hass(int character_talent) {
+	for (int i = 0; i < _s_character_talents.size(); ++i) {
+		if (_s_character_talents[i] == character_talent) {
+			return true;
+		}
+	}
+
+	return false;
+}
+int Entity::character_talent_gets(int index) {
+	ERR_FAIL_INDEX_V(index, _s_character_talents.size(), 0);
+
+	return _s_character_talents.get(index);
+}
+int Entity::character_talent_gets_count() {
+	return _s_character_talents.size();
+}
+void Entity::character_talents_sclear() {
+	_s_character_talents.clear();
+
+	ORPC(character_talent_cclear);
+}
+
+void Entity::character_talent_addc(int character_talent) {
+	if (character_talent_hasc(character_talent))
+		return;
+
+	_c_character_talents.push_back(character_talent);
+
+	if (has_method("_con_character_talent_learned"))
+		call("_con_character_talent_learned", character_talent);
+
+	emit_signal("ccharacter_talent_learned", this, character_talent);
+}
+void Entity::character_talent_removec(int character_talent) {
+	for (int i = 0; i < _c_character_talents.size(); ++i) {
+		if (_c_character_talents[i] == character_talent) {
+			_c_character_talents.remove(i);
+			return;
+		}
+	}
+}
+bool Entity::character_talent_hasc(int character_talent) {
+	for (int i = 0; i < _c_character_talents.size(); ++i) {
+		if (_c_character_talents[i] == character_talent) {
+			return true;
+		}
+	}
+
+	return false;
+}
+int Entity::character_talent_getc(int index) {
+	ERR_FAIL_INDEX_V(index, _c_character_talents.size(), 0);
+
+	return _c_character_talents.get(index);
+}
+int Entity::character_talent_getc_count() {
+	return _c_character_talents.size();
+}
+void Entity::character_talent_cclear() {
+	_c_character_talents.clear();
 }
 
 ////    Bag    ////
@@ -5672,8 +5909,11 @@ Entity::Entity() {
 	_s_target = NULL;
 	_c_target = NULL;
 
-	_s_free_talent_points = 0;
-	_c_free_talent_points = 0;
+	_s_free_character_talent_points = 0;
+	_c_free_character_talent_points = 0;
+
+	_s_free_class_talent_points = 0;
+	_c_free_class_talent_points = 0;
 
 	_s_free_spell_points = 0;
 	_c_free_spell_points = 0;
@@ -5919,11 +6159,11 @@ Entity::~Entity() {
 	_s_spells.clear();
 	_c_spells.clear();
 
-	_s_free_talent_points = 0;
-	_c_free_talent_points = 0;
+	_s_free_class_talent_points = 0;
+	_c_free_character_talent_points = 0;
 
-	_s_talents.clear();
-	_c_talents.clear();
+	_s_class_talents.clear();
+	_c_character_talents.clear();
 
 	_stats.clear();
 
@@ -6028,7 +6268,7 @@ void Entity::_notification_scharacter_level_up(int level) {
 		if (ESS::get_singleton()->get_use_spell_points())
 			sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
 
-		sets_free_talent_points(gets_free_talent_points() + level);
+		sets_free_character_talent_points(gets_free_character_talent_points() + level);
 	}
 }
 
@@ -6044,7 +6284,7 @@ void Entity::_notification_sclass_level_up(int level) {
 	if (ESS::get_singleton()->get_use_spell_points())
 		sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
 
-	sets_free_talent_points(gets_free_talent_points() + level);
+	sets_free_class_talent_points(gets_free_class_talent_points() + level);
 }
 
 void Entity::_moved() {
@@ -6837,55 +7077,105 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_sentity_resource_added", "resource"), &Entity::notification_sentity_resource_added);
 	ClassDB::bind_method(D_METHOD("notification_sentity_resource_removed", "resource"), &Entity::notification_sentity_resource_removed);
 
-	//Talents
+	//Class Talents
 
-	ClassDB::bind_method(D_METHOD("gets_free_talent_points"), &Entity::gets_free_talent_points);
-	ClassDB::bind_method(D_METHOD("sets_free_talent_points", "value"), &Entity::sets_free_talent_points);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_talent_points"), "sets_free_talent_points", "gets_free_talent_points");
+	ClassDB::bind_method(D_METHOD("gets_free_class_talent_points"), &Entity::gets_free_class_talent_points);
+	ClassDB::bind_method(D_METHOD("sets_free_class_talent_points", "value"), &Entity::sets_free_class_talent_points);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_class_talent_points"), "sets_free_class_talent_points", "gets_free_class_talent_points");
 
-	ClassDB::bind_method(D_METHOD("getc_free_talent_points"), &Entity::getc_free_talent_points);
-	ClassDB::bind_method(D_METHOD("setc_free_talent_points", "value"), &Entity::setc_free_talent_points);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_talent_points", PROPERTY_HINT_NONE, "", 0), "setc_free_talent_points", "getc_free_talent_points");
+	ClassDB::bind_method(D_METHOD("getc_free_class_talent_points"), &Entity::getc_free_class_talent_points);
+	ClassDB::bind_method(D_METHOD("setc_free_class_talent_points", "value"), &Entity::setc_free_class_talent_points);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_class_talent_points", PROPERTY_HINT_NONE, "", 0), "setc_free_class_talent_points", "getc_free_class_talent_points");
 
-	BIND_VMETHOD(MethodInfo("_talent_sreceive_learn_request", PropertyInfo(Variant::INT, "spec_index"), PropertyInfo(Variant::INT, "talent_row"), PropertyInfo(Variant::INT, "talent_culomn")));
-	BIND_VMETHOD(MethodInfo("_talent_sreceive_reset_request"));
+	BIND_VMETHOD(MethodInfo("_class_talent_sreceive_learn_request", PropertyInfo(Variant::INT, "spec_index"), PropertyInfo(Variant::INT, "class_talent_row"), PropertyInfo(Variant::INT, "class_talent_culomn")));
+	BIND_VMETHOD(MethodInfo("_class_talent_sreceive_reset_request"));
 
-	ADD_SIGNAL(MethodInfo("stalent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "talent_id")));
-	ADD_SIGNAL(MethodInfo("ctalent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "talent_id")));
+	ADD_SIGNAL(MethodInfo("sclass_talent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "class_talent_id")));
+	ADD_SIGNAL(MethodInfo("cclass_talent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "class_talent_id")));
 
-	ADD_SIGNAL(MethodInfo("stalent_reset", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	ADD_SIGNAL(MethodInfo("ctalent_reset", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	ADD_SIGNAL(MethodInfo("sclass_talent_reset", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	ADD_SIGNAL(MethodInfo("cclass_talent_reset", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	BIND_VMETHOD(MethodInfo("_son_talent_learned", PropertyInfo(Variant::INT, "talent_id")));
-	BIND_VMETHOD(MethodInfo("_con_talent_learned", PropertyInfo(Variant::INT, "talent_id")));
+	BIND_VMETHOD(MethodInfo("_son_class_talent_learned", PropertyInfo(Variant::INT, "class_talent_id")));
+	BIND_VMETHOD(MethodInfo("_con_class_talent_learned", PropertyInfo(Variant::INT, "class_talent_id")));
 
-	BIND_VMETHOD(MethodInfo("_son_talent_reset"));
-	BIND_VMETHOD(MethodInfo("_con_talent_reset"));
+	BIND_VMETHOD(MethodInfo("_son_class_talent_reset"));
+	BIND_VMETHOD(MethodInfo("_con_class_talent_reset"));
 
-	ClassDB::bind_method(D_METHOD("talent_crequest_learn", "spec_index", "talent_row", "talent_culomn"), &Entity::talent_crequest_learn);
-	ClassDB::bind_method(D_METHOD("talent_sreceive_learn_request", "spec_index", "talent_row", "talent_culomn"), &Entity::talent_sreceive_learn_request);
-	ClassDB::bind_method(D_METHOD("_talent_sreceive_learn_request", "spec_index", "talent_row", "talent_culomn"), &Entity::_talent_sreceive_learn_request);
+	ClassDB::bind_method(D_METHOD("class_talent_crequest_learn", "spec_index", "class_talent_row", "class_talent_culomn"), &Entity::class_talent_crequest_learn);
+	ClassDB::bind_method(D_METHOD("class_talent_sreceive_learn_request", "spec_index", "class_talent_row", "class_talent_culomn"), &Entity::class_talent_sreceive_learn_request);
+	ClassDB::bind_method(D_METHOD("_class_talent_sreceive_learn_request", "spec_index", "class_talent_row", "class_talent_culomn"), &Entity::_class_talent_sreceive_learn_request);
 
-	ClassDB::bind_method(D_METHOD("talent_crequest_reset"), &Entity::talent_crequest_reset);
-	ClassDB::bind_method(D_METHOD("talent_sreceive_reset_request"), &Entity::talent_sreceive_reset_request);
-	ClassDB::bind_method(D_METHOD("_talent_sreceive_reset_request"), &Entity::_talent_sreceive_reset_request);
+	ClassDB::bind_method(D_METHOD("class_talent_crequest_reset"), &Entity::class_talent_crequest_reset);
+	ClassDB::bind_method(D_METHOD("class_talent_sreceive_reset_request"), &Entity::class_talent_sreceive_reset_request);
+	ClassDB::bind_method(D_METHOD("_class_talent_sreceive_reset_request"), &Entity::_class_talent_sreceive_reset_request);
 
-	ClassDB::bind_method(D_METHOD("talent_sreset"), &Entity::talent_sreset);
-	ClassDB::bind_method(D_METHOD("talent_creset"), &Entity::talent_creset);
+	ClassDB::bind_method(D_METHOD("class_talent_sreset"), &Entity::class_talent_sreset);
+	ClassDB::bind_method(D_METHOD("class_talent_creset"), &Entity::class_talent_creset);
 
-	ClassDB::bind_method(D_METHOD("talent_adds", "talent"), &Entity::talent_adds);
-	ClassDB::bind_method(D_METHOD("talent_removes", "talent"), &Entity::talent_removes);
-	ClassDB::bind_method(D_METHOD("talent_hass", "talent"), &Entity::talent_hass);
-	ClassDB::bind_method(D_METHOD("talent_gets", "index"), &Entity::talent_gets);
-	ClassDB::bind_method(D_METHOD("talent_gets_count"), &Entity::talent_gets_count);
-	ClassDB::bind_method(D_METHOD("talents_sclear"), &Entity::talents_sclear);
+	ClassDB::bind_method(D_METHOD("class_talent_adds", "class_talent"), &Entity::class_talent_adds);
+	ClassDB::bind_method(D_METHOD("class_talent_removes", "class_talent"), &Entity::class_talent_removes);
+	ClassDB::bind_method(D_METHOD("class_talent_hass", "class_talent"), &Entity::class_talent_hass);
+	ClassDB::bind_method(D_METHOD("class_talent_gets", "index"), &Entity::class_talent_gets);
+	ClassDB::bind_method(D_METHOD("class_talent_gets_count"), &Entity::class_talent_gets_count);
+	ClassDB::bind_method(D_METHOD("class_talents_sclear"), &Entity::class_talents_sclear);
 
-	ClassDB::bind_method(D_METHOD("talent_addc", "talent"), &Entity::talent_addc);
-	ClassDB::bind_method(D_METHOD("talent_removec", "talent"), &Entity::talent_removec);
-	ClassDB::bind_method(D_METHOD("talent_hasc", "talent"), &Entity::talent_hasc);
-	ClassDB::bind_method(D_METHOD("talent_getc", "index"), &Entity::talent_getc);
-	ClassDB::bind_method(D_METHOD("talent_getc_count"), &Entity::talent_getc_count);
-	ClassDB::bind_method(D_METHOD("talent_cclear"), &Entity::talent_cclear);
+	ClassDB::bind_method(D_METHOD("class_talent_addc", "class_talent"), &Entity::class_talent_addc);
+	ClassDB::bind_method(D_METHOD("class_talent_removec", "class_talent"), &Entity::class_talent_removec);
+	ClassDB::bind_method(D_METHOD("class_talent_hasc", "class_talent"), &Entity::class_talent_hasc);
+	ClassDB::bind_method(D_METHOD("class_talent_getc", "index"), &Entity::class_talent_getc);
+	ClassDB::bind_method(D_METHOD("class_talent_getc_count"), &Entity::class_talent_getc_count);
+	ClassDB::bind_method(D_METHOD("class_talent_cclear"), &Entity::class_talent_cclear);
+
+	//Character Talents
+
+	ClassDB::bind_method(D_METHOD("gets_free_character_talent_points"), &Entity::gets_free_character_talent_points);
+	ClassDB::bind_method(D_METHOD("sets_free_character_talent_points", "value"), &Entity::sets_free_character_talent_points);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_character_talent_points"), "sets_free_character_talent_points", "gets_free_character_talent_points");
+
+	ClassDB::bind_method(D_METHOD("getc_free_character_talent_points"), &Entity::getc_free_character_talent_points);
+	ClassDB::bind_method(D_METHOD("setc_free_character_talent_points", "value"), &Entity::setc_free_character_talent_points);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_character_talent_points", PROPERTY_HINT_NONE, "", 0), "setc_free_character_talent_points", "getc_free_character_talent_points");
+
+	BIND_VMETHOD(MethodInfo("_character_talent_sreceive_learn_request", PropertyInfo(Variant::INT, "spec_index"), PropertyInfo(Variant::INT, "character_talent_row"), PropertyInfo(Variant::INT, "character_talent_culomn")));
+	BIND_VMETHOD(MethodInfo("_character_talent_sreceive_reset_request"));
+
+	ADD_SIGNAL(MethodInfo("scharacter_talent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "character_talent_id")));
+	ADD_SIGNAL(MethodInfo("ccharacter_talent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "character_talent_id")));
+
+	ADD_SIGNAL(MethodInfo("scharacter_talent_reset", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	ADD_SIGNAL(MethodInfo("ccharacter_talent_reset", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
+	BIND_VMETHOD(MethodInfo("_son_character_talent_learned", PropertyInfo(Variant::INT, "character_talent_id")));
+	BIND_VMETHOD(MethodInfo("_con_character_talent_learned", PropertyInfo(Variant::INT, "character_talent_id")));
+
+	BIND_VMETHOD(MethodInfo("_son_character_talent_reset"));
+	BIND_VMETHOD(MethodInfo("_con_character_talent_reset"));
+
+	ClassDB::bind_method(D_METHOD("character_talent_crequest_learn", "spec_index", "character_talent_row", "character_talent_culomn"), &Entity::character_talent_crequest_learn);
+	ClassDB::bind_method(D_METHOD("character_talent_sreceive_learn_request", "spec_index", "character_talent_row", "character_talent_culomn"), &Entity::character_talent_sreceive_learn_request);
+	ClassDB::bind_method(D_METHOD("_character_talent_sreceive_learn_request", "spec_index", "character_talent_row", "character_talent_culomn"), &Entity::_character_talent_sreceive_learn_request);
+
+	ClassDB::bind_method(D_METHOD("character_talent_crequest_reset"), &Entity::character_talent_crequest_reset);
+	ClassDB::bind_method(D_METHOD("character_talent_sreceive_reset_request"), &Entity::character_talent_sreceive_reset_request);
+	ClassDB::bind_method(D_METHOD("_character_talent_sreceive_reset_request"), &Entity::_character_talent_sreceive_reset_request);
+
+	ClassDB::bind_method(D_METHOD("character_talent_sreset"), &Entity::character_talent_sreset);
+	ClassDB::bind_method(D_METHOD("character_talent_creset"), &Entity::character_talent_creset);
+
+	ClassDB::bind_method(D_METHOD("character_talent_adds", "character_talent"), &Entity::character_talent_adds);
+	ClassDB::bind_method(D_METHOD("character_talent_removes", "character_talent"), &Entity::character_talent_removes);
+	ClassDB::bind_method(D_METHOD("character_talent_hass", "character_talent"), &Entity::character_talent_hass);
+	ClassDB::bind_method(D_METHOD("character_talent_gets", "index"), &Entity::character_talent_gets);
+	ClassDB::bind_method(D_METHOD("character_talent_gets_count"), &Entity::character_talent_gets_count);
+	ClassDB::bind_method(D_METHOD("character_talents_sclear"), &Entity::character_talents_sclear);
+
+	ClassDB::bind_method(D_METHOD("character_talent_addc", "character_talent"), &Entity::character_talent_addc);
+	ClassDB::bind_method(D_METHOD("character_talent_removec", "character_talent"), &Entity::character_talent_removec);
+	ClassDB::bind_method(D_METHOD("character_talent_hasc", "character_talent"), &Entity::character_talent_hasc);
+	ClassDB::bind_method(D_METHOD("character_talent_getc", "index"), &Entity::character_talent_getc);
+	ClassDB::bind_method(D_METHOD("character_talent_getc_count"), &Entity::character_talent_getc_count);
+	ClassDB::bind_method(D_METHOD("character_talent_cclear"), &Entity::character_talent_cclear);
 
 	//Clientside EventHandlers
 	BIND_VMETHOD(MethodInfo("_notification_cdeath"));
