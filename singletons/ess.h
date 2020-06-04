@@ -78,6 +78,9 @@ public:
 	int get_max_class_level() const;
 	void set_max_class_level(const int value);
 
+	int get_auto_learn_spells() const;
+	void set_auto_learn_spells(const int value);
+
 	Ref<ESSResourceDB> get_resource_db();
 	void set_resource_db(const Ref<ESSResourceDB> &resource_db);
 
@@ -179,6 +182,7 @@ private:
 	bool _allow_class_recipe_learning;
 	int _max_character_level;
 	int _max_class_level;
+	bool _auto_learn_spells;
 
 	//Stats
 	Vector<StringName> _stat_id_to_name;

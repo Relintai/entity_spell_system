@@ -102,6 +102,13 @@ void ESS::set_max_class_level(const int value) {
 	_max_class_level = value;
 }
 
+int ESS::get_auto_learn_spells() const {
+	return _auto_learn_spells;
+}
+void ESS::set_auto_learn_spells(const int value) {
+	_auto_learn_spells = value;
+}
+
 Ref<ESSResourceDB> ESS::get_resource_db() {
 	return _ess_resource_db;
 }
@@ -494,6 +501,10 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_max_class_level", "value"), &ESS::set_max_class_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_class_level"), "set_max_class_level", "get_max_class_level");
 
+	ClassDB::bind_method(D_METHOD("get_auto_learn_spells"), &ESS::get_auto_learn_spells);
+	ClassDB::bind_method(D_METHOD("set_auto_learn_spells", "value"), &ESS::set_auto_learn_spells);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "auto_learn_spells"), "set_auto_learn_spells", "get_auto_learn_spells");
+
 	ClassDB::bind_method(D_METHOD("get_resource_db"), &ESS::get_resource_db);
 	ClassDB::bind_method(D_METHOD("set_resource_db"), &ESS::set_resource_db);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_db", PROPERTY_HINT_RESOURCE_TYPE, "ESSResourceDB"), "set_resource_db", "get_resource_db");
@@ -596,6 +607,7 @@ ESS::ESS() {
 	_use_class_xp = GLOBAL_DEF("ess/level/use_class_xp", false);
 	_automatic_class_levelups = GLOBAL_DEF("ess/level/automatic_class_levelups", false);
 	_use_global_class_level = GLOBAL_DEF("ess/level/use_global_class_level", false);
+	_auto_learn_spells = GLOBAL_DEF("ess/level/auto_learn_spells", true);
 
 	_max_character_level = GLOBAL_DEF("ess/level/max_character_level", 20);
 	_max_class_level = GLOBAL_DEF("ess/level/max_class_level", 40);
