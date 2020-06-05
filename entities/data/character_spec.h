@@ -40,10 +40,10 @@ public:
 	void set_num_rows(const int value);
 
 	int get_num_columns(const int row) const;
-	void set_num_columns(const int row, int value);
+	void set_num_columns(const int row, const int value);
 
 	int get_num_ranks(const int row, const int column) const;
-	void set_num_ranks(const int row, const int column, int value);
+	void set_num_ranks(const int row, const int column, const int value);
 
 	Vector<Variant> get_talents();
 

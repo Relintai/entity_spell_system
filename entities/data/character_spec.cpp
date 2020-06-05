@@ -45,7 +45,7 @@ int CharacterSpec::get_num_columns(const int row) const {
 
 	return _rows[row].size();
 }
-void CharacterSpec::set_num_columns(const int row, int value) {
+void CharacterSpec::set_num_columns(const int row, const int value) {
 	ERR_FAIL_INDEX(row, _rows.size());
 
 	_rows.write[row].resize(value);
@@ -57,7 +57,7 @@ int CharacterSpec::get_num_ranks(const int row, const int column) const {
 
 	return _rows[row][column].size();
 }
-void CharacterSpec::set_num_ranks(const int row, const int column, int value) {
+void CharacterSpec::set_num_ranks(const int row, const int column, const int value) {
 	ERR_FAIL_INDEX(row, _rows.size());
 
 	_rows.write[row].write[column].resize(value);
