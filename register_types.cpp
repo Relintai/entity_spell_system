@@ -49,7 +49,6 @@ SOFTWARE.
 #include "entities/skills/entity_skill_data.h"
 
 #include "entities/data/character_spec.h"
-#include "entities/data/talent_row_data.h"
 
 #include "data/items/model_visual.h"
 #include "data/items/model_visual_entry.h"
@@ -174,7 +173,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<ItemTemplate>();
 	ClassDB::register_class<ItemInstance>();
 	ClassDB::register_class<SpellCooldownManipulationData>();
-	ClassDB::register_class<TalentRowData>();
 
 	ClassDB::register_class<EquipmentData>();
 

@@ -35,7 +35,6 @@ SOFTWARE.
 #include "../pipelines/spell_heal_info.h"
 #include "../profiles/class_profile.h"
 #include "./data/character_spec.h"
-#include "./data/talent_row_data.h"
 #include "./resources/entity_resource_health.h"
 #include "./resources/entity_resource_speed.h"
 #include "./skills/entity_skill.h"
@@ -4775,12 +4774,8 @@ void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_tale
 
 	ERR_FAIL_COND(!spec.is_valid());
 
-	Ref<TalentRowData> tr = spec->get_talent_row(class_talent_row);
-
-	ERR_FAIL_COND(!tr.is_valid());
-
-	for (int i = 0; i < TalentRowData::MAX_TALENTS_PER_ENTRY; ++i) {
-		Ref<Aura> class_talent = tr->get_talent(class_talent_culomn, i);
+	for (int i = 0; i < spec->get_num_ranks(class_talent_row, class_talent_culomn); ++i) {
+		Ref<Aura> class_talent = spec->get_talent(class_talent_row, class_talent_culomn, i);
 
 		if (!class_talent.is_valid())
 			return;
@@ -4803,7 +4798,7 @@ void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_tale
 		}
 
 		if (i > 0) {
-			Ref<Aura> pt = tr->get_talent(class_talent_culomn, i - 1);
+			Ref<Aura> pt = spec->get_talent(class_talent_row, class_talent_culomn, i - 1);
 
 			for (int j = 0; j < aura_gets_count(); ++j) {
 				Ref<AuraData> ad = aura_gets(j);
@@ -4998,12 +4993,10 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 
 	ERR_FAIL_COND(!spec.is_valid());
 
-	Ref<TalentRowData> tr = spec->get_talent_row(character_talent_row);
+	ERR_FAIL_COND(!spec.is_valid());
 
-	ERR_FAIL_COND(!tr.is_valid());
-
-	for (int i = 0; i < TalentRowData::MAX_TALENTS_PER_ENTRY; ++i) {
-		Ref<Aura> character_talent = tr->get_talent(character_talent_culomn, i);
+	for (int i = 0; i < spec->get_num_ranks(character_talent_row, character_talent_culomn); ++i) {
+		Ref<Aura> character_talent = spec->get_talent(character_talent_row, character_talent_culomn, i);
 
 		if (!character_talent.is_valid())
 			return;
@@ -5026,7 +5019,7 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 		}
 
 		if (i > 0) {
-			Ref<Aura> pt = tr->get_talent(character_talent_culomn, i - 1);
+			Ref<Aura> pt = spec->get_talent(character_talent_row, character_talent_culomn, i - 1);
 
 			for (int j = 0; j < aura_gets_count(); ++j) {
 				Ref<AuraData> ad = aura_gets(j);
@@ -6467,7 +6460,7 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 		return false;
 	}
 
-	return true;
+	return false;
 
 	/*
 	sets_entity_type((int)((int)dict.get("type", 0)));
@@ -6756,7 +6749,7 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 		return false;
 	}
 
-	return true;
+	return false;
 	/*
 	Dictionary dict;
 

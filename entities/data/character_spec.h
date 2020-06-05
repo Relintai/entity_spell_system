@@ -27,38 +27,44 @@ SOFTWARE.
 #include "core/ustring.h"
 #include "core/vector.h"
 
-#include "talent_row_data.h"
-
-class TalentRowData;
 class Aura;
 
 class CharacterSpec : public Resource {
 	GDCLASS(CharacterSpec, Resource);
 
 public:
-	int get_id();
-	void set_id(int value);
+	int get_id() const;
+	void set_id(const int value);
 
-	int get_num_talent_rows();
-	void set_num_talent_rows(int value);
+	int get_num_rows() const;
+	void set_num_rows(const int value);
 
-	Ref<TalentRowData> get_talent_row(int index) const;
-	void set_talent_row(const int index, const Ref<TalentRowData> row);
+	int get_num_columns(const int row) const;
+	void set_num_columns(const int row, int value);
 
-	Vector<Variant> get_talent_rows();
-	void set_talent_rows(const Vector<Variant> &auras);
+	int get_num_ranks(const int row, const int column) const;
+	void set_num_ranks(const int row, const int column, int value);
 
-	Ref<Aura> get_talent(const int row_index, const int culomn, const int rank) const;
+	Vector<Variant> get_talents();
+
+	Ref<Aura> get_talent(const int row, const int column, const int rank);
+	void set_talent(const int row, const int column, const int rank, const Ref<Aura> &talent);
+
+	bool has_talent_with_id(const int id);
+	Ref<Aura> get_talent_with_id(const int id);
 
 	CharacterSpec();
 	~CharacterSpec();
 
 protected:
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
 	static void _bind_methods();
 
 private:
 	int _id;
-	Vector<Ref<TalentRowData> > _rows;
+	Vector<Vector<Vector<Ref<Aura> > > > _rows;
 };
 
 #endif

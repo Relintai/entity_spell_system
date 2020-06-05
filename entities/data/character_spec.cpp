@@ -26,46 +26,111 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-int CharacterSpec::get_id() {
+int CharacterSpec::get_id() const {
 	return _id;
 }
-void CharacterSpec::set_id(int value) {
+void CharacterSpec::set_id(const int value) {
 	_id = value;
 }
 
-int CharacterSpec::get_num_talent_rows() {
+int CharacterSpec::get_num_rows() const {
 	return _rows.size();
 }
-void CharacterSpec::set_num_talent_rows(int value) {
+void CharacterSpec::set_num_rows(const int value) {
 	_rows.resize(value);
 }
 
-Ref<TalentRowData> CharacterSpec::get_talent_row(int index) const {
-	ERR_FAIL_INDEX_V(index, _rows.size(), Ref<TalentRowData>(NULL));
+int CharacterSpec::get_num_columns(const int row) const {
+	ERR_FAIL_INDEX_V(row, _rows.size(), 0);
 
-	return _rows[index];
+	return _rows[row].size();
 }
-void CharacterSpec::set_talent_row(const int index, const Ref<TalentRowData> row) {
-	ERR_FAIL_INDEX(index, _rows.size());
+void CharacterSpec::set_num_columns(const int row, int value) {
+	ERR_FAIL_INDEX(row, _rows.size());
 
-	_rows.set(index, row);
-}
-
-Vector<Variant> CharacterSpec::get_talent_rows() {
-	VARIANT_ARRAY_GET(_rows);
-}
-void CharacterSpec::set_talent_rows(const Vector<Variant> &talent_rows) {
-	VARIANT_ARRAY_SET(talent_rows, _rows, TalentRowData);
+	_rows.write[row].resize(value);
 }
 
-Ref<Aura> CharacterSpec::get_talent(const int row_index, const int culomn, const int rank) const {
-	ERR_FAIL_INDEX_V(row_index, _rows.size(), Ref<Aura>(NULL));
+int CharacterSpec::get_num_ranks(const int row, const int column) const {
+	ERR_FAIL_INDEX_V(row, _rows.size(), 0);
+	ERR_FAIL_INDEX_V(column, _rows[row].size(), 0);
 
-	if (_rows[row_index].is_valid()) {
-		return _rows[row_index]->get_talent(culomn, rank);
+	return _rows[row][column].size();
+}
+void CharacterSpec::set_num_ranks(const int row, const int column, int value) {
+	ERR_FAIL_INDEX(row, _rows.size());
+
+	_rows.write[row].write[column].resize(value);
+}
+
+Vector<Variant> CharacterSpec::get_talents() {
+	Vector<Variant> r;
+	for (int i = 0; i < _rows.size(); i++) {
+		Vector<Variant> col;
+
+		for (int j = 0; j < _rows[i].size(); j++) {
+			Vector<Variant> entries;
+
+			for (int k = 0; k < _rows[j].size(); k++) {
+#if GODOT4
+				entries.push_back(_rows[i][j][k]);
+#else
+				entries.push_back(_rows[i][j][k].get_ref_ptr());
+#endif
+			}
+
+			col.push_back(entries);
+		}
+
+		r.push_back(col);
 	}
 
-	return Ref<Aura>(NULL);
+	return r;
+}
+
+Ref<Aura> CharacterSpec::get_talent(const int row, const int column, const int rank) {
+	ERR_FAIL_INDEX_V(row, _rows.size(), Ref<Aura>());
+	ERR_FAIL_INDEX_V(column, _rows[row].size(), Ref<Aura>());
+	ERR_FAIL_INDEX_V(rank, _rows[row][column].size(), Ref<Aura>());
+
+	return _rows[row][column][rank];
+}
+void CharacterSpec::set_talent(const int row, const int column, const int rank, const Ref<Aura> &talent) {
+	ERR_FAIL_INDEX(row, _rows.size());
+	ERR_FAIL_INDEX(column, _rows[row].size());
+	ERR_FAIL_INDEX(rank, _rows[row][column].size());
+
+	_rows.write[row].write[column].write[rank] = talent;
+}
+
+bool CharacterSpec::has_talent_with_id(const int id) {
+	for (int i = 0; i < _rows.size(); ++i) {
+		for (int j = 0; j < _rows[i].size(); ++j) {
+			for (int k = 0; k < _rows[i][j].size(); ++k) {
+				const Ref<Aura> a = _rows[i][j][k];
+
+				if (a.is_valid() && a->get_id() == id)
+					return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+Ref<Aura> CharacterSpec::get_talent_with_id(const int id) {
+	for (int i = 0; i < _rows.size(); ++i) {
+		for (int j = 0; j < _rows[i].size(); ++j) {
+			for (int k = 0; k < _rows[i][j].size(); ++k) {
+				const Ref<Aura> a = _rows[i][j][k];
+
+				if (a.is_valid() && a->get_id() == id)
+					return a;
+			}
+		}
+	}
+
+	return Ref<Aura>();
 }
 
 CharacterSpec::CharacterSpec() {
@@ -73,7 +138,126 @@ CharacterSpec::CharacterSpec() {
 }
 
 CharacterSpec::~CharacterSpec() {
+	for (int i = 0; i < _rows.size(); ++i) {
+		for (int j = 0; j < _rows[i].size(); ++j) {
+			for (int k = 0; k < _rows[i][j].size(); ++k) {
+				_rows.write[i].write[j].write[k].unref();
+			}
+		}
+	}
+
 	_rows.clear();
+}
+
+bool CharacterSpec::_set(const StringName &p_name, const Variant &p_value) {
+	String name = p_name;
+
+	if (name.begins_with("row_")) {
+		String nprop = name.get_slicec('/', 0); //row_[]
+		int row_id = nprop.get_slicec('_', 1).to_int();
+
+		if (row_id >= _rows.size()) {
+			_rows.resize(row_id + 1);
+		}
+
+		String cprop = name.get_slicec('/', 1); //column_[] or size
+
+		if (cprop == "size") {
+			_rows.write[row_id].resize(p_value);
+
+			return true;
+		} else {
+			int col_id = cprop.get_slicec('_', 1).to_int();
+
+			if (col_id >= _rows[row_id].size()) {
+				_rows.write[row_id].resize(col_id + 1);
+			}
+
+			String eprop = name.get_slicec('/', 2); //entry_[] or size
+
+			if (eprop == "size") {
+				_rows.write[row_id].write[col_id].resize(p_value);
+
+				return true;
+			} else {
+				int entry_id = eprop.get_slicec('_', 1).to_int();
+
+				if (entry_id >= _rows[row_id][col_id].size()) {
+					_rows.write[row_id].write[col_id].resize(col_id + 1);
+				}
+
+				_rows.write[row_id].write[col_id].write[entry_id] = p_value;
+
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool CharacterSpec::_get(const StringName &p_name, Variant &r_ret) const {
+	String name = p_name;
+
+	if (name.begins_with("row_")) {
+		String nprop = name.get_slicec('/', 0); //row_[]
+		int row_id = nprop.get_slicec('_', 1).to_int();
+
+		if (row_id >= _rows.size()) {
+			return false;
+		}
+
+		String cprop = name.get_slicec('/', 1); //column_[] or size
+
+		if (cprop == "size") {
+			r_ret = _rows[row_id].size();
+
+			return true;
+		} else {
+			int col_id = cprop.get_slicec('_', 1).to_int();
+
+			if (col_id >= _rows[row_id].size()) {
+				return false;
+			}
+
+			String eprop = name.get_slicec('/', 2); //entry_[] or size
+
+			if (eprop == "size") {
+				r_ret = _rows[row_id][col_id].size();
+
+				return true;
+			} else {
+
+				int entry_id = eprop.get_slicec('_', 1).to_int();
+
+				if (entry_id >= _rows[row_id][col_id].size()) {
+					return false;
+				}
+
+				r_ret = _rows[row_id][col_id][entry_id];
+
+				return true;
+			}
+		}
+	} else {
+		return false;
+	}
+
+	return false;
+}
+
+void CharacterSpec::_get_property_list(List<PropertyInfo> *p_list) const {
+	for (int i = 0; i < _rows.size(); ++i) {
+		p_list->push_back(PropertyInfo(Variant::INT, "row_" + itos(i) + "/size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED));
+
+		for (int j = 0; j < _rows[i].size(); ++j) {
+			p_list->push_back(PropertyInfo(Variant::INT, "row_" + itos(i) + "/column_" + itos(j) + "/size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED));
+
+			for (int k = 0; k < _rows[i][j].size(); ++k) {
+				p_list->push_back(PropertyInfo(Variant::OBJECT, "row_" + itos(i) + "/column_" + itos(j) + "/entry_" + itos(k), PROPERTY_HINT_RESOURCE_TYPE, "Aura", PROPERTY_USAGE_DEFAULT));
+			}
+		}
+	}
 }
 
 void CharacterSpec::_bind_methods() {
@@ -83,15 +267,21 @@ void CharacterSpec::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
-	ClassDB::bind_method(D_METHOD("get_num_talent_rows"), &CharacterSpec::get_num_talent_rows);
-	ClassDB::bind_method(D_METHOD("set_num_talent_rows", "value"), &CharacterSpec::set_num_talent_rows);
+	ClassDB::bind_method(D_METHOD("get_num_rows"), &CharacterSpec::get_num_rows);
+	ClassDB::bind_method(D_METHOD("set_num_rows", "value"), &CharacterSpec::set_num_rows);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "num_rows", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_num_rows", "get_num_rows");
 
-	ClassDB::bind_method(D_METHOD("get_talent_row", "index"), &CharacterSpec::get_talent_row);
-	ClassDB::bind_method(D_METHOD("set_talent_row", "index", "row"), &CharacterSpec::set_talent_row);
+	ClassDB::bind_method(D_METHOD("get_num_columns", "row"), &CharacterSpec::get_num_columns);
+	ClassDB::bind_method(D_METHOD("set_num_columns", "row", "value"), &CharacterSpec::set_num_columns);
 
-	ClassDB::bind_method(D_METHOD("get_talent", "row_index", "culomn", "rank"), &CharacterSpec::get_talent);
+	ClassDB::bind_method(D_METHOD("get_num_ranks", "row", "culomn"), &CharacterSpec::get_num_ranks);
+	ClassDB::bind_method(D_METHOD("set_num_ranks", "row", "culomn", "value"), &CharacterSpec::set_num_ranks);
 
-	ClassDB::bind_method(D_METHOD("get_talent_rows"), &CharacterSpec::get_talent_rows);
-	ClassDB::bind_method(D_METHOD("set_talent_rows", "auras"), &CharacterSpec::set_talent_rows);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "talent_rows", PROPERTY_HINT_NONE, "17/17:TalentRowData", PROPERTY_USAGE_DEFAULT, "TalentRowData"), "set_talent_rows", "get_talent_rows");
+	ClassDB::bind_method(D_METHOD("get_talents"), &CharacterSpec::get_talents);
+
+	ClassDB::bind_method(D_METHOD("get_talent", "row", "culomn", "rank"), &CharacterSpec::get_talent);
+	ClassDB::bind_method(D_METHOD("set_talent", "row", "culomn", "rank"), &CharacterSpec::set_talent);
+
+	ClassDB::bind_method(D_METHOD("has_talent_with_id", "id"), &CharacterSpec::has_talent_with_id);
+	ClassDB::bind_method(D_METHOD("get_talent_with_id", "id"), &CharacterSpec::get_talent_with_id);
 }
