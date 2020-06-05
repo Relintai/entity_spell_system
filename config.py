@@ -44,7 +44,6 @@ def get_doc_classes():
         "EntityData",
         "ItemContainerDataEntry",
         "ItemContainerData",
-        "TalentRowData",
         "VendorItemDataEntry",
         "VendorItemData",
         "EntityResourceCostData",

@@ -71,7 +71,6 @@ class SpellDamageInfo;
 class SpellHealInfo;
 class SpellCastInfo;
 class EntityCreateInfo;
-class TalentRowData;
 class CharacterSpec;
 class EntitySkill;
 class ClassProfile;
