@@ -48,38 +48,38 @@ public:
 	bool get_immune();
 	void set_immune(bool value);
 
-	int get_heal();
-	void set_heal(int value);
+	int heal_get();
+	void heal_set(int value);
 
-	bool get_crit();
-	void set_crit(bool value);
+	bool crit_get();
+	void crit_set(bool value);
 
-	int get_amount_absorbed();
-	void set_amount_absorbed(int value);
+	int amount_absorbed_get();
+	void amount_absorbed_set(int value);
 
-	SpellEnums::SpellType get_spell_type();
-	void set_spell_type(SpellEnums::SpellType value);
+	SpellEnums::SpellType spell_type_get();
+	void spell_type_set(SpellEnums::SpellType value);
 
-	Entity *get_dealer();
-	void set_dealer(Node *value);
+	Entity *dealer_get();
+	void dealer_set(Node *value);
 
-	Entity *get_receiver();
-	void set_receiver(Node *value);
+	Entity *receiver_get();
+	void receiver_set(Node *value);
 
-	Ref<Reference> get_heal_source();
-	void set_heal_source(Ref<Reference> value);
+	Ref<Reference> source_get();
+	void source_set(Ref<Reference> value);
 
-	Ref<Spell> get_spell_heal_source();
-	void set_spell_heal_source(Ref<Spell> value);
+	Ref<Spell> spell_source_get();
+	void spell_source_set(Ref<Spell> value);
 
-	Ref<Aura> get_aura_heal_source();
-	void set_aura_heal_source(Ref<Aura> value);
+	Ref<Aura> aura_source_get();
+	void aura_source_set(Ref<Aura> value);
 
-	int get_heal_source_id();
-	void set_heal_source_id(int value);
+	int source_get_id();
+	void source_set_id(int value);
 
-	HealSourceType get_heal_source_type();
-	void set_heal_source_type(HealSourceType value);
+	HealSourceType source_get_type();
+	void source_set_type(HealSourceType value);
 
 	void reset();
 

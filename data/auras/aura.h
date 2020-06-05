@@ -100,73 +100,72 @@ public:
 	int get_ability_scale_data_id() const;
 	void set_ability_scale_data_id(const int value);
 
-	float get_damage_scale_for_level(int level) const;
-	float get_heal_scale_for_level(int level) const;
-	float get_absorb_scale_for_level(int level) const;
+	float damage_get_scale_for_level(int level) const;
+	float heal_get_scale_for_level(int level) const;
+	float absorb_get_scale_for_level(int level) const;
 
 	Ref<Spell> get_teaches_spell();
 	void set_teaches_spell(const Ref<Spell> &spell);
 
 	//Damage
-	bool get_damage_enabled() const;
-	void set_damage_enabled(const bool value);
+	bool damage_get_enabled() const;
+	void damage_set_enabled(const bool value);
 
-	int get_damage_type() const;
+	int damage_get_type() const;
 
-	void set_damage_type(const int value);
+	void damage_set_type(const int value);
 
-	int get_damage_min() const;
-	void set_damage_min(const int value);
+	int damage_get_min() const;
+	void damage_set_min(const int value);
 
-	int get_damage_max() const;
-	void set_damage_max(const int value);
+	int damage_get_max() const;
+	void damage_set_max(const int value);
 
-	bool get_damage_can_crit() const;
-	void set_damage_can_crit(const bool value);
+	bool damage_get_can_crit() const;
+	void damage_set_can_crit(const bool value);
 
-	void set_damage(const int min, const int max, const bool can_crit);
+	void damage_set(const int min, const int max, const bool can_crit);
 
 	//Absorb
-	bool get_absorb_enabled() const;
-	void set_absorb_enabled(const bool value);
+	bool absorb_get_enabled() const;
+	void absorb_set_enabled(const bool value);
 
-	int get_absorb_damage_type() const;
+	int absorb_damage_get_type() const;
+	void absorb_damage_set_type(const int value);
 
-	void set_absorb_damage_type(const int value);
+	int absorb_get_min() const;
+	void absorb_set_min(const int value);
 
-	int get_absorb_min() const;
-	void set_absorb_min(const int value);
-
-	int get_absorb_max() const;
-	void set_absorb_max(const int value);
+	int absorb_get_max() const;
+	void absorb_set_max(const int value);
 
 	//Heal
-	bool get_heal_enabled() const;
-	void set_heal_enabled(const bool value);
+	bool heal_get_enabled() const;
+	void heal_set_enabled(const bool value);
 
-	int get_heal_min() const;
-	void set_heal_min(const int value);
+	int heal_get_min() const;
+	void heal_set_min(const int value);
 
-	int get_heal_max() const;
-	void set_heal_max(const int value);
+	int heal_get_max() const;
+	void heal_set_max(const int value);
 
-	bool get_heal_can_crit() const;
-	void set_heal_can_crit(const bool value);
+	bool heal_get_can_crit() const;
+	void heal_set_can_crit(const bool value);
 
-	void set_heal(const int min, const int max, const bool can_crit);
+	void heal_set(const int min, const int max, const bool can_crit);
 
 	//Dispells
-	bool get_dispell_enabled() const;
-	void set_dispell_enabled(const bool value);
+	bool dispell_get_enabled() const;
+	void dispell_set_enabled(const bool value);
 
-	int get_dispell_count_min() const;
-	void set_dispell_count_min(const int value);
+	int dispell_get_count_min() const;
+	void dispell_set_count_min(const int value);
 
-	int get_dispell_count_max() const;
-	void set_dispell_count_max(const int value);
+	int dispell_get_count_max() const;
+	void dispell_set_count_max(const int value);
 
-	int get_dispell_aura_types() const;
-	void set_dispell_aura_types(const int value);
+	int dispell_get_aura_types() const;
+	void dispell_set_aura_types(const int value);
 
 	//Resources
 	Ref<EntityResourceCostData> get_resource_cost();
@@ -175,14 +174,14 @@ public:
 	Ref<EntityResourceCostData> get_resource_give();
 	void set_resource_give(const Ref<EntityResourceCostData> &value);
 
-	Ref<Curve> get_damage_scaling_curve() { return _damage_scaling_curve; }
-	void set_damage_scaling_curve(const Ref<Curve> &curve) { _damage_scaling_curve = curve; }
+	Ref<Curve> damage_get_scaling_curve() { return _damage_scaling_curve; }
+	void damage_set_scaling_curve(const Ref<Curve> &curve) { _damage_scaling_curve = curve; }
 
-	Ref<Curve> get_heal_scaling_curve() { return _heal_scaling_curve; }
-	void set_heal_scaling_curve(const Ref<Curve> &curve) { _heal_scaling_curve = curve; }
+	Ref<Curve> heal_get_scaling_curve() { return _heal_scaling_curve; }
+	void heal_set_scaling_curve(const Ref<Curve> &curve) { _heal_scaling_curve = curve; }
 
-	Ref<Curve> get_absorb_scaling_curve() { return _absorb_scaling_curve; }
-	void set_absorb_scaling_curve(const Ref<Curve> &curve) { _absorb_scaling_curve = curve; }
+	Ref<Curve> absorb_get_scaling_curve() { return _absorb_scaling_curve; }
+	void absorb_set_scaling_curve(const Ref<Curve> &curve) { _absorb_scaling_curve = curve; }
 
 	//states
 	int get_add_states() const { return _add_states; }

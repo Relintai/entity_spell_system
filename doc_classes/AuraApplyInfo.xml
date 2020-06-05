@@ -12,9 +12,9 @@
 	<members>
 		<member name="aura" type="Aura" setter="set_aura" getter="get_aura">
 		</member>
-		<member name="caster" type="Entity" setter="set_caster" getter="get_caster">
+		<member name="caster" type="Entity" setter="caster_set" getter="caster_get">
 		</member>
-		<member name="spell_scale" type="float" setter="set_spell_scale" getter="get_spell_scale" default="0.0">
+		<member name="spell_scale" type="float" setter="spell_scale_set" getter="spell_scale_get" default="0.0">
 		</member>
 		<member name="target" type="Entity" setter="set_target" getter="get_target">
 		</member>

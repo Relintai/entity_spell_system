@@ -35,15 +35,15 @@ void Inventory::set_allowed_item_types(const int value) {
 	_allowed_item_types = value;
 }
 
-Player *Inventory::get_target() const {
+Player *Inventory::target_get() const {
 	return _target;
 }
 
-void Inventory::set_target(Player *value) {
+void Inventory::target_set(Player *value) {
 	_target = value;
 }
 
-void Inventory::set_target_bind(Node *caster) {
+void Inventory::target_set_bind(Node *caster) {
 	if (!caster) {
 		return;
 	}
@@ -72,6 +72,6 @@ void Inventory::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "allowed_item_types", PROPERTY_HINT_FLAGS, ItemEnums::BINDING_STRING_ITEM_TYPE_FLAGS), "set_allowed_item_types", "get_allowed_item_types");
 
 	ClassDB::bind_method(D_METHOD("get_target"), &Inventory::get_target);
-	ClassDB::bind_method(D_METHOD("set_target", "target"), &Inventory::set_target_bind);
+	ClassDB::bind_method(D_METHOD("set_target", "target"), &Inventory::target_set_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "Player"), "set_target", "get_target");
 }

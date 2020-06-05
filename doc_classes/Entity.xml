@@ -1752,13 +1752,13 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_damage_reduction">
+		<method name="damage_get_reduction">
 			<return type="Stat">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="get_damage_taken">
+		<method name="damage_get_taken">
 			<return type="Stat">
 			</return>
 			<description>
@@ -1776,7 +1776,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_health">
+		<method name="heal_getth">
 			<return type="Stat">
 			</return>
 			<description>

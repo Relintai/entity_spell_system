@@ -39,9 +39,9 @@ public:
 	int get_allowed_item_types() const;
 	void set_allowed_item_types(const int value);
 
-	Player *get_target() const;
-	void set_target(Player *caster);
-	void set_target_bind(Node *caster);
+	Player *target_get() const;
+	void target_set(Player *caster);
+	void target_set_bind(Node *caster);
 
 	Inventory();
 	~Inventory();

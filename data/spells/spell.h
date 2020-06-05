@@ -81,8 +81,8 @@ public:
 	int get_id() const;
 	void set_id(const int value);
 
-	int get_spell_type() const;
-	void set_spell_type(const int value);
+	int spell_type_get() const;
+	void spell_type_set(const int value);
 
 	SpellEnums::SpellCategory get_spell_category() const;
 	void set_spell_category(const SpellEnums::SpellCategory value);
@@ -145,11 +145,11 @@ public:
 	int get_num_caster_aura_applys() const;
 	void set_num_caster_aura_applys(const int value);
 
-	Ref<Aura> get_caster_aura_apply(const int index);
-	void set_caster_aura_apply(const int index, const Ref<Aura> &caster_aura_apply);
+	Ref<Aura> caster_get_aura_apply(const int index);
+	void caster_set_aura_apply(const int index, const Ref<Aura> &caster_aura_apply);
 
-	Vector<Variant> get_caster_aura_applys();
-	void set_caster_aura_applys(const Vector<Variant> &caster_aura_applys);
+	Vector<Variant> caster_get_aura_applys();
+	void caster_set_aura_applys(const Vector<Variant> &caster_aura_applys);
 
 	//Target Aura Apply
 	int get_num_target_aura_applys() const;
@@ -172,17 +172,17 @@ public:
 	void set_on_learn_auras(const Vector<Variant> &on_learn_auras);
 
 	//Range
-	bool get_range_enabled() const;
-	void set_range_enabled(const bool value);
+	bool range_get_enabled() const;
+	void range_set_enabled(const bool value);
 
-	float get_range() const;
-	void set_range(const float value);
+	float range_get() const;
+	void range_set(const float value);
 
-	bool get_cast_time_enabled() const;
-	void set_cast_time_enabled(const bool value);
+	bool cast_time_get_enabled() const;
+	void cast_time_set_enabled(const bool value);
 
-	float get_cast_time() const;
-	void set_cast_time(const float value);
+	float cast_time_get() const;
+	void cast_time_set(const float value);
 
 	//Delay
 	bool projectile_get_use_time() const;
@@ -201,51 +201,51 @@ public:
 	void projectile_set_scene(const Ref<PackedScene> &value);
 
 	//Damage
-	bool get_damage_enabled() const;
-	void set_damage_enabled(const bool value);
+	bool damage_get_enabled() const;
+	void damage_set_enabled(const bool value);
 
-	int get_damage_type() const;
-	void set_damage_type(const int value);
+	int damage_get_type() const;
+	void damage_set_type(const int value);
 
-	int get_damage_min() const;
-	void set_damage_min(const int value);
+	int damage_get_min() const;
+	void damage_set_min(const int value);
 
-	int get_damage_max() const;
-	void set_damage_max(const int value);
+	int damage_get_max() const;
+	void damage_set_max(const int value);
 
-	int get_damage_scale_stat() const;
-	void set_damage_scale_stat(const int value);
+	int damage_get_scale_stat() const;
+	void damage_set_scale_stat(const int value);
 
-	float get_damage_scale_coeff() const;
-	void set_damage_scale_coeff(const float value);
+	float damage_get_scale_coeff() const;
+	void damage_set_scale_coeff(const float value);
 
-	bool get_heal_enabled() const;
-	void set_heal_enabled(const bool value);
+	bool heal_get_enabled() const;
+	void heal_set_enabled(const bool value);
 
-	int get_heal_min() const;
-	void set_heal_min(const int value);
+	int heal_get_min() const;
+	void heal_set_min(const int value);
 
-	int get_heal_max() const;
-	void set_heal_max(const int value);
+	int heal_get_max() const;
+	void heal_set_max(const int value);
 
-	int get_heal_scale_stat() const;
-	void set_heal_scale_stat(const int value);
+	int heal_get_scale_stat() const;
+	void heal_set_scale_stat(const int value);
 
-	float get_heal_scale_coeff() const;
-	void set_heal_scale_coeff(const float value);
+	float heal_get_scale_coeff() const;
+	void heal_set_scale_coeff(const float value);
 
 	//Dispells
-	bool get_dispell_enabled() const;
-	void set_dispell_enabled(const bool value);
+	bool dispell_get_enabled() const;
+	void dispell_set_enabled(const bool value);
 
-	int get_dispell_count_min() const;
-	void set_dispell_count_min(const int value);
+	int dispell_get_count_min() const;
+	void dispell_set_count_min(const int value);
 
-	int get_dispell_count_max() const;
-	void set_dispell_count_max(const int value);
+	int dispell_get_count_max() const;
+	void dispell_set_count_max(const int value);
 
-	int get_dispell_aura_types() const;
-	void set_dispell_aura_types(const int value);
+	int dispell_get_aura_types() const;
+	void dispell_set_aura_types(const int value);
 
 	//Target
 	bool get_needs_target() const;

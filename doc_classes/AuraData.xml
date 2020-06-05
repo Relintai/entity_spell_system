@@ -86,23 +86,23 @@
 		</member>
 		<member name="aura_id" type="int" setter="set_aura_id" getter="get_aura_id" default="0">
 		</member>
-		<member name="caster" type="Entity" setter="set_caster" getter="get_caster">
+		<member name="caster" type="Entity" setter="caster_set" getter="caster_get">
 		</member>
-		<member name="caster_path" type="NodePath" setter="set_caster_path" getter="get_caster_path" default="NodePath(&quot;&quot;)">
+		<member name="caster_path" type="NodePath" setter="caster_set_path" getter="caster_get_path" default="NodePath(&quot;&quot;)">
 		</member>
-		<member name="damage" type="int" setter="set_damage" getter="get_damage" default="0">
+		<member name="damage" type="int" setter="damage_set" getter="damage_get" default="0">
 		</member>
-		<member name="damage_count" type="float" setter="set_damage_count" getter="get_damage_count" default="0.0">
+		<member name="damage_count" type="float" setter="damage_set_count" getter="damage_get_count" default="0.0">
 		</member>
-		<member name="damage_taken" type="int" setter="set_damage_taken" getter="get_damage_taken" default="0">
+		<member name="damage_taken" type="int" setter="damage_set_taken" getter="damage_get_taken" default="0">
 		</member>
-		<member name="heal" type="int" setter="set_heal" getter="get_heal" default="0">
+		<member name="heal" type="int" setter="heal_set" getter="heal_get" default="0">
 		</member>
 		<member name="is_timed" type="bool" setter="set_is_timed" getter="get_is_timed" default="false">
 		</member>
 		<member name="owner" type="Entity" setter="set_owner" getter="get_owner">
 		</member>
-		<member name="remaining_absorb" type="int" setter="set_heal" getter="get_remaining_absorb" default="0">
+		<member name="remaining_absorb" type="int" setter="heal_set" getter="get_remaining_absorb" default="0">
 		</member>
 		<member name="remaining_time" type="float" setter="set_remaining_time" getter="get_remaining_time" default="0.0">
 		</member>

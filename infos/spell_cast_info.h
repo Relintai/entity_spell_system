@@ -34,31 +34,31 @@ class SpellCastInfo : public Reference {
 	GDCLASS(SpellCastInfo, Reference);
 
 public:
-	Entity *get_caster();
-	void set_caster(Entity *caster);
-	void set_caster_bind(Node *caster);
+	Entity *caster_get();
+	void caster_set(Entity *caster);
+	void caster_set_bind(Node *caster);
 
-	Entity *get_target();
-	void set_target(Entity *caster);
-	void set_target_bind(Node *caster);
+	Entity *target_get();
+	void target_set(Entity *caster);
+	void target_set_bind(Node *caster);
 
-	bool get_has_cast_time() const;
-	void set_has_cast_time(bool value);
+	bool has_cast_time_get() const;
+	void has_cast_time_set(bool value);
 
-	float get_cast_time() const;
-	void set_cast_time(float value);
+	float cast_time_get() const;
+	void cast_time_set(float value);
 
-	float get_current_cast_time() const;
-	void set_current_cast_time(float value);
+	float current_cast_time_get() const;
+	void current_cast_time_set(float value);
 
-	bool get_is_casting() const;
-	void set_is_casting(bool value);
+	bool is_casting_get() const;
+	void is_casting_set(bool value);
 
-	int get_num_pushbacks() const;
-	void set_num_pushbacks(int value);
+	int num_pushbacks_get() const;
+	void num_pushbacks_set(int value);
 
-	float get_spell_scale() const;
-	void set_spell_scale(float value);
+	float spell_scale_get() const;
+	void spell_scale_set(float value);
 
 	Ref<Spell> get_spell() const;
 	void set_spell(const Ref<Spell> &spell);

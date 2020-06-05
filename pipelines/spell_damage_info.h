@@ -48,40 +48,40 @@ public:
 	bool get_immune();
 	void set_immune(bool value);
 
-	int get_damage();
-	void set_damage(int value);
+	int damage_get();
+	void damage_set(int value);
 
-	bool get_crit();
-	void set_crit(bool value);
+	bool crit_get();
+	void crit_set(bool value);
 
-	int get_amount_absorbed();
-	void set_amount_absorbed(int value);
+	int amount_absorbed_get();
+	void amount_absorbed_set(int value);
 
-	SpellEnums::SpellType get_spell_type();
-	void set_spell_type(SpellEnums::SpellType value);
+	SpellEnums::SpellType spell_type_get();
+	void spell_type_set(SpellEnums::SpellType value);
 
-	Entity *get_dealer();
-	void set_dealer(Entity *value);
-	void set_dealer_bind(Node *value);
+	Entity *dealer_get();
+	void dealer_set(Entity *value);
+	void dealer_set_bind(Node *value);
 
-	Entity *get_receiver();
-	void set_receiver(Entity *value);
-	void set_receiver_bind(Node *value);
+	Entity *receiver_get();
+	void receiver_set(Entity *value);
+	void receiver_set_bind(Node *value);
 
-	Ref<Reference> get_damage_source();
-	void set_damage_source(Ref<Reference> value);
+	Ref<Reference> source_get();
+	void source_set(Ref<Reference> value);
 
-	Ref<Spell> get_spell_damage_source();
-	void set_spell_damage_source(Ref<Spell> value);
+	Ref<Spell> spell_source_get();
+	void spell_source_set(Ref<Spell> value);
 
-	Ref<Aura> get_aura_damage_source();
-	void set_aura_damage_source(Ref<Aura> value);
+	Ref<Aura> aura_source_get();
+	void aura_source_set(Ref<Aura> value);
 
-	int get_damage_source_id();
-	void set_damage_source_id(int value);
+	int source_get_id();
+	void source_set_id(int value);
 
-	DamageSourceType get_damage_source_type();
-	void set_damage_source_type(DamageSourceType value);
+	DamageSourceType source_get_type();
+	void source_set_type(DamageSourceType value);
 
 	void reset();
 

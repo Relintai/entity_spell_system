@@ -24,15 +24,15 @@ SOFTWARE.
 
 #include "../data/auras/aura.h"
 
-Entity *AuraApplyInfo::get_caster() const {
+Entity *AuraApplyInfo::caster_get() const {
 	return _caster;
 }
 
-void AuraApplyInfo::set_caster(Entity *value) {
+void AuraApplyInfo::caster_set(Entity *value) {
 	_caster = value;
 }
 
-void AuraApplyInfo::set_caster_bind(Node *caster) {
+void AuraApplyInfo::caster_set_bind(Node *caster) {
 	if (!caster) {
 		return;
 	}
@@ -46,15 +46,15 @@ void AuraApplyInfo::set_caster_bind(Node *caster) {
 	_caster = e;
 }
 
-Entity *AuraApplyInfo::get_target() const {
+Entity *AuraApplyInfo::target_get() const {
 	return _target;
 }
 
-void AuraApplyInfo::set_target(Entity *value) {
+void AuraApplyInfo::target_set(Entity *value) {
 	_target = value;
 }
 
-void AuraApplyInfo::set_target_bind(Node *caster) {
+void AuraApplyInfo::target_set_bind(Node *caster) {
 	if (!caster) {
 		return;
 	}
@@ -68,11 +68,11 @@ void AuraApplyInfo::set_target_bind(Node *caster) {
 	_target = e;
 }
 
-float AuraApplyInfo::get_spell_scale() const {
+float AuraApplyInfo::spell_scale_get() const {
 	return _spell_scale;
 }
 
-void AuraApplyInfo::set_spell_scale(float value) {
+void AuraApplyInfo::spell_scale_set(float value) {
 	_spell_scale = value;
 }
 
@@ -106,17 +106,17 @@ AuraApplyInfo::AuraApplyInfo(Entity *caster, Entity *target, float spell_scale) 
 }
 
 void AuraApplyInfo::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_caster"), &AuraApplyInfo::get_caster);
-	ClassDB::bind_method(D_METHOD("set_caster", "caster"), &AuraApplyInfo::set_caster_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_caster", "get_caster");
+	ClassDB::bind_method(D_METHOD("caster_get"), &AuraApplyInfo::caster_get);
+	ClassDB::bind_method(D_METHOD("caster_set", "caster"), &AuraApplyInfo::caster_set_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "caster_set", "caster_get");
 
-	ClassDB::bind_method(D_METHOD("get_target"), &AuraApplyInfo::get_target);
-	ClassDB::bind_method(D_METHOD("set_target", "target"), &AuraApplyInfo::set_target_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_target", "get_target");
+	ClassDB::bind_method(D_METHOD("target_get"), &AuraApplyInfo::target_get);
+	ClassDB::bind_method(D_METHOD("target_set", "target"), &AuraApplyInfo::target_set_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "target_set", "target_get");
 
-	ClassDB::bind_method(D_METHOD("get_spell_scale"), &AuraApplyInfo::get_spell_scale);
-	ClassDB::bind_method(D_METHOD("set_spell_scale", "value"), &AuraApplyInfo::set_spell_scale);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "spell_scale"), "set_spell_scale", "get_spell_scale");
+	ClassDB::bind_method(D_METHOD("spell_scale_get"), &AuraApplyInfo::spell_scale_get);
+	ClassDB::bind_method(D_METHOD("spell_scale_set", "value"), &AuraApplyInfo::spell_scale_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "spell_scale"), "spell_scale_set", "spell_scale_get");
 
 	ClassDB::bind_method(D_METHOD("get_aura"), &AuraApplyInfo::get_aura);
 	ClassDB::bind_method(D_METHOD("set_aura", "aura"), &AuraApplyInfo::set_aura);

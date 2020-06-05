@@ -2476,7 +2476,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	Ref<EntityResource> hp = resource_gets_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
 	ERR_FAIL_COND(!hp.is_valid());
 
-	int h = hp->get_current_value() - info->get_damage();
+	int h = hp->get_current_value() - info->damage_get();
 
 	if (h < 0) {
 		h = 0;
@@ -2507,7 +2507,7 @@ void Entity::sdeal_damage_to(Ref<SpellDamageInfo> info) {
 	}
 
 	sapply_passives_damage_deal(info);
-	info->get_receiver()->stake_damage(info);
+	info->receiver_get()->stake_damage(info);
 	notification_sdamage(SpellEnums::NOTIFICATION_DAMAGE_DEALT_DAMAGE, info);
 
 	//send an event to client
@@ -2551,7 +2551,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 	Ref<EntityResource> hp = resource_gets_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
 	ERR_FAIL_COND(!hp.is_valid());
 
-	int h = hp->get_current_value() + info->get_heal();
+	int h = hp->get_current_value() + info->heal_get();
 
 	if (h > hp->get_max_value()) {
 		h = hp->get_max_value();
@@ -2567,7 +2567,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 
 void Entity::sdeal_heal_to(Ref<SpellHealInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-	ERR_FAIL_COND(info->get_receiver() == NULL);
+	ERR_FAIL_COND(info->receiver_get() == NULL);
 
 	//serverside
 
@@ -2576,7 +2576,7 @@ void Entity::sdeal_heal_to(Ref<SpellHealInfo> info) {
 	}
 
 	sapply_passives_heal_deal(info);
-	info->get_receiver()->stake_heal(info);
+	info->receiver_get()->stake_heal(info);
 	notification_sheal(SpellEnums::NOTIFICATION_HEAL_HEAL_DEALT, info);
 
 	VRPCOBJ12(cdealt_heal_rpc, JSON::print(info->to_dict()), notification_cheal, SpellEnums::NOTIFICATION_HEAL_DEALT_HEAL, info);
@@ -2782,11 +2782,11 @@ void Entity::_item_uses(int item_id) {
 		Ref<SpellCastInfo> info;
 		info.instance();
 
-		info->set_caster(this);
-		info->set_target(gets_target());
-		info->set_has_cast_time(sp->get_cast_time_enabled());
-		info->set_cast_time(sp->get_cast_time());
-		info->set_spell_scale(1);
+		info->caster_set(this);
+		info->target_set(gets_target());
+		info->has_cast_time_set(sp->cast_time_get_enabled());
+		info->cast_time_set(sp->cast_time_get());
+		info->spell_scale_set(1);
 		info->set_spell(sp);
 		info->set_source_item(ii);
 		info->set_source_template(it);
@@ -2801,11 +2801,11 @@ void Entity::_item_uses(int item_id) {
 		Ref<SpellCastInfo> info;
 		info.instance();
 
-		info->set_caster(this);
-		info->set_target(gets_target());
-		info->set_has_cast_time(sp->get_cast_time_enabled());
-		info->set_cast_time(sp->get_cast_time());
-		info->set_spell_scale(1);
+		info->caster_set(this);
+		info->target_set(gets_target());
+		info->has_cast_time_set(sp->cast_time_get_enabled());
+		info->cast_time_set(sp->cast_time_get());
+		info->spell_scale_set(1);
 		info->set_spell(sp);
 		info->set_source_template(it);
 
@@ -3196,14 +3196,14 @@ void Entity::aura_removes(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	int aid = aura->get_aura_id();
-	Entity *caster = aura->get_caster();
+	Entity *caster = aura->caster_get();
 
 	Ref<AuraData> a;
 	bool removed = false;
 	for (int i = 0; i < _s_auras.size(); i++) {
 		a = _s_auras.get(i);
 
-		if (a->get_aura_id() == aid && a->get_caster() == caster) {
+		if (a->get_aura_id() == aid && a->caster_get() == caster) {
 			_s_auras.remove(i);
 			removed = true;
 			break;
@@ -3365,14 +3365,14 @@ void Entity::aura_removec(Ref<AuraData> aura) {
 	ERR_FAIL_COND(!aura.is_valid());
 
 	int aid = aura->get_aura_id();
-	Entity *caster = aura->get_caster();
+	Entity *caster = aura->caster_get();
 
 	Ref<AuraData> a;
 	bool removed = false;
 	for (int i = 0; i < _c_auras.size(); i++) {
 		a = _c_auras.get(i);
 
-		if (a->get_aura_id() == aid && a->get_caster() == caster) {
+		if (a->get_aura_id() == aid && a->caster_get() == caster) {
 			_c_auras.remove(i);
 			removed = true;
 			break;
@@ -3446,7 +3446,7 @@ Ref<AuraData> Entity::aura_gets_by(Entity *caster, int aura_id) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		if (ad->get_aura_id() == aura_id && ad->get_caster() == caster) {
+		if (ad->get_aura_id() == aura_id && ad->caster_get() == caster) {
 			return ad;
 		}
 	}
@@ -3471,7 +3471,7 @@ Ref<AuraData> Entity::aura_gets_with_group_by(Entity *caster, Ref<AuraGroup> aur
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		if (ad->get_aura()->get_aura_group() == aura_group && ad->get_caster() == caster) {
+		if (ad->get_aura()->get_aura_group() == aura_group && ad->caster_get() == caster) {
 			return ad;
 		}
 	}
@@ -3786,7 +3786,7 @@ void Entity::cast_starts(Ref<SpellCastInfo> info) {
 		ad->get_aura()->notification_scast(SpellEnums::NOTIFICATION_CAST_STARTED, ad, info);
 	}
 
-	_s_spell_cast_info->set_is_casting(true);
+	_s_spell_cast_info->is_casting_set(true);
 
 	notification_scast(SpellEnums::NOTIFICATION_CAST_STARTED, info);
 
@@ -4814,9 +4814,9 @@ void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_tale
 		Ref<AuraApplyInfo> info;
 		info.instance();
 
-		info->set_caster(this);
-		info->set_target(this);
-		info->set_spell_scale(1);
+		info->caster_set(this);
+		info->target_set(this);
+		info->spell_scale_set(1);
 		info->set_aura(class_talent);
 
 		class_talent->sapply(info);
@@ -5035,9 +5035,9 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 		Ref<AuraApplyInfo> info;
 		info.instance();
 
-		info->set_caster(this);
-		info->set_target(this);
-		info->set_spell_scale(1);
+		info->caster_set(this);
+		info->target_set(this);
+		info->spell_scale_set(1);
 		info->set_aura(character_talent);
 
 		character_talent->sapply(info);
@@ -5560,7 +5560,7 @@ void Entity::update(float delta) {
 	update_auras(delta);
 
 	if (ISSERVER()) {
-		if (_s_spell_cast_info.is_valid() && _s_spell_cast_info->get_is_casting()) {
+		if (_s_spell_cast_info.is_valid() && _s_spell_cast_info->is_casting_get()) {
 			if (_s_spell_cast_info->update_cast_time(delta)) {
 				cast_finishs();
 			}
@@ -5597,7 +5597,7 @@ void Entity::update(float delta) {
 	}
 
 	if (ISCLIENT()) {
-		if (_c_spell_cast_info.is_valid() && _c_spell_cast_info->get_is_casting()) {
+		if (_c_spell_cast_info.is_valid() && _c_spell_cast_info->is_casting_get()) {
 			_c_spell_cast_info->update_cast_time(delta);
 		}
 

@@ -43,10 +43,10 @@ void Spell::set_id(const int value) {
 	_id = value;
 }
 
-int Spell::get_spell_type() const {
+int Spell::spell_type_get() const {
 	return _spell_type;
 }
-void Spell::set_spell_type(int value) {
+void Spell::spell_type_set(int value) {
 	_spell_type = value;
 }
 
@@ -192,21 +192,21 @@ void Spell::set_num_caster_aura_applys(const int value) {
 	_caster_aura_applys.resize(value);
 }
 
-Ref<Aura> Spell::get_caster_aura_apply(const int index) {
+Ref<Aura> Spell::caster_get_aura_apply(const int index) {
 	ERR_FAIL_INDEX_V(index, _caster_aura_applys.size(), Ref<Aura>());
 
 	return _caster_aura_applys[index];
 }
-void Spell::set_caster_aura_apply(const int index, const Ref<Aura> &caster_aura_apply) {
+void Spell::caster_set_aura_apply(const int index, const Ref<Aura> &caster_aura_apply) {
 	ERR_FAIL_INDEX(index, _caster_aura_applys.size());
 
 	_caster_aura_applys.set(index, Ref<Aura>(caster_aura_apply));
 }
 
-Vector<Variant> Spell::get_caster_aura_applys() {
+Vector<Variant> Spell::caster_get_aura_applys() {
 	VARIANT_ARRAY_GET(_caster_aura_applys);
 }
-void Spell::set_caster_aura_applys(const Vector<Variant> &caster_aura_applys) {
+void Spell::caster_set_aura_applys(const Vector<Variant> &caster_aura_applys) {
 	VARIANT_ARRAY_SET(caster_aura_applys, _caster_aura_applys, Aura);
 }
 
@@ -266,31 +266,31 @@ void Spell::set_on_learn_auras(const Vector<Variant> &on_learn_aura_applys) {
 
 ////    Range    ////
 
-bool Spell::get_range_enabled() const {
+bool Spell::range_get_enabled() const {
 	return _range_enabled;
 }
-void Spell::set_range_enabled(const bool value) {
+void Spell::range_set_enabled(const bool value) {
 	_range_enabled = value;
 }
 
-float Spell::get_range() const {
+float Spell::range_get() const {
 	return _range;
 }
-void Spell::set_range(const float value) {
+void Spell::range_set(const float value) {
 	_range = value;
 }
 
-bool Spell::get_cast_time_enabled() const {
+bool Spell::cast_time_get_enabled() const {
 	return _cast_time_enabled;
 }
-void Spell::set_cast_time_enabled(const bool value) {
+void Spell::cast_time_set_enabled(const bool value) {
 	_cast_time_enabled = value;
 }
 
-float Spell::get_cast_time() const {
+float Spell::cast_time_get() const {
 	return _cast_time;
 }
-void Spell::set_cast_time(const float value) {
+void Spell::cast_time_set(const float value) {
 	_cast_time = value;
 }
 
@@ -329,108 +329,108 @@ void Spell::projectile_set_scene(const Ref<PackedScene> &value) {
 	_projectile_scene = value;
 }
 
-bool Spell::get_damage_enabled() const {
+bool Spell::damage_get_enabled() const {
 	return _damage_enabled;
 }
-void Spell::set_damage_enabled(const bool value) {
+void Spell::damage_set_enabled(const bool value) {
 	_damage_enabled = value;
 }
 
-int Spell::get_damage_type() const {
+int Spell::damage_get_type() const {
 	return _damage_type;
 }
-void Spell::set_damage_type(const int value) {
+void Spell::damage_set_type(const int value) {
 	_damage_type = value;
 }
 
-int Spell::get_damage_min() const {
+int Spell::damage_get_min() const {
 	return _damage_min;
 }
-void Spell::set_damage_min(const int value) {
+void Spell::damage_set_min(const int value) {
 	_damage_min = value;
 }
 
-int Spell::get_damage_max() const {
+int Spell::damage_get_max() const {
 	return _damage_max;
 }
-void Spell::set_damage_max(const int value) {
+void Spell::damage_set_max(const int value) {
 	_damage_max = value;
 }
 
-int Spell::get_damage_scale_stat() const {
+int Spell::damage_get_scale_stat() const {
 	return _damage_scale_stat;
 }
-void Spell::set_damage_scale_stat(const int value) {
+void Spell::damage_set_scale_stat(const int value) {
 	_damage_scale_stat = value;
 }
 
-float Spell::get_damage_scale_coeff() const {
+float Spell::damage_get_scale_coeff() const {
 	return _damage_scale_coeff;
 }
-void Spell::set_damage_scale_coeff(const float value) {
+void Spell::damage_set_scale_coeff(const float value) {
 	_damage_scale_coeff = value;
 }
 
-bool Spell::get_heal_enabled() const {
+bool Spell::heal_get_enabled() const {
 	return _heal_enabled;
 }
-void Spell::set_heal_enabled(const bool value) {
+void Spell::heal_set_enabled(const bool value) {
 	_heal_enabled = value;
 }
 
-int Spell::get_heal_min() const {
+int Spell::heal_get_min() const {
 	return _heal_min;
 }
-void Spell::set_heal_min(const int value) {
+void Spell::heal_set_min(const int value) {
 	_heal_min = value;
 }
 
-int Spell::get_heal_max() const {
+int Spell::heal_get_max() const {
 	return _heal_max;
 }
-void Spell::set_heal_max(const int value) {
+void Spell::heal_set_max(const int value) {
 	_heal_max = value;
 }
 
-int Spell::get_heal_scale_stat() const {
+int Spell::heal_get_scale_stat() const {
 	return _heal_scale_stat;
 }
-void Spell::set_heal_scale_stat(const int value) {
+void Spell::heal_set_scale_stat(const int value) {
 	_heal_scale_stat = value;
 }
 
-float Spell::get_heal_scale_coeff() const {
+float Spell::heal_get_scale_coeff() const {
 	return _heal_scale_coeff;
 }
-void Spell::set_heal_scale_coeff(const float value) {
+void Spell::heal_set_scale_coeff(const float value) {
 	_heal_scale_coeff = value;
 }
 
-bool Spell::get_dispell_enabled() const {
+bool Spell::dispell_get_enabled() const {
 	return _dispell_enabled;
 }
-void Spell::set_dispell_enabled(const bool value) {
+void Spell::dispell_set_enabled(const bool value) {
 	_dispell_enabled = value;
 }
 
-int Spell::get_dispell_count_min() const {
+int Spell::dispell_get_count_min() const {
 	return _dispell_count_min;
 }
-void Spell::set_dispell_count_min(const int value) {
+void Spell::dispell_set_count_min(const int value) {
 	_dispell_count_min = value;
 }
 
-int Spell::get_dispell_count_max() const {
+int Spell::dispell_get_count_max() const {
 	return _dispell_count_max;
 }
-void Spell::set_dispell_count_max(const int value) {
+void Spell::dispell_set_count_max(const int value) {
 	_dispell_count_max = value;
 }
 
-int Spell::get_dispell_aura_types() const {
+int Spell::dispell_get_aura_types() const {
 	return _dispell_aura_types;
 }
-void Spell::set_dispell_aura_types(const int value) {
+void Spell::dispell_set_aura_types(const int value) {
 	_dispell_aura_types = value;
 }
 
@@ -539,11 +539,11 @@ void Spell::cast_starts_simple(Entity *caster, float spell_scale) {
 
 	Ref<SpellCastInfo> info = Ref<SpellCastInfo>(memnew(SpellCastInfo()));
 
-	info->set_caster(caster);
-	info->set_target(caster->gets_target());
-	info->set_has_cast_time(get_cast_time_enabled());
-	info->set_cast_time(get_cast_time());
-	info->set_spell_scale(spell_scale);
+	info->caster_set(caster);
+	info->target_set(caster->gets_target());
+	info->has_cast_time_set(cast_time_get_enabled());
+	info->cast_time_set(cast_time_get());
+	info->spell_scale_set(spell_scale);
 	info->set_spell(Ref<Spell>(this));
 
 	cast_starts(info);
@@ -554,7 +554,7 @@ void Spell::cast_interrupts_simple(Entity *caster) {
 
 	Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
 
-	info->set_caster(caster);
+	info->caster_set(caster);
 	info->set_spell(Ref<Spell>(this));
 
 	cast_interrupts(info);
@@ -565,7 +565,7 @@ void Spell::cast_starts_triggered_simple(Entity *caster) {
 
 	Ref<SpellCastInfo> info(memnew(SpellCastInfo()));
 
-	info->set_caster(caster);
+	info->caster_set(caster);
 	info->set_spell(Ref<Spell>(this));
 
 	cast_starts_triggered(info);
@@ -577,8 +577,8 @@ void Spell::cast_starts(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
 	//Auto self cast. Note: Remove needs_target, and skip this if spell should only target enemies.
-	if (info->get_target() == NULL) {
-		info->set_target(info->get_caster());
+	if (info->target_get() == NULL) {
+		info->target_set(info->caster_get());
 	}
 
 	if (has_method("_cast_starts")) {
@@ -659,25 +659,25 @@ void Spell::notification_ccast(int what, Ref<SpellCastInfo> info) {
 }
 
 void Spell::calculate_initial_damage(Ref<SpellDamageInfo> data) {
-	ERR_FAIL_COND(!data.is_valid() || data->get_receiver() == NULL);
+	ERR_FAIL_COND(!data.is_valid() || data->receiver_get() == NULL);
 
 	call("_calculate_initial_damage", data);
 }
 
 void Spell::handle_spell_damage(Ref<SpellDamageInfo> data) {
-	ERR_FAIL_COND(!data.is_valid() || data->get_receiver() == NULL);
+	ERR_FAIL_COND(!data.is_valid() || data->receiver_get() == NULL);
 
 	call("_handle_spell_damage", data);
 }
 
 void Spell::calculate_initial_heal(Ref<SpellHealInfo> data) {
-	ERR_FAIL_COND(!data.is_valid() || data->get_receiver() == NULL);
+	ERR_FAIL_COND(!data.is_valid() || data->receiver_get() == NULL);
 
 	call("_calculate_initial_heal", data);
 }
 
 void Spell::handle_spell_heal(Ref<SpellHealInfo> data) {
-	ERR_FAIL_COND(!data.is_valid() || data->get_receiver() == NULL);
+	ERR_FAIL_COND(!data.is_valid() || data->receiver_get() == NULL);
 
 	call("_handle_spell_heal", data);
 }
@@ -698,16 +698,16 @@ void Spell::handle_gcd(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
 	if (_global_cooldown_enabled && _cast_time_enabled) {
-		float gcd = info->get_caster()->stat_gets_current(ESS::get_singleton()->stat_get_id("Global Cooldown"));
+		float gcd = info->caster_get()->stat_gets_current(ESS::get_singleton()->stat_get_id("Global Cooldown"));
 
-		info->get_caster()->gcd_starts(gcd);
+		info->caster_get()->gcd_starts(gcd);
 	}
 }
 void Spell::handle_cooldown(Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
 	if (_cooldown > 0.00001) {
-		info->get_caster()->cooldown_adds(_id, _cooldown);
+		info->caster_get()->cooldown_adds(_id, _cooldown);
 	}
 }
 
@@ -865,28 +865,28 @@ Spell::~Spell() {
 }
 
 void Spell::_cast_starts(Ref<SpellCastInfo> info) {
-	if (info->get_caster()->cast_is_castings()) {
+	if (info->caster_get()->cast_is_castings()) {
 		return;
 	}
 
-	if ((get_global_cooldown_enabled() && info->get_caster()->gcd_hass()) ||
-			info->get_caster()->category_cooldown_hass(get_spell_type()) ||
-			info->get_caster()->cooldown_hass(get_id())) {
+	if ((get_global_cooldown_enabled() && info->caster_get()->gcd_hass()) ||
+			info->caster_get()->category_cooldown_hass(spell_type_get()) ||
+			info->caster_get()->cooldown_hass(get_id())) {
 		return;
 	}
 
-	if (!info->get_caster()->spell_hass_id(get_id())) {
+	if (!info->caster_get()->spell_hass_id(get_id())) {
 		return;
 	}
 
-	if (get_cast_time_enabled()) {
-		info->get_caster()->cast_starts(info);
+	if (cast_time_get_enabled()) {
+		info->caster_get()->cast_starts(info);
 		return;
 	}
 
-	info->get_caster()->cast_spell_successs(info);
+	info->caster_get()->cast_spell_successs(info);
 
-	info->get_target()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED_TARGET, info);
+	info->target_get()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED_TARGET, info);
 
 	//if (get_projectile().is_valid()) {
 	//	handle_projectile(info);
@@ -900,11 +900,11 @@ void Spell::_cast_starts(Ref<SpellCastInfo> info) {
 }
 
 void Spell::_cast_finishs(Ref<SpellCastInfo> info) {
-	info->get_caster()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED, info);
-	info->get_caster()->cast_spell_successs(info);
+	info->caster_get()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED, info);
+	info->caster_get()->cast_spell_successs(info);
 
-	if (INSTANCE_VALIDATE(info->get_target())) {
-		info->get_target()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED_TARGET, info);
+	if (INSTANCE_VALIDATE(info->target_get())) {
+		info->target_get()->notification_scast(SpellEnums::NOTIFICATION_CAST_FINISHED_TARGET, info);
 	}
 
 	//if (get_projectile().is_valid()) {
@@ -918,7 +918,7 @@ void Spell::_cast_finishs(Ref<SpellCastInfo> info) {
 
 void Spell::_son_cast_player_moved(Ref<SpellCastInfo> info) {
 	if (get_can_move_while_casting()) {
-		info->get_caster()->cast_fails();
+		info->caster_get()->cast_fails();
 	}
 }
 
@@ -929,32 +929,32 @@ void Spell::_son_spell_hit(Ref<SpellCastInfo> info) {
 void Spell::_calculate_initial_damage(Ref<SpellDamageInfo> data) {
 	Math::randomize();
 
-	data->set_damage(get_damage_min() + (get_damage_max() - get_damage_min() * Math::randf()));
+	data->damage_set(damage_get_min() + (damage_get_max() - damage_get_min() * Math::randf()));
 }
 
 void Spell::_handle_spell_damage(Ref<SpellDamageInfo> data) {
 	calculate_initial_damage(data);
 
-	data->get_dealer()->sdeal_damage_to(data);
+	data->dealer_get()->sdeal_damage_to(data);
 }
 
 void Spell::_calculate_initial_heal(Ref<SpellHealInfo> data) {
 	Math::randomize();
 
-	data->set_heal(get_heal_min() + (get_heal_max() - get_heal_min() * Math::randf()));
+	data->heal_set(heal_get_min() + (heal_get_max() - heal_get_min() * Math::randf()));
 }
 
 void Spell::_handle_spell_heal(Ref<SpellHealInfo> data) {
 	calculate_initial_heal(data);
 
-	data->get_dealer()->sdeal_heal_to(data);
+	data->dealer_get()->sdeal_heal_to(data);
 }
 
 void Spell::_handle_projectile(Ref<SpellCastInfo> info) {
 	if (_projectile_scene.is_valid()) {
 		Node *projectile = _projectile_scene->instance();
 
-		Node *p = info->get_caster()->get_parent();
+		Node *p = info->caster_get()->get_parent();
 
 		ERR_FAIL_COND(!INSTANCE_VALIDATE(p));
 
@@ -982,22 +982,22 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 #			return
 			*/
 
-	bool has_target = INSTANCE_VALIDATE(info->get_target());
+	bool has_target = INSTANCE_VALIDATE(info->target_get());
 
 	if (_target_type == SPELL_TARGET_TYPE_TARGET) {
 		if (!has_target)
 			return;
 	} else if (_target_type == SPELL_TARGET_TYPE_SELF) {
-		info->set_target(info->get_caster());
+		info->target_set(info->caster_get());
 	}
 
 	if (_damage_enabled && has_target) {
 		Ref<SpellDamageInfo> sdi;
 		sdi.instance();
 
-		sdi->set_damage_source(Ref<Spell>(this));
-		sdi->set_dealer(info->get_caster());
-		sdi->set_receiver(info->get_target());
+		sdi->source_set(Ref<Spell>(this));
+		sdi->dealer_set(info->caster_get());
+		sdi->receiver_set(info->target_get());
 
 		handle_spell_damage(sdi);
 	}
@@ -1006,9 +1006,9 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 		Ref<AuraApplyInfo> aai;
 		aai.instance();
 
-		aai->set_caster(info->get_caster());
-		aai->set_target(info->get_caster());
-		aai->set_spell_scale(1);
+		aai->caster_set(info->caster_get());
+		aai->target_set(info->caster_get());
+		aai->spell_scale_set(1);
 		aai->set_aura(_caster_aura_applys[i]);
 
 		_caster_aura_applys.get(i)->sapply(aai);
@@ -1021,21 +1021,21 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 			Ref<AuraData> ad;
 
 			if (aura->get_aura_group().is_valid()) {
-				ad = info->get_target()->aura_gets_with_group_by_bind(info->get_caster(), aura->get_aura_group());
+				ad = info->target_get()->aura_gets_with_group_by_bind(info->caster_get(), aura->get_aura_group());
 			} else {
-				ad = info->get_target()->aura_gets_by(info->get_caster(), aura->get_id());
+				ad = info->target_get()->aura_gets_by(info->caster_get(), aura->get_id());
 			}
 
 			if (ad.is_valid()) {
-				info->get_target()->aura_removes_exact(ad);
+				info->target_get()->aura_removes_exact(ad);
 			}
 
 			Ref<AuraApplyInfo> aai;
 			aai.instance();
 
-			aai->set_caster(info->get_caster());
-			aai->set_target(info->get_target());
-			aai->set_spell_scale(1);
+			aai->caster_set(info->caster_get());
+			aai->target_set(info->target_get());
+			aai->spell_scale_set(1);
 			aai->set_aura(aura);
 
 			aura->sapply(aai);
@@ -1122,9 +1122,9 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &Spell::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
 
-	ClassDB::bind_method(D_METHOD("get_spell_type"), &Spell::get_spell_type);
-	ClassDB::bind_method(D_METHOD("set_spell_type", "value"), &Spell::set_spell_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_type", PROPERTY_HINT_FLAGS, SpellEnums::BINDING_STRING_SPELL_TYPES), "set_spell_type", "get_spell_type");
+	ClassDB::bind_method(D_METHOD("spell_type_get"), &Spell::spell_type_get);
+	ClassDB::bind_method(D_METHOD("spell_type_set", "value"), &Spell::spell_type_set);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_type", PROPERTY_HINT_FLAGS, SpellEnums::BINDING_STRING_SPELL_TYPES), "spell_type_set", "spell_type_get");
 
 	ClassDB::bind_method(D_METHOD("get_spell_category"), &Spell::get_spell_category);
 	ClassDB::bind_method(D_METHOD("set_spell_category", "value"), &Spell::set_spell_category);
@@ -1178,12 +1178,12 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_num_caster_aura_applys"), &Spell::get_num_caster_aura_applys);
 	ClassDB::bind_method(D_METHOD("set_num_caster_aura_applys", "value"), &Spell::set_num_caster_aura_applys);
 
-	ClassDB::bind_method(D_METHOD("get_caster_aura_apply", "index"), &Spell::get_caster_aura_apply);
-	ClassDB::bind_method(D_METHOD("set_caster_aura_apply", "index", "aura"), &Spell::set_caster_aura_apply);
+	ClassDB::bind_method(D_METHOD("caster_get_aura_apply", "index"), &Spell::caster_get_aura_apply);
+	ClassDB::bind_method(D_METHOD("caster_set_aura_apply", "index", "aura"), &Spell::caster_set_aura_apply);
 
-	ClassDB::bind_method(D_METHOD("get_caster_aura_applys"), &Spell::get_caster_aura_applys);
-	ClassDB::bind_method(D_METHOD("set_caster_aura_applys", "caster_aura_applys"), &Spell::set_caster_aura_applys);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "caster_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_caster_aura_applys", "get_caster_aura_applys");
+	ClassDB::bind_method(D_METHOD("caster_get_aura_applys"), &Spell::caster_get_aura_applys);
+	ClassDB::bind_method(D_METHOD("caster_set_aura_applys", "caster_aura_applys"), &Spell::caster_set_aura_applys);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "caster_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "caster_set_aura_applys", "caster_get_aura_applys");
 
 	//ADD_GROUP("Target Aura Apply", "target_aura_applys");
 	ClassDB::bind_method(D_METHOD("get_num_target_aura_applys"), &Spell::get_num_target_aura_applys);
@@ -1234,22 +1234,22 @@ void Spell::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cooldown_global_cooldown_enabled"), "set_global_cooldown_enabled", "get_global_cooldown_enabled");
 
 	ADD_GROUP("Range", "range");
-	ClassDB::bind_method(D_METHOD("get_range_enabled"), &Spell::get_range_enabled);
-	ClassDB::bind_method(D_METHOD("set_range_enabled", "value"), &Spell::set_range_enabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "range_enabled"), "set_range_enabled", "get_range_enabled");
+	ClassDB::bind_method(D_METHOD("range_get_enabled"), &Spell::range_get_enabled);
+	ClassDB::bind_method(D_METHOD("range_set_enabled", "value"), &Spell::range_set_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "range_enabled"), "range_set_enabled", "range_get_enabled");
 
-	ClassDB::bind_method(D_METHOD("get_range"), &Spell::get_range);
-	ClassDB::bind_method(D_METHOD("set_range", "value"), &Spell::set_range);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "range_range"), "set_range", "get_range");
+	ClassDB::bind_method(D_METHOD("range_get"), &Spell::range_get);
+	ClassDB::bind_method(D_METHOD("range_set", "value"), &Spell::range_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "range_range"), "range_set", "range_get");
 
 	ADD_GROUP("Cast", "cast");
-	ClassDB::bind_method(D_METHOD("get_cast_time_enabled"), &Spell::get_cast_time_enabled);
-	ClassDB::bind_method(D_METHOD("set_cast_time_enabled", "value"), &Spell::set_cast_time_enabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cast_enabled"), "set_cast_time_enabled", "get_cast_time_enabled");
+	ClassDB::bind_method(D_METHOD("cast_time_get_enabled"), &Spell::cast_time_get_enabled);
+	ClassDB::bind_method(D_METHOD("cast_time_set_enabled", "value"), &Spell::cast_time_set_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "cast_enabled"), "cast_time_set_enabled", "cast_time_get_enabled");
 
-	ClassDB::bind_method(D_METHOD("get_cast_time"), &Spell::get_cast_time);
-	ClassDB::bind_method(D_METHOD("set_cast_time", "value"), &Spell::set_cast_time);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cast_cast_time"), "set_cast_time", "get_cast_time");
+	ClassDB::bind_method(D_METHOD("cast_time_get"), &Spell::cast_time_get);
+	ClassDB::bind_method(D_METHOD("cast_time_set", "value"), &Spell::cast_time_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cast_cast_time"), "cast_time_set", "cast_time_get");
 
 	ClassDB::bind_method(D_METHOD("get_can_move_while_casting"), &Spell::get_can_move_while_casting);
 	ClassDB::bind_method(D_METHOD("set_can_move_while_casting", "value"), &Spell::set_can_move_while_casting);
@@ -1277,67 +1277,67 @@ void Spell::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "projectile_scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "projectile_set_scene", "projectile_get_scene");
 
 	ADD_GROUP("Damage", "damage");
-	ClassDB::bind_method(D_METHOD("get_damage_enabled"), &Spell::get_damage_enabled);
-	ClassDB::bind_method(D_METHOD("set_damage_enabled", "value"), &Spell::set_damage_enabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "damage_enabled"), "set_damage_enabled", "get_damage_enabled");
+	ClassDB::bind_method(D_METHOD("damage_get_enabled"), &Spell::damage_get_enabled);
+	ClassDB::bind_method(D_METHOD("damage_set_enabled", "value"), &Spell::damage_set_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "damage_enabled"), "damage_set_enabled", "damage_get_enabled");
 
-	ClassDB::bind_method(D_METHOD("get_damage_type"), &Spell::get_damage_type);
-	ClassDB::bind_method(D_METHOD("set_damage_type", "value"), &Spell::set_damage_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_type", PROPERTY_HINT_FLAGS, SpellEnums::BINDING_STRING_DAMAGE_TYPES), "set_damage_type", "get_damage_type");
+	ClassDB::bind_method(D_METHOD("damage_get_type"), &Spell::damage_get_type);
+	ClassDB::bind_method(D_METHOD("damage_set_type", "value"), &Spell::damage_set_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_type", PROPERTY_HINT_FLAGS, SpellEnums::BINDING_STRING_DAMAGE_TYPES), "damage_set_type", "damage_get_type");
 
-	ClassDB::bind_method(D_METHOD("get_damage_min"), &Spell::get_damage_min);
-	ClassDB::bind_method(D_METHOD("set_damage_min", "value"), &Spell::set_damage_min);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_min"), "set_damage_min", "get_damage_min");
+	ClassDB::bind_method(D_METHOD("damage_get_min"), &Spell::damage_get_min);
+	ClassDB::bind_method(D_METHOD("damage_set_min", "value"), &Spell::damage_set_min);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_min"), "damage_set_min", "damage_get_min");
 
-	ClassDB::bind_method(D_METHOD("get_damage_max"), &Spell::get_damage_max);
-	ClassDB::bind_method(D_METHOD("set_damage_max", "value"), &Spell::set_damage_max);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_max"), "set_damage_max", "get_damage_max");
+	ClassDB::bind_method(D_METHOD("damage_get_max"), &Spell::damage_get_max);
+	ClassDB::bind_method(D_METHOD("damage_set_max", "value"), &Spell::damage_set_max);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_max"), "damage_set_max", "damage_get_max");
 
-	ClassDB::bind_method(D_METHOD("get_damage_scale_stat"), &Spell::get_damage_scale_stat);
-	ClassDB::bind_method(D_METHOD("set_damage_scale_stat", "value"), &Spell::set_damage_scale_stat);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_scale_stat", PROPERTY_HINT_ENUM, ""), "set_damage_scale_stat", "get_damage_scale_stat");
+	ClassDB::bind_method(D_METHOD("damage_get_scale_stat"), &Spell::damage_get_scale_stat);
+	ClassDB::bind_method(D_METHOD("damage_set_scale_stat", "value"), &Spell::damage_set_scale_stat);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_scale_stat", PROPERTY_HINT_ENUM, ""), "damage_set_scale_stat", "damage_get_scale_stat");
 
-	ClassDB::bind_method(D_METHOD("get_damage_scale_coeff"), &Spell::get_damage_scale_coeff);
-	ClassDB::bind_method(D_METHOD("set_damage_scale_coeff", "value"), &Spell::set_damage_scale_coeff);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "damage_scale_coeff"), "set_damage_scale_coeff", "get_damage_scale_coeff");
+	ClassDB::bind_method(D_METHOD("damage_get_scale_coeff"), &Spell::damage_get_scale_coeff);
+	ClassDB::bind_method(D_METHOD("damage_set_scale_coeff", "value"), &Spell::damage_set_scale_coeff);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "damage_scale_coeff"), "damage_set_scale_coeff", "damage_get_scale_coeff");
 
 	ADD_GROUP("Heal", "heal");
-	ClassDB::bind_method(D_METHOD("get_heal_enabled"), &Spell::get_heal_enabled);
-	ClassDB::bind_method(D_METHOD("set_heal_enabled", "value"), &Spell::set_heal_enabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "heal_enabled"), "set_heal_enabled", "get_heal_enabled");
+	ClassDB::bind_method(D_METHOD("heal_get_enabled"), &Spell::heal_get_enabled);
+	ClassDB::bind_method(D_METHOD("heal_set_enabled", "value"), &Spell::heal_set_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "heal_enabled"), "heal_set_enabled", "heal_get_enabled");
 
-	ClassDB::bind_method(D_METHOD("get_heal_min"), &Spell::get_heal_min);
-	ClassDB::bind_method(D_METHOD("set_heal_min", "value"), &Spell::set_heal_min);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_min"), "set_heal_min", "get_heal_min");
+	ClassDB::bind_method(D_METHOD("heal_get_min"), &Spell::heal_get_min);
+	ClassDB::bind_method(D_METHOD("heal_set_min", "value"), &Spell::heal_set_min);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_min"), "heal_set_min", "heal_get_min");
 
-	ClassDB::bind_method(D_METHOD("get_heal_max"), &Spell::get_heal_max);
-	ClassDB::bind_method(D_METHOD("set_heal_max", "value"), &Spell::set_heal_max);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_max"), "set_heal_max", "get_heal_max");
+	ClassDB::bind_method(D_METHOD("heal_get_max"), &Spell::heal_get_max);
+	ClassDB::bind_method(D_METHOD("heal_set_max", "value"), &Spell::heal_set_max);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_max"), "heal_set_max", "heal_get_max");
 
-	ClassDB::bind_method(D_METHOD("get_heal_scale_stat"), &Spell::get_heal_scale_stat);
-	ClassDB::bind_method(D_METHOD("set_heal_scale_stat", "value"), &Spell::set_heal_scale_stat);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_scale_stat", PROPERTY_HINT_ENUM, ""), "set_heal_scale_stat", "get_heal_scale_stat");
+	ClassDB::bind_method(D_METHOD("heal_get_scale_stat"), &Spell::heal_get_scale_stat);
+	ClassDB::bind_method(D_METHOD("heal_set_scale_stat", "value"), &Spell::heal_set_scale_stat);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_scale_stat", PROPERTY_HINT_ENUM, ""), "heal_set_scale_stat", "heal_get_scale_stat");
 
-	ClassDB::bind_method(D_METHOD("get_heal_scale_coeff"), &Spell::get_heal_scale_coeff);
-	ClassDB::bind_method(D_METHOD("set_heal_scale_coeff", "value"), &Spell::set_heal_scale_coeff);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "heal_scale_coeff"), "set_heal_scale_coeff", "get_heal_scale_coeff");
+	ClassDB::bind_method(D_METHOD("heal_get_scale_coeff"), &Spell::heal_get_scale_coeff);
+	ClassDB::bind_method(D_METHOD("heal_set_scale_coeff", "value"), &Spell::heal_set_scale_coeff);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "heal_scale_coeff"), "heal_set_scale_coeff", "heal_get_scale_coeff");
 
 	ADD_GROUP("Dispell", "dispell");
-	ClassDB::bind_method(D_METHOD("get_dispell_enabled"), &Spell::get_dispell_enabled);
-	ClassDB::bind_method(D_METHOD("set_dispell_enabled", "value"), &Spell::set_dispell_enabled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dispell_enabled"), "set_dispell_enabled", "get_dispell_enabled");
+	ClassDB::bind_method(D_METHOD("dispell_get_enabled"), &Spell::dispell_get_enabled);
+	ClassDB::bind_method(D_METHOD("dispell_set_enabled", "value"), &Spell::dispell_set_enabled);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dispell_enabled"), "dispell_set_enabled", "dispell_get_enabled");
 
-	ClassDB::bind_method(D_METHOD("get_dispell_count_min"), &Spell::get_dispell_count_min);
-	ClassDB::bind_method(D_METHOD("set_dispell_count_min", "value"), &Spell::set_dispell_count_min);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_count_min"), "set_dispell_count_min", "get_dispell_count_min");
+	ClassDB::bind_method(D_METHOD("dispell_get_count_min"), &Spell::dispell_get_count_min);
+	ClassDB::bind_method(D_METHOD("dispell_set_count_min", "value"), &Spell::dispell_set_count_min);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_count_min"), "dispell_set_count_min", "dispell_get_count_min");
 
-	ClassDB::bind_method(D_METHOD("get_dispell_count_max"), &Spell::get_dispell_count_max);
-	ClassDB::bind_method(D_METHOD("set_dispell_count_max", "value"), &Spell::set_dispell_count_max);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_count_max"), "set_dispell_count_max", "get_dispell_count_max");
+	ClassDB::bind_method(D_METHOD("dispell_get_count_max"), &Spell::dispell_get_count_max);
+	ClassDB::bind_method(D_METHOD("dispell_set_count_max", "value"), &Spell::dispell_set_count_max);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_count_max"), "dispell_set_count_max", "dispell_get_count_max");
 
-	ClassDB::bind_method(D_METHOD("get_dispell_aura_types"), &Spell::get_dispell_aura_types);
-	ClassDB::bind_method(D_METHOD("set_dispell_aura_types", "value"), &Spell::set_dispell_aura_types);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_aura_types", PROPERTY_HINT_FLAGS, SpellEnums::BINDING_STRING_AURA_FLAG_TYPES), "set_dispell_aura_types", "get_dispell_aura_types");
+	ClassDB::bind_method(D_METHOD("dispell_get_aura_types"), &Spell::dispell_get_aura_types);
+	ClassDB::bind_method(D_METHOD("dispell_set_aura_types", "value"), &Spell::dispell_set_aura_types);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "dispell_aura_types", PROPERTY_HINT_FLAGS, SpellEnums::BINDING_STRING_AURA_FLAG_TYPES), "dispell_set_aura_types", "dispell_get_aura_types");
 
 	ADD_GROUP("Interrupt", "interrupt");
 	ClassDB::bind_method(D_METHOD("get_interrupt_enabled"), &Spell::get_interrupt_enabled);

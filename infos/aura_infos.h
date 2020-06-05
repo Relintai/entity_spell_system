@@ -33,16 +33,16 @@ class AuraApplyInfo : public Reference {
 	GDCLASS(AuraApplyInfo, Reference);
 
 public:
-	Entity *get_caster() const;
-	void set_caster(Entity *caster);
-	void set_caster_bind(Node *caster);
+	Entity *caster_get() const;
+	void caster_set(Entity *caster);
+	void caster_set_bind(Node *caster);
 
-	Entity *get_target() const;
-	void set_target(Entity *caster);
-	void set_target_bind(Node *caster);
+	Entity *target_get() const;
+	void target_set(Entity *caster);
+	void target_set_bind(Node *caster);
 
-	float get_spell_scale() const;
-	void set_spell_scale(float value);
+	float spell_scale_get() const;
+	void spell_scale_set(float value);
 
 	Ref<Aura> get_aura() const;
 	void set_aura(Ref<Aura> aura);

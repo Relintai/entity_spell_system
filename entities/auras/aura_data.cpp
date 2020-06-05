@@ -29,11 +29,11 @@ SOFTWARE.
 
 #include "../../defines.h"
 
-float AuraData::get_damage_count() {
+float AuraData::damage_get_count() {
 	return _damage_already_taken;
 }
 
-void AuraData::set_damage_count(int damageTaken) {
+void AuraData::damage_set_count(int damageTaken) {
 	_damage_already_taken = damageTaken;
 }
 
@@ -102,11 +102,11 @@ void AuraData::set_owner_bind(Node *value) {
 	_owner = e;
 }
 
-Entity *AuraData::get_caster() {
+Entity *AuraData::caster_get() {
 	return _caster;
 }
 
-void AuraData::set_caster(Entity *value) {
+void AuraData::caster_set(Entity *value) {
 	_caster = value;
 
 	if (_caster == _owner) {
@@ -124,9 +124,9 @@ void AuraData::set_caster(Entity *value) {
 	}
 }
 
-void AuraData::set_caster_bind(Node *value) {
+void AuraData::caster_set_bind(Node *value) {
 	if (!value) {
-		set_caster(NULL);
+		caster_set(NULL);
 		return;
 	}
 
@@ -136,21 +136,21 @@ void AuraData::set_caster_bind(Node *value) {
 		return;
 	}
 
-	set_caster(e);
+	caster_set(e);
 }
 
-NodePath AuraData::get_caster_path() {
+NodePath AuraData::caster_get_path() {
 	return _caster_path;
 }
-void AuraData::set_caster_path(NodePath value) {
+void AuraData::caster_set_path(NodePath value) {
 	_caster_path = value;
 }
 
-float AuraData::get_spell_scale() {
+float AuraData::spell_scale_get() {
 	return _spell_scale;
 }
 
-void AuraData::set_spell_scale(float value) {
+void AuraData::spell_scale_set(float value) {
 	_spell_scale = value;
 }
 
@@ -172,11 +172,11 @@ void AuraData::set_aura(Ref<Aura> aura) {
 		_aura_path = "";
 }
 
-int AuraData::get_damage() {
+int AuraData::damage_get() {
 	return _damage;
 }
 
-void AuraData::set_damage(int value) {
+void AuraData::damage_set(int value) {
 	_damage = value;
 }
 
@@ -204,11 +204,11 @@ void AuraData::set_unhandled_ticks(int value) {
 	_unhandled_ticks = value;
 }
 
-int AuraData::get_damage_taken() {
+int AuraData::damage_get_taken() {
 	return _damage_already_taken;
 }
 
-void AuraData::set_damage_taken(int value) {
+void AuraData::damage_set_taken(int value) {
 	_damage_already_taken = value;
 }
 
@@ -240,11 +240,11 @@ void AuraData::refresh(float remaining_time) {
 	_time_since_last_tick = (float)0;
 }*/
 
-int AuraData::get_heal() {
+int AuraData::heal_get() {
 	return _heal;
 }
 
-void AuraData::set_heal(int value) {
+void AuraData::heal_set(int value) {
 	_heal = value;
 }
 
@@ -390,13 +390,13 @@ void AuraData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_owner", "value"), &AuraData::set_owner_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_owner", "get_owner");
 
-	ClassDB::bind_method(D_METHOD("get_caster"), &AuraData::get_caster);
-	ClassDB::bind_method(D_METHOD("set_caster", "value"), &AuraData::set_caster_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_caster", "get_caster");
+	ClassDB::bind_method(D_METHOD("caster_get"), &AuraData::caster_get);
+	ClassDB::bind_method(D_METHOD("caster_set", "value"), &AuraData::caster_set_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "caster_set", "caster_get");
 
-	ClassDB::bind_method(D_METHOD("get_caster_path"), &AuraData::get_caster_path);
-	ClassDB::bind_method(D_METHOD("set_caster_path", "value"), &AuraData::set_caster_path);
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "caster_path"), "set_caster_path", "get_caster_path");
+	ClassDB::bind_method(D_METHOD("caster_get_path"), &AuraData::caster_get_path);
+	ClassDB::bind_method(D_METHOD("caster_set_path", "value"), &AuraData::caster_set_path);
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "caster_path"), "caster_set_path", "caster_get_path");
 
 	ClassDB::bind_method(D_METHOD("get_aura"), &AuraData::get_aura);
 	ClassDB::bind_method(D_METHOD("set_aura", "value"), &AuraData::set_aura);
@@ -404,13 +404,13 @@ void AuraData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("refresh", "remaining"), &AuraData::refresh);
 
-	ClassDB::bind_method(D_METHOD("get_damage"), &AuraData::get_damage);
-	ClassDB::bind_method(D_METHOD("set_damage", "value"), &AuraData::set_damage);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage"), "set_damage", "get_damage");
+	ClassDB::bind_method(D_METHOD("damage_get"), &AuraData::damage_get);
+	ClassDB::bind_method(D_METHOD("damage_set", "value"), &AuraData::damage_set);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage"), "damage_set", "damage_get");
 
-	ClassDB::bind_method(D_METHOD("get_damage_count"), &AuraData::get_damage_count);
-	ClassDB::bind_method(D_METHOD("set_damage_count", "value"), &AuraData::set_damage_count);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_count"), "set_damage_count", "get_damage_count");
+	ClassDB::bind_method(D_METHOD("damage_get_count"), &AuraData::damage_get_count);
+	ClassDB::bind_method(D_METHOD("damage_set_count", "value"), &AuraData::damage_set_count);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_count"), "damage_set_count", "damage_get_count");
 
 	ClassDB::bind_method(D_METHOD("get_tick"), &AuraData::get_tick);
 	ClassDB::bind_method(D_METHOD("set_tick", "value"), &AuraData::set_tick);
@@ -424,17 +424,17 @@ void AuraData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_unhandled_ticks", "value"), &AuraData::set_unhandled_ticks);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "unhandled_ticks"), "set_unhandled_ticks", "get_unhandled_ticks");
 
-	ClassDB::bind_method(D_METHOD("get_damage_taken"), &AuraData::get_damage_taken);
-	ClassDB::bind_method(D_METHOD("set_damage_taken", "value"), &AuraData::set_damage_taken);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_taken"), "set_damage_taken", "get_damage_taken");
+	ClassDB::bind_method(D_METHOD("damage_get_taken"), &AuraData::damage_get_taken);
+	ClassDB::bind_method(D_METHOD("damage_set_taken", "value"), &AuraData::damage_set_taken);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "damage_taken"), "damage_set_taken", "damage_get_taken");
 
-	ClassDB::bind_method(D_METHOD("get_heal"), &AuraData::get_heal);
-	ClassDB::bind_method(D_METHOD("set_heal", "value"), &AuraData::set_heal);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal"), "set_heal", "get_heal");
+	ClassDB::bind_method(D_METHOD("heal_get"), &AuraData::heal_get);
+	ClassDB::bind_method(D_METHOD("heal_set", "value"), &AuraData::heal_set);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal"), "heal_set", "heal_get");
 
 	ClassDB::bind_method(D_METHOD("get_remaining_absorb"), &AuraData::get_remaining_absorb);
 	ClassDB::bind_method(D_METHOD("set_remaining_absorb", "value"), &AuraData::set_remaining_absorb);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "remaining_absorb"), "set_heal", "get_remaining_absorb");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "remaining_absorb"), "heal_set", "get_remaining_absorb");
 
 	ClassDB::bind_method(D_METHOD("get_slow"), &AuraData::get_slow);
 	ClassDB::bind_method(D_METHOD("set_slow", "value"), &AuraData::set_slow);

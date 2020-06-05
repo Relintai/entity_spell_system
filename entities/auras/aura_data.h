@@ -50,26 +50,26 @@ public:
 	void set_owner(Entity *value);
 	void set_owner_bind(Node *value);
 
-	Entity *get_caster();
-	void set_caster(Entity *value);
-	void set_caster_bind(Node *value);
+	Entity *caster_get();
+	void caster_set(Entity *value);
+	void caster_set_bind(Node *value);
 
-	NodePath get_caster_path();
-	void set_caster_path(NodePath value);
+	NodePath caster_get_path();
+	void caster_set_path(NodePath value);
 
-	float get_spell_scale();
-	void set_spell_scale(float value);
+	float spell_scale_get();
+	void spell_scale_set(float value);
 
 	Ref<Aura> get_aura();
 	void set_aura(Ref<Aura> aura);
 
 	void refresh(float remaining);
 
-	int get_damage();
-	void set_damage(int value);
+	int damage_get();
+	void damage_set(int value);
 
-	float get_damage_count();
-	void set_damage_count(int damageTaken);
+	float damage_get_count();
+	void damage_set_count(int damageTaken);
 
 	float get_tick();
 	void set_tick(float value);
@@ -80,11 +80,11 @@ public:
 	int get_unhandled_ticks();
 	void set_unhandled_ticks(int value);
 
-	int get_damage_taken();
-	void set_damage_taken(int value);
+	int damage_get_taken();
+	void damage_set_taken(int value);
 
-	int get_heal();
-	void set_heal(int value);
+	int heal_get();
+	void heal_set(int value);
 
 	int get_remaining_absorb();
 	void set_remaining_absorb(int remaining_timeAbsorb);

@@ -32,17 +32,17 @@
 		</method>
 	</methods>
 	<members>
-		<member name="cast_time" type="float" setter="set_cast_time" getter="get_cast_time" default="0.0">
+		<member name="cast_time" type="float" setter="cast_time_set" getter="cast_time_get" default="0.0">
 		</member>
-		<member name="caster" type="Entity" setter="set_caster" getter="get_caster">
+		<member name="caster" type="Entity" setter="caster_set" getter="caster_get">
 		</member>
-		<member name="current_cast_time" type="float" setter="set_current_cast_time" getter="get_current_cast_time" default="0.0">
+		<member name="current_cast_time" type="float" setter="current_cast_time_set" getter="current_cast_time_get" default="0.0">
 		</member>
-		<member name="has_cast_time" type="bool" setter="set_has_cast_time" getter="get_has_cast_time" default="false">
+		<member name="has_cast_time" type="bool" setter="has_cast_time_set" getter="has_cast_time_get" default="false">
 		</member>
-		<member name="is_casting" type="bool" setter="set_is_casting" getter="get_is_casting" default="false">
+		<member name="is_casting" type="bool" setter="is_casting_set" getter="is_casting_get" default="false">
 		</member>
-		<member name="num_pushbacks" type="int" setter="set_num_pushbacks" getter="get_num_pushbacks" default="0">
+		<member name="num_pushbacks" type="int" setter="num_pushbacks_set" getter="num_pushbacks_get" default="0">
 		</member>
 		<member name="source_item" type="ItemInstance" setter="set_source_item" getter="get_source_item">
 		</member>
@@ -50,7 +50,7 @@
 		</member>
 		<member name="spell" type="Spell" setter="set_spell" getter="get_spell">
 		</member>
-		<member name="spell_scale" type="float" setter="set_spell_scale" getter="get_spell_scale" default="0.0">
+		<member name="spell_scale" type="float" setter="spell_scale_set" getter="spell_scale_get" default="0.0">
 		</member>
 		<member name="target" type="Entity" setter="set_target" getter="get_target">
 		</member>

@@ -33,17 +33,17 @@ SOFTWARE.
 
 ////    SpellCastInfo    ////
 
-Entity *SpellCastInfo::get_caster() {
+Entity *SpellCastInfo::caster_get() {
 	if (_caster && !INSTANCE_VALIDATE(_caster)) {
 		_caster = NULL;
 	}
 
 	return _caster;
 }
-void SpellCastInfo::set_caster(Entity *value) {
+void SpellCastInfo::caster_set(Entity *value) {
 	_caster = value;
 }
-void SpellCastInfo::set_caster_bind(Node *caster) {
+void SpellCastInfo::caster_set_bind(Node *caster) {
 	if (!caster) {
 		return;
 	}
@@ -57,17 +57,17 @@ void SpellCastInfo::set_caster_bind(Node *caster) {
 	_caster = e;
 }
 
-Entity *SpellCastInfo::get_target() {
+Entity *SpellCastInfo::target_get() {
 	if (_target && !INSTANCE_VALIDATE(_target)) {
 		_target = NULL;
 	}
 
 	return _target;
 }
-void SpellCastInfo::set_target(Entity *value) {
+void SpellCastInfo::target_set(Entity *value) {
 	_target = value;
 }
-void SpellCastInfo::set_target_bind(Node *target) {
+void SpellCastInfo::target_set_bind(Node *target) {
 	if (!target) {
 		return;
 	}
@@ -81,45 +81,45 @@ void SpellCastInfo::set_target_bind(Node *target) {
 	_target = e;
 }
 
-bool SpellCastInfo::get_has_cast_time() const {
+bool SpellCastInfo::has_cast_time_get() const {
 	return _has_cast_time;
 }
-void SpellCastInfo::set_has_cast_time(bool value) {
+void SpellCastInfo::has_cast_time_set(bool value) {
 	_has_cast_time = value;
 }
 
-float SpellCastInfo::get_cast_time() const {
+float SpellCastInfo::cast_time_get() const {
 	return _cast_time;
 }
-void SpellCastInfo::set_cast_time(float value) {
+void SpellCastInfo::cast_time_set(float value) {
 	_cast_time = value;
 }
 
-float SpellCastInfo::get_current_cast_time() const {
+float SpellCastInfo::current_cast_time_get() const {
 	return _current_cast_time;
 }
-void SpellCastInfo::set_current_cast_time(float value) {
+void SpellCastInfo::current_cast_time_set(float value) {
 	_current_cast_time = value;
 }
 
-bool SpellCastInfo::get_is_casting() const {
+bool SpellCastInfo::is_casting_get() const {
 	return _is_casting;
 }
-void SpellCastInfo::set_is_casting(bool value) {
+void SpellCastInfo::is_casting_set(bool value) {
 	_is_casting = value;
 }
 
-int SpellCastInfo::get_num_pushbacks() const {
+int SpellCastInfo::num_pushbacks_get() const {
 	return _num_pushbacks;
 }
-void SpellCastInfo::set_num_pushbacks(int value) {
+void SpellCastInfo::num_pushbacks_set(int value) {
 	_num_pushbacks = value;
 }
 
-float SpellCastInfo::get_spell_scale() const {
+float SpellCastInfo::spell_scale_get() const {
 	return _spell_scale;
 }
-void SpellCastInfo::set_spell_scale(float value) {
+void SpellCastInfo::spell_scale_set(float value) {
 	_spell_scale = value;
 }
 
@@ -243,37 +243,37 @@ SpellCastInfo::~SpellCastInfo() {
 }
 
 void SpellCastInfo::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_caster"), &SpellCastInfo::get_caster);
-	ClassDB::bind_method(D_METHOD("set_caster", "caster"), &SpellCastInfo::set_caster_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_caster", "get_caster");
+	ClassDB::bind_method(D_METHOD("caster_get"), &SpellCastInfo::caster_get);
+	ClassDB::bind_method(D_METHOD("caster_set", "caster"), &SpellCastInfo::caster_set_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "caster_set", "caster_get");
 
-	ClassDB::bind_method(D_METHOD("get_target"), &SpellCastInfo::get_target);
-	ClassDB::bind_method(D_METHOD("set_target", "caster"), &SpellCastInfo::set_target_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_target", "get_target");
+	ClassDB::bind_method(D_METHOD("target_get"), &SpellCastInfo::target_get);
+	ClassDB::bind_method(D_METHOD("set_target", "caster"), &SpellCastInfo::target_set_bind);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "target", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_target", "target_get");
 
-	ClassDB::bind_method(D_METHOD("get_has_cast_time"), &SpellCastInfo::get_has_cast_time);
-	ClassDB::bind_method(D_METHOD("set_has_cast_time", "value"), &SpellCastInfo::set_has_cast_time);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_cast_time"), "set_has_cast_time", "get_has_cast_time");
+	ClassDB::bind_method(D_METHOD("has_cast_time_get"), &SpellCastInfo::has_cast_time_get);
+	ClassDB::bind_method(D_METHOD("has_cast_time_set", "value"), &SpellCastInfo::has_cast_time_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "has_cast_time"), "has_cast_time_set", "has_cast_time_get");
 
-	ClassDB::bind_method(D_METHOD("get_cast_time"), &SpellCastInfo::get_cast_time);
-	ClassDB::bind_method(D_METHOD("set_cast_time", "value"), &SpellCastInfo::set_cast_time);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cast_time"), "set_cast_time", "get_cast_time");
+	ClassDB::bind_method(D_METHOD("cast_time_get"), &SpellCastInfo::cast_time_get);
+	ClassDB::bind_method(D_METHOD("cast_time_set", "value"), &SpellCastInfo::cast_time_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cast_time"), "cast_time_set", "cast_time_get");
 
-	ClassDB::bind_method(D_METHOD("get_current_cast_time"), &SpellCastInfo::get_current_cast_time);
-	ClassDB::bind_method(D_METHOD("set_current_cast_time", "value"), &SpellCastInfo::set_current_cast_time);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "current_cast_time"), "set_current_cast_time", "get_current_cast_time");
+	ClassDB::bind_method(D_METHOD("current_cast_time_get"), &SpellCastInfo::current_cast_time_get);
+	ClassDB::bind_method(D_METHOD("current_cast_time_set", "value"), &SpellCastInfo::current_cast_time_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "current_cast_time"), "current_cast_time_set", "current_cast_time_get");
 
-	ClassDB::bind_method(D_METHOD("get_is_casting"), &SpellCastInfo::get_is_casting);
-	ClassDB::bind_method(D_METHOD("set_is_casting", "value"), &SpellCastInfo::set_is_casting);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_casting"), "set_is_casting", "get_is_casting");
+	ClassDB::bind_method(D_METHOD("is_casting_get"), &SpellCastInfo::is_casting_get);
+	ClassDB::bind_method(D_METHOD("is_casting_set", "value"), &SpellCastInfo::is_casting_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_casting"), "is_casting_set", "is_casting_get");
 
-	ClassDB::bind_method(D_METHOD("get_num_pushbacks"), &SpellCastInfo::get_num_pushbacks);
-	ClassDB::bind_method(D_METHOD("set_num_pushbacks", "value"), &SpellCastInfo::set_num_pushbacks);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "num_pushbacks"), "set_num_pushbacks", "get_num_pushbacks");
+	ClassDB::bind_method(D_METHOD("num_pushbacks_get"), &SpellCastInfo::num_pushbacks_get);
+	ClassDB::bind_method(D_METHOD("num_pushbacks_set", "value"), &SpellCastInfo::num_pushbacks_set);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "num_pushbacks"), "num_pushbacks_set", "num_pushbacks_get");
 
-	ClassDB::bind_method(D_METHOD("get_spell_scale"), &SpellCastInfo::get_spell_scale);
-	ClassDB::bind_method(D_METHOD("set_spell_scale", "value"), &SpellCastInfo::set_spell_scale);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "spell_scale"), "set_spell_scale", "get_spell_scale");
+	ClassDB::bind_method(D_METHOD("spell_scale_get"), &SpellCastInfo::spell_scale_get);
+	ClassDB::bind_method(D_METHOD("spell_scale_set", "value"), &SpellCastInfo::spell_scale_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "spell_scale"), "spell_scale_set", "spell_scale_get");
 
 	ClassDB::bind_method(D_METHOD("get_spell"), &SpellCastInfo::get_spell);
 	ClassDB::bind_method(D_METHOD("set_spell", "spell"), &SpellCastInfo::set_spell);
