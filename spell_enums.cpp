@@ -31,3 +31,10 @@ const String SpellEnums::BINDING_STRING_AURA_TYPES = "None,Magic,Poison,Physical
 const String SpellEnums::BINDING_STRING_AURA_FLAG_TYPES = "Magic,Poison,Physical,Curse,Bleed,Talent,Skill";
 const String SpellEnums::BINDING_STRING_COLLIDER_TYPE = "None,Sphere,Box";
 const String SpellEnums::BINDING_STRING_TARGET_TYPE = "None,Node,Bone ID,Coords";
+const String SpellEnums::BINDING_STRING_TRIGGER_TYPE = "None,Percent,PPM";
+const String SpellEnums::BINDING_STRING_TRIGGER_NOTIFICATION_TYPE = "Aura,Damage,Heal,Cast,Death,Cooldown Added,Cooldown Removed,Category CooldownAdded,Category CooldownRemoved,GCD Started,GCD Removed,XP Gained,Class Levelup,Character Levelup,Entity Resource Added,Entity Resource Removed,Aura Custom,Damage Custom,Heal Custom,Cast Custom,Custom";
+
+const String SpellEnums::BINDING_STRING_NOTIFICATION_AURAS = "Before Applied,After Applied,Applied,Added,Removed,Refreshed";
+const String SpellEnums::BINDING_STRING_NOTIFICATION_DAMAGES = "Before Hit,Hit,Before Damage,Receive,Dealt Damage,Damage Dealt,Damage";
+const String SpellEnums::BINDING_STRING_NOTIFICATION_HEALS = "Heal Hit,Before Heal,Receive,Dealt Heal,Heal Dealt";
+const String SpellEnums::BINDING_STRING_NOTIFICATION_CASTS = "Before,Before Cast Target,Finished Target,Finished,Started,Failed,Success,Interrupted,Delayed";

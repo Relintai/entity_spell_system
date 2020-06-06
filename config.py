@@ -17,7 +17,6 @@ def get_doc_classes():
 
         "AuraGroup",
         "AuraStatAttribute",
-        "AuraTriggerData",
         "Aura",
         "CraftRecipeHelper",
         "CraftRecipe",

@@ -36,7 +36,6 @@ SOFTWARE.
 #include "../../infos/aura_infos.h"
 
 #include "aura_stat_attribute.h"
-#include "aura_trigger_data.h"
 
 #include "../../entities/auras/aura_data.h"
 #include "../../infos/spell_cast_info.h"
@@ -53,6 +52,8 @@ class AuraScript;
 class Entity;
 class SpellCastInfo;
 class EntityResourceCostData;
+
+class Spell;
 
 class Aura : public Resource {
 	GDCLASS(Aura, Resource);
@@ -198,17 +199,23 @@ public:
 	void set_diminishing_category(const SpellEnums::DiminishingReturnCategory diminishingCategory);
 
 	//Triggers
-	int get_trigger_count() const;
-	void set_trigger_count(int count);
+	int trigger_get_count() const;
+	void trigger_set_count(const int count);
 
-	SpellEnums::TriggerEvents get_trigger_event(int index) const;
-	void set_trigger_event(int index, const SpellEnums::TriggerEvents value);
+	SpellEnums::TriggerNotificationType trigger_get_notification_type(const int index) const;
+	void trigger_set_notification_type(const int index, const SpellEnums::TriggerNotificationType value);
 
-	Ref<Aura> get_trigger_aura(int index) const;
-	void set_trigger_aura(int index, const Ref<Aura> value);
+	int trigger_get_notification_data(const int index) const;
+	void trigger_set_notification_data(const int index, const int value);
 
-	Ref<Spell> get_trigger_spell(int index) const;
-	void set_trigger_spell(int index, const Ref<Spell> value);
+	SpellEnums::TriggerType trigger_get_trigger_type(const int index) const;
+	void trigger_set_trigger_type(const int index, const SpellEnums::TriggerType value);
+
+	float trigger_get_trigger_type_data(const int index) const;
+	void trigger_set_trigger_type_data(const int index, const float value);
+
+	Ref<Spell> trigger_get_spell(const int index) const;
+	void trigger_set_spell(const int index, const Ref<Spell> &value);
 
 	//Talent
 	Ref<Aura> get_talent_required_talent() const;
@@ -218,22 +225,22 @@ public:
 	void set_talent_required_spell(const Ref<Spell> spell);
 
 	//AuraStatAttributes
-	int get_aura_stat_attribute_count() const;
-	void set_aura_stat_attribute_count(int count);
+	int stat_attribute_get_count() const;
+	void stat_attribute_set_count(int count);
 
-	int get_aura_stat_attribute_stat(int index) const;
-	void set_aura_stat_attribute_stat(int index, const int value);
+	int stat_attribute_get_stat(int index) const;
+	void stat_attribute_set_stat(int index, const int value);
 
-	float get_aura_stat_attribute_base_mod(int index) const;
-	void set_aura_stat_attribute_base_mod(int index, float value);
+	float stat_attribute_get_base_mod(int index) const;
+	void stat_attribute_set_base_mod(int index, float value);
 
-	float get_aura_stat_attribute_bonus_mod(int index) const;
-	void set_aura_stat_attribute_bonus_mod(int index, float value);
+	float stat_attribute_get_bonus_mod(int index) const;
+	void stat_attribute_set_bonus_mod(int index, float value);
 
-	float get_aura_stat_attribute_percent_mod(int index) const;
-	void set_aura_stat_attribute_percent_mod(int index, float value);
+	float stat_attribute_get_percent_mod(int index) const;
+	void stat_attribute_set_percent_mod(int index, float value);
 
-	Ref<AuraStatAttribute> get_aura_stat_attribute(int index) { return _aura_stat_attributes[index]; }
+	Ref<AuraStatAttribute> stat_attribute_get(int index) { return _aura_stat_attributes[index]; }
 
 	////    SpellSystem    ////
 
@@ -357,6 +364,22 @@ protected:
 	static void _bind_methods();
 	void _validate_property(PropertyInfo &property) const;
 
+protected:
+	struct AuraTriggerData {
+		SpellEnums::TriggerNotificationType notification_type;
+		int notification_data;
+		SpellEnums::TriggerType trigger_type;
+		float trigger_type_data;
+		Ref<Spell> spell;
+
+		AuraTriggerData() {
+			notification_type = SpellEnums::TRIGGER_NOTIFICATION_TYPE_AURA;
+			trigger_type = SpellEnums::TRIGGER_TYPE_NONE;
+			notification_data = 0;
+			trigger_type_data = 0;
+		}
+	};
+
 private:
 	enum {
 		MAX_AURA_STATS = 5, //Increase if necessary, should be enough for now
@@ -413,7 +436,7 @@ private:
 	int _supress_states;
 
 	int _trigger_count;
-	Ref<AuraTriggerData> _trigger_datas[MAX_TRIGGER_DATA];
+	AuraTriggerData _trigger_datas[MAX_TRIGGER_DATA];
 
 	int _aura_stat_attribute_count;
 	Ref<AuraStatAttribute> _aura_stat_attributes[MAX_AURA_STATS];

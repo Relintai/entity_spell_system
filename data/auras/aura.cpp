@@ -362,9 +362,6 @@ Aura::Aura() {
 	}
 
 	_trigger_count = 0;
-	for (int i = 0; i < MAX_TRIGGER_DATA; ++i) {
-		_trigger_datas[i] = Ref<AuraTriggerData>(memnew(AuraTriggerData()));
-	}
 }
 
 Aura::~Aura() {
@@ -379,7 +376,7 @@ Aura::~Aura() {
 	_heal_scaling_curve.unref();
 
 	for (int i = 0; i < MAX_TRIGGER_DATA; ++i) {
-		_trigger_datas[i].unref();
+		_trigger_datas[i].spell.unref();
 	}
 
 	for (int i = 0; i < MAX_AURA_STATS; ++i) {
@@ -392,50 +389,74 @@ Aura::~Aura() {
 
 //////     Triggers      ///////
 
-int Aura::get_trigger_count() const {
+int Aura::trigger_get_count() const {
 	return _trigger_count;
 }
 
-void Aura::set_trigger_count(int count) {
+void Aura::trigger_set_count(const int count) {
 	ERR_FAIL_COND(count < 0 || count > MAX_TRIGGER_DATA);
 
 	_trigger_count = count;
 }
 
-SpellEnums::TriggerEvents Aura::get_trigger_event(int index) const {
-	ERR_FAIL_INDEX_V(index, _trigger_count, SpellEnums::TRIGGER_NONE);
+SpellEnums::TriggerNotificationType Aura::trigger_get_notification_type(const int index) const {
+	ERR_FAIL_INDEX_V(index, _trigger_count, SpellEnums::TRIGGER_NOTIFICATION_TYPE_AURA);
 
-	return _trigger_datas[index]->get_trigger_event();
+	return _trigger_datas[index].notification_type;
 }
 
-void Aura::set_trigger_event(int index, const SpellEnums::TriggerEvents value) {
+void Aura::trigger_set_notification_type(const int index, const SpellEnums::TriggerNotificationType value) {
 	ERR_FAIL_COND(index < 0 || index > _trigger_count);
 
-	_trigger_datas[index]->set_trigger_event(value);
+	_trigger_datas[index].notification_type = value;
 }
 
-Ref<Aura> Aura::get_trigger_aura(int index) const {
-	ERR_FAIL_INDEX_V(index, _trigger_count, Ref<Aura>(NULL));
+int Aura::trigger_get_notification_data(const int index) const {
+	ERR_FAIL_INDEX_V(index, _trigger_count, 0);
 
-	return _trigger_datas[index]->get_aura();
+	return _trigger_datas[index].notification_data;
 }
 
-void Aura::set_trigger_aura(int index, const Ref<Aura> value) {
+void Aura::trigger_set_notification_data(const int index, const int value) {
 	ERR_FAIL_COND(index < 0 || index > _trigger_count);
 
-	_trigger_datas[index]->set_aura(value);
+	_trigger_datas[index].notification_data = value;
 }
 
-Ref<Spell> Aura::get_trigger_spell(int index) const {
-	ERR_FAIL_INDEX_V(index, _trigger_count, Ref<Spell>(NULL));
+SpellEnums::TriggerType Aura::trigger_get_trigger_type(const int index) const {
+	ERR_FAIL_INDEX_V(index, _trigger_count, SpellEnums::TRIGGER_TYPE_NONE);
 
-	return _trigger_datas[index]->get_spell();
+	return _trigger_datas[index].trigger_type;
 }
 
-void Aura::set_trigger_spell(int index, const Ref<Spell> value) {
+void Aura::trigger_set_trigger_type(const int index, const SpellEnums::TriggerType value) {
 	ERR_FAIL_COND(index < 0 || index > _trigger_count);
 
-	_trigger_datas[index]->set_spell(value);
+	_trigger_datas[index].trigger_type = value;
+}
+
+float Aura::trigger_get_trigger_type_data(const int index) const {
+	ERR_FAIL_INDEX_V(index, _trigger_count, 0);
+
+	return _trigger_datas[index].trigger_type_data;
+}
+
+void Aura::trigger_set_trigger_type_data(const int index, const float value) {
+	ERR_FAIL_COND(index < 0 || index > _trigger_count);
+
+	_trigger_datas[index].trigger_type_data = value;
+}
+
+Ref<Spell> Aura::trigger_get_spell(const int index) const {
+	ERR_FAIL_INDEX_V(index, _trigger_count, Ref<Spell>());
+
+	return _trigger_datas[index].spell;
+}
+
+void Aura::trigger_set_spell(const int index, const Ref<Spell> &value) {
+	ERR_FAIL_COND(index < 0 || index > _trigger_count);
+
+	_trigger_datas[index].spell = value;
 }
 
 ////    Talent    ////
@@ -455,54 +476,54 @@ void Aura::set_talent_required_spell(const Ref<Spell> spell) {
 
 ////// Aura Stat Attributes //////
 
-int Aura::get_aura_stat_attribute_count() const {
+int Aura::stat_attribute_get_count() const {
 	return _aura_stat_attribute_count;
 }
-void Aura::set_aura_stat_attribute_count(int count) {
+void Aura::stat_attribute_set_count(int count) {
 	ERR_FAIL_COND(count < 0 || count > MAX_AURA_STATS);
 
 	_aura_stat_attribute_count = count;
 }
 
-int Aura::get_aura_stat_attribute_stat(int index) const {
+int Aura::stat_attribute_get_stat(int index) const {
 	ERR_FAIL_INDEX_V(index, MAX_AURA_STATS, 0);
 
 	return _aura_stat_attributes[index]->get_stat();
 }
-void Aura::set_aura_stat_attribute_stat(int index, const int value) {
+void Aura::stat_attribute_set_stat(int index, const int value) {
 	ERR_FAIL_INDEX(index, MAX_AURA_STATS);
 
 	_aura_stat_attributes[index]->set_stat(value);
 }
 
-float Aura::get_aura_stat_attribute_base_mod(int index) const {
+float Aura::stat_attribute_get_base_mod(int index) const {
 	ERR_FAIL_INDEX_V(index, MAX_AURA_STATS, 0);
 
 	return _aura_stat_attributes[index]->get_base_mod();
 }
-void Aura::set_aura_stat_attribute_base_mod(int index, float value) {
+void Aura::stat_attribute_set_base_mod(int index, float value) {
 	ERR_FAIL_INDEX(index, MAX_AURA_STATS);
 
 	_aura_stat_attributes[index]->set_base_mod(value);
 }
 
-float Aura::get_aura_stat_attribute_bonus_mod(int index) const {
+float Aura::stat_attribute_get_bonus_mod(int index) const {
 	ERR_FAIL_INDEX_V(index, MAX_AURA_STATS, 0);
 
 	return _aura_stat_attributes[index]->get_bonus_mod();
 }
-void Aura::set_aura_stat_attribute_bonus_mod(int index, float value) {
+void Aura::stat_attribute_set_bonus_mod(int index, float value) {
 	ERR_FAIL_INDEX(index, MAX_AURA_STATS);
 
 	_aura_stat_attributes[index]->set_bonus_mod(value);
 }
 
-float Aura::get_aura_stat_attribute_percent_mod(int index) const {
+float Aura::stat_attribute_get_percent_mod(int index) const {
 	ERR_FAIL_INDEX_V(index, MAX_AURA_STATS, 0);
 
 	return _aura_stat_attributes[index]->get_percent_mod();
 }
-void Aura::set_aura_stat_attribute_percent_mod(int index, float value) {
+void Aura::stat_attribute_set_percent_mod(int index, float value) {
 	ERR_FAIL_INDEX(index, MAX_AURA_STATS);
 
 	_aura_stat_attributes[index]->set_percent_mod(value);
@@ -1171,10 +1192,105 @@ void Aura::_validate_property(PropertyInfo &property) const {
 
 		if (property.name.ends_with("stat"))
 			property.hint_string = ESS::get_singleton()->stat_get_string();
-	} else if (prop.begins_with("Trigger_")) {
+	} else if (prop.begins_with("trigger_")) {
+		if (prop.ends_with("count"))
+			return;
+
 		int frame = prop.get_slicec('/', 0).get_slicec('_', 1).to_int();
 		if (frame >= _trigger_count) {
 			property.usage = 0;
+		} else {
+			if (prop.ends_with("notification_data")) {
+				switch (_trigger_datas[frame].notification_type) {
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_AURA:
+						property.hint = PROPERTY_HINT_ENUM;
+						property.hint_string = SpellEnums::BINDING_STRING_NOTIFICATION_AURAS;
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_DAMAGE:
+						property.hint = PROPERTY_HINT_ENUM;
+						property.hint_string = SpellEnums::BINDING_STRING_NOTIFICATION_DAMAGES;
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_HEAL:
+						property.hint = PROPERTY_HINT_ENUM;
+						property.hint_string = SpellEnums::BINDING_STRING_NOTIFICATION_HEALS;
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_CAST:
+						property.hint = PROPERTY_HINT_ENUM;
+						property.hint_string = SpellEnums::BINDING_STRING_NOTIFICATION_CASTS;
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_DEATH:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_COOLDOWN_ADDED:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_COOLDOWN_REMOVED:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_CATEGORY_COOLDOWN_ADDED:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_CATEGORY_COOLDOWN_REMOVED:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_GCD_STARTED:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_GCD_FINISHED:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_XP_GAINED:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_CLASS_LEVELUP:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_CHARACTER_LEVELUP:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_ENTITY_RESOURCE_ADDED:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_ENTITY_RESOURCE_REMOVED:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_AURA_CUSTOM:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_DAMAGE_CUSTOM:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_HEAL_CUSTOM:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_CAST_CUSTOM:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					case SpellEnums::TRIGGER_NOTIFICATION_TYPE_CUSTOM:
+						property.hint = PROPERTY_HINT_NONE;
+						property.hint_string = "";
+						break;
+					default:
+						break;
+				}
+			}
 		}
 	}
 }
@@ -1574,52 +1690,60 @@ void Aura::_bind_methods() {
 
 	////    Triggers    ////
 	ADD_GROUP("Triggers", "trigger");
-	ClassDB::bind_method(D_METHOD("get_trigger_count"), &Aura::get_trigger_count);
-	ClassDB::bind_method(D_METHOD("set_trigger_count", "count"), &Aura::set_trigger_count);
+	ClassDB::bind_method(D_METHOD("trigger_get_count"), &Aura::trigger_get_count);
+	ClassDB::bind_method(D_METHOD("trigger_set_count", "count"), &Aura::trigger_set_count);
 
-	ClassDB::bind_method(D_METHOD("get_trigger_event", "index"), &Aura::get_trigger_event);
-	ClassDB::bind_method(D_METHOD("set_trigger_event", "index", "value"), &Aura::set_trigger_event);
+	ClassDB::bind_method(D_METHOD("trigger_get_notification_type", "index"), &Aura::trigger_get_notification_type);
+	ClassDB::bind_method(D_METHOD("trigger_set_notification_type", "index", "value"), &Aura::trigger_set_notification_type);
 
-	ClassDB::bind_method(D_METHOD("get_trigger_aura", "index"), &Aura::get_trigger_aura);
-	ClassDB::bind_method(D_METHOD("set_trigger_aura", "index", "value"), &Aura::set_trigger_aura);
+	ClassDB::bind_method(D_METHOD("trigger_get_notification_data", "index"), &Aura::trigger_get_notification_data);
+	ClassDB::bind_method(D_METHOD("trigger_set_notification_data", "index", "value"), &Aura::trigger_set_notification_data);
 
-	ClassDB::bind_method(D_METHOD("get_trigger_spell", "index"), &Aura::get_trigger_spell);
-	ClassDB::bind_method(D_METHOD("set_trigger_spell", "index", "value"), &Aura::set_trigger_spell);
+	ClassDB::bind_method(D_METHOD("trigger_get_trigger_type", "index"), &Aura::trigger_get_trigger_type);
+	ClassDB::bind_method(D_METHOD("trigger_set_trigger_type", "index", "value"), &Aura::trigger_set_trigger_type);
 
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "trigger_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_TRIGGER_DATA), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_trigger_count", "get_trigger_count");
+	ClassDB::bind_method(D_METHOD("trigger_get_trigger_type_data", "index"), &Aura::trigger_get_trigger_type_data);
+	ClassDB::bind_method(D_METHOD("trigger_set_trigger_type_data", "index", "value"), &Aura::trigger_set_trigger_type_data);
+
+	ClassDB::bind_method(D_METHOD("trigger_get_spell", "index"), &Aura::trigger_get_spell);
+	ClassDB::bind_method(D_METHOD("trigger_set_spell", "index", "value"), &Aura::trigger_set_spell);
+
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "trigger_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_TRIGGER_DATA), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "trigger_set_count", "trigger_get_count");
 
 	for (int i = 0; i < MAX_TRIGGER_DATA; i++) {
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "Trigger_" + itos(i) + "/event", PROPERTY_HINT_ENUM, SpellEnums::BINDING_STRING_TRIGGER_EVENTS, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_trigger_event", "get_trigger_event", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "Trigger_" + itos(i) + "/aura", PROPERTY_HINT_RESOURCE_TYPE, "Aura", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_trigger_aura", "get_trigger_aura", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "Trigger_" + itos(i) + "/spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_trigger_spell", "get_trigger_spell", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "trigger_" + itos(i) + "/notification_type", PROPERTY_HINT_ENUM, SpellEnums::BINDING_STRING_TRIGGER_NOTIFICATION_TYPE, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "trigger_set_notification_type", "trigger_get_notification_type", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "trigger_" + itos(i) + "/notification_data"), "trigger_set_notification_data", "trigger_get_notification_data", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "trigger_" + itos(i) + "/trigger_type", PROPERTY_HINT_ENUM, SpellEnums::BINDING_STRING_TRIGGER_TYPE), "trigger_set_trigger_type", "trigger_get_trigger_type", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "trigger_" + itos(i) + "/trigger_type_data"), "trigger_set_trigger_type_data", "trigger_get_trigger_type_data", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "trigger_" + itos(i) + "/spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell", PROPERTY_USAGE_DEFAULT), "trigger_set_spell", "trigger_get_spell", i);
 	}
 
 	ADD_GROUP("Attributes", "attribute");
 	//AuraStatAttributes
-	ClassDB::bind_method(D_METHOD("get_aura_stat_attribute_count"), &Aura::get_aura_stat_attribute_count);
-	ClassDB::bind_method(D_METHOD("set_aura_stat_attribute_count", "count"), &Aura::set_aura_stat_attribute_count);
+	ClassDB::bind_method(D_METHOD("stat_attribute_get_count"), &Aura::stat_attribute_get_count);
+	ClassDB::bind_method(D_METHOD("stat_attribute_set_count", "count"), &Aura::stat_attribute_set_count);
 
-	ClassDB::bind_method(D_METHOD("get_aura_stat_attribute_stat", "index"), &Aura::get_aura_stat_attribute_stat);
-	ClassDB::bind_method(D_METHOD("set_aura_stat_attribute_stat", "index", "value"), &Aura::set_aura_stat_attribute_stat);
+	ClassDB::bind_method(D_METHOD("stat_attribute_get_stat", "index"), &Aura::stat_attribute_get_stat);
+	ClassDB::bind_method(D_METHOD("stat_attribute_set_stat", "index", "value"), &Aura::stat_attribute_set_stat);
 
-	ClassDB::bind_method(D_METHOD("get_aura_stat_attribute_base_mod", "index"), &Aura::get_aura_stat_attribute_base_mod);
-	ClassDB::bind_method(D_METHOD("set_aura_stat_attribute_base_mod", "index", "value"), &Aura::set_aura_stat_attribute_base_mod);
+	ClassDB::bind_method(D_METHOD("stat_attribute_get_base_mod", "index"), &Aura::stat_attribute_get_base_mod);
+	ClassDB::bind_method(D_METHOD("stat_attribute_set_base_mod", "index", "value"), &Aura::stat_attribute_set_base_mod);
 
-	ClassDB::bind_method(D_METHOD("get_aura_stat_attribute_bonus_mod", "index"), &Aura::get_aura_stat_attribute_bonus_mod);
-	ClassDB::bind_method(D_METHOD("set_aura_stat_attribute_bonus_mod", "index", "value"), &Aura::set_aura_stat_attribute_bonus_mod);
+	ClassDB::bind_method(D_METHOD("stat_attribute_get_bonus_mod", "index"), &Aura::stat_attribute_get_bonus_mod);
+	ClassDB::bind_method(D_METHOD("stat_attribute_set_bonus_mod", "index", "value"), &Aura::stat_attribute_set_bonus_mod);
 
-	ClassDB::bind_method(D_METHOD("get_aura_stat_attribute_percent_mod", "index"), &Aura::get_aura_stat_attribute_percent_mod);
-	ClassDB::bind_method(D_METHOD("set_aura_stat_attribute_percent_mod", "index", "value"), &Aura::set_aura_stat_attribute_percent_mod);
+	ClassDB::bind_method(D_METHOD("stat_attribute_get_percent_mod", "index"), &Aura::stat_attribute_get_percent_mod);
+	ClassDB::bind_method(D_METHOD("stat_attribute_set_percent_mod", "index", "value"), &Aura::stat_attribute_set_percent_mod);
 
-	ClassDB::bind_method(D_METHOD("get_aura_stat_attribute", "index"), &Aura::get_aura_stat_attribute);
+	ClassDB::bind_method(D_METHOD("stat_attribute_get", "index"), &Aura::stat_attribute_get);
 
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "attribute_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_AURA_STATS), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_aura_stat_attribute_count", "get_aura_stat_attribute_count");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "attribute_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_AURA_STATS), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "stat_attribute_set_count", "stat_attribute_get_count");
 
 	for (int i = 0; i < MAX_AURA_STATS; i++) {
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "StatModAttribute_" + itos(i) + "/stat", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura_stat_attribute_stat", "get_aura_stat_attribute_stat", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura_stat_attribute_base_mod", "get_aura_stat_attribute_base_mod", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/bonus_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura_stat_attribute_bonus_mod", "get_aura_stat_attribute_bonus_mod", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_aura_stat_attribute_percent_mod", "get_aura_stat_attribute_percent_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "StatModAttribute_" + itos(i) + "/stat", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_stat", "stat_attribute_get_stat", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_base_mod", "stat_attribute_get_base_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/bonus_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_bonus_mod", "stat_attribute_get_bonus_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_percent_mod", "stat_attribute_get_percent_mod", i);
 	}
 
 	ClassDB::bind_method(D_METHOD("is_talent"), &Aura::is_talent);

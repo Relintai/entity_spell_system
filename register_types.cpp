@@ -91,7 +91,6 @@ SOFTWARE.
 #include "entities/entity.h"
 
 #include "data/auras/aura_stat_attribute.h"
-#include "data/auras/aura_trigger_data.h"
 
 #include "drag_and_drop/es_drag_and_drop.h"
 
@@ -211,8 +210,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<EntityResource>();
 	ClassDB::register_class<EntityResourceHealth>();
 	ClassDB::register_class<EntityResourceSpeed>();
-
-	ClassDB::register_class<AuraTriggerData>();
 
 	//entities
 	ClassDB::register_class<EntityCreateInfo>();
