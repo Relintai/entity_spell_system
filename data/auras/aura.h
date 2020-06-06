@@ -193,8 +193,11 @@ public:
 	void set_supress_states(const int value) { _supress_states = value; }
 
 	//DiminishingReturns
-	SpellEnums::DiminishingReturnCategory get_diminishing_category() const;
-	void set_diminishing_category(const SpellEnums::DiminishingReturnCategory diminishingCategory);
+	bool diminishing_return_enabled_get() const;
+	void diminishing_return_enabled_set(const bool value);
+
+	int diminishing_return_category_get() const;
+	void diminishing_return_category_set(const int value);
 
 	//Triggers
 	int trigger_get_count() const;
@@ -451,7 +454,8 @@ private:
 	int _aura_stat_attribute_count;
 	AuraStatAttribute _aura_stat_attributes[MAX_AURA_STATS];
 
-	SpellEnums::DiminishingReturnCategory _diminishing_category;
+	bool _diminishing_return_enabled;
+	int _diminishing_return_category;
 
 	static const int DIMINISHING_RETURN_ROOT_AURA_ID = 1;
 	static const int DIMINISHING_RETURN_TIME = 15;

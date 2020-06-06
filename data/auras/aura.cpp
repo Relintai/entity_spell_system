@@ -139,12 +139,18 @@ float Aura::absorb_get_scale_for_level(const int level) const {
 	return 1;
 }
 
-SpellEnums::DiminishingReturnCategory Aura::get_diminishing_category() const {
-	return _diminishing_category;
+bool Aura::diminishing_return_enabled_get() const {
+	return _diminishing_return_enabled;
+}
+void Aura::diminishing_return_enabled_set(const bool value) {
+	_diminishing_return_enabled = value;
 }
 
-void Aura::set_diminishing_category(SpellEnums::DiminishingReturnCategory diminishingCategory) {
-	_diminishing_category = diminishingCategory;
+int Aura::diminishing_return_category_get() const {
+	return _diminishing_return_category;
+}
+void Aura::diminishing_return_category_set(const int value) {
+	_diminishing_return_category = value;
 }
 
 Ref<Spell> Aura::get_teaches_spell() {
@@ -358,6 +364,9 @@ Aura::Aura() {
 
 	_aura_stat_attribute_count = 0;
 	_trigger_count = 0;
+
+	_diminishing_return_enabled = false;
+	_diminishing_return_category = 0;
 }
 
 Aura::~Aura() {
@@ -1183,6 +1192,8 @@ void Aura::_validate_property(PropertyInfo &property) const {
 
 		if (property.name.ends_with("stat"))
 			property.hint_string = ESS::get_singleton()->stat_get_string();
+	} else if (prop == "diminishing_return_category") {
+		property.hint_string = ESS::get_singleton()->dminishing_return_categories_get();
 	} else if (prop.begins_with("trigger_")) {
 		if (prop.ends_with("count"))
 			return;
@@ -1668,6 +1679,16 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_supress_states"), &Aura::get_supress_states);
 	ClassDB::bind_method(D_METHOD("set_supress_states", "value"), &Aura::set_supress_states);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "states_supress", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES), "set_supress_states", "get_supress_states");
+
+	//Diminishing Returns
+	ADD_GROUP("Diminishing Returns", "diminishing_return");
+	ClassDB::bind_method(D_METHOD("diminishing_return_enabled_get"), &Aura::diminishing_return_enabled_get);
+	ClassDB::bind_method(D_METHOD("diminishing_return_enabled_set", "value"), &Aura::diminishing_return_enabled_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "diminishing_return_enabled"), "diminishing_return_enabled_set", "diminishing_return_enabled_get");
+
+	ClassDB::bind_method(D_METHOD("diminishing_return_category_get"), &Aura::diminishing_return_category_get);
+	ClassDB::bind_method(D_METHOD("diminishing_return_category_set", "value"), &Aura::diminishing_return_category_set);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "diminishing_return_category", PROPERTY_HINT_ENUM, ""), "diminishing_return_category_set", "diminishing_return_category_get");
 
 	////    Talents    ////
 	ADD_GROUP("Talent", "talent");

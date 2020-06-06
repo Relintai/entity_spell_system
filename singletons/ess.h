@@ -156,6 +156,16 @@ public:
 	String texture_layers_get() const;
 	void texture_layers_set(const String &value);
 
+	//Diminishing Returns
+	String dminishing_return_categories_get() const;
+	void dminishing_return_categories_set(const String &value);
+
+	float dminishing_return_length_get() const;
+	void dminishing_return_length_set(const float value);
+
+	int dminishing_return_steps_get() const;
+	void dminishing_return_steps_set(const int value);
+
 	ESS();
 	~ESS();
 
@@ -210,6 +220,11 @@ private:
 	//Other
 	String _model_visual_groups;
 	String _texture_layers;
+
+	//Diminishing Returns
+	String _dminishing_return_categories;
+	float _dminishing_return_length;
+	int _dminishing_return_steps;
 };
 
 #endif

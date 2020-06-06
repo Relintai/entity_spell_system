@@ -460,6 +460,28 @@ void ESS::texture_layers_set(const String &value) {
 	_texture_layers = value;
 }
 
+//Diminishing Returns
+String ESS::dminishing_return_categories_get() const {
+	return _dminishing_return_categories;
+}
+void ESS::dminishing_return_categories_set(const String &value) {
+	_dminishing_return_categories = value;
+}
+
+float ESS::dminishing_return_length_get() const {
+	return _dminishing_return_length;
+}
+void ESS::dminishing_return_length_set(const float value) {
+	_dminishing_return_length = value;
+}
+
+int ESS::dminishing_return_steps_get() const {
+	return _dminishing_return_steps;
+}
+void ESS::dminishing_return_steps_set(const int value) {
+	_dminishing_return_steps = value;
+}
+
 void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_use_spell_points"), &ESS::get_use_spell_points);
 	ClassDB::bind_method(D_METHOD("set_use_spell_points", "value"), &ESS::set_use_spell_points);
@@ -628,6 +650,10 @@ ESS::ESS() {
 	_model_visual_groups = GLOBAL_DEF("ess/enums/model_visual_groups", "None,Bodypart,Alt Bodypart,Attachment");
 
 	_texture_layers = GLOBAL_DEF("ess/enums/texture_layers", "None,Skin,Underwear,Shirt,Clothes Base,Clothes 1,Clothes 2,Clothes 3,Clothes 4,Clothes 5,Belt,Tabard,Overlay");
+
+	_dminishing_return_categories = GLOBAL_DEF("ess/enums/dminishing_return_categories", "Stun,Sleep,Disorient");
+	_dminishing_return_length = GLOBAL_DEF("ess/enums/dminishing_return_length", 15.0);
+	_dminishing_return_steps = GLOBAL_DEF("ess/enums/dminishing_return_steps", 4);
 
 	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load) {
 		call_deferred("load_all");
