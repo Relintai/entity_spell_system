@@ -28,7 +28,6 @@ SOFTWARE.
 #include "scene/resources/texture.h"
 
 #include "../../item_enums.h"
-#include "item_template_stat_modifier.h"
 #include "model_visual.h"
 
 class ItemInstance;
@@ -141,29 +140,26 @@ public:
 	void set_consumed(const bool value);
 
 	//Stat mods
-	int get_item_stat_modifier_count() const;
-	void set_item_stat_modifier_count(const int value);
+	int stat_modifier_get_count() const;
+	void stat_modifier_set_count(const int value);
 
-	int get_item_stat_id(int index) const;
-	void set_item_stat_id(int index, int value);
+	int stat_modifier_get_stat_id(int index) const;
+	void stat_modifier_set_stat_id(int index, int value);
 
-	float get_item_min_base_mod(const int index) const;
-	void set_item_min_base_mod(const int index, const float value);
-	float get_item_max_base_mod(const int index) const;
-	void set_item_max_base_mod(const int index, const float value);
-	float get_item_min_bonus_mod(const int index) const;
-	void set_item_min_bonus_mod(const int index, const float value);
-	float get_item_max_bonus_mod(const int index) const;
-	void set_item_max_bonus_mod(const int index, const float value);
-	float get_item_min_percent_mod(const int index) const;
-	void set_item_min_percent_mod(const int index, const float value);
-	float get_item_max_percent_mod(const int index) const;
-	void set_item_max_percent_mod(const int index, const float value);
-	float get_item_scaling_factor(const int index) const;
-	void set_item_scaling_factor(const int index, const float value);
-
-	Ref<ItemTemplateStatModifier> get_item_template_stat_modifier(const int index);
-	//void set_item_stat_modifier(int index, ItemStatModifier modifier);
+	float stat_modifier_get_min_base_mod(const int index) const;
+	void stat_modifier_set_min_base_mod(const int index, const float value);
+	float stat_modifier_get_max_base_mod(const int index) const;
+	void stat_modifier_set_max_base_mod(const int index, const float value);
+	float stat_modifier_get_min_bonus_mod(const int index) const;
+	void stat_modifier_set_min_bonus_mod(const int index, const float value);
+	float stat_modifier_get_max_bonus_mod(const int index) const;
+	void stat_modifier_set_max_bonus_mod(const int index, const float value);
+	float stat_modifier_get_min_percent_mod(const int index) const;
+	void stat_modifier_set_min_percent_mod(const int index, const float value);
+	float stat_modifier_get_max_percent_mod(const int index) const;
+	void stat_modifier_set_max_percent_mod(const int index, const float value);
+	float stat_modifier_get_scaling_factor(const int index) const;
+	void stat_modifier_set_scaling_factor(const int index, const float value);
 
 	int get_animator_weapon_type();
 
@@ -183,6 +179,33 @@ public:
 protected:
 	void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
+
+protected:
+	struct ItemTemplateStatModifier {
+		int stat_id;
+
+		float min_base_mod;
+		float max_base_mod;
+
+		float min_bonus_mod;
+		float max_bonus_mod;
+
+		float min_percent_mod;
+		float max_percent_mod;
+
+		float scaling_factor;
+
+		ItemTemplateStatModifier() {
+			stat_id = 0;
+			min_base_mod = 0;
+			max_base_mod = 0;
+			min_bonus_mod = 0;
+			max_bonus_mod = 0;
+			min_percent_mod = 0;
+			max_percent_mod = 0;
+			scaling_factor = 1;
+		}
+	};
 
 private:
 	enum {
@@ -223,7 +246,7 @@ private:
 	bool _consumed;
 
 	int _modifier_count;
-	Ref<ItemTemplateStatModifier> _modifiers[MAX_ITEM_STAT_MOD];
+	ItemTemplateStatModifier _modifiers[MAX_ITEM_STAT_MOD];
 };
 
 #endif

@@ -2189,7 +2189,7 @@ void Entity::_equip_applys_item(Ref<ItemInstance> item) {
 
 	ERR_FAIL_COND(!it.is_valid());
 
-	for (int i = 0; i < item->get_item_stat_modifier_count(); ++i) {
+	for (int i = 0; i < item->stat_modifier_get_count(); ++i) {
 		Ref<ItemStatModifier> mod = item->get_item_stat_modifier(i);
 
 		if (!mod.is_valid())
@@ -2209,7 +2209,7 @@ void Entity::_equip_deapplys_item(Ref<ItemInstance> item) {
 
 	ERR_FAIL_COND(!it.is_valid());
 
-	for (int i = 0; i < item->get_item_stat_modifier_count(); ++i) {
+	for (int i = 0; i < item->stat_modifier_get_count(); ++i) {
 		Ref<ItemStatModifier> mod = item->get_item_stat_modifier(i);
 
 		if (!mod.is_valid())

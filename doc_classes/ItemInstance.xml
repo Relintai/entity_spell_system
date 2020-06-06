@@ -64,7 +64,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_stat_modifier_count" qualifiers="const">
+		<method name="stat_modifier_get_count" qualifiers="const">
 			<return type="int">
 			</return>
 			<description>

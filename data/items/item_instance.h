@@ -43,7 +43,7 @@ public:
 	void remove_item_stat_modifier(const int index);
 	void clear_item_stat_modifiers();
 
-	int get_item_stat_modifier_count() const;
+	int stat_modifier_get_count() const;
 
 	int get_stack_size() const;
 	void set_stack_size(const int value);

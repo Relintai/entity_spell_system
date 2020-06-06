@@ -54,7 +54,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_max_base_mod" qualifiers="const">
+		<method name="stat_modifier_get_max_base_mod" qualifiers="const">
 			<return type="float">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -62,7 +62,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_max_bonus_mod" qualifiers="const">
+		<method name="stat_modifier_get_max_bonus_mod" qualifiers="const">
 			<return type="float">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -70,7 +70,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_max_percent_mod" qualifiers="const">
+		<method name="stat_modifier_get_max_percent_mod" qualifiers="const">
 			<return type="float">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -78,7 +78,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_min_base_mod" qualifiers="const">
+		<method name="stat_modifier_get_min_base_mod" qualifiers="const">
 			<return type="float">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -86,7 +86,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_min_bonus_mod" qualifiers="const">
+		<method name="stat_modifier_get_min_bonus_mod" qualifiers="const">
 			<return type="float">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -94,7 +94,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_min_percent_mod" qualifiers="const">
+		<method name="stat_modifier_get_min_percent_mod" qualifiers="const">
 			<return type="float">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -102,7 +102,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_scaling_factor" qualifiers="const">
+		<method name="stat_modifier_get_scaling_factor" qualifiers="const">
 			<return type="float">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -110,7 +110,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_stat_id" qualifiers="const">
+		<method name="stat_modifier_get_stat_id" qualifiers="const">
 			<return type="int" enum="Stat.StatId">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -178,7 +178,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_item_max_base_mod">
+		<method name="stat_modifier_set_max_base_mod">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -188,7 +188,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_item_max_bonus_mod">
+		<method name="stat_modifier_set_max_bonus_mod">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -198,7 +198,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_item_max_percent_mod">
+		<method name="stat_modifier_set_max_percent_mod">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -208,7 +208,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_item_min_base_mod">
+		<method name="stat_modifier_set_min_base_mod">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -218,7 +218,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_item_min_bonus_mod">
+		<method name="stat_modifier_set_min_bonus_mod">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -228,7 +228,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_item_min_percent_mod">
+		<method name="stat_modifier_set_min_percent_mod">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -238,7 +238,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_item_scaling_factor">
+		<method name="stat_modifier_set_scaling_factor">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -248,7 +248,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_item_stat_id">
+		<method name="stat_modifier_set_stat_id">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -322,7 +322,7 @@
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
 		</member>
-		<member name="item_stat_modifier_count" type="int" setter="set_item_stat_modifier_count" getter="get_item_stat_modifier_count" default="0">
+		<member name="item_stat_modifier_count" type="int" setter="stat_modifier_set_count" getter="stat_modifier_get_count" default="0">
 		</member>
 		<member name="item_sub_sub_type" type="int" setter="set_item_sub_sub_type" getter="get_item_sub_sub_type" enum="ItemEnums.ItemSubSubtype" default="0">
 		</member>

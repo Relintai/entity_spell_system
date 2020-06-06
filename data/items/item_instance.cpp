@@ -55,7 +55,7 @@ void ItemInstance::remove_item_stat_modifier(const int index) {
 void ItemInstance::clear_item_stat_modifiers() {
 	_modifiers.clear();
 }
-int ItemInstance::get_item_stat_modifier_count() const {
+int ItemInstance::stat_modifier_get_count() const {
 	return _modifiers.size();
 }
 
@@ -159,7 +159,7 @@ void ItemInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_item_stat_modifier", "modifier"), &ItemInstance::add_item_stat_modifier);
 	ClassDB::bind_method(D_METHOD("remove_item_stat_modifier", "index"), &ItemInstance::remove_item_stat_modifier);
 	ClassDB::bind_method(D_METHOD("clear_item_stat_modifiers"), &ItemInstance::clear_item_stat_modifiers);
-	ClassDB::bind_method(D_METHOD("get_item_stat_modifier_count"), &ItemInstance::get_item_stat_modifier_count);
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_count"), &ItemInstance::stat_modifier_get_count);
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_get_description"));
 	ClassDB::bind_method(D_METHOD("get_description"), &ItemInstance::get_description);

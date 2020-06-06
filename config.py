@@ -22,7 +22,6 @@ def get_doc_classes():
         "EquipmentData",
         "ItemInstance",
         "ItemStatModifier",
-        "ItemTemplateStatModifier",
         "ItemTemplate",
         "ModelVisualEntry",
         "ModelVisual",

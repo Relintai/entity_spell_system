@@ -283,85 +283,77 @@ void ItemTemplate::set_consumed(const bool value) {
 	_consumed = false;
 }
 
-int ItemTemplate::get_item_stat_modifier_count() const {
+int ItemTemplate::stat_modifier_get_count() const {
 	return _modifier_count;
 }
 
-void ItemTemplate::set_item_stat_modifier_count(int value) {
+void ItemTemplate::stat_modifier_set_count(int value) {
 	_modifier_count = value;
 }
 
-int ItemTemplate::get_item_stat_id(const int index) const {
-	return _modifiers[index]->get_stat_id();
+int ItemTemplate::stat_modifier_get_stat_id(const int index) const {
+	return _modifiers[index].stat_id;
 }
 
-void ItemTemplate::set_item_stat_id(const int index, const int value) {
-	_modifiers[index]->set_stat_id(value);
+void ItemTemplate::stat_modifier_set_stat_id(const int index, const int value) {
+	_modifiers[index].stat_id = value;
 }
 
-float ItemTemplate::get_item_min_base_mod(const int index) const {
-	return _modifiers[index]->get_min_base_mod();
+float ItemTemplate::stat_modifier_get_min_base_mod(const int index) const {
+	return _modifiers[index].min_base_mod;
 }
 
-void ItemTemplate::set_item_min_base_mod(const int index, const float value) {
-	_modifiers[index]->set_min_base_mod(value);
+void ItemTemplate::stat_modifier_set_min_base_mod(const int index, const float value) {
+	_modifiers[index].min_base_mod = value;
 }
 
-float ItemTemplate::get_item_max_base_mod(const int index) const {
-	return _modifiers[index]->get_max_base_mod();
+float ItemTemplate::stat_modifier_get_max_base_mod(const int index) const {
+	return _modifiers[index].max_base_mod;
 }
 
-void ItemTemplate::set_item_max_base_mod(const int index, const float value) {
-	_modifiers[index]->set_max_base_mod(value);
+void ItemTemplate::stat_modifier_set_max_base_mod(const int index, const float value) {
+	_modifiers[index].max_base_mod = value;
 }
 
-float ItemTemplate::get_item_min_bonus_mod(const int index) const {
-	return _modifiers[index]->get_min_bonus_mod();
+float ItemTemplate::stat_modifier_get_min_bonus_mod(const int index) const {
+	return _modifiers[index].min_bonus_mod;
 }
 
-void ItemTemplate::set_item_min_bonus_mod(const int index, const float value) {
-	_modifiers[index]->set_min_bonus_mod(value);
+void ItemTemplate::stat_modifier_set_min_bonus_mod(const int index, const float value) {
+	_modifiers[index].min_bonus_mod = value;
 }
 
-float ItemTemplate::get_item_max_bonus_mod(const int index) const {
-	return _modifiers[index]->get_max_bonus_mod();
+float ItemTemplate::stat_modifier_get_max_bonus_mod(const int index) const {
+	return _modifiers[index].max_bonus_mod;
 }
 
-void ItemTemplate::set_item_max_bonus_mod(const int index, const float value) {
-	_modifiers[index]->set_max_bonus_mod(value);
+void ItemTemplate::stat_modifier_set_max_bonus_mod(const int index, const float value) {
+	_modifiers[index].max_bonus_mod = value;
 }
 
-float ItemTemplate::get_item_min_percent_mod(const int index) const {
-	return _modifiers[index]->get_min_percent_mod();
+float ItemTemplate::stat_modifier_get_min_percent_mod(const int index) const {
+	return _modifiers[index].min_percent_mod;
 }
 
-void ItemTemplate::set_item_min_percent_mod(const int index, const float value) {
-	_modifiers[index]->set_min_percent_mod(value);
+void ItemTemplate::stat_modifier_set_min_percent_mod(const int index, const float value) {
+	_modifiers[index].min_percent_mod = value;
 }
 
-float ItemTemplate::get_item_max_percent_mod(const int index) const {
-	return _modifiers[index]->get_max_percent_mod();
+float ItemTemplate::stat_modifier_get_max_percent_mod(const int index) const {
+	return _modifiers[index].max_percent_mod;
 }
 
-void ItemTemplate::set_item_max_percent_mod(const int index, const float value) {
-	_modifiers[index]->set_max_percent_mod(value);
+void ItemTemplate::stat_modifier_set_max_percent_mod(const int index, const float value) {
+	_modifiers[index].max_percent_mod = value;
 }
 
-float ItemTemplate::get_item_scaling_factor(const int index) const {
-	return _modifiers[index]->get_scaling_factor();
+float ItemTemplate::stat_modifier_get_scaling_factor(const int index) const {
+	return _modifiers[index].scaling_factor;
 }
 
-void ItemTemplate::set_item_scaling_factor(const int index, const float value) {
-	_modifiers[index]->set_scaling_factor(value);
+void ItemTemplate::stat_modifier_set_scaling_factor(const int index, const float value) {
+	_modifiers[index].scaling_factor = value;
 }
-
-Ref<ItemTemplateStatModifier> ItemTemplate::get_item_template_stat_modifier(const int index) {
-	return Ref<ItemTemplateStatModifier>(_modifiers[index]);
-}
-/*
-void ItemTemplate::set_item_stat_modifier(int index, ItemStatModifier modifier) {
-	_modifiers[index] = modifier;
-}*/
 
 int ItemTemplate::get_animator_weapon_type() {
 	if (_item_sub_type == ItemEnums::ITEM_SUB_TYPE_SWORD) {
@@ -422,10 +414,6 @@ ItemTemplate::ItemTemplate() {
 
 	_charges = -1;
 	_consumed = false;
-
-	for (int i = 0; i < MAX_ITEM_STAT_MOD; ++i) {
-		_modifiers[i] = Ref<ItemTemplateStatModifier>(memnew(ItemTemplateStatModifier()));
-	}
 }
 
 ItemTemplate::~ItemTemplate() {
@@ -437,8 +425,11 @@ ItemTemplate::~ItemTemplate() {
 
 void ItemTemplate::_validate_property(PropertyInfo &property) const {
 	String prop = property.name;
-	if (prop.begins_with("Modifiers_")) {
-		int frame = prop.get_slicec('/', 0).get_slicec('_', 1).to_int();
+	if (prop.begins_with("stat_modifier_")) {
+		if (prop.ends_with("count"))
+			return;
+
+		int frame = prop.get_slicec('/', 0).get_slicec('_', 2).to_int();
 		if (frame >= _modifier_count) {
 			property.usage = 0;
 		}
@@ -582,51 +573,49 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_description"), &ItemTemplate::get_description);
 
 	//StatMods Property binds
-	ClassDB::bind_method(D_METHOD("get_item_stat_modifier_count"), &ItemTemplate::get_item_stat_modifier_count);
-	ClassDB::bind_method(D_METHOD("set_item_stat_modifier_count", "count"), &ItemTemplate::set_item_stat_modifier_count);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "item_stat_modifier_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_ITEM_STAT_MOD), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_item_stat_modifier_count", "get_item_stat_modifier_count");
+	ADD_GROUP("Stat Modifiers", "stat_modifier");
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_count"), &ItemTemplate::stat_modifier_get_count);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_count", "count"), &ItemTemplate::stat_modifier_set_count);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_modifier_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_ITEM_STAT_MOD), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "stat_modifier_set_count", "stat_modifier_get_count");
 
-	ClassDB::bind_method(D_METHOD("get_item_stat_id", "index"), &ItemTemplate::get_item_stat_id);
-	ClassDB::bind_method(D_METHOD("set_item_stat_id", "index", "value"), &ItemTemplate::set_item_stat_id);
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_stat_id", "index"), &ItemTemplate::stat_modifier_get_stat_id);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_stat_id", "index", "value"), &ItemTemplate::stat_modifier_set_stat_id);
 
-	ClassDB::bind_method(D_METHOD("get_item_min_base_mod", "index"), &ItemTemplate::get_item_min_base_mod);
-	ClassDB::bind_method(D_METHOD("set_item_min_base_mod", "index", "value"), &ItemTemplate::set_item_min_base_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_min_base_mod", "index"), &ItemTemplate::stat_modifier_get_min_base_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_min_base_mod", "index", "value"), &ItemTemplate::stat_modifier_set_min_base_mod);
 
-	ClassDB::bind_method(D_METHOD("get_item_max_base_mod", "index"), &ItemTemplate::get_item_max_base_mod);
-	ClassDB::bind_method(D_METHOD("set_item_max_base_mod", "index", "value"), &ItemTemplate::set_item_max_base_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_max_base_mod", "index"), &ItemTemplate::stat_modifier_get_max_base_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_max_base_mod", "index", "value"), &ItemTemplate::stat_modifier_set_max_base_mod);
 
-	ClassDB::bind_method(D_METHOD("get_item_min_bonus_mod", "index"), &ItemTemplate::get_item_min_bonus_mod);
-	ClassDB::bind_method(D_METHOD("set_item_min_bonus_mod", "index", "value"), &ItemTemplate::set_item_min_bonus_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_min_bonus_mod", "index"), &ItemTemplate::stat_modifier_get_min_bonus_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_min_bonus_mod", "index", "value"), &ItemTemplate::stat_modifier_set_min_bonus_mod);
 
-	ClassDB::bind_method(D_METHOD("get_item_max_bonus_mod", "index"), &ItemTemplate::get_item_max_bonus_mod);
-	ClassDB::bind_method(D_METHOD("set_item_max_bonus_mod", "index", "value"), &ItemTemplate::set_item_max_bonus_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_max_bonus_mod", "index"), &ItemTemplate::stat_modifier_get_max_bonus_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_max_bonus_mod", "index", "value"), &ItemTemplate::stat_modifier_set_max_bonus_mod);
 
-	ClassDB::bind_method(D_METHOD("get_item_min_percent_mod", "index"), &ItemTemplate::get_item_min_percent_mod);
-	ClassDB::bind_method(D_METHOD("set_item_min_percent_mod", "index", "value"), &ItemTemplate::set_item_min_percent_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_min_percent_mod", "index"), &ItemTemplate::stat_modifier_get_min_percent_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_min_percent_mod", "index", "value"), &ItemTemplate::stat_modifier_set_min_percent_mod);
 
-	ClassDB::bind_method(D_METHOD("get_item_max_percent_mod", "index"), &ItemTemplate::get_item_max_percent_mod);
-	ClassDB::bind_method(D_METHOD("set_item_max_percent_mod", "index", "value"), &ItemTemplate::set_item_max_percent_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_max_percent_mod", "index"), &ItemTemplate::stat_modifier_get_max_percent_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_max_percent_mod", "index", "value"), &ItemTemplate::stat_modifier_set_max_percent_mod);
 
-	ClassDB::bind_method(D_METHOD("get_item_scaling_factor", "index"), &ItemTemplate::get_item_scaling_factor);
-	ClassDB::bind_method(D_METHOD("set_item_scaling_factor", "index", "value"), &ItemTemplate::set_item_scaling_factor);
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_scaling_factor", "index"), &ItemTemplate::stat_modifier_get_scaling_factor);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_scaling_factor", "index", "value"), &ItemTemplate::stat_modifier_set_scaling_factor);
 
 	for (int i = 0; i < MAX_ITEM_STAT_MOD; ++i) {
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "Modifiers_" + itos(i) + "/stat_id", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_stat_id", "get_item_stat_id", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "stat_modifier_" + itos(i) + "/stat_id", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_modifier_set_stat_id", "stat_modifier_get_stat_id", i);
 
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/min_base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_min_base_mod", "get_item_min_base_mod", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/max_base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_max_base_mod", "get_item_max_base_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "stat_modifier_" + itos(i) + "/min_base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_modifier_set_min_base_mod", "stat_modifier_get_min_base_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "stat_modifier_" + itos(i) + "/max_base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_modifier_set_max_base_mod", "stat_modifier_get_max_base_mod", i);
 
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/min_bonus_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_min_bonus_mod", "get_item_min_bonus_mod", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/max_bonus_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_max_bonus_mod", "get_item_max_bonus_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "stat_modifier_" + itos(i) + "/min_bonus_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_modifier_set_min_bonus_mod", "stat_modifier_get_min_bonus_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "stat_modifier_" + itos(i) + "/max_bonus_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_modifier_set_max_bonus_mod", "stat_modifier_get_max_bonus_mod", i);
 
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/min_percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_min_percent_mod", "get_item_min_percent_mod", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/max_percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_max_percent_mod", "get_item_max_percent_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "stat_modifier_" + itos(i) + "/min_percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_modifier_set_min_percent_mod", "stat_modifier_get_min_percent_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "stat_modifier_" + itos(i) + "/max_percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_modifier_set_max_percent_mod", "stat_modifier_get_max_percent_mod", i);
 
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "Modifiers_" + itos(i) + "/scaling_factor", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "set_item_scaling_factor", "get_item_scaling_factor", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "stat_modifier_" + itos(i) + "/scaling_factor", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_modifier_set_scaling_factor", "stat_modifier_get_scaling_factor", i);
 	}
-
-	//ClassDB::bind_method(D_METHOD("get_item_stat_modifier", "index"), &ItemTemplate::get_item_stat_modifier);
-	//ClassDB::bind_method(D_METHOD("set_item_stat_modifier", "index", "value"), &ItemTemplate::set_item_stat_modifier);
 
 	ClassDB::bind_method(D_METHOD("get_animator_weapon_type"), &ItemTemplate::get_animator_weapon_type);
 

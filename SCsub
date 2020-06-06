@@ -20,7 +20,6 @@ sources = [
     "data/entities/xp_data.cpp",
 
     "data/items/item_stat_modifier.cpp",
-    "data/items/item_template_stat_modifier.cpp",
     "data/items/item_instance.cpp",
     "data/items/item_template.cpp",
     "data/items/equipment_data.cpp",
