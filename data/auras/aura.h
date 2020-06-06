@@ -35,8 +35,6 @@ SOFTWARE.
 #include "../../entities/entity.h"
 #include "../../infos/aura_infos.h"
 
-#include "aura_stat_attribute.h"
-
 #include "../../entities/auras/aura_data.h"
 #include "../../infos/spell_cast_info.h"
 #include "../../pipelines/spell_damage_info.h"
@@ -240,8 +238,6 @@ public:
 	float stat_attribute_get_percent_mod(int index) const;
 	void stat_attribute_set_percent_mod(int index, float value);
 
-	Ref<AuraStatAttribute> stat_attribute_get(int index) { return _aura_stat_attributes[index]; }
-
 	////    SpellSystem    ////
 
 	//Commands, c++ only
@@ -380,6 +376,20 @@ protected:
 		}
 	};
 
+	struct AuraStatAttribute {
+		int stat;
+		float base_mod;
+		float bonus_mod;
+		float percent_mod;
+
+		AuraStatAttribute() {
+			stat = 0;
+			base_mod = 0;
+			bonus_mod = 0;
+			percent_mod = 0;
+		}
+	};
+
 private:
 	enum {
 		MAX_AURA_STATS = 5, //Increase if necessary, should be enough for now
@@ -439,7 +449,7 @@ private:
 	AuraTriggerData _trigger_datas[MAX_TRIGGER_DATA];
 
 	int _aura_stat_attribute_count;
-	Ref<AuraStatAttribute> _aura_stat_attributes[MAX_AURA_STATS];
+	AuraStatAttribute _aura_stat_attributes[MAX_AURA_STATS];
 
 	SpellEnums::DiminishingReturnCategory _diminishing_category;
 

@@ -357,10 +357,6 @@ Aura::Aura() {
 	_supress_states = 0;
 
 	_aura_stat_attribute_count = 0;
-	for (int i = 0; i < MAX_AURA_STATS; ++i) {
-		_aura_stat_attributes[i] = Ref<AuraStatAttribute>(memnew(AuraStatAttribute()));
-	}
-
 	_trigger_count = 0;
 }
 
@@ -377,10 +373,6 @@ Aura::~Aura() {
 
 	for (int i = 0; i < MAX_TRIGGER_DATA; ++i) {
 		_trigger_datas[i].spell.unref();
-	}
-
-	for (int i = 0; i < MAX_AURA_STATS; ++i) {
-		_aura_stat_attributes[i].unref();
 	}
 
 	_talent_required_talent.unref();
@@ -488,45 +480,45 @@ void Aura::stat_attribute_set_count(int count) {
 int Aura::stat_attribute_get_stat(int index) const {
 	ERR_FAIL_INDEX_V(index, MAX_AURA_STATS, 0);
 
-	return _aura_stat_attributes[index]->get_stat();
+	return _aura_stat_attributes[index].stat;
 }
 void Aura::stat_attribute_set_stat(int index, const int value) {
 	ERR_FAIL_INDEX(index, MAX_AURA_STATS);
 
-	_aura_stat_attributes[index]->set_stat(value);
+	_aura_stat_attributes[index].stat = value;
 }
 
 float Aura::stat_attribute_get_base_mod(int index) const {
 	ERR_FAIL_INDEX_V(index, MAX_AURA_STATS, 0);
 
-	return _aura_stat_attributes[index]->get_base_mod();
+	return _aura_stat_attributes[index].base_mod;
 }
 void Aura::stat_attribute_set_base_mod(int index, float value) {
 	ERR_FAIL_INDEX(index, MAX_AURA_STATS);
 
-	_aura_stat_attributes[index]->set_base_mod(value);
+	_aura_stat_attributes[index].base_mod = value;
 }
 
 float Aura::stat_attribute_get_bonus_mod(int index) const {
 	ERR_FAIL_INDEX_V(index, MAX_AURA_STATS, 0);
 
-	return _aura_stat_attributes[index]->get_bonus_mod();
+	return _aura_stat_attributes[index].bonus_mod;
 }
 void Aura::stat_attribute_set_bonus_mod(int index, float value) {
 	ERR_FAIL_INDEX(index, MAX_AURA_STATS);
 
-	_aura_stat_attributes[index]->set_bonus_mod(value);
+	_aura_stat_attributes[index].bonus_mod = value;
 }
 
 float Aura::stat_attribute_get_percent_mod(int index) const {
 	ERR_FAIL_INDEX_V(index, MAX_AURA_STATS, 0);
 
-	return _aura_stat_attributes[index]->get_percent_mod();
+	return _aura_stat_attributes[index].percent_mod;
 }
 void Aura::stat_attribute_set_percent_mod(int index, float value) {
 	ERR_FAIL_INDEX(index, MAX_AURA_STATS);
 
-	_aura_stat_attributes[index]->set_percent_mod(value);
+	_aura_stat_attributes[index].percent_mod = value;
 }
 
 void Aura::sapply_simple(Entity *caster, Entity *target, float spell_scale) {
@@ -991,12 +983,10 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 		Entity *owner = ad->get_owner();
 
 		for (int i = 0; i < _aura_stat_attribute_count; ++i) {
-			Ref<AuraStatAttribute> stat_attribute = _aura_stat_attributes[i];
-
-			int stat_index = stat_attribute->get_stat();
-			owner->stat_mod_base(stat_index, stat_attribute->get_base_mod());
-			owner->stat_mod_bonus(stat_index, stat_attribute->get_bonus_mod());
-			owner->stat_mod_percent(stat_index, stat_attribute->get_percent_mod());
+			int stat_index = _aura_stat_attributes[i].stat;
+			owner->stat_mod_base(stat_index, _aura_stat_attributes[i].base_mod);
+			owner->stat_mod_bonus(stat_index, _aura_stat_attributes[i].bonus_mod);
+			owner->stat_mod_percent(stat_index, _aura_stat_attributes[i].percent_mod);
 		}
 
 		if (_add_states != 0) {
@@ -1021,12 +1011,10 @@ void Aura::_sdeapply(Ref<AuraData> data) {
 	Entity *owner = data->get_owner();
 
 	for (int i = 0; i < _aura_stat_attribute_count; ++i) {
-		Ref<AuraStatAttribute> stat_attribute = _aura_stat_attributes[i];
-
-		int stat_index = stat_attribute->get_stat();
-		owner->stat_mod_base(stat_index, -stat_attribute->get_base_mod());
-		owner->stat_mod_bonus(stat_index, -stat_attribute->get_bonus_mod());
-		owner->stat_mod_percent(stat_index, -stat_attribute->get_percent_mod());
+		int stat_index = _aura_stat_attributes[i].stat;
+		owner->stat_mod_base(stat_index, -_aura_stat_attributes[i].base_mod);
+		owner->stat_mod_bonus(stat_index, -_aura_stat_attributes[i].bonus_mod);
+		owner->stat_mod_percent(stat_index, -_aura_stat_attributes[i].percent_mod);
 	}
 
 	if (_add_states != 0) {
@@ -1184,8 +1172,11 @@ void Aura::_handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info) {
 
 void Aura::_validate_property(PropertyInfo &property) const {
 	String prop = property.name;
-	if (prop.begins_with("StatModAttribute_")) {
-		int frame = prop.get_slicec('/', 0).get_slicec('_', 1).to_int();
+	if (prop.begins_with("stat_attribute_")) {
+		if (prop.ends_with("count"))
+			return;
+
+		int frame = prop.get_slicec('/', 0).get_slicec('_', 2).to_int();
 		if (frame >= _aura_stat_attribute_count) {
 			property.usage = 0;
 		}
@@ -1718,7 +1709,7 @@ void Aura::_bind_methods() {
 		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "trigger_" + itos(i) + "/spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell", PROPERTY_USAGE_DEFAULT), "trigger_set_spell", "trigger_get_spell", i);
 	}
 
-	ADD_GROUP("Attributes", "attribute");
+	ADD_GROUP("Stat Attributes", "stat_attribute");
 	//AuraStatAttributes
 	ClassDB::bind_method(D_METHOD("stat_attribute_get_count"), &Aura::stat_attribute_get_count);
 	ClassDB::bind_method(D_METHOD("stat_attribute_set_count", "count"), &Aura::stat_attribute_set_count);
@@ -1735,15 +1726,13 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("stat_attribute_get_percent_mod", "index"), &Aura::stat_attribute_get_percent_mod);
 	ClassDB::bind_method(D_METHOD("stat_attribute_set_percent_mod", "index", "value"), &Aura::stat_attribute_set_percent_mod);
 
-	ClassDB::bind_method(D_METHOD("stat_attribute_get", "index"), &Aura::stat_attribute_get);
-
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "attribute_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_AURA_STATS), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "stat_attribute_set_count", "stat_attribute_get_count");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "stat_attribute_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_AURA_STATS), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "stat_attribute_set_count", "stat_attribute_get_count");
 
 	for (int i = 0; i < MAX_AURA_STATS; i++) {
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "StatModAttribute_" + itos(i) + "/stat", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_stat", "stat_attribute_get_stat", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_base_mod", "stat_attribute_get_base_mod", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/bonus_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_bonus_mod", "stat_attribute_get_bonus_mod", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "StatModAttribute_" + itos(i) + "/percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_percent_mod", "stat_attribute_get_percent_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "stat_attribute_" + itos(i) + "/stat", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_stat", "stat_attribute_get_stat", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "stat_attribute_" + itos(i) + "/base_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_base_mod", "stat_attribute_get_base_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "stat_attribute_" + itos(i) + "/bonus_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_bonus_mod", "stat_attribute_get_bonus_mod", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "stat_attribute_" + itos(i) + "/percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "stat_attribute_set_percent_mod", "stat_attribute_get_percent_mod", i);
 	}
 
 	ClassDB::bind_method(D_METHOD("is_talent"), &Aura::is_talent);

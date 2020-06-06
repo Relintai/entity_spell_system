@@ -16,7 +16,6 @@ def get_doc_classes():
         "ESS",
 
         "AuraGroup",
-        "AuraStatAttribute",
         "Aura",
         "CraftRecipeHelper",
         "CraftRecipe",

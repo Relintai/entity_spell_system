@@ -29,7 +29,6 @@ SOFTWARE.
 
 #include "data/auras/aura.h"
 #include "data/auras/aura_group.h"
-#include "data/auras/aura_stat_attribute.h"
 
 #include "data/entities/xp_data.h"
 #include "data/items/equipment_data.h"
@@ -89,8 +88,6 @@ SOFTWARE.
 
 #include "entities/auras/aura_data.h"
 #include "entities/entity.h"
-
-#include "data/auras/aura_stat_attribute.h"
 
 #include "drag_and_drop/es_drag_and_drop.h"
 
@@ -153,7 +150,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<Spell>();
 	ClassDB::register_class<Aura>();
 	ClassDB::register_class<AuraGroup>();
-	ClassDB::register_class<AuraStatAttribute>();
 
 	ClassDB::register_class<EntityData>();
 	ClassDB::register_class<EntityClassData>();

@@ -30,6 +30,8 @@ SOFTWARE.
 #include "character_spec.h"
 #include "vendor_item_data.h"
 
+#include "../../singletons/ess.h"
+
 #include "../../defines.h"
 
 int EntityData::get_id() const {

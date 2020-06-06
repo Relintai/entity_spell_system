@@ -25,6 +25,8 @@ SOFTWARE.
 #include "../auras/aura.h"
 #include "../spells/spell.h"
 
+#include "../../singletons/ess.h"
+
 #include "core/version.h"
 
 int EntitySpeciesData::get_id() const {
