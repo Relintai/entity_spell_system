@@ -1723,11 +1723,11 @@ void Aura::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "trigger_count", PROPERTY_HINT_RANGE, "0," + itos(MAX_TRIGGER_DATA), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "trigger_set_count", "trigger_get_count");
 
 	for (int i = 0; i < MAX_TRIGGER_DATA; i++) {
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "trigger_" + itos(i) + "/notification_type", PROPERTY_HINT_ENUM, SpellEnums::BINDING_STRING_TRIGGER_NOTIFICATION_TYPE, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "trigger_set_notification_type", "trigger_get_notification_type", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "trigger_" + itos(i) + "/notification_data"), "trigger_set_notification_data", "trigger_get_notification_data", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::INT, "trigger_" + itos(i) + "/trigger_type", PROPERTY_HINT_ENUM, SpellEnums::BINDING_STRING_TRIGGER_TYPE), "trigger_set_trigger_type", "trigger_get_trigger_type", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "trigger_" + itos(i) + "/trigger_type_data"), "trigger_set_trigger_type_data", "trigger_get_trigger_type_data", i);
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "trigger_" + itos(i) + "/spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell", PROPERTY_USAGE_DEFAULT), "trigger_set_spell", "trigger_get_spell", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "trigger_" + itos(i) + "/notification_type", PROPERTY_HINT_ENUM, SpellEnums::BINDING_STRING_TRIGGER_NOTIFICATION_TYPE, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "trigger_set_notification_type", "trigger_get_notification_type", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "trigger_" + itos(i) + "/notification_data", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "trigger_set_notification_data", "trigger_get_notification_data", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::INT, "trigger_" + itos(i) + "/trigger_type", PROPERTY_HINT_ENUM, SpellEnums::BINDING_STRING_TRIGGER_TYPE, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "trigger_set_trigger_type", "trigger_get_trigger_type", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "trigger_" + itos(i) + "/trigger_type_data", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "trigger_set_trigger_type_data", "trigger_get_trigger_type_data", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "trigger_" + itos(i) + "/spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "trigger_set_spell", "trigger_get_spell", i);
 	}
 
 	ADD_GROUP("Stat Attributes", "stat_attribute");
