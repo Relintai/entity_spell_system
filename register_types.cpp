@@ -32,7 +32,6 @@ SOFTWARE.
 
 #include "data/entities/xp_data.h"
 #include "data/items/equipment_data.h"
-#include "data/items/item_stat_modifier.h"
 #include "data/spells/spell_cooldown_manipulation_data.h"
 
 #include "entities/data/entity_class_data.h"
@@ -161,7 +160,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<ItemContainerDataEntry>();
 
 	ClassDB::register_class<XPData>();
-	ClassDB::register_class<ItemStatModifier>();
 	ClassDB::register_class<ItemEnums>();
 	ClassDB::register_class<ItemTemplate>();
 	ClassDB::register_class<ItemInstance>();

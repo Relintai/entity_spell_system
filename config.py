@@ -21,7 +21,6 @@ def get_doc_classes():
         "CraftRecipe",
         "EquipmentData",
         "ItemInstance",
-        "ItemStatModifier",
         "ItemTemplate",
         "ModelVisualEntry",
         "ModelVisual",

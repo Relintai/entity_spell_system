@@ -27,7 +27,6 @@ SOFTWARE.
 #include "core/vector.h"
 
 #include "../../item_enums.h"
-#include "item_stat_modifier.h"
 
 class ItemTemplate;
 
@@ -38,8 +37,20 @@ public:
 	Ref<ItemTemplate> get_item_template();
 	void set_item_template(const Ref<ItemTemplate> &value);
 
-	Ref<ItemStatModifier> get_item_stat_modifier(const int index);
-	void add_item_stat_modifier(const Ref<ItemStatModifier> &modifier);
+	//Modifiers
+	int stat_modifier_get_stat_id(const int index) const;
+	void stat_modifier_set_stat_id(const int index, const int value);
+
+	float stat_modifier_get_base_mod(const int index) const;
+	void stat_modifier_set_base_mod(const int index, const float value);
+
+	float stat_modifier_get_bonus_mod(const int index) const;
+	void stat_modifier_set_bonus_mod(const int index, const float value);
+
+	float stat_modifier_get_percent_mod(const int index) const;
+	void stat_modifier_set_percent_mod(const int index, const float value);
+
+	void add_item_stat_modifier(const int stat_id, const int base_mod, const int bonus_mod, const int percent_mod);
 	void remove_item_stat_modifier(const int index);
 	void clear_item_stat_modifiers();
 
@@ -65,6 +76,21 @@ public:
 protected:
 	static void _bind_methods();
 
+protected:
+	struct ItemStatModifier {
+		int stat_id;
+		float base_mod;
+		float bonus_mod;
+		float percent_mod;
+
+		ItemStatModifier() {
+			stat_id = 0;
+			base_mod = 0;
+			bonus_mod = 0;
+			percent_mod = 0;
+		}
+	};
+
 private:
 	Ref<ItemTemplate> _item_template;
 	StringName _item_template_path;
@@ -72,7 +98,7 @@ private:
 	int _stack_size;
 	int _charges;
 
-	Vector<Ref<ItemStatModifier> > _modifiers;
+	Vector<ItemStatModifier> _modifiers;
 };
 
 #endif

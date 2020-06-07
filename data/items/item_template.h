@@ -148,16 +148,22 @@ public:
 
 	float stat_modifier_get_min_base_mod(const int index) const;
 	void stat_modifier_set_min_base_mod(const int index, const float value);
+
 	float stat_modifier_get_max_base_mod(const int index) const;
 	void stat_modifier_set_max_base_mod(const int index, const float value);
+
 	float stat_modifier_get_min_bonus_mod(const int index) const;
 	void stat_modifier_set_min_bonus_mod(const int index, const float value);
+
 	float stat_modifier_get_max_bonus_mod(const int index) const;
 	void stat_modifier_set_max_bonus_mod(const int index, const float value);
+
 	float stat_modifier_get_min_percent_mod(const int index) const;
 	void stat_modifier_set_min_percent_mod(const int index, const float value);
+
 	float stat_modifier_get_max_percent_mod(const int index) const;
 	void stat_modifier_set_max_percent_mod(const int index, const float value);
+
 	float stat_modifier_get_scaling_factor(const int index) const;
 	void stat_modifier_set_scaling_factor(const int index, const float value);
 

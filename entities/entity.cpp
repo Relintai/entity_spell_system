@@ -2190,16 +2190,11 @@ void Entity::_equip_applys_item(Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!it.is_valid());
 
 	for (int i = 0; i < item->stat_modifier_get_count(); ++i) {
-		Ref<ItemStatModifier> mod = item->get_item_stat_modifier(i);
+		int sid = item->stat_modifier_get_stat_id(i);
 
-		if (!mod.is_valid())
-			continue;
-
-		int sid = mod->get_stat_id();
-
-		stat_mod_base(sid, mod->get_base_mod());
-		stat_mod_bonus(sid, mod->get_bonus_mod());
-		stat_mod_percent(sid, mod->get_percent_mod());
+		stat_mod_base(sid, item->stat_modifier_get_base_mod(i));
+		stat_mod_bonus(sid, item->stat_modifier_get_bonus_mod(i));
+		stat_mod_percent(sid, item->stat_modifier_get_percent_mod(i));
 	}
 }
 void Entity::_equip_deapplys_item(Ref<ItemInstance> item) {
@@ -2210,16 +2205,11 @@ void Entity::_equip_deapplys_item(Ref<ItemInstance> item) {
 	ERR_FAIL_COND(!it.is_valid());
 
 	for (int i = 0; i < item->stat_modifier_get_count(); ++i) {
-		Ref<ItemStatModifier> mod = item->get_item_stat_modifier(i);
+		int sid = item->stat_modifier_get_stat_id(i);
 
-		if (!mod.is_valid())
-			continue;
-
-		int sid = mod->get_stat_id();
-
-		stat_mod_base(sid, -mod->get_base_mod());
-		stat_mod_bonus(sid, -mod->get_bonus_mod());
-		stat_mod_percent(sid, -mod->get_percent_mod());
+		stat_mod_base(sid, -item->stat_modifier_get_base_mod(i));
+		stat_mod_bonus(sid, -item->stat_modifier_get_bonus_mod(i));
+		stat_mod_percent(sid, -item->stat_modifier_get_percent_mod(i));
 	}
 }
 

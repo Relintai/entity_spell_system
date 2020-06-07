@@ -39,13 +39,59 @@ void ItemInstance::set_item_template(const Ref<ItemTemplate> &value) {
 		_item_template_path = value->get_path();
 }
 
-Ref<ItemStatModifier> ItemInstance::get_item_stat_modifier(const int index) {
-	ERR_FAIL_INDEX_V(index, _modifiers.size(), Ref<ItemStatModifier>());
+int ItemInstance::stat_modifier_get_stat_id(const int index) const {
+	ERR_FAIL_INDEX_V(index, _modifiers.size(), 0);
 
-	return _modifiers.get(index);
+	return _modifiers[index].stat_id;
 }
-void ItemInstance::add_item_stat_modifier(const Ref<ItemStatModifier> &modifier) {
-	_modifiers.push_back(modifier);
+void ItemInstance::stat_modifier_set_stat_id(const int index, const int value) {
+	ERR_FAIL_INDEX(index, _modifiers.size());
+
+	_modifiers.write[index].stat_id = value;
+}
+
+float ItemInstance::stat_modifier_get_base_mod(const int index) const {
+	ERR_FAIL_INDEX_V(index, _modifiers.size(), 0);
+
+	return _modifiers[index].base_mod;
+}
+void ItemInstance::stat_modifier_set_base_mod(const int index, const float value) {
+	ERR_FAIL_INDEX(index, _modifiers.size());
+
+	_modifiers.write[index].base_mod = value;
+}
+
+float ItemInstance::stat_modifier_get_bonus_mod(const int index) const {
+	ERR_FAIL_INDEX_V(index, _modifiers.size(), 0);
+
+	return _modifiers[index].bonus_mod;
+}
+void ItemInstance::stat_modifier_set_bonus_mod(const int index, const float value) {
+	ERR_FAIL_INDEX(index, _modifiers.size());
+
+	_modifiers.write[index].bonus_mod = value;
+}
+
+float ItemInstance::stat_modifier_get_percent_mod(const int index) const {
+	ERR_FAIL_INDEX_V(index, _modifiers.size(), 0);
+
+	return _modifiers[index].percent_mod;
+}
+void ItemInstance::stat_modifier_set_percent_mod(const int index, const float value) {
+	ERR_FAIL_INDEX(index, _modifiers.size());
+
+	_modifiers.write[index].percent_mod = value;
+}
+
+void ItemInstance::add_item_stat_modifier(const int stat_id, const int base_mod, const int bonus_mod, const int percent_mod) {
+	ItemStatModifier mod;
+
+	mod.stat_id = stat_id;
+	mod.base_mod = base_mod;
+	mod.bonus_mod = bonus_mod;
+	mod.percent_mod = percent_mod;
+
+	_modifiers.push_back(mod);
 }
 void ItemInstance::remove_item_stat_modifier(const int index) {
 	ERR_FAIL_INDEX(index, _modifiers.size());
@@ -101,7 +147,16 @@ Dictionary ItemInstance::_to_dict() {
 	Array mods;
 
 	for (int i = 0; i < _modifiers.size(); ++i) {
-		mods.append(_modifiers.get(i)->to_dict());
+
+		Dictionary mdict;
+
+		mdict["stat_id"] = _modifiers[i].stat_id;
+
+		mdict["base_mod"] = _modifiers[i].base_mod;
+		mdict["bonus_mod"] = _modifiers[i].bonus_mod;
+		mdict["percent_mod"] = _modifiers[i].percent_mod;
+
+		mods.append(mdict);
 	}
 
 	dict["modifiers"] = mods;
@@ -122,10 +177,13 @@ void ItemInstance::_from_dict(const Dictionary &dict) {
 	Array mods = dict.get("modifiers", Array());
 
 	for (int i = 0; i < mods.size(); ++i) {
-		Ref<ItemStatModifier> mod;
-		mod.instance();
+		ItemStatModifier mod;
+		Dictionary mdict = mods.get(i);
 
-		mod->from_dict(mods.get(i));
+		mod.stat_id = dict.get("stat_id", 0);
+		mod.base_mod = dict.get("base_mod", 0);
+		mod.bonus_mod = dict.get("bonus_mod", 0);
+		mod.percent_mod = dict.get("percent_mod", 0);
 
 		_modifiers.push_back(mod);
 	}
@@ -155,8 +213,19 @@ void ItemInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_charges", "size"), &ItemInstance::set_charges);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "charges"), "set_charges", "get_charges");
 
-	ClassDB::bind_method(D_METHOD("get_item_stat_modifier", "index"), &ItemInstance::get_item_stat_modifier);
-	ClassDB::bind_method(D_METHOD("add_item_stat_modifier", "modifier"), &ItemInstance::add_item_stat_modifier);
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_stat_id", "index"), &ItemInstance::stat_modifier_get_stat_id);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_stat_id", "index", "value"), &ItemInstance::stat_modifier_set_stat_id);
+
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_base_mod", "index"), &ItemInstance::stat_modifier_get_base_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_base_mod", "index", "value"), &ItemInstance::stat_modifier_set_base_mod);
+
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_bonus_mod", "index"), &ItemInstance::stat_modifier_get_bonus_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_bonus_mod", "index", "value"), &ItemInstance::stat_modifier_set_bonus_mod);
+
+	ClassDB::bind_method(D_METHOD("stat_modifier_get_percent_mod", "index"), &ItemInstance::stat_modifier_get_percent_mod);
+	ClassDB::bind_method(D_METHOD("stat_modifier_set_percent_mod", "index", "value"), &ItemInstance::stat_modifier_set_percent_mod);
+
+	ClassDB::bind_method(D_METHOD("add_item_stat_modifier", "stat_id", "base_mod", "bonus_mod", "percent_mod"), &ItemInstance::add_item_stat_modifier);
 	ClassDB::bind_method(D_METHOD("remove_item_stat_modifier", "index"), &ItemInstance::remove_item_stat_modifier);
 	ClassDB::bind_method(D_METHOD("clear_item_stat_modifiers"), &ItemInstance::clear_item_stat_modifiers);
 	ClassDB::bind_method(D_METHOD("stat_modifier_get_count"), &ItemInstance::stat_modifier_get_count);
