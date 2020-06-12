@@ -24,15 +24,22 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#include "../../singletons/ess.h"
-
 #include "../../defines.h"
+#include "../../singletons/ess.h"
+#include "core/ustring.h"
 
 int SpeciesModelData::get_id() {
 	return _id;
 }
 void SpeciesModelData::set_id(int value) {
 	_id = value;
+}
+
+int SpeciesModelData::get_bone_structure() const {
+	return _bone_structure;
+}
+void SpeciesModelData::set_bone_structure(const int value) {
+	_bone_structure = value;
 }
 
 Ref<PackedScene> SpeciesModelData::get_body() {
@@ -44,253 +51,304 @@ void SpeciesModelData::set_body(Ref<PackedScene> value) {
 
 //Entries
 
-Ref<ModelVisualEntry> SpeciesModelData::get_visual(const int bone_index, const int index) const {
-	ERR_FAIL_INDEX_V(bone_index, EntityEnums::SKELETON_POINTS_MAX, Ref<ModelVisualEntry>());
-	ERR_FAIL_INDEX_V(index, _visuals[bone_index].size(), Ref<ModelVisualEntry>());
+Ref<ModelVisualEntry> SpeciesModelData::get_visual(const int index) const {
+	ERR_FAIL_INDEX_V(index, _visuals.size(), Ref<ModelVisualEntry>());
 
-	return _visuals[bone_index].get(index);
+	return _visuals.get(index);
 }
-void SpeciesModelData::set_visual(const int bone_index, const int index, const Ref<ModelVisualEntry> visual) {
-	ERR_FAIL_INDEX(bone_index, EntityEnums::SKELETON_POINTS_MAX);
-	ERR_FAIL_INDEX(index, _visuals[bone_index].size());
+void SpeciesModelData::set_visual(const int index, const Ref<ModelVisualEntry> visual) {
+	ERR_FAIL_INDEX(index, _visuals.size());
 
-	_visuals[bone_index].set(index, visual);
+	_visuals.set(index, visual);
 }
-void SpeciesModelData::add_visual(const int bone_index, const Ref<ModelVisualEntry> visual) {
-	ERR_FAIL_INDEX(bone_index, EntityEnums::SKELETON_POINTS_MAX);
-
-	_visuals[bone_index].push_back(visual);
+void SpeciesModelData::add_visual(const Ref<ModelVisualEntry> &visual) {
+	_visuals.push_back(visual);
 }
-void SpeciesModelData::remove_visual(const int bone_index, const int index) {
-	ERR_FAIL_INDEX(bone_index, EntityEnums::SKELETON_POINTS_MAX);
-	ERR_FAIL_INDEX(index, _visuals[bone_index].size());
+void SpeciesModelData::remove_visual(const int index) {
+	ERR_FAIL_INDEX(index, _visuals.size());
 
-	_visuals[bone_index].remove(index);
+	_visuals.remove(index);
 }
 
-int SpeciesModelData::get_visual_count(const int bone_index) const {
-	ERR_FAIL_INDEX_V(bone_index, EntityEnums::SKELETON_POINTS_MAX, 0);
-
-	return _visuals[bone_index].size();
+int SpeciesModelData::get_visual_count() const {
+	return _visuals.size();
 }
 
-Vector<Variant> SpeciesModelData::get_visuals(const int bone_index) {
-	ERR_FAIL_INDEX_V(bone_index, EntityEnums::SKELETON_POINTS_MAX, Vector<Variant>());
-
-	VARIANT_ARRAY_GET(_visuals[bone_index]);
+Vector<Variant> SpeciesModelData::get_visuals() {
+	VARIANT_ARRAY_GET(_visuals);
 }
-void SpeciesModelData::set_visuals(const int bone_index, const Vector<Variant> &visuals) {
-	ERR_FAIL_INDEX(bone_index, EntityEnums::SKELETON_POINTS_MAX);
+void SpeciesModelData::set_visuals(const Vector<Variant> &visuals) {
+	VARIANT_ARRAY_SET(visuals, _visuals, ModelVisualEntry);
+}
 
-	_visuals[bone_index].clear();
-	for (int i = 0; i < visuals.size(); i++) {
-		Ref<ModelVisualEntry> visual = Ref<ModelVisualEntry>(visuals[i]);
+//Customizable Slots
+String SpeciesModelData::get_customizable_slots_string() const {
+	return _customizable_slots_string;
+}
+void SpeciesModelData::set_customizable_slots_string(const String &value) {
+	_customizable_slots_string = value;
 
-		_visuals[bone_index].push_back(visual);
+	if (value == "") {
+		_customizable_slots.resize(0);
+		return;
 	}
+
+	_customizable_slots.resize(_customizable_slots_string.get_slice_count(","));
 }
 
-//Layer Colors
+Ref<ModelVisualEntry> SpeciesModelData::get_customizable_slot_entry(const int slot_index, const int index) const {
+	ERR_FAIL_INDEX_V(slot_index, _customizable_slots.size(), Ref<ModelVisualEntry>());
+	ERR_FAIL_INDEX_V(index, _customizable_slots[slot_index].size(), Ref<ModelVisualEntry>());
 
-Color SpeciesModelData::get_layer_color(const int index) const {
-	ERR_FAIL_INDEX_V(index, _layer_colors.size(), Color());
-
-	return _layer_colors.get(index);
+	return _customizable_slots[slot_index].get(index);
 }
-void SpeciesModelData::set_layer_color(const int index, const Color &layer_color) {
-	ERR_FAIL_INDEX(index, _layer_colors.size());
+void SpeciesModelData::set_customizable_slot_entry(const int slot_index, const int index, const Ref<ModelVisualEntry> customizable_slot) {
+	ERR_FAIL_INDEX(slot_index, _customizable_slots.size());
+	ERR_FAIL_INDEX(index, _customizable_slots[slot_index].size());
 
-	_layer_colors.set(index, layer_color);
+	_customizable_slots.write[slot_index].set(index, customizable_slot);
 }
-void SpeciesModelData::add_layer_color(const Color &layer_color) {
-	_layer_colors.push_back(layer_color);
-}
-void SpeciesModelData::remove_layer_color(const int index) {
-	ERR_FAIL_INDEX(index, _layer_colors.size());
+void SpeciesModelData::add_customizable_slot_entry(const int slot_index, const Ref<ModelVisualEntry> customizable_slot) {
+	ERR_FAIL_INDEX(slot_index, _customizable_slots.size());
 
-	_layer_colors.remove(index);
+	_customizable_slots.write[slot_index].push_back(customizable_slot);
+}
+void SpeciesModelData::remove_customizable_slot_entry(const int slot_index, const int index) {
+	ERR_FAIL_INDEX(slot_index, _customizable_slots.size());
+	ERR_FAIL_INDEX(index, _customizable_slots.size());
+
+	_customizable_slots.write[slot_index].remove(index);
 }
 
-int SpeciesModelData::get_layer_color_count() const {
-	return _layer_colors.size();
+int SpeciesModelData::get_customizable_slot_count() const {
+	return _customizable_slots.size();
 }
 
-Vector<Variant> SpeciesModelData::get_layer_colors() {
+int SpeciesModelData::get_customizable_slot_entry_count(const int slot_index) const {
+	ERR_FAIL_INDEX_V(slot_index, _customizable_slots.size(), 0);
+
+	return _customizable_slots[slot_index].size();
+}
+
+Vector<Variant> SpeciesModelData::get_customizable_slot_entries(const int slot_index) const {
 	Vector<Variant> r;
-	for (int i = 0; i < _layer_colors.size(); i++) {
-		r.push_back(_layer_colors[i]);
+
+	ERR_FAIL_INDEX_V(slot_index, _customizable_slots.size(), r);
+
+	for (int i = 0; i < _customizable_slots[slot_index].size(); i++) {
+		r.push_back(_customizable_slots[slot_index][i].get_ref_ptr());
 	}
 	return r;
 }
-void SpeciesModelData::set_layer_colors(const Vector<Variant> &layer_colors) {
-	_layer_colors.clear();
-	for (int i = 0; i < layer_colors.size(); i++) {
-		Color layer_color = Color(layer_colors[i]);
+void SpeciesModelData::set_customizable_slot_entries(const int slot_index, const Vector<Variant> &customizable_slots) {
+	ERR_FAIL_INDEX(slot_index, _customizable_slots.size());
 
-		_layer_colors.push_back(layer_color);
+	_customizable_slots.write[slot_index].clear();
+	for (int i = 0; i < customizable_slots.size(); i++) {
+		Ref<ModelVisualEntry> e = Ref<ModelVisualEntry>(customizable_slots[i]);
+		_customizable_slots.write[slot_index].push_back(e);
 	}
 }
 
-//SkinColors
-
-Color SpeciesModelData::get_skin_color(const int index) const {
-	ERR_FAIL_INDEX_V(index, _skin_colors.size(), Color());
-
-	return _skin_colors.get(index);
+//Color Customizable Slots
+String SpeciesModelData::get_customizable_color_slots_string() const {
+	return _customizable_color_slots_string;
 }
-void SpeciesModelData::set_skin_color(const int index, const Color skin_color) {
-	ERR_FAIL_INDEX(index, _skin_colors.size());
+void SpeciesModelData::set_customizable_color_slots_string(const String &value) {
+	_customizable_color_slots_string = value;
 
-	_skin_colors.set(index, skin_color);
-}
-void SpeciesModelData::add_skin_color(const Color skin_color) {
-	_skin_colors.push_back(skin_color);
-}
-void SpeciesModelData::remove_skin_color(const int index) {
-	ERR_FAIL_INDEX(index, _skin_colors.size());
-
-	_skin_colors.remove(index);
-}
-
-int SpeciesModelData::get_skin_color_count() const {
-	return _skin_colors.size();
-}
-
-Vector<Variant> SpeciesModelData::get_skin_colors() {
-	Vector<Variant> r;
-	for (int i = 0; i < _skin_colors.size(); i++) {
-		r.push_back(_skin_colors[i]);
+	if (value == "") {
+		_visuals.resize(0);
+		return;
 	}
-	return r;
-}
-void SpeciesModelData::set_skin_colors(const Vector<Variant> &skin_colors) {
-	_skin_colors.clear();
-	for (int i = 0; i < skin_colors.size(); i++) {
-		Color skin_color = Color(skin_colors[i]);
 
-		_skin_colors.push_back(skin_color);
-	}
+	_customizable_color_slots.resize(_customizable_color_slots_string.get_slice_count(","));
 }
 
-//HairStyles
+Color SpeciesModelData::get_color_customizable_slot_color(const int slot_index, const int index) const {
+	ERR_FAIL_INDEX_V(slot_index, _customizable_color_slots.size(), Color());
+	ERR_FAIL_INDEX_V(index, _customizable_color_slots.size(), Color());
 
-Ref<ModelVisualEntry> SpeciesModelData::get_hair_style(const int index) const {
-	ERR_FAIL_INDEX_V(index, _hair_styles.size(), Ref<ModelVisualEntry>());
+	return _customizable_color_slots[slot_index].colors.get(index);
+}
+void SpeciesModelData::set_color_customizable_slot_color(const int slot_index, const int index, const Color color_customizable_slot) {
+	ERR_FAIL_INDEX(slot_index, _customizable_color_slots.size());
+	ERR_FAIL_INDEX(index, _customizable_color_slots[slot_index].colors.size());
 
-	return _hair_styles.get(index);
+	_customizable_color_slots.write[slot_index].colors.set(index, color_customizable_slot);
 }
-void SpeciesModelData::set_hair_style(const int index, const Ref<ModelVisualEntry> hair_style) {
-	ERR_FAIL_INDEX(index, _hair_styles.size());
+void SpeciesModelData::add_color_customizable_slot_color(const int slot_index, const Color color_customizable_slot) {
+	ERR_FAIL_INDEX(slot_index, _customizable_color_slots.size());
 
-	_hair_styles.set(index, hair_style);
+	_customizable_color_slots.write[slot_index].colors.push_back(color_customizable_slot);
 }
-void SpeciesModelData::add_hair_style(const Ref<ModelVisualEntry> hair_style) {
-	_hair_styles.push_back(hair_style);
-}
-void SpeciesModelData::remove_hair_style(const int index) {
-	ERR_FAIL_INDEX(index, _hair_styles.size());
+void SpeciesModelData::remove_color_customizable_slot_color(const int slot_index, const int index) {
+	ERR_FAIL_INDEX(slot_index, _customizable_color_slots.size());
+	ERR_FAIL_INDEX(index, _customizable_color_slots.size());
 
-	_hair_styles.remove(index);
-}
-
-int SpeciesModelData::get_hair_style_count() const {
-	return _hair_styles.size();
-}
-
-Vector<Variant> SpeciesModelData::get_hair_styles() {
-	VARIANT_ARRAY_GET(_hair_styles);
-}
-void SpeciesModelData::set_hair_styles(const Vector<Variant> &hair_styles) {
-	VARIANT_ARRAY_SET(hair_styles, _hair_styles, ModelVisualEntry);
+	_customizable_color_slots.write[slot_index].colors.remove(index);
 }
 
-//HairColors
+Vector<Color> SpeciesModelData::get_color_customizable_slot_colors(const int slot_index) const {
+	ERR_FAIL_INDEX_V(slot_index, _customizable_color_slots.size(), Vector<Color>());
 
-Color SpeciesModelData::get_hair_color(const int index) const {
-	ERR_FAIL_INDEX_V(index, _hair_colors.size(), Color());
-
-	return _hair_colors.get(index);
+	return _customizable_color_slots[slot_index].colors;
 }
-void SpeciesModelData::set_hair_color(const int index, const Color hair_color) {
-	ERR_FAIL_INDEX(index, _hair_colors.size());
+void SpeciesModelData::set_color_customizable_slot_colors(const int slot_index, const Vector<Color> &colors) {
+	ERR_FAIL_INDEX(slot_index, _customizable_color_slots.size());
 
-	_hair_colors.set(index, hair_color);
-}
-void SpeciesModelData::add_hair_color(const Color hair_color) {
-	_hair_colors.push_back(hair_color);
-}
-void SpeciesModelData::remove_hair_color(const int index) {
-	ERR_FAIL_INDEX(index, _hair_colors.size());
-
-	_hair_colors.remove(index);
+	_customizable_color_slots.write[slot_index].colors = colors;
 }
 
-int SpeciesModelData::get_hair_color_count() const {
-	return _hair_colors.size();
+uint64_t SpeciesModelData::get_color_customizable_slot_bone_slot_mask(const int slot_index) const {
+	ERR_FAIL_INDEX_V(slot_index, _customizable_color_slots.size(), 0);
+
+	return _customizable_color_slots[slot_index].bone_slot_mask;
+}
+void SpeciesModelData::set_color_customizable_slot_bone_slot_mask(const int slot_index, const uint64_t value) {
+	ERR_FAIL_INDEX(slot_index, _customizable_color_slots.size());
+
+	_customizable_color_slots.write[slot_index].bone_slot_mask = value;
 }
 
-Vector<Variant> SpeciesModelData::get_hair_colors() {
-	Vector<Variant> r;
-	for (int i = 0; i < _hair_colors.size(); i++) {
-		r.push_back(_hair_colors[i]);
-	}
-	return r;
-}
-void SpeciesModelData::set_hair_colors(const Vector<Variant> &hair_colors) {
-	_hair_colors.clear();
-	for (int i = 0; i < hair_colors.size(); i++) {
-		Color hair_color = Color(hair_colors[i]);
+int SpeciesModelData::get_color_customizable_slot_texture_layer(const int slot_index) const {
+	ERR_FAIL_INDEX_V(slot_index, _customizable_color_slots.size(), 0);
 
-		_hair_colors.push_back(hair_color);
-	}
+	return _customizable_color_slots[slot_index].texture_layer;
+}
+void SpeciesModelData::set_color_customizable_slot_texture_layer(const int slot_index, const int value) {
+	ERR_FAIL_INDEX(slot_index, _customizable_color_slots.size());
+
+	_customizable_color_slots.write[slot_index].texture_layer = value;
 }
 
-//Heads
-
-Ref<ModelVisualEntry> SpeciesModelData::get_head(const int index) const {
-	ERR_FAIL_INDEX_V(index, _heads.size(), Ref<ModelVisualEntry>());
-
-	return _heads.get(index);
-}
-void SpeciesModelData::set_head(const int index, const Ref<ModelVisualEntry> head) {
-	ERR_FAIL_INDEX(index, _heads.size());
-
-	_heads.set(index, head);
-}
-void SpeciesModelData::add_head(const Ref<ModelVisualEntry> head) {
-	_heads.push_back(head);
-}
-void SpeciesModelData::remove_head(const int index) {
-	ERR_FAIL_INDEX(index, _heads.size());
-
-	_heads.remove(index);
+int SpeciesModelData::get_color_customizable_count() const {
+	return _customizable_color_slots.size();
 }
 
-int SpeciesModelData::get_head_count() const {
-	return _heads.size();
-}
+int SpeciesModelData::get_color_customizable_slot_count(const int slot_index) const {
+	ERR_FAIL_INDEX_V(slot_index, _customizable_color_slots.size(), 0);
 
-Vector<Variant> SpeciesModelData::get_heads() {
-	VARIANT_ARRAY_GET(_heads);
-}
-void SpeciesModelData::set_heads(const Vector<Variant> &heads) {
-	VARIANT_ARRAY_SET(heads, _heads, ModelVisualEntry);
+	return _customizable_color_slots[slot_index].colors.size();
 }
 
 SpeciesModelData::SpeciesModelData() {
 	_id = 0;
+	_bone_structure = 0;
 }
 SpeciesModelData::~SpeciesModelData() {
 	_body.unref();
 
-	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		_visuals[i].clear();
+	_visuals.clear();
+
+	for (int i = 0; i < _customizable_slots.size(); ++i) {
+		_customizable_slots.write[i].clear();
 	}
 
-	_skin_colors.clear();
-	_hair_styles.clear();
-	_hair_colors.clear();
-	_heads.clear();
+	for (int i = 0; i < _customizable_color_slots.size(); ++i) {
+		_customizable_color_slots.write[i].colors.clear();
+	}
+
+	_customizable_slots.clear();
+	_customizable_color_slots.clear();
+}
+
+bool SpeciesModelData::_set(const StringName &p_name, const Variant &p_value) {
+	String name = p_name;
+
+	if (name.begins_with("customizable_slots")) {
+		int index = name.get_slicec('/', 1).get_slicec('_', 0).to_int();
+
+		if (_customizable_slots.size() <= index) {
+			_customizable_slots.resize(index + 1);
+		}
+
+		set_customizable_slot_entries(index, p_value);
+
+		return true;
+	} else if (name.begins_with("customizable_color_slots")) {
+		int index = name.get_slicec('/', 1).get_slicec('_', 0).to_int();
+
+		if (_customizable_color_slots.size() <= index) {
+			_customizable_color_slots.resize(index + 1);
+		}
+
+		String prop = name.get_slicec('/', 2);
+
+		if (prop == "texture_layer") {
+			_customizable_color_slots.write[index].texture_layer = p_value;
+			return true;
+		} else if (prop == "bone_slot_mask") {
+			_customizable_color_slots.write[index].bone_slot_mask = p_value;
+			return true;
+		} else if (prop == "colors") {
+			_customizable_color_slots.write[index].colors = p_value;
+			return true;
+		}
+
+		return false;
+	}
+
+	return false;
+}
+bool SpeciesModelData::_get(const StringName &p_name, Variant &r_ret) const {
+	String name = p_name;
+
+	if (name.begins_with("customizable_slots")) {
+		int index = name.get_slicec('/', 1).get_slicec('_', 0).to_int();
+
+		if (_customizable_slots.size() <= index) {
+			return false;
+		}
+
+		r_ret = get_customizable_slot_entries(index);
+		return true;
+	} else if (name.begins_with("customizable_color_slots")) {
+		int index = name.get_slicec('/', 1).get_slicec('_', 0).to_int();
+
+		if (_customizable_color_slots.size() <= index) {
+			return false;
+		}
+
+		String prop = name.get_slicec('/', 2);
+
+		if (prop == "texture_layer") {
+			r_ret = _customizable_color_slots[index].texture_layer;
+			return true;
+		} else if (prop == "bone_slot_mask") {
+			r_ret = _customizable_color_slots[index].bone_slot_mask;
+			return true;
+		} else if (prop == "colors") {
+			r_ret = _customizable_color_slots[index].colors;
+			return true;
+		}
+
+		return false;
+	}
+
+	return false;
+}
+void SpeciesModelData::_get_property_list(List<PropertyInfo> *p_list) const {
+	int count = _customizable_slots_string.get_slice_count(",");
+
+	for (int i = 0; i < count; ++i) {
+		p_list->push_back(PropertyInfo(Variant::ARRAY, "customizable_slots/" + itos(i) + "_" + _customizable_slots_string.get_slicec(',', i), PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL, "ModelVisualEntry"));
+	}
+
+	count = _customizable_color_slots_string.get_slice_count(",");
+
+	for (int i = 0; i < count; ++i) {
+		p_list->push_back(PropertyInfo(Variant::INT, "customizable_color_slots/" + itos(i) + "_" + _customizable_color_slots_string.get_slicec(',', i) + "/texture_layer", PROPERTY_HINT_ENUM, ESS::get_singleton()->texture_layers_get(), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED));
+		p_list->push_back(PropertyInfo(Variant::INT, "customizable_color_slots/" + itos(i) + "_" + _customizable_color_slots_string.get_slicec(',', i) + "/bone_slot_mask", PROPERTY_HINT_FLAGS, ESS::get_singleton()->skeletons_bones_index_get(_bone_structure), PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
+		p_list->push_back(PropertyInfo(Variant::ARRAY, "customizable_color_slots/" + itos(i) + "_" + _customizable_color_slots_string.get_slicec(',', i) + "/colors", PROPERTY_HINT_NONE, "17/17:Color", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL, "Color"));
+	}
+}
+void SpeciesModelData::_validate_property(PropertyInfo &property) const {
+	String prop = property.name;
+
+	if (prop == "bone_structure") {
+		property.hint_string = ESS::get_singleton()->entity_types_get();
+	}
 }
 
 void SpeciesModelData::_bind_methods() {
@@ -298,115 +356,62 @@ void SpeciesModelData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &SpeciesModelData::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
 
+	ClassDB::bind_method(D_METHOD("get_bone_structure"), &SpeciesModelData::get_bone_structure);
+	ClassDB::bind_method(D_METHOD("set_bone_structure", "value"), &SpeciesModelData::set_bone_structure);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "bone_structure", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_bone_structure", "get_bone_structure");
+
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
 	ClassDB::bind_method(D_METHOD("get_body"), &SpeciesModelData::get_body);
 	ClassDB::bind_method(D_METHOD("set_body", "value"), &SpeciesModelData::set_body);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "body", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_body", "get_body");
 
-	//Layer Colors
-	ClassDB::bind_method(D_METHOD("get_layer_color", "index"), &SpeciesModelData::get_layer_color);
-	ClassDB::bind_method(D_METHOD("set_layer_color", "index", "data"), &SpeciesModelData::set_layer_color);
-	ClassDB::bind_method(D_METHOD("add_layer_color", "layer_color"), &SpeciesModelData::add_layer_color);
-	ClassDB::bind_method(D_METHOD("remove_layer_color", "index"), &SpeciesModelData::remove_layer_color);
-
-	ClassDB::bind_method(D_METHOD("get_layer_color_count"), &SpeciesModelData::get_layer_color_count);
-
-	ClassDB::bind_method(D_METHOD("get_layer_colors"), &SpeciesModelData::get_layer_colors);
-	ClassDB::bind_method(D_METHOD("set_layer_colors", "layer_colors"), &SpeciesModelData::set_layer_colors);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "layer_colors", PROPERTY_HINT_NONE, "17/17:Color", PROPERTY_USAGE_DEFAULT, "Color"), "set_layer_colors", "get_layer_colors");
-
 	//Entries
-	ClassDB::bind_method(D_METHOD("get_visual", "bone_index", "index"), &SpeciesModelData::get_visual);
-	ClassDB::bind_method(D_METHOD("set_visual", "bone_index", "index", "data"), &SpeciesModelData::set_visual);
-	ClassDB::bind_method(D_METHOD("add_visual", "bone_index", "visual"), &SpeciesModelData::add_visual);
-	ClassDB::bind_method(D_METHOD("remove_visual", "bone_index", "index"), &SpeciesModelData::remove_visual);
+	ClassDB::bind_method(D_METHOD("get_visual", "index"), &SpeciesModelData::get_visual);
+	ClassDB::bind_method(D_METHOD("set_visual", "index", "data"), &SpeciesModelData::set_visual);
+	ClassDB::bind_method(D_METHOD("add_visual", "visual"), &SpeciesModelData::add_visual);
+	ClassDB::bind_method(D_METHOD("remove_visual", "index"), &SpeciesModelData::remove_visual);
 
-	ClassDB::bind_method(D_METHOD("get_visual_count", "bone_index"), &SpeciesModelData::get_visual_count);
+	ClassDB::bind_method(D_METHOD("get_visual_count"), &SpeciesModelData::get_visual_count);
 
-	ClassDB::bind_method(D_METHOD("get_visuals", "bone_index"), &SpeciesModelData::get_visuals);
-	ClassDB::bind_method(D_METHOD("set_visuals", "bone_index", "visuals"), &SpeciesModelData::set_visuals);
+	ClassDB::bind_method(D_METHOD("get_visuals"), &SpeciesModelData::get_visuals);
+	ClassDB::bind_method(D_METHOD("set_visuals", "visuals"), &SpeciesModelData::set_visuals);
 
-	ADD_GROUP("Visuals", "visual_");
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_root", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_ROOT);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_pelvis", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_PELVIS);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_spine", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_SPINE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_spine_1", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_SPINE_1);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_spine_2", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_SPINE_2);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_neck", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_NECK);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_head", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_HEAD);
+	//Customizable Slots
+	ClassDB::bind_method(D_METHOD("get_customizable_slots_string"), &SpeciesModelData::get_customizable_slots_string);
+	ClassDB::bind_method(D_METHOD("set_customizable_slots_string", "value"), &SpeciesModelData::set_customizable_slots_string);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "customizable_slots_string"), "set_customizable_slots_string", "get_customizable_slots_string");
 
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_clavicle", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_CLAVICLE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_upper_arm", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_UPPER_ARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_forearm", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FOREARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_hand", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_HAND);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_thumb_base", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_THUMB_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_thumb_end", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_THUMB_END);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_fingers_base", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FINGERS_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_fingers_end", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FINGERS_END);
+	ClassDB::bind_method(D_METHOD("get_customizable_slot_entry", "slot_index", "index"), &SpeciesModelData::get_customizable_slot_entry);
+	ClassDB::bind_method(D_METHOD("set_customizable_slot_entry", "slot_index", "index", "data"), &SpeciesModelData::set_customizable_slot_entry);
+	ClassDB::bind_method(D_METHOD("add_customizable_slot_entry", "slot_index", "customizable_slot"), &SpeciesModelData::add_customizable_slot_entry);
+	ClassDB::bind_method(D_METHOD("remove_customizable_slot_entry", "slot_index", "index"), &SpeciesModelData::remove_customizable_slot_entry);
 
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_clavicle", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_CLAVICLE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_upper_arm", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_UPPER_ARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_forearm", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FOREARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_hand", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_HAND);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_thumb_base", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_THUMB_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_thumb_end", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_THUMB_END);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_fingers_base", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FINGERS_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_fingers_end", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FINGERS_END);
+	ClassDB::bind_method(D_METHOD("get_customizable_slot_count"), &SpeciesModelData::get_customizable_slot_count);
+	ClassDB::bind_method(D_METHOD("get_customizable_slot_entry_count", "slot_index"), &SpeciesModelData::get_customizable_slot_entry_count);
 
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_thigh", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_THIGH);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_calf", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_CALF);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_left_foot", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_LEFT_FOOT);
+	ClassDB::bind_method(D_METHOD("get_customizable_slot_entries", "slot_index"), &SpeciesModelData::get_customizable_slot_entries);
+	ClassDB::bind_method(D_METHOD("set_customizable_slot_entries", "slot_index", "customizable_slots"), &SpeciesModelData::set_customizable_slot_entries);
 
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_thigh", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_THIGH);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_calf", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_CALF);
-	ADD_PROPERTYI(PropertyInfo(Variant::ARRAY, "visual_right_foot", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_visuals", "get_visuals", EntityEnums::SKELETON_POINT_RIGHT_FOOT);
+	//Color Slots
+	ClassDB::bind_method(D_METHOD("get_customizable_color_slots_string"), &SpeciesModelData::get_customizable_color_slots_string);
+	ClassDB::bind_method(D_METHOD("set_customizable_color_slots_string", "value"), &SpeciesModelData::set_customizable_color_slots_string);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "customizable_color_slots_string"), "set_customizable_color_slots_string", "get_customizable_color_slots_string");
 
-	//DungeonDatas
-	ClassDB::bind_method(D_METHOD("get_skin_color", "index"), &SpeciesModelData::get_skin_color);
-	ClassDB::bind_method(D_METHOD("set_skin_color", "index", "data"), &SpeciesModelData::set_skin_color);
-	ClassDB::bind_method(D_METHOD("add_skin_color", "skin_color"), &SpeciesModelData::add_skin_color);
-	ClassDB::bind_method(D_METHOD("remove_skin_color", "index"), &SpeciesModelData::remove_skin_color);
+	ClassDB::bind_method(D_METHOD("get_color_customizable_slot_color", "slot_index", "index"), &SpeciesModelData::get_color_customizable_slot_color);
+	ClassDB::bind_method(D_METHOD("set_color_customizable_slot_color", "slot_index", "index", "data"), &SpeciesModelData::set_color_customizable_slot_color);
+	ClassDB::bind_method(D_METHOD("add_color_customizable_slot_color", "slot_index", "color_customizable_slot"), &SpeciesModelData::add_color_customizable_slot_color);
+	ClassDB::bind_method(D_METHOD("remove_color_customizable_slot_color", "slot_index", "index"), &SpeciesModelData::remove_color_customizable_slot_color);
 
-	ClassDB::bind_method(D_METHOD("get_skin_color_count"), &SpeciesModelData::get_skin_color_count);
+	ClassDB::bind_method(D_METHOD("get_color_customizable_slot_colors", "slot_index"), &SpeciesModelData::get_color_customizable_slot_colors);
+	ClassDB::bind_method(D_METHOD("set_color_customizable_slot_colors", "slot_index", "colors"), &SpeciesModelData::set_color_customizable_slot_colors);
 
-	ClassDB::bind_method(D_METHOD("get_skin_colors"), &SpeciesModelData::get_skin_colors);
-	ClassDB::bind_method(D_METHOD("set_skin_colors", "skin_colors"), &SpeciesModelData::set_skin_colors);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "skin_colors", PROPERTY_HINT_NONE, "17/17:Color", PROPERTY_USAGE_DEFAULT, "Color"), "set_skin_colors", "get_skin_colors");
+	ClassDB::bind_method(D_METHOD("get_color_customizable_slot_bone_slot_mask", "slot_index"), &SpeciesModelData::get_color_customizable_slot_bone_slot_mask);
+	ClassDB::bind_method(D_METHOD("set_color_customizable_slot_bone_slot_mask", "slot_index", "value"), &SpeciesModelData::set_color_customizable_slot_bone_slot_mask);
 
-	//DungeonDatas
-	ClassDB::bind_method(D_METHOD("get_hair_style", "index"), &SpeciesModelData::get_hair_style);
-	ClassDB::bind_method(D_METHOD("set_hair_style", "index", "data"), &SpeciesModelData::set_hair_style);
-	ClassDB::bind_method(D_METHOD("add_hair_style", "hair_style"), &SpeciesModelData::add_hair_style);
-	ClassDB::bind_method(D_METHOD("remove_hair_style", "index"), &SpeciesModelData::remove_hair_style);
+	ClassDB::bind_method(D_METHOD("get_color_customizable_slot_texture_layer", "slot_index"), &SpeciesModelData::get_color_customizable_slot_texture_layer);
+	ClassDB::bind_method(D_METHOD("set_color_customizable_slot_texture_layer", "slot_index", "value"), &SpeciesModelData::set_color_customizable_slot_texture_layer);
 
-	ClassDB::bind_method(D_METHOD("get_hair_style_count"), &SpeciesModelData::get_hair_style_count);
-
-	ClassDB::bind_method(D_METHOD("get_hair_styles"), &SpeciesModelData::get_hair_styles);
-	ClassDB::bind_method(D_METHOD("set_hair_styles", "hair_styles"), &SpeciesModelData::set_hair_styles);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "hair_styles", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_hair_styles", "get_hair_styles");
-
-	//DungeonDatas
-	ClassDB::bind_method(D_METHOD("get_hair_color", "index"), &SpeciesModelData::get_hair_color);
-	ClassDB::bind_method(D_METHOD("set_hair_color", "index", "data"), &SpeciesModelData::set_hair_color);
-	ClassDB::bind_method(D_METHOD("add_hair_color", "hair_color"), &SpeciesModelData::add_hair_color);
-	ClassDB::bind_method(D_METHOD("remove_hair_color", "index"), &SpeciesModelData::remove_hair_color);
-
-	ClassDB::bind_method(D_METHOD("get_hair_color_count"), &SpeciesModelData::get_hair_color_count);
-
-	ClassDB::bind_method(D_METHOD("get_hair_colors"), &SpeciesModelData::get_hair_colors);
-	ClassDB::bind_method(D_METHOD("set_hair_colors", "hair_colors"), &SpeciesModelData::set_hair_colors);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "hair_colors", PROPERTY_HINT_NONE, "17/17:Color", PROPERTY_USAGE_DEFAULT, "Color"), "set_hair_colors", "get_hair_colors");
-
-	//DungeonDatas
-	ClassDB::bind_method(D_METHOD("get_head", "index"), &SpeciesModelData::get_head);
-	ClassDB::bind_method(D_METHOD("set_head", "index", "data"), &SpeciesModelData::set_head);
-	ClassDB::bind_method(D_METHOD("add_head", "head"), &SpeciesModelData::add_head);
-	ClassDB::bind_method(D_METHOD("remove_head", "index"), &SpeciesModelData::remove_head);
-
-	ClassDB::bind_method(D_METHOD("get_head_count"), &SpeciesModelData::get_head_count);
-
-	ClassDB::bind_method(D_METHOD("get_heads"), &SpeciesModelData::get_heads);
-	ClassDB::bind_method(D_METHOD("set_heads", "heads"), &SpeciesModelData::set_heads);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "heads", PROPERTY_HINT_NONE, "17/17:ModelVisualEntry", PROPERTY_USAGE_DEFAULT, "ModelVisualEntry"), "set_heads", "get_heads");
+	ClassDB::bind_method(D_METHOD("get_color_customizable_count"), &SpeciesModelData::get_color_customizable_count);
+	ClassDB::bind_method(D_METHOD("get_color_customizable_slot_count", "slot_index"), &SpeciesModelData::get_color_customizable_slot_count);
 }

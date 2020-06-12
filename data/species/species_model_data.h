@@ -43,93 +43,90 @@ public:
 	int get_id();
 	void set_id(int value);
 
+	int get_bone_structure() const;
+	void set_bone_structure(const int value);
+
 	Ref<PackedScene> get_body();
 	void set_body(Ref<PackedScene> value);
 
 	//Entries
-	Ref<ModelVisualEntry> get_visual(const int bone_index, const int index) const;
-	void set_visual(const int bone_index, const int index, const Ref<ModelVisualEntry> visual);
-	void add_visual(const int bone_index, const Ref<ModelVisualEntry> visual);
-	void remove_visual(const int bone_index, const int index);
+	Ref<ModelVisualEntry> get_visual(const int index) const;
+	void set_visual(const int index, const Ref<ModelVisualEntry> visual);
+	void add_visual(const Ref<ModelVisualEntry> &visual);
+	void remove_visual(const int index);
 
-	int get_visual_count(const int bone_index) const;
+	int get_visual_count() const;
 
-	Vector<Variant> get_visuals(const int bone_index);
-	void set_visuals(const int bone_index, const Vector<Variant> &visuals);
+	Vector<Variant> get_visuals();
+	void set_visuals(const Vector<Variant> &visuals);
 
-	//Layer Colors
-	Color get_layer_color(const int index) const;
-	void set_layer_color(const int index, const Color &layer_color);
-	void add_layer_color(const Color &layer_color);
-	void remove_layer_color(const int index);
+	//Customizable Slots
+	String get_customizable_slots_string() const;
+	void set_customizable_slots_string(const String &value);
 
-	int get_layer_color_count() const;
+	Ref<ModelVisualEntry> get_customizable_slot_entry(const int slot_index, const int index) const;
+	void set_customizable_slot_entry(const int slot_index, const int index, const Ref<ModelVisualEntry> customizable_slot);
+	void add_customizable_slot_entry(const int slot_index, const Ref<ModelVisualEntry> customizable_slot);
+	void remove_customizable_slot_entry(const int slot_index, const int index);
 
-	Vector<Variant> get_layer_colors();
-	void set_layer_colors(const Vector<Variant> &layer_colors);
+	int get_customizable_slot_count() const;
+	int get_customizable_slot_entry_count(const int slot_index) const;
 
-	//SkinColors
-	Color get_skin_color(const int index) const;
-	void set_skin_color(const int index, const Color skin_color);
-	void add_skin_color(const Color skin_color);
-	void remove_skin_color(const int index);
+	Vector<Variant> get_customizable_slot_entries(const int slot_index) const;
+	void set_customizable_slot_entries(const int slot_index, const Vector<Variant> &customizable_slots);
 
-	int get_skin_color_count() const;
+	//Color Customizable Slots
+	String get_customizable_color_slots_string() const;
+	void set_customizable_color_slots_string(const String &value);
 
-	Vector<Variant> get_skin_colors();
-	void set_skin_colors(const Vector<Variant> &skin_colors);
+	Color get_color_customizable_slot_color(const int slot_index, const int index) const;
+	void set_color_customizable_slot_color(const int slot_index, const int index, const Color color_customizable_slot);
+	void add_color_customizable_slot_color(const int slot_index, const Color color_customizable_slot);
+	void remove_color_customizable_slot_color(const int slot_index, const int index);
 
-	//HairStyles
-	Ref<ModelVisualEntry> get_hair_style(const int index) const;
-	void set_hair_style(const int index, const Ref<ModelVisualEntry> hair_style);
-	void add_hair_style(const Ref<ModelVisualEntry> hair_style);
-	void remove_hair_style(const int index);
+	Vector<Color> get_color_customizable_slot_colors(const int slot_index) const;
+	void set_color_customizable_slot_colors(const int slot_index, const Vector<Color> &colors);
 
-	int get_hair_style_count() const;
+	uint64_t get_color_customizable_slot_bone_slot_mask(const int slot_index) const;
+	void set_color_customizable_slot_bone_slot_mask(const int slot_index, const uint64_t value);
 
-	Vector<Variant> get_hair_styles();
-	void set_hair_styles(const Vector<Variant> &hair_styles);
+	int get_color_customizable_slot_texture_layer(const int slot_index) const;
+	void set_color_customizable_slot_texture_layer(const int slot_index, const int value);
 
-	//HairColors
-	Color get_hair_color(const int index) const;
-	void set_hair_color(const int index, const Color hair_color);
-	void add_hair_color(const Color hair_color);
-	void remove_hair_color(const int index);
-
-	int get_hair_color_count() const;
-
-	Vector<Variant> get_hair_colors();
-	void set_hair_colors(const Vector<Variant> &hair_colors);
-
-	//Heads
-	Ref<ModelVisualEntry> get_head(const int index) const;
-	void set_head(const int index, const Ref<ModelVisualEntry> head);
-	void add_head(const Ref<ModelVisualEntry> head);
-	void remove_head(const int index);
-
-	int get_head_count() const;
-
-	Vector<Variant> get_heads();
-	void set_heads(const Vector<Variant> &heads);
+	int get_color_customizable_count() const;
+	int get_color_customizable_slot_count(const int slot_index) const;
 
 	SpeciesModelData();
 	~SpeciesModelData();
 
 protected:
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
+	void _validate_property(PropertyInfo &property) const;
+
 	static void _bind_methods();
+
+protected:
+	struct ColorSlotData {
+		int texture_layer;
+		uint64_t bone_slot_mask;
+		Vector<Color> colors;
+	};
 
 private:
 	int _id;
+	int _bone_structure;
 
 	Ref<PackedScene> _body;
 
-	Vector<Ref<ModelVisualEntry> > _visuals[EntityEnums::SKELETON_POINTS_MAX];
-	Vector<Color> _layer_colors;
+	String _customizable_slots_string;
+	String _customizable_color_slots_string;
 
-	Vector<Color> _skin_colors;
-	Vector<Ref<ModelVisualEntry> > _hair_styles;
-	Vector<Color> _hair_colors;
-	Vector<Ref<ModelVisualEntry> > _heads;
+	Vector<Ref<ModelVisualEntry> > _visuals;
+
+	Vector<Vector<Ref<ModelVisualEntry> > > _customizable_slots;
+	Vector<ColorSlotData> _customizable_color_slots;
 };
 
 #endif
