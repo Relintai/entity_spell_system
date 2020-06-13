@@ -89,9 +89,6 @@ sources = [
 
     "utility/entity_create_info.cpp",
 
-    "utility/cooldown.cpp",
-    "utility/category_cooldown.cpp",
-
     "data/loot/loot_data_base.cpp",
 
     "entities/ai/entity_ai.cpp",

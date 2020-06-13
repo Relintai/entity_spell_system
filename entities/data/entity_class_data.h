@@ -37,8 +37,6 @@ SOFTWARE.
 #include "../../pipelines/spell_heal_info.h"
 
 #include "../../item_enums.h"
-#include "../../utility/category_cooldown.h"
-#include "../../utility/cooldown.h"
 
 #include "../resources/entity_resource_data.h"
 
@@ -152,11 +150,11 @@ public:
 	void notification_sdeath(Entity *entity);
 	void notification_sdeath_bind(Node *entity);
 
-	void notification_scooldown_added(Ref<Cooldown> cooldown);
-	void notification_scooldown_removed(Ref<Cooldown> cooldown);
+	void notification_scooldown_added(int id, float value);
+	void notification_scooldown_removed(int id, float value);
 
-	void notification_scategory_cooldown_added(Ref<CategoryCooldown> category_cooldown);
-	void notification_scategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+	void notification_scategory_cooldown_added(int id, float value);
+	void notification_scategory_cooldown_removed(int id, float value);
 
 	void notification_sgcd_started(Entity *entity, float gcd);
 	void notification_sgcd_finished(Entity *entity);
@@ -182,10 +180,10 @@ public:
 	void notification_cdeath(Entity *entity);
 	void notification_cdeath_bind(Node *entity);
 
-	void notification_ccooldown_added(Ref<Cooldown> cooldown);
-	void notification_ccooldown_removed(Ref<Cooldown> cooldown);
-	void notification_ccategory_cooldown_added(Ref<CategoryCooldown> category_cooldown);
-	void notification_ccategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+	void notification_ccooldown_added(int id, float value);
+	void notification_ccooldown_removed(int id, float value);
+	void notification_ccategory_cooldown_added(int id, float value);
+	void notification_ccategory_cooldown_removed(int id, float value);
 
 	void notification_cgcd_started(Entity *entity, float gcd);
 	void notification_cgcd_finished(Entity *entity);

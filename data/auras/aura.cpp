@@ -641,22 +641,22 @@ void Aura::notification_sdeath(Ref<AuraData> data) {
 		call("_notification_sdeath", data);
 }
 
-void Aura::notification_scooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown) {
+void Aura::notification_scooldown_added(Ref<AuraData> data, int id, float value) {
 	if (has_method("_notification_scooldown_added"))
-		call("_notification_scooldown_added", data, cooldown);
+		call("_notification_scooldown_added", data, id, value);
 }
-void Aura::notification_scooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown) {
+void Aura::notification_scooldown_removed(Ref<AuraData> data, int id, float value) {
 	if (has_method("_notification_scooldown_removed"))
-		call("_notification_scooldown_removed", data, cooldown);
+		call("_notification_scooldown_removed", data, id, value);
 }
 
-void Aura::notification_scategory_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
+void Aura::notification_scategory_cooldown_added(Ref<AuraData> data, int id, float value) {
 	if (has_method("_notification_scategory_cooldown_added"))
-		call("_notification_scategory_cooldown_added", data, category_cooldown);
+		call("_notification_scategory_cooldown_added", data, id, value);
 }
-void Aura::notification_scategory_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
+void Aura::notification_scategory_cooldown_removed(Ref<AuraData> data, int id, float value) {
 	if (has_method("_notification_scategory_cooldown_removed"))
-		call("_notification_scategory_cooldown_removed", data, category_cooldown);
+		call("_notification_scategory_cooldown_removed", data, id, value);
 }
 
 void Aura::notification_sgcd_started(Ref<AuraData> data, float gcd) {
@@ -747,21 +747,21 @@ void Aura::notification_cdeath(Ref<AuraData> data) {
 		call("_notification_cdeath", data);
 }
 
-void Aura::notification_ccooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown) {
+void Aura::notification_ccooldown_added(Ref<AuraData> data, int id, float value) {
 	if (has_method("_notification_ccooldown_added"))
-		call("_notification_ccooldown_added", data, cooldown);
+		call("_notification_ccooldown_added", data, id, value);
 }
-void Aura::notification_ccooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown) {
+void Aura::notification_ccooldown_removed(Ref<AuraData> data, int id, float value) {
 	if (has_method("_notification_ccooldown_removed"))
-		call("_notification_ccooldown_removed", data, cooldown);
+		call("_notification_ccooldown_removed", data, id, value);
 }
-void Aura::notification_ccategory_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
+void Aura::notification_ccategory_cooldown_added(Ref<AuraData> data, int id, float value) {
 	if (has_method("_notification_ccategory_cooldown_added"))
-		call("_notification_ccategory_cooldown_added", data, category_cooldown);
+		call("_notification_ccategory_cooldown_added", data, id, value);
 }
-void Aura::notification_ccategory_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown) {
+void Aura::notification_ccategory_cooldown_removed(Ref<AuraData> data, int id, float value) {
 	if (has_method("_notification_ccategory_cooldown_removed"))
-		call("_notification_ccategory_cooldown_removed", data, category_cooldown);
+		call("_notification_ccategory_cooldown_removed", data, id, value);
 }
 
 void Aura::notification_cgcd_started(Ref<AuraData> data, float gcd) {

@@ -40,9 +40,6 @@ SOFTWARE.
 #include "../../pipelines/spell_damage_info.h"
 #include "../../pipelines/spell_heal_info.h"
 
-#include "../../utility/category_cooldown.h"
-#include "../../utility/cooldown.h"
-
 #include "../spells/spell_effect_visual.h"
 
 class AuraApplyInfo;
@@ -267,11 +264,11 @@ public:
 
 	void notification_sdeath(Ref<AuraData> data);
 
-	void notification_scooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown);
-	void notification_scooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown);
+	void notification_scooldown_added(Ref<AuraData> data, int id, float value);
+	void notification_scooldown_removed(Ref<AuraData> data, int id, float value);
 
-	void notification_scategory_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
-	void notification_scategory_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
+	void notification_scategory_cooldown_added(Ref<AuraData> data, int id, float value);
+	void notification_scategory_cooldown_removed(Ref<AuraData> data, int id, float value);
 
 	void notification_sgcd_started(Ref<AuraData> data, float gcd);
 	void notification_sgcd_finished(Ref<AuraData> data);
@@ -293,10 +290,10 @@ public:
 
 	void notification_cdeath(Ref<AuraData> data);
 
-	void notification_ccooldown_added(Ref<AuraData> data, Ref<Cooldown> cooldown);
-	void notification_ccooldown_removed(Ref<AuraData> data, Ref<Cooldown> cooldown);
-	void notification_ccategory_cooldown_added(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
-	void notification_ccategory_cooldown_removed(Ref<AuraData> data, Ref<CategoryCooldown> category_cooldown);
+	void notification_ccooldown_added(Ref<AuraData> data, int id, float value);
+	void notification_ccooldown_removed(Ref<AuraData> data, int id, float value);
+	void notification_ccategory_cooldown_added(Ref<AuraData> data, int id, float value);
+	void notification_ccategory_cooldown_removed(Ref<AuraData> data, int id, float value);
 
 	void notification_cgcd_started(Ref<AuraData> data, float gcd);
 	void notification_cgcd_finished(Ref<AuraData> data);

@@ -98,8 +98,6 @@ SOFTWARE.
 
 #include "skeleton/skeleton_model_entry.h"
 
-#include "utility/category_cooldown.h"
-#include "utility/cooldown.h"
 #include "utility/entity_create_info.h"
 
 #include "data/loot/loot_data_base.h"
@@ -225,9 +223,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<SpeciesInstance>();
 
 	ClassDB::register_class<SkeletonModelEntry>();
-
-	ClassDB::register_class<Cooldown>();
-	ClassDB::register_class<CategoryCooldown>();
 
 	ClassDB::register_class<LootDataBase>();
 

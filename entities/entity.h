@@ -47,8 +47,6 @@ SOFTWARE.
 #include "../utility/entity_create_info.h"
 
 #include "../inventory/bag.h"
-#include "../utility/category_cooldown.h"
-#include "../utility/cooldown.h"
 #include "./data/entity_data_container.h"
 
 #include "../profiles/actionbar/action_bar_profile.h"
@@ -525,11 +523,11 @@ public:
 	void notification_scast(int what, Ref<SpellCastInfo> info);
 	void notification_sdamage(int what, Ref<SpellDamageInfo> info);
 
-	void notification_scooldown_added(Ref<Cooldown> cooldown);
-	void notification_scooldown_removed(Ref<Cooldown> cooldown);
+	void notification_scooldown_added(int id, float value);
+	void notification_scooldown_removed(int id, float value);
 
-	void notification_scategory_cooldown_added(Ref<CategoryCooldown> category_cooldown);
-	void notification_scategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+	void notification_scategory_cooldown_added(int id, float value);
+	void notification_scategory_cooldown_removed(int id, float value);
 
 	void notification_sentity_resource_added(Ref<EntityResource> resource);
 	void notification_sentity_resource_removed(Ref<EntityResource> resource);
@@ -548,11 +546,11 @@ public:
 	void notification_ccast(int what, Ref<SpellCastInfo> info);
 	void notification_cdamage(int what, Ref<SpellDamageInfo> info);
 
-	void notification_ccooldown_added(Ref<Cooldown> cooldown);
-	void notification_ccooldown_removed(Ref<Cooldown> cooldown);
+	void notification_ccooldown_added(int id, float value);
+	void notification_ccooldown_removed(int id, float value);
 
-	void notification_ccategory_cooldown_added(Ref<CategoryCooldown> category_cooldown);
-	void notification_ccategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown);
+	void notification_ccategory_cooldown_added(int id, float value);
+	void notification_ccategory_cooldown_removed(int id, float value);
 
 	void notification_centity_resource_added(Ref<EntityResource> resource);
 	void notification_centity_resource_removed(Ref<EntityResource> resource);
@@ -698,43 +696,34 @@ public:
 
 	////    Cooldowns    ////
 
-	Vector<Ref<Cooldown> > *cooldowns_gets();
-	Vector<Ref<Cooldown> > *cooldowns_getc();
-
-	HashMap<int, Ref<Cooldown> > *cooldown_get_maps();
-	HashMap<int, Ref<Cooldown> > *cooldown_get_mapc();
-
 	bool cooldown_hass(int spell_id);
 	void cooldown_adds(int spell_id, float value);
 	void cooldown_removes(int spell_id);
-	Ref<Cooldown> cooldown_gets(int spell_id);
-	Ref<Cooldown> cooldown_gets_index(int index);
+	float cooldown_gets(int spell_id);
+	float cooldown_gets_index(int index);
 	int cooldown_gets_count();
 
 	bool cooldown_hasc(int spell_id);
 	void cooldown_addc(int spell_id, float value);
 	void cooldown_removec(int spell_id);
-	Ref<Cooldown> cooldown_getc(int spell_id);
-	Ref<Cooldown> cooldown_getc_index(int index);
+	float cooldown_getc(int spell_id);
+	float cooldown_getc_index(int index);
 	int cooldown_getc_count();
 
 	//Category Cooldowns
 
-	Vector<Ref<CategoryCooldown> > category_cooldowns_gets();
-	Vector<Ref<CategoryCooldown> > category_cooldowns_getc();
-
 	bool category_cooldown_hass(int category_id);
 	void category_cooldown_adds(int category_id, float value);
 	void category_cooldown_removes(int category_id);
-	Ref<CategoryCooldown> category_cooldown_gets(int category_id);
-	Ref<CategoryCooldown> category_cooldown_gets_index(int index);
+	float category_cooldown_gets(int category_id);
+	float category_cooldown_gets_index(int index);
 	int category_cooldown_gets_count();
 
 	bool category_cooldown_hasc(int category_id);
 	void category_cooldown_addc(int category_id, float value);
 	void category_cooldown_removec(int spell_id);
-	Ref<CategoryCooldown> category_cooldown_getc(int category_id);
-	Ref<CategoryCooldown> category_cooldown_getc_index(int index);
+	float category_cooldown_getc(int category_id);
+	float category_cooldown_getc_index(int index);
 	int category_cooldown_getc_count();
 
 	//Known Spells
@@ -1080,6 +1069,18 @@ protected:
 	static void _bind_methods();
 	virtual void _notification(int p_what);
 
+protected:
+	struct Cooldown {
+		int id;
+		StringName path;
+		float cooldown;
+
+		Cooldown() {
+			id = 0;
+			cooldown = 0;
+		}
+	};
+
 private:
 	bool _maunal_process;
 
@@ -1197,14 +1198,11 @@ private:
 	int _c_entity_flags;
 
 	////    Cooldowns    ////
-	Vector<Ref<Cooldown> > _s_cooldowns;
-	Vector<Ref<Cooldown> > _c_cooldowns;
+	Vector<Cooldown> _s_cooldowns;
+	Vector<Cooldown> _c_cooldowns;
 
-	HashMap<int, Ref<Cooldown> > _s_cooldown_map;
-	HashMap<int, Ref<Cooldown> > _c_cooldown_map;
-
-	Vector<Ref<CategoryCooldown> > _s_category_cooldowns;
-	Vector<Ref<CategoryCooldown> > _c_category_cooldowns;
+	Vector<Cooldown> _s_category_cooldowns;
+	Vector<Cooldown> _c_category_cooldowns;
 
 	int _s_active_category_cooldowns;
 	int _c_active_category_cooldowns;

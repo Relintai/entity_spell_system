@@ -390,34 +390,34 @@ void EntityData::notification_sdeath_bind(Node *entity) {
 	notification_sdeath(e);
 }
 
-void EntityData::notification_scooldown_added(Ref<Cooldown> cooldown) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_scooldown_added(cooldown);
+void EntityData::notification_scooldown_added(int id, float value) {
+	//if (_entity_class_data.is_valid())
+	//	_entity_class_data->notification_scooldown_added(id, value);
 
 	if (has_method("_notification_scooldown_added"))
-		call("_notification_scooldown_added", cooldown);
+		call("_notification_scooldown_added", id, value);
 }
-void EntityData::notification_scooldown_removed(Ref<Cooldown> cooldown) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_scooldown_removed(cooldown);
+void EntityData::notification_scooldown_removed(int id, float value) {
+	//if (_entity_class_data.is_valid())
+	//	_entity_class_data->notification_scooldown_removed(id, value);
 
 	if (has_method("_notification_scooldown_removed"))
-		call("_notification_scooldown_removed", cooldown);
+		call("_notification_scooldown_removed", id, value);
 }
 
-void EntityData::notification_scategory_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_scategory_cooldown_added(category_cooldown);
+void EntityData::notification_scategory_cooldown_added(int id, float value) {
+	//if (_entity_class_data.is_valid())
+	//	_entity_class_data->notification_scategory_cooldown_added(id, value);
 
 	if (has_method("_notification_scategory_cooldown_added"))
-		call("_notification_scategory_cooldown_added", category_cooldown);
+		call("_notification_scategory_cooldown_added", id, value);
 }
-void EntityData::notification_scategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_scategory_cooldown_removed(category_cooldown);
+void EntityData::notification_scategory_cooldown_removed(int id, float value) {
+	//if (_entity_class_data.is_valid())
+	//	_entity_class_data->notification_scategory_cooldown_removed(id, value);
 
 	if (has_method("_notification_scategory_cooldown_removed"))
-		call("_notification_scategory_cooldown_removed", category_cooldown);
+		call("_notification_scategory_cooldown_removed", id, value);
 }
 
 void EntityData::notification_sgcd_started(Entity *entity, float gcd) {
@@ -579,41 +579,33 @@ void EntityData::notification_cdeath_bind(Node *entity) {
 	notification_cdeath(e);
 }
 
-void EntityData::notification_ccooldown_added(Ref<Cooldown> cooldown) {
-	ERR_FAIL_COND(!cooldown.is_valid());
-
+void EntityData::notification_ccooldown_added(int id, float value) {
 	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_ccooldown_added(cooldown);
+		_entity_class_data->notification_ccooldown_added(id, value);
 
 	if (has_method("_notification_ccooldown_added"))
-		call("_notification_ccooldown_added", cooldown);
+		call("_notification_ccooldown_added", id, value);
 }
-void EntityData::notification_ccooldown_removed(Ref<Cooldown> cooldown) {
-	ERR_FAIL_COND(!cooldown.is_valid());
-
+void EntityData::notification_ccooldown_removed(int id, float value) {
 	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_ccooldown_removed(cooldown);
+		_entity_class_data->notification_ccooldown_removed(id, value);
 
 	if (has_method("_notification_ccooldown_removed"))
-		call("_notification_ccooldown_removed", cooldown);
+		call("_notification_ccooldown_removed", id, value);
 }
-void EntityData::notification_ccategory_cooldown_added(Ref<CategoryCooldown> category_cooldown) {
-	ERR_FAIL_COND(!category_cooldown.is_valid());
-
+void EntityData::notification_ccategory_cooldown_added(int id, float value) {
 	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_ccategory_cooldown_added(category_cooldown);
+		_entity_class_data->notification_ccategory_cooldown_added(id, value);
 
 	if (has_method("_notification_ccategory_cooldown_added"))
-		call("_notification_ccategory_cooldown_added", category_cooldown);
+		call("_notification_ccategory_cooldown_added", id, value);
 }
-void EntityData::notification_ccategory_cooldown_removed(Ref<CategoryCooldown> category_cooldown) {
-	ERR_FAIL_COND(!category_cooldown.is_valid());
-
+void EntityData::notification_ccategory_cooldown_removed(int id, float value) {
 	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_ccategory_cooldown_removed(category_cooldown);
+		_entity_class_data->notification_ccategory_cooldown_removed(id, value);
 
 	if (has_method("_notification_ccategory_cooldown_removed"))
-		call("_notification_ccategory_cooldown_removed", category_cooldown);
+		call("_notification_ccategory_cooldown_removed", id, value);
 }
 
 void EntityData::notification_cgcd_started(Entity *entity, float gcd) {
