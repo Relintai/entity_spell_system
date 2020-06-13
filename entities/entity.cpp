@@ -6423,7 +6423,9 @@ void Entity::_notification(int p_what) {
 bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name;
 
-	if (name.get_slicec('/', 0) == "stat") {
+	String main_prop = name.get_slicec('/', 0);
+
+	if (main_prop == "stat") {
 		int stat_id = name.get_slicec('/', 1).to_int();
 		String stat_prop_name = name.get_slicec('/', 2);
 
@@ -6446,52 +6448,21 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 		} else {
 			return false;
 		}
-	} else {
-		return false;
+	} else if (main_prop == "sequipment") {
+		int slot_id = name.get_slicec('/', 1).to_int();
+
+		if (_s_equipment.size() <= slot_id) {
+			return false;
+		}
+
+		_s_equipment.write[slot_id] = p_value;
+
+		return true;
 	}
 
 	return false;
 
 	/*
-	sets_entity_type((int)((int)dict.get("type", 0)));
-
-	sets_model_index(static_cast<int>(static_cast<int>(dict.get("model_index", 0))));
-
-	if (ESS::get_singleton()->get_use_global_class_level()) {
-		_s_class_level = (dict.get("class_level", 0));
-		_s_class_xp = (dict.get("class_xp", 0));
-	} else {
-		sets_class_level(dict.get("class_level", 0));
-		sets_class_xp(dict.get("class_xp", 0));
-	}
-
-	sets_character_level(dict.get("character_level", 0));
-	sets_character_xp(dict.get("character_xp", 0));
-
-	sets_money(dict.get("money", 0));
-
-	sets_entity_name(dict.get("entity_name", ""));
-
-	sets_seed(dict.get("seed", _s_seed));
-
-	////    Equipment    ////
-
-	Dictionary equipment = dict.get("equipment", Dictionary());
-
-	for (int i = 0; i < ESS::get_singleton()->equip_slot_get_count(); ++i) {
-		if (equipment.has(String::num(i))) {
-			Ref<ItemInstance> ii = _s_equipment[i];
-
-			if (!ii.is_valid()) {
-				ii.instance();
-			}
-
-			ii->from_dict(dict[String::num(i)]);
-
-			_s_equipment[i] = ii;
-			_c_equipment[i] = ii;
-		}
-	}
 
 	////    Resources    ////
 
@@ -6552,14 +6523,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 		_s_auras.push_back(r);
 		//_c_auras.push_back(r);
 	}
-
-	sets_entity_type((int)((int)dict.get("entity_type", 0)));
-	sets_immunity_flags(dict.get("immunity_flags", 0));
-	sets_entity_flags(dict.get("entity_flags", 0));
-	EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
-
-	sets_original_entity_controller(contr);
-	sets_entity_controller(contr);
 
 	////    Cooldowns    ////
 
@@ -6712,7 +6675,9 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 	String name = p_name;
 
-	if (name.get_slicec('/', 0) == "stat") {
+	String main_prop = name.get_slicec('/', 0);
+
+	if (main_prop == "stat") {
 		int stat_id = name.get_slicec('/', 1).to_int();
 		String stat_prop_name = name.get_slicec('/', 2);
 
@@ -6735,26 +6700,22 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 		} else {
 			return false;
 		}
-	} else {
-		return false;
+	} else if (main_prop == "sequipment") {
+		int slot_id = name.get_slicec('/', 1).to_int();
+
+		if (_s_equipment.size() <= slot_id) {
+			return false;
+		}
+
+		r_ret = _s_equipment[slot_id];
+
+		return true;
 	}
 
 	return false;
+
 	/*
 	Dictionary dict;
-
-	////    Equipment    ////
-
-	Dictionary equipment;
-
-	for (int i = 0; i < ESS::get_singleton()->equip_slot_get_count(); ++i) {
-		Ref<ItemInstance> ii = _s_equipment[i];
-
-		if (ii.is_valid())
-			equipment[i] = ii->to_dict();
-	}
-
-	dict["equipment"] = equipment;
 
 	////    Resources    ////
 
@@ -6890,12 +6851,16 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 
 void Entity::_get_property_list(List<PropertyInfo> *p_list) const {
 	//int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
-	int property_usange = PROPERTY_USAGE_DEFAULT;
+	int property_usange = PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL;
 
 	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/base", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/percent", PROPERTY_HINT_NONE, "", property_usange));
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/scurrent", PROPERTY_HINT_NONE, "", property_usange));
+	}
+
+	for (int i = 0; i < ESS::get_singleton()->equip_slot_get_count(); ++i) {
+		p_list->push_back(PropertyInfo(Variant::OBJECT, "sequipment/" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", property_usange));
 	}
 }
 
