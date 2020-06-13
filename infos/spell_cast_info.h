@@ -23,15 +23,15 @@ SOFTWARE.
 #ifndef SPELL_INFOS_H
 #define SPELL_INFOS_H
 
-#include "core/reference.h"
+#include "core/resource.h"
 
 class Spell;
 class Entity;
 class ItemInstance;
 class ItemTemplate;
 
-class SpellCastInfo : public Reference {
-	GDCLASS(SpellCastInfo, Reference);
+class SpellCastInfo : public Resource {
+	GDCLASS(SpellCastInfo, Resource);
 
 public:
 	Entity *caster_get();

@@ -23,15 +23,15 @@ SOFTWARE.
 #ifndef ITEM_INSTANCE_H
 #define ITEM_INSTANCE_H
 
-#include "core/reference.h"
+#include "core/resource.h"
 #include "core/vector.h"
 
 #include "../../item_enums.h"
 
 class ItemTemplate;
 
-class ItemInstance : public Reference {
-	GDCLASS(ItemInstance, Reference);
+class ItemInstance : public Resource {
+	GDCLASS(ItemInstance, Resource);
 
 public:
 	Ref<ItemTemplate> get_item_template();

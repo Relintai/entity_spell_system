@@ -23,11 +23,11 @@ SOFTWARE.
 #ifndef ENTITY_SKILL_H
 #define ENTITY_SKILL_H
 
-#include "core/reference.h"
+#include "core/resource.h"
 #include "entity_skill_data.h"
 
-class EntitySkill : public Reference {
-	GDCLASS(EntitySkill, Reference);
+class EntitySkill : public Resource {
+	GDCLASS(EntitySkill, Resource);
 
 public:
 	Ref<EntitySkillData> get_skill();

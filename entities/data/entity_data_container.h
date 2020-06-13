@@ -24,10 +24,10 @@ SOFTWARE.
 #define ENTITY_DATA_CONTAINER_H
 
 #include "core/dictionary.h"
-#include "core/reference.h"
+#include "core/resource.h"
 
-class EntityDataContainer : public Reference {
-	GDCLASS(EntityDataContainer, Reference);
+class EntityDataContainer : public Resource {
+	GDCLASS(EntityDataContainer, Resource);
 
 public:
 	Dictionary to_dict();

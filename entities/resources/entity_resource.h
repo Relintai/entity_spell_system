@@ -23,13 +23,13 @@ SOFTWARE.
 #ifndef ENTITY_RESOURCE_H
 #define ENTITY_RESOURCE_H
 
-#include "core/reference.h"
+#include "core/resource.h"
 
 class Entity;
 class EntityResourceData;
 
-class EntityResource : public Reference {
-	GDCLASS(EntityResource, Reference);
+class EntityResource : public Resource {
+	GDCLASS(EntityResource, Resource);
 
 public:
 	bool get_dirty() const;
