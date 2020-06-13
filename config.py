@@ -89,8 +89,6 @@ def get_doc_classes():
         "SkeletonModelEntry",
         "SpeciesModelData",
 
-        "CategoryCooldown",
-        "Cooldown",
         "EntityCreateInfo",
 
         "SpellFollowProjectile3D",
