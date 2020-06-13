@@ -7556,10 +7556,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("cast_spell_successs", "info"), &Entity::cast_spell_successs);
 
 	//Cooldowns
-	ADD_SIGNAL(MethodInfo("scooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	ADD_SIGNAL(MethodInfo("scooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	ADD_SIGNAL(MethodInfo("ccooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
-	ADD_SIGNAL(MethodInfo("ccooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	ADD_SIGNAL(MethodInfo("scooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	ADD_SIGNAL(MethodInfo("scooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	ADD_SIGNAL(MethodInfo("ccooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	ADD_SIGNAL(MethodInfo("ccooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
 
 	ClassDB::bind_method(D_METHOD("cooldown_hass", "spell_id"), &Entity::cooldown_hass);
 	ClassDB::bind_method(D_METHOD("cooldown_adds", "spell_id", "value"), &Entity::cooldown_adds);
