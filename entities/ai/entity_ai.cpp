@@ -24,6 +24,15 @@ SOFTWARE.
 
 #include "../entity.h"
 
+#include "../../infos/spell_cast_info.h"
+
+#include "../../data/auras/aura.h"
+#include "../../data/items/item_instance.h"
+#include "../../entities/auras/aura_data.h"
+#include "../../entities/resources/entity_resource.h"
+#include "../../pipelines/spell_damage_info.h"
+#include "../../pipelines/spell_heal_info.h"
+
 #include "../../defines.h"
 
 bool EntityAI::get_enabled() {
@@ -128,6 +137,362 @@ void EntityAI::pet_move(float delta) {
 void EntityAI::_on_set_owner() {
 }
 
+void EntityAI::start_casting(int spell_id, Entity *caster, float spellScale) {
+	//if (_entity_class_data.is_valid())
+	//	_entity_class_data->start_casting(spell_id, caster, spellScale);
+}
+
+void EntityAI::notification_saura(int what, Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_notification_saura"))
+		call("_notification_saura", what, data);
+}
+void EntityAI::notification_sheal(int what, Ref<SpellHealInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_notification_sheal"))
+		call("_notification_sheal", what, info);
+}
+void EntityAI::notification_scast(int what, Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_notification_scast"))
+		call("_notification_scast", what, info);
+}
+void EntityAI::notification_sdamage(int what, Ref<SpellDamageInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_notification_sdamage"))
+		call("_notification_sdamage", what, info);
+}
+
+void EntityAI::notification_sdeath(Entity *entity) {
+	if (has_method("_notification_sdeath"))
+		call("_notification_sdeath", entity);
+}
+
+void EntityAI::notification_sdeath_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_sdeath(e);
+}
+
+void EntityAI::notification_scooldown_added(int id, float value) {
+	if (has_method("_notification_scooldown_added"))
+		call("_notification_scooldown_added", id, value);
+}
+void EntityAI::notification_scooldown_removed(int id, float value) {
+	if (has_method("_notification_scooldown_removed"))
+		call("_notification_scooldown_removed", id, value);
+}
+
+void EntityAI::notification_scategory_cooldown_added(int id, float value) {
+	if (has_method("_notification_scategory_cooldown_added"))
+		call("_notification_scategory_cooldown_added", id, value);
+}
+void EntityAI::notification_scategory_cooldown_removed(int id, float value) {
+	if (has_method("_notification_scategory_cooldown_removed"))
+		call("_notification_scategory_cooldown_removed", id, value);
+}
+
+void EntityAI::notification_sgcd_started(Entity *entity, float gcd) {
+	if (has_method("_notification_sgcd_started"))
+		call("_notification_sgcd_started", entity, gcd);
+}
+void EntityAI::notification_sgcd_finished(Entity *entity) {
+	if (has_method("_notification_sgcd_finished"))
+		call("_notification_sgcd_finished", entity);
+}
+void EntityAI::notification_sgcd_started_bind(Node *entity, float gcd) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_sgcd_started(e, gcd);
+}
+void EntityAI::notification_sgcd_finished_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_sgcd_finished(e);
+}
+
+void EntityAI::notification_sxp_gained(Entity *entity, int value) {
+	if (has_method("_notification_sxp_gained"))
+		call("_notification_sxp_gained", entity, value);
+}
+void EntityAI::notification_sxp_gained_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_sxp_gained(e, value);
+}
+
+void EntityAI::notification_sclass_level_up(Entity *entity, int value) {
+	if (has_method("_notification_sclass_level_up"))
+		call("_notification_sclass_level_up", entity);
+}
+void EntityAI::notification_sclass_level_up_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_sclass_level_up(e, value);
+}
+
+void EntityAI::notification_scharacter_level_up(Entity *entity, int value) {
+	if (has_method("_notification_scharacter_level_up"))
+		call("_notification_scharacter_level_up", entity);
+}
+void EntityAI::notification_scharacter_level_up_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_scharacter_level_up(e, value);
+}
+
+void EntityAI::notification_sentity_resource_added(Ref<EntityResource> resource) {
+	if (has_method("_notification_sentity_resource_added"))
+		call("_notification_sentity_resource_added", resource);
+}
+
+void EntityAI::notification_sentity_resource_removed(Ref<EntityResource> resource) {
+	if (has_method("_notification_sentity_resource_removed"))
+		call("_notification_sentity_resource_removed", resource);
+}
+
+//Clientside Event Handlers
+void EntityAI::notification_caura(int what, Ref<AuraData> data) {
+	ERR_FAIL_COND(!data.is_valid());
+
+	if (has_method("_notification_caura"))
+		call("_notification_caura", what, data);
+}
+void EntityAI::notification_cheal(int what, Ref<SpellHealInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_notification_cheal"))
+		call("_notification_cheal", what, info);
+}
+void EntityAI::notification_ccast(int what, Ref<SpellCastInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_notification_ccast"))
+		call("_notification_ccast", what, info);
+}
+void EntityAI::notification_cdamage(int what, Ref<SpellDamageInfo> info) {
+	ERR_FAIL_COND(!info.is_valid());
+
+	if (has_method("_notification_cdamage"))
+		call("_notification_cdamage", what, info);
+}
+
+void EntityAI::notification_cdeath(Entity *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	if (has_method("_notification_cdeath"))
+		call("_notification_cdeath", entity);
+}
+
+void EntityAI::notification_cdeath_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_cdeath(e);
+}
+
+void EntityAI::notification_ccooldown_added(int id, float value) {
+	if (has_method("_notification_ccooldown_added"))
+		call("_notification_ccooldown_added", id, value);
+}
+void EntityAI::notification_ccooldown_removed(int id, float value) {
+	if (has_method("_notification_ccooldown_removed"))
+		call("_notification_ccooldown_removed", id, value);
+}
+void EntityAI::notification_ccategory_cooldown_added(int id, float value) {
+	if (has_method("_notification_ccategory_cooldown_added"))
+		call("_notification_ccategory_cooldown_added", id, value);
+}
+void EntityAI::notification_ccategory_cooldown_removed(int id, float value) {
+	if (has_method("_notification_ccategory_cooldown_removed"))
+		call("_notification_ccategory_cooldown_removed", id, value);
+}
+
+void EntityAI::notification_cgcd_started(Entity *entity, float gcd) {
+	if (has_method("_notification_cgcd_started"))
+		call("_notification_cgcd_started", entity, gcd);
+}
+void EntityAI::notification_cgcd_finished(Entity *entity) {
+	if (has_method("_notification_cgcd_finished"))
+		call("_notification_cgcd_finished", entity);
+}
+void EntityAI::notification_cgcd_started_bind(Node *entity, float gcd) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_cgcd_started(e, gcd);
+}
+void EntityAI::notification_cgcd_finished_bind(Node *entity) {
+	ERR_FAIL_COND(entity == NULL);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_cgcd_finished(e);
+}
+
+void EntityAI::notification_cxp_gained(Entity *entity, int value) {
+	if (has_method("_notification_cxp_gained"))
+		call("_notification_cxp_gained", entity, value);
+}
+void EntityAI::notification_cxp_gained_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_cxp_gained(e, value);
+}
+
+void EntityAI::notification_cclass_level_up(Entity *entity, int value) {
+	if (has_method("_notification_cclass_level_up"))
+		call("_notification_cclass_level_up", entity);
+}
+void EntityAI::notification_cclass_level_up_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_cclass_level_up(e, value);
+}
+
+void EntityAI::notification_ccharacter_level_up(Entity *entity, int value) {
+	if (has_method("_notification_ccharacter_level_up"))
+		call("_notification_ccharacter_level_up", entity);
+}
+void EntityAI::notification_ccharacter_level_up_bind(Node *entity, int value) {
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	notification_ccharacter_level_up(e, value);
+}
+
+void EntityAI::notification_centity_resource_added(Ref<EntityResource> resource) {
+	if (has_method("_notification_centity_resource_added"))
+		call("_notification_centity_resource_added", resource);
+}
+
+void EntityAI::notification_centity_resource_removed(Ref<EntityResource> resource) {
+	if (has_method("_notification_centity_resource_removed"))
+		call("_notification_centity_resource_removed", resource);
+}
+
+//Equipment
+
+bool EntityAI::equip_should_deny(Entity *entity, int equip_slot, Ref<ItemInstance> item) {
+	if (has_method("_equip_should_deny"))
+		if (call("_equip_should_deny", entity, equip_slot, item))
+			return true;
+
+	return false;
+}
+bool EntityAI::equip_should_deny_bind(Node *entity, int equip_slot, Ref<ItemInstance> item) {
+	ERR_FAIL_COND_V(!INSTANCE_VALIDATE(entity), false);
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND_V(e == NULL, false);
+
+	return equip_should_deny(e, equip_slot, item);
+}
+
+void EntityAI::equip_son_success(Entity *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	if (has_method("_equip_son_success"))
+		call("_equip_son_success", entity, equip_slot, item, old_item, bag_slot);
+}
+void EntityAI::equip_son_success_bind(Node *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	equip_son_success(e, equip_slot, item, old_item, bag_slot);
+}
+
+void EntityAI::equip_son_fail(Entity *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	if (has_method("_equip_son_fail"))
+		call("_equip_son_fail", entity, equip_slot, item, old_item, bag_slot);
+}
+void EntityAI::equip_son_fail_bind(Node *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	equip_son_fail(e, equip_slot, item, old_item, bag_slot);
+}
+
+void EntityAI::equip_con_success(Entity *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	if (has_method("_equip_con_success"))
+		call("_equip_con_success", entity, equip_slot, item, old_item, bag_slot);
+}
+void EntityAI::equip_con_success_bind(Node *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	equip_con_success(e, equip_slot, item, old_item, bag_slot);
+}
+
+void EntityAI::equip_con_fail(Entity *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	if (has_method("_equip_con_fail"))
+		call("_equip_con_fail", entity, equip_slot, item, old_item, bag_slot);
+}
+void EntityAI::equip_con_fail_bind(Node *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
+	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
+
+	Entity *e = Object::cast_to<Entity>(entity);
+
+	ERR_FAIL_COND(e == NULL);
+
+	equip_con_fail(e, equip_slot, item, old_item, bag_slot);
+}
+
 EntityAI::EntityAI() {
 	_enabled = true;
 	_owner = NULL;
@@ -186,4 +551,112 @@ void EntityAI::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("pet_move", "delta"), &EntityAI::pet_move);
 
 	ClassDB::bind_method(D_METHOD("_on_set_owner"), &EntityAI::_on_set_owner);
+
+	//EventHandlers
+	BIND_VMETHOD(MethodInfo("_notification_saura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_notification_sheal", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_scast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_sdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	ClassDB::bind_method(D_METHOD("notification_saura", "what", "data"), &EntityAI::notification_saura);
+	ClassDB::bind_method(D_METHOD("notification_sheal", "what", "info"), &EntityAI::notification_sheal);
+	ClassDB::bind_method(D_METHOD("notification_scast", "what", "info"), &EntityAI::notification_scast);
+	ClassDB::bind_method(D_METHOD("notification_sdamage", "what", "info"), &EntityAI::notification_sdamage);
+
+	BIND_VMETHOD(MethodInfo("_notification_caura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
+	BIND_VMETHOD(MethodInfo("_notification_cheal", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_ccast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
+	BIND_VMETHOD(MethodInfo("_notification_cdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	ClassDB::bind_method(D_METHOD("notification_caura", "what", "data"), &EntityAI::notification_caura);
+	ClassDB::bind_method(D_METHOD("notification_cheal", "what", "info"), &EntityAI::notification_cheal);
+	ClassDB::bind_method(D_METHOD("notification_ccast", "what", "info"), &EntityAI::notification_ccast);
+	ClassDB::bind_method(D_METHOD("notification_cdamage", "what", "info"), &EntityAI::notification_cdamage);
+
+	ClassDB::bind_method(D_METHOD("notification_sdeath", "data"), &EntityAI::notification_sdeath_bind);
+
+	ClassDB::bind_method(D_METHOD("notification_scooldown_added", "cooldown"), &EntityAI::notification_scooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_scooldown_removed", "cooldown"), &EntityAI::notification_scooldown_removed);
+
+	ClassDB::bind_method(D_METHOD("notification_scategory_cooldown_added", "category_cooldown"), &EntityAI::notification_scategory_cooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_scategory_cooldown_removed", "category_cooldown"), &EntityAI::notification_scategory_cooldown_removed);
+
+	ClassDB::bind_method(D_METHOD("notification_sgcd_started", "entity", "gcd"), &EntityAI::notification_sgcd_started_bind);
+	ClassDB::bind_method(D_METHOD("notification_sgcd_finished", "entity"), &EntityAI::notification_sgcd_finished_bind);
+
+	ClassDB::bind_method(D_METHOD("notification_sxp_gained", "entity", "value"), &EntityAI::notification_sxp_gained_bind);
+	ClassDB::bind_method(D_METHOD("notification_sclass_level_up", "entity", "value"), &EntityAI::notification_sclass_level_up_bind);
+	ClassDB::bind_method(D_METHOD("notification_scharacter_level_up", "entity", "value"), &EntityAI::notification_scharacter_level_up_bind);
+
+	ClassDB::bind_method(D_METHOD("notification_sentity_resource_added", "resource"), &EntityAI::notification_sentity_resource_added);
+	ClassDB::bind_method(D_METHOD("notification_sentity_resource_removed", "resource"), &EntityAI::notification_sentity_resource_removed);
+
+	BIND_VMETHOD(MethodInfo("_notification_sdeath", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
+	BIND_VMETHOD(MethodInfo("_notification_scooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_scooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+
+	BIND_VMETHOD(MethodInfo("_notification_scategory_cooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_scategory_cooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+
+	BIND_VMETHOD(MethodInfo("_notification_sgcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_notification_sgcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
+	BIND_VMETHOD(MethodInfo("_notification_sxp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_sclass_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_scharacter_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+
+	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+
+	//Clientside Event Handlers
+	ClassDB::bind_method(D_METHOD("notification_cdeath", "data"), &EntityAI::notification_cdeath_bind);
+
+	ClassDB::bind_method(D_METHOD("notification_ccooldown_added", "cooldown"), &EntityAI::notification_ccooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_ccooldown_removed", "cooldown"), &EntityAI::notification_ccooldown_removed);
+	ClassDB::bind_method(D_METHOD("notification_ccategory_cooldown_added", "cooldown"), &EntityAI::notification_ccategory_cooldown_added);
+	ClassDB::bind_method(D_METHOD("notification_ccategory_cooldown_removed", "cooldown"), &EntityAI::notification_ccategory_cooldown_removed);
+
+	ClassDB::bind_method(D_METHOD("notification_cgcd_started", "entity", "gcd"), &EntityAI::notification_cgcd_started_bind);
+	ClassDB::bind_method(D_METHOD("notification_cgcd_finished", "entity"), &EntityAI::notification_cgcd_finished_bind);
+
+	ClassDB::bind_method(D_METHOD("notification_cxp_gained", "entity", "value"), &EntityAI::notification_cxp_gained_bind);
+	ClassDB::bind_method(D_METHOD("notification_cclass_level_up", "entity", "value"), &EntityAI::notification_cclass_level_up_bind);
+	ClassDB::bind_method(D_METHOD("notification_ccharacter_level_up", "entity", "value"), &EntityAI::notification_ccharacter_level_up_bind);
+
+	ClassDB::bind_method(D_METHOD("notification_centity_resource_added", "resource"), &EntityAI::notification_centity_resource_added);
+	ClassDB::bind_method(D_METHOD("notification_centity_resource_removed", "resource"), &EntityAI::notification_centity_resource_removed);
+
+	BIND_VMETHOD(MethodInfo("_notification_cdeath", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
+	BIND_VMETHOD(MethodInfo("_notification_ccooldown_added", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_ccooldown_removed", PropertyInfo(Variant::OBJECT, "cooldown", PROPERTY_HINT_RESOURCE_TYPE, "Cooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_ccategory_cooldown_added", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+	BIND_VMETHOD(MethodInfo("_notification_ccategory_cooldown_removed", PropertyInfo(Variant::OBJECT, "category_cooldown", PROPERTY_HINT_RESOURCE_TYPE, "CategoryCooldown")));
+
+	BIND_VMETHOD(MethodInfo("_notification_cgcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
+	BIND_VMETHOD(MethodInfo("_notification_cgcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+
+	BIND_VMETHOD(MethodInfo("_notification_cxp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_cclass_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_ccharacter_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+
+	BIND_VMETHOD(MethodInfo("_notification_centity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	BIND_VMETHOD(MethodInfo("_notification_centity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+
+	//Equipment
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_equip_should_deny", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+
+	BIND_VMETHOD(MethodInfo("_equip_son_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
+	BIND_VMETHOD(MethodInfo("_equip_son_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
+	BIND_VMETHOD(MethodInfo("_equip_con_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
+	BIND_VMETHOD(MethodInfo("_equip_con_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
+
+	ClassDB::bind_method(D_METHOD("equip_should_deny", "entity", "equip_slot", "item"), &EntityAI::equip_should_deny_bind);
+
+	ClassDB::bind_method(D_METHOD("equip_son_success", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityAI::equip_son_success_bind);
+	ClassDB::bind_method(D_METHOD("equip_son_fail", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityAI::equip_son_fail_bind);
+	ClassDB::bind_method(D_METHOD("equip_con_success", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityAI::equip_con_success_bind);
+	ClassDB::bind_method(D_METHOD("equip_con_fail", "entity", "equip_slot", "item", "old_item", "bag_slot"), &EntityAI::equip_con_fail_bind);
 }
