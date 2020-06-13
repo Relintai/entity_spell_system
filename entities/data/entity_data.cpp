@@ -331,15 +331,12 @@ void EntityData::sinteract_bind(Node *entity) {
 }
 
 void EntityData::start_casting(int spell_id, Entity *caster, float spellScale) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->start_casting(spell_id, caster, spellScale);
+	//if (_entity_class_data.is_valid())
+	//	_entity_class_data->start_casting(spell_id, caster, spellScale);
 }
 
 void EntityData::notification_saura(int what, Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
-
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_saura(what, data);
 
 	if (has_method("_notification_saura"))
 		call("_notification_saura", what, data);
@@ -347,17 +344,11 @@ void EntityData::notification_saura(int what, Ref<AuraData> data) {
 void EntityData::notification_sheal(int what, Ref<SpellHealInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_sheal(what, info);
-
 	if (has_method("_notification_sheal"))
 		call("_notification_sheal", what, info);
 }
 void EntityData::notification_scast(int what, Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_scast(what, info);
 
 	if (has_method("_notification_scast"))
 		call("_notification_scast", what, info);
@@ -365,17 +356,11 @@ void EntityData::notification_scast(int what, Ref<SpellCastInfo> info) {
 void EntityData::notification_sdamage(int what, Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_sdamage(what, info);
-
 	if (has_method("_notification_sdamage"))
 		call("_notification_sdamage", what, info);
 }
 
 void EntityData::notification_sdeath(Entity *entity) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_sdeath(entity);
-
 	if (has_method("_notification_sdeath"))
 		call("_notification_sdeath", entity);
 }
@@ -391,46 +376,28 @@ void EntityData::notification_sdeath_bind(Node *entity) {
 }
 
 void EntityData::notification_scooldown_added(int id, float value) {
-	//if (_entity_class_data.is_valid())
-	//	_entity_class_data->notification_scooldown_added(id, value);
-
 	if (has_method("_notification_scooldown_added"))
 		call("_notification_scooldown_added", id, value);
 }
 void EntityData::notification_scooldown_removed(int id, float value) {
-	//if (_entity_class_data.is_valid())
-	//	_entity_class_data->notification_scooldown_removed(id, value);
-
 	if (has_method("_notification_scooldown_removed"))
 		call("_notification_scooldown_removed", id, value);
 }
 
 void EntityData::notification_scategory_cooldown_added(int id, float value) {
-	//if (_entity_class_data.is_valid())
-	//	_entity_class_data->notification_scategory_cooldown_added(id, value);
-
 	if (has_method("_notification_scategory_cooldown_added"))
 		call("_notification_scategory_cooldown_added", id, value);
 }
 void EntityData::notification_scategory_cooldown_removed(int id, float value) {
-	//if (_entity_class_data.is_valid())
-	//	_entity_class_data->notification_scategory_cooldown_removed(id, value);
-
 	if (has_method("_notification_scategory_cooldown_removed"))
 		call("_notification_scategory_cooldown_removed", id, value);
 }
 
 void EntityData::notification_sgcd_started(Entity *entity, float gcd) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_sgcd_started(entity, gcd);
-
 	if (has_method("_notification_sgcd_started"))
 		call("_notification_sgcd_started", entity, gcd);
 }
 void EntityData::notification_sgcd_finished(Entity *entity) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_sgcd_finished(entity);
-
 	if (has_method("_notification_sgcd_finished"))
 		call("_notification_sgcd_finished", entity);
 }
@@ -454,9 +421,6 @@ void EntityData::notification_sgcd_finished_bind(Node *entity) {
 }
 
 void EntityData::notification_sxp_gained(Entity *entity, int value) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_sxp_gained(entity, value);
-
 	if (has_method("_notification_sxp_gained"))
 		call("_notification_sxp_gained", entity, value);
 }
@@ -471,9 +435,6 @@ void EntityData::notification_sxp_gained_bind(Node *entity, int value) {
 }
 
 void EntityData::notification_sclass_level_up(Entity *entity, int value) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_sclass_level_up(entity, value);
-
 	if (has_method("_notification_sclass_level_up"))
 		call("_notification_sclass_level_up", entity);
 }
@@ -488,9 +449,6 @@ void EntityData::notification_sclass_level_up_bind(Node *entity, int value) {
 }
 
 void EntityData::notification_scharacter_level_up(Entity *entity, int value) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_scharacter_level_up(entity, value);
-
 	if (has_method("_notification_scharacter_level_up"))
 		call("_notification_scharacter_level_up", entity);
 }
@@ -505,18 +463,11 @@ void EntityData::notification_scharacter_level_up_bind(Node *entity, int value) 
 }
 
 void EntityData::notification_sentity_resource_added(Ref<EntityResource> resource) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_sentity_resource_added(resource);
-
 	if (has_method("_notification_sentity_resource_added"))
 		call("_notification_sentity_resource_added", resource);
 }
 
 void EntityData::notification_sentity_resource_removed(Ref<EntityResource> resource) {
-	if (_entity_class_data.is_valid()) {
-		_entity_class_data->notification_sentity_resource_removed(resource);
-	}
-
 	if (has_method("_notification_sentity_resource_removed"))
 		call("_notification_sentity_resource_removed", resource);
 }
@@ -525,17 +476,11 @@ void EntityData::notification_sentity_resource_removed(Ref<EntityResource> resou
 void EntityData::notification_caura(int what, Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_caura(what, data);
-
 	if (has_method("_notification_caura"))
 		call("_notification_caura", what, data);
 }
 void EntityData::notification_cheal(int what, Ref<SpellHealInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_cheal(what, info);
 
 	if (has_method("_notification_cheal"))
 		call("_notification_cheal", what, info);
@@ -543,17 +488,11 @@ void EntityData::notification_cheal(int what, Ref<SpellHealInfo> info) {
 void EntityData::notification_ccast(int what, Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_ccast(what, info);
-
 	if (has_method("_notification_ccast"))
 		call("_notification_ccast", what, info);
 }
 void EntityData::notification_cdamage(int what, Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_cdamage(what, info);
 
 	if (has_method("_notification_cdamage"))
 		call("_notification_cdamage", what, info);
@@ -561,9 +500,6 @@ void EntityData::notification_cdamage(int what, Ref<SpellDamageInfo> info) {
 
 void EntityData::notification_cdeath(Entity *entity) {
 	ERR_FAIL_COND(entity == NULL);
-
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_cdeath(entity);
 
 	if (has_method("_notification_cdeath"))
 		call("_notification_cdeath", entity);
@@ -580,45 +516,27 @@ void EntityData::notification_cdeath_bind(Node *entity) {
 }
 
 void EntityData::notification_ccooldown_added(int id, float value) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_ccooldown_added(id, value);
-
 	if (has_method("_notification_ccooldown_added"))
 		call("_notification_ccooldown_added", id, value);
 }
 void EntityData::notification_ccooldown_removed(int id, float value) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_ccooldown_removed(id, value);
-
 	if (has_method("_notification_ccooldown_removed"))
 		call("_notification_ccooldown_removed", id, value);
 }
 void EntityData::notification_ccategory_cooldown_added(int id, float value) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_ccategory_cooldown_added(id, value);
-
 	if (has_method("_notification_ccategory_cooldown_added"))
 		call("_notification_ccategory_cooldown_added", id, value);
 }
 void EntityData::notification_ccategory_cooldown_removed(int id, float value) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_ccategory_cooldown_removed(id, value);
-
 	if (has_method("_notification_ccategory_cooldown_removed"))
 		call("_notification_ccategory_cooldown_removed", id, value);
 }
 
 void EntityData::notification_cgcd_started(Entity *entity, float gcd) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_cgcd_started(entity, gcd);
-
 	if (has_method("_notification_cgcd_started"))
 		call("_notification_cgcd_started", entity, gcd);
 }
 void EntityData::notification_cgcd_finished(Entity *entity) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_cgcd_finished(entity);
-
 	if (has_method("_notification_cgcd_finished"))
 		call("_notification_cgcd_finished", entity);
 }
@@ -642,9 +560,6 @@ void EntityData::notification_cgcd_finished_bind(Node *entity) {
 }
 
 void EntityData::notification_cxp_gained(Entity *entity, int value) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_cxp_gained(entity, value);
-
 	if (has_method("_notification_cxp_gained"))
 		call("_notification_cxp_gained", entity, value);
 }
@@ -659,9 +574,6 @@ void EntityData::notification_cxp_gained_bind(Node *entity, int value) {
 }
 
 void EntityData::notification_cclass_level_up(Entity *entity, int value) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_cclass_level_up(entity, value);
-
 	if (has_method("_notification_cclass_level_up"))
 		call("_notification_cclass_level_up", entity);
 }
@@ -676,9 +588,6 @@ void EntityData::notification_cclass_level_up_bind(Node *entity, int value) {
 }
 
 void EntityData::notification_ccharacter_level_up(Entity *entity, int value) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->notification_ccharacter_level_up(entity, value);
-
 	if (has_method("_notification_ccharacter_level_up"))
 		call("_notification_ccharacter_level_up", entity);
 }
@@ -693,19 +602,11 @@ void EntityData::notification_ccharacter_level_up_bind(Node *entity, int value) 
 }
 
 void EntityData::notification_centity_resource_added(Ref<EntityResource> resource) {
-	if (_entity_class_data.is_valid()) {
-		_entity_class_data->notification_centity_resource_added(resource);
-	}
-
 	if (has_method("_notification_centity_resource_added"))
 		call("_notification_centity_resource_added", resource);
 }
 
 void EntityData::notification_centity_resource_removed(Ref<EntityResource> resource) {
-	if (_entity_class_data.is_valid()) {
-		_entity_class_data->notification_centity_resource_removed(resource);
-	}
-
 	if (has_method("_notification_centity_resource_removed"))
 		call("_notification_centity_resource_removed", resource);
 }
@@ -713,10 +614,6 @@ void EntityData::notification_centity_resource_removed(Ref<EntityResource> resou
 //Equipment
 
 bool EntityData::equip_should_deny(Entity *entity, int equip_slot, Ref<ItemInstance> item) {
-	if (_entity_class_data.is_valid())
-		if (_entity_class_data->equip_should_deny(entity, equip_slot, item))
-			return true;
-
 	if (has_method("_equip_should_deny"))
 		if (call("_equip_should_deny", entity, equip_slot, item))
 			return true;
@@ -734,9 +631,6 @@ bool EntityData::equip_should_deny_bind(Node *entity, int equip_slot, Ref<ItemIn
 }
 
 void EntityData::equip_son_success(Entity *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->equip_son_success(entity, equip_slot, item, old_item, bag_slot);
-
 	if (has_method("_equip_son_success"))
 		call("_equip_son_success", entity, equip_slot, item, old_item, bag_slot);
 }
@@ -751,9 +645,6 @@ void EntityData::equip_son_success_bind(Node *entity, int equip_slot, Ref<ItemIn
 }
 
 void EntityData::equip_son_fail(Entity *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->equip_son_fail(entity, equip_slot, item, old_item, bag_slot);
-
 	if (has_method("_equip_son_fail"))
 		call("_equip_son_fail", entity, equip_slot, item, old_item, bag_slot);
 }
@@ -768,9 +659,6 @@ void EntityData::equip_son_fail_bind(Node *entity, int equip_slot, Ref<ItemInsta
 }
 
 void EntityData::equip_con_success(Entity *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->equip_con_success(entity, equip_slot, item, old_item, bag_slot);
-
 	if (has_method("_equip_con_success"))
 		call("_equip_con_success", entity, equip_slot, item, old_item, bag_slot);
 }
@@ -785,9 +673,6 @@ void EntityData::equip_con_success_bind(Node *entity, int equip_slot, Ref<ItemIn
 }
 
 void EntityData::equip_con_fail(Entity *entity, int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (_entity_class_data.is_valid())
-		_entity_class_data->equip_con_fail(entity, equip_slot, item, old_item, bag_slot);
-
 	if (has_method("_equip_con_fail"))
 		call("_equip_con_fail", entity, equip_slot, item, old_item, bag_slot);
 }
