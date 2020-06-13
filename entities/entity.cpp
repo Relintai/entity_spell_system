@@ -1550,9 +1550,7 @@ float Entity::gcd_gets() {
 void Entity::gcd_starts(float value) {
 	_s_gcd = value;
 
-	void notification_sgcd_started();
-
-	emit_signal("sgcd_started", _s_gcd);
+	notification_sgcd_started();
 
 	ORPC(gcd_startc, value);
 }
@@ -1560,9 +1558,7 @@ void Entity::gcd_starts(float value) {
 void Entity::gcd_startc(float value) {
 	_c_gcd = value;
 
-	void notification_cgcd_started();
-
-	emit_signal("cgcd_started", _c_gcd);
+	notification_cgcd_started();
 }
 
 ////    States    ////
@@ -1971,8 +1967,6 @@ void Entity::dies() {
 
 void Entity::diec() {
 	notification_cdeath();
-
-	emit_signal("diecd", this);
 }
 
 void Entity::notification_sstat_changed(const int statid, const float current) {
@@ -3032,6 +3026,8 @@ void Entity::notification_sgcd_started() {
 
 		ad->get_aura()->notification_sgcd_started(ad, _s_gcd);
 	}
+
+	emit_signal("sgcd_started", _s_gcd);
 }
 void Entity::notification_sgcd_finished() {
 	if (_s_entity_data.is_valid()) {
@@ -3060,6 +3056,8 @@ void Entity::notification_cgcd_started() {
 
 		ad->get_aura()->notification_cgcd_started(ad, _c_gcd);
 	}
+
+	emit_signal("cgcd_started", _c_gcd);
 }
 void Entity::notification_cgcd_finished() {
 	if (_s_entity_data.is_valid()) {
@@ -3074,6 +3072,8 @@ void Entity::notification_cgcd_finished() {
 
 		ad->get_aura()->notification_cgcd_finished(ad);
 	}
+
+	emit_signal("cgcd_finished");
 }
 
 void Entity::son_physics_process(float delta) {
@@ -3629,6 +3629,8 @@ void Entity::notification_cdeath() {
 
 	if (has_method("_notification_cdeath"))
 		call("_notification_cdeath");
+
+	emit_signal("diecd", this);
 }
 
 void Entity::notification_ccooldown_added(int id, float value) {
@@ -5469,9 +5471,7 @@ void Entity::update(float delta) {
 		if (_c_gcd <= 0) {
 			_c_gcd = 0;
 
-			void notification_cgcd_finished();
-
-			emit_signal("cgcd_finished");
+			notification_cgcd_finished();
 		}
 	}
 
