@@ -331,8 +331,8 @@ void EntityData::sinteract_bind(Node *entity) {
 }
 
 void EntityData::start_casting(int spell_id, Entity *caster, float spellScale) {
-	//if (_entity_class_data.is_valid())
-	//	_entity_class_data->start_casting(spell_id, caster, spellScale);
+	if (_entity_class_data.is_valid())
+		_entity_class_data->start_casting(spell_id, caster, spellScale);
 }
 
 void EntityData::notification_saura(int what, Ref<AuraData> data) {

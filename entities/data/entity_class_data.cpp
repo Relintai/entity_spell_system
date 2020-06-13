@@ -294,6 +294,26 @@ void EntityClassData::_setup_resources(Node *entity) {
 	}
 }
 
+void EntityClassData::start_casting(int spell_id, Entity *caster, float spellScale) {
+	if (_spells.size() == 0) {
+		return;
+	}
+
+	for (int i = 0; i < _spells.size(); i++) {
+		Ref<Spell> s = _spells[i];
+
+		if (s == NULL) {
+			print_error("class doesn't have spell! spell_id: " + itos(spell_id));
+			return;
+		}
+
+		if (s->get_id() == spell_id) {
+			s->cast_starts_simple(caster, spellScale);
+			return;
+		}
+	}
+}
+
 EntityClassData::EntityClassData() {
 	_id = 0;
 	_spell_points_per_level = 1;

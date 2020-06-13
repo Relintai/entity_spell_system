@@ -135,6 +135,8 @@ public:
 	void setup_resources(Entity *entity);
 	void _setup_resources(Node *entity);
 
+	void start_casting(int spell_id, Entity *caster, float spellScale);
+
 	EntityClassData();
 	~EntityClassData();
 
