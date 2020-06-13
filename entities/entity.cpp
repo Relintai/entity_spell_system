@@ -46,6 +46,90 @@ SOFTWARE.
 
 #include "../defines.h"
 
+#define NOTIFICATION_IMPLS(func, signal, ...)    \
+	if (_s_entity_data.is_valid())               \
+		_s_entity_data->func(this, __VA_ARGS__); \
+                                                 \
+	if (has_method("_" #func))                   \
+		call("_" #func, __VA_ARGS__);            \
+                                                 \
+	for (int i = 0; i < _s_auras.size(); ++i) {  \
+		Ref<AuraData> ad = _s_auras.get(i);      \
+		ad->get_aura()->func(ad, __VA_ARGS__);   \
+	}                                            \
+                                                 \
+	emit_signal(signal, this, __VA_ARGS__);
+
+#define NOTIFICATION_IMPLSS(func, signal)       \
+	if (_s_entity_data.is_valid())              \
+		_s_entity_data->func(this);             \
+                                                \
+	if (has_method("_" #func))                  \
+		call("_" #func);                        \
+                                                \
+	for (int i = 0; i < _s_auras.size(); ++i) { \
+		Ref<AuraData> ad = _s_auras.get(i);     \
+		ad->get_aura()->func(ad);               \
+	}                                           \
+                                                \
+	emit_signal(signal, this);
+
+#define NOTIFICATION_IMPLC(func, signal, ...)    \
+	if (_c_entity_data.is_valid())               \
+		_c_entity_data->func(this, __VA_ARGS__); \
+                                                 \
+	if (has_method("_" #func))                   \
+		call("_" #func, __VA_ARGS__);            \
+                                                 \
+	for (int i = 0; i < _c_auras.size(); ++i) {  \
+		Ref<AuraData> ad = _c_auras.get(i);      \
+		ad->get_aura()->func(ad, __VA_ARGS__);   \
+	}                                            \
+                                                 \
+	emit_signal(signal, this, __VA_ARGS__);
+
+#define NOTIFICATION_IMPLCS(func, signal)       \
+	if (_c_entity_data.is_valid())              \
+		_c_entity_data->func(this);             \
+                                                \
+	if (has_method("_" #func))                  \
+		call("_" #func);                        \
+                                                \
+	for (int i = 0; i < _c_auras.size(); ++i) { \
+		Ref<AuraData> ad = _c_auras.get(i);     \
+		ad->get_aura()->func(ad);               \
+	}                                           \
+                                                \
+	emit_signal(signal, this);
+
+#define NOTIFICATION_RES_IMPLS(func, signal, ...) \
+	if (_s_entity_data.is_valid())                \
+		_s_entity_data->func(__VA_ARGS__);        \
+                                                  \
+	if (has_method("_" #func))                    \
+		call("_" #func, __VA_ARGS__);             \
+                                                  \
+	for (int i = 0; i < _s_auras.size(); ++i) {   \
+		Ref<AuraData> ad = _s_auras.get(i);       \
+		ad->get_aura()->func(ad, __VA_ARGS__);    \
+	}                                             \
+                                                  \
+	emit_signal(signal, __VA_ARGS__);
+
+#define NOTIFICATION_RES_IMPLC(func, signal, ...) \
+	if (_c_entity_data.is_valid())                \
+		_c_entity_data->func(__VA_ARGS__);        \
+                                                  \
+	if (has_method("_" #func))                    \
+		call("_" #func, __VA_ARGS__);             \
+                                                  \
+	for (int i = 0; i < _c_auras.size(); ++i) {   \
+		Ref<AuraData> ad = _c_auras.get(i);       \
+		ad->get_aura()->func(ad, __VA_ARGS__);    \
+	}                                             \
+                                                  \
+	emit_signal(signal, __VA_ARGS__);
+
 NodePath Entity::get_body_path() {
 	return _body_path;
 }
@@ -3014,66 +3098,16 @@ void Entity::notification_scategory_cooldown_removed(int id, float value) {
 }
 
 void Entity::notification_sgcd_started() {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_sgcd_started(this, _s_gcd);
-	}
-
-	if (has_method("_notification_sgcd_started"))
-		call("_notification_sgcd_started", _s_gcd);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_sgcd_started(ad, _s_gcd);
-	}
-
-	emit_signal("sgcd_started", _s_gcd);
+	NOTIFICATION_IMPLS(notification_sgcd_started, "sgcd_started", _s_gcd);
 }
 void Entity::notification_sgcd_finished() {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_sgcd_finished(this);
-	}
-
-	if (has_method("_notification_sgcd_finished"))
-		call("_notification_sgcd_finished");
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_sgcd_finished(ad);
-	}
+	NOTIFICATION_IMPLSS(notification_sgcd_finished, "sgcd_finished");
 }
 void Entity::notification_cgcd_started() {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_cgcd_started(this, _c_gcd);
-	}
-
-	if (has_method("_notification_cgcd_started"))
-		call("_notification_cgcd_started", _c_gcd);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_cgcd_started(ad, _c_gcd);
-	}
-
-	emit_signal("cgcd_started", _c_gcd);
+	NOTIFICATION_IMPLC(notification_cgcd_started, "cgcd_started", _c_gcd);
 }
 void Entity::notification_cgcd_finished() {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_cgcd_finished(this);
-	}
-
-	if (has_method("_notification_cgcd_finished"))
-		call("_notification_cgcd_finished");
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_cgcd_finished(ad);
-	}
-
-	emit_signal("cgcd_finished");
+	NOTIFICATION_IMPLCS(notification_cgcd_finished, "cgcd_finished");
 }
 
 void Entity::son_physics_process(float delta) {
@@ -3097,88 +3131,23 @@ void Entity::son_physics_process(float delta) {
 }
 
 void Entity::notification_sxp_gained(int value) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_sxp_gained(this, value);
-	}
-
-	if (has_method("_notification_sxp_gained"))
-		call("_notification_sxp_gained", value);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_sxp_gained(ad, value);
-	}
-
-	emit_signal("notification_sxp_gained", this, value);
+	NOTIFICATION_IMPLS(notification_sxp_gained, "notification_sxp_gained", value);
 }
 
 void Entity::notification_sclass_level_up(int value) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_sclass_level_up(this, value);
-	}
-
-	if (has_method("_notification_sclass_level_up"))
-		call("_notification_sclass_level_up", value);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_sclass_level_up(ad, value);
-	}
-
-	emit_signal("notification_sclass_level_up", this, value);
+	NOTIFICATION_IMPLS(notification_sxp_gained, "notification_sclass_level_up", value);
 }
 
 void Entity::notification_scharacter_level_up(int value) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_scharacter_level_up(this, value);
-	}
-
-	if (has_method("_notification_scharacter_level_up"))
-		call("_notification_scharacter_level_up", value);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_scharacter_level_up(ad, value);
-	}
-
-	emit_signal("notification_scharacter_level_up", this, value);
+	NOTIFICATION_IMPLS(notification_scharacter_level_up, "notification_scharacter_level_up", value);
 }
 
 void Entity::notification_sentity_resource_added(Ref<EntityResource> resource) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_sentity_resource_added(resource);
-	}
-
-	if (has_method("_notification_sentity_resource_added"))
-		call("_notification_sentity_resource_added", resource);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_sentity_resource_added(ad, resource);
-	}
-
-	emit_signal("sentity_resource_added", resource);
+	NOTIFICATION_RES_IMPLS(notification_sentity_resource_added, "sentity_resource_added", resource);
 }
 
 void Entity::notification_sentity_resource_removed(Ref<EntityResource> resource) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_sentity_resource_removed(resource);
-	}
-
-	if (has_method("_notification_sentity_resource_removed"))
-		call("_notification_sentity_resource_removed", resource);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_sentity_resource_removed(ad, resource);
-	}
-
-	emit_signal("sentity_resource_removed", resource);
+	NOTIFICATION_RES_IMPLS(notification_sentity_resource_removed, "sentity_resource_removed", resource);
 }
 
 void Entity::aura_adds(Ref<AuraData> aura) {
@@ -3542,6 +3511,8 @@ void Entity::notification_cuntargeted() {
 void Entity::notification_caura(int what, Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
+	//NOTIFICATION_RES_IMPLC(notification_caura, "notification_caura", what, data);
+
 	if (_c_entity_data.is_valid()) {
 		_c_entity_data->notification_caura(what, data);
 	}
@@ -3617,170 +3588,40 @@ void Entity::notification_cdamage(int what, Ref<SpellDamageInfo> info) {
 }
 
 void Entity::notification_cdeath() {
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->notification_cdeath(this);
-	}
-
-	for (int i = 0; i < _c_auras.size(); ++i) {
-		Ref<AuraData> ad = _c_auras.get(i);
-
-		ad->get_aura()->notification_cdeath(ad);
-	}
-
-	if (has_method("_notification_cdeath"))
-		call("_notification_cdeath");
-
-	emit_signal("diecd", this);
+	NOTIFICATION_IMPLCS(notification_cdeath, "diecd")
 }
 
 void Entity::notification_ccooldown_added(int id, float value) {
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->notification_ccooldown_added(id, value);
-	}
-
-	for (int i = 0; i < _c_auras.size(); ++i) {
-		Ref<AuraData> ad = _c_auras.get(i);
-
-		ad->get_aura()->notification_ccooldown_added(ad, id, value);
-	}
-
-	if (has_method("_notification_ccooldown_added"))
-		call("_notification_ccooldown_added", id, value);
-
-	emit_signal("ccooldown_added", id, value);
+	NOTIFICATION_RES_IMPLC(notification_ccooldown_added, "ccooldown_added", id, value)
 }
 void Entity::notification_ccooldown_removed(int id, float value) {
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->notification_ccooldown_removed(id, value);
-	}
-
-	for (int i = 0; i < _c_auras.size(); ++i) {
-		Ref<AuraData> ad = _c_auras.get(i);
-
-		ad->get_aura()->notification_ccooldown_removed(ad, id, value);
-	}
-
-	if (has_method("_notification_ccooldown_removed"))
-		call("_notification_ccooldown_removed", id, value);
-
-	emit_signal("ccooldown_removed", id, value);
+	NOTIFICATION_RES_IMPLC(notification_ccooldown_removed, "ccooldown_removed", id, value)
 }
 void Entity::notification_ccategory_cooldown_added(int id, float value) {
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->notification_ccategory_cooldown_added(id, value);
-	}
-
-	for (int i = 0; i < _c_auras.size(); ++i) {
-		Ref<AuraData> ad = _c_auras.get(i);
-
-		ad->get_aura()->notification_ccategory_cooldown_added(ad, id, value);
-	}
-
-	if (has_method("_notification_ccategory_cooldown_added"))
-		call("_notification_ccategory_cooldown_added", id, value);
-
-	emit_signal("ccategory_cooldown_added", id, value);
+	NOTIFICATION_RES_IMPLC(notification_ccategory_cooldown_added, "ccategory_cooldown_added", id, value)
 }
 void Entity::notification_ccategory_cooldown_removed(int id, float value) {
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->notification_ccategory_cooldown_removed(id, value);
-	}
-
-	for (int i = 0; i < _c_auras.size(); ++i) {
-		Ref<AuraData> ad = _c_auras.get(i);
-
-		ad->get_aura()->notification_ccategory_cooldown_removed(ad, id, value);
-	}
-
-	if (has_method("_notification_ccategory_cooldown_removed"))
-		call("_notification_ccategory_cooldown_removed", id, value);
-
-	emit_signal("ccategory_cooldown_removed", id, value);
+	NOTIFICATION_RES_IMPLC(notification_ccategory_cooldown_removed, "ccategory_cooldown_removed", id, value)
 }
 
 void Entity::notification_cxp_gained(int value) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_cxp_gained(this, value);
-	}
-
-	if (has_method("_notification_cxp_gained"))
-		call("_notification_cxp_gained", value);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_cxp_gained(ad, value);
-	}
-
-	emit_signal("notification_cxp_gained", this, value);
+	NOTIFICATION_IMPLC(notification_cxp_gained, "notification_cxp_gained", value)
 }
 
 void Entity::notification_cclass_level_up(int value) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_cclass_level_up(this, value);
-	}
-
-	if (has_method("_notification_cclass_level_up"))
-		call("_notification_cclass_level_up", value);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_cclass_level_up(ad, value);
-	}
-
-	emit_signal("notification_cclass_level_up", this, value);
+	NOTIFICATION_IMPLC(notification_cclass_level_up, "notification_cclass_level_up", value)
 }
 
 void Entity::notification_ccharacter_level_up(int value) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_ccharacter_level_up(this, value);
-	}
-
-	if (has_method("_notification_ccharacter_level_up"))
-		call("_notification_ccharacter_level_up", value);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_ccharacter_level_up(ad, value);
-	}
-
-	emit_signal("notification_ccharacter_level_up", this, value);
+	NOTIFICATION_IMPLC(notification_ccharacter_level_up, "notification_ccharacter_level_up", value)
 }
 
 void Entity::notification_centity_resource_added(Ref<EntityResource> resource) {
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->notification_centity_resource_added(resource);
-	}
-
-	if (has_method("_notification_centity_resource_added"))
-		call("_notification_centity_resource_added", resource);
-
-	for (int i = 0; i < _c_auras.size(); ++i) {
-		Ref<AuraData> ad = _c_auras.get(i);
-
-		ad->get_aura()->notification_centity_resource_added(ad, resource);
-	}
-
-	emit_signal("centity_resource_added", resource);
+	NOTIFICATION_RES_IMPLC(notification_centity_resource_added, "centity_resource_added", resource)
 }
 
 void Entity::notification_centity_resource_removed(Ref<EntityResource> resource) {
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->notification_centity_resource_removed(resource);
-	}
-
-	if (has_method("_notification_centity_resource_removed"))
-		call("_notification_centity_resource_removed", resource);
-
-	for (int i = 0; i < _c_auras.size(); ++i) {
-		Ref<AuraData> ad = _c_auras.get(i);
-
-		ad->get_aura()->notification_centity_resource_removed(ad, resource);
-	}
-
-	emit_signal("centity_resource_removed", resource);
+	NOTIFICATION_RES_IMPLC(notification_centity_resource_removed, "centity_resource_removed", resource)
 }
 
 ////    Casting System    ////
@@ -5459,9 +5300,7 @@ void Entity::update(float delta) {
 		if (_s_gcd <= 0) {
 			_s_gcd = 0;
 
-			void notification_sgcd_finished();
-
-			emit_signal("sgcd_finished");
+			notification_sgcd_finished();
 		}
 	}
 
@@ -7494,10 +7333,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("getc_speed"), &Entity::getc_speed);
 
 	//GCD
-	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::REAL, "value")));
-	ADD_SIGNAL(MethodInfo("sgcd_finished"));
-	ADD_SIGNAL(MethodInfo("cgcd_started", PropertyInfo(Variant::REAL, "value")));
-	ADD_SIGNAL(MethodInfo("cgcd_finished"));
+	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "value")));
+	ADD_SIGNAL(MethodInfo("sgcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	ADD_SIGNAL(MethodInfo("cgcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "value")));
+	ADD_SIGNAL(MethodInfo("cgcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	ClassDB::bind_method(D_METHOD("gcd_hasc"), &Entity::gcd_hasc);
 	ClassDB::bind_method(D_METHOD("gcd_hass"), &Entity::gcd_hass);
