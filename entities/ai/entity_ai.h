@@ -103,35 +103,6 @@ public:
 	void notification_sentity_resource_added(Ref<EntityResource> resource);
 	void notification_sentity_resource_removed(Ref<EntityResource> resource);
 
-	//Clientside Event Handlers
-	void notification_caura(int what, Ref<AuraData> data);
-	void notification_cheal(int what, Ref<SpellHealInfo> info);
-	void notification_ccast(int what, Ref<SpellCastInfo> info);
-	void notification_cdamage(int what, Ref<SpellDamageInfo> info);
-
-	void notification_ccooldown_added(int id, float value);
-	void notification_ccooldown_removed(int id, float value);
-	void notification_ccategory_cooldown_added(int id, float value);
-	void notification_ccategory_cooldown_removed(int id, float value);
-
-	void notification_cdeath(Entity *entity);
-	void notification_cdeath_bind(Node *entity);
-
-	void notification_cgcd_started(Entity *entity, float gcd);
-	void notification_cgcd_finished(Entity *entity);
-	void notification_cgcd_started_bind(Node *entity, float gcd);
-	void notification_cgcd_finished_bind(Node *entity);
-
-	void notification_cxp_gained(Entity *entity, int value);
-	void notification_cxp_gained_bind(Node *entity, int value);
-	void notification_cclass_level_up(Entity *entity, int value);
-	void notification_cclass_level_up_bind(Node *entity, int value);
-	void notification_ccharacter_level_up(Entity *entity, int value);
-	void notification_ccharacter_level_up_bind(Node *entity, int value);
-
-	void notification_centity_resource_added(Ref<EntityResource> resource);
-	void notification_centity_resource_removed(Ref<EntityResource> resource);
-
 	//Equipment
 
 	bool equip_should_deny(Entity *entity, int equip_slot, Ref<ItemInstance> item);
