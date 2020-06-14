@@ -46,52 +46,46 @@ SOFTWARE.
 
 #include "../defines.h"
 
-#define NOTIFICATION_IMPLS(func, signal, ...)    \
-	if (_s_entity_data.is_valid())               \
-		_s_entity_data->func(this, __VA_ARGS__); \
-                                                 \
-	if (has_method("_" #func))                   \
-		call("_" #func, __VA_ARGS__);            \
-                                                 \
-	for (int i = 0; i < _s_auras.size(); ++i) {  \
-		Ref<AuraData> ad = _s_auras.get(i);      \
-		ad->get_aura()->func(ad, __VA_ARGS__);   \
-	}                                            \
-                                                 \
+#define NOTIFICATION_IMPLS(func, signal, ...)                                          \
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) \
+		_s_ai->func(this, __VA_ARGS__);                                                \
+                                                                                       \
+	if (has_method("_" #func))                                                         \
+		call("_" #func, __VA_ARGS__);                                                  \
+                                                                                       \
+	for (int i = 0; i < _s_auras.size(); ++i) {                                        \
+		Ref<AuraData> ad = _s_auras.get(i);                                            \
+		ad->get_aura()->func(ad, __VA_ARGS__);                                         \
+	}                                                                                  \
+                                                                                       \
 	emit_signal(signal, this, __VA_ARGS__);
 
-#define NOTIFICATION_IMPLSS(func, signal)       \
-	if (_s_entity_data.is_valid())              \
-		_s_entity_data->func(this);             \
-                                                \
-	if (has_method("_" #func))                  \
-		call("_" #func);                        \
-                                                \
-	for (int i = 0; i < _s_auras.size(); ++i) { \
-		Ref<AuraData> ad = _s_auras.get(i);     \
-		ad->get_aura()->func(ad);               \
-	}                                           \
-                                                \
+#define NOTIFICATION_IMPLSS(func, signal)                                              \
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) \
+		_s_ai->func(this);                                                             \
+                                                                                       \
+	if (has_method("_" #func))                                                         \
+		call("_" #func);                                                               \
+                                                                                       \
+	for (int i = 0; i < _s_auras.size(); ++i) {                                        \
+		Ref<AuraData> ad = _s_auras.get(i);                                            \
+		ad->get_aura()->func(ad);                                                      \
+	}                                                                                  \
+                                                                                       \
 	emit_signal(signal, this);
 
-#define NOTIFICATION_IMPLC(func, signal, ...)    \
-	if (_c_entity_data.is_valid())               \
-		_c_entity_data->func(this, __VA_ARGS__); \
-                                                 \
-	if (has_method("_" #func))                   \
-		call("_" #func, __VA_ARGS__);            \
-                                                 \
-	for (int i = 0; i < _c_auras.size(); ++i) {  \
-		Ref<AuraData> ad = _c_auras.get(i);      \
-		ad->get_aura()->func(ad, __VA_ARGS__);   \
-	}                                            \
-                                                 \
+#define NOTIFICATION_IMPLC(func, signal, ...)   \
+	if (has_method("_" #func))                  \
+		call("_" #func, __VA_ARGS__);           \
+                                                \
+	for (int i = 0; i < _c_auras.size(); ++i) { \
+		Ref<AuraData> ad = _c_auras.get(i);     \
+		ad->get_aura()->func(ad, __VA_ARGS__);  \
+	}                                           \
+                                                \
 	emit_signal(signal, this, __VA_ARGS__);
 
 #define NOTIFICATION_IMPLCS(func, signal)       \
-	if (_c_entity_data.is_valid())              \
-		_c_entity_data->func(this);             \
-                                                \
 	if (has_method("_" #func))                  \
 		call("_" #func);                        \
                                                 \
@@ -102,24 +96,21 @@ SOFTWARE.
                                                 \
 	emit_signal(signal, this);
 
-#define NOTIFICATION_RES_IMPLS(func, signal, ...) \
-	if (_s_entity_data.is_valid())                \
-		_s_entity_data->func(__VA_ARGS__);        \
-                                                  \
-	if (has_method("_" #func))                    \
-		call("_" #func, __VA_ARGS__);             \
-                                                  \
-	for (int i = 0; i < _s_auras.size(); ++i) {   \
-		Ref<AuraData> ad = _s_auras.get(i);       \
-		ad->get_aura()->func(ad, __VA_ARGS__);    \
-	}                                             \
-                                                  \
+#define NOTIFICATION_RES_IMPLS(func, signal, ...)                                      \
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) \
+		_s_ai->func(__VA_ARGS__);                                                      \
+                                                                                       \
+	if (has_method("_" #func))                                                         \
+		call("_" #func, __VA_ARGS__);                                                  \
+                                                                                       \
+	for (int i = 0; i < _s_auras.size(); ++i) {                                        \
+		Ref<AuraData> ad = _s_auras.get(i);                                            \
+		ad->get_aura()->func(ad, __VA_ARGS__);                                         \
+	}                                                                                  \
+                                                                                       \
 	emit_signal(signal, __VA_ARGS__);
 
 #define NOTIFICATION_RES_IMPLC(func, signal, ...) \
-	if (_c_entity_data.is_valid())                \
-		_c_entity_data->func(__VA_ARGS__);        \
-                                                  \
 	if (has_method("_" #func))                    \
 		call("_" #func, __VA_ARGS__);             \
                                                   \
@@ -130,24 +121,21 @@ SOFTWARE.
                                                   \
 	emit_signal(signal, __VA_ARGS__);
 
-#define NOTIFICATION_AURA_IMPLS(func, signal, what, ...) \
-	if (_s_entity_data.is_valid())                       \
-		_s_entity_data->func(what, __VA_ARGS__);         \
-                                                         \
-	if (has_method("_" #func))                           \
-		call("_" #func, what, __VA_ARGS__);              \
-                                                         \
-	for (int i = 0; i < _s_auras.size(); ++i) {          \
-		Ref<AuraData> ad = _s_auras.get(i);              \
-		ad->get_aura()->func(what, ad, __VA_ARGS__);     \
-	}                                                    \
-                                                         \
+#define NOTIFICATION_AURA_IMPLS(func, signal, what, ...)                               \
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) \
+		_s_ai->func(what, __VA_ARGS__);                                                \
+                                                                                       \
+	if (has_method("_" #func))                                                         \
+		call("_" #func, what, __VA_ARGS__);                                            \
+                                                                                       \
+	for (int i = 0; i < _s_auras.size(); ++i) {                                        \
+		Ref<AuraData> ad = _s_auras.get(i);                                            \
+		ad->get_aura()->func(what, ad, __VA_ARGS__);                                   \
+	}                                                                                  \
+                                                                                       \
 	emit_signal(signal, what, __VA_ARGS__);
 
 #define NOTIFICATION_AURA_IMPLC(func, signal, what, ...) \
-	if (_c_entity_data.is_valid())                       \
-		_c_entity_data->func(what, __VA_ARGS__);         \
-                                                         \
 	if (has_method("_" #func))                           \
 		call("_" #func, what, __VA_ARGS__);              \
                                                          \
@@ -2108,8 +2096,8 @@ void Entity::creceive_stat(int id, int ccurrent) {
 ////    Equip Slots    ////
 
 bool Entity::equip_should_deny(int equip_slot, Ref<ItemInstance> item) {
-	if (_s_entity_data.is_valid()) {
-		if (_s_entity_data->equip_should_deny(this, equip_slot, item))
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) {
+		if (_s_ai->equip_should_deny(this, equip_slot, item))
 			return true;
 	}
 
@@ -2128,8 +2116,8 @@ bool Entity::equip_should_deny(int equip_slot, Ref<ItemInstance> item) {
 }
 
 void Entity::equip_son_success(int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->equip_son_success(this, equip_slot, item, old_item, bag_slot);
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) {
+		_s_ai->equip_son_success(this, equip_slot, item, old_item, bag_slot);
 	}
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
@@ -2145,8 +2133,8 @@ void Entity::equip_son_success(int equip_slot, Ref<ItemInstance> item, Ref<ItemI
 }
 
 void Entity::equip_son_fail(int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->equip_son_fail(this, equip_slot, item, old_item, bag_slot);
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) {
+		_s_ai->equip_son_fail(this, equip_slot, item, old_item, bag_slot);
 	}
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
@@ -2162,8 +2150,8 @@ void Entity::equip_son_fail(int equip_slot, Ref<ItemInstance> item, Ref<ItemInst
 }
 
 void Entity::equip_con_success(int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->equip_con_success(this, equip_slot, item, old_item, bag_slot);
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) {
+		_s_ai->equip_con_success(this, equip_slot, item, old_item, bag_slot);
 	}
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
@@ -2179,8 +2167,8 @@ void Entity::equip_con_success(int equip_slot, Ref<ItemInstance> item, Ref<ItemI
 }
 
 void Entity::equip_con_fail(int equip_slot, Ref<ItemInstance> item, Ref<ItemInstance> old_item, int bag_slot) {
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->equip_con_fail(this, equip_slot, item, old_item, bag_slot);
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) {
+		_s_ai->equip_con_fail(this, equip_slot, item, old_item, bag_slot);
 	}
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
@@ -2853,12 +2841,20 @@ void Entity::levelup_ccharacter(int value) {
 ////    Spell System    ////
 
 void Entity::spell_casts(int spell_id) {
-	Ref<EntityData> cc = gets_entity_data();
-
-	if (!cc.is_valid())
+	if (_s_spells.size() == 0) {
 		return;
+	}
 
-	cc->start_casting(spell_id, this, 1);
+	for (int i = 0; i < _s_spells.size(); i++) {
+		Ref<Spell> s = _s_spells[i];
+
+		ERR_CONTINUE(!s.is_valid());
+
+		if (s->get_id() == spell_id) {
+			s->cast_starts_simple(this, 1);
+			return;
+		}
+	}
 }
 
 void Entity::spell_crequest_cast(int spell_id) {
@@ -2978,8 +2974,8 @@ void Entity::sapply_passives_heal_deal(Ref<SpellHealInfo> info) {
 void Entity::notification_saura(int what, Ref<AuraData> data) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_saura(what, data);
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) {
+		_s_ai->notification_saura(what, data);
 	}
 
 	if (has_method("_notification_saura"))
@@ -2996,8 +2992,8 @@ void Entity::notification_saura(int what, Ref<AuraData> data) {
 void Entity::notification_sheal(int what, Ref<SpellHealInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_sheal(what, info);
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) {
+		_s_ai->notification_sheal(what, info);
 	}
 
 	if (has_method("_notification_sheal"))
@@ -3017,8 +3013,8 @@ void Entity::notification_scast(int what, Ref<SpellCastInfo> info) {
 void Entity::notification_sdamage(int what, Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_sdamage(what, info);
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) {
+		_s_ai->notification_sdamage(what, info);
 	}
 
 	if (has_method("_notification_sdamage"))
@@ -3032,8 +3028,8 @@ void Entity::notification_sdamage(int what, Ref<SpellDamageInfo> info) {
 }
 
 void Entity::notification_sdeath() {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_sdeath(this);
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) {
+		_s_ai->notification_sdeath(this);
 	}
 
 	for (int i = 0; i < _s_auras.size(); ++i) {
@@ -3476,10 +3472,6 @@ void Entity::notification_caura(int what, Ref<AuraData> data) {
 
 	//NOTIFICATION_RES_IMPLC(notification_caura, "notification_caura", what, data);
 
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->notification_caura(what, data);
-	}
-
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
@@ -3493,10 +3485,6 @@ void Entity::notification_caura(int what, Ref<AuraData> data) {
 }
 void Entity::notification_cheal(int what, Ref<SpellHealInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->notification_cheal(what, info);
-	}
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
@@ -3515,10 +3503,6 @@ void Entity::notification_ccast(int what, Ref<SpellCastInfo> info) {
 
 	info->get_spell()->notification_ccast(what, info);
 
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->notification_ccast(what, info);
-	}
-
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
@@ -3532,10 +3516,6 @@ void Entity::notification_ccast(int what, Ref<SpellCastInfo> info) {
 }
 void Entity::notification_cdamage(int what, Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
-
-	if (_c_entity_data.is_valid()) {
-		_c_entity_data->notification_cdamage(what, info);
-	}
 
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
