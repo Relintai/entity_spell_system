@@ -130,6 +130,34 @@ SOFTWARE.
                                                   \
 	emit_signal(signal, __VA_ARGS__);
 
+#define NOTIFICATION_AURA_IMPLS(func, signal, what, ...) \
+	if (_s_entity_data.is_valid())                       \
+		_s_entity_data->func(what, __VA_ARGS__);         \
+                                                         \
+	if (has_method("_" #func))                           \
+		call("_" #func, what, __VA_ARGS__);              \
+                                                         \
+	for (int i = 0; i < _s_auras.size(); ++i) {          \
+		Ref<AuraData> ad = _s_auras.get(i);              \
+		ad->get_aura()->func(what, ad, __VA_ARGS__);     \
+	}                                                    \
+                                                         \
+	emit_signal(signal, what, __VA_ARGS__);
+
+#define NOTIFICATION_AURA_IMPLC(func, signal, what, ...) \
+	if (_c_entity_data.is_valid())                       \
+		_c_entity_data->func(what, __VA_ARGS__);         \
+                                                         \
+	if (has_method("_" #func))                           \
+		call("_" #func, what, __VA_ARGS__);              \
+                                                         \
+	for (int i = 0; i < _c_auras.size(); ++i) {          \
+		Ref<AuraData> ad = _c_auras.get(i);              \
+		ad->get_aura()->func(what, ad, __VA_ARGS__);     \
+	}                                                    \
+                                                         \
+	emit_signal(signal, what, __VA_ARGS__);
+
 NodePath Entity::get_body_path() {
 	return _body_path;
 }
@@ -2984,20 +3012,7 @@ void Entity::notification_sheal(int what, Ref<SpellHealInfo> info) {
 void Entity::notification_scast(int what, Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_scast(what, info);
-	}
-
-	if (has_method("_notification_scast"))
-		call("_notification_scast", what, info);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_scast(what, ad, info);
-	}
-
-	emit_signal("notification_scast", what, info);
+	NOTIFICATION_AURA_IMPLS(notification_scast, "notification_scast", what, info);
 }
 void Entity::notification_sdamage(int what, Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
@@ -3032,69 +3047,17 @@ void Entity::notification_sdeath() {
 }
 
 void Entity::notification_scooldown_added(int id, float value) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_scooldown_added(id, value);
-	}
-
-	if (has_method("_notification_scooldown_added"))
-		call("_notification_scooldown_added", id, value);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_scooldown_added(ad, id, value);
-	}
-
-	emit_signal("scooldown_added", id, value);
+	NOTIFICATION_RES_IMPLS(notification_scooldown_added, "scooldown_added", id, value);
 }
 void Entity::notification_scooldown_removed(int id, float value) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_scooldown_removed(id, value);
-	}
-
-	if (has_method("_notification_scooldown_removed"))
-		call("_notification_scooldown_removed", id);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_scooldown_removed(ad, id, value);
-	}
-
-	emit_signal("scooldown_removed", id, value);
+	NOTIFICATION_RES_IMPLS(notification_scooldown_removed, "scooldown_removed", id, value);
 }
 
 void Entity::notification_scategory_cooldown_added(int id, float value) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_scategory_cooldown_added(id, value);
-	}
-
-	if (has_method("_notification_scategory_cooldown_added"))
-		call("_notification_scategory_cooldown_added", id, value);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_scategory_cooldown_added(ad, id, value);
-	}
-
-	emit_signal("scategory_cooldown_added", id, value);
+	NOTIFICATION_RES_IMPLS(notification_scategory_cooldown_added, "scategory_cooldown_added", id, value);
 }
 void Entity::notification_scategory_cooldown_removed(int id, float value) {
-	if (_s_entity_data.is_valid()) {
-		_s_entity_data->notification_scategory_cooldown_removed(id, value);
-	}
-
-	if (has_method("_notification_scategory_cooldown_removed"))
-		call("_notification_scategory_cooldown_removed", id, value);
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		Ref<AuraData> ad = _s_auras.get(i);
-
-		ad->get_aura()->notification_scategory_cooldown_removed(ad, id, value);
-	}
-
-	emit_signal("scategory_cooldown_removed", id, value);
+	NOTIFICATION_RES_IMPLS(notification_scategory_cooldown_removed, "scategory_cooldown_removed", id, value);
 }
 
 void Entity::notification_sgcd_started() {
