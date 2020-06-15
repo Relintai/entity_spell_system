@@ -4736,6 +4736,25 @@ void Entity::class_talent_cclear() {
 	_c_class_talents.clear();
 }
 
+PoolIntArray Entity::sclass_talents_get() {
+	PoolIntArray arr;
+	arr.resize(_s_class_talents.size());
+	PoolIntArray::Write w = arr.write();
+
+	for (int i = 0; i < _s_class_talents.size(); ++i) {
+		w[i] = _s_class_talents[i];
+	}
+
+	return arr;
+}
+void Entity::sclass_talents_set(const PoolIntArray &data) {
+	_s_class_talents.resize(data.size());
+
+	for (int i = 0; i < _s_class_talents.size(); ++i) {
+		_s_class_talents.write[i] = data[i];
+	}
+}
+
 ////    Character Talents    ////
 
 int Entity::gets_free_character_talent_points() {
@@ -4955,6 +4974,25 @@ int Entity::character_talent_getc_count() {
 }
 void Entity::character_talent_cclear() {
 	_c_character_talents.clear();
+}
+
+PoolIntArray Entity::scharacter_talents_get() {
+	PoolIntArray arr;
+	arr.resize(_s_character_talents.size());
+	PoolIntArray::Write w = arr.write();
+
+	for (int i = 0; i < _s_character_talents.size(); ++i) {
+		w[i] = _s_character_talents[i];
+	}
+
+	return arr;
+}
+void Entity::scharacter_talents_set(const PoolIntArray &data) {
+	_s_character_talents.resize(data.size());
+
+	for (int i = 0; i < _s_character_talents.size(); ++i) {
+		_s_character_talents.write[i] = data[i];
+	}
 }
 
 ////    Bag    ////
@@ -6444,7 +6482,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 
 	////    Talents    ////
 
-	dict["free_talent_points"] = _s_free_talent_points;
 	dict["talents"] = _s_talents;
 
 	////    Data    ////
@@ -6714,6 +6751,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("class_talent_getc_count"), &Entity::class_talent_getc_count);
 	ClassDB::bind_method(D_METHOD("class_talent_cclear"), &Entity::class_talent_cclear);
 
+	ClassDB::bind_method(D_METHOD("sclass_talents_get"), &Entity::sclass_talents_get);
+	ClassDB::bind_method(D_METHOD("sclass_talents_set", "data"), &Entity::sclass_talents_set);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "sclass_talents", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "sclass_talents_set", "sclass_talents_get");
+
 	//Character Talents
 
 	ClassDB::bind_method(D_METHOD("gets_free_character_talent_points"), &Entity::gets_free_character_talent_points);
@@ -6763,6 +6804,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("character_talent_getc", "index"), &Entity::character_talent_getc);
 	ClassDB::bind_method(D_METHOD("character_talent_getc_count"), &Entity::character_talent_getc_count);
 	ClassDB::bind_method(D_METHOD("character_talent_cclear"), &Entity::character_talent_cclear);
+
+	ClassDB::bind_method(D_METHOD("scharacter_talents_get"), &Entity::scharacter_talents_get);
+	ClassDB::bind_method(D_METHOD("scharacter_talents_set", "data"), &Entity::scharacter_talents_set);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "scharacter_talents", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "scharacter_talents_set", "scharacter_talents_get");
 
 	//Cooldowns
 	BIND_VMETHOD(MethodInfo("notification_scooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));

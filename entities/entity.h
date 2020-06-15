@@ -841,6 +841,9 @@ public:
 	int class_talent_getc_count();
 	void class_talent_cclear();
 
+	PoolIntArray sclass_talents_get();
+	void sclass_talents_set(const PoolIntArray &data);
+
 	////    Character Talents    ////
 
 	int gets_free_character_talent_points();
@@ -873,6 +876,9 @@ public:
 	int character_talent_getc(int index);
 	int character_talent_getc_count();
 	void character_talent_cclear();
+
+	PoolIntArray scharacter_talents_get();
+	void scharacter_talents_set(const PoolIntArray &data);
 
 	////    Inventory    ////
 
