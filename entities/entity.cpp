@@ -1939,6 +1939,13 @@ int Entity::craft_getc_recipe_count() {
 	return _c_craft_recipes.size();
 }
 
+Vector<Variant> Entity::scraft_recipes_get() {
+	VARIANT_ARRAY_GET(_s_craft_recipes);
+}
+void Entity::scraft_recipes_set(const Vector<Variant> &resources) {
+	VARIANT_ARRAY_SET(resources, _s_craft_recipes, CraftRecipe);
+}
+
 ////    Stat System    ////
 
 EntityStat Entity::get_stat(const int stat_id) const {
@@ -6324,17 +6331,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 	_s_active_category_cooldowns = dict.get("active_category_cooldowns", 0);
 	_c_active_category_cooldowns = _s_active_category_cooldowns;
 
-	////    Talents    ////
-
-	_s_free_talent_points = dict.get("free_talent_points", 0);
-	_c_free_talent_points = _s_free_talent_points;
-
-	Vector<int> talents = dict.get("talents", Vector<int>());
-
-	for (int i = 0; i < talents.size(); ++i) {
-		talent_adds(talents[i]);
-	}
-
 	////    Data    ////
 
 	Array entity_datas = dict.get("entity_datas", Array());
@@ -6352,25 +6348,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 
 				_s_data.push_back(data);
 				_c_data.push_back(data);
-			}
-		}
-	}
-
-	////    Crafting    ////
-
-	_s_craft_recipes.clear();
-	_c_craft_recipes.clear();
-
-	Dictionary known_recipes = dict.get("known_recipes", Dictionary());
-
-	for (int i = 0; i < known_recipes.size(); ++i) {
-		StringName crn = known_recipes.get(String::num(i), "");
-
-		if (ESS::get_singleton() != NULL) {
-			Ref<CraftRecipe> cr = ESS::get_singleton()->get_resource_db()->get_craft_recipe_path(crn);
-
-			if (cr.is_valid()) {
-				craft_adds_recipe(cr);
 			}
 		}
 	}
@@ -6454,12 +6431,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 	/*
 	Dictionary dict;
 
-	////    SpellCastData    ////
-
-	//Not needed
-	//Ref<SpellCastInfo> _s_spell_cast_info;
-	//Ref<SpellCastInfo> _c_spell_cast_info;
-
 	////    Cooldowns    ////
 
 	Dictionary cds;
@@ -6480,10 +6451,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 
 	dict["active_category_cooldowns"] = _s_active_category_cooldowns;
 
-	////    Talents    ////
-
-	dict["talents"] = _s_talents;
-
 	////    Data    ////
 
 	Array entity_datas;
@@ -6493,16 +6460,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 	}
 
 	dict["entity_datas"] = entity_datas;
-
-	////    Crafting    ////
-
-	Dictionary known_recipes;
-
-	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
-		known_recipes[i] = _s_craft_recipes.get(i)->get_path();
-	}
-
-	dict["known_recipes"] = known_recipes;
 
 	////    Known Spells    ////
 
@@ -7283,7 +7240,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("spell_gets_cast_info"), &Entity::spell_gets_cast_info);
 	ClassDB::bind_method(D_METHOD("sets_spell_cast_info", "value"), &Entity::sets_spell_cast_info);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sspell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo"), "sets_spell_cast_info", "spell_gets_cast_info");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sspell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo", PROPERTY_USAGE_STORAGE), "sets_spell_cast_info", "spell_gets_cast_info");
 
 	ClassDB::bind_method(D_METHOD("spell_getc_cast_info"), &Entity::spell_getc_cast_info);
 	ClassDB::bind_method(D_METHOD("setc_spell_cast_info", "value"), &Entity::setc_spell_cast_info);
@@ -7411,6 +7368,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("craft_removec_recipe_id", "id"), &Entity::craft_removec_recipe_id);
 	ClassDB::bind_method(D_METHOD("craft_getc_recipe", "craft_recipe"), &Entity::craft_getc_recipe);
 	ClassDB::bind_method(D_METHOD("craft_getc_recipe_count"), &Entity::craft_getc_recipe_count);
+
+	ClassDB::bind_method(D_METHOD("scraft_recipes_get"), &Entity::scraft_recipes_get);
+	ClassDB::bind_method(D_METHOD("scraft_recipes_set", "caster_aura_applys"), &Entity::scraft_recipes_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scraft_recipes", PROPERTY_HINT_NONE, "17/17:CraftRecipe", PROPERTY_USAGE_STORAGE, "CraftRecipe"), "scraft_recipes_set", "scraft_recipes_get");
 
 	//Skills
 	ClassDB::bind_method(D_METHOD("skill_hass_id", "id"), &Entity::skill_hass_id);

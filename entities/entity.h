@@ -526,6 +526,9 @@ public:
 	Ref<CraftRecipe> craft_getc_recipe(int index);
 	int craft_getc_recipe_count();
 
+	Vector<Variant> scraft_recipes_get();
+	void scraft_recipes_set(const Vector<Variant> &data);
+
 	////    SpellSystem    ////
 
 	//EventHandlers
