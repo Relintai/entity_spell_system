@@ -1631,20 +1631,28 @@ bool Entity::getc_is_dead() {
 	return _c_is_dead;
 }
 
-bool Entity::gcd_hasc() {
+bool Entity::gcd_hasc() const {
 	return _c_gcd >= 0.000000001;
 }
 
-bool Entity::gcd_hass() {
+bool Entity::gcd_hass() const {
 	return _s_gcd >= 0.000000001;
 }
 
-float Entity::gcd_getc() {
+float Entity::gcd_getc() const {
 	return _c_gcd;
 }
 
-float Entity::gcd_gets() {
+void Entity::gcd_setc(const float value) {
+	_c_gcd = value;
+}
+
+float Entity::gcd_gets() const {
 	return _s_gcd;
+}
+
+void Entity::gcd_sets(const float value) {
+	_s_gcd = value;
 }
 
 void Entity::gcd_starts(float value) {
@@ -6230,11 +6238,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 		resource_adds(res);
 	}
 
-	////    GCD    ////
-
-	_s_gcd = dict.get("gcd", 0);
-	_c_gcd = _s_gcd;
-
 	////    States    ////
 
 	Dictionary statesd = dict.get("states", Dictionary());
@@ -6382,23 +6385,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 		_c_skills.push_back(r);
 	}
 
-	////    Bags    ////
-
-	Dictionary bagd = dict.get("bag", Dictionary());
-
-	if (!bagd.empty()) {
-		if (!_s_bag.is_valid()) {
-			Ref<Bag> bag;
-			bag.instance();
-
-			bag->from_dict(bagd);
-
-			sets_bag(bag);
-		} else {
-			_s_bag->from_dict(bagd);
-		}
-	}
-
 	////     Actionbars    ////
 
 	_actionbar_locked = dict.get("actionbar_locked", false);
@@ -6471,10 +6457,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 	}
 
 	dict["resources"] = rd;
-
-	////    GCD    ////
-
-	dict["gcd"] = _s_gcd;
 
 	////    States    ////
 
@@ -6576,11 +6558,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 	}
 
 	dict["skills"] = skills;
-
-	////    Bags    ////
-
-	if (_s_bag.is_valid())
-		dict["bag"] = _s_bag->to_dict();
 
 	////     Actionbars    ////
 
@@ -7283,8 +7260,15 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gcd_hasc"), &Entity::gcd_hasc);
 	ClassDB::bind_method(D_METHOD("gcd_hass"), &Entity::gcd_hass);
+
 	ClassDB::bind_method(D_METHOD("gcd_getc"), &Entity::gcd_getc);
+	ClassDB::bind_method(D_METHOD("gcd_setc", "value"), &Entity::gcd_setc);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cgcd", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_NETWORK), "gcd_setc", "gcd_getc");
+
 	ClassDB::bind_method(D_METHOD("gcd_gets"), &Entity::gcd_gets);
+	ClassDB::bind_method(D_METHOD("gcd_sets", "value"), &Entity::gcd_sets);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "sgcd", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_NETWORK), "gcd_sets", "gcd_gets");
+
 	ClassDB::bind_method(D_METHOD("gcd_starts", "value"), &Entity::gcd_starts);
 	ClassDB::bind_method(D_METHOD("gcd_startc", "value"), &Entity::gcd_startc);
 

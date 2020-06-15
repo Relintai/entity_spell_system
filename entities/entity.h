@@ -474,12 +474,17 @@ public:
 
 	////    Global Cooldown    ////
 
-	bool gcd_hasc();
-	bool gcd_hass();
-	float gcd_getc();
-	float gcd_gets();
-	void gcd_starts(float value);
-	void gcd_startc(float value);
+	bool gcd_hasc() const;
+	bool gcd_hass() const;
+
+	float gcd_getc() const;
+	void gcd_setc(const float value);
+
+	float gcd_gets() const;
+	void gcd_sets(const float value);
+
+	void gcd_starts(const float value);
+	void gcd_startc(const float value);
 
 	////    States    ////
 	int getc_state();
