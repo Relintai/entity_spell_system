@@ -727,6 +727,9 @@ public:
 	float cooldown_getc_index(int index);
 	int cooldown_getc_count();
 
+	Vector<Variant> scooldowns_get();
+	void scooldowns_set(const Vector<Variant> &data);
+
 	//Category Cooldowns
 
 	bool category_cooldown_hass(int category_id);
@@ -742,6 +745,9 @@ public:
 	float category_cooldown_getc(int category_id);
 	float category_cooldown_getc_index(int index);
 	int category_cooldown_getc_count();
+
+	Vector<Variant> scategory_cooldowns_get();
+	void scategory_cooldowns_set(const Vector<Variant> &data);
 
 	//Known Spells
 

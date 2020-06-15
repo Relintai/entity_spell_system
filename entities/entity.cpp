@@ -3851,6 +3851,34 @@ int Entity::cooldown_getc_count() {
 	return _c_cooldowns.size();
 }
 
+Vector<Variant> Entity::scooldowns_get() {
+	Vector<Variant> arr;
+	arr.resize(_s_cooldowns.size() * 3);
+
+	for (int i = 0; i < _s_cooldowns.size(); ++i) {
+		int indx = i * 3;
+
+		arr.write[indx] = _s_cooldowns[i].id;
+		arr.write[indx + 1] = _s_cooldowns[i].cooldown;
+		arr.write[indx + 2] = _s_cooldowns[i].path;
+	}
+
+	return arr;
+}
+void Entity::scooldowns_set(const Vector<Variant> &data) {
+	ERR_FAIL_COND(data.size() % 3 != 0);
+
+	_s_cooldowns.resize(data.size() / 3);
+
+	for (int i = 0; i < _s_cooldowns.size(); ++i) {
+		int indx = i * 3;
+
+		_s_cooldowns.write[i].id = data[indx];
+		_s_cooldowns.write[i].cooldown = data[indx + 1];
+		_s_cooldowns.write[i].path = data[indx + 2];
+	}
+}
+
 //Category Cooldowns
 
 bool Entity::category_cooldown_hass(int category_id) {
@@ -3989,6 +4017,34 @@ float Entity::category_cooldown_getc_index(int index) {
 }
 int Entity::category_cooldown_getc_count() {
 	return _c_category_cooldowns.size();
+}
+
+Vector<Variant> Entity::scategory_cooldowns_get() {
+	Vector<Variant> arr;
+	arr.resize(_s_category_cooldowns.size() * 3);
+
+	for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
+		int indx = i * 3;
+
+		arr.write[indx] = _s_category_cooldowns[i].id;
+		arr.write[indx + 1] = _s_category_cooldowns[i].cooldown;
+		arr.write[indx + 2] = _s_category_cooldowns[i].path;
+	}
+
+	return arr;
+}
+void Entity::scategory_cooldowns_set(const Vector<Variant> &data) {
+	ERR_FAIL_COND(data.size() % 3 != 0);
+
+	_s_category_cooldowns.resize(data.size() / 3);
+
+	for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
+		int indx = i * 3;
+
+		_s_category_cooldowns.write[i].id = data[indx];
+		_s_category_cooldowns.write[i].cooldown = data[indx + 1];
+		_s_category_cooldowns.write[i].path = data[indx + 2];
+	}
 }
 
 //Known Spells
@@ -6310,53 +6366,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 	}
 
 	return false;
-
-	/*
-
-	////    Cooldowns    ////
-
-	_s_cooldowns.clear();
-	_c_cooldowns.clear();
-
-	Dictionary cds = dict.get("cooldowns", Dictionary());
-
-	for (int i = 0; i < cds.size(); ++i) {
-		Cooldown cd;
-		cd.instance();
-
-		cd->from_dict(cds.get(String::num(i), Dictionary()));
-
-		_s_cooldowns.push_back(cd);
-		_c_cooldowns.push_back(cd);
-	}
-
-	Dictionary ccds = dict.get("category_cooldowns", Dictionary());
-
-	for (int i = 0; i < ccds.size(); ++i) {
-		Cooldown ccd;
-		ccd.instance();
-
-		ccd->from_dict(ccds.get(String::num(i), Dictionary()));
-
-		_s_category_cooldowns.push_back(ccd);
-		_c_category_cooldowns.push_back(ccd);
-	}
-
-	_s_active_category_cooldowns = dict.get("active_category_cooldowns", 0);
-	_c_active_category_cooldowns = _s_active_category_cooldowns;
-	
-	////     Actionbars    ////
-
-	_actionbar_locked = dict.get("actionbar_locked", false);
-	//_action_bar_profile->from_dict(dict.get("actionbar_profile", Dictionary()));
-
-	StringName edp = dict.get("entity_data_path", "");
-
-	if (ESS::get_singleton() != NULL) {
-		sets_entity_data(ESS::get_singleton()->get_resource_db()->get_entity_data_path(edp));
-	}
-
-	sets_entity_data_path(edp);*/
 }
 
 bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
@@ -6400,36 +6409,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 	}
 
 	return false;
-
-	/*
-	Dictionary dict;
-
-	////    Cooldowns    ////
-
-	Dictionary cds;
-
-	for (int i = 0; i < _s_cooldowns.size(); ++i) {
-		cds[i] = _s_cooldowns.get(i)->to_dict();
-	}
-
-	dict["cooldowns"] = cds;
-
-	Dictionary ccds;
-
-	for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
-		ccds[i] = _s_category_cooldowns.get(i)->to_dict();
-	}
-
-	dict["category_cooldowns"] = ccds;
-
-	dict["active_category_cooldowns"] = _s_active_category_cooldowns;
-
-	////     Actionbars    ////
-
-	dict["actionbar_locked"] = _actionbar_locked;
-	//dict["actionbar_profile"] = _action_bar_profile->to_dict();
-
-	return dict;*/
 }
 
 void Entity::_get_property_list(List<PropertyInfo> *p_list) const {
@@ -7234,6 +7213,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("cooldown_getc_index", "index"), &Entity::cooldown_getc_index);
 	ClassDB::bind_method(D_METHOD("cooldown_getc_count"), &Entity::cooldown_getc_count);
 
+	ClassDB::bind_method(D_METHOD("scooldowns_get"), &Entity::scooldowns_get);
+	ClassDB::bind_method(D_METHOD("scooldowns_set", "data"), &Entity::scooldowns_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scooldowns", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "scooldowns_set", "scooldowns_get");
+
 	//Category Cooldowns
 	ADD_SIGNAL(MethodInfo("scategory_cooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
 	ADD_SIGNAL(MethodInfo("scategory_cooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
@@ -7253,6 +7236,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("category_cooldown_getc", "category_id"), &Entity::category_cooldown_getc);
 	ClassDB::bind_method(D_METHOD("category_cooldown_getc_index", "index"), &Entity::category_cooldown_getc_index);
 	ClassDB::bind_method(D_METHOD("category_cooldown_getc_count"), &Entity::category_cooldown_getc_count);
+
+	ClassDB::bind_method(D_METHOD("scategory_cooldowns_get"), &Entity::scategory_cooldowns_get);
+	ClassDB::bind_method(D_METHOD("scategory_cooldowns_set", "data"), &Entity::scategory_cooldowns_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scategory_cooldowns", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "scategory_cooldowns_set", "scategory_cooldowns_get");
 
 	//Known Spells
 	ADD_SIGNAL(MethodInfo("sspell_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
