@@ -46,6 +46,14 @@ SOFTWARE.
 
 #include "../defines.h"
 
+#define PROPERTY_DEBUG false
+
+#if PROPERTY_DEBUG
+#define PROPERTY_USAGE_ENTITY_HIDDEN PROPERTY_USAGE_DEFAULT
+#else
+#define PROPERTY_USAGE_ENTITY_HIDDEN PROPERTY_USAGE_STORAGE
+#endif
+
 #define NOTIFICATION_IMPLS(func, signal, ...)                                          \
 	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) \
 		_s_ai->func(this, __VA_ARGS__);                                                \
@@ -6412,8 +6420,11 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 }
 
 void Entity::_get_property_list(List<PropertyInfo> *p_list) const {
-	//int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
+#if PROPERTY_DEBUG
 	int property_usange = PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL;
+#else
+	int property_usange = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL;
+#endif
 
 	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
 		p_list->push_back(PropertyInfo(Variant::REAL, "stat/" + itos(i) + "/base", PROPERTY_HINT_NONE, "", property_usange));
@@ -6591,7 +6602,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_free_class_talent_points"), &Entity::gets_free_class_talent_points);
 	ClassDB::bind_method(D_METHOD("sets_free_class_talent_points", "value"), &Entity::sets_free_class_talent_points);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_class_talent_points"), "sets_free_class_talent_points", "gets_free_class_talent_points");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_class_talent_points", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_free_class_talent_points", "gets_free_class_talent_points");
 
 	ClassDB::bind_method(D_METHOD("getc_free_class_talent_points"), &Entity::getc_free_class_talent_points);
 	ClassDB::bind_method(D_METHOD("setc_free_class_talent_points", "value"), &Entity::setc_free_class_talent_points);
@@ -6639,13 +6650,13 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sclass_talents_get"), &Entity::sclass_talents_get);
 	ClassDB::bind_method(D_METHOD("sclass_talents_set", "data"), &Entity::sclass_talents_set);
-	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "sclass_talents", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "sclass_talents_set", "sclass_talents_get");
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "sclass_talents", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sclass_talents_set", "sclass_talents_get");
 
 	//Character Talents
 
 	ClassDB::bind_method(D_METHOD("gets_free_character_talent_points"), &Entity::gets_free_character_talent_points);
 	ClassDB::bind_method(D_METHOD("sets_free_character_talent_points", "value"), &Entity::sets_free_character_talent_points);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_character_talent_points"), "sets_free_character_talent_points", "gets_free_character_talent_points");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_character_talent_points", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_free_character_talent_points", "gets_free_character_talent_points");
 
 	ClassDB::bind_method(D_METHOD("getc_free_character_talent_points"), &Entity::getc_free_character_talent_points);
 	ClassDB::bind_method(D_METHOD("setc_free_character_talent_points", "value"), &Entity::setc_free_character_talent_points);
@@ -6693,7 +6704,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("scharacter_talents_get"), &Entity::scharacter_talents_get);
 	ClassDB::bind_method(D_METHOD("scharacter_talents_set", "data"), &Entity::scharacter_talents_set);
-	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "scharacter_talents", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "scharacter_talents_set", "scharacter_talents_get");
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "scharacter_talents", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "scharacter_talents_set", "scharacter_talents_get");
 
 	//Cooldowns
 	BIND_VMETHOD(MethodInfo("notification_scooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
@@ -6848,7 +6859,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sauras_get"), &Entity::sauras_get);
 	ClassDB::bind_method(D_METHOD("sauras_set", "data"), &Entity::sauras_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sauras", PROPERTY_HINT_NONE, "17/17:AuraData", PROPERTY_USAGE_STORAGE, "AuraData"), "sauras_set", "sauras_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sauras", PROPERTY_HINT_NONE, "17/17:AuraData", PROPERTY_USAGE_ENTITY_HIDDEN, "AuraData"), "sauras_set", "sauras_get");
 
 	//Hooks
 	BIND_VMETHOD(MethodInfo("_moved"));
@@ -6883,15 +6894,15 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_entity_data_id"), &Entity::gets_entity_data_id);
 	ClassDB::bind_method(D_METHOD("sets_entity_data_id", "value"), &Entity::sets_entity_data_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "characterclass_id"), "sets_entity_data_id", "gets_entity_data_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "characterclass_id", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_entity_data_id", "gets_entity_data_id");
 
 	ClassDB::bind_method(D_METHOD("getc_entity_data_id"), &Entity::getc_entity_data_id);
 	ClassDB::bind_method(D_METHOD("setc_entity_data_id", "value"), &Entity::setc_entity_data_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_data_id"), "setc_entity_data_id", "getc_entity_data_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_data_id", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "setc_entity_data_id", "getc_entity_data_id");
 
 	ClassDB::bind_method(D_METHOD("gets_entity_player_type"), &Entity::gets_entity_player_type);
 	ClassDB::bind_method(D_METHOD("sets_entity_player_type", "value"), &Entity::sets_entity_player_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_player_type"), "sets_entity_player_type", "gets_entity_player_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_player_type", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_entity_player_type", "gets_entity_player_type");
 
 	ClassDB::bind_method(D_METHOD("getc_entity_player_type"), &Entity::getc_entity_player_type);
 	ClassDB::bind_method(D_METHOD("setc_entity_player_type", "value"), &Entity::setc_entity_player_type);
@@ -6899,7 +6910,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_guid"), &Entity::gets_guid);
 	ClassDB::bind_method(D_METHOD("sets_guid", "value"), &Entity::sets_guid);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sguid"), "sets_guid", "gets_guid");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sguid", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_guid", "gets_guid");
 
 	ClassDB::bind_method(D_METHOD("getc_guid"), &Entity::getc_guid);
 	ClassDB::bind_method(D_METHOD("setc_guid", "value"), &Entity::setc_guid);
@@ -6907,7 +6918,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_entity_type"), &Entity::gets_entity_type);
 	ClassDB::bind_method(D_METHOD("sets_entity_type", "value"), &Entity::sets_entity_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_type", PROPERTY_HINT_ENUM, ""), "sets_entity_type", "gets_entity_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_type", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_entity_type", "gets_entity_type");
 
 	ClassDB::bind_method(D_METHOD("getc_entity_type"), &Entity::getc_entity_type);
 	ClassDB::bind_method(D_METHOD("setc_entity_type", "value"), &Entity::sets_entity_type);
@@ -6915,11 +6926,11 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_ai_state"), &Entity::gets_ai_state);
 	ClassDB::bind_method(D_METHOD("sets_ai_state", "value"), &Entity::sets_ai_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES), "sets_ai_state", "gets_ai_state");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES, PROPERTY_USAGE_ENTITY_HIDDEN), "sets_ai_state", "gets_ai_state");
 
 	ClassDB::bind_method(D_METHOD("gets_seed"), &Entity::gets_seed);
 	ClassDB::bind_method(D_METHOD("sets_seed", "value"), &Entity::sets_seed);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sseed"), "sets_seed", "gets_seed");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sseed", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_seed", "gets_seed");
 
 	ClassDB::bind_method(D_METHOD("getc_seed"), &Entity::getc_seed);
 	ClassDB::bind_method(D_METHOD("setc_seed", "value"), &Entity::setc_seed);
@@ -6937,7 +6948,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_entity_interaction_type"), &Entity::gets_entity_interaction_type);
 	ClassDB::bind_method(D_METHOD("sets_entity_interaction_type", "value"), &Entity::sets_entity_interaction_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_interaction_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE), "sets_entity_interaction_type", "gets_entity_interaction_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_interaction_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE, PROPERTY_USAGE_ENTITY_HIDDEN), "sets_entity_interaction_type", "gets_entity_interaction_type");
 
 	ClassDB::bind_method(D_METHOD("getc_entity_interaction_type"), &Entity::getc_entity_interaction_type);
 	ClassDB::bind_method(D_METHOD("setc_entity_interaction_type", "value"), &Entity::setc_entity_interaction_type);
@@ -6945,11 +6956,11 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_immunity_flags"), &Entity::gets_immunity_flags);
 	ClassDB::bind_method(D_METHOD("sets_immunity_flags", "value"), &Entity::sets_immunity_flags);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "simmunity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_IMMUNITY_FLAGS), "sets_immunity_flags", "gets_immunity_flags");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "simmunity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_IMMUNITY_FLAGS, PROPERTY_USAGE_ENTITY_HIDDEN), "sets_immunity_flags", "gets_immunity_flags");
 
 	ClassDB::bind_method(D_METHOD("gets_entity_flags"), &Entity::gets_entity_flags);
 	ClassDB::bind_method(D_METHOD("sets_entity_flags", "value"), &Entity::sets_entity_flags);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_FLAGS), "sets_entity_flags", "gets_entity_flags");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_flags", PROPERTY_HINT_FLAGS, EntityEnums::BINDING_STRING_ENTITY_FLAGS, PROPERTY_USAGE_ENTITY_HIDDEN), "sets_entity_flags", "gets_entity_flags");
 
 	ClassDB::bind_method(D_METHOD("getc_entity_flags"), &Entity::getc_entity_flags);
 	ClassDB::bind_method(D_METHOD("setc_entity_flags", "value"), &Entity::setc_entity_flags);
@@ -6965,7 +6976,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_model_index"), &Entity::gets_model_index);
 	ClassDB::bind_method(D_METHOD("sets_model_index", "value"), &Entity::sets_model_index);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "smodel_index"), "sets_model_index", "gets_model_index");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "smodel_index", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_model_index", "gets_model_index");
 
 	ClassDB::bind_method(D_METHOD("getc_model_index"), &Entity::getc_model_index);
 	ClassDB::bind_method(D_METHOD("setc_model_index", "value"), &Entity::setc_model_index);
@@ -6974,6 +6985,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gets_class_level"), &Entity::gets_class_level);
 	ClassDB::bind_method(D_METHOD("sets_class_level", "value"), &Entity::sets_class_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sclass_level"), "sets_class_level", "gets_class_level");
+
 	ClassDB::bind_method(D_METHOD("getc_class_level"), &Entity::getc_class_level);
 	ClassDB::bind_method(D_METHOD("setc_class_level", "value"), &Entity::setc_class_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cclass_level", PROPERTY_HINT_NONE, "", 0), "setc_class_level", "getc_class_level");
@@ -6981,20 +6993,23 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gets_character_level"), &Entity::gets_character_level);
 	ClassDB::bind_method(D_METHOD("sets_character_level", "value"), &Entity::sets_character_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "scharacter_level"), "sets_character_level", "gets_character_level");
+
 	ClassDB::bind_method(D_METHOD("getc_character_level"), &Entity::getc_character_level);
 	ClassDB::bind_method(D_METHOD("setc_character_level", "value"), &Entity::setc_character_level);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "ccharacter_level", PROPERTY_HINT_NONE, "", 0), "setc_character_level", "getc_character_level");
 
 	ClassDB::bind_method(D_METHOD("gets_class_xp"), &Entity::gets_class_xp);
 	ClassDB::bind_method(D_METHOD("sets_class_xp", "value"), &Entity::sets_class_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sclass_xp"), "sets_class_xp", "gets_class_xp");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sclass_xp", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_class_xp", "gets_class_xp");
+
 	ClassDB::bind_method(D_METHOD("getc_class_xp"), &Entity::getc_class_xp);
 	ClassDB::bind_method(D_METHOD("setc_class_xp", "value"), &Entity::setc_class_xp);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cclass_xp", PROPERTY_HINT_NONE, "", 0), "setc_class_xp", "getc_class_xp");
 
 	ClassDB::bind_method(D_METHOD("gets_character_xp"), &Entity::gets_character_xp);
 	ClassDB::bind_method(D_METHOD("sets_character_xp", "value"), &Entity::sets_character_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "scharacter_xp"), "sets_character_xp", "gets_character_xp");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "scharacter_xp", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_character_xp", "gets_character_xp");
+
 	ClassDB::bind_method(D_METHOD("getc_character_xp"), &Entity::getc_character_xp);
 	ClassDB::bind_method(D_METHOD("setc_character_xp", "value"), &Entity::setc_character_xp);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "ccharacter_xp", PROPERTY_HINT_NONE, "", 0), "setc_character_xp", "getc_character_xp");
@@ -7110,7 +7125,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sresources_get"), &Entity::sresources_get);
 	ClassDB::bind_method(D_METHOD("sresources_set", "caster_aura_applys"), &Entity::sresources_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sresources", PROPERTY_HINT_NONE, "17/17:EntityResource", PROPERTY_USAGE_STORAGE, "EntityResource"), "sresources_set", "sresources_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sresources", PROPERTY_HINT_NONE, "17/17:EntityResource", PROPERTY_USAGE_ENTITY_HIDDEN, "EntityResource"), "sresources_set", "sresources_get");
 
 	//GCD
 	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "value")));
@@ -7123,11 +7138,11 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gcd_getc"), &Entity::gcd_getc);
 	ClassDB::bind_method(D_METHOD("gcd_setc", "value"), &Entity::gcd_setc);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cgcd", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_NETWORK), "gcd_setc", "gcd_getc");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "cgcd", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "gcd_setc", "gcd_getc");
 
 	ClassDB::bind_method(D_METHOD("gcd_gets"), &Entity::gcd_gets);
 	ClassDB::bind_method(D_METHOD("gcd_sets", "value"), &Entity::gcd_sets);
-	ADD_PROPERTY(PropertyInfo(Variant::REAL, "sgcd", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_NETWORK), "gcd_sets", "gcd_gets");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "sgcd", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "gcd_sets", "gcd_gets");
 
 	ClassDB::bind_method(D_METHOD("gcd_starts", "value"), &Entity::gcd_starts);
 	ClassDB::bind_method(D_METHOD("gcd_startc", "value"), &Entity::gcd_startc);
@@ -7145,7 +7160,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sdatas_get"), &Entity::sdatas_get);
 	ClassDB::bind_method(D_METHOD("sdatas_set", "data"), &Entity::sdatas_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sdatas", PROPERTY_HINT_NONE, "17/17:EntityDataContainer", PROPERTY_USAGE_STORAGE, "EntityDataContainer"), "sdatas_set", "sdatas_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sdatas", PROPERTY_HINT_NONE, "17/17:EntityDataContainer", PROPERTY_USAGE_ENTITY_HIDDEN, "EntityDataContainer"), "sdatas_set", "sdatas_get");
 
 	//States
 	ADD_SIGNAL(MethodInfo("sstate_changed", PropertyInfo(Variant::INT, "value")));
@@ -7153,18 +7168,18 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("getc_state"), &Entity::getc_state);
 	ClassDB::bind_method(D_METHOD("setc_state", "state"), &Entity::setc_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cstate", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "setc_state", "getc_state");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cstate", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "setc_state", "getc_state");
 
 	ClassDB::bind_method(D_METHOD("gets_state"), &Entity::gets_state);
 	ClassDB::bind_method(D_METHOD("sets_state", "state"), &Entity::sets_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sstate"), "sets_state", "gets_state");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sstate", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_state", "gets_state");
 
 	ClassDB::bind_method(D_METHOD("adds_state_ref", "state_index"), &Entity::adds_state_ref);
 	ClassDB::bind_method(D_METHOD("removes_state_ref", "state_index"), &Entity::removes_state_ref);
 
 	ClassDB::bind_method(D_METHOD("states_gets"), &Entity::states_gets);
 	ClassDB::bind_method(D_METHOD("states_sets", "state"), &Entity::states_sets);
-	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "sstates", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "states_sets", "states_gets");
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "sstates", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "states_sets", "states_gets");
 
 	//Casting System
 
@@ -7173,7 +7188,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("spell_gets_cast_info"), &Entity::spell_gets_cast_info);
 	ClassDB::bind_method(D_METHOD("sets_spell_cast_info", "value"), &Entity::sets_spell_cast_info);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sspell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo", PROPERTY_USAGE_STORAGE), "sets_spell_cast_info", "spell_gets_cast_info");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sspell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_spell_cast_info", "spell_gets_cast_info");
 
 	ClassDB::bind_method(D_METHOD("spell_getc_cast_info"), &Entity::spell_getc_cast_info);
 	ClassDB::bind_method(D_METHOD("setc_spell_cast_info", "value"), &Entity::setc_spell_cast_info);
@@ -7215,7 +7230,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("scooldowns_get"), &Entity::scooldowns_get);
 	ClassDB::bind_method(D_METHOD("scooldowns_set", "data"), &Entity::scooldowns_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scooldowns", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "scooldowns_set", "scooldowns_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scooldowns", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "scooldowns_set", "scooldowns_get");
 
 	//Category Cooldowns
 	ADD_SIGNAL(MethodInfo("scategory_cooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
@@ -7239,7 +7254,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("scategory_cooldowns_get"), &Entity::scategory_cooldowns_get);
 	ClassDB::bind_method(D_METHOD("scategory_cooldowns_set", "data"), &Entity::scategory_cooldowns_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scategory_cooldowns", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "scategory_cooldowns_set", "scategory_cooldowns_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scategory_cooldowns", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "scategory_cooldowns_set", "scategory_cooldowns_get");
 
 	//Known Spells
 	ADD_SIGNAL(MethodInfo("sspell_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell")));
@@ -7252,7 +7267,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_free_spell_points"), &Entity::gets_free_spell_points);
 	ClassDB::bind_method(D_METHOD("sets_free_spell_points", "value"), &Entity::sets_free_spell_points);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_spell_points"), "sets_free_spell_points", "gets_free_spell_points");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sfree_spell_points", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_free_spell_points", "gets_free_spell_points");
 
 	ClassDB::bind_method(D_METHOD("getc_free_spell_points"), &Entity::getc_free_spell_points);
 	ClassDB::bind_method(D_METHOD("setc_free_spell_points", "value"), &Entity::setc_free_spell_points);
@@ -7281,7 +7296,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sspells_get"), &Entity::sspells_get);
 	ClassDB::bind_method(D_METHOD("sspells_set", "data"), &Entity::sspells_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sspells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_STORAGE, "Spell"), "sspells_set", "sspells_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sspells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_ENTITY_HIDDEN, "Spell"), "sspells_set", "sspells_get");
 
 	//Crafting
 	BIND_VMETHOD(MethodInfo("_crafts", PropertyInfo(Variant::INT, "id")));
@@ -7316,7 +7331,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("scraft_recipes_get"), &Entity::scraft_recipes_get);
 	ClassDB::bind_method(D_METHOD("scraft_recipes_set", "caster_aura_applys"), &Entity::scraft_recipes_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scraft_recipes", PROPERTY_HINT_NONE, "17/17:CraftRecipe", PROPERTY_USAGE_STORAGE, "CraftRecipe"), "scraft_recipes_set", "scraft_recipes_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "scraft_recipes", PROPERTY_HINT_NONE, "17/17:CraftRecipe", PROPERTY_USAGE_ENTITY_HIDDEN, "CraftRecipe"), "scraft_recipes_set", "scraft_recipes_get");
 
 	//Skills
 	ClassDB::bind_method(D_METHOD("skill_hass_id", "id"), &Entity::skill_hass_id);
@@ -7340,7 +7355,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sskills_get"), &Entity::sskills_get);
 	ClassDB::bind_method(D_METHOD("sskills_set", "data"), &Entity::sskills_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sskills", PROPERTY_HINT_NONE, "17/17:EntitySkill", PROPERTY_USAGE_STORAGE, "EntitySkill"), "sskills_set", "sskills_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sskills", PROPERTY_HINT_NONE, "17/17:EntitySkill", PROPERTY_USAGE_ENTITY_HIDDEN, "EntitySkill"), "sskills_set", "sskills_get");
 
 	//skeleton
 	ClassDB::bind_method(D_METHOD("get_body"), &Entity::get_body);
@@ -7389,7 +7404,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("gets_target_bag"), &Entity::gets_target_bag);
 	ClassDB::bind_method(D_METHOD("sets_target_bag", "bag"), &Entity::sets_target_bag);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "starget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), "sets_target_bag", "gets_target_bag");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "starget_bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_target_bag", "gets_target_bag");
 
 	ClassDB::bind_method(D_METHOD("getc_target_bag"), &Entity::getc_target_bag);
 	ClassDB::bind_method(D_METHOD("setc_target_bag", "bag"), &Entity::setc_target_bag);
@@ -7449,7 +7464,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_actionbar_locked"), &Entity::get_actionbar_locked);
 	ClassDB::bind_method(D_METHOD("set_actionbar_locked", "value"), &Entity::set_actionbar_locked);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "actionbar_locked"), "set_actionbar_locked", "get_actionbar_locked");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "actionbar_locked", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "set_actionbar_locked", "get_actionbar_locked");
 
 	ClassDB::bind_method(D_METHOD("get_action_bar_profile"), &Entity::get_action_bar_profile);
 
@@ -7487,15 +7502,15 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("pet_gets_formation_index"), &Entity::pet_gets_formation_index);
 	ClassDB::bind_method(D_METHOD("pet_sets_formation_index", "value"), &Entity::pet_sets_formation_index);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spet_formation_index"), "pet_sets_formation_index", "pet_gets_formation_index");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spet_formation_index", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "pet_sets_formation_index", "pet_gets_formation_index");
 
 	ClassDB::bind_method(D_METHOD("pet_gets_ai_state"), &Entity::pet_gets_ai_state);
 	ClassDB::bind_method(D_METHOD("pet_sets_ai_state", "value"), &Entity::pet_sets_ai_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "pet_gets_ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES), "pet_sets_ai_state", "pet_gets_ai_state");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "pet_gets_ai_state", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_AI_STATES, PROPERTY_USAGE_ENTITY_HIDDEN), "pet_sets_ai_state", "pet_gets_ai_state");
 
 	ClassDB::bind_method(D_METHOD("gets_original_entity_controller"), &Entity::gets_original_entity_controller);
 	ClassDB::bind_method(D_METHOD("sets_original_entity_controller", "value"), &Entity::sets_original_entity_controller);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "soriginal_entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "sets_original_entity_controller", "gets_original_entity_controller");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "soriginal_entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER, PROPERTY_USAGE_ENTITY_HIDDEN), "sets_original_entity_controller", "gets_original_entity_controller");
 
 	ClassDB::bind_method(D_METHOD("gets_entity_controller"), &Entity::gets_entity_controller);
 	ClassDB::bind_method(D_METHOD("sets_entity_controller", "value"), &Entity::sets_entity_controller);
@@ -7505,11 +7520,11 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("getc_is_controlled"), &Entity::getc_is_controlled);
 	ClassDB::bind_method(D_METHOD("setc_is_controlled", "value"), &Entity::setc_is_controlled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "c_is_controlled"), "setc_is_controlled", "getc_is_controlled");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "c_is_controlled", PROPERTY_HINT_NONE, "", 0), "setc_is_controlled", "getc_is_controlled");
 
 	ClassDB::bind_method(D_METHOD("gets_ai"), &Entity::gets_ai);
 	ClassDB::bind_method(D_METHOD("sets_ai", "value"), &Entity::sets_ai);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sai", PROPERTY_HINT_RESOURCE_TYPE, "EntityAI"), "sets_ai", "gets_ai");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sai", PROPERTY_HINT_RESOURCE_TYPE, "EntityAI", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_ai", "gets_ai");
 
 	//Serialization
 	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
