@@ -5302,6 +5302,13 @@ int Entity::data_getc_count() {
 	return _c_data.size();
 }
 
+Vector<Variant> Entity::sdatas_get() {
+	VARIANT_ARRAY_GET(_s_data);
+}
+void Entity::sdatas_set(const Vector<Variant> &data) {
+	VARIANT_ARRAY_SET(data, _s_data, EntityDataContainer);
+}
+
 ////    Actionbars    ////
 
 bool Entity::get_actionbar_locked() {
@@ -6337,28 +6344,7 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 
 	_s_active_category_cooldowns = dict.get("active_category_cooldowns", 0);
 	_c_active_category_cooldowns = _s_active_category_cooldowns;
-
-	////    Data    ////
-
-	Array entity_datas = dict.get("entity_datas", Array());
-
-	for (int i = 0; i < entity_datas.size(); ++i) {
-		Dictionary entry = entity_datas.get(i);
-
-		String class_name = dict.get("class_name", EntityDataContainer::get_class_static());
-
-		if (ClassDB::can_instance(class_name) && ClassDB::is_parent_class(class_name, EntityDataContainer::get_class_static())) {
-			Ref<EntityDataContainer> data = Ref<EntityDataContainer>(ClassDB::instance(class_name));
-
-			if (data.is_valid()) {
-				data->from_dict(entry);
-
-				_s_data.push_back(data);
-				_c_data.push_back(data);
-			}
-		}
-	}
-
+	
 	////     Actionbars    ////
 
 	_actionbar_locked = dict.get("actionbar_locked", false);
@@ -6437,16 +6423,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 	dict["category_cooldowns"] = ccds;
 
 	dict["active_category_cooldowns"] = _s_active_category_cooldowns;
-
-	////    Data    ////
-
-	Array entity_datas;
-
-	for (int i = 0; i < _s_data.size(); ++i) {
-		entity_datas.append(_s_data.get(i)->to_dict());
-	}
-
-	dict["entity_datas"] = entity_datas;
 
 	////     Actionbars    ////
 
@@ -7187,6 +7163,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("data_removec", "index"), &Entity::data_removec);
 	ClassDB::bind_method(D_METHOD("data_getc", "index"), &Entity::data_getc);
 	ClassDB::bind_method(D_METHOD("data_getc_count"), &Entity::data_getc_count);
+
+	ClassDB::bind_method(D_METHOD("sdatas_get"), &Entity::sdatas_get);
+	ClassDB::bind_method(D_METHOD("sdatas_set", "data"), &Entity::sdatas_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sdatas", PROPERTY_HINT_NONE, "17/17:EntityDataContainer", PROPERTY_USAGE_STORAGE, "EntityDataContainer"), "sdatas_set", "sdatas_get");
 
 	//States
 	ADD_SIGNAL(MethodInfo("sstate_changed", PropertyInfo(Variant::INT, "value")));

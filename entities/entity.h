@@ -964,6 +964,9 @@ public:
 	Ref<EntityDataContainer> data_getc(int index);
 	int data_getc_count();
 
+	Vector<Variant> sdatas_get();
+	void sdatas_set(const Vector<Variant> &data);
+
 	////    Actionbars    ////
 
 	bool get_actionbar_locked();
