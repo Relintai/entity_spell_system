@@ -499,6 +499,9 @@ public:
 	void adds_state_ref(int state_index);
 	void removes_state_ref(int state_index);
 
+	PoolIntArray states_gets() const;
+	void states_sets(const PoolIntArray &data);
+
 	////    Crafting System    ////
 
 	void craft_crequest(int id);

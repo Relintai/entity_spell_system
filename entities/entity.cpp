@@ -1707,6 +1707,26 @@ void Entity::removes_state_ref(int state_index) {
 	}
 }
 
+PoolIntArray Entity::states_gets() const {
+	PoolIntArray arr;
+	arr.resize(EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX);
+
+	PoolIntArray::Write w = arr.write();
+
+	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
+		w[i] = _s_states[i];
+	}
+
+	return arr;
+}
+void Entity::states_sets(const PoolIntArray &data) {
+	ERR_FAIL_COND(data.size() <= EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX);
+
+	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
+		_s_states[i] = data[i];
+	}
+}
+
 ////    Crafting System    ////
 
 void Entity::craft_crequest(int id) {
@@ -6220,17 +6240,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 
 	/*
 
-	////    States    ////
-
-	Dictionary statesd = dict.get("states", Dictionary());
-
-	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
-		_s_states[i] = statesd.get(String::num(i), 0);
-	}
-
-	_s_state = dict.get("state", Dictionary());
-	_c_state = _s_state;
-
 	////    Auras    ////
 
 	_s_auras.clear();
@@ -6425,18 +6434,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 
 	/*
 	Dictionary dict;
-
-	////    States    ////
-
-	Dictionary stated;
-
-	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
-		stated[i] = _s_states[i];
-	}
-
-	dict["states"] = stated;
-
-	dict["state"] = _s_state;
 
 	////    SpellCastData    ////
 
@@ -7261,10 +7258,18 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("getc_state"), &Entity::getc_state);
 	ClassDB::bind_method(D_METHOD("setc_state", "state"), &Entity::setc_state);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cstate"), "setc_state", "getc_state");
+
 	ClassDB::bind_method(D_METHOD("gets_state"), &Entity::gets_state);
 	ClassDB::bind_method(D_METHOD("sets_state", "state"), &Entity::sets_state);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sstate"), "sets_state", "gets_state");
+
 	ClassDB::bind_method(D_METHOD("adds_state_ref", "state_index"), &Entity::adds_state_ref);
 	ClassDB::bind_method(D_METHOD("removes_state_ref", "state_index"), &Entity::removes_state_ref);
+
+	ClassDB::bind_method(D_METHOD("states_gets"), &Entity::states_gets);
+	ClassDB::bind_method(D_METHOD("states_sets", "state"), &Entity::states_sets);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "sstates", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "states_sets", "states_gets");
 
 	//Casting System
 
