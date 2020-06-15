@@ -772,6 +772,9 @@ public:
 	void spell_addc_rpc(int id);
 	void spell_removec_rpc(int id);
 
+	Vector<Variant> sspells_get();
+	void sspells_set(const Vector<Variant> &data);
+
 	//Skills
 
 	bool skill_hass_id(int id);

@@ -4174,6 +4174,13 @@ void Entity::spell_removec_rpc(int id) {
 	spell_removec(ESS::get_singleton()->get_resource_db()->get_spell(id));
 }
 
+Vector<Variant> Entity::sspells_get() {
+	VARIANT_ARRAY_GET(_s_spells);
+}
+void Entity::sspells_set(const Vector<Variant> &data) {
+	VARIANT_ARRAY_SET(data, _s_spells, Spell);
+}
+
 //Skills
 bool Entity::skill_hass_id(int id) {
 	for (int i = 0; i < _s_skills.size(); ++i) {
@@ -6352,26 +6359,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 		}
 	}
 
-	////    Known Spells    ////
-
-	if (ESS::get_singleton()->get_use_spell_points())
-		sets_free_spell_points(dict.get("free_spell_points", 0));
-
-	Dictionary known_spells = dict.get("known_spells", Dictionary());
-
-	for (int i = 0; i < known_spells.size(); ++i) {
-		StringName spell_path = known_spells.get(String::num(i), "");
-
-		if (ESS::get_singleton() != NULL) {
-			Ref<Spell> sp = ESS::get_singleton()->get_resource_db()->get_spell_path(spell_path);
-
-			if (sp.is_valid()) {
-				_s_spells.push_back(sp);
-				_c_spells.push_back(sp);
-			}
-		}
-	}
-
 	////     Actionbars    ////
 
 	_actionbar_locked = dict.get("actionbar_locked", false);
@@ -6460,19 +6447,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 	}
 
 	dict["entity_datas"] = entity_datas;
-
-	////    Known Spells    ////
-
-	if (ESS::get_singleton()->get_use_spell_points())
-		dict["free_spell_points"] = _s_free_spell_points;
-
-	Dictionary known_spells;
-
-	for (int i = 0; i < _s_spells.size(); ++i) {
-		known_spells[i] = _s_spells.get(i)->get_path();
-	}
-
-	dict["known_spells"] = known_spells;
 
 	////     Actionbars    ////
 
@@ -7337,6 +7311,10 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("spell_addc_rpc", "id"), &Entity::spell_addc_rpc);
 	ClassDB::bind_method(D_METHOD("spell_removec_rpc", "id"), &Entity::spell_removec_rpc);
+
+	ClassDB::bind_method(D_METHOD("sspells_get"), &Entity::sspells_get);
+	ClassDB::bind_method(D_METHOD("sspells_set", "data"), &Entity::sspells_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sspells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_STORAGE, "Spell"), "sspells_set", "sspells_get");
 
 	//Crafting
 	BIND_VMETHOD(MethodInfo("_crafts", PropertyInfo(Variant::INT, "id")));
