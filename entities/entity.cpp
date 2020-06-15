@@ -3471,6 +3471,13 @@ Ref<AuraData> Entity::aura_getc(int index) {
 	return Ref<AuraData>(_c_auras.get(index));
 }
 
+Vector<Variant> Entity::sauras_get() {
+	VARIANT_ARRAY_GET(_s_auras);
+}
+void Entity::sauras_set(const Vector<Variant> &data) {
+	VARIANT_ARRAY_SET(data, _s_auras, AuraData);
+}
+
 void Entity::moved() {
 	if (has_method("_moved"))
 		call("_moved");
@@ -6247,25 +6254,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 
 	/*
 
-	////    Auras    ////
-
-	_s_auras.clear();
-	_c_auras.clear();
-
-	Dictionary auras = dict.get("auras", Dictionary());
-
-	for (int i = 0; i < auras.size(); ++i) {
-		Ref<AuraData> r;
-		r.instance();
-
-		r->from_dict(auras.get(String::num(i), Dictionary()));
-		r->set_owner(this);
-		r->resolve_references(this);
-
-		_s_auras.push_back(r);
-		//_c_auras.push_back(r);
-	}
-
 	////    Cooldowns    ////
 
 	_s_cooldowns.clear();
@@ -6433,21 +6421,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 	//Not needed
 	//Ref<SpellCastInfo> _s_spell_cast_info;
 	//Ref<SpellCastInfo> _c_spell_cast_info;
-
-	//// AuraComponent    ////
-
-	Dictionary auras;
-
-	for (int i = 0; i < _s_auras.size(); ++i) {
-		auras[i] = _s_auras.get(i)->to_dict();
-	}
-
-	dict["auras"] = auras;
-
-	dict["entity_type"] = _s_entity_type;
-	dict["immunity_flags"] = _s_immunity_flags;
-	dict["entity_flags"] = _s_entity_flags;
-	dict["entity_controller"] = _s_entity_controller;
 
 	////    Cooldowns    ////
 
@@ -6941,6 +6914,10 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("aura_getc_count"), &Entity::aura_getc_count);
 	ClassDB::bind_method(D_METHOD("aura_getc", "index"), &Entity::aura_getc);
+
+	ClassDB::bind_method(D_METHOD("sauras_get"), &Entity::sauras_get);
+	ClassDB::bind_method(D_METHOD("sauras_set", "data"), &Entity::sauras_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sauras", PROPERTY_HINT_NONE, "17/17:AuraData", PROPERTY_USAGE_STORAGE, "AuraData"), "sauras_set", "sauras_get");
 
 	//Hooks
 	BIND_VMETHOD(MethodInfo("_moved"));

@@ -388,11 +388,11 @@ void AuraData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_owner"), &AuraData::get_owner);
 	ClassDB::bind_method(D_METHOD("set_owner", "value"), &AuraData::set_owner_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_owner", "get_owner");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity", 0), "set_owner", "get_owner");
 
 	ClassDB::bind_method(D_METHOD("caster_get"), &AuraData::caster_get);
 	ClassDB::bind_method(D_METHOD("caster_set", "value"), &AuraData::caster_set_bind);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "caster_set", "caster_get");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "caster", PROPERTY_HINT_RESOURCE_TYPE, "Entity", 0), "caster_set", "caster_get");
 
 	ClassDB::bind_method(D_METHOD("caster_get_path"), &AuraData::caster_get_path);
 	ClassDB::bind_method(D_METHOD("caster_set_path", "value"), &AuraData::caster_set_path);

@@ -661,6 +661,9 @@ public:
 	int aura_getc_count();
 	Ref<AuraData> aura_getc(int index);
 
+	Vector<Variant> sauras_get();
+	void sauras_set(const Vector<Variant> &data);
+
 	//Hooks
 	void moved();
 
