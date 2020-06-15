@@ -2553,6 +2553,13 @@ Ref<EntityResource> Entity::getc_speed() {
 	return _s_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED);
 }
 
+Vector<Variant> Entity::sresources_get() {
+	VARIANT_ARRAY_GET(_s_resources);
+}
+void Entity::sresources_set(const Vector<Variant> &resources) {
+	VARIANT_ARRAY_SET(resources, _s_resources, EntityResource);
+}
+
 void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
@@ -6213,31 +6220,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 
 	/*
 
-	////    Resources    ////
-
-	_s_resources.clear();
-	_c_resources.clear();
-
-	Dictionary rd = dict.get("resources", Dictionary());
-
-	for (int i = 0; i < rd.size(); ++i) {
-		Dictionary ird = rd.get(String::num(i), Dictionary());
-
-		StringName data_path = ird.get("data_path", "");
-
-		Ref<EntityResourceData> resd = ESS::get_singleton()->get_resource_db()->get_entity_resource_path(data_path);
-
-		ERR_CONTINUE(!resd.is_valid());
-
-		Ref<EntityResource> res = resd->get_entity_resource_instance();
-
-		ERR_CONTINUE(!res.is_valid());
-
-		res->from_dict(ird);
-
-		resource_adds(res);
-	}
-
 	////    States    ////
 
 	Dictionary statesd = dict.get("states", Dictionary());
@@ -6443,20 +6425,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 
 	/*
 	Dictionary dict;
-
-	////    Resources    ////
-
-	Dictionary rd;
-
-	for (int i = 0; i < _s_resources.size(); ++i) {
-		Ref<EntityResource> r = _s_resources.get(i);
-
-		ERR_CONTINUE(!r.is_valid());
-
-		rd[String::num(i)] = r->to_dict();
-	}
-
-	dict["resources"] = rd;
 
 	////    States    ////
 
@@ -7251,6 +7219,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("gets_speed"), &Entity::gets_speed);
 	ClassDB::bind_method(D_METHOD("getc_health"), &Entity::getc_health);
 	ClassDB::bind_method(D_METHOD("getc_speed"), &Entity::getc_speed);
+
+	ClassDB::bind_method(D_METHOD("sresources_get"), &Entity::sresources_get);
+	ClassDB::bind_method(D_METHOD("sresources_set", "caster_aura_applys"), &Entity::sresources_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sresources", PROPERTY_HINT_NONE, "17/17:EntityResource", PROPERTY_USAGE_DEFAULT, "EntityResource"), "sresources_set", "sresources_get");
 
 	//GCD
 	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "value")));

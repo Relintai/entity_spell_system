@@ -472,6 +472,9 @@ public:
 	Ref<EntityResource> getc_health();
 	Ref<EntityResource> getc_speed();
 
+	Vector<Variant> sresources_get();
+	void sresources_set(const Vector<Variant> &resources);
+
 	////    Global Cooldown    ////
 
 	bool gcd_hasc() const;
