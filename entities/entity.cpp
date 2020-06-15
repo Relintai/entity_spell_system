@@ -4335,6 +4335,13 @@ void Entity::skill_changec_max(int skill_id, int value) {
 	}
 }
 
+Vector<Variant> Entity::sskills_get() {
+	VARIANT_ARRAY_GET(_s_skills);
+}
+void Entity::sskills_set(const Vector<Variant> &data) {
+	VARIANT_ARRAY_SET(data, _s_skills, EntitySkill);
+}
+
 ////    Casting System    ////
 
 bool Entity::cast_is_castings() {
@@ -6362,20 +6369,6 @@ bool Entity::_set(const StringName &p_name, const Variant &p_value) {
 		}
 	}
 
-	////    Skills    ////
-
-	Dictionary skills = dict.get("skills", Dictionary());
-
-	for (int i = 0; i < skills.size(); ++i) {
-		Ref<EntitySkill> r;
-		r.instance();
-
-		r->from_dict(skills.get(String::num(i), Dictionary()));
-
-		_s_skills.push_back(r);
-		_c_skills.push_back(r);
-	}
-
 	////     Actionbars    ////
 
 	_actionbar_locked = dict.get("actionbar_locked", false);
@@ -6513,16 +6506,6 @@ bool Entity::_get(const StringName &p_name, Variant &r_ret) const {
 	}
 
 	dict["known_spells"] = known_spells;
-
-	////    Skills    ////
-
-	Dictionary skills;
-
-	for (int i = 0; i < _s_skills.size(); ++i) {
-		skills[i] = _s_skills.get(i)->to_dict();
-	}
-
-	dict["skills"] = skills;
 
 	////     Actionbars    ////
 
@@ -7219,7 +7202,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("sresources_get"), &Entity::sresources_get);
 	ClassDB::bind_method(D_METHOD("sresources_set", "caster_aura_applys"), &Entity::sresources_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sresources", PROPERTY_HINT_NONE, "17/17:EntityResource", PROPERTY_USAGE_DEFAULT, "EntityResource"), "sresources_set", "sresources_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sresources", PROPERTY_HINT_NONE, "17/17:EntityResource", PROPERTY_USAGE_STORAGE, "EntityResource"), "sresources_set", "sresources_get");
 
 	//GCD
 	ADD_SIGNAL(MethodInfo("sgcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "value")));
@@ -7258,7 +7241,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("getc_state"), &Entity::getc_state);
 	ClassDB::bind_method(D_METHOD("setc_state", "state"), &Entity::setc_state);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cstate"), "setc_state", "getc_state");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cstate", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE), "setc_state", "getc_state");
 
 	ClassDB::bind_method(D_METHOD("gets_state"), &Entity::gets_state);
 	ClassDB::bind_method(D_METHOD("sets_state", "state"), &Entity::sets_state);
@@ -7426,6 +7409,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("skill_removec_id", "skill_id"), &Entity::skill_removec_id);
 	ClassDB::bind_method(D_METHOD("skill_changec", "skill_id", "value"), &Entity::skill_changec);
 	ClassDB::bind_method(D_METHOD("skill_changec_max", "skill_id", "value"), &Entity::skill_changec_max);
+
+	ClassDB::bind_method(D_METHOD("sskills_get"), &Entity::sskills_get);
+	ClassDB::bind_method(D_METHOD("sskills_set", "data"), &Entity::sskills_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sskills", PROPERTY_HINT_NONE, "17/17:EntitySkill", PROPERTY_USAGE_STORAGE, "EntitySkill"), "sskills_set", "sskills_get");
 
 	//skeleton
 	ClassDB::bind_method(D_METHOD("get_body"), &Entity::get_body);

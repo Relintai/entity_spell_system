@@ -790,6 +790,9 @@ public:
 	void skill_changec(int skill_id, int value);
 	void skill_changec_max(int skill_id, int value);
 
+	Vector<Variant> sskills_get();
+	void sskills_set(const Vector<Variant> &data);
+
 	////    Target    ////
 
 	void target_crequest_change(NodePath path);
