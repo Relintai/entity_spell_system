@@ -34,7 +34,10 @@ int CharacterSkeleton3D::get_entity_type() const {
 void CharacterSkeleton3D::set_entity_type(const int value) {
 	_entity_type = value;
 
-	_attach_point_nodes.resize(ESS::get_singleton()->skeletons_bone_attachment_index_get(_entity_type).get_slice_count(","));
+	int bones_size = ESS::get_singleton()->skeletons_bones_index_get(_entity_type).get_slice_count(",");
+	int attachment_size = ESS::get_singleton()->skeletons_bone_attachment_index_get(_entity_type).get_slice_count(",");
+	_attach_point_nodes.resize(attachment_size);
+	_entries.resize(bones_size);
 }
 
 int CharacterSkeleton3D::get_model_index() {
@@ -190,7 +193,7 @@ void CharacterSkeleton3D::remove_model_visual(Ref<ModelVisual> vis) {
 	if (index == -1)
 		return;
 
-	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
+	for (int i = 0; i < _entries.size(); ++i) {
 		Ref<ModelVisualEntry> e = vis->get_visual_entry(i);
 
 		if (e.is_valid())
@@ -224,8 +227,8 @@ int CharacterSkeleton3D::get_model_visual_count() {
 void CharacterSkeleton3D::clear_model_visuals() {
 	_model_visuals.clear();
 
-	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		_entries[i].clear();
+	for (int i = 0; i < _entries.size(); ++i) {
+		_entries.write[i].clear();
 	}
 
 	_model_dirty = true;
@@ -238,7 +241,7 @@ void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 
 	int target_bone_idx = ive->get_bone();
 
-	Vector<Ref<SkeletonModelEntry> > &entries = _entries[target_bone_idx];
+	Vector<Ref<SkeletonModelEntry> > &entries = _entries.write[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {
 		Ref<SkeletonModelEntry> e = entries.get(i);
@@ -266,7 +269,7 @@ void CharacterSkeleton3D::remove_model_visual_entry(Ref<ModelVisual> vis, Ref<Mo
 
 	int target_bone_idx = ive->get_bone();
 
-	Vector<Ref<SkeletonModelEntry> > &entries = _entries[target_bone_idx];
+	Vector<Ref<SkeletonModelEntry> > &entries = _entries.write[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {
 		Ref<SkeletonModelEntry> e = entries.get(i);
@@ -287,20 +290,20 @@ void CharacterSkeleton3D::remove_model_visual_entry(Ref<ModelVisual> vis, Ref<Mo
 }
 
 Ref<SkeletonModelEntry> CharacterSkeleton3D::get_model_entry(const int bone_index, const int index) {
-	ERR_FAIL_INDEX_V(bone_index, EntityEnums::SKELETON_POINTS_MAX, Ref<SkeletonModelEntry>());
+	ERR_FAIL_INDEX_V(bone_index, _entries.size(), Ref<SkeletonModelEntry>());
 	ERR_FAIL_INDEX_V(index, _entries[bone_index].size(), Ref<SkeletonModelEntry>());
 
 	return _entries[bone_index].get(index);
 }
 int CharacterSkeleton3D::get_model_entry_count(const int bone_index) {
-	ERR_FAIL_INDEX_V(bone_index, EntityEnums::SKELETON_POINTS_MAX, 0);
+	ERR_FAIL_INDEX_V(bone_index, _entries.size(), 0);
 
 	return _entries[bone_index].size();
 }
 
 void CharacterSkeleton3D::sort_layers() {
-	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		Vector<Ref<SkeletonModelEntry> > &entries = _entries[i];
+	for (int i = 0; i < _entries.size(); ++i) {
+		Vector<Ref<SkeletonModelEntry> > &entries = _entries.write[i];
 
 		entries.sort_custom<_ModelEntryComparator>();
 	}
@@ -421,9 +424,11 @@ CharacterSkeleton3D::CharacterSkeleton3D() {
 CharacterSkeleton3D::~CharacterSkeleton3D() {
 	_attach_point_nodes.clear();
 
-	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		_entries[i].clear();
+	for (int i = 0; i < _entries.size(); ++i) {
+		_entries.write[i].clear();
 	}
+
+	_entries.clear();
 
 	_model_visuals.clear();
 }

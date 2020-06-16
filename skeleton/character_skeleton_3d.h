@@ -152,7 +152,7 @@ private:
 
 	bool _model_dirty;
 	Vector<Ref<ModelVisual> > _model_visuals;
-	Vector<Ref<SkeletonModelEntry> > _entries[EntityEnums::SKELETON_POINTS_MAX];
+	Vector<Vector<Ref<SkeletonModelEntry> > > _entries;
 };
 
 #endif
