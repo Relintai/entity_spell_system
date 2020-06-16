@@ -27,6 +27,7 @@ const String EntityEnums::BINDING_STRING_ENTITY_CONTOLLER = "None,Player,AI";
 const String EntityEnums::BINDING_STRING_ENTITY_FLAGS = "Untargetable,Hidden,Interactable,Hostile";
 const String EntityEnums::BINDING_STRING_ENTITY_STATE_TYPES = "None,Stun,Root,Frozen,Silenced,Disoriented,Feared,Burning,Cold,Cursed,Pacified";
 const String EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS = "Root,Pelvis,Spine,Spine 1,Spine 2,Neck,Head,Left Clavicle,Left upper Arm,Left Forearm,Left Hand,Left Thumb Base,Left Thumb End,Left Fingers Base,Left Fingers End,Right Clavicle,Right upper Arm,Right Forearm,Right Hand,Right Thumb Base,Right Thumb End,Right Fingers Base,Right Fingers End,Left Thigh,Left Calf,Left Foot,Right Thigh,Right Calf,Right Foot";
+const String EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS = "Root,Pelvis,Spine,Spine 1,Spine 2,Neck,Head,Torso,Right Hip,Left Hip,Back,Left Hand,Right Hand";
 const String EntityEnums::BINDING_STRING_AI_STATES = "Off,Rest,Patrol,Follow Path,Regenerate,Attack,Pet Follow,Pet Stop,Pet Attack";
 const String EntityEnums::BINDING_STRING_ENTITY_IMMUNITY_FLAGS = "Stun,Root,Freeze,Silence,Disorient,Fear,Burning,Cold,Pacify,Magic,Poison,Physical,Curse,Bleed,Melee,Holy,Shadow,Nature,Fire,Frost,Lightning,Chaos,Slow,Crit,AOE,Damage,Fall Damage,Projectile,Debuff,Attacks";
 const String EntityEnums::BINDING_STRING_ENTITY_RELATION_TYPE = "Neutral,Friendly,Hostile";
@@ -76,6 +77,22 @@ void EntityEnums::_bind_methods() {
 	BIND_ENUM_CONSTANT(ENTITY_STATE_TYPE_INDEX_CURSED);
 	BIND_ENUM_CONSTANT(ENTITY_STATE_TYPE_INDEX_PACIFIED);
 	BIND_ENUM_CONSTANT(ENTITY_STATE_TYPE_INDEX_MAX);
+
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_ROOT);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_PELVIS);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_SPINE);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_SPINE_1);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_SPINE_2);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_NECK);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_HEAD);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_TORSO);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_RIGHT_HIP);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_LEFT_HIP);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_BACK);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_LEFT_HAND);
+	BIND_ENUM_CONSTANT(COMMON_SKELETON_POINT_RIGHT_HAND);
+
+	BIND_CONSTANT(COMMON_SKELETON_POINTS_MAX);
 
 	BIND_ENUM_CONSTANT(SKELETON_POINT_ROOT);
 	BIND_ENUM_CONSTANT(SKELETON_POINT_PELVIS);

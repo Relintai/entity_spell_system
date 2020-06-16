@@ -35,6 +35,7 @@ public:
 	static const String BINDING_STRING_ENTITY_FLAGS;
 	static const String BINDING_STRING_ENTITY_STATE_TYPES;
 	static const String BINDING_STRING_CHARCATER_SKELETON_POINTS;
+	static const String BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS;
 	static const String BINDING_STRING_AI_STATES;
 	static const String BINDING_STRING_PET_STATES;
 	static const String BINDING_STRING_ENTITY_IMMUNITY_FLAGS;
@@ -163,8 +164,24 @@ public:
 		ENTITY_IMMUNITY_FLAG_DISPELL = 1 << 30,
 	};
 
-	//This should only be a common bone lookup enum, that can be made to work for all skeletons
-	//e.g. for applying spell effects
+	enum CommonCharacterSkeletonPoints {
+		COMMON_SKELETON_POINT_ROOT = 0,
+		COMMON_SKELETON_POINT_PELVIS,
+		COMMON_SKELETON_POINT_SPINE,
+		COMMON_SKELETON_POINT_SPINE_1,
+		COMMON_SKELETON_POINT_SPINE_2,
+		COMMON_SKELETON_POINT_NECK,
+		COMMON_SKELETON_POINT_HEAD,
+		COMMON_SKELETON_POINT_TORSO,
+		COMMON_SKELETON_POINT_RIGHT_HIP,
+		COMMON_SKELETON_POINT_LEFT_HIP,
+		COMMON_SKELETON_POINT_BACK,
+		COMMON_SKELETON_POINT_LEFT_HAND,
+		COMMON_SKELETON_POINT_RIGHT_HAND,
+
+		COMMON_SKELETON_POINTS_MAX,
+	};
+
 	enum CharacterSkeletonPoints {
 		SKELETON_POINT_ROOT = 0,
 		SKELETON_POINT_PELVIS = 1,
@@ -269,6 +286,7 @@ VARIANT_ENUM_CAST(EntityEnums::EntityFlags);
 VARIANT_ENUM_CAST(EntityEnums::EntityStateTypeFlags);
 VARIANT_ENUM_CAST(EntityEnums::EntityStateTypeIndexes);
 VARIANT_ENUM_CAST(EntityEnums::CharacterSkeletonPoints);
+VARIANT_ENUM_CAST(EntityEnums::CommonCharacterSkeletonPoints);
 VARIANT_ENUM_CAST(EntityEnums::AIStates);
 VARIANT_ENUM_CAST(EntityEnums::EntityImmunityFlags);
 VARIANT_ENUM_CAST(EntityEnums::EntityRelationType);

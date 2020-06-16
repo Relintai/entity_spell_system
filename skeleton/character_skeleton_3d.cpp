@@ -22,9 +22,20 @@ SOFTWARE.
 
 #include "character_skeleton_3d.h"
 
+#include "../singletons/ess.h"
+
 #include "../data/items/model_visual.h"
 
 #include "../defines.h"
+
+int CharacterSkeleton3D::get_entity_type() const {
+	return _entity_type;
+}
+void CharacterSkeleton3D::set_entity_type(const int value) {
+	_entity_type = value;
+
+	_attach_point_nodes.resize(ESS::get_singleton()->skeletons_bone_attachment_index_get(_entity_type).get_slice_count(","));
+}
 
 int CharacterSkeleton3D::get_model_index() {
 	return _model_index;
@@ -40,21 +51,71 @@ void CharacterSkeleton3D::set_model_dirty(bool value) {
 	_model_dirty = value;
 }
 
-NodePath CharacterSkeleton3D::get_bone_path(int index) {
-	ERR_FAIL_INDEX_V(index, EntityEnums::SKELETON_POINTS_MAX, NodePath());
+NodePath CharacterSkeleton3D::attach_point_path_get(const int index) const {
+	ERR_FAIL_INDEX_V(index, _attach_point_nodes.size(), NodePath());
 
-	return _bone_paths[index];
+	return _attach_point_nodes[index].path;
 }
-void CharacterSkeleton3D::set_bone_path(int index, NodePath path) {
-	ERR_FAIL_INDEX(index, EntityEnums::SKELETON_POINTS_MAX);
+void CharacterSkeleton3D::attach_point_path_set(const int index, const NodePath &path) {
+	ERR_FAIL_INDEX(index, _attach_point_nodes.size());
 
-	_bone_paths[index] = path;
-
-	_bone_nodes[index] = get_node_or_null(path);
+	_attach_point_nodes.write[index].path = path;
+	_attach_point_nodes.write[index].node = get_node_or_null(path);
 }
 
-Node *CharacterSkeleton3D::get_bone_node(EntityEnums::CharacterSkeletonPoints node_id) {
-	return _bone_nodes[node_id];
+Node *CharacterSkeleton3D::attach_point_node_get(const int index) {
+	ERR_FAIL_INDEX_V(index, _attach_point_nodes.size(), NULL);
+
+	return _attach_point_nodes[index].node;
+}
+
+int CharacterSkeleton3D::attach_point_count() const {
+	return _attach_point_nodes.size();
+}
+
+Node *CharacterSkeleton3D::common_attach_point_node_get(const EntityEnums::CommonCharacterSkeletonPoints index) {
+	ERR_FAIL_INDEX_V(common_attach_point_index_get(index), _attach_point_nodes.size(), NULL);
+
+	return _attach_point_nodes[common_attach_point_index_get(index)].node;
+}
+void CharacterSkeleton3D::common_attach_point_add_effect(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene) {
+	int index = common_attach_point_index_get(point);
+
+	ERR_FAIL_INDEX(index, _attach_point_nodes.size());
+
+	Node *n = _attach_point_nodes[index].node;
+
+	if (INSTANCE_VALIDATE(n) && n->has_method("add_effect")) {
+		n->call("add_effect", scene);
+	}
+}
+void CharacterSkeleton3D::common_attach_point_add_effect_timed(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene, const float time) {
+	int index = common_attach_point_index_get(point);
+
+	ERR_FAIL_INDEX(index, _attach_point_nodes.size());
+
+	Node *n = _attach_point_nodes[index].node;
+
+	if (INSTANCE_VALIDATE(n) && n->has_method("add_effect_timed")) {
+		n->call("add_effect_timed", scene, time);
+	}
+}
+void CharacterSkeleton3D::common_attach_point_remove_effect(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene) {
+	int index = common_attach_point_index_get(point);
+
+	ERR_FAIL_INDEX(index, _attach_point_nodes.size());
+
+	Node *n = _attach_point_nodes[index].node;
+
+	if (INSTANCE_VALIDATE(n) && n->has_method("remove_effect")) {
+		n->call("remove_effect", scene);
+	}
+}
+int CharacterSkeleton3D::common_attach_point_index_get(const EntityEnums::CommonCharacterSkeletonPoints point) {
+	return call("_common_attach_point_index_get", point);
+}
+int CharacterSkeleton3D::_common_attach_point_index_get(const EntityEnums::CommonCharacterSkeletonPoints point) {
+	return 0;
 }
 
 NodePath CharacterSkeleton3D::get_animation_player_path() {
@@ -98,8 +159,8 @@ AnimationTree *CharacterSkeleton3D::get_animation_tree() {
 }
 
 void CharacterSkeleton3D::update_nodes() {
-	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		_bone_nodes[i] = get_node_or_null(_bone_paths[i]);
+	for (int i = 0; i < _attach_point_nodes.size(); ++i) {
+		_attach_point_nodes.write[i].node = get_node_or_null(_attach_point_nodes[i].path);
 	}
 
 	set_animation_player_path(_animation_player_path);
@@ -352,15 +413,14 @@ Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 CharacterSkeleton3D::CharacterSkeleton3D() {
 	_model_dirty = false;
 	_model_index = 0;
-
-	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		_bone_nodes[i] = NULL;
-	}
+	_entity_type = 0;
 
 	_animation_player = NULL;
 }
 
 CharacterSkeleton3D::~CharacterSkeleton3D() {
+	_attach_point_nodes.clear();
+
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
 		_entries[i].clear();
 	}
@@ -382,7 +442,65 @@ void CharacterSkeleton3D::_notification(int p_what) {
 	}
 }
 
+bool CharacterSkeleton3D::_set(const StringName &p_name, const Variant &p_value) {
+	String name = p_name;
+
+	if (name.begins_with("attach_point_paths")) {
+		int index = name.get_slicec('/', 1).get_slicec('_', 0).to_int();
+
+		if (index >= _attach_point_nodes.size()) {
+			_attach_point_nodes.resize(index + 1);
+		}
+
+		NodePath np = p_value;
+
+		_attach_point_nodes.write[index].path = np;
+
+		if (is_inside_tree())
+			_attach_point_nodes.write[index].node = get_node_or_null(p_value);
+
+		return true;
+	}
+
+	return false;
+}
+bool CharacterSkeleton3D::_get(const StringName &p_name, Variant &r_ret) const {
+	String name = p_name;
+
+	if (name.begins_with("attach_point_paths")) {
+		int index = name.get_slicec('/', 1).get_slicec('_', 0).to_int();
+
+		if (index >= _attach_point_nodes.size()) {
+			return false;
+		}
+
+		r_ret = _attach_point_nodes[index].path;
+
+		return true;
+	}
+
+	return false;
+}
+void CharacterSkeleton3D::_get_property_list(List<PropertyInfo> *p_list) const {
+	String bones = ESS::get_singleton()->skeletons_bone_attachment_index_get(_entity_type);
+	int slicec = bones.get_slice_count(",");
+
+	for (int i = 0; i < slicec; ++i) {
+		p_list->push_back(PropertyInfo(Variant::NODE_PATH, "attach_point_paths/" + itos(i) + "_" + bones.get_slicec(',', i)));
+	}
+}
+
+void CharacterSkeleton3D::_validate_property(PropertyInfo &property) const {
+	if (property.name == "entity_type") {
+		property.hint_string = ESS::get_singleton()->entity_types_get();
+	}
+}
+
 void CharacterSkeleton3D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_entity_type"), &CharacterSkeleton3D::get_entity_type);
+	ClassDB::bind_method(D_METHOD("set_entity_type", "value"), &CharacterSkeleton3D::set_entity_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_type", PROPERTY_HINT_ENUM, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_entity_type", "get_entity_type");
+
 	ClassDB::bind_method(D_METHOD("get_model_index"), &CharacterSkeleton3D::get_model_index);
 	ClassDB::bind_method(D_METHOD("set_model_index", "value"), &CharacterSkeleton3D::set_model_index);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "model_index"), "set_model_index", "get_model_index");
@@ -422,57 +540,24 @@ void CharacterSkeleton3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("bake_mesh_array_uv", "arr", "tex", "mul_color"), &CharacterSkeleton3D::bake_mesh_array_uv, DEFVAL(0.7));
 
 	//Bone Paths
-	ClassDB::bind_method(D_METHOD("get_bone_path", "index"), &CharacterSkeleton3D::get_bone_path);
-	ClassDB::bind_method(D_METHOD("set_bone_path", "index", "path"), &CharacterSkeleton3D::set_bone_path);
+	ClassDB::bind_method(D_METHOD("attach_point_path_get", "index"), &CharacterSkeleton3D::attach_point_path_get);
+	ClassDB::bind_method(D_METHOD("attach_point_path_set", "index", "path"), &CharacterSkeleton3D::attach_point_path_set);
 
-	//ADD_GROUP("Bone Paths", "bone_path_");
-	//ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_root"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_ROOT);
+	ClassDB::bind_method(D_METHOD("attach_point_node_get", "index"), &CharacterSkeleton3D::attach_point_node_get);
 
-	ClassDB::bind_method(D_METHOD("get_bone_node", "bone_idx"), &CharacterSkeleton3D::get_bone_node);
+	ClassDB::bind_method(D_METHOD("attach_point_count"), &CharacterSkeleton3D::attach_point_count);
+
+	BIND_VMETHOD(MethodInfo("_common_attach_point_index_get", PropertyInfo(Variant::INT, "point", PROPERTY_HINT_NONE, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS)));
+
+	ClassDB::bind_method(D_METHOD("common_attach_point_node_get", "point"), &CharacterSkeleton3D::common_attach_point_node_get);
+	ClassDB::bind_method(D_METHOD("common_attach_point_add_effect", "point", "scene"), &CharacterSkeleton3D::common_attach_point_add_effect);
+	ClassDB::bind_method(D_METHOD("common_attach_point_add_effect_timed", "point", "scene", "time"), &CharacterSkeleton3D::common_attach_point_add_effect_timed);
+	ClassDB::bind_method(D_METHOD("common_attach_point_remove_effect", "point", "scene"), &CharacterSkeleton3D::common_attach_point_remove_effect);
+	ClassDB::bind_method(D_METHOD("common_attach_point_index_get", "point"), &CharacterSkeleton3D::common_attach_point_index_get);
+	ClassDB::bind_method(D_METHOD("_common_attach_point_index_get", "point"), &CharacterSkeleton3D::_common_attach_point_index_get);
 
 	ClassDB::bind_method(D_METHOD("get_animation_player"), &CharacterSkeleton3D::get_animation_player);
 	ClassDB::bind_method(D_METHOD("get_animation_tree"), &CharacterSkeleton3D::get_animation_tree);
 
 	ClassDB::bind_method(D_METHOD("update_nodes"), &CharacterSkeleton3D::update_nodes);
-
-	/*
-	//Attack Points?
-	ClassDB::bind_method(D_METHOD("get_visual", "index"), &CharacterSkeleton3D::get_visual);
-	ClassDB::bind_method(D_METHOD("set_visual", "index", "entry"), &CharacterSkeleton3D::set_visual);
-
-	ADD_GROUP("Visuals", "visual_");
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_root", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_ROOT);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_pelvis", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_PELVIS);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_spine", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_SPINE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_spine_1", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_SPINE_1);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_spine_2", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_SPINE_2);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_neck", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_NECK);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_head", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_HEAD);
-
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_clavicle", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_CLAVICLE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_upper_arm", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_UPPER_ARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_forearm", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_FOREARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_hand", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_HAND);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_thumb_base", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_THUMB_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_thumb_end", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_THUMB_END);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_fingers_base", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_FINGERS_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_fingers_end", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_FINGERS_END);
-
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_clavicle", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_CLAVICLE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_upper_arm", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_UPPER_ARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_forearm", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_FOREARM);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_hand", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_HAND);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_thumb_base", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_THUMB_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_thumb_end", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_THUMB_END);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_fingers_base", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_FINGERS_BASE);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_fingers_end", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_FINGERS_END);
-
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_thigh", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_THIGH);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_calf", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_CALF);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_left_foot", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_LEFT_FOOT);
-
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_thigh", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_THIGH);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_calf", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_CALF);
-	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "visual_right_foot", PROPERTY_HINT_RESOURCE_TYPE, "CharacterSkeletonVisualEntry"), "set_visual", "get_visual", EntityEnums::SKELETON_POINT_RIGHT_FOOT);
-	*/
 }

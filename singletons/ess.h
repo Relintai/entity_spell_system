@@ -149,6 +149,12 @@ public:
 	PoolStringArray skeletons_bones_get() const;
 	void skeletons_bones_set(const PoolStringArray &value);
 
+	String skeletons_bone_attachment_index_get(const int index) const;
+	int skeletons_bone_attachments_count();
+
+	PoolStringArray skeletons_bone_attachment_points_get() const;
+	void skeletons_bone_attachment_points_set(const PoolStringArray &value);
+
 	//Other
 	String model_visual_groups_get() const;
 	void model_visual_groups_set(const String &value);
@@ -216,6 +222,7 @@ private:
 	//Entity Types
 	String _entity_types;
 	PoolStringArray _skeletons_bones;
+	PoolStringArray _skeletons_bone_attachment_points;
 
 	//Other
 	String _model_visual_groups;

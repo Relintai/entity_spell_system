@@ -52,16 +52,28 @@ class CharacterSkeleton3D : public Spatial {
 	GDCLASS(CharacterSkeleton3D, Spatial);
 
 public:
+	int get_entity_type() const;
+	void set_entity_type(const int value);
+
 	int get_model_index();
 	void set_model_index(int value);
 
 	bool get_model_dirty() const;
 	void set_model_dirty(bool value);
 
-	NodePath get_bone_path(int index);
-	void set_bone_path(int index, NodePath path);
+	NodePath attach_point_path_get(const int index) const;
+	void attach_point_path_set(const int index, const NodePath &path);
 
-	Node *get_bone_node(EntityEnums::CharacterSkeletonPoints node_id);
+	Node *attach_point_node_get(const int index);
+
+	int attach_point_count() const;
+
+	Node *common_attach_point_node_get(const EntityEnums::CommonCharacterSkeletonPoints point);
+	void common_attach_point_add_effect(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene);
+	void common_attach_point_add_effect_timed(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene, const float time);
+	void common_attach_point_remove_effect(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene);
+	int common_attach_point_index_get(const EntityEnums::CommonCharacterSkeletonPoints point);
+	virtual int _common_attach_point_index_get(const EntityEnums::CommonCharacterSkeletonPoints point);
 
 	NodePath get_animation_player_path();
 	void set_animation_player_path(NodePath path);
@@ -100,6 +112,10 @@ public:
 	~CharacterSkeleton3D();
 
 protected:
+	bool _set(const StringName &p_name, const Variant &p_value);
+	bool _get(const StringName &p_name, Variant &r_ret) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
+	void _validate_property(PropertyInfo &property) const;
 	static void _bind_methods();
 	virtual void _notification(int p_notification);
 
@@ -114,17 +130,25 @@ protected:
 		}
 	};
 
+	struct AttachPointNode {
+		NodePath path;
+		Node *node;
+
+		AttachPointNode() {
+			node = NULL;
+		}
+	};
+
 private:
+	int _entity_type;
 	int _model_index;
 	NodePath _animation_player_path;
 	NodePath _animation_tree_path;
 
-	NodePath _bone_paths[EntityEnums::SKELETON_POINTS_MAX];
-
 	AnimationPlayer *_animation_player;
 	AnimationTree *_animation_tree;
 
-	Node *_bone_nodes[EntityEnums::SKELETON_POINTS_MAX];
+	Vector<AttachPointNode> _attach_point_nodes;
 
 	bool _model_dirty;
 	Vector<Ref<ModelVisual> > _model_visuals;

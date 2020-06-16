@@ -445,6 +445,22 @@ void ESS::skeletons_bones_set(const PoolStringArray &value) {
 	_skeletons_bones = value;
 }
 
+String ESS::skeletons_bone_attachment_index_get(const int index) const {
+	ERR_FAIL_INDEX_V(index, _skeletons_bone_attachment_points.size(), String());
+
+	return _skeletons_bone_attachment_points[index];
+}
+int ESS::skeletons_bone_attachments_count() {
+	return _skeletons_bone_attachment_points.size();
+}
+
+PoolStringArray ESS::skeletons_bone_attachment_points_get() const {
+	return _skeletons_bone_attachment_points;
+}
+void ESS::skeletons_bone_attachment_points_set(const PoolStringArray &value) {
+	_skeletons_bone_attachment_points = value;
+}
+
 //Other
 String ESS::model_visual_groups_get() const {
 	return _model_visual_groups;
@@ -608,6 +624,13 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("skeletons_bones_set", "value"), &ESS::skeletons_bones_set);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "skeletons_bones"), "skeletons_bones_set", "skeletons_bones_get");
 
+	ClassDB::bind_method(D_METHOD("skeletons_bone_attachment_index_get", "index"), &ESS::skeletons_bone_attachment_index_get);
+	ClassDB::bind_method(D_METHOD("skeletons_bone_attachments_count"), &ESS::skeletons_bone_attachments_count);
+
+	ClassDB::bind_method(D_METHOD("skeletons_bone_attachment_points_get"), &ESS::skeletons_bone_attachment_points_get);
+	ClassDB::bind_method(D_METHOD("skeletons_bone_attachment_points_set", "value"), &ESS::skeletons_bone_attachment_points_set);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "skeletons_bone_attachment_points"), "skeletons_bone_attachment_points_set", "skeletons_bone_attachment_points_get");
+
 	//Other
 	ClassDB::bind_method(D_METHOD("model_visual_groups_get"), &ESS::model_visual_groups_get);
 	ClassDB::bind_method(D_METHOD("model_visual_groups_set", "value"), &ESS::model_visual_groups_set);
@@ -646,6 +669,7 @@ ESS::ESS() {
 
 	_entity_types = GLOBAL_DEF("ess/enums/entity_types", "None,Creature,Totem,Idol,Humanoid,Mechanical,Beast,Dragonkin,Elemental,Ghost,Energy,Anomaly,Demon,Object");
 	_skeletons_bones = GLOBAL_DEF("ess/enums/skeletons_bones", PoolStringArray());
+	_skeletons_bone_attachment_points = GLOBAL_DEF("ess/enums/skeletons_bone_attachment_points", PoolStringArray());
 
 	_model_visual_groups = GLOBAL_DEF("ess/enums/model_visual_groups", "None,Bodypart,Alt Bodypart,Attachment");
 
