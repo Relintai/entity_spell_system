@@ -69,9 +69,9 @@ public:
 	int attach_point_count() const;
 
 	Node *common_attach_point_node_get(const EntityEnums::CommonCharacterSkeletonPoints point);
-	void common_attach_point_add_effect(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene);
-	void common_attach_point_add_effect_timed(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene, const float time);
-	void common_attach_point_remove_effect(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene);
+	void common_attach_point_add(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene);
+	void common_attach_point_add_timed(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene, const float time);
+	void common_attach_point_remove(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene);
 	int common_attach_point_index_get(const EntityEnums::CommonCharacterSkeletonPoints point);
 	virtual int _common_attach_point_index_get(const EntityEnums::CommonCharacterSkeletonPoints point);
 

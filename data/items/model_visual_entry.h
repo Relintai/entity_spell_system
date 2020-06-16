@@ -42,6 +42,17 @@ class ModelVisualEntry : public Resource {
 	GDCLASS(ModelVisualEntry, Resource);
 
 public:
+	enum ModenVisualEntryType {
+		MODEL_VISUAL_ENTRY_TYPE_BONE = 0,
+		MODEL_VISUAL_ENTRY_TYPE_ATTACHMENT
+	};
+
+	static const String BINDING_STRING_MODEL_VISUAL_ENTRY_TYPES;
+
+public:
+	ModelVisualEntry::ModenVisualEntryType get_type() const;
+	void set_type(const ModelVisualEntry::ModenVisualEntryType type);
+
 	int get_override_layer() const;
 	void set_override_layer(const int layer);
 
@@ -109,6 +120,7 @@ protected:
 	static void _bind_methods();
 
 private:
+	ModelVisualEntry::ModenVisualEntryType _type;
 	int _override_layer;
 
 	int _entity_type;
@@ -117,5 +129,7 @@ private:
 
 	Vector<MVEE> _entries;
 };
+
+VARIANT_ENUM_CAST(ModelVisualEntry::ModenVisualEntryType);
 
 #endif

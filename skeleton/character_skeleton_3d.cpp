@@ -81,37 +81,37 @@ Node *CharacterSkeleton3D::common_attach_point_node_get(const EntityEnums::Commo
 
 	return _attach_point_nodes[common_attach_point_index_get(index)].node;
 }
-void CharacterSkeleton3D::common_attach_point_add_effect(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene) {
+void CharacterSkeleton3D::common_attach_point_add(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene) {
 	int index = common_attach_point_index_get(point);
 
 	ERR_FAIL_INDEX(index, _attach_point_nodes.size());
 
 	Node *n = _attach_point_nodes[index].node;
 
-	if (INSTANCE_VALIDATE(n) && n->has_method("add_effect")) {
-		n->call("add_effect", scene);
+	if (INSTANCE_VALIDATE(n) && n->has_method("add")) {
+		n->call("add", scene);
 	}
 }
-void CharacterSkeleton3D::common_attach_point_add_effect_timed(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene, const float time) {
+void CharacterSkeleton3D::common_attach_point_add_timed(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene, const float time) {
 	int index = common_attach_point_index_get(point);
 
 	ERR_FAIL_INDEX(index, _attach_point_nodes.size());
 
 	Node *n = _attach_point_nodes[index].node;
 
-	if (INSTANCE_VALIDATE(n) && n->has_method("add_effect_timed")) {
-		n->call("add_effect_timed", scene, time);
+	if (INSTANCE_VALIDATE(n) && n->has_method("add_timed")) {
+		n->call("add_timed", scene, time);
 	}
 }
-void CharacterSkeleton3D::common_attach_point_remove_effect(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene) {
+void CharacterSkeleton3D::common_attach_point_remove(const EntityEnums::CommonCharacterSkeletonPoints point, const Ref<PackedScene> &scene) {
 	int index = common_attach_point_index_get(point);
 
 	ERR_FAIL_INDEX(index, _attach_point_nodes.size());
 
 	Node *n = _attach_point_nodes[index].node;
 
-	if (INSTANCE_VALIDATE(n) && n->has_method("remove_effect")) {
-		n->call("remove_effect", scene);
+	if (INSTANCE_VALIDATE(n) && n->has_method("remove")) {
+		n->call("remove", scene);
 	}
 }
 int CharacterSkeleton3D::common_attach_point_index_get(const EntityEnums::CommonCharacterSkeletonPoints point) {
@@ -239,6 +239,20 @@ void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 	ERR_FAIL_COND(!vis.is_valid());
 	ERR_FAIL_COND(!ive.is_valid());
 
+	if (ive->get_type() == ModelVisualEntry::MODEL_VISUAL_ENTRY_TYPE_ATTACHMENT) {
+		EntityEnums::CommonCharacterSkeletonPoints target_bone = static_cast<EntityEnums::CommonCharacterSkeletonPoints>(ive->get_bone());
+
+		for (int i = 0; i < ive->get_size(); ++i) {
+			Ref<PackedScene> ps = ive->get_attachment(i);
+
+			if (ps.is_valid()) {
+				common_attach_point_add(target_bone, ps);
+			}
+		}
+
+		return;
+	}
+
 	int target_bone_idx = ive->get_bone();
 
 	Vector<Ref<SkeletonModelEntry> > &entries = _entries.write[target_bone_idx];
@@ -266,6 +280,20 @@ void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 void CharacterSkeleton3D::remove_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive) {
 	ERR_FAIL_COND(!vis.is_valid());
 	ERR_FAIL_COND(!ive.is_valid());
+
+	if (ive->get_type() == ModelVisualEntry::MODEL_VISUAL_ENTRY_TYPE_ATTACHMENT) {
+		EntityEnums::CommonCharacterSkeletonPoints target_bone = static_cast<EntityEnums::CommonCharacterSkeletonPoints>(ive->get_bone());
+
+		for (int i = 0; i < ive->get_size(); ++i) {
+			Ref<PackedScene> ps = ive->get_attachment(i);
+
+			if (ps.is_valid()) {
+				common_attach_point_remove(target_bone, ps);
+			}
+		}
+
+		return;
+	}
 
 	int target_bone_idx = ive->get_bone();
 
@@ -555,9 +583,9 @@ void CharacterSkeleton3D::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_common_attach_point_index_get", PropertyInfo(Variant::INT, "point", PROPERTY_HINT_NONE, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS)));
 
 	ClassDB::bind_method(D_METHOD("common_attach_point_node_get", "point"), &CharacterSkeleton3D::common_attach_point_node_get);
-	ClassDB::bind_method(D_METHOD("common_attach_point_add_effect", "point", "scene"), &CharacterSkeleton3D::common_attach_point_add_effect);
-	ClassDB::bind_method(D_METHOD("common_attach_point_add_effect_timed", "point", "scene", "time"), &CharacterSkeleton3D::common_attach_point_add_effect_timed);
-	ClassDB::bind_method(D_METHOD("common_attach_point_remove_effect", "point", "scene"), &CharacterSkeleton3D::common_attach_point_remove_effect);
+	ClassDB::bind_method(D_METHOD("common_attach_point_add", "point", "scene"), &CharacterSkeleton3D::common_attach_point_add);
+	ClassDB::bind_method(D_METHOD("common_attach_point_add_timed", "point", "scene", "time"), &CharacterSkeleton3D::common_attach_point_add_timed);
+	ClassDB::bind_method(D_METHOD("common_attach_point_remove", "point", "scene"), &CharacterSkeleton3D::common_attach_point_remove);
 	ClassDB::bind_method(D_METHOD("common_attach_point_index_get", "point"), &CharacterSkeleton3D::common_attach_point_index_get);
 	ClassDB::bind_method(D_METHOD("_common_attach_point_index_get", "point"), &CharacterSkeleton3D::_common_attach_point_index_get);
 

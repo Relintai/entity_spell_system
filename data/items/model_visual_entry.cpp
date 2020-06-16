@@ -24,6 +24,15 @@ SOFTWARE.
 
 #include "../../singletons/ess.h"
 
+const String ModelVisualEntry::BINDING_STRING_MODEL_VISUAL_ENTRY_TYPES = "Bone,Attachment";
+
+ModelVisualEntry::ModenVisualEntryType ModelVisualEntry::get_type() const {
+	return _type;
+}
+void ModelVisualEntry::set_type(const ModelVisualEntry::ModenVisualEntryType type) {
+	_type = type;
+}
+
 int ModelVisualEntry::get_override_layer() const {
 	return _override_layer;
 }
@@ -116,6 +125,7 @@ void ModelVisualEntry::set_size(const int value) {
 }
 
 ModelVisualEntry::ModelVisualEntry() {
+	_type = MODEL_VISUAL_ENTRY_TYPE_BONE;
 	_override_layer = 0;
 
 	_entity_type = 0;
@@ -209,35 +219,53 @@ bool ModelVisualEntry::_get(const StringName &p_name, Variant &r_ret) const {
 }
 void ModelVisualEntry::_get_property_list(List<PropertyInfo> *p_list) const {
 	for (int i = 0; i < _entries.size(); ++i) {
+		if (_type == ModelVisualEntry::MODEL_VISUAL_ENTRY_TYPE_BONE) {
 #ifdef MESH_DATA_RESOURCE_PRESENT
-		p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/mesh", PROPERTY_HINT_RESOURCE_TYPE, "MeshDataResource"));
+			p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/mesh", PROPERTY_HINT_RESOURCE_TYPE, "MeshDataResource", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
 #endif
-		p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture"));
-		p_list->push_back(PropertyInfo(Variant::COLOR, "entry_" + itos(i) + "/color"));
-		p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/attachment", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"));
-		p_list->push_back(PropertyInfo(Variant::TRANSFORM, "entry_" + itos(i) + "/transform"));
+			p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
+			p_list->push_back(PropertyInfo(Variant::COLOR, "entry_" + itos(i) + "/color", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
+		} else {
+			p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/attachment", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
+		}
+		p_list->push_back(PropertyInfo(Variant::TRANSFORM, "entry_" + itos(i) + "/transform", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
 	}
 }
 
 void ModelVisualEntry::_validate_property(PropertyInfo &property) const {
 	String name = property.name;
 
+	if (_type == ModelVisualEntry::MODEL_VISUAL_ENTRY_TYPE_BONE) {
+		if (name == "entity_type") {
+			property.usage = PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED;
+			property.hint_string = ESS::get_singleton()->entity_types_get();
+		} else if (name == "bone") {
+			if (ESS::get_singleton()->skeletons_bones_count() > _entity_type) {
+				property.hint_string = ESS::get_singleton()->skeletons_bones_index_get(_entity_type);
+			} else {
+				property.hint_string = "";
+			}
+		}
+	} else {
+		if (name == "entity_type") {
+			property.usage = PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED;
+		} else if (name == "bone") {
+			property.hint_string = EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS;
+		}
+	}
+
 	if (name == "group") {
 		property.hint_string = ESS::get_singleton()->model_visual_groups_get();
-	} else if (name == "bone") {
-		if (ESS::get_singleton()->skeletons_bones_count() > _entity_type) {
-			property.hint_string = ESS::get_singleton()->skeletons_bones_index_get(_entity_type);
-		} else {
-			property.hint_string = "";
-		}
-	} else if (name == "entity_type") {
-		property.hint_string = ESS::get_singleton()->entity_types_get();
 	} else if (name == "override_layer") {
 		property.hint_string = ESS::get_singleton()->texture_layers_get();
 	}
 }
 
 void ModelVisualEntry::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_type"), &ModelVisualEntry::get_type);
+	ClassDB::bind_method(D_METHOD("set_type", "value"), &ModelVisualEntry::set_type);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "type", PROPERTY_HINT_ENUM, ModelVisualEntry::BINDING_STRING_MODEL_VISUAL_ENTRY_TYPES, PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_type", "get_type");
+
 	ClassDB::bind_method(D_METHOD("get_override_layer"), &ModelVisualEntry::get_override_layer);
 	ClassDB::bind_method(D_METHOD("set_override_layer", "value"), &ModelVisualEntry::set_override_layer);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "override_layer", PROPERTY_HINT_ENUM, ""), "set_override_layer", "get_override_layer");
@@ -274,4 +302,7 @@ void ModelVisualEntry::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_size"), &ModelVisualEntry::get_size);
 	ClassDB::bind_method(D_METHOD("set_size", "value"), &ModelVisualEntry::set_size);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED), "set_size", "get_size");
+
+	BIND_ENUM_CONSTANT(MODEL_VISUAL_ENTRY_TYPE_BONE);
+	BIND_ENUM_CONSTANT(MODEL_VISUAL_ENTRY_TYPE_ATTACHMENT);
 }
