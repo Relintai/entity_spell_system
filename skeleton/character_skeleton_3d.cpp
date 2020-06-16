@@ -109,11 +109,11 @@ void CharacterSkeleton3D::update_nodes() {
 void CharacterSkeleton3D::add_model_visual(Ref<ModelVisual> vis) {
 	ERR_FAIL_COND(!vis.is_valid());
 
-	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
+	for (int i = 0; i < vis->get_visual_entry_count(); ++i) {
 		Ref<ModelVisualEntry> e = vis->get_visual_entry(i);
 
 		if (e.is_valid())
-			add_model_visual_entry(vis, e, i);
+			add_model_visual_entry(vis, e);
 	}
 
 	_model_visuals.push_back(vis);
@@ -133,7 +133,7 @@ void CharacterSkeleton3D::remove_model_visual(Ref<ModelVisual> vis) {
 		Ref<ModelVisualEntry> e = vis->get_visual_entry(i);
 
 		if (e.is_valid())
-			remove_model_visual_entry(vis, e, i);
+			remove_model_visual_entry(vis, e);
 	}
 
 	_model_visuals.remove(index);
@@ -171,13 +171,13 @@ void CharacterSkeleton3D::clear_model_visuals() {
 	set_process(true);
 }
 
-void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive, int target_bone) {
+void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive) {
 	ERR_FAIL_COND(!vis.is_valid());
 	ERR_FAIL_COND(!ive.is_valid());
 
-	int target_bone_idx = target_bone;
+	int target_bone_idx = ive->get_bone();
 
-	Vector<Ref<SkeletonModelEntry>> &entries = _entries[target_bone_idx];
+	Vector<Ref<SkeletonModelEntry> > &entries = _entries[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {
 		Ref<SkeletonModelEntry> e = entries.get(i);
@@ -191,7 +191,7 @@ void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 	Ref<SkeletonModelEntry> e;
 	e.instance();
 
-	e->set_priority(static_cast<int>(vis->get_layer()));
+	e->set_priority(vis->get_layer());
 	//e->set_color(ive->get_color());
 	e->set_entry(ive);
 
@@ -199,13 +199,13 @@ void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 	_model_dirty = true;
 	set_process(true);
 }
-void CharacterSkeleton3D::remove_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive, int target_bone) {
+void CharacterSkeleton3D::remove_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive) {
 	ERR_FAIL_COND(!vis.is_valid());
 	ERR_FAIL_COND(!ive.is_valid());
 
-	int target_bone_idx = target_bone;
+	int target_bone_idx = ive->get_bone();
 
-	Vector<Ref<SkeletonModelEntry>> &entries = _entries[target_bone_idx];
+	Vector<Ref<SkeletonModelEntry> > &entries = _entries[target_bone_idx];
 
 	for (int i = 0; i < entries.size(); ++i) {
 		Ref<SkeletonModelEntry> e = entries.get(i);
@@ -239,7 +239,7 @@ int CharacterSkeleton3D::get_model_entry_count(const int bone_index) {
 
 void CharacterSkeleton3D::sort_layers() {
 	for (int i = 0; i < EntityEnums::SKELETON_POINTS_MAX; ++i) {
-		Vector<Ref<SkeletonModelEntry>> &entries = _entries[i];
+		Vector<Ref<SkeletonModelEntry> > &entries = _entries[i];
 
 		entries.sort_custom<_ModelEntryComparator>();
 	}
@@ -425,8 +425,8 @@ void CharacterSkeleton3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_bone_path", "index"), &CharacterSkeleton3D::get_bone_path);
 	ClassDB::bind_method(D_METHOD("set_bone_path", "index", "path"), &CharacterSkeleton3D::set_bone_path);
 
-	ADD_GROUP("Bone Paths", "bone_path_");
-	ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_root"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_ROOT);
+	//ADD_GROUP("Bone Paths", "bone_path_");
+	//ADD_PROPERTYI(PropertyInfo(Variant::NODE_PATH, "bone_path_root"), "set_bone_path", "get_bone_path", EntityEnums::SKELETON_POINT_ROOT);
 
 	ClassDB::bind_method(D_METHOD("get_bone_node", "bone_idx"), &CharacterSkeleton3D::get_bone_node);
 

@@ -163,6 +163,8 @@ public:
 		ENTITY_IMMUNITY_FLAG_DISPELL = 1 << 30,
 	};
 
+	//This should only be a common bone lookup enum, that can be made to work for all skeletons
+	//e.g. for applying spell effects
 	enum CharacterSkeletonPoints {
 		SKELETON_POINT_ROOT = 0,
 		SKELETON_POINT_PELVIS = 1,

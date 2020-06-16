@@ -82,8 +82,8 @@ public:
 	int get_model_visual_count();
 	void clear_model_visuals();
 
-	void add_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive, int target_bone);
-	void remove_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive, int target_bone);
+	void add_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive);
+	void remove_model_visual_entry(Ref<ModelVisual> vis, Ref<ModelVisualEntry> ive);
 
 	Ref<SkeletonModelEntry> get_model_entry(const int bone_index, const int index);
 	int get_model_entry_count(const int bone_index);
@@ -127,8 +127,8 @@ private:
 	Node *_bone_nodes[EntityEnums::SKELETON_POINTS_MAX];
 
 	bool _model_dirty;
-	Vector<Ref<ModelVisual>> _model_visuals;
-	Vector<Ref<SkeletonModelEntry>> _entries[EntityEnums::SKELETON_POINTS_MAX];
+	Vector<Ref<ModelVisual> > _model_visuals;
+	Vector<Ref<SkeletonModelEntry> > _entries[EntityEnums::SKELETON_POINTS_MAX];
 };
 
 #endif
