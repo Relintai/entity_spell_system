@@ -35,16 +35,16 @@ class SpellEffectVisualSimple : public SpellEffectVisual {
 public:
 	bool has_spell_effect_visual();
 
-	EntityEnums::CharacterSkeletonPoints get_spell_effect_visual_point();
-	void set_spell_effect_visual_point(EntityEnums::CharacterSkeletonPoints point);
+	EntityEnums::CommonCharacterSkeletonPoints get_spell_effect_visual_point();
+	void set_spell_effect_visual_point(EntityEnums::CommonCharacterSkeletonPoints point);
 
 	Ref<PackedScene> get_spell_effect_visual();
 	void set_spell_effect_visual(Ref<PackedScene> value);
 
 	bool has_spell_cast_finish_effect();
 
-	EntityEnums::CharacterSkeletonPoints get_spell_cast_finish_effect_point();
-	void set_spell_cast_finish_effect_point(EntityEnums::CharacterSkeletonPoints point);
+	EntityEnums::CommonCharacterSkeletonPoints get_spell_cast_finish_effect_point();
+	void set_spell_cast_finish_effect_point(EntityEnums::CommonCharacterSkeletonPoints point);
 
 	Ref<PackedScene> get_spell_cast_finish_effect();
 	void set_spell_cast_finish_effect(Ref<PackedScene> value);
@@ -56,8 +56,8 @@ public:
 	//VisualEffect
 	bool has_aura_effect_visual();
 
-	EntityEnums::CharacterSkeletonPoints get_aura_effect_visual_point();
-	void set_aura_effect_visual_point(EntityEnums::CharacterSkeletonPoints point);
+	EntityEnums::CommonCharacterSkeletonPoints get_aura_effect_visual_point();
+	void set_aura_effect_visual_point(EntityEnums::CommonCharacterSkeletonPoints point);
 
 	Ref<PackedScene> get_aura_effect_visual();
 	void set_aura_effect_visual(Ref<PackedScene> value);
@@ -69,15 +69,15 @@ protected:
 	static void _bind_methods();
 
 private:
-	EntityEnums::CharacterSkeletonPoints _effect_visual_point;
+	EntityEnums::CommonCharacterSkeletonPoints _effect_visual_point;
 	Ref<PackedScene> _effect_visual;
 
-	EntityEnums::CharacterSkeletonPoints _spell_cast_finish_effect_point;
+	EntityEnums::CommonCharacterSkeletonPoints _spell_cast_finish_effect_point;
 	Ref<PackedScene> _spell_cast_finish_effect;
 
 	Ref<PackedScene> _spell_cast_effect;
 
-	EntityEnums::CharacterSkeletonPoints _aura_effect_visual_point;
+	EntityEnums::CommonCharacterSkeletonPoints _aura_effect_visual_point;
 	Ref<PackedScene> _aura_effect_visual;
 };
 

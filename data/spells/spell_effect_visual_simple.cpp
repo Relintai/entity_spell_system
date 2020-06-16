@@ -26,10 +26,10 @@ bool SpellEffectVisualSimple::has_spell_effect_visual() {
 	return _effect_visual.is_valid();
 }
 
-EntityEnums::CharacterSkeletonPoints SpellEffectVisualSimple::get_spell_effect_visual_point() {
+EntityEnums::CommonCharacterSkeletonPoints SpellEffectVisualSimple::get_spell_effect_visual_point() {
 	return _effect_visual_point;
 }
-void SpellEffectVisualSimple::set_spell_effect_visual_point(EntityEnums::CharacterSkeletonPoints point) {
+void SpellEffectVisualSimple::set_spell_effect_visual_point(EntityEnums::CommonCharacterSkeletonPoints point) {
 	_effect_visual_point = point;
 }
 
@@ -44,10 +44,10 @@ bool SpellEffectVisualSimple::has_spell_cast_finish_effect() {
 	return _spell_cast_finish_effect.is_valid();
 }
 
-EntityEnums::CharacterSkeletonPoints SpellEffectVisualSimple::get_spell_cast_finish_effect_point() {
+EntityEnums::CommonCharacterSkeletonPoints SpellEffectVisualSimple::get_spell_cast_finish_effect_point() {
 	return _spell_cast_finish_effect_point;
 }
-void SpellEffectVisualSimple::set_spell_cast_finish_effect_point(EntityEnums::CharacterSkeletonPoints point) {
+void SpellEffectVisualSimple::set_spell_cast_finish_effect_point(EntityEnums::CommonCharacterSkeletonPoints point) {
 	_spell_cast_finish_effect_point = point;
 }
 
@@ -74,10 +74,10 @@ bool SpellEffectVisualSimple::has_aura_effect_visual() {
 	return _effect_visual.is_valid();
 }
 
-EntityEnums::CharacterSkeletonPoints SpellEffectVisualSimple::get_aura_effect_visual_point() {
+EntityEnums::CommonCharacterSkeletonPoints SpellEffectVisualSimple::get_aura_effect_visual_point() {
 	return _aura_effect_visual_point;
 }
-void SpellEffectVisualSimple::set_aura_effect_visual_point(EntityEnums::CharacterSkeletonPoints point) {
+void SpellEffectVisualSimple::set_aura_effect_visual_point(EntityEnums::CommonCharacterSkeletonPoints point) {
 	_aura_effect_visual_point = point;
 }
 
@@ -101,7 +101,7 @@ void SpellEffectVisualSimple::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_spell_effect_visual_point"), &SpellEffectVisualSimple::get_spell_effect_visual_point);
 	ClassDB::bind_method(D_METHOD("set_spell_effect_visual_point", "value"), &SpellEffectVisualSimple::set_spell_effect_visual_point);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_effect_visual_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS), "set_spell_effect_visual_point", "get_spell_effect_visual_point");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_effect_visual_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS), "set_spell_effect_visual_point", "get_spell_effect_visual_point");
 
 	ClassDB::bind_method(D_METHOD("get_spell_effect_visual"), &SpellEffectVisualSimple::get_spell_effect_visual);
 	ClassDB::bind_method(D_METHOD("set_spell_effect_visual", "value"), &SpellEffectVisualSimple::set_spell_effect_visual);
@@ -111,7 +111,7 @@ void SpellEffectVisualSimple::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_spell_cast_finish_effect_point"), &SpellEffectVisualSimple::get_spell_cast_finish_effect_point);
 	ClassDB::bind_method(D_METHOD("set_spell_cast_finish_effect_point", "value"), &SpellEffectVisualSimple::set_spell_cast_finish_effect_point);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_cast_finish_effect_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS), "set_spell_cast_finish_effect_point", "get_spell_cast_finish_effect_point");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_cast_finish_effect_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS), "set_spell_cast_finish_effect_point", "get_spell_cast_finish_effect_point");
 
 	ClassDB::bind_method(D_METHOD("get_spell_cast_finish_effect"), &SpellEffectVisualSimple::get_spell_cast_finish_effect);
 	ClassDB::bind_method(D_METHOD("set_spell_cast_finish_effect", "value"), &SpellEffectVisualSimple::set_spell_cast_finish_effect);
@@ -128,7 +128,7 @@ void SpellEffectVisualSimple::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_aura_effect_visual_point"), &SpellEffectVisualSimple::get_aura_effect_visual_point);
 	ClassDB::bind_method(D_METHOD("set_aura_effect_visual_point", "value"), &SpellEffectVisualSimple::set_aura_effect_visual_point);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "aura_effect_visual_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_CHARCATER_SKELETON_POINTS), "set_aura_effect_visual_point", "get_aura_effect_visual_point");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "aura_effect_visual_point", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS), "set_aura_effect_visual_point", "get_aura_effect_visual_point");
 
 	ClassDB::bind_method(D_METHOD("get_aura_effect_visual"), &SpellEffectVisualSimple::get_aura_effect_visual);
 	ClassDB::bind_method(D_METHOD("set_aura_effect_visual", "value"), &SpellEffectVisualSimple::set_aura_effect_visual);
