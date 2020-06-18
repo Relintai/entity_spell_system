@@ -180,15 +180,15 @@ void Entity::set_body(Node *body) {
 	_body_3d = Object::cast_to<Spatial>(body);
 }
 
-void Entity::instance_body() {
+void Entity::instance_body(const Ref<EntityData> &data, const int model_index) {
 	if (is_queued_for_deletion())
 		return;
 
-	if (get_body() == NULL && _c_entity_data.is_valid() && _c_entity_data->get_entity_species_data().is_valid() &&
-			_c_entity_data->get_entity_species_data()->get_model_data_count() > _c_model_index &&
-			_c_entity_data->get_entity_species_data()->get_model_data(_c_model_index).is_valid() &&
-			_c_entity_data->get_entity_species_data()->get_model_data(_c_model_index)->get_body().is_valid()) {
-		Node *node = _c_entity_data->get_entity_species_data()->get_model_data(_c_model_index)->get_body()->instance();
+	if (get_body() == NULL && data.is_valid() && data->get_entity_species_data().is_valid() &&
+			data->get_entity_species_data()->get_model_data_count() > model_index &&
+			data->get_entity_species_data()->get_model_data(model_index).is_valid() &&
+			data->get_entity_species_data()->get_model_data(model_index)->get_body().is_valid()) {
+		Node *node = data->get_entity_species_data()->get_model_data(model_index)->get_body()->instance();
 
 		add_child(node);
 		set_body(node);
@@ -559,16 +559,7 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 
 	//setup();
 
-	if (get_body() == NULL && value.is_valid() && value->get_entity_species_data().is_valid() &&
-			value->get_entity_species_data()->get_model_data_count() > _s_model_index &&
-			value->get_entity_species_data()->get_model_data(_s_model_index).is_valid() &&
-			value->get_entity_species_data()->get_model_data(_s_model_index)->get_body().is_valid()) {
-
-		Node *node = value->get_entity_species_data()->get_model_data(_s_model_index)->get_body()->instance();
-
-		add_child(node);
-		set_body(node);
-	}
+	instance_body(value, _s_model_index);
 
 	emit_signal("sentity_data_changed", value);
 
@@ -582,7 +573,7 @@ Ref<EntityData> Entity::getc_entity_data() {
 void Entity::setc_entity_data(Ref<EntityData> value) {
 	_c_entity_data = value;
 
-	call_deferred("instance_body");
+	instance_body(value, _c_model_index);
 
 	emit_signal("centity_data_changed", value);
 }
