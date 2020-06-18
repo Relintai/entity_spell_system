@@ -644,10 +644,11 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 	_s_character_xp = info->get_character_xp();
 
 	sets_entity_name(info->get_entity_name());
-	sets_entity_data(info->get_entity_data());
 
 	if (!info->get_serialized_data().empty()) {
 		from_dict(info->get_serialized_data());
+	} else {
+		sets_entity_data(info->get_entity_data());
 	}
 
 	if (has_method("_setup")) {
