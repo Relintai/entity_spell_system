@@ -180,6 +180,21 @@ void Entity::set_body(Node *body) {
 	_body_3d = Object::cast_to<Spatial>(body);
 }
 
+void Entity::instance_body() {
+	if (is_queued_for_deletion())
+		return;
+
+	if (get_body() == NULL && _c_entity_data.is_valid() && _c_entity_data->get_entity_species_data().is_valid() &&
+			_c_entity_data->get_entity_species_data()->get_model_data_count() > _c_model_index &&
+			_c_entity_data->get_entity_species_data()->get_model_data(_c_model_index).is_valid() &&
+			_c_entity_data->get_entity_species_data()->get_model_data(_c_model_index)->get_body().is_valid()) {
+		Node *node = _c_entity_data->get_entity_species_data()->get_model_data(_c_model_index)->get_body()->instance();
+
+		add_child(node);
+		set_body(node);
+	}
+}
+
 NodePath Entity::get_character_skeleton_path() {
 	return _character_skeleton_path;
 }
@@ -530,6 +545,10 @@ Ref<EntityData> Entity::gets_entity_data() {
 }
 
 void Entity::sets_entity_data(Ref<EntityData> value) {
+	if (is_queued_for_deletion()) {
+		return;
+	}
+
 	_s_class_id = 0;
 
 	if (value.is_valid()) {
@@ -544,6 +563,7 @@ void Entity::sets_entity_data(Ref<EntityData> value) {
 			value->get_entity_species_data()->get_model_data_count() > _s_model_index &&
 			value->get_entity_species_data()->get_model_data(_s_model_index).is_valid() &&
 			value->get_entity_species_data()->get_model_data(_s_model_index)->get_body().is_valid()) {
+
 		Node *node = value->get_entity_species_data()->get_model_data(_s_model_index)->get_body()->instance();
 
 		add_child(node);
@@ -562,15 +582,7 @@ Ref<EntityData> Entity::getc_entity_data() {
 void Entity::setc_entity_data(Ref<EntityData> value) {
 	_c_entity_data = value;
 
-	if (get_body() == NULL && value.is_valid() && value->get_entity_species_data().is_valid() &&
-			value->get_entity_species_data()->get_model_data_count() > _c_model_index &&
-			value->get_entity_species_data()->get_model_data(_c_model_index).is_valid() &&
-			value->get_entity_species_data()->get_model_data(_c_model_index)->get_body().is_valid()) {
-		Node *node = value->get_entity_species_data()->get_model_data(_c_model_index)->get_body()->instance();
-
-		add_child(node);
-		set_body(node);
-	}
+	call_deferred("instance_body");
 
 	emit_signal("centity_data_changed", value);
 }
@@ -7364,6 +7376,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_body", "body"), &Entity::set_body);
 	ClassDB::bind_method(D_METHOD("get_character_skeleton"), &Entity::get_character_skeleton);
 	ClassDB::bind_method(D_METHOD("set_character_skeleton", "skeleton"), &Entity::set_character_skeleton);
+
+	ClassDB::bind_method(D_METHOD("instance_body"), &Entity::instance_body);
 
 	//Transforms
 	ClassDB::bind_method(D_METHOD("get_transform_3d", "only_stored"), &Entity::get_transform_3d, DEFVAL(false));

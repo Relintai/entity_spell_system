@@ -36,6 +36,7 @@ void CharacterSkeleton3D::set_entity_type(const int value) {
 
 	int bones_size = ESS::get_singleton()->skeletons_bones_index_get(_entity_type).get_slice_count(",");
 	int attachment_size = ESS::get_singleton()->skeletons_bone_attachment_index_get(_entity_type).get_slice_count(",");
+
 	_attach_point_nodes.resize(attachment_size);
 	_entries.resize(bones_size);
 }
@@ -447,6 +448,7 @@ CharacterSkeleton3D::CharacterSkeleton3D() {
 	_entity_type = 0;
 
 	_animation_player = NULL;
+	_animation_tree = NULL;
 }
 
 CharacterSkeleton3D::~CharacterSkeleton3D() {
