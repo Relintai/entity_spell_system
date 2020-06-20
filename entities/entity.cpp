@@ -1384,7 +1384,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 		ERR_CONTINUE(!resd.is_valid());
 
-		Ref<EntityResource> res = resd->duplicate(true);
+		Ref<EntityResource> res = resd->duplicate();
 
 		ERR_CONTINUE(!res.is_valid());
 
@@ -2455,9 +2455,9 @@ void Entity::resource_addc_rpc(int index, String data) {
 	Ref<EntityResource> resd = ESS::get_singleton()->get_resource_db()->get_entity_resource(data_id);
 
 	ERR_FAIL_COND(!resd.is_valid());
-	print_error("aaa");
-	Ref<EntityResource> res = resd->duplicate(true);
-	print_error("bbb");
+
+	Ref<EntityResource> res = resd->duplicate();
+
 	ERR_FAIL_COND(!res.is_valid());
 
 	res->from_dict(dict);

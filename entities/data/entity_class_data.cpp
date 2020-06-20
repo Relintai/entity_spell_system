@@ -289,7 +289,7 @@ void EntityClassData::_setup_resources(Node *entity) {
 		Ref<EntityResource> res = _entity_resources.get(i);
 
 		if (res.is_valid()) {
-			Ref<EntityResource> r = res->duplicate(false);
+			Ref<EntityResource> r = res->duplicate();
 
 			ent->resource_adds(r);
 		}
