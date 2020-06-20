@@ -1101,27 +1101,45 @@ void Entity::from_dict(const Dictionary &dict) {
 Dictionary Entity::_to_dict() {
 	Dictionary dict;
 
+	////    Transforms    ////
+
+	//Not needed (at least atm)
+
 	////    PlayerData    ////
 
 	dict["guid"] = _s_guid;
 	//dict["entity_data_id"] = _s_class_id;
-	dict["type"] = _s_type;
-	dict["model_index"] = _s_model_index;
-	dict["class_level"] = gets_class_level();
-	dict["class_xp"] = gets_class_xp();
-
-	dict["character_level"] = _s_character_level;
-	dict["character_xp"] = _s_character_xp;
-	dict["money"] = _s_money;
-	dict["seed"] = _s_seed;
 
 	if (_s_entity_data.is_valid())
 		dict["entity_data_path"] = _s_entity_data->get_path();
 	else
 		dict["entity_data_path"] = _s_entity_data_path;
 
+	//int _s_entity_player_type;
+
+	dict["type"] = _s_type;
+	dict["model_index"] = _s_model_index;
+	dict["class_level"] = gets_class_level();
+	dict["character_level"] = _s_character_level;
+
+	dict["class_xp"] = gets_class_xp();
+	dict["character_xp"] = _s_character_xp;
+
+	dict["money"] = _s_money;
+
 	//dict["send_flag"] = _s_send_flag;
 	dict["entity_name"] = _s_entity_name;
+
+	dict["interaction_type"] = static_cast<int>(_s_interaction_type);
+
+	//int _s_is_dead;
+
+	dict["seed"] = _s_seed;
+
+	dict["entity_type"] = _s_entity_type;
+	dict["immunity_flags"] = _s_immunity_flags;
+	dict["entity_flags"] = _s_entity_flags;
+	dict["entity_controller"] = _s_entity_controller;
 
 	////     Stats    ////
 
@@ -1199,11 +1217,6 @@ Dictionary Entity::_to_dict() {
 	}
 
 	dict["auras"] = auras;
-
-	dict["entity_type"] = _s_entity_type;
-	dict["immunity_flags"] = _s_immunity_flags;
-	dict["entity_flags"] = _s_entity_flags;
-	dict["entity_controller"] = _s_entity_controller;
 
 	////    Cooldowns    ////
 
@@ -1296,12 +1309,34 @@ Dictionary Entity::_to_dict() {
 	dict["actionbar_locked"] = _actionbar_locked;
 	//dict["actionbar_profile"] = _action_bar_profile->to_dict();
 
+	// AI
+
+	//not needed
+
+	//Pets
+
+	//Not yet properly implemented
+
+	// Callbacks
+
+	//Probably not needed
+	//Vector<Ref<SpellCastInfo> > _physics_process_scis;
+
 	return dict;
 }
 void Entity::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
 
-	sets_entity_type((int)((int)dict.get("type", 0)));
+	////    Transforms    ////
+
+	//Not needed for now
+
+	////    PlayerData    ////
+
+	sets_guid(dict.get("guid", 0));
+	sets_entity_type(dict.get("type", 0));
+
+	//entity_data_path at end
 
 	sets_model_index(static_cast<int>(static_cast<int>(dict.get("model_index", 0))));
 
@@ -1320,7 +1355,19 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	sets_entity_name(dict.get("entity_name", ""));
 
+	sets_entity_interaction_type(static_cast<EntityEnums::EntityInteractionType>(static_cast<int>(dict.get("interaction_type", 0))));
+
+	//int _s_is_dead;
+
 	sets_seed(dict.get("seed", _s_seed));
+
+	//EntityPlayerType not needed
+	sets_immunity_flags(dict.get("immunity_flags", 0));
+	sets_entity_flags(dict.get("entity_flags", 0));
+	EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
+
+	sets_original_entity_controller(contr);
+	sets_entity_controller(contr);
 
 	////     Stats    ////
 
@@ -1409,6 +1456,10 @@ void Entity::_from_dict(const Dictionary &dict) {
 	_s_state = dict.get("state", Dictionary());
 	_c_state = _s_state;
 
+	////    SpellCastData    ////
+
+	//Not needed
+
 	////    Auras    ////
 
 	_s_auras.clear();
@@ -1427,14 +1478,6 @@ void Entity::_from_dict(const Dictionary &dict) {
 		_s_auras.push_back(r);
 		//_c_auras.push_back(r);
 	}
-
-	sets_entity_type((int)((int)dict.get("entity_type", 0)));
-	sets_immunity_flags(dict.get("immunity_flags", 0));
-	sets_entity_flags(dict.get("entity_flags", 0));
-	EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
-
-	sets_original_entity_controller(contr);
-	sets_entity_controller(contr);
 
 	////    Cooldowns    ////
 
@@ -1599,6 +1642,22 @@ void Entity::_from_dict(const Dictionary &dict) {
 	}
 
 	sets_entity_data_path(edp);
+
+	// AI
+
+	//Not needed right now
+
+	//Pets
+
+	//NYI
+
+	// Networking
+
+	//Not Needed
+
+	// Callbacks
+
+	//Not Needed
 }
 
 //////     Stat System      //////
