@@ -56,6 +56,9 @@ public:
 
 	int stat_modifier_get_count() const;
 
+	Vector<Variant> stat_modifiers_get();
+	void stat_modifiers_set(const Vector<Variant> &mods);
+
 	int get_stack_size() const;
 	void set_stack_size(const int value);
 

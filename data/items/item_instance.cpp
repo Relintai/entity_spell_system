@@ -105,6 +105,38 @@ int ItemInstance::stat_modifier_get_count() const {
 	return _modifiers.size();
 }
 
+Vector<Variant> ItemInstance::stat_modifiers_get() {
+	Vector<Variant> arr;
+	arr.resize(_modifiers.size() * 4);
+
+	for (int i = 0; i < _modifiers.size(); ++i) {
+		int indx = i * 4;
+		const ItemStatModifier &m = _modifiers[i];
+
+		arr.write[indx] = m.stat_id;
+		arr.write[indx + 1] = m.base_mod;
+		arr.write[indx + 2] = m.bonus_mod;
+		arr.write[indx + 3] = m.percent_mod;
+	}
+
+	return arr;
+}
+void ItemInstance::stat_modifiers_set(const Vector<Variant> &mods) {
+	ERR_FAIL_COND((mods.size() % 4) != 0);
+
+	_modifiers.resize(mods.size() / 4);
+
+	for (int i = 0; i < _modifiers.size(); ++i) {
+		int indx = i * 4;
+		ItemStatModifier &m = _modifiers.write[i];
+
+		m.stat_id = mods[indx];
+		m.base_mod = mods[indx + 1];
+		m.bonus_mod = mods[indx + 2];
+		m.percent_mod = mods[indx + 3];
+	}
+}
+
 int ItemInstance::get_stack_size() const {
 	return _stack_size;
 }
@@ -229,6 +261,10 @@ void ItemInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("remove_item_stat_modifier", "index"), &ItemInstance::remove_item_stat_modifier);
 	ClassDB::bind_method(D_METHOD("clear_item_stat_modifiers"), &ItemInstance::clear_item_stat_modifiers);
 	ClassDB::bind_method(D_METHOD("stat_modifier_get_count"), &ItemInstance::stat_modifier_get_count);
+
+	ClassDB::bind_method(D_METHOD("stat_modifiers_get"), &ItemInstance::stat_modifiers_get);
+	ClassDB::bind_method(D_METHOD("stat_modifiers_set", "mods"), &ItemInstance::stat_modifiers_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "stat_modifiers", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT, ""), "stat_modifiers_set", "stat_modifiers_get");
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_get_description"));
 	ClassDB::bind_method(D_METHOD("get_description"), &ItemInstance::get_description);
