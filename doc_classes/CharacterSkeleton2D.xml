@@ -53,7 +53,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="model_index" type="int" setter="set_model_index" getter="get_model_index" enum="EntityEnums.EntityGender" default="0">
+		<member name="model_index" type="int" setter="set_model_index" getter="get_model_index" default="0">
 		</member>
 	</members>
 	<constants>

@@ -30,7 +30,7 @@
 		</member>
 		<member name="heal_source_type" type="int" setter="source_set_type" getter="source_get_type" enum="SpellHealInfo.HealSourceType" default="0">
 		</member>
-		<member name="immune" type="bool" setter="set_immune" getter="get_immune" default="false">
+		<member name="immune" type="bool" setter="set_immune" getter="get_immune" default="true">
 		</member>
 		<member name="receiver" type="Entity" setter="receiver_set" getter="receiver_get">
 		</member>

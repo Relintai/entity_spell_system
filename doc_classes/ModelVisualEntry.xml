@@ -8,10 +8,18 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="get_effect_offset">
-			<return type="Vector3">
+		<method name="get_attachment">
+			<return type="PackedScene">
 			</return>
-			<argument index="0" name="index" type="int">
+			<argument index="0" name="arg0" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_color" qualifiers="const">
+			<return type="Color">
+			</return>
+			<argument index="0" name="arg0" type="int">
 			</argument>
 			<description>
 			</description>
@@ -32,12 +40,30 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_effect_offset">
-			<return type="void">
+		<method name="get_transform" qualifiers="const">
+			<return type="Transform">
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
-			<argument index="1" name="value" type="Vector3">
+			<description>
+			</description>
+		</method>
+		<method name="set_attachment">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="PackedScene">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_color">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="Color">
 			</argument>
 			<description>
 			</description>
@@ -62,27 +88,35 @@
 			<description>
 			</description>
 		</method>
+		<method name="set_transform">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="value" type="Transform">
+			</argument>
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
-		<member name="color" type="Color" setter="set_color" getter="get_color" default="Color( 1, 1, 1, 1 )">
+		<member name="bone" type="int" setter="set_bone" getter="get_bone" default="0">
 		</member>
-		<member name="effect_male" type="PackedScene" setter="set_effect" getter="get_effect">
+		<member name="entity_type" type="int" setter="set_entity_type" getter="get_entity_type" default="0">
 		</member>
-		<member name="effect_offset_female" type="Vector3" setter="set_effect_offset" getter="get_effect_offset" default="Vector3( 0, 0, 0 )">
+		<member name="group" type="int" setter="set_group" getter="get_group" default="0">
 		</member>
-		<member name="effect_offset_male" type="Vector3" setter="set_effect_offset" getter="get_effect_offset" default="Vector3( 0, 0, 0 )">
+		<member name="override_layer" type="int" setter="set_override_layer" getter="get_override_layer" default="0">
 		</member>
-		<member name="mesh_female" type="MeshDataResource" setter="set_mesh" getter="get_mesh">
+		<member name="size" type="int" setter="set_size" getter="get_size" default="1">
 		</member>
-		<member name="mesh" type="MeshDataResource" setter="set_mesh" getter="get_mesh">
-		</member>
-		<member name="override_layer" type="int" setter="set_override_layer" getter="get_override_layer" enum="ItemEnums.EntityTextureLayers" default="0">
-		</member>
-		<member name="texture_female" type="Texture" setter="set_texture" getter="get_texture">
-		</member>
-		<member name="texture" type="Texture" setter="set_texture" getter="get_texture">
+		<member name="type" type="int" setter="set_type" getter="get_type" enum="ModelVisualEntry.ModenVisualEntryType" default="0">
 		</member>
 	</members>
 	<constants>
+		<constant name="MODEL_VISUAL_ENTRY_TYPE_BONE" value="0" enum="ModenVisualEntryType">
+		</constant>
+		<constant name="MODEL_VISUAL_ENTRY_TYPE_ATTACHMENT" value="1" enum="ModenVisualEntryType">
+		</constant>
 	</constants>
 </class>

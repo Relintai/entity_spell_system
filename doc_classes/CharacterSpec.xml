@@ -9,16 +9,28 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="get_num_talent_rows">
+		<method name="get_num_columns" qualifiers="const">
 			<return type="int">
 			</return>
+			<argument index="0" name="row" type="int">
+			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="get_talent" qualifiers="const">
+		<method name="get_num_ranks" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="row" type="int">
+			</argument>
+			<argument index="1" name="culomn" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_talent">
 			<return type="Aura">
 			</return>
-			<argument index="0" name="row_index" type="int">
+			<argument index="0" name="row" type="int">
 			</argument>
 			<argument index="1" name="culomn" type="int">
 			</argument>
@@ -27,28 +39,60 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_talent_row" qualifiers="const">
-			<return type="TalentRowData">
+		<method name="get_talent_with_id">
+			<return type="Aura">
 			</return>
-			<argument index="0" name="index" type="int">
+			<argument index="0" name="id" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="set_num_talent_rows">
-			<return type="void">
+		<method name="get_talents">
+			<return type="Array">
 			</return>
-			<argument index="0" name="value" type="int">
+			<description>
+			</description>
+		</method>
+		<method name="has_talent_with_id">
+			<return type="bool">
+			</return>
+			<argument index="0" name="id" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="set_talent_row">
+		<method name="set_num_columns">
 			<return type="void">
 			</return>
-			<argument index="0" name="index" type="int">
+			<argument index="0" name="row" type="int">
 			</argument>
-			<argument index="1" name="row" type="TalentRowData">
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_num_ranks">
+			<return type="void">
+			</return>
+			<argument index="0" name="row" type="int">
+			</argument>
+			<argument index="1" name="culomn" type="int">
+			</argument>
+			<argument index="2" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_talent">
+			<return type="void">
+			</return>
+			<argument index="0" name="row" type="int">
+			</argument>
+			<argument index="1" name="culomn" type="int">
+			</argument>
+			<argument index="2" name="rank" type="int">
+			</argument>
+			<argument index="3" name="arg3" type="Aura">
 			</argument>
 			<description>
 			</description>
@@ -57,7 +101,7 @@
 	<members>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
 		</member>
-		<member name="talent_rows" type="Array" setter="set_talent_rows" getter="get_talent_rows" default="[  ]">
+		<member name="num_rows" type="int" setter="set_num_rows" getter="get_num_rows" default="0">
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
 		</member>

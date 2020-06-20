@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SpellCastInfo" inherits="Reference" version="3.2">
+<class name="SpellCastInfo" inherits="Resource" version="3.2">
 	<brief_description>
 		Contains spell cast related information, for easy manipulation with auras, spell callbacks, etc.
 	</brief_description>
@@ -52,7 +52,7 @@
 		</member>
 		<member name="spell_scale" type="float" setter="spell_scale_set" getter="spell_scale_get" default="0.0">
 		</member>
-		<member name="target" type="Entity" setter="set_target" getter="get_target">
+		<member name="target" type="Entity" setter="set_target" getter="target_get">
 		</member>
 	</members>
 	<constants>

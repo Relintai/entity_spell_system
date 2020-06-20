@@ -20,34 +20,6 @@
 		</constant>
 		<constant name="ENTITY_PLAYER_TYPE_DISPLAY" value="4" enum="EntityPlayerType">
 		</constant>
-		<constant name="ENITIY_TYPE_NONE" value="0" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_CREATURE" value="1" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_TOTEM" value="2" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_IDOL" value="3" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_HUMANOID" value="4" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_MECHANICAL" value="5" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_BEAST" value="6" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_DRAGONKIN" value="7" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_ELEMENTAL" value="8" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_GHOST" value="9" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_ENERGY" value="10" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_ANOMALY" value="11" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_DEMON" value="12" enum="EntityType">
-		</constant>
-		<constant name="ENITIY_TYPE_OBJECT" value="13" enum="EntityType">
-		</constant>
 		<constant name="ENITIY_CONTROLLER_NONE" value="0" enum="EntityController">
 		</constant>
 		<constant name="ENITIY_CONTROLLER_PLAYER" value="1" enum="EntityController">
@@ -110,65 +82,45 @@
 		</constant>
 		<constant name="ENTITY_STATE_TYPE_INDEX_MAX" value="11" enum="EntityStateTypeIndexes">
 		</constant>
-		<constant name="SKELETON_POINT_ROOT" value="0" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_ROOT" value="0" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_PELVIS" value="1" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_PELVIS" value="1" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_SPINE" value="2" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_SPINE" value="2" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_SPINE_1" value="3" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_SPINE_1" value="3" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_SPINE_2" value="4" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_SPINE_2" value="4" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_NECK" value="5" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_NECK" value="5" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_HEAD" value="6" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_HEAD" value="6" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_LEFT_CLAVICLE" value="7" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_TORSO" value="7" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_LEFT_UPPER_ARM" value="8" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_RIGHT_HIP" value="8" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_LEFT_FOREARM" value="9" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_LEFT_HIP" value="9" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_LEFT_HAND" value="10" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_BACK" value="10" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_LEFT_THUMB_BASE" value="11" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_LEFT_HAND" value="11" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_LEFT_THUMB_END" value="12" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_RIGHT_HAND" value="12" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_LEFT_FINGERS_BASE" value="13" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_WEAPON_LEFT" value="13" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_LEFT_FINGERS_END" value="14" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_WEAPON_RIGHT" value="14" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_RIGHT_CLAVICLE" value="15" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_WEAPON_LEFT_BACK" value="15" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_RIGHT_UPPER_ARM" value="16" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_WEAPON_RIGHT_BACK" value="16" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_RIGHT_FOREARM" value="17" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_WEAPON_LEFT_SHIELD" value="17" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_RIGHT_HAND" value="18" enum="CharacterSkeletonPoints">
+		<constant name="COMMON_SKELETON_POINT_WEAPON_RIGHT_SHIELD" value="18" enum="CommonCharacterSkeletonPoints">
 		</constant>
-		<constant name="SKELETON_POINT_RIGHT_THUMB_BASE" value="19" enum="CharacterSkeletonPoints">
-		</constant>
-		<constant name="SKELETON_POINT_RIGHT_THUMB_END" value="20" enum="CharacterSkeletonPoints">
-		</constant>
-		<constant name="SKELETON_POINT_RIGHT_FINGERS_BASE" value="21" enum="CharacterSkeletonPoints">
-		</constant>
-		<constant name="SKELETON_POINT_RIGHT_FINGERS_END" value="22" enum="CharacterSkeletonPoints">
-		</constant>
-		<constant name="SKELETON_POINT_LEFT_THIGH" value="23" enum="CharacterSkeletonPoints">
-		</constant>
-		<constant name="SKELETON_POINT_LEFT_CALF" value="24" enum="CharacterSkeletonPoints">
-		</constant>
-		<constant name="SKELETON_POINT_LEFT_FOOT" value="25" enum="CharacterSkeletonPoints">
-		</constant>
-		<constant name="SKELETON_POINT_RIGHT_THIGH" value="26" enum="CharacterSkeletonPoints">
-		</constant>
-		<constant name="SKELETON_POINT_RIGHT_CALF" value="27" enum="CharacterSkeletonPoints">
-		</constant>
-		<constant name="SKELETON_POINT_RIGHT_FOOT" value="28" enum="CharacterSkeletonPoints">
-		</constant>
-		<constant name="SKELETON_POINTS_MAX" value="29">
+		<constant name="COMMON_SKELETON_POINTS_MAX" value="19">
 		</constant>
 		<constant name="AI_STATE_OFF" value="0" enum="AIStates">
 		</constant>
@@ -276,10 +228,6 @@
 		</constant>
 		<constant name="ENTITY_CLASS_PLAYSTYLE_TYPE_NONE" value="3" enum="EntityClassPlaystyleType">
 		</constant>
-		<constant name="GENDER_MALE" value="0" enum="EntityGender">
-		</constant>
-		<constant name="GENDER_FEMALE" value="1" enum="EntityGender">
-		</constant>
 		<constant name="ENTITY_WINDOW_LOOT" value="0" enum="EntityWindows">
 		</constant>
 		<constant name="ENTITY_WINDOW_CONTAINER" value="1" enum="EntityWindows">
@@ -288,11 +236,11 @@
 		</constant>
 		<constant name="ENTITY_WINDOW_TRAINER" value="2" enum="EntityWindows">
 		</constant>
-		<constant name="GENDER_COUNT" value="2">
+		<constant name="ENTITY_RESOURCE_INDEX_HEALTH" value="0" enum="EntityResourceIndices">
 		</constant>
-		<constant name="MAX_CHARACTER_LEVEL" value="20">
+		<constant name="ENTITY_RESOURCE_INDEX_SPEED" value="1" enum="EntityResourceIndices">
 		</constant>
-		<constant name="MAX_CLASS_LEVEL" value="60">
+		<constant name="ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN" value="2" enum="EntityResourceIndices">
 		</constant>
 		<constant name="BASE_XP" value="50">
 		</constant>

@@ -43,7 +43,7 @@
 		</member>
 		<member name="head_index" type="int" setter="set_head_index" getter="get_head_index" default="0">
 		</member>
-		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		<member name="id" type="int" setter="set_id" getter="get_id" default="116271120">
 		</member>
 		<member name="skin_color_index" type="int" setter="set_skin_color_index" getter="get_skin_color_index" default="0">
 		</member>

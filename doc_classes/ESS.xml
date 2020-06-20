@@ -12,6 +12,52 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="equip_slot_get_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="equip_slot_get_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="name" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_slot_get_name" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_slot_get_property_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="name" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_slot_get_property_name" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_slot_is_property" qualifiers="const">
+			<return type="bool">
+			</return>
+			<argument index="0" name="name" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="load_all">
 			<return type="void">
 			</return>
@@ -66,11 +112,87 @@
 			<description>
 			</description>
 		</method>
+		<method name="skeletons_bone_attachment_index_get" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skeletons_bone_attachments_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="skeletons_bones_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="skeletons_bones_index_get" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="name" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_name" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_property_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="name" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_property_name" qualifiers="const">
+			<return type="String">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_is_property" qualifiers="const">
+			<return type="bool">
+			</return>
+			<argument index="0" name="name" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
 		<member name="allow_class_recipe_learning" type="bool" setter="set_allow_class_recipe_learning" getter="get_allow_class_recipe_learning" default="false">
 		</member>
 		<member name="allow_class_spell_learning" type="bool" setter="set_allow_class_spell_learning" getter="get_allow_class_spell_learning" default="false">
+		</member>
+		<member name="auto_learn_spells" type="int" setter="set_auto_learn_spells" getter="get_auto_learn_spells" default="1">
 		</member>
 		<member name="automatic_class_levelups" type="bool" setter="set_automatic_class_levelups" getter="get_automatic_class_levelups" default="false">
 		</member>
@@ -80,11 +202,35 @@
 		</member>
 		<member name="entity_spawner_path" type="String" setter="set_entity_spawner_path" getter="get_entity_spawner_path" default="&quot;&quot;">
 		</member>
+		<member name="entity_types" type="String" setter="entity_types_set" getter="entity_types_get" default="&quot;None,Creature,Totem,Idol,Humanoid,Mechanical,Beast,Dragonkin,Elemental,Ghost,Energy,Anomaly,Demon,Object&quot;">
+		</member>
+		<member name="equip_slot_string" type="String" setter="equip_slot_set_string" getter="equip_slot_get_string" default="&quot;Head,Neck,Shoulder,Chest,Gloves,Belt,Legs,Feet,Ring_1,Ring_2,Trinket_1,Trinket_2,Main_Hand,Off_Hand,None&quot;">
+		</member>
+		<member name="equip_slots" type="PoolStringArray" setter="equip_slots_set" getter="equip_slots_get" default="PoolStringArray( &quot;Head&quot;, &quot;Neck&quot;, &quot;Shoulder&quot;, &quot;Chest&quot;, &quot;Gloves&quot;, &quot;Belt&quot;, &quot;Legs&quot;, &quot;Feet&quot;, &quot;Ring_1&quot;, &quot;Ring_2&quot;, &quot;Trinket_1&quot;, &quot;Trinket_2&quot;, &quot;Main_Hand&quot;, &quot;Off_Hand&quot; )">
+		</member>
+		<member name="main_stat_count" type="int" setter="stat_set_main_stat_count" getter="stat_get_main_stat_count" default="5">
+		</member>
+		<member name="max_character_level" type="int" setter="set_max_character_level" getter="get_max_character_level" default="20">
+		</member>
+		<member name="max_class_level" type="int" setter="set_max_class_level" getter="get_max_class_level" default="40">
+		</member>
+		<member name="model_visual_groups" type="String" setter="model_visual_groups_set" getter="model_visual_groups_get" default="&quot;None,Bodypart,Alt Bodypart,Attachment&quot;">
+		</member>
 		<member name="resource_db" type="ESSResourceDB" setter="set_resource_db" getter="get_resource_db">
 		</member>
 		<member name="resource_db_path" type="String" setter="set_resource_db_path" getter="get_resource_db_path" default="&quot;&quot;">
 		</member>
 		<member name="scale_spells_by_default" type="bool" setter="set_scale_spells_by_default" getter="get_scale_spells_by_default" default="false">
+		</member>
+		<member name="skeletons_bone_attachment_points" type="PoolStringArray" setter="skeletons_bone_attachment_points_set" getter="skeletons_bone_attachment_points_get" default="PoolStringArray(  )">
+		</member>
+		<member name="skeletons_bones" type="PoolStringArray" setter="skeletons_bones_set" getter="skeletons_bones_get" default="PoolStringArray(  )">
+		</member>
+		<member name="stat_string" type="String" setter="stat_set_string" getter="stat_get_string" default="&quot;Agility,Strength,Stamina,Intellect,Spirit,Health,Speed,Global Cooldown,Haste&quot;">
+		</member>
+		<member name="stats" type="PoolStringArray" setter="stats_set" getter="stats_get" default="PoolStringArray( &quot;Agility&quot;, &quot;Strength&quot;, &quot;Stamina&quot;, &quot;Intellect&quot;, &quot;Spirit&quot;, &quot;Health&quot;, &quot;Speed&quot;, &quot;Global Cooldown&quot;, &quot;Haste&quot; )">
+		</member>
+		<member name="texture_layers" type="String" setter="texture_layers_set" getter="texture_layers_get" default="&quot;None,Skin,Underwear,Shirt,Clothes Base,Clothes 1,Clothes 2,Clothes 3,Clothes 4,Clothes 5,Belt,Tabard,Overlay&quot;">
 		</member>
 		<member name="use_class_xp" type="bool" setter="set_use_class_xp" getter="get_use_class_xp" default="false">
 		</member>

@@ -8,7 +8,15 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="get_visual">
+		<method name="add_visual_entry">
+			<return type="void">
+			</return>
+			<argument index="0" name="visual_entry" type="ModelVisualEntry">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_visual_entry" qualifiers="const">
 			<return type="ModelVisualEntry">
 			</return>
 			<argument index="0" name="index" type="int">
@@ -16,77 +24,35 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_visual">
+		<method name="get_visual_entry_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="remove_visual_entry">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
-			<argument index="1" name="entry" type="ModelVisualEntry">
+			<description>
+			</description>
+		</method>
+		<method name="set_visual_entry">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="data" type="ModelVisualEntry">
 			</argument>
 			<description>
 			</description>
 		</method>
 	</methods>
 	<members>
-		<member name="layer" type="int" setter="set_layer" getter="get_layer" enum="ItemEnums.EntityTextureLayers" default="0">
+		<member name="get_visual_entries" type="Array" setter="set_visual_entries" getter="get_visual_entries" default="[  ]">
 		</member>
-		<member name="visual_head" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_left_calf" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_left_clavicle" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_left_fingers_base" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_left_fingers_end" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_left_foot" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_left_forearm" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_left_hand" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_left_thigh" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_left_thumb_base" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_left_thumb_end" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_left_upper_arm" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_neck" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_pelvis" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_right_calf" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_right_clavicle" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_right_fingers_base" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_right_fingers_end" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_right_foot" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_right_forearm" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_right_hand" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_right_thigh" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_right_thumb_base" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_right_thumb_end" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_right_upper_arm" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_root" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_spine" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_spine_1" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
-		</member>
-		<member name="visual_spine_2" type="ModelVisualEntry" setter="set_visual" getter="get_visual">
+		<member name="layer" type="int" setter="set_layer" getter="get_layer" default="0">
 		</member>
 	</members>
 	<constants>

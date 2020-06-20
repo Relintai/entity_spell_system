@@ -8,10 +8,238 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="_equip_con_fail" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_equip_con_success" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_equip_should_deny" qualifiers="virtual">
+			<return type="bool">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_equip_son_fail" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_equip_son_success" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="_move" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_saura" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scast" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scategory_cooldown_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scategory_cooldown_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scharacter_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sclass_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scooldown_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scooldown_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sdamage" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sdeath" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sentity_resource_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sentity_resource_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sgcd_finished" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sgcd_started" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="gcd" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sheal" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sxp_gained" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -46,10 +274,244 @@
 			<description>
 			</description>
 		</method>
+		<method name="equip_con_fail">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_con_success">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_should_deny">
+			<return type="bool">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_son_fail">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_son_success">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_editor_description" qualifiers="const">
+			<return type="String">
+			</return>
+			<description>
+			</description>
+		</method>
 		<method name="move">
 			<return type="void">
 			</return>
 			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_saura">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scast">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scategory_cooldown_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scategory_cooldown_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scharacter_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sclass_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scooldown_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scooldown_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sdamage">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sdeath">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sentity_resource_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sentity_resource_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sgcd_finished">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sgcd_started">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="gcd" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sheal">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sxp_gained">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -66,6 +528,14 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="delta" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_editor_description">
+			<return type="void">
+			</return>
+			<argument index="0" name="editor_description" type="String">
 			</argument>
 			<description>
 			</description>

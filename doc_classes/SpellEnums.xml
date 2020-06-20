@@ -60,36 +60,6 @@
 		</constant>
 		<constant name="SPELL_TYPE_CHAOS" value="128" enum="SpellType">
 		</constant>
-		<constant name="DIMINISHING_RETURN_CATEGORY_NONE" value="0" enum="DiminishingReturnCategory">
-		</constant>
-		<constant name="DIMINISHING_RETURN_CATEGORY_ROOT" value="1" enum="DiminishingReturnCategory">
-		</constant>
-		<constant name="DIMINISHING_RETURN_CATEGORY_STUN" value="2" enum="DiminishingReturnCategory">
-		</constant>
-		<constant name="TRIGGER_NONE" value="0" enum="TriggerEvents">
-		</constant>
-		<constant name="TRIGGER_AURA_EVENT_S_ON_BEFORE_DAMAGE" value="1" enum="TriggerEvents">
-		</constant>
-		<constant name="TRIGGER_AURA_EVENT_S_ON_DAMAGE_RECEIVE" value="2" enum="TriggerEvents">
-		</constant>
-		<constant name="TRIGGER_AURA_EVENT_S_ON_HIT" value="3" enum="TriggerEvents">
-		</constant>
-		<constant name="TRIGGER_AURA_EVENT_S_ON_DAMAGE_DEALT" value="4" enum="TriggerEvents">
-		</constant>
-		<constant name="TRIGGER_AURA_EVENT_S_ON_AURA_REMOVE" value="5" enum="TriggerEvents">
-		</constant>
-		<constant name="TRIGGER_AURA_EVENT_S_ON_AURA_DISPELL" value="6" enum="TriggerEvents">
-		</constant>
-		<constant name="TRIGGER_AURA_EVENT_S_ON_BEFORE_AURA_APPLIED" value="7" enum="TriggerEvents">
-		</constant>
-		<constant name="TRIGGER_AURA_EVENT_S_ON_AFTER_AURA_APPLIED" value="8" enum="TriggerEvents">
-		</constant>
-		<constant name="TRIGGER_AURA_EVENT_C_ON_AURA_ADDED" value="9" enum="TriggerEvents">
-		</constant>
-		<constant name="TRIGGER_AURA_EVENT_C_ON_AURA_REMOVED" value="10" enum="TriggerEvents">
-		</constant>
-		<constant name="TRIGGER_AURA_EVENT_C_ON_AURA_REFRESHED" value="11" enum="TriggerEvents">
-		</constant>
 		<constant name="AURA_TYPE_NONE" value="0" enum="AuraType">
 		</constant>
 		<constant name="AURA_TYPE_MAGIC" value="1" enum="AuraType">
@@ -119,6 +89,106 @@
 		<constant name="TARGET_TYPE_BONE_ID" value="2" enum="TargetType">
 		</constant>
 		<constant name="TARGET_TYPE_COORDS" value="3" enum="TargetType">
+		</constant>
+		<constant name="TRIGGER_TYPE_NONE" value="0" enum="TriggerType">
+		</constant>
+		<constant name="TRIGGER_TYPE_PERCENT" value="1" enum="TriggerType">
+		</constant>
+		<constant name="TRIGGER_TYPE_PPM" value="2" enum="TriggerType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_AURA" value="0" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_DAMAGE" value="1" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_HEAL" value="2" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_CAST" value="3" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_DEATH" value="4" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_COOLDOWN_ADDED" value="5" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_COOLDOWN_REMOVED" value="6" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_CATEGORY_COOLDOWN_ADDED" value="7" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_CATEGORY_COOLDOWN_REMOVED" value="8" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_GCD_STARTED" value="9" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_GCD_FINISHED" value="10" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_XP_GAINED" value="11" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_CLASS_LEVELUP" value="12" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_CHARACTER_LEVELUP" value="13" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_ENTITY_RESOURCE_ADDED" value="14" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_ENTITY_RESOURCE_REMOVED" value="15" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_AURA_CUSTOM" value="16" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_DAMAGE_CUSTOM" value="17" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_HEAL_CUSTOM" value="18" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_CAST_CUSTOM" value="19" enum="TriggerNotificationType">
+		</constant>
+		<constant name="TRIGGER_NOTIFICATION_TYPE_CUSTOM" value="20" enum="TriggerNotificationType">
+		</constant>
+		<constant name="NOTIFICATION_AURA_BEFORE_APPLIED" value="0">
+		</constant>
+		<constant name="NOTIFICATION_AURA_AFTER_APPLIED" value="1">
+		</constant>
+		<constant name="NOTIFICATION_AURA_APPLIED" value="2">
+		</constant>
+		<constant name="NOTIFICATION_AURA_ADDED" value="3">
+		</constant>
+		<constant name="NOTIFICATION_AURA_REMOVED" value="4">
+		</constant>
+		<constant name="NOTIFICATION_AURA_REFRESHED" value="5">
+		</constant>
+		<constant name="NOTIFICATION_DAMAGE_BEFORE_HIT" value="0">
+		</constant>
+		<constant name="NOTIFICATION_DAMAGE_HIT" value="1">
+		</constant>
+		<constant name="NOTIFICATION_DAMAGE_BEFORE_DAMAGE" value="2">
+		</constant>
+		<constant name="NOTIFICATION_DAMAGE_RECEIVE" value="3">
+		</constant>
+		<constant name="NOTIFICATION_DAMAGE_DEALT_DAMAGE" value="4">
+		</constant>
+		<constant name="NOTIFICATION_DAMAGE_DAMAGE_DEALT" value="5">
+		</constant>
+		<constant name="NOTIFICATION_HEAL_BEFORE_HIT" value="0">
+		</constant>
+		<constant name="NOTIFICATION_HEAL_BEFORE_HEAL" value="1">
+		</constant>
+		<constant name="NOTIFICATION_HEAL_RECEIVE" value="2">
+		</constant>
+		<constant name="NOTIFICATION_HEAL_DEALT_HEAL" value="3">
+		</constant>
+		<constant name="NOTIFICATION_HEAL_HEAL_DEALT" value="4">
+		</constant>
+		<constant name="NOTIFICATION_CAST_BEFORE" value="0">
+		</constant>
+		<constant name="NOTIFICATION_CAST_BEFORE_CAST_TARGET" value="1">
+		</constant>
+		<constant name="NOTIFICATION_CAST_FINISHED_TARGET" value="2">
+		</constant>
+		<constant name="NOTIFICATION_CAST_FINISHED" value="3">
+		</constant>
+		<constant name="NOTIFICATION_CAST_STARTED" value="4">
+		</constant>
+		<constant name="NOTIFICATION_CAST_FAILED" value="5">
+		</constant>
+		<constant name="NOTIFICATION_CAST_SUCCESS" value="6">
+		</constant>
+		<constant name="NOTIFICATION_CAST_INTERRUPTED" value="7">
+		</constant>
+		<constant name="NOTIFICATION_CAST_DELAYED" value="8">
 		</constant>
 	</constants>
 </class>

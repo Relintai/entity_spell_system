@@ -24,7 +24,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_spell_cast_ended" qualifiers="virtual">
+		<method name="_cast_finishs" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -32,7 +32,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_spell_cast_failed" qualifiers="virtual">
+		<method name="_cast_interrupts" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -40,7 +40,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_spell_cast_interrupted" qualifiers="virtual">
+		<method name="_cast_starts" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -48,15 +48,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_spell_cast_started" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_spell_cast_success" qualifiers="virtual">
+		<method name="_cast_starts_triggered" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -106,18 +98,22 @@
 			<description>
 			</description>
 		</method>
-		<method name="_cast_finishs" qualifiers="virtual">
+		<method name="_notification_ccast" qualifiers="virtual">
 			<return type="void">
 			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="_cast_interrupts" qualifiers="virtual">
+		<method name="_notification_scast" qualifiers="virtual">
 			<return type="void">
 			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
 			</description>
@@ -156,22 +152,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="_cast_starts" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_cast_starts_triggered" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="calculate_initial_damage">
 			<return type="void">
 			</return>
@@ -188,7 +168,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_spell_cast_ended">
+		<method name="cast_finishs">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -196,7 +176,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_spell_cast_failed">
+		<method name="cast_interrupts">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -204,7 +184,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_spell_cast_interrupted">
+		<method name="cast_starts">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -212,15 +192,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="con_spell_cast_started">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_spell_cast_success">
+		<method name="cast_starts_triggered">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -232,6 +204,16 @@
 			<return type="Aura">
 			</return>
 			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="caster_set_aura_apply">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="aura" type="Aura">
 			</argument>
 			<description>
 			</description>
@@ -334,12 +316,22 @@
 			<description>
 			</description>
 		</method>
-		<method name="caster_set_aura_apply">
+		<method name="notification_ccast">
 			<return type="void">
 			</return>
-			<argument index="0" name="index" type="int">
+			<argument index="0" name="what" type="int">
 			</argument>
-			<argument index="1" name="aura" type="Aura">
+			<argument index="1" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scast">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
 			</description>
@@ -388,22 +380,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="cast_finishs">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_interrupts">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="son_cast_damage_received">
 			<return type="void">
 			</return>
@@ -431,22 +407,6 @@
 			</description>
 		</method>
 		<method name="son_spell_hit">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_starts">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_starts_triggered">
 			<return type="void">
 			</return>
 			<argument index="0" name="info" type="SpellCastInfo">
@@ -490,7 +450,7 @@
 		</member>
 		<member name="damage_scale_coeff" type="float" setter="damage_set_scale_coeff" getter="damage_get_scale_coeff" default="0.0">
 		</member>
-		<member name="damage_scale_stat" type="int" setter="damage_set_scale_stat" getter="damage_get_scale_stat" enum="Stat.StatId" default="42">
+		<member name="damage_scale_stat" type="int" setter="damage_set_scale_stat" getter="damage_get_scale_stat" default="0">
 		</member>
 		<member name="damage_type" type="int" setter="damage_set_type" getter="damage_get_type" default="0">
 		</member>
@@ -510,7 +470,7 @@
 		</member>
 		<member name="heal_scale_coeff" type="float" setter="heal_set_scale_coeff" getter="heal_get_scale_coeff" default="0.0">
 		</member>
-		<member name="heal_scale_stat" type="int" setter="heal_set_scale_stat" getter="heal_get_scale_stat" enum="Stat.StatId" default="42">
+		<member name="heal_scale_stat" type="int" setter="heal_set_scale_stat" getter="heal_get_scale_stat" default="0">
 		</member>
 		<member name="hide_from_actionbar" type="bool" setter="set_hide_from_actionbar" getter="get_hide_from_actionbar" default="false">
 		</member>

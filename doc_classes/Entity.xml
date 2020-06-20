@@ -12,16 +12,6 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="_equip_can_equip_item" qualifiers="virtual">
-			<return type="bool">
-			</return>
-			<argument index="0" name="equip_slot" type="int">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="_canc_interact" qualifiers="virtual">
 			<return type="bool">
 			</return>
@@ -34,6 +24,88 @@
 			<description>
 			</description>
 		</method>
+		<method name="_character_talent_sreceive_learn_request" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="spec_index" type="int">
+			</argument>
+			<argument index="1" name="character_talent_row" type="int">
+			</argument>
+			<argument index="2" name="character_talent_culomn" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_character_talent_sreceive_reset_request" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_class_talent_sreceive_learn_request" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="spec_index" type="int">
+			</argument>
+			<argument index="1" name="class_talent_row" type="int">
+			</argument>
+			<argument index="2" name="class_talent_culomn" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_class_talent_sreceive_reset_request" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_con_character_talent_learned" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="character_talent_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_character_talent_reset" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_con_class_talent_learned" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="class_talent_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_con_class_talent_reset" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_con_target_changed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="old_target" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_crafts" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="_equip_applyc_item" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -42,7 +114,7 @@
 			<description>
 			</description>
 		</method>
-		<method name="_equip_deapplyc_item" qualifiers="virtual">
+		<method name="_equip_applys_item" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="item" type="ItemInstance">
@@ -50,120 +122,12 @@
 			<description>
 			</description>
 		</method>
-		<method name="_con_aura_added" qualifiers="virtual">
-			<return type="void">
+		<method name="_equip_can_equip_item" qualifiers="virtual">
+			<return type="bool">
 			</return>
-			<argument index="0" name="data" type="AuraData">
+			<argument index="0" name="equip_slot" type="int">
 			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_aura_refresh" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_aura_removed" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_cast_failed" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_cast_finished" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_cast_started" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_cast_state_changed" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_ccharacter_level_up" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_cclass_level_up" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_damage_dealt" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_dealt_damage" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_dealt_heal" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_cdeath" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_centity_resource_added" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="resource" type="EntityResource">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_centity_resource_removed" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="resource" type="EntityResource">
+			<argument index="1" name="item" type="ItemInstance">
 			</argument>
 			<description>
 			</description>
@@ -196,134 +160,10 @@
 			<description>
 			</description>
 		</method>
-		<method name="_notification_cgcd_finished" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_cgcd_started" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="gcd" type="float">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_heal_dealt" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_spell_cast_success" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_talent_learned" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="talent_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_con_talent_reset" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="_con_target_changed" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="old_target" type="Entity">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_cxp_gained" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_from_dict" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_getc_relation_to" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="to" type="Entity">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_gets_relation_to" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="to" type="Entity">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_moved" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_cmouse_enter" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_cmouse_exit" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_ctargeted" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_cuntargeted" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="_equip_applys_item" qualifiers="virtual">
+		<method name="_equip_deapplyc_item" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_crafts" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="id" type="int">
 			</argument>
 			<description>
 			</description>
@@ -336,202 +176,12 @@
 			<description>
 			</description>
 		</method>
-		<method name="_equips" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="equip_slot" type="int">
-			</argument>
-			<argument index="1" name="bag_slot" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_setup" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="EntityCreateInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="_equip_should_deny" qualifiers="virtual">
 			<return type="bool">
 			</return>
 			<argument index="0" name="equip_slot" type="int">
 			</argument>
 			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_sinteract" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="_son_after_aura_applied" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_before_aura_applied" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_before_cast" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_before_cast_target" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_before_damage" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_before_damage_hit" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_before_heal" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_before_heal_hit" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_cast_failed" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_cast_finished" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_cast_finished_target" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_cast_started" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_scharacter_level_up" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_sclass_level_up" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_damage_dealt" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_damage_receive" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_dealt_damage" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_dealt_heal" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_sdeath" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_sentity_resource_added" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="resource" type="EntityResource">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_sentity_resource_removed" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="resource" type="EntityResource">
 			</argument>
 			<description>
 			</description>
@@ -564,6 +214,252 @@
 			<description>
 			</description>
 		</method>
+		<method name="_equips" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="equip_slot" type="int">
+			</argument>
+			<argument index="1" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_from_dict" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_getc_relation_to" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="to" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_gets_relation_to" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="to" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_initialize" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_item_uses" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="item_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_moved" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_caura" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_ccast" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_ccharacter_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cclass_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cdamage" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cdeath" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_centity_resource_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_centity_resource_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cgcd_finished" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cgcd_started" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="gcd" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cheal" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cmouse_enter" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cmouse_exit" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_ctargeted" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cuntargeted" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cxp_gained" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_saura" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scast" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scharacter_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sclass_level_up" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sdamage" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sdeath" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sentity_resource_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sentity_resource_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="_notification_sgcd_finished" qualifiers="virtual">
 			<return type="void">
 			</return>
@@ -578,47 +474,59 @@
 			<description>
 			</description>
 		</method>
-		<method name="_son_heal_dealt" qualifiers="virtual">
+		<method name="_notification_sheal" qualifiers="virtual">
 			<return type="void">
 			</return>
-			<argument index="0" name="info" type="SpellHealInfo">
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellHealInfo">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="_son_heal_receive" qualifiers="virtual">
+		<method name="_notification_sxp_gained" qualifiers="virtual">
 			<return type="void">
 			</return>
-			<argument index="0" name="info" type="SpellHealInfo">
+			<argument index="0" name="value" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="_son_hit" qualifiers="virtual">
+		<method name="_setup" qualifiers="virtual">
 			<return type="void">
 			</return>
-			<argument index="0" name="info" type="SpellDamageInfo">
+			<description>
+			</description>
+		</method>
+		<method name="_sinteract" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="_son_character_talent_learned" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="character_talent_id" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="_son_spell_cast_success" qualifiers="virtual">
+		<method name="_son_character_talent_reset" qualifiers="virtual">
 			<return type="void">
 			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
+			<description>
+			</description>
+		</method>
+		<method name="_son_class_talent_learned" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="class_talent_id" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="_son_talent_learned" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="talent_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_son_talent_reset" qualifiers="virtual">
+		<method name="_son_class_talent_reset" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<description>
@@ -634,43 +542,17 @@
 			<description>
 			</description>
 		</method>
-		<method name="_notification_sxp_gained" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_talent_sreceive_reset_request" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="_talent_sreceive_learn_request" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="spec_index" type="int">
-			</argument>
-			<argument index="1" name="talent_row" type="int">
-			</argument>
-			<argument index="2" name="talent_culomn" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_item_uses" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="item_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="_to_dict" qualifiers="virtual">
 			<return type="Dictionary">
 			</return>
+			<description>
+			</description>
+		</method>
+		<method name="adds_state_ref">
+			<return type="void">
+			</return>
+			<argument index="0" name="state_index" type="int">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -690,1188 +572,10 @@
 			<description>
 			</description>
 		</method>
-		<method name="category_cooldown_addc">
-			<return type="void">
-			</return>
-			<argument index="0" name="category_id" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cooldown_addc">
-			<return type="void">
-			</return>
-			<argument index="0" name="spell_id" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_addc_recipe">
-			<return type="void">
-			</return>
-			<argument index="0" name="craft_recipe" type="CraftRecipe">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_addc_recipe_id">
-			<return type="void">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="data_addc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="EntityDataContainer">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="item_addc">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="item_addc_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<argument index="1" name="item_data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="pet_addc">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Node">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="pet_addc_path">
-			<return type="void">
-			</return>
-			<argument index="0" name="arg0" type="NodePath">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="resource_addc">
-			<return type="void">
-			</return>
-			<argument index="0" name="palyer_resource" type="int">
-			</argument>
-			<argument index="1" name="arg1" type="EntityResource">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="resource_addc_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_addc">
-			<return type="void">
-			</return>
-			<argument index="0" name="skill" type="EntitySkill">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_addc_id">
-			<return type="void">
-			</return>
-			<argument index="0" name="skill_id" type="int">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
-			<argument index="2" name="max_value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_addc">
-			<return type="void">
-			</return>
-			<argument index="0" name="spell" type="Spell">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_addc_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_addc">
-			<return type="void">
-			</return>
-			<argument index="0" name="talent" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_item_addc">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_item_addc_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<argument index="1" name="item_data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="xp_addc">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="aura_adds">
 			<return type="void">
 			</return>
 			<argument index="0" name="aura" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="category_cooldown_adds">
-			<return type="void">
-			</return>
-			<argument index="0" name="category_id" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cooldown_adds">
-			<return type="void">
-			</return>
-			<argument index="0" name="spell_id" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_adds_recipe">
-			<return type="void">
-			</return>
-			<argument index="0" name="craft_recipe" type="CraftRecipe">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_adds_recipe_id">
-			<return type="void">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="data_adds">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="EntityDataContainer">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="pet_adds">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Node">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="resource_adds">
-			<return type="void">
-			</return>
-			<argument index="0" name="palyer_resource" type="EntityResource">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="seen_by_adds">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Node">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="sees_adds">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Node">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_adds">
-			<return type="void">
-			</return>
-			<argument index="0" name="skill" type="EntitySkill">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_adds">
-			<return type="void">
-			</return>
-			<argument index="0" name="spell" type="Spell">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_adds_id">
-			<return type="void">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="adds_state_ref">
-			<return type="void">
-			</return>
-			<argument index="0" name="state_index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_adds">
-			<return type="void">
-			</return>
-			<argument index="0" name="talent" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="xp_adds">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="equip_can_equip_item">
-			<return type="bool">
-			</return>
-			<argument index="0" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="canc_interact">
-			<return type="bool">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="cans_interact">
-			<return type="bool">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="item_cchange_count">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<argument index="1" name="new_count" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_item_cchange_count">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<argument index="1" name="new_count" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="levelup_ccharacter">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="levelup_cclass">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_cclear">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="cdamage_dealt_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cdealt_damage_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cdealt_heal_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="equip_deapplyc_item">
-			<return type="void">
-			</return>
-			<argument index="0" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_delayc">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="item_cdeny_swap">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id_1" type="int">
-			</argument>
-			<argument index="1" name="slot_id_2" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_item_cdeny_swap">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id_1" type="int">
-			</argument>
-			<argument index="1" name="slot_id_2" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="item_cdeny_remove">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_item_cdeny_remove">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="diec">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="equip_cfail">
-			<return type="void">
-			</return>
-			<argument index="0" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
-			</argument>
-			<argument index="1" name="bag_slot" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="equip_csuccess">
-			<return type="void">
-			</return>
-			<argument index="0" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
-			</argument>
-			<argument index="1" name="bag_slot" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_failc">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="cast_finishc">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="skill_changec">
-			<return type="void">
-			</return>
-			<argument index="0" name="skill_id" type="int">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_changec_max">
-			<return type="void">
-			</return>
-			<argument index="0" name="skill_id" type="int">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cheal_dealt_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_interruptc">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="cast_is_castingc">
-			<return type="bool">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="resource_clearc">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="resource_clears">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="lootc">
-			<return type="void">
-			</return>
-			<argument index="0" name="arg0" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_aura_added">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_aura_refresh">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_aura_removed">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_cast_failed">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_cast_finished">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_cast_started">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_cast_state_changed">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_ccategory_cooldown_added">
-			<return type="void">
-			</return>
-			<argument index="0" name="category_cooldown" type="CategoryCooldown">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_ccategory_cooldown_added" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="category_cooldown" type="CategoryCooldown">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_ccategory_cooldown_removed">
-			<return type="void">
-			</return>
-			<argument index="0" name="category_cooldown" type="CategoryCooldown">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_ccategory_cooldown_removed" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="category_cooldown" type="CategoryCooldown">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_ccharacter_level_up">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_cclass_level_up">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_ccooldown_added" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="cooldown" type="Cooldown">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_ccooldown_added">
-			<return type="void">
-			</return>
-			<argument index="0" name="cooldown" type="Cooldown">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_ccooldown_removed" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="cooldown" type="Cooldown">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_ccooldown_removed">
-			<return type="void">
-			</return>
-			<argument index="0" name="cooldown" type="Cooldown">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_damage_dealt">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_dealt_damage">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_dealt_heal">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_cdeath">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="notification_centity_resource_added">
-			<return type="void">
-			</return>
-			<argument index="0" name="resource" type="EntityResource">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_centity_resource_removed">
-			<return type="void">
-			</return>
-			<argument index="0" name="resource" type="EntityResource">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="equip_con_fail">
-			<return type="void">
-			</return>
-			<argument index="0" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="old_item" type="ItemInstance">
-			</argument>
-			<argument index="3" name="bag_slot" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="equip_con_success">
-			<return type="void">
-			</return>
-			<argument index="0" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="old_item" type="ItemInstance">
-			</argument>
-			<argument index="3" name="bag_slot" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_cgcd_finished">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="notification_cgcd_started">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="con_heal_dealt">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="con_spell_cast_success">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_cxp_gained">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="copen_window">
-			<return type="void">
-			</return>
-			<argument index="0" name="window_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="resource_creceive_curr_max">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="current" type="int">
-			</argument>
-			<argument index="2" name="max" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="resource_creceive_current">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="current" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="resource_creceive_data">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="creceive_stat">
-			<return type="void">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<argument index="1" name="ccurrent" type="int">
-			</argument>
-			<argument index="2" name="cmax" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_crequest">
-			<return type="void">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="equip_crequest">
-			<return type="void">
-			</return>
-			<argument index="0" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
-			</argument>
-			<argument index="1" name="bag_slot" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="crequest_interact">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="item_crequest_swap">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id_1" type="int">
-			</argument>
-			<argument index="1" name="slot_id_2" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="loot_crequest">
-			<return type="void">
-			</return>
-			<argument index="0" name="arg0" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="item_crequest_remove">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_crequest_cast">
-			<return type="void">
-			</return>
-			<argument index="0" name="spell_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_learn_requestc">
-			<return type="void">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_crequest_learn">
-			<return type="void">
-			</return>
-			<argument index="0" name="spec_index" type="int">
-			</argument>
-			<argument index="1" name="talent_row" type="int">
-			</argument>
-			<argument index="2" name="talent_culomn" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_crequest_reset">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="target_crequest_change">
-			<return type="void">
-			</return>
-			<argument index="0" name="path" type="NodePath">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_item_crequest_swap">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id_1" type="int">
-			</argument>
-			<argument index="1" name="slot_id_2" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_remove_crequest_item">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="item_crequest_use">
-			<return type="void">
-			</return>
-			<argument index="0" name="item_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_creset">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="cequip_applys_item">
-			<return type="void">
-			</return>
-			<argument index="0" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_spell_successc">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_spell_successc_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_startc">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_startc_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="gcd_startc">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="float">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="items_swapc">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id_1" type="int">
-			</argument>
-			<argument index="1" name="slot_id_2" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_items_cswap">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id_1" type="int">
-			</argument>
-			<argument index="1" name="slot_id_2" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="from_dict">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="get_action_bar_profile">
-			<return type="ActionBarProfile">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_block">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_body">
-			<return type="Node">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_character_skeleton">
-			<return type="Node">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="damage_get_reduction">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="damage_get_taken">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_energy">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_gcd">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="heal_getth">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_mana">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_maunal_process" qualifiers="const">
-			<return type="bool">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_melee_crit">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_melee_crit_bonus">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_melee_damage">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_melee_damage_reduction">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_parry">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_rage">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_speed">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_spell_crit">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_spell_crit_bonus">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_spell_damage">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_spell_damage_reduction">
-			<return type="Stat">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_stat_enum">
-			<return type="Stat">
-			</return>
-			<argument index="0" name="index" type="int" enum="Stat.StatId">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="get_stat_int">
-			<return type="Stat">
-			</return>
-			<argument index="0" name="index" type="int">
 			</argument>
 			<description>
 			</description>
@@ -1885,190 +589,6 @@
 			</description>
 		</method>
 		<method name="aura_getc_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="category_cooldown_getc">
-			<return type="CategoryCooldown">
-			</return>
-			<argument index="0" name="category_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="category_cooldown_getc_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="category_cooldown_getc_index">
-			<return type="CategoryCooldown">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cooldown_getc">
-			<return type="Cooldown">
-			</return>
-			<argument index="0" name="spell_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cooldown_getc_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="cooldown_getc_index">
-			<return type="Cooldown">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_getc_recipe">
-			<return type="CraftRecipe">
-			</return>
-			<argument index="0" name="craft_recipe" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_getc_recipe_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="data_getc">
-			<return type="EntityDataContainer">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="data_getc_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="equip_getc_slot">
-			<return type="ItemInstance">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="gcd_getc">
-			<return type="bool">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="gcd_hasc">
-			<return type="bool">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="pet_getc">
-			<return type="Entity">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="pet_getc_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="getc_relation_to">
-			<return type="int" enum="EntityEnums.EntityRelationType">
-			</return>
-			<argument index="0" name="to" type="Node">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="resource_getc_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="resource_getc_id">
-			<return type="EntityResource">
-			</return>
-			<argument index="0" name="type" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="resource_getc_index">
-			<return type="EntityResource">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_getc">
-			<return type="EntitySkill">
-			</return>
-			<argument index="0" name="skill" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_getc_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="spell_getc">
-			<return type="Spell">
-			</return>
-			<argument index="0" name="spell" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_getc_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="getc_state">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="talent_getc">
-			<return type="int">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_getc_count">
 			<return type="int">
 			</return>
 			<description>
@@ -2104,558 +624,6 @@
 			<argument index="0" name="caster" type="Node">
 			</argument>
 			<argument index="1" name="aura_group" type="AuraGroup">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="category_cooldown_gets">
-			<return type="CategoryCooldown">
-			</return>
-			<argument index="0" name="category_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="category_cooldown_gets_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="category_cooldown_gets_index">
-			<return type="CategoryCooldown">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cooldown_gets">
-			<return type="Cooldown">
-			</return>
-			<argument index="0" name="spell_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cooldown_gets_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="cooldown_gets_index">
-			<return type="Cooldown">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_gets_recipe">
-			<return type="CraftRecipe">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_gets_recipe_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="craft_gets_recipe_id">
-			<return type="CraftRecipe">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="data_gets">
-			<return type="EntityDataContainer">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="data_gets_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="equip_gets_slot">
-			<return type="ItemInstance">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="gcd_gets">
-			<return type="bool">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="gcd_hass">
-			<return type="bool">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="pet_gets">
-			<return type="Entity">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="pet_gets_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="gets_relation_to">
-			<return type="int" enum="EntityEnums.EntityRelationType">
-			</return>
-			<argument index="0" name="to" type="Node">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="resource_gets_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="resource_gets_id">
-			<return type="EntityResource">
-			</return>
-			<argument index="0" name="type" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="resource_gets_index">
-			<return type="EntityResource">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="seen_by_gets">
-			<return type="Entity">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="seen_by_gets_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="sees_gets">
-			<return type="Entity">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="sees_gets_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="skill_gets">
-			<return type="EntitySkill">
-			</return>
-			<argument index="0" name="skill" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_gets_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="spell_gets">
-			<return type="Spell">
-			</return>
-			<argument index="0" name="spell" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_gets_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="gets_state">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="talent_gets">
-			<return type="int">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_gets_count">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="category_cooldown_hasc">
-			<return type="bool">
-			</return>
-			<argument index="0" name="category_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cooldown_hasc">
-			<return type="bool">
-			</return>
-			<argument index="0" name="spell_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_hasc_recipe">
-			<return type="bool">
-			</return>
-			<argument index="0" name="craft_recipe" type="CraftRecipe">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_hasc_recipe_id">
-			<return type="bool">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_hasc">
-			<return type="bool">
-			</return>
-			<argument index="0" name="skill" type="EntitySkill">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_hasc_id">
-			<return type="bool">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_hasc">
-			<return type="bool">
-			</return>
-			<argument index="0" name="spell" type="Spell">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_hasc_id">
-			<return type="bool">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_hasc">
-			<return type="bool">
-			</return>
-			<argument index="0" name="talent" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="category_cooldown_hass">
-			<return type="bool">
-			</return>
-			<argument index="0" name="category_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cooldown_hass">
-			<return type="bool">
-			</return>
-			<argument index="0" name="spell_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_hass_recipe">
-			<return type="bool">
-			</return>
-			<argument index="0" name="craft_recipe" type="CraftRecipe">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_hass_recipe_id">
-			<return type="bool">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_hass">
-			<return type="bool">
-			</return>
-			<argument index="0" name="skill" type="EntitySkill">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_hass_id">
-			<return type="bool">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_hass">
-			<return type="bool">
-			</return>
-			<argument index="0" name="spell" type="Spell">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_hass_id">
-			<return type="bool">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_hass">
-			<return type="bool">
-			</return>
-			<argument index="0" name="talent" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="is_deserialized">
-			<return type="bool">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="moved">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="target_net_setc">
-			<return type="void">
-			</return>
-			<argument index="0" name="path" type="NodePath">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_net_sets">
-			<return type="void">
-			</return>
-			<argument index="0" name="path" type="NodePath">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_cmouse_enter">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="notification_cmouse_exit">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="notification_cstat_changed">
-			<return type="void">
-			</return>
-			<argument index="0" name="stat" type="Stat">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_ctargeted">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="notification_cuntargeted">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="notification_item_sadded">
-			<return type="void">
-			</return>
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_item_sscount_changed">
-			<return type="void">
-			</return>
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_item_sremoved">
-			<return type="void">
-			</return>
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_items_sswapped">
-			<return type="void">
-			</return>
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="slot_id_1" type="int">
-			</argument>
-			<argument index="2" name="slot_id_2" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_soverburden_removed">
-			<return type="void">
-			</return>
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_soverburdened">
-			<return type="void">
-			</return>
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_sstat_changed">
-			<return type="void">
-			</return>
-			<argument index="0" name="stat" type="Stat">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_target_item_sadded">
-			<return type="void">
-			</return>
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_target_item_sscount_changed">
-			<return type="void">
-			</return>
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_target_item_sremoved">
-			<return type="void">
-			</return>
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_target_items_sswapped">
-			<return type="void">
-			</return>
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="slot_id_1" type="int">
-			</argument>
-			<argument index="2" name="slot_id_2" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="register_for_physics_process">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
 			</argument>
 			<description>
 			</description>
@@ -2724,126 +692,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="category_cooldown_removec">
-			<return type="void">
-			</return>
-			<argument index="0" name="category_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cooldown_removec">
-			<return type="void">
-			</return>
-			<argument index="0" name="spell_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_removec_recipe">
-			<return type="void">
-			</return>
-			<argument index="0" name="craft_recipe" type="CraftRecipe">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="craft_removec_recipe_id">
-			<return type="void">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="data_removec">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="item_removec">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="pet_removec">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Node">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="pet_removec_index">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="resource_removec">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_removec">
-			<return type="void">
-			</return>
-			<argument index="0" name="skill" type="EntitySkill">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_removec_id">
-			<return type="void">
-			</return>
-			<argument index="0" name="skill_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_removec">
-			<return type="void">
-			</return>
-			<argument index="0" name="spell" type="Spell">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_removec_rpc">
-			<return type="void">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_removec">
-			<return type="void">
-			</return>
-			<argument index="0" name="talent" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_item_removec">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="aura_removes">
 			<return type="void">
 			</return>
@@ -2884,6 +732,214 @@
 			<description>
 			</description>
 		</method>
+		<method name="canc_interact">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cans_interact">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cast_delayc">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cast_delays">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cast_failc">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cast_fails">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cast_finishc">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cast_finishs">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cast_interruptc">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cast_interrupts">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cast_is_castingc">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cast_is_castings">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cast_spell_successc">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cast_spell_successc_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cast_spell_successs">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cast_startc">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cast_startc_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cast_starts">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="category_cooldown_addc">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="category_cooldown_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="category_cooldown_getc">
+			<return type="float">
+			</return>
+			<argument index="0" name="category_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="category_cooldown_getc_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="category_cooldown_getc_index">
+			<return type="float">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="category_cooldown_gets">
+			<return type="float">
+			</return>
+			<argument index="0" name="category_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="category_cooldown_gets_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="category_cooldown_gets_index">
+			<return type="float">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="category_cooldown_hasc">
+			<return type="bool">
+			</return>
+			<argument index="0" name="category_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="category_cooldown_hass">
+			<return type="bool">
+			</return>
+			<argument index="0" name="category_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="category_cooldown_removec">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="category_cooldown_removes">
 			<return type="void">
 			</return>
@@ -2892,10 +948,542 @@
 			<description>
 			</description>
 		</method>
+		<method name="cdamage_dealt_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cdealt_damage_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cdealt_heal_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cequip_applys_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_addc">
+			<return type="void">
+			</return>
+			<argument index="0" name="character_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="character_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_cclear">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_crequest_learn">
+			<return type="void">
+			</return>
+			<argument index="0" name="spec_index" type="int">
+			</argument>
+			<argument index="1" name="character_talent_row" type="int">
+			</argument>
+			<argument index="2" name="character_talent_culomn" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_crequest_reset">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_creset">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_getc">
+			<return type="int">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_getc_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_gets">
+			<return type="int">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_gets_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_hasc">
+			<return type="bool">
+			</return>
+			<argument index="0" name="character_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_hass">
+			<return type="bool">
+			</return>
+			<argument index="0" name="character_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_removec">
+			<return type="void">
+			</return>
+			<argument index="0" name="character_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_removes">
+			<return type="void">
+			</return>
+			<argument index="0" name="character_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_sreceive_learn_request">
+			<return type="void">
+			</return>
+			<argument index="0" name="spec_index" type="int">
+			</argument>
+			<argument index="1" name="character_talent_row" type="int">
+			</argument>
+			<argument index="2" name="character_talent_culomn" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_sreceive_reset_request">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="character_talent_sreset">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="character_talents_sclear">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cheal_dealt_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_addc">
+			<return type="void">
+			</return>
+			<argument index="0" name="class_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="class_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_cclear">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_crequest_learn">
+			<return type="void">
+			</return>
+			<argument index="0" name="spec_index" type="int">
+			</argument>
+			<argument index="1" name="class_talent_row" type="int">
+			</argument>
+			<argument index="2" name="class_talent_culomn" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_crequest_reset">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_creset">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_getc">
+			<return type="int">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_getc_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_gets">
+			<return type="int">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_gets_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_hasc">
+			<return type="bool">
+			</return>
+			<argument index="0" name="class_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_hass">
+			<return type="bool">
+			</return>
+			<argument index="0" name="class_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_removec">
+			<return type="void">
+			</return>
+			<argument index="0" name="class_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_removes">
+			<return type="void">
+			</return>
+			<argument index="0" name="class_talent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_sreceive_learn_request">
+			<return type="void">
+			</return>
+			<argument index="0" name="spec_index" type="int">
+			</argument>
+			<argument index="1" name="class_talent_row" type="int">
+			</argument>
+			<argument index="2" name="class_talent_culomn" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_sreceive_reset_request">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="class_talent_sreset">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="class_talents_sclear">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cooldown_addc">
+			<return type="void">
+			</return>
+			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cooldown_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cooldown_getc">
+			<return type="float">
+			</return>
+			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cooldown_getc_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cooldown_getc_index">
+			<return type="float">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cooldown_gets">
+			<return type="float">
+			</return>
+			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cooldown_gets_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="cooldown_gets_index">
+			<return type="float">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cooldown_hasc">
+			<return type="bool">
+			</return>
+			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cooldown_hass">
+			<return type="bool">
+			</return>
+			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="cooldown_removec">
+			<return type="void">
+			</return>
+			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="cooldown_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="copen_window">
+			<return type="void">
+			</return>
+			<argument index="0" name="window_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_addc_recipe">
+			<return type="void">
+			</return>
+			<argument index="0" name="craft_recipe" type="CraftRecipe">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_addc_recipe_id">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_adds_recipe">
+			<return type="void">
+			</return>
+			<argument index="0" name="craft_recipe" type="CraftRecipe">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_adds_recipe_id">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_crequest">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_getc_recipe">
+			<return type="CraftRecipe">
+			</return>
+			<argument index="0" name="craft_recipe" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_getc_recipe_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="craft_gets_recipe">
+			<return type="CraftRecipe">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_gets_recipe_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="craft_gets_recipe_id">
+			<return type="CraftRecipe">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_hasc_recipe">
+			<return type="bool">
+			</return>
+			<argument index="0" name="craft_recipe" type="CraftRecipe">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_hasc_recipe_id">
+			<return type="bool">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_hass_recipe">
+			<return type="bool">
+			</return>
+			<argument index="0" name="craft_recipe" type="CraftRecipe">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_hass_recipe_id">
+			<return type="bool">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_removec_recipe">
+			<return type="void">
+			</return>
+			<argument index="0" name="craft_recipe" type="CraftRecipe">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="craft_removec_recipe_id">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
 			</argument>
 			<description>
 			</description>
@@ -2916,10 +1504,480 @@
 			<description>
 			</description>
 		</method>
+		<method name="crafts">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="creceive_stat">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="ccurrent" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="crequest_interact">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="data_addc">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="EntityDataContainer">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="data_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="EntityDataContainer">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="data_getc">
+			<return type="EntityDataContainer">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="data_getc_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="data_gets">
+			<return type="EntityDataContainer">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="data_gets_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="data_removec">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="data_removes">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="diec">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="dies">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="equip_applys_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_can_equip_item">
+			<return type="bool">
+			</return>
+			<argument index="0" name="equip_slot" type="int">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_cfail">
+			<return type="void">
+			</return>
+			<argument index="0" name="equip_slot" type="int">
+			</argument>
+			<argument index="1" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_con_fail">
+			<return type="void">
+			</return>
+			<argument index="0" name="equip_slot" type="int">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<argument index="2" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_con_success">
+			<return type="void">
+			</return>
+			<argument index="0" name="equip_slot" type="int">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<argument index="2" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_crequest">
+			<return type="void">
+			</return>
+			<argument index="0" name="equip_slot" type="int">
+			</argument>
+			<argument index="1" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_csuccess">
+			<return type="void">
+			</return>
+			<argument index="0" name="equip_slot" type="int">
+			</argument>
+			<argument index="1" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_deapplyc_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_deapplys_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_getc_slot">
+			<return type="ItemInstance">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_gets_slot">
+			<return type="ItemInstance">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_should_deny">
+			<return type="bool">
+			</return>
+			<argument index="0" name="equip_slot" type="int">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_son_fail">
+			<return type="void">
+			</return>
+			<argument index="0" name="equip_slot" type="int">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<argument index="2" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equip_son_success">
+			<return type="void">
+			</return>
+			<argument index="0" name="equip_slot" type="int">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<argument index="2" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="equips">
+			<return type="void">
+			</return>
+			<argument index="0" name="equip_slot" type="int">
+			</argument>
+			<argument index="1" name="bag_slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="from_dict">
+			<return type="void">
+			</return>
+			<argument index="0" name="dict" type="Dictionary">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="gcd_hasc" qualifiers="const">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="gcd_hass" qualifiers="const">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="gcd_startc">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="gcd_starts">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_action_bar_profile">
+			<return type="ActionBarProfile">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_body">
+			<return type="Node">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_body_2d">
+			<return type="Node2D">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_body_3d">
+			<return type="Spatial">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_character_skeleton">
+			<return type="Node">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_maunal_process" qualifiers="const">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_transform_2d" qualifiers="const">
+			<return type="Transform2D">
+			</return>
+			<argument index="0" name="only_stored" type="bool" default="false">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_transform_3d" qualifiers="const">
+			<return type="Transform">
+			</return>
+			<argument index="0" name="only_stored" type="bool" default="false">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="getc_health">
+			<return type="EntityResource">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="getc_relation_to">
+			<return type="int" enum="EntityEnums.EntityRelationType">
+			</return>
+			<argument index="0" name="to" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="getc_speed">
+			<return type="EntityResource">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="gets_health">
+			<return type="EntityResource">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="gets_relation_to">
+			<return type="int" enum="EntityEnums.EntityRelationType">
+			</return>
+			<argument index="0" name="to" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="gets_speed">
+			<return type="EntityResource">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="instance_body">
+			<return type="void">
+			</return>
+			<argument index="0" name="arg0" type="EntityData">
+			</argument>
+			<argument index="1" name="arg1" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="is_deserialized">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="item_addc">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="item_addc_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<argument index="1" name="item_data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="item_cchange_count">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<argument index="1" name="new_count" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="item_cdeny_remove">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="item_cdeny_swap">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id_1" type="int">
+			</argument>
+			<argument index="1" name="slot_id_2" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="item_crequest_remove">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="item_crequest_swap">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id_1" type="int">
+			</argument>
+			<argument index="1" name="slot_id_2" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="item_crequest_use">
+			<return type="void">
+			</return>
+			<argument index="0" name="item_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="item_removec">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
 			</argument>
 			<description>
 			</description>
@@ -2932,130 +1990,46 @@
 			<description>
 			</description>
 		</method>
-		<method name="pet_removes">
+		<method name="item_uses">
 			<return type="void">
 			</return>
-			<argument index="0" name="entity" type="Node">
+			<argument index="0" name="item_id" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="pet_removes_index">
+		<method name="items_swapc">
 			<return type="void">
 			</return>
-			<argument index="0" name="index" type="int">
+			<argument index="0" name="slot_id_1" type="int">
+			</argument>
+			<argument index="1" name="slot_id_2" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="resource_removes">
+		<method name="items_swaps">
 			<return type="void">
 			</return>
-			<argument index="0" name="index" type="int">
+			<argument index="0" name="slot_id_1" type="int">
+			</argument>
+			<argument index="1" name="slot_id_2" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="seen_by_removes">
+		<method name="levelup_ccharacter">
 			<return type="void">
 			</return>
-			<argument index="0" name="entity" type="Node">
+			<argument index="0" name="value" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="seen_by_removes_index">
+		<method name="levelup_cclass">
 			<return type="void">
 			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="sees_removes">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Node">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="sees_removes_index">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="skill_removes">
-			<return type="void">
-			</return>
-			<argument index="0" name="skill" type="EntitySkill">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_removes">
-			<return type="void">
-			</return>
-			<argument index="0" name="spell" type="Spell">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="removes_state_ref">
-			<return type="void">
-			</return>
-			<argument index="0" name="state_index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_removes">
-			<return type="void">
-			</return>
-			<argument index="0" name="talent" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_item_removes">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="equip_applys_item">
-			<return type="void">
-			</return>
-			<argument index="0" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="sapply_passives_damage_deal">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="sapply_passives_damage_receive">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="spell_casts">
-			<return type="void">
-			</return>
-			<argument index="0" name="spell_id" type="int">
+			<argument index="0" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -3076,53 +2050,777 @@
 			<description>
 			</description>
 		</method>
-		<method name="talents_sclear">
+		<method name="loot_crequest">
+			<return type="void">
+			</return>
+			<argument index="0" name="arg0" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="lootc">
+			<return type="void">
+			</return>
+			<argument index="0" name="arg0" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="loots">
+			<return type="void">
+			</return>
+			<argument index="0" name="arg0" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="moved">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="crafts">
+		<method name="notification_caura">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccast">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccategory_cooldown_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccategory_cooldown_added" qualifiers="virtual">
 			<return type="void">
 			</return>
 			<argument index="0" name="id" type="int">
 			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="sdeal_damage_to">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
+			<argument index="1" name="value" type="float">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="sdeal_heal_to">
+		<method name="notification_ccategory_cooldown_removed" qualifiers="virtual">
 			<return type="void">
 			</return>
-			<argument index="0" name="data" type="SpellHealInfo">
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="equip_deapplys_item">
+		<method name="notification_ccategory_cooldown_removed">
 			<return type="void">
 			</return>
-			<argument index="0" name="item" type="ItemInstance">
+			<argument index="0" name="category_cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="cast_delays">
+		<method name="notification_ccharacter_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_cclass_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccooldown_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccooldown_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccooldown_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccooldown_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_cdamage">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_cdeath">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="dies">
+		<method name="notification_centity_resource_added">
 			<return type="void">
 			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_centity_resource_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_cgcd_finished">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="notification_cgcd_started">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="notification_cheal">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_cmouse_enter">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="notification_cmouse_exit">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="notification_cstat_changed">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_ctargeted">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="notification_cuntargeted">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="notification_cxp_gained">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_item_sadded">
+			<return type="void">
+			</return>
+			<argument index="0" name="bag" type="Bag">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<argument index="2" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_item_sremoved">
+			<return type="void">
+			</return>
+			<argument index="0" name="bag" type="Bag">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<argument index="2" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_item_sscount_changed">
+			<return type="void">
+			</return>
+			<argument index="0" name="bag" type="Bag">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<argument index="2" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_items_sswapped">
+			<return type="void">
+			</return>
+			<argument index="0" name="bag" type="Bag">
+			</argument>
+			<argument index="1" name="slot_id_1" type="int">
+			</argument>
+			<argument index="2" name="slot_id_2" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_saura">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scast">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scategory_cooldown_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scategory_cooldown_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scategory_cooldown_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scategory_cooldown_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="category_cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scharacter_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sclass_level_up">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scooldown_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scooldown_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scooldown_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="cooldown" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_scooldown_removed" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sdamage">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sdeath">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sentity_resource_added">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sentity_resource_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sgcd_finished">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sgcd_started">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sheal">
+			<return type="void">
+			</return>
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_soverburden_removed">
+			<return type="void">
+			</return>
+			<argument index="0" name="bag" type="Bag">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_soverburdened">
+			<return type="void">
+			</return>
+			<argument index="0" name="bag" type="Bag">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sstat_changed">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_sxp_gained">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_target_item_sadded">
+			<return type="void">
+			</return>
+			<argument index="0" name="bag" type="Bag">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<argument index="2" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_target_item_sremoved">
+			<return type="void">
+			</return>
+			<argument index="0" name="bag" type="Bag">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<argument index="2" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_target_item_sscount_changed">
+			<return type="void">
+			</return>
+			<argument index="0" name="bag" type="Bag">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<argument index="2" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="notification_target_items_sswapped">
+			<return type="void">
+			</return>
+			<argument index="0" name="bag" type="Bag">
+			</argument>
+			<argument index="1" name="slot_id_1" type="int">
+			</argument>
+			<argument index="2" name="slot_id_2" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="pet_addc">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="pet_addc_path">
+			<return type="void">
+			</return>
+			<argument index="0" name="arg0" type="NodePath">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="pet_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="pet_getc">
+			<return type="Entity">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="pet_getc_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="pet_gets">
+			<return type="Entity">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="pet_gets_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="pet_removec">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="pet_removec_index">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="pet_removes">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="pet_removes_index">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="register_for_physics_process">
+			<return type="void">
+			</return>
+			<argument index="0" name="info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="removes_state_ref">
+			<return type="void">
+			</return>
+			<argument index="0" name="state_index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_addc">
+			<return type="void">
+			</return>
+			<argument index="0" name="palyer_resource" type="int">
+			</argument>
+			<argument index="1" name="arg1" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_addc_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="palyer_resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_clearc">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="resource_clears">
+			<return type="void">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="resource_creceive_curr_max">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="current" type="int">
+			</argument>
+			<argument index="2" name="max" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_creceive_current">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="current" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_creceive_data">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_getc_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="resource_getc_id">
+			<return type="EntityResource">
+			</return>
+			<argument index="0" name="type" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_getc_index">
+			<return type="EntityResource">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_gets_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="resource_gets_id">
+			<return type="EntityResource">
+			</return>
+			<argument index="0" name="type" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_gets_index">
+			<return type="EntityResource">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_removec">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="resource_removes">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -3158,12 +2856,126 @@
 			<description>
 			</description>
 		</method>
-		<method name="equips">
+		<method name="sapply_passives_damage_deal">
 			<return type="void">
 			</return>
-			<argument index="0" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
+			<argument index="0" name="data" type="SpellDamageInfo">
 			</argument>
-			<argument index="1" name="bag_slot" type="int">
+			<description>
+			</description>
+		</method>
+		<method name="sapply_passives_damage_receive">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sdeal_damage_to">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sdeal_heal_to">
+			<return type="void">
+			</return>
+			<argument index="0" name="data" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="seen_by_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="seen_by_gets">
+			<return type="Entity">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="seen_by_gets_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="seen_by_removes">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="seen_by_removes_index">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sees_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sees_gets">
+			<return type="Entity">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sees_gets_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="sees_removes">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="sees_removes_index">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_body">
+			<return type="void">
+			</return>
+			<argument index="0" name="body" type="Node">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_character_skeleton">
+			<return type="void">
+			</return>
+			<argument index="0" name="skeleton" type="Node">
 			</argument>
 			<description>
 			</description>
@@ -3176,22 +2988,22 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_stat_enum">
+		<method name="set_transform_2d">
 			<return type="void">
 			</return>
-			<argument index="0" name="stat_id" type="int" enum="Stat.StatId">
+			<argument index="0" name="transform" type="Transform2D">
 			</argument>
-			<argument index="1" name="entry" type="Stat">
+			<argument index="1" name="only_stored" type="bool" default="false">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="set_stat_int">
+		<method name="set_transform_3d">
 			<return type="void">
 			</return>
-			<argument index="0" name="index" type="int">
+			<argument index="0" name="transform" type="Transform">
 			</argument>
-			<argument index="1" name="entry" type="Stat">
+			<argument index="1" name="only_stored" type="bool" default="false">
 			</argument>
 			<description>
 			</description>
@@ -3204,26 +3016,10 @@
 			<description>
 			</description>
 		</method>
-		<method name="setc_state">
-			<return type="void">
-			</return>
-			<argument index="0" name="state" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="setc_target_bag_rpc">
 			<return type="void">
 			</return>
 			<argument index="0" name="data" type="String">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="sets_state">
-			<return type="void">
-			</return>
-			<argument index="0" name="state" type="int">
 			</argument>
 			<description>
 			</description>
@@ -3242,43 +3038,257 @@
 			<description>
 			</description>
 		</method>
-		<method name="cast_fails">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="cast_finishs">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="equip_should_deny">
-			<return type="bool">
-			</return>
-			<argument index="0" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</method>
 		<method name="sinteract">
 			<return type="void">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="cast_interrupts">
+		<method name="skill_addc">
 			<return type="void">
+			</return>
+			<argument index="0" name="skill" type="EntitySkill">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_addc_id">
+			<return type="void">
+			</return>
+			<argument index="0" name="skill_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<argument index="2" name="max_value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="skill" type="EntitySkill">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_changec">
+			<return type="void">
+			</return>
+			<argument index="0" name="skill_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_changec_max">
+			<return type="void">
+			</return>
+			<argument index="0" name="skill_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_getc">
+			<return type="EntitySkill">
+			</return>
+			<argument index="0" name="skill" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_getc_count">
+			<return type="int">
 			</return>
 			<description>
 			</description>
 		</method>
-		<method name="cast_is_castings">
+		<method name="skill_gets">
+			<return type="EntitySkill">
+			</return>
+			<argument index="0" name="skill" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_gets_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="skill_hasc">
 			<return type="bool">
 			</return>
+			<argument index="0" name="skill" type="EntitySkill">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_hasc_id">
+			<return type="bool">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_hass">
+			<return type="bool">
+			</return>
+			<argument index="0" name="skill" type="EntitySkill">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_hass_id">
+			<return type="bool">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_removec">
+			<return type="void">
+			</return>
+			<argument index="0" name="skill" type="EntitySkill">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_removec_id">
+			<return type="void">
+			</return>
+			<argument index="0" name="skill_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="skill_removes">
+			<return type="void">
+			</return>
+			<argument index="0" name="skill" type="EntitySkill">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_addc">
+			<return type="void">
+			</return>
+			<argument index="0" name="spell" type="Spell">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_addc_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="spell" type="Spell">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_adds_id">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_casts">
+			<return type="void">
+			</return>
+			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_crequest_cast">
+			<return type="void">
+			</return>
+			<argument index="0" name="spell_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_getc">
+			<return type="Spell">
+			</return>
+			<argument index="0" name="spell" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_getc_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="spell_gets">
+			<return type="Spell">
+			</return>
+			<argument index="0" name="spell" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_gets_count">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="spell_hasc">
+			<return type="bool">
+			</return>
+			<argument index="0" name="spell" type="Spell">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_hasc_id">
+			<return type="bool">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_hass">
+			<return type="bool">
+			</return>
+			<argument index="0" name="spell" type="Spell">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_hass_id">
+			<return type="bool">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="spell_learn_requestc">
+			<return type="void">
+			</return>
+			<argument index="0" name="id" type="int">
+			</argument>
 			<description>
 			</description>
 		</method>
@@ -3290,281 +3300,27 @@
 			<description>
 			</description>
 		</method>
-		<method name="loots">
+		<method name="spell_removec">
 			<return type="void">
 			</return>
-			<argument index="0" name="arg0" type="int">
+			<argument index="0" name="spell" type="Spell">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="son_after_aura_applied">
+		<method name="spell_removec_rpc">
 			<return type="void">
 			</return>
-			<argument index="0" name="data" type="AuraData">
+			<argument index="0" name="id" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="son_before_aura_applied">
+		<method name="spell_removes">
 			<return type="void">
 			</return>
-			<argument index="0" name="data" type="AuraData">
+			<argument index="0" name="spell" type="Spell">
 			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_before_cast">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_before_cast_target">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_before_damage">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_before_damage_hit">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_before_heal">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_before_heal_hit">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_cast_failed">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_cast_finished">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_cast_finished_target">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_cast_started">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_scharacter_level_up">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_sclass_level_up">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_damage_dealt">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_damage_receive">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_dealt_damage">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_dealt_heal">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_sdeath">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="notification_sentity_resource_added">
-			<return type="void">
-			</return>
-			<argument index="0" name="resource" type="EntityResource">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_sentity_resource_removed">
-			<return type="void">
-			</return>
-			<argument index="0" name="resource" type="EntityResource">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="equip_son_fail">
-			<return type="void">
-			</return>
-			<argument index="0" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="old_item" type="ItemInstance">
-			</argument>
-			<argument index="3" name="bag_slot" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="equip_son_success">
-			<return type="void">
-			</return>
-			<argument index="0" name="equip_slot" type="int" enum="ItemEnums.EquipSlots">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="old_item" type="ItemInstance">
-			</argument>
-			<argument index="3" name="bag_slot" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_sgcd_finished">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="notification_sgcd_started">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="son_heal_dealt">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_heal_receive">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_hit">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="son_spell_cast_success">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="notification_sxp_gained">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_sreceive_reset_request">
-			<return type="void">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="talent_sreceive_learn_request">
-			<return type="void">
-			</return>
-			<argument index="0" name="spec_index" type="int">
-			</argument>
-			<argument index="1" name="talent_row" type="int">
-			</argument>
-			<argument index="2" name="talent_culomn" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="talent_sreset">
-			<return type="void">
-			</return>
 			<description>
 			</description>
 		</method>
@@ -3582,52 +3338,6 @@
 			<argument index="0" name="id" type="int">
 			</argument>
 			<argument index="1" name="ccurrent" type="int">
-			</argument>
-			<argument index="2" name="cmax" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_spell_successs">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="cast_starts">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="gcd_starts">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="float">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="items_swaps">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id_1" type="int">
-			</argument>
-			<argument index="1" name="slot_id_2" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="target_items_sswap">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id_1" type="int">
-			</argument>
-			<argument index="1" name="slot_id_2" type="int">
 			</argument>
 			<description>
 			</description>
@@ -3648,10 +3358,306 @@
 			<description>
 			</description>
 		</method>
-		<method name="item_uses">
+		<method name="stat_get_base" qualifiers="const">
+			<return type="float">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_base_calculated" qualifiers="const">
+			<return type="float">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_bonus" qualifiers="const">
+			<return type="float">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_dirty" qualifiers="const">
+			<return type="bool">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_get_percent" qualifiers="const">
+			<return type="float">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_getc_current" qualifiers="const">
+			<return type="float">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_gets_current" qualifiers="const">
+			<return type="float">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_mod">
 			<return type="void">
 			</return>
-			<argument index="0" name="item_id" type="int">
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="base" type="float">
+			</argument>
+			<argument index="2" name="bonus" type="float">
+			</argument>
+			<argument index="3" name="percent" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_mod_base">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_mod_bonus">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_mod_percent">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_recalculate">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_set_base">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_set_base_calculated">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_set_bonus">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_set_dirty">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="bool">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_set_percent">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_setc_current">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_sets_current">
+			<return type="void">
+			</return>
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_crequest_change">
+			<return type="void">
+			</return>
+			<argument index="0" name="path" type="NodePath">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_item_addc">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_item_addc_rpc">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<argument index="1" name="item_data" type="String">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_item_cchange_count">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<argument index="1" name="new_count" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_item_cdeny_remove">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_item_cdeny_swap">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id_1" type="int">
+			</argument>
+			<argument index="1" name="slot_id_2" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_item_crequest_swap">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id_1" type="int">
+			</argument>
+			<argument index="1" name="slot_id_2" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_item_removec">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_item_removes">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_items_cswap">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id_1" type="int">
+			</argument>
+			<argument index="1" name="slot_id_2" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_items_sswap">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id_1" type="int">
+			</argument>
+			<argument index="1" name="slot_id_2" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_net_setc">
+			<return type="void">
+			</return>
+			<argument index="0" name="path" type="NodePath">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_net_sets">
+			<return type="void">
+			</return>
+			<argument index="0" name="path" type="NodePath">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="target_remove_crequest_item">
+			<return type="void">
+			</return>
+			<argument index="0" name="slot_id" type="int">
 			</argument>
 			<description>
 			</description>
@@ -3678,6 +3684,22 @@
 			<description>
 			</description>
 		</method>
+		<method name="xp_addc">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="xp_adds">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
 		<member name="actionbar_locked" type="bool" setter="set_actionbar_locked" getter="get_actionbar_locked" default="false">
@@ -3686,47 +3708,55 @@
 		</member>
 		<member name="body_path" type="NodePath" setter="set_body_path" getter="get_body_path" default="NodePath(&quot;&quot;)">
 		</member>
+		<member name="c_is_controlled" type="bool" setter="setc_is_controlled" getter="getc_is_controlled">
+		</member>
 		<member name="cbag" type="Bag" setter="setc_bag" getter="getc_bag">
 		</member>
-		<member name="ccharacter_level" type="int" setter="setc_character_level" getter="getc_character_level" default="1">
+		<member name="ccharacter_level" type="int" setter="setc_character_level" getter="getc_character_level">
 		</member>
-		<member name="ccharacter_xp" type="int" setter="setc_character_xp" getter="getc_character_xp" default="0">
+		<member name="ccharacter_xp" type="int" setter="setc_character_xp" getter="getc_character_xp">
 		</member>
-		<member name="cclass_level" type="int" setter="setc_class_level" getter="getc_class_level" default="1">
+		<member name="cclass_level" type="int" setter="setc_class_level" getter="getc_class_level">
 		</member>
-		<member name="cclass_xp" type="int" setter="setc_class_xp" getter="getc_class_xp" default="0">
+		<member name="cclass_xp" type="int" setter="setc_class_xp" getter="getc_class_xp">
 		</member>
 		<member name="centity_data" type="EntityData" setter="setc_entity_data" getter="getc_entity_data">
 		</member>
-		<member name="centity_flags" type="int" setter="setc_entity_flags" getter="getc_entity_flags" default="0">
+		<member name="centity_flags" type="int" setter="setc_entity_flags" getter="getc_entity_flags">
 		</member>
-		<member name="centity_interaction_type" type="int" setter="setc_entity_interaction_type" getter="getc_entity_interaction_type" enum="EntityEnums.EntityInteractionType" default="0">
+		<member name="centity_interaction_type" type="int" setter="setc_entity_interaction_type" getter="getc_entity_interaction_type" enum="EntityEnums.EntityInteractionType">
 		</member>
-		<member name="centity_name" type="String" setter="setc_entity_name" getter="getc_entity_name" default="&quot;&quot;">
+		<member name="centity_name" type="String" setter="setc_entity_name" getter="getc_entity_name">
 		</member>
-		<member name="centity_player_type" type="int" setter="setc_entity_player_type" getter="getc_entity_player_type" default="0">
+		<member name="centity_player_type" type="int" setter="setc_entity_player_type" getter="getc_entity_player_type">
 		</member>
-		<member name="centity_type" type="int" setter="setc_entity_type" getter="getc_entity_type" enum="EntityEnums.EntityType" default="0">
+		<member name="centity_type" type="int" setter="setc_entity_type" getter="getc_entity_type">
 		</member>
-		<member name="cfree_spell_points" type="int" setter="setc_free_spell_points" getter="getc_free_spell_points" default="0">
+		<member name="cfree_character_talent_points" type="int" setter="setc_free_character_talent_points" getter="getc_free_character_talent_points">
 		</member>
-		<member name="cfree_talent_points" type="int" setter="setc_free_talent_points" getter="getc_free_talent_points" default="0">
+		<member name="cfree_class_talent_points" type="int" setter="setc_free_class_talent_points" getter="getc_free_class_talent_points">
 		</member>
-		<member name="cmodel_index" type="int" setter="setc_model_index" getter="getc_model_index" enum="EntityEnums.EntityGender" default="0">
+		<member name="cfree_spell_points" type="int" setter="setc_free_spell_points" getter="getc_free_spell_points">
 		</member>
-		<member name="cguid" type="int" setter="setc_guid" getter="getc_guid" default="0">
+		<member name="cgcd" type="float" setter="gcd_setc" getter="gcd_getc" default="0.0">
+		</member>
+		<member name="cguid" type="int" setter="setc_guid" getter="getc_guid">
 		</member>
 		<member name="character_skeleton_path" type="NodePath" setter="set_character_skeleton_path" getter="get_character_skeleton_path" default="NodePath(&quot;&quot;)">
 		</member>
 		<member name="characterclass_id" type="int" setter="sets_entity_data_id" getter="gets_entity_data_id" default="0">
 		</member>
-		<member name="cis_pet" type="bool" setter="" getter="getc_is_pet" default="false">
+		<member name="cis_pet" type="bool" setter="" getter="getc_is_pet">
 		</member>
-		<member name="cmoney" type="int" setter="setc_money" getter="getc_money" default="0">
+		<member name="cmodel_index" type="int" setter="setc_model_index" getter="getc_model_index">
 		</member>
-		<member name="cseed" type="int" setter="setc_seed" getter="getc_seed" default="0">
+		<member name="cmoney" type="int" setter="setc_money" getter="getc_money">
+		</member>
+		<member name="cseed" type="int" setter="setc_seed" getter="getc_seed">
 		</member>
 		<member name="cspell_cast_info" type="SpellCastInfo" setter="setc_spell_cast_info" getter="spell_getc_cast_info">
+		</member>
+		<member name="cstate" type="int" setter="setc_state" getter="getc_state" default="0">
 		</member>
 		<member name="ctarget" type="Entity" setter="setc_target" getter="getc_target">
 		</member>
@@ -3738,15 +3768,29 @@
 		</member>
 		<member name="sai" type="EntityAI" setter="sets_ai" getter="gets_ai">
 		</member>
+		<member name="sauras" type="Array" setter="sauras_set" getter="sauras_get" default="[  ]">
+		</member>
 		<member name="sbag" type="Bag" setter="sets_bag" getter="gets_bag">
 		</member>
+		<member name="scategory_cooldowns" type="Array" setter="scategory_cooldowns_set" getter="scategory_cooldowns_get" default="[  ]">
+		</member>
 		<member name="scharacter_level" type="int" setter="sets_character_level" getter="gets_character_level" default="1">
+		</member>
+		<member name="scharacter_talents" type="PoolIntArray" setter="scharacter_talents_set" getter="scharacter_talents_get" default="PoolIntArray(  )">
 		</member>
 		<member name="scharacter_xp" type="int" setter="sets_character_xp" getter="gets_character_xp" default="0">
 		</member>
 		<member name="sclass_level" type="int" setter="sets_class_level" getter="gets_class_level" default="1">
 		</member>
+		<member name="sclass_talents" type="PoolIntArray" setter="sclass_talents_set" getter="sclass_talents_get" default="PoolIntArray(  )">
+		</member>
 		<member name="sclass_xp" type="int" setter="sets_class_xp" getter="gets_class_xp" default="0">
+		</member>
+		<member name="scooldowns" type="Array" setter="scooldowns_set" getter="scooldowns_get" default="[  ]">
+		</member>
+		<member name="scraft_recipes" type="Array" setter="scraft_recipes_set" getter="scraft_recipes_get" default="[  ]">
+		</member>
+		<member name="sdatas" type="Array" setter="sdatas_set" getter="sdatas_get" default="[  ]">
 		</member>
 		<member name="sentity_controller" type="int" setter="sets_entity_controller" getter="gets_entity_controller" enum="EntityEnums.EntityController" default="0">
 		</member>
@@ -3760,19 +3804,23 @@
 		</member>
 		<member name="sentity_player_type" type="int" setter="sets_entity_player_type" getter="gets_entity_player_type" default="0">
 		</member>
-		<member name="sentity_type" type="int" setter="sets_entity_type" getter="gets_entity_type" enum="EntityEnums.EntityType" default="0">
+		<member name="sentity_type" type="int" setter="sets_entity_type" getter="gets_entity_type" default="0">
 		</member>
-		<member name="sfree_spell_points" type="int" setter="sets_free_spell_points" getter="free_spell_points_gets" default="0">
+		<member name="sfree_character_talent_points" type="int" setter="sets_free_character_talent_points" getter="gets_free_character_talent_points" default="0">
 		</member>
-		<member name="sfree_talent_points" type="int" setter="sets_free_talent_points" getter="gets_free_talent_points" default="0">
+		<member name="sfree_class_talent_points" type="int" setter="sets_free_class_talent_points" getter="gets_free_class_talent_points" default="0">
 		</member>
-		<member name="smodel_index" type="int" setter="sets_model_index" getter="gets_model_index" enum="EntityEnums.EntityGender" default="0">
+		<member name="sfree_spell_points" type="int" setter="sets_free_spell_points" getter="gets_free_spell_points" default="0">
+		</member>
+		<member name="sgcd" type="float" setter="gcd_sets" getter="gcd_gets" default="0.0">
 		</member>
 		<member name="sguid" type="int" setter="sets_guid" getter="gets_guid" default="0">
 		</member>
 		<member name="simmunity_flags" type="int" setter="sets_immunity_flags" getter="gets_immunity_flags" default="0">
 		</member>
-		<member name="sis_pet" type="bool" setter="" getter="gets_is_pet" default="false">
+		<member name="sis_pet" type="bool" setter="" getter="gets_is_pet">
+		</member>
+		<member name="smodel_index" type="int" setter="sets_model_index" getter="gets_model_index" default="0">
 		</member>
 		<member name="smoney" type="int" setter="sets_money" getter="gets_money" default="0">
 		</member>
@@ -3782,9 +3830,19 @@
 		</member>
 		<member name="spet_owner" type="Entity" setter="pet_sets_owner" getter="pet_gets_owner">
 		</member>
+		<member name="sresources" type="Array" setter="sresources_set" getter="sresources_get" default="[ Object(EntityResourceHealth,&quot;resource_local_to_scene&quot;:false,&quot;resource_name&quot;:&quot;&quot;,&quot;id&quot;:0,&quot;text_name&quot;:&quot;&quot;,&quot;current_value&quot;:0,&quot;max_value&quot;:0,&quot;script&quot;:null), Object(EntityResourceSpeed,&quot;resource_local_to_scene&quot;:false,&quot;resource_name&quot;:&quot;&quot;,&quot;id&quot;:0,&quot;text_name&quot;:&quot;&quot;,&quot;current_value&quot;:0,&quot;max_value&quot;:0,&quot;script&quot;:null) ]">
+		</member>
 		<member name="sseed" type="int" setter="sets_seed" getter="gets_seed" default="0">
 		</member>
+		<member name="sskills" type="Array" setter="sskills_set" getter="sskills_get" default="[  ]">
+		</member>
 		<member name="sspell_cast_info" type="SpellCastInfo" setter="sets_spell_cast_info" getter="spell_gets_cast_info">
+		</member>
+		<member name="sspells" type="Array" setter="sspells_set" getter="sspells_get" default="[  ]">
+		</member>
+		<member name="sstate" type="int" setter="sets_state" getter="gets_state" default="0">
+		</member>
+		<member name="sstates" type="PoolIntArray" setter="states_sets" getter="states_gets" default="PoolIntArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )">
 		</member>
 		<member name="starget" type="Entity" setter="sets_target" getter="gets_target">
 		</member>
@@ -3792,30 +3850,6 @@
 		</member>
 	</members>
 	<signals>
-		<signal name="caura_added">
-			<argument index="0" name="aura_data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="caura_removed">
-			<argument index="0" name="aura_data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="caura_removed_dispelled">
-			<argument index="0" name="aura_data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="caura_removed_expired">
-			<argument index="0" name="aura_data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</signal>
 		<signal name="cbag_changed">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
@@ -3824,56 +3858,62 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="ccast_delayed">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="ccast_failed">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="ccast_finished">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="ccast_interrupted">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="ccast_started">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
 		<signal name="ccategory_cooldown_added">
-			<argument index="0" name="cooldown" type="CategoryCooldown">
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
 			</argument>
 			<description>
 			</description>
 		</signal>
 		<signal name="ccategory_cooldown_removed">
-			<argument index="0" name="cooldown" type="CategoryCooldown">
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="ccharacter_talent_learned">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="character_talent_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="ccharacter_talent_reset">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="cclass_talent_learned">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="class_talent_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="cclass_talent_reset">
+			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<description>
 			</description>
 		</signal>
 		<signal name="ccooldown_added">
-			<argument index="0" name="cooldown" type="Cooldown">
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
 			</argument>
 			<description>
 			</description>
 		</signal>
 		<signal name="ccooldown_removed">
-			<argument index="0" name="cooldown" type="Cooldown">
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
 			</argument>
 			<description>
 			</description>
@@ -3890,12 +3930,6 @@
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="diecd">
-			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<description>
 			</description>
@@ -3927,11 +3961,15 @@
 			</description>
 		</signal>
 		<signal name="cgcd_finished">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
 			<description>
 			</description>
 		</signal>
 		<signal name="cgcd_started">
-			<argument index="0" name="value" type="float">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="float">
 			</argument>
 			<description>
 			</description>
@@ -3950,26 +3988,10 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="notification_ccharacter_level_up">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
 		<signal name="con_class_level_changed">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="level" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="notification_cclass_level_up">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -4006,34 +4028,6 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="equip_con_fail">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="equip_slot" type="int">
-			</argument>
-			<argument index="2" name="item" type="ItemInstance">
-			</argument>
-			<argument index="3" name="old_item" type="ItemInstance">
-			</argument>
-			<argument index="4" name="bag_slot" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="equip_con_success">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="equip_slot" type="int">
-			</argument>
-			<argument index="2" name="item" type="ItemInstance">
-			</argument>
-			<argument index="3" name="old_item" type="ItemInstance">
-			</argument>
-			<argument index="4" name="bag_slot" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
 		<signal name="con_heal_dealt">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
@@ -4050,10 +4044,18 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="notification_cxp_gained">
+		<signal name="crafts_recipe_added">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
-			<argument index="1" name="value" type="int">
+			<argument index="1" name="craft_recipe" type="CraftRecipe">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="crafts_success">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="item" type="ItemInstance">
 			</argument>
 			<description>
 			</description>
@@ -4090,12 +4092,6 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="cast_spell_successc">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
 		<signal name="cspell_removed">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
@@ -4106,20 +4102,6 @@
 		</signal>
 		<signal name="cstate_changed">
 			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="ctalent_learned">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="talent_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="ctalent_reset">
-			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<description>
 			</description>
@@ -4146,138 +4128,8 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="equipment_changed">
-			<argument index="0" name="slot" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="notification_cmouse_entered">
-			<description>
-			</description>
-		</signal>
-		<signal name="notification_cmouse_exited">
-			<description>
-			</description>
-		</signal>
-		<signal name="onc_open_container_winow_request">
-			<description>
-			</description>
-		</signal>
-		<signal name="onc_open_loot_winow_request">
-			<description>
-			</description>
-		</signal>
-		<signal name="onc_open_vendor_winow_request">
-			<description>
-			</description>
-		</signal>
-		<signal name="notification_ctargeted">
-			<description>
-			</description>
-		</signal>
-		<signal name="notification_cuntargeted">
-			<description>
-			</description>
-		</signal>
-		<signal name="saura_added">
-			<argument index="0" name="aura_data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="saura_removed">
-			<argument index="0" name="aura_data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="saura_removed_dispelled">
-			<argument index="0" name="aura_data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="saura_removed_expired">
-			<argument index="0" name="aura_data" type="AuraData">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="sbag_changed">
+		<signal name="diecd">
 			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="bag" type="Bag">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="scast_delayed">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="scast_failed">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="scast_finished">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="scast_interrupted">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="scast_started">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="scategory_cooldown_added">
-			<argument index="0" name="cooldown" type="CategoryCooldown">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="scategory_cooldown_removed">
-			<argument index="0" name="cooldown" type="CategoryCooldown">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="scooldown_added">
-			<argument index="0" name="cooldown" type="Cooldown">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="scooldown_removed">
-			<argument index="0" name="cooldown" type="Cooldown">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="crafts_recipe_added">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="craft_recipe" type="CraftRecipe">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="crafts_success">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
 			</argument>
 			<description>
 			</description>
@@ -4288,92 +4140,30 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="sentity_data_changed">
-			<argument index="0" name="data" type="EntityData">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="sentity_resource_added">
-			<argument index="0" name="resource" type="EntityResource">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="sentity_resource_removed">
-			<argument index="0" name="resource" type="EntityResource">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="sfree_spell_points_changed">
+		<signal name="equip_con_fail">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
-			<argument index="1" name="new_value" type="int">
+			<argument index="1" name="equip_slot" type="int">
+			</argument>
+			<argument index="2" name="item" type="ItemInstance">
+			</argument>
+			<argument index="3" name="old_item" type="ItemInstance">
+			</argument>
+			<argument index="4" name="bag_slot" type="int">
 			</argument>
 			<description>
 			</description>
 		</signal>
-		<signal name="sgcd_finished">
-			<description>
-			</description>
-		</signal>
-		<signal name="sgcd_started">
-			<argument index="0" name="value" type="float">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="sname_changed">
+		<signal name="equip_con_success">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="son_character_level_changed">
-			<argument index="0" name="entity" type="Entity">
+			<argument index="1" name="equip_slot" type="int">
 			</argument>
-			<argument index="1" name="level" type="int">
+			<argument index="2" name="item" type="ItemInstance">
 			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="notification_scharacter_level_up">
-			<argument index="0" name="entity" type="Entity">
+			<argument index="3" name="old_item" type="ItemInstance">
 			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="son_class_level_changed">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="level" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="notification_sclass_level_up">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="son_damage_received">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="info" type="SpellDamageInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="son_dealt_heal">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="info" type="SpellHealInfo">
+			<argument index="4" name="bag_slot" type="int">
 			</argument>
 			<description>
 			</description>
@@ -4406,6 +4196,304 @@
 			<description>
 			</description>
 		</signal>
+		<signal name="equipment_changed">
+			<argument index="0" name="slot" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="isc_controlled_changed">
+			<argument index="0" name="value" type="bool">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_caura">
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="aura_data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_ccast">
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="spell_cast_info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_ccharacter_level_up">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_cclass_level_up">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_cdamage">
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_cheal">
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_cmouse_entered">
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_cmouse_exited">
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_ctargeted">
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_cuntargeted">
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_cxp_gained">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_saura">
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="aura_data" type="AuraData">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_scast">
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="spell_cast_info" type="SpellCastInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_scharacter_level_up">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_sclass_level_up">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_sdamage">
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_sheal">
+			<argument index="0" name="what" type="int">
+			</argument>
+			<argument index="1" name="info" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="notification_sxp_gained">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="onc_open_container_winow_request">
+			<description>
+			</description>
+		</signal>
+		<signal name="onc_open_loot_winow_request">
+			<description>
+			</description>
+		</signal>
+		<signal name="onc_open_vendor_winow_request">
+			<description>
+			</description>
+		</signal>
+		<signal name="sbag_changed">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="bag" type="Bag">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="scategory_cooldown_added">
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="scategory_cooldown_removed">
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="scharacter_talent_learned">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="character_talent_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="scharacter_talent_reset">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="sclass_talent_learned">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="class_talent_id" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="sclass_talent_reset">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="scooldown_added">
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="scooldown_removed">
+			<argument index="0" name="id" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="sentity_data_changed">
+			<argument index="0" name="data" type="EntityData">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="sentity_resource_added">
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="sentity_resource_removed">
+			<argument index="0" name="resource" type="EntityResource">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="sfree_spell_points_changed">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="new_value" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="sgcd_finished">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="sgcd_started">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="sname_changed">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="son_character_level_changed">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="level" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="son_class_level_changed">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="level" type="int">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="son_damage_received">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="info" type="SpellDamageInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
+		<signal name="son_dealt_heal">
+			<argument index="0" name="entity" type="Entity">
+			</argument>
+			<argument index="1" name="info" type="SpellHealInfo">
+			</argument>
+			<description>
+			</description>
+		</signal>
 		<signal name="son_heal_dealt">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
@@ -4418,14 +4506,6 @@
 			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<argument index="1" name="info" type="SpellHealInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="notification_sxp_gained">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -4454,12 +4534,6 @@
 			<description>
 			</description>
 		</signal>
-		<signal name="cast_spell_successs">
-			<argument index="0" name="spell_cast_info" type="SpellCastInfo">
-			</argument>
-			<description>
-			</description>
-		</signal>
 		<signal name="sspell_removed">
 			<argument index="0" name="entity" type="Entity">
 			</argument>
@@ -4470,20 +4544,6 @@
 		</signal>
 		<signal name="sstate_changed">
 			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="stalent_learned">
-			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<argument index="1" name="talent_id" type="int">
-			</argument>
-			<description>
-			</description>
-		</signal>
-		<signal name="stalent_reset">
-			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<description>
 			</description>

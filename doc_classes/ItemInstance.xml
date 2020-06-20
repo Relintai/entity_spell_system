@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ItemInstance" inherits="Reference" version="3.2">
+<class name="ItemInstance" inherits="Resource" version="3.2">
 	<brief_description>
 		Runtime information for an item.
 	</brief_description>
@@ -31,7 +31,13 @@
 		<method name="add_item_stat_modifier">
 			<return type="void">
 			</return>
-			<argument index="0" name="modifier" type="ItemStatModifier">
+			<argument index="0" name="stat_id" type="int">
+			</argument>
+			<argument index="1" name="base_mod" type="int">
+			</argument>
+			<argument index="2" name="bonus_mod" type="int">
+			</argument>
+			<argument index="3" name="percent_mod" type="int">
 			</argument>
 			<description>
 			</description>
@@ -56,8 +62,24 @@
 			<description>
 			</description>
 		</method>
-		<method name="get_item_stat_modifier">
-			<return type="ItemStatModifier">
+		<method name="remove_item_stat_modifier">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_get_base_mod" qualifiers="const">
+			<return type="float">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_get_bonus_mod" qualifiers="const">
+			<return type="float">
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
@@ -70,10 +92,58 @@
 			<description>
 			</description>
 		</method>
-		<method name="remove_item_stat_modifier">
+		<method name="stat_modifier_get_percent_mod" qualifiers="const">
+			<return type="float">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_get_stat_id" qualifiers="const">
+			<return type="int">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_base_mod">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_bonus_mod">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_percent_mod">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="stat_modifier_set_stat_id">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -91,6 +161,8 @@
 		<member name="item_template" type="ItemTemplate" setter="set_item_template" getter="get_item_template">
 		</member>
 		<member name="stack_size" type="int" setter="set_stack_size" getter="get_stack_size" default="1">
+		</member>
+		<member name="stat_modifiers" type="Array" setter="stat_modifiers_set" getter="stat_modifiers_get" default="[  ]">
 		</member>
 	</members>
 	<signals>

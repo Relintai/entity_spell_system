@@ -54,6 +54,110 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_num_auras" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_num_grants_spells" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_num_required_skills" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_num_teaches_spells" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="get_required_skill">
+			<return type="Aura">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_teaches_spell">
+			<return type="Spell">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_aura">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="aura" type="Aura">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_grants_spell">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="spell" type="Spell">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_num_auras">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_num_grants_spells">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_num_teaches_spells">
+			<return type="void">
+			</return>
+			<argument index="0" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_required_skill">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="aura" type="Aura">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_teaches_spell">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="spell" type="Spell">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="stat_modifier_get_max_base_mod" qualifiers="const">
 			<return type="float">
 			</return>
@@ -111,69 +215,9 @@
 			</description>
 		</method>
 		<method name="stat_modifier_get_stat_id" qualifiers="const">
-			<return type="int" enum="Stat.StatId">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="get_num_auras" qualifiers="const">
 			<return type="int">
 			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_num_grants_spells" qualifiers="const">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_num_required_skills" qualifiers="const">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_num_teaches_spells" qualifiers="const">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_required_skill">
-			<return type="Aura">
-			</return>
 			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="get_teaches_spell">
-			<return type="Spell">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="set_aura">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="aura" type="Aura">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="set_grants_spell">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="spell" type="Spell">
 			</argument>
 			<description>
 			</description>
@@ -253,51 +297,7 @@
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
-			<argument index="1" name="value" type="int" enum="Stat.StatId">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="set_num_auras">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="set_num_grants_spells">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="set_num_teaches_spells">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="set_required_skill">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="aura" type="Aura">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="set_teaches_spell">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="spell" type="Spell">
+			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
@@ -314,15 +314,13 @@
 		</member>
 		<member name="consumed" type="bool" setter="set_consumed" getter="get_consumed" default="false">
 		</member>
-		<member name="equip_slot" type="int" setter="set_equip_slot" getter="get_equip_slot" enum="ItemEnums.EquipSlots" default="14">
+		<member name="equip_slot" type="int" setter="set_equip_slot" getter="get_equip_slot" default="14">
 		</member>
 		<member name="grants_spells" type="Array" setter="set_grants_spells" getter="get_grants_spells" default="[  ]">
 		</member>
 		<member name="icon" type="Texture" setter="set_icon" getter="get_icon">
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
-		</member>
-		<member name="item_stat_modifier_count" type="int" setter="stat_modifier_set_count" getter="stat_modifier_get_count" default="0">
 		</member>
 		<member name="item_sub_sub_type" type="int" setter="set_item_sub_sub_type" getter="get_item_sub_sub_type" enum="ItemEnums.ItemSubSubtype" default="0">
 		</member>
@@ -345,6 +343,8 @@
 		<member name="scale_z" type="float" setter="set_scale_z" getter="get_scale_z" default="0.0">
 		</member>
 		<member name="stack_size" type="int" setter="set_stack_size" getter="get_stack_size" default="1">
+		</member>
+		<member name="stat_modifier_count" type="int" setter="stat_modifier_set_count" getter="stat_modifier_get_count" default="0">
 		</member>
 		<member name="teaches_spells" type="Array" setter="set_teaches_spells" getter="get_teaches_spells" default="[  ]">
 		</member>

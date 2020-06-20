@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityResourceCostData" inherits="Resource" version="3.2">
+<class name="EntityResourceCostDataResource" inherits="EntityResourceCostData" version="3.2">
 	<brief_description>
-		Contains a resource cost. Resource in this context is things like mana.
 	</brief_description>
 	<description>
 	</description>
@@ -10,7 +9,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="cost" type="int" setter="set_cost" getter="get_cost" default="0">
+		<member name="entity_resource_data" type="EntityResource" setter="set_entity_resource_data" getter="get_entity_resource_data">
 		</member>
 	</members>
 	<constants>

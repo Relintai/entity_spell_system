@@ -96,38 +96,6 @@
 		</constant>
 		<constant name="ITEM_SUB_SUB_TYPE_RIGHT_HAND" value="4" enum="ItemSubSubtype">
 		</constant>
-		<constant name="EQUIP_SLOT_HEAD" value="0" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_NECK" value="1" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_SHOULDERS" value="2" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_CHEST" value="3" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_GLOVES" value="4" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_BELT" value="5" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_LEGS" value="6" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_FEET" value="7" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_RING_1" value="8" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_RING_2" value="9" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_TRINKET_1" value="10" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_TRINKET_2" value="11" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_MAIN_HAND" value="12" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_OFF_HAND" value="13" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_NONE" value="14" enum="EquipSlots">
-		</constant>
-		<constant name="EQUIP_SLOT_EQUIP_SLOT_MAX" value="14" enum="EquipSlots">
-		</constant>
 		<constant name="ARMOR_TYPE_NONE" value="0" enum="ArmorType">
 		</constant>
 		<constant name="ARMOR_TYPE_CLOTH" value="1" enum="ArmorType">
@@ -139,32 +107,6 @@
 		<constant name="ARMOR_TYPE_PLATE" value="4" enum="ArmorType">
 		</constant>
 		<constant name="ARMOR_TYPE_MAX" value="5" enum="ArmorType">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_NONE" value="0" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_SKIN" value="1" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_UNDERWEAR" value="2" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_SHIRT" value="3" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_BASE" value="4" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_1" value="5" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_2" value="6" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_3" value="7" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_4" value="8" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_CLOTHES_5" value="9" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_BELT" value="10" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_TABARD" value="11" enum="EntityTextureLayers">
-		</constant>
-		<constant name="ENTITY_TEXTURE_LAYER_OVERLAY" value="12" enum="EntityTextureLayers">
 		</constant>
 	</constants>
 </class>

@@ -8,129 +8,89 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="get_stat_data_enum">
-			<return type="StatDataEntry">
-			</return>
-			<argument index="0" name="index" type="int" enum="Stat.StatId">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="get_stat_data_int">
-			<return type="StatDataEntry">
+		<method name="get_base">
+			<return type="float">
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="set_stat_data_enum">
-			<return type="void">
+		<method name="get_mod_stat_id">
+			<return type="int">
 			</return>
-			<argument index="0" name="stat_id" type="int" enum="Stat.StatId">
-			</argument>
-			<argument index="1" name="entry" type="StatDataEntry">
+			<argument index="0" name="index" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="set_stat_data_int">
+		<method name="get_mod_stat_multiplier">
+			<return type="float">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_target_stat_id">
+			<return type="int">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="has_mod_stats">
+			<return type="bool">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="set_base">
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
-			<argument index="1" name="entry" type="StatDataEntry">
+			<argument index="1" name="entry" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_mod_stat_id">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="value" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_mod_stat_multiplier">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="value" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="set_target_stat_id">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="value" type="int">
 			</argument>
 			<description>
 			</description>
 		</method>
 	</methods>
 	<members>
-		<member name="base_stat_" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_agility" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_armor" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_attack_power" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_block" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_chaos_resist" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_damage_reduction" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_damage_taken" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_energy" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_fear_resist" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_fire_resist" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_frost_resist" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_gcd" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_haste" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_haste_rating" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_heal_taken" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_health" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_holy_resist" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_intellect" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_lightning_resist" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_mana" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_melee_crit" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_melee_crit_bonus" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_melee_damage" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_melee_damage_reduction" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_nature_resist" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_parry" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_rage" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_resilience" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_shadow_resist" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_silence_resist" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_speed" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_spell_crit" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_spell_crit_bonus" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_spell_damage" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_spell_damage_reduction" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_spell_power" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_spirit" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_stamina" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_strength" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_stun_resist" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
-		<member name="base_stat_xp_rate" type="StatDataEntry" setter="set_stat_data_enum" getter="get_stat_data_enum">
-		</member>
 		<member name="level_stat_data" type="LevelStatData" setter="set_level_stat_data" getter="get_level_stat_data">
+		</member>
+		<member name="mod_stat_count" type="int" setter="set_mod_stat_count" getter="get_mod_stat_count" default="0">
 		</member>
 	</members>
 	<constants>

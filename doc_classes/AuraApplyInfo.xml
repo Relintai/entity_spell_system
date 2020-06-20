@@ -16,7 +16,7 @@
 		</member>
 		<member name="spell_scale" type="float" setter="spell_scale_set" getter="spell_scale_get" default="0.0">
 		</member>
-		<member name="target" type="Entity" setter="set_target" getter="get_target">
+		<member name="target" type="Entity" setter="target_set" getter="target_get">
 		</member>
 	</members>
 	<constants>

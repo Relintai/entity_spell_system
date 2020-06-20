@@ -16,6 +16,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="_common_attach_point_index_get" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="point" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="add_model_visual">
 			<return type="void">
 			</return>
@@ -31,7 +39,37 @@
 			</argument>
 			<argument index="1" name="ive" type="ModelVisualEntry">
 			</argument>
-			<argument index="2" name="arg2" type="int">
+			<description>
+			</description>
+		</method>
+		<method name="attach_point_count" qualifiers="const">
+			<return type="int">
+			</return>
+			<description>
+			</description>
+		</method>
+		<method name="attach_point_node_get">
+			<return type="Node">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="attach_point_path_get" qualifiers="const">
+			<return type="NodePath">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="attach_point_path_set">
+			<return type="void">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<argument index="1" name="path" type="NodePath">
 			</argument>
 			<description>
 			</description>
@@ -60,6 +98,54 @@
 			<description>
 			</description>
 		</method>
+		<method name="common_attach_point_add">
+			<return type="void">
+			</return>
+			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints">
+			</argument>
+			<argument index="1" name="scene" type="PackedScene">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="common_attach_point_add_timed">
+			<return type="void">
+			</return>
+			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints">
+			</argument>
+			<argument index="1" name="scene" type="PackedScene">
+			</argument>
+			<argument index="2" name="time" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="common_attach_point_index_get">
+			<return type="int">
+			</return>
+			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="common_attach_point_node_get">
+			<return type="Node">
+			</return>
+			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="common_attach_point_remove">
+			<return type="void">
+			</return>
+			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints">
+			</argument>
+			<argument index="1" name="scene" type="PackedScene">
+			</argument>
+			<description>
+			</description>
+		</method>
 		<method name="get_animation_player">
 			<return type="AnimationPlayer">
 			</return>
@@ -68,36 +154,6 @@
 		</method>
 		<method name="get_animation_tree">
 			<return type="AnimationTree">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_bone_node">
-			<return type="Node">
-			</return>
-			<argument index="0" name="bone_idx" type="int" enum="EntityEnums.CharacterSkeletonPoints">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="get_bone_path">
-			<return type="NodePath">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="get_model_visual">
-			<return type="ModelVisual">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="get_model_visual_count">
-			<return type="int">
 			</return>
 			<description>
 			</description>
@@ -117,6 +173,20 @@
 			</return>
 			<argument index="0" name="bone_index" type="int">
 			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_model_visual">
+			<return type="ModelVisual">
+			</return>
+			<argument index="0" name="index" type="int">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="get_model_visual_count">
+			<return type="int">
+			</return>
 			<description>
 			</description>
 		</method>
@@ -143,8 +213,6 @@
 			</argument>
 			<argument index="1" name="ive" type="ModelVisualEntry">
 			</argument>
-			<argument index="2" name="arg2" type="int">
-			</argument>
 			<description>
 			</description>
 		</method>
@@ -152,16 +220,6 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="set_bone_path">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="path" type="NodePath">
 			</argument>
 			<description>
 			</description>
@@ -184,11 +242,11 @@
 		</member>
 		<member name="animation_tree_path" type="NodePath" setter="set_animation_tree_path" getter="get_animation_tree_path" default="NodePath(&quot;&quot;)">
 		</member>
-		<member name="bone_path_root" type="NodePath" setter="set_bone_path" getter="get_bone_path" default="NodePath(&quot;&quot;)">
-		</member>
-		<member name="model_index" type="int" setter="set_model_index" getter="get_model_index" enum="EntityEnums.EntityGender" default="0">
+		<member name="entity_type" type="int" setter="set_entity_type" getter="get_entity_type" default="0">
 		</member>
 		<member name="model_dirty" type="bool" setter="set_model_dirty" getter="get_model_dirty" default="false">
+		</member>
+		<member name="model_index" type="int" setter="set_model_index" getter="get_model_index" default="0">
 		</member>
 	</members>
 	<constants>

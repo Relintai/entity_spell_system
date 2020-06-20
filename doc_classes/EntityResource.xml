@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityResource" inherits="Reference" version="3.2">
+<class name="EntityResource" inherits="Resource" version="3.2">
 	<brief_description>
 		An instance of an entity resource. Resource in this context is things like mana.
 	</brief_description>
@@ -22,18 +22,30 @@
 			<description>
 			</description>
 		</method>
-		<method name="_onc_added" qualifiers="virtual">
+		<method name="_notification_cstat_changed" qualifiers="virtual">
 			<return type="void">
 			</return>
-			<argument index="0" name="entity" type="Entity">
+			<argument index="0" name="statid" type="int">
+			</argument>
+			<argument index="1" name="curent" type="float">
 			</argument>
 			<description>
 			</description>
 		</method>
-		<method name="_notification_cstat_changed" qualifiers="virtual">
+		<method name="_notification_sstat_changed" qualifiers="virtual">
 			<return type="void">
 			</return>
-			<argument index="0" name="stat" type="Stat">
+			<argument index="0" name="statid" type="int">
+			</argument>
+			<argument index="1" name="curent" type="float">
+			</argument>
+			<description>
+			</description>
+		</method>
+		<method name="_onc_added" qualifiers="virtual">
+			<return type="void">
+			</return>
+			<argument index="0" name="entity" type="Entity">
 			</argument>
 			<description>
 			</description>
@@ -52,14 +64,6 @@
 			<return type="void">
 			</return>
 			<argument index="0" name="entity" type="Entity">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="_notification_sstat_changed" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="stat" type="Stat">
 			</argument>
 			<description>
 			</description>
@@ -138,27 +142,19 @@
 	<members>
 		<member name="current_value" type="int" setter="set_current_value" getter="get_current_value" default="0">
 		</member>
-		<member name="data_path" type="String" setter="set_data_path" getter="get_data_path" default="&quot;&quot;">
+		<member name="dirty" type="bool" setter="set_dirty" getter="get_dirty">
 		</member>
-		<member name="dirty" type="bool" setter="set_dirty" getter="get_dirty" default="false">
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
 		</member>
 		<member name="max_value" type="int" setter="set_max_value" getter="get_max_value" default="0">
 		</member>
 		<member name="owner" type="Entity" setter="set_owner" getter="get_owner">
 		</member>
-		<member name="resource_data" type="EntityResource" setter="set_resource_data" getter="get_resource_data">
+		<member name="should_process" type="bool" setter="set_should_process" getter="get_should_process">
 		</member>
-		<member name="should_process" type="bool" setter="set_should_process" getter="get_should_process" default="false">
+		<member name="text_name" type="String" setter="set_text_name" getter="get_text_name" default="&quot;&quot;">
 		</member>
 	</members>
-	<signals>
-		<signal name="changed">
-			<argument index="0" name="resource" type="EntityResource">
-			</argument>
-			<description>
-			</description>
-		</signal>
-	</signals>
 	<constants>
 	</constants>
 </class>
