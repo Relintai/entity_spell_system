@@ -517,6 +517,10 @@ bool CharacterSkeleton3D::_get(const StringName &p_name, Variant &r_ret) const {
 	return false;
 }
 void CharacterSkeleton3D::_get_property_list(List<PropertyInfo> *p_list) const {
+	if (ESS::get_singleton()->skeletons_bone_attachments_count() == 0) {
+		return;
+	}
+
 	String bones = ESS::get_singleton()->skeletons_bone_attachment_index_get(_entity_type);
 	int slicec = bones.get_slice_count(",");
 
