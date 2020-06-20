@@ -33,8 +33,12 @@
 #define SpatialEditorPlugin Node3DEditorPlugin
 #define SpatialEditorViewport Node3DEditorViewport
 #define PoolStringArray PackedStringArray
+
 #define REAL FLOAT
+
 #define POOL_STRING_ARRAY PACKED_STRING_ARRAY
+#define POOL_INT_ARRAY PACKED_INT32_ARRAY
+
 #define Spatial Node3D
 
 typedef class RenderingServer VisualServer;

@@ -1691,10 +1691,16 @@ PoolIntArray Entity::states_gets() const {
 	PoolIntArray arr;
 	arr.resize(EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX);
 
+#if !GODOT4
 	PoolIntArray::Write w = arr.write();
+#endif
 
 	for (int i = 0; i < EntityEnums::ENTITY_STATE_TYPE_INDEX_MAX; ++i) {
+#if !GODOT4
 		w[i] = _s_states[i];
+#else
+		arr.write[i] = _s_states[i];
+#endif
 	}
 
 	return arr;
@@ -4789,10 +4795,17 @@ void Entity::class_talent_cclear() {
 PoolIntArray Entity::sclass_talents_get() {
 	PoolIntArray arr;
 	arr.resize(_s_class_talents.size());
+
+#if !GODOT4
 	PoolIntArray::Write w = arr.write();
+#endif
 
 	for (int i = 0; i < _s_class_talents.size(); ++i) {
+#if !GODOT4
 		w[i] = _s_class_talents[i];
+#else
+		arr.write[i] = _s_class_talents[i];
+#endif
 	}
 
 	return arr;
@@ -5029,10 +5042,17 @@ void Entity::character_talent_cclear() {
 PoolIntArray Entity::scharacter_talents_get() {
 	PoolIntArray arr;
 	arr.resize(_s_character_talents.size());
+
+#if !GODOT4
 	PoolIntArray::Write w = arr.write();
+#endif
 
 	for (int i = 0; i < _s_character_talents.size(); ++i) {
+#if !GODOT4
 		w[i] = _s_character_talents[i];
+#else
+		arr.write[i] = _s_character_talents[i];
+#endif
 	}
 
 	return arr;

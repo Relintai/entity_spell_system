@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "loot_data_base.h"
 
+#include "../../defines.h"
+
 int LootDataBase::get_loot_db_size() const {
 	return _loot_dbs.size();
 }
@@ -140,7 +142,6 @@ bool LootDataBase::_set(const StringName &p_name, const Variant &p_value) {
 	String name = p_name;
 
 	if (name.begins_with("loot_dbs/")) {
-
 		int index = name.get_slicec('/', 1).to_int();
 		String what = name.get_slicec('/', 2);
 
@@ -165,7 +166,6 @@ bool LootDataBase::_set(const StringName &p_name, const Variant &p_value) {
 		return false;
 
 	} else if (name.begins_with("items/")) {
-
 		int index = name.get_slicec('/', 1).to_int();
 		String what = name.get_slicec('/', 2);
 
@@ -197,7 +197,6 @@ bool LootDataBase::_get(const StringName &p_name, Variant &r_ret) const {
 	String name = p_name;
 
 	if (name.begins_with("loot_dbs/")) {
-
 		int index = name.get_slicec('/', 1).to_int();
 		String what = name.get_slicec('/', 2);
 
@@ -219,7 +218,6 @@ bool LootDataBase::_get(const StringName &p_name, Variant &r_ret) const {
 
 		return false;
 	} else if (name.begins_with("items/")) {
-
 		int index = name.get_slicec('/', 1).to_int();
 		String what = name.get_slicec('/', 2);
 

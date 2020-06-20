@@ -136,7 +136,11 @@ Vector<Variant> SpeciesModelData::get_customizable_slot_entries(const int slot_i
 	ERR_FAIL_INDEX_V(slot_index, _customizable_slots.size(), r);
 
 	for (int i = 0; i < _customizable_slots[slot_index].size(); i++) {
+#if GODOT4
+		r.push_back(_customizable_slots[slot_index][i]);
+#else
 		r.push_back(_customizable_slots[slot_index][i].get_ref_ptr());
+#endif
 	}
 	return r;
 }
