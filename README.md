@@ -8,7 +8,8 @@ The module supports networking. It is designed to be authoritative, so players s
 
 It is a c++ engine module, which means you will need to compile it into godot. (See compiling)
 
-It supports godot 3.2 at the moment.
+It supports both godot 3.2 and 4.0 (master). Note that since 4.0 is still in very early stages I only 
+check whether it works from time to time.
 
 ### What the module doesn't cover
 
@@ -132,6 +133,10 @@ First make sure that you can compile godot. See the official docs: https://docs.
 
 1. Clone the engine if you haven't already:
 
+If you want Godot 3.2:
+```git clone -b 3.2 https://github.com/godotengine/godot.git godot```
+
+If you want Godot 4.0:
 ```git clone https://github.com/godotengine/godot.git godot```
 
 2. go into the modules folder inside the engine's directory"
