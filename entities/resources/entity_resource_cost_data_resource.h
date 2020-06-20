@@ -25,15 +25,15 @@ SOFTWARE.
 
 #include "core/resource.h"
 
+#include "entity_resource.h"
 #include "entity_resource_cost_data.h"
-#include "entity_resource_data.h"
 
 class EntityResourceCostDataResource : public EntityResourceCostData {
 	GDCLASS(EntityResourceCostDataResource, EntityResourceCostData);
 
 public:
-	Ref<EntityResourceData> get_entity_resource_data();
-	void set_entity_resource_data(Ref<EntityResourceData> data);
+	Ref<EntityResource> get_entity_resource_data();
+	void set_entity_resource_data(Ref<EntityResource> data);
 
 	EntityResourceCostDataResource();
 
@@ -41,7 +41,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	Ref<EntityResourceData> _entity_resource_data;
+	Ref<EntityResource> _entity_resource_data;
 };
 
 #endif

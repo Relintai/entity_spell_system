@@ -753,7 +753,7 @@
 			</description>
 		</method>
 		<method name="get_entity_resource" qualifiers="const">
-			<return type="EntityResourceData">
+			<return type="EntityResource">
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
@@ -845,7 +845,7 @@
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
-			<argument index="1" name="entity_resource" type="EntityResourceData">
+			<argument index="1" name="entity_resource" type="EntityResource">
 			</argument>
 			<description>
 			</description>

@@ -25,7 +25,7 @@ SOFTWARE.
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
 #include "../entity.h"
-#include "entity_resource_data.h"
+#include "entity_resource.h"
 
 void EntityResourceHealth::_init() {
 	set_current_value(100);

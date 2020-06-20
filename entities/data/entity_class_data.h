@@ -38,7 +38,7 @@ SOFTWARE.
 
 #include "../../item_enums.h"
 
-#include "../resources/entity_resource_data.h"
+#include "../resources/entity_resource.h"
 
 class Aura;
 class Spell;
@@ -72,8 +72,8 @@ public:
 	int get_num_entity_resources();
 	void set_num_entity_resources(int value);
 
-	Ref<EntityResourceData> get_entity_resource(int index) const;
-	void set_entity_resource(int index, Ref<EntityResourceData> entity_resources);
+	Ref<EntityResource> get_entity_resource(int index) const;
+	void set_entity_resource(int index, Ref<EntityResource> entity_resources);
 
 	Vector<Variant> get_entity_resources();
 	void set_entity_resources(const Vector<Variant> &entity_resourcess);
@@ -152,7 +152,7 @@ private:
 
 	EntityEnums::EntityClassPlaystyleType _playstyle_type;
 
-	Vector<Ref<EntityResourceData> > _entity_resources;
+	Vector<Ref<EntityResource> > _entity_resources;
 	Vector<Ref<CharacterSpec> > _specs;
 	Vector<Ref<Spell> > _spells;
 	Vector<Ref<Spell> > _start_spells;

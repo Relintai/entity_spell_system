@@ -27,27 +27,27 @@ SOFTWARE.
 #include "../data/species/entity_species_data.h"
 #include "../data/spells/spell.h"
 #include "../entities/data/entity_data.h"
-#include "../entities/resources/entity_resource_data.h"
+#include "../entities/resources/entity_resource.h"
 #include "../entities/skills/entity_skill_data.h"
 
-Ref<EntityResourceData> ESSResourceDBMap::get_entity_resource(int class_id) {
-	//ERR_FAIL_COND_V_MSG(!_entity_resource_map.has(class_id), Ref<EntityResourceData>(), "Could not find EntityResourceData! Id:" + String::num(class_id));
+Ref<EntityResource> ESSResourceDBMap::get_entity_resource(int class_id) {
+	//ERR_FAIL_COND_V_MSG(!_entity_resource_map.has(class_id), Ref<EntityResource>(), "Could not find EntityResource! Id:" + String::num(class_id));
 
 	if (!_entity_resource_map.has(class_id)) {
-		return Ref<EntityResourceData>();
+		return Ref<EntityResource>();
 	}
 
 	return _entity_resource_map.get(class_id);
 }
-Ref<EntityResourceData> ESSResourceDBMap::get_entity_resource_index(int index) {
-	ERR_FAIL_INDEX_V(index, _entity_resources.size(), Ref<EntityResourceData>(NULL));
+Ref<EntityResource> ESSResourceDBMap::get_entity_resource_index(int index) {
+	ERR_FAIL_INDEX_V(index, _entity_resources.size(), Ref<EntityResource>(NULL));
 
 	return _entity_resources.get(index);
 }
 int ESSResourceDBMap::get_entity_resource_count() {
 	return _entity_resources.size();
 }
-void ESSResourceDBMap::add_entity_resource(Ref<EntityResourceData> cls) {
+void ESSResourceDBMap::add_entity_resource(Ref<EntityResource> cls) {
 	ERR_FAIL_COND(!cls.is_valid());
 
 	_entity_resources.push_back(cls);

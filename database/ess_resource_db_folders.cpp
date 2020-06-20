@@ -27,7 +27,7 @@ SOFTWARE.
 #include "../data/species/entity_species_data.h"
 #include "../data/spells/spell.h"
 #include "../entities/data/entity_data.h"
-#include "../entities/resources/entity_resource_data.h"
+#include "../entities/resources/entity_resource.h"
 #include "../entities/skills/entity_skill_data.h"
 
 bool ESSResourceDBFolders::get_automatic_load() const {
@@ -125,7 +125,7 @@ void ESSResourceDBFolders::load_folder(const String &folder) {
 void ESSResourceDBFolders::add_resource(const Ref<Resource> &resource) {
 	StringName cls = resource->get_class_name();
 
-	if (cls == "EntityResourceData") {
+	if (cls == "EntityResource") {
 		add_entity_resource(resource);
 	} else if (cls == "EntitySkillData") {
 		add_entity_skill(resource);

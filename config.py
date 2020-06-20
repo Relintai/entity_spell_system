@@ -45,7 +45,6 @@ def get_doc_classes():
         "EntityResourceCostData",
         "EntityResourceCostDataHealth",
         "EntityResourceCostDataResource",
-        "EntityResourceData",
         "EntityResource",
         "EntityResourceHealth",
         "EntityResourceSpeed",

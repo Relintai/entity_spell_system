@@ -76,15 +76,15 @@ void EntityClassData::set_num_entity_resources(int value) {
 	_entity_resources.resize(value);
 }
 
-Ref<EntityResourceData> EntityClassData::get_entity_resource(int index) const {
-	ERR_FAIL_INDEX_V(index, _entity_resources.size(), Ref<EntityResourceData>());
+Ref<EntityResource> EntityClassData::get_entity_resource(int index) const {
+	ERR_FAIL_INDEX_V(index, _entity_resources.size(), Ref<EntityResource>());
 
 	return _entity_resources[index];
 }
-void EntityClassData::set_entity_resource(int index, Ref<EntityResourceData> entity_resource) {
+void EntityClassData::set_entity_resource(int index, Ref<EntityResource> entity_resource) {
 	ERR_FAIL_INDEX(index, _entity_resources.size());
 
-	_entity_resources.set(index, Ref<EntityResourceData>(entity_resource));
+	_entity_resources.set(index, Ref<EntityResource>(entity_resource));
 }
 
 Vector<Variant> EntityClassData::get_entity_resources() {
@@ -93,7 +93,7 @@ Vector<Variant> EntityClassData::get_entity_resources() {
 void EntityClassData::set_entity_resources(const Vector<Variant> &entity_resources) {
 	_entity_resources.clear();
 	for (int i = 0; i < entity_resources.size(); i++) {
-		Ref<EntityResourceData> entity_resource = Ref<EntityResourceData>(entity_resources[i]);
+		Ref<EntityResource> entity_resource = Ref<EntityResource>(entity_resources[i]);
 
 		_entity_resources.push_back(entity_resource);
 	}
@@ -286,10 +286,12 @@ void EntityClassData::_setup_resources(Node *entity) {
 	Entity *ent = Object::cast_to<Entity>(entity);
 
 	for (int i = 0; i < _entity_resources.size(); ++i) {
-		Ref<EntityResourceData> res = _entity_resources.get(i);
+		Ref<EntityResource> res = _entity_resources.get(i);
 
 		if (res.is_valid()) {
-			ent->resource_adds(res->get_entity_resource_instance());
+			Ref<EntityResource> r = res->duplicate(false);
+
+			ent->resource_adds(r);
 		}
 	}
 }
@@ -341,7 +343,7 @@ void EntityClassData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_entity_resources"), &EntityClassData::get_entity_resources);
 	ClassDB::bind_method(D_METHOD("set_entity_resources", "entity_resources"), &EntityClassData::set_entity_resources);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_resources", PROPERTY_HINT_NONE, "17/17:EntityResourceData", PROPERTY_USAGE_DEFAULT, "EntityResourceData"), "set_entity_resources", "get_entity_resources");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_resources", PROPERTY_HINT_NONE, "17/17:EntityResource", PROPERTY_USAGE_DEFAULT, "EntityResource"), "set_entity_resources", "get_entity_resources");
 
 	ClassDB::bind_method(D_METHOD("_setup_resources", "entity"), &EntityClassData::_setup_resources);
 

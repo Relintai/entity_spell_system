@@ -12,7 +12,7 @@
 	<members>
 		<member name="cost" type="int" setter="set_cost" getter="get_cost" default="0">
 		</member>
-		<member name="entity_resource_data" type="EntityResourceData" setter="set_entity_resource_data" getter="get_entity_resource_data">
+		<member name="entity_resource_data" type="EntityResource" setter="set_entity_resource_data" getter="get_entity_resource_data">
 		</member>
 	</members>
 	<constants>

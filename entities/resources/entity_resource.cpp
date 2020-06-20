@@ -25,7 +25,20 @@ SOFTWARE.
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
 #include "../entity.h"
-#include "entity_resource_data.h"
+
+int EntityResource::get_id() const {
+	return _id;
+}
+void EntityResource::set_id(const int value) {
+	_id = value;
+}
+
+String EntityResource::get_text_name() const {
+	return _text_name;
+}
+void EntityResource::set_text_name(const String value) {
+	_text_name = value;
+}
 
 bool EntityResource::get_dirty() const {
 	return _dirty;
@@ -41,32 +54,6 @@ void EntityResource::set_should_process(const bool value) {
 	_should_process = value;
 }
 
-Ref<EntityResourceData> EntityResource::get_resource_data() {
-	return _data;
-}
-void EntityResource::set_resource_data(const Ref<EntityResourceData> &value) {
-	_data = value;
-
-	if (value.is_valid()) {
-		_data_path = value->get_path();
-	}
-
-	_dirty = true;
-
-	emit_signal("changed", Ref<EntityResource>(this));
-}
-
-StringName EntityResource::get_data_path() const {
-	return _data_path;
-}
-void EntityResource::set_data_path(const StringName &value) {
-	_data_path = value;
-
-	_dirty = true;
-
-	emit_signal("changed", Ref<EntityResource>(this));
-}
-
 int EntityResource::get_current_value() const {
 	return _current;
 }
@@ -75,7 +62,7 @@ void EntityResource::set_current_value(const int value) {
 
 	_dirty = true;
 
-	emit_signal("changed", Ref<EntityResource>(this));
+	//emit_signal("changed", Ref<EntityResource>(this));
 }
 
 int EntityResource::get_max_value() const {
@@ -86,7 +73,7 @@ void EntityResource::set_max_value(const int value) {
 
 	_dirty = true;
 
-	emit_signal("changed", Ref<EntityResource>(this));
+	//emit_signal("changed", Ref<EntityResource>(this));
 }
 
 Entity *EntityResource::get_owner() {
@@ -164,10 +151,6 @@ void EntityResource::receivec_update_string(const String str) {
 		call("_receivec_update_string", str);
 }
 
-void EntityResource::resolve_references() {
-	set_resource_data(ESS::get_singleton()->get_resource_db()->get_entity_resource_path(_data_path));
-}
-
 Dictionary EntityResource::to_dict() {
 	return call("_to_dict");
 }
@@ -178,11 +161,13 @@ void EntityResource::from_dict(const Dictionary &dict) {
 Dictionary EntityResource::_to_dict() {
 	Dictionary dict;
 
+	dict["data_path"] = ESS::get_singleton()->get_resource_db()->get_entity_resource(_id)->get_path();
+
 	dict["dirty"] = _dirty;
 	dict["should_process"] = _should_process;
 
 	//dict["data_id"] = _data_id;
-	dict["data_path"] = _data_path;
+	//dict["data_path"] = _data_path;
 
 	dict["current"] = _current;
 
@@ -192,12 +177,11 @@ Dictionary EntityResource::_to_dict() {
 }
 void EntityResource::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.empty());
-	ERR_FAIL_COND(!ESS::get_singleton()->get_resource_db().is_valid());
 
 	_dirty = dict.get("dirty", false);
 	_should_process = dict.get("should_process", false);
 
-	_data_path = dict.get("data_path", "");
+	//_data_path = dict.get("data_path", "");
 	//_data_id = ESS::get_singleton()->get_resource_db()->entity_data_path_to_id(_data_path);
 
 	//_data_id = dict.get("data_id", 0);
@@ -206,8 +190,12 @@ void EntityResource::_from_dict(const Dictionary &dict) {
 }
 
 EntityResource::EntityResource() {
+	_id = 0;
+
 	_server_side = false;
 	_dirty = false;
+
+	_owner = NULL;
 
 	_should_process = has_method("_process");
 
@@ -216,25 +204,26 @@ EntityResource::EntityResource() {
 }
 
 EntityResource::~EntityResource() {
-	_data.unref();
+	_owner = NULL;
 }
 
 void EntityResource::_bind_methods() {
+
+	ClassDB::bind_method(D_METHOD("get_id"), &EntityResource::get_id);
+	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityResource::set_id);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
+
+	ClassDB::bind_method(D_METHOD("get_text_name"), &EntityResource::get_text_name);
+	ClassDB::bind_method(D_METHOD("set_text_name", "value"), &EntityResource::set_text_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_text_name", "get_text_name");
+
 	ClassDB::bind_method(D_METHOD("get_dirty"), &EntityResource::get_dirty);
 	ClassDB::bind_method(D_METHOD("set_dirty", "value"), &EntityResource::set_dirty);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dirty"), "set_dirty", "get_dirty");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dirty", PROPERTY_HINT_NONE, "", 0), "set_dirty", "get_dirty");
 
 	ClassDB::bind_method(D_METHOD("get_should_process"), &EntityResource::get_should_process);
 	ClassDB::bind_method(D_METHOD("set_should_process", "value"), &EntityResource::set_should_process);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "should_process"), "set_should_process", "get_should_process");
-
-	ClassDB::bind_method(D_METHOD("get_resource_data"), &EntityResource::get_resource_data);
-	ClassDB::bind_method(D_METHOD("set_resource_data", "value"), &EntityResource::set_resource_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_data", PROPERTY_HINT_RESOURCE_TYPE, "EntityResourceData"), "set_resource_data", "get_resource_data");
-
-	ClassDB::bind_method(D_METHOD("get_data_path"), &EntityResource::get_data_path);
-	ClassDB::bind_method(D_METHOD("set_data_path", "value"), &EntityResource::set_data_path);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "data_path"), "set_data_path", "get_data_path");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "should_process", PROPERTY_HINT_NONE, "", 0), "set_should_process", "get_should_process");
 
 	ClassDB::bind_method(D_METHOD("get_current_value"), &EntityResource::get_current_value);
 	ClassDB::bind_method(D_METHOD("set_current_value", "value"), &EntityResource::set_current_value);

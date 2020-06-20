@@ -40,7 +40,7 @@
 		<method name="add_entity_resource">
 			<return type="void">
 			</return>
-			<argument index="0" name="cls" type="EntityResourceData">
+			<argument index="0" name="cls" type="EntityResource">
 			</argument>
 			<description>
 			</description>
@@ -296,7 +296,7 @@
 			</description>
 		</method>
 		<method name="get_entity_resource">
-			<return type="EntityResourceData">
+			<return type="EntityResource">
 			</return>
 			<argument index="0" name="class_id" type="int">
 			</argument>
@@ -310,7 +310,7 @@
 			</description>
 		</method>
 		<method name="get_entity_resource_index">
-			<return type="EntityResourceData">
+			<return type="EntityResource">
 			</return>
 			<argument index="0" name="index" type="int">
 			</argument>
@@ -318,7 +318,7 @@
 			</description>
 		</method>
 		<method name="get_entity_resource_path">
-			<return type="EntityResourceData">
+			<return type="EntityResource">
 			</return>
 			<argument index="0" name="path" type="String">
 			</argument>

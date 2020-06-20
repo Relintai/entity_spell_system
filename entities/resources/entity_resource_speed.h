@@ -26,7 +26,6 @@ SOFTWARE.
 #include "entity_resource.h"
 
 class Entity;
-class EntityResourceData;
 
 class EntityResourceSpeed : public EntityResource {
 	GDCLASS(EntityResourceSpeed, EntityResource);

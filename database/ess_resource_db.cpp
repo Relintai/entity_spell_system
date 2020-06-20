@@ -27,7 +27,7 @@ SOFTWARE.
 #include "../data/species/entity_species_data.h"
 #include "../data/spells/spell.h"
 #include "../entities/data/entity_data.h"
-#include "../entities/resources/entity_resource_data.h"
+#include "../entities/resources/entity_resource.h"
 #include "../entities/skills/entity_skill_data.h"
 
 Ref<Aura> ESSResourceDB::get_skill_for_armor_type(const int index) {
@@ -48,7 +48,7 @@ void ESSResourceDB::set_xp_data(const Ref<XPData> &data) {
 	_xp_data = data;
 }
 
-void ESSResourceDB::add_entity_resource(Ref<EntityResourceData> cls) {
+void ESSResourceDB::add_entity_resource(Ref<EntityResource> cls) {
 	if (!cls.is_valid())
 		return;
 
@@ -56,7 +56,7 @@ void ESSResourceDB::add_entity_resource(Ref<EntityResourceData> cls) {
 	_entity_resources_path_to_id.set(cls->get_path(), cls->get_id());
 }
 
-Ref<EntityResourceData> ESSResourceDB::get_entity_resource_path(const StringName &path) {
+Ref<EntityResource> ESSResourceDB::get_entity_resource_path(const StringName &path) {
 	return get_entity_resource(entity_resource_path_to_id(path));
 }
 
@@ -325,7 +325,7 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_xp_data", "data"), &ESSResourceDB::set_xp_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "xp_data", PROPERTY_HINT_RESOURCE_TYPE, "XPData"), "set_xp_data", "get_xp_data");
 
-	//EntityResourceData
+	//EntityResource
 	ClassDB::bind_method(D_METHOD("add_entity_resource", "cls"), &ESSResourceDB::add_entity_resource);
 	ClassDB::bind_method(D_METHOD("get_entity_resource", "class_id"), &ESSResourceDB::get_entity_resource);
 	ClassDB::bind_method(D_METHOD("get_entity_resource_index", "index"), &ESSResourceDB::get_entity_resource_index);

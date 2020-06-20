@@ -38,7 +38,7 @@ class Spell;
 class EntityData;
 class CraftRecipe;
 class ItemTemplate;
-class EntityResourceData;
+class EntityResource;
 class EntitySkillData;
 class EntityCreateInfo;
 class SpellCastInfo;
@@ -57,10 +57,10 @@ public:
 	PoolStringArray get_folders() const;
 	void set_folders(const PoolStringArray &folders);
 
-	Ref<EntityResourceData> get_entity_resource(int class_id);
-	Ref<EntityResourceData> get_entity_resource_index(int index);
+	Ref<EntityResource> get_entity_resource(int class_id);
+	Ref<EntityResource> get_entity_resource_index(int index);
 	int get_entity_resource_count();
-	void add_entity_resource(Ref<EntityResourceData> cls);
+	void add_entity_resource(Ref<EntityResource> cls);
 	Vector<Variant> get_entity_resources() const;
 	void set_entity_resources(const Vector<Variant> &data);
 
@@ -124,14 +124,14 @@ protected:
 private:
 	bool _remap_ids;
 
-	Vector<Ref<EntityResourceData>> _entity_resources;
-	Vector<Ref<EntitySkillData>> _entity_skills;
-	Vector<Ref<EntityData>> _entity_datas;
-	Vector<Ref<Spell>> _spells;
-	Vector<Ref<Aura>> _auras;
-	Vector<Ref<CraftRecipe>> _craft_recipes;
-	Vector<Ref<ItemTemplate>> _item_templates;
-	Vector<Ref<EntitySpeciesData>> _entity_species_datas;
+	Vector<Ref<EntityResource> > _entity_resources;
+	Vector<Ref<EntitySkillData> > _entity_skills;
+	Vector<Ref<EntityData> > _entity_datas;
+	Vector<Ref<Spell> > _spells;
+	Vector<Ref<Aura> > _auras;
+	Vector<Ref<CraftRecipe> > _craft_recipes;
+	Vector<Ref<ItemTemplate> > _item_templates;
+	Vector<Ref<EntitySpeciesData> > _entity_species_datas;
 };
 
 #endif

@@ -43,7 +43,7 @@ class Spell;
 class EntityData;
 class CraftRecipe;
 class ItemTemplate;
-class EntityResourceData;
+class EntityResource;
 class EntitySkillData;
 class EntityCreateInfo;
 class SpellCastInfo;
@@ -59,14 +59,14 @@ public:
 	Ref<XPData> get_xp_data();
 	void set_xp_data(const Ref<XPData> &data);
 
-	virtual Ref<EntityResourceData> get_entity_resource(int class_id) = 0;
-	virtual Ref<EntityResourceData> get_entity_resource_index(int index) = 0;
+	virtual Ref<EntityResource> get_entity_resource(int class_id) = 0;
+	virtual Ref<EntityResource> get_entity_resource_index(int index) = 0;
 	virtual int get_entity_resource_count() = 0;
-	virtual void add_entity_resource(Ref<EntityResourceData> cls);
+	virtual void add_entity_resource(Ref<EntityResource> cls);
 	virtual Vector<Variant> get_entity_resources() const = 0;
 	virtual void set_entity_resources(const Vector<Variant> &data) = 0;
 
-	Ref<EntityResourceData> get_entity_resource_path(const StringName &path);
+	Ref<EntityResource> get_entity_resource_path(const StringName &path);
 	StringName entity_resource_id_to_path(const int id) const;
 	int entity_resource_path_to_id(const StringName &path) const;
 

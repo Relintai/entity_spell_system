@@ -26,23 +26,22 @@ SOFTWARE.
 #include "core/resource.h"
 
 class Entity;
-class EntityResourceData;
 
 class EntityResource : public Resource {
 	GDCLASS(EntityResource, Resource);
 
 public:
+	int get_id() const;
+	void set_id(const int value);
+
+	String get_text_name() const;
+	void set_text_name(const String value);
+
 	bool get_dirty() const;
 	void set_dirty(const bool value);
 
 	bool get_should_process() const;
 	void set_should_process(const bool value);
-
-	Ref<EntityResourceData> get_resource_data();
-	void set_resource_data(const Ref<EntityResourceData> &value);
-
-	StringName get_data_path() const;
-	void set_data_path(const StringName &value);
 
 	int get_current_value() const;
 	void set_current_value(const int value);
@@ -73,8 +72,6 @@ public:
 	void receivec_update_full(const int current, const int max);
 	void receivec_update_string(const String str);
 
-	virtual void resolve_references();
-
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
 
@@ -88,14 +85,14 @@ protected:
 	static void _bind_methods();
 
 private:
+	int _id;
+	String _text_name;
+
 	bool _server_side;
 
 	Entity *_owner;
 	bool _dirty;
 	bool _should_process;
-
-	Ref<EntityResourceData> _data;
-	StringName _data_path;
 
 	int _current;
 	int _max;

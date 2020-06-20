@@ -146,7 +146,7 @@
 		</member>
 		<member name="owner" type="Entity" setter="set_owner" getter="get_owner">
 		</member>
-		<member name="resource_data" type="EntityResourceData" setter="set_resource_data" getter="get_resource_data">
+		<member name="resource_data" type="EntityResource" setter="set_resource_data" getter="get_resource_data">
 		</member>
 		<member name="should_process" type="bool" setter="set_should_process" getter="get_should_process" default="false">
 		</member>

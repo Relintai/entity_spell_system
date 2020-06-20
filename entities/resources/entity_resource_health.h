@@ -26,7 +26,6 @@ SOFTWARE.
 #include "entity_resource.h"
 
 class Entity;
-class EntityResourceData;
 
 class EntityResourceHealth : public EntityResource {
 	GDCLASS(EntityResourceHealth, EntityResource);

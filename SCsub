@@ -72,7 +72,6 @@ sources = [
     "entities/auras/aura_data.cpp",
     "entities/entity.cpp",
 
-    "entities/resources/entity_resource_data.cpp",
     "entities/resources/entity_resource_cost_data.cpp",
     "entities/resources/entity_resource_cost_data_health.cpp",
     "entities/resources/entity_resource_cost_data_resource.cpp",

@@ -48,7 +48,7 @@ class Spell;
 class EntityData;
 class CraftRecipe;
 class ItemTemplate;
-class EntityResourceData;
+class EntityResource;
 class EntitySkillData;
 class EntityCreateInfo;
 class SpellCastInfo;

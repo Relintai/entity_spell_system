@@ -675,22 +675,6 @@ void Entity::_setup() {
 				VRPCOBJ(aura_addc_rpc, JSON::print(ad->to_dict()), aura_addc, ad);
 		}
 
-		for (int i = 0; i < _s_resources.size(); ++i) {
-			Ref<EntityResource> res = _s_resources.get(i);
-
-			ERR_CONTINUE(!res.is_valid());
-
-			res->resolve_references();
-		}
-
-		for (int i = 0; i < _c_resources.size(); ++i) {
-			Ref<EntityResource> res = _c_resources.get(i);
-
-			ERR_CONTINUE(!res.is_valid());
-
-			res->resolve_references();
-		}
-
 		if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY) {
 			if (ESS::get_singleton()->get_use_global_class_level()) {
 				Ref<ClassProfile> cp = ProfileManager::get_singleton()->getc_player_profile()->get_class_profile(gets_entity_data()->get_path());
@@ -779,22 +763,6 @@ void Entity::_setup() {
 			if (ii.is_valid())
 				_s_equipment.write[i] = ii;
 		}
-	}
-
-	for (int i = 0; i < _s_resources.size(); ++i) {
-		Ref<EntityResource> res = _s_resources.get(i);
-
-		ERR_CONTINUE(!res.is_valid());
-
-		res->resolve_references();
-	}
-
-	for (int i = 0; i < _c_resources.size(); ++i) {
-		Ref<EntityResource> res = _c_resources.get(i);
-
-		ERR_CONTINUE(!res.is_valid());
-
-		res->resolve_references();
 	}
 
 	sets_ai(_s_entity_data->get_ai_instance());
@@ -1412,11 +1380,11 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 		StringName data_path = ird.get("data_path", "");
 
-		Ref<EntityResourceData> resd = ESS::get_singleton()->get_resource_db()->get_entity_resource_path(data_path);
+		Ref<EntityResource> resd = ESS::get_singleton()->get_resource_db()->get_entity_resource_path(data_path);
 
 		ERR_CONTINUE(!resd.is_valid());
 
-		Ref<EntityResource> res = resd->get_entity_resource_instance();
+		Ref<EntityResource> res = resd->duplicate(true);
 
 		ERR_CONTINUE(!res.is_valid());
 
@@ -2413,7 +2381,7 @@ Ref<EntityResource> Entity::resource_gets_id(int id) {
 	for (int i = EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN; i < _s_resources.size(); ++i) {
 		Ref<EntityResource> r = _s_resources.get(i);
 
-		if (r->get_resource_data()->get_id() == id) {
+		if (r->get_id() == id) {
 			return r;
 		}
 	}
@@ -2484,12 +2452,12 @@ void Entity::resource_addc_rpc(int index, String data) {
 
 	int data_id = dict.get("data_id", 0);
 
-	Ref<EntityResourceData> resd = ESS::get_singleton()->get_resource_db()->get_entity_resource(data_id);
+	Ref<EntityResource> resd = ESS::get_singleton()->get_resource_db()->get_entity_resource(data_id);
 
 	ERR_FAIL_COND(!resd.is_valid());
-
-	Ref<EntityResource> res = resd->get_entity_resource_instance();
-
+	print_error("aaa");
+	Ref<EntityResource> res = resd->duplicate(true);
+	print_error("bbb");
 	ERR_FAIL_COND(!res.is_valid());
 
 	res->from_dict(dict);
@@ -2506,7 +2474,7 @@ Ref<EntityResource> Entity::resource_getc_id(int id) {
 	for (int i = EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN; i < _c_resources.size(); ++i) {
 		Ref<EntityResource> r = _c_resources.get(i);
 
-		if (r->get_resource_data()->get_id() == id) {
+		if (r->get_id() == id) {
 			return r;
 		}
 	}

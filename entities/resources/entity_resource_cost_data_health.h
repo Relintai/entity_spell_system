@@ -25,8 +25,8 @@ SOFTWARE.
 
 #include "core/resource.h"
 
+#include "entity_resource.h"
 #include "entity_resource_cost_data.h"
-#include "entity_resource_data.h"
 
 class EntityResourceCostDataHealth : public EntityResourceCostData {
 	GDCLASS(EntityResourceCostDataHealth, EntityResourceCostData);

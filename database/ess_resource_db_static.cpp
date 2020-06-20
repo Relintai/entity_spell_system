@@ -27,7 +27,7 @@ SOFTWARE.
 #include "../data/species/entity_species_data.h"
 #include "../data/spells/spell.h"
 #include "../entities/data/entity_data.h"
-#include "../entities/resources/entity_resource_data.h"
+#include "../entities/resources/entity_resource.h"
 #include "../entities/skills/entity_skill_data.h"
 
 bool ESSResourceDBStatic::get_remap_ids() const {
@@ -37,21 +37,21 @@ void ESSResourceDBStatic::set_remap_ids(const bool value) {
 	_remap_ids = value;
 }
 
-Ref<EntityResourceData> ESSResourceDBStatic::get_entity_resource(int id) {
+Ref<EntityResource> ESSResourceDBStatic::get_entity_resource(int id) {
 	if (id < 0 || id >= _entity_resources.size())
-		return Ref<EntityResourceData>();
+		return Ref<EntityResource>();
 
 	return _entity_resources.get(id);
 }
-Ref<EntityResourceData> ESSResourceDBStatic::get_entity_resource_index(int index) {
-	ERR_FAIL_INDEX_V(index, _entity_resources.size(), Ref<EntityResourceData>(NULL));
+Ref<EntityResource> ESSResourceDBStatic::get_entity_resource_index(int index) {
+	ERR_FAIL_INDEX_V(index, _entity_resources.size(), Ref<EntityResource>(NULL));
 
 	return _entity_resources.get(index);
 }
 int ESSResourceDBStatic::get_entity_resource_count() {
 	return _entity_resources.size();
 }
-void ESSResourceDBStatic::add_entity_resource(Ref<EntityResourceData> cls) {
+void ESSResourceDBStatic::add_entity_resource(Ref<EntityResource> cls) {
 	if (_remap_ids && cls.is_valid())
 		cls->set_id(_entity_resources.size());
 
@@ -65,7 +65,7 @@ Vector<Variant> ESSResourceDBStatic::get_entity_resources() const {
 void ESSResourceDBStatic::set_entity_resources(const Vector<Variant> &data) {
 	_entity_resources.clear();
 	for (int i = 0; i < data.size(); i++) {
-		Ref<EntityResourceData> d = Ref<EntityResourceData>(data[i]);
+		Ref<EntityResource> d = Ref<EntityResource>(data[i]);
 
 		add_entity_resource(d);
 	}
@@ -353,7 +353,7 @@ void ESSResourceDBStatic::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_remap_ids", "value"), &ESSResourceDBStatic::set_remap_ids);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "remap_ids"), "set_remap_ids", "get_remap_ids");
 
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_resources", PROPERTY_HINT_NONE, "17/17:EntityResourceData", PROPERTY_USAGE_DEFAULT, "EntityResourceData"), "set_entity_resources", "get_entity_resources");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_resources", PROPERTY_HINT_NONE, "17/17:EntityResource", PROPERTY_USAGE_DEFAULT, "EntityResource"), "set_entity_resources", "get_entity_resources");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_skills", PROPERTY_HINT_NONE, "17/17:EntitySkillData", PROPERTY_USAGE_DEFAULT, "EntitySkillData"), "set_entity_skills", "get_entity_skills");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_datas", PROPERTY_HINT_NONE, "17/17:EntityData", PROPERTY_USAGE_DEFAULT, "EntityData"), "set_entity_datas", "get_entity_datas");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
