@@ -86,7 +86,7 @@ XPData::~XPData() {
 bool XPData::_set(const StringName &p_name, const Variant &p_value) {
 	String prop_name = p_name;
 
-	if (prop_name.begins_with("level_")) {
+	if (prop_name.begins_with("character_level")) {
 		int level = prop_name.get_slice("/", 1).to_int();
 
 		if (level >= ESS::get_singleton()->get_max_character_level())
@@ -95,7 +95,7 @@ bool XPData::_set(const StringName &p_name, const Variant &p_value) {
 		_character_xps.write[level] = p_value;
 
 		return true;
-	} else if (prop_name.begins_with("class_level_")) {
+	} else if (prop_name.begins_with("class_level")) {
 		int level = prop_name.get_slice("/", 1).to_int();
 
 		if (level >= ESS::get_singleton()->get_max_class_level())
