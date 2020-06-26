@@ -3181,7 +3181,7 @@ void Entity::notification_sxp_gained(int value) {
 }
 
 void Entity::notification_sclass_level_up(int value) {
-	NOTIFICATION_IMPLS(notification_sxp_gained, "notification_sclass_level_up", value);
+	NOTIFICATION_IMPLS(notification_sclass_level_up, "notification_sclass_level_up", value);
 }
 
 void Entity::notification_scharacter_level_up(int value) {
@@ -6177,6 +6177,7 @@ void Entity::_crafts(int id) {
 void Entity::_notification_sxp_gained(int value) {
 	if (ESS::get_singleton()->get_use_class_xp() && ESS::get_singleton()->get_automatic_class_levelups()) {
 		if (ESS::get_singleton()->get_resource_db()->get_xp_data()->can_class_level_up(gets_class_level())) {
+
 			int xpr = ESS::get_singleton()->get_resource_db()->get_xp_data()->get_class_xp(gets_class_level());
 
 			if (xpr <= gets_class_xp()) {
@@ -6232,6 +6233,25 @@ void Entity::_notification_sclass_level_up(int level) {
 		sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
 
 	sets_free_class_talent_points(gets_free_class_talent_points() + level);
+
+	if (ESS::get_singleton()->get_auto_learn_spells()) {
+		for (int i = 0; i < ecd->get_num_spells(); ++i) {
+			Ref<Spell> sp = ecd->get_spell(i);
+
+			if (!sp.is_valid())
+				continue;
+
+			if (sp->get_level() <= gets_class_level() && !spell_hass(sp)) {
+				Ref<Spell> rs = sp->get_training_required_spell();
+
+				if (rs.is_valid() && !spell_hass(rs)) {
+					continue;
+				}
+
+				spell_learns(sp->get_id());
+			}
+		}
+	}
 }
 
 void Entity::_moved() {
