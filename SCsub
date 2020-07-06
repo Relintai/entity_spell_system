@@ -7,6 +7,9 @@ module_env = env.Clone()
 if os.path.isdir('../mesh_data_resource'):
     module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
 
+if os.path.isdir('../props'):
+    module_env.Append(CPPDEFINES=['PROPS_PRESENT'])
+
 sources = [
     "register_types.cpp",
 
@@ -119,6 +122,8 @@ sources = [
     "database/ess_resource_db_folders.cpp",
 
     "editor/ess_editor_plugin.cpp",
+
+    "props/prop_data_entity.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

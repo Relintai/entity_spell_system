@@ -102,6 +102,8 @@ def get_doc_classes():
         "SpellEnums",
 
         "ESSEntitySpawner",
+
+        "PropDataEntity",
     ]
 
 def get_doc_path():

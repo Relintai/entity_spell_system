@@ -132,10 +132,18 @@ SOFTWARE.
 #include "database/ess_resource_db_map.h"
 #include "database/ess_resource_db_static.h"
 
+#if PROPS_PRESENT
+#include "props/prop_data_entity.h"
+#endif
+
 static ESS *entity_data_manager = NULL;
 static ProfileManager *profile_manager = NULL;
 
 void register_entity_spell_system_types() {
+#if PROPS_PRESENT
+	ClassDB::register_class<PropDataEntity>();
+#endif
+
 	ClassDB::register_class<SpellEnums>();
 
 	//data
