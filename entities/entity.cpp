@@ -2619,10 +2619,10 @@ Ref<EntityResource> Entity::gets_speed() {
 	return _s_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED);
 }
 Ref<EntityResource> Entity::getc_health() {
-	return _s_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
+	return _c_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
 }
 Ref<EntityResource> Entity::getc_speed() {
-	return _s_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED);
+	return _c_resources.get(EntityEnums::ENTITY_RESOURCE_INDEX_SPEED);
 }
 
 Vector<Variant> Entity::sresources_get() {
