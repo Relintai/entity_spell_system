@@ -145,6 +145,8 @@ void EntityResource::receivec_update(const int current) {
 void EntityResource::receivec_update_full(const int current, const int max) {
 	_current = current;
 	_max = max;
+
+	emit_changed();
 }
 void EntityResource::receivec_update_string(const String str) {
 	if (has_method("_receivec_update_string"))
@@ -187,6 +189,8 @@ void EntityResource::_from_dict(const Dictionary &dict) {
 	//_data_id = dict.get("data_id", 0);
 	_current = dict.get("current", 0);
 	_max = dict.get("max", 0);
+
+	emit_changed();
 }
 
 EntityResource::EntityResource() {
