@@ -7532,4 +7532,5 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_moved"), &Entity::_moved);
 	ClassDB::bind_method(D_METHOD("_con_target_changed", "entity", "old_target"), &Entity::_con_target_changed);
 	ClassDB::bind_method(D_METHOD("_notification_sdeath"), &Entity::_notification_sdeath);
+	ClassDB::bind_method(D_METHOD("_spell_learns", "id"), &Entity::_spell_learns);
 }
