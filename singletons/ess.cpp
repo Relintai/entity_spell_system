@@ -60,20 +60,6 @@ void ESS::set_use_class_xp(const bool value) {
 	_use_class_xp = value;
 }
 
-bool ESS::get_automatic_class_levelups() const {
-	return _automatic_class_levelups;
-}
-void ESS::set_automatic_class_levelups(const bool value) {
-	_automatic_class_levelups = value;
-}
-
-bool ESS::get_use_global_class_level() const {
-	return _use_global_class_level;
-}
-void ESS::set_use_global_class_level(const bool value) {
-	_use_global_class_level = value;
-}
-
 bool ESS::get_allow_class_spell_learning() const {
 	return _allow_class_spell_learning;
 }
@@ -511,17 +497,9 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &ESS::set_automatic_load);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
 
-	ClassDB::bind_method(D_METHOD("get_automatic_class_levelups"), &ESS::get_automatic_class_levelups);
-	ClassDB::bind_method(D_METHOD("set_automatic_class_levelups", "load"), &ESS::set_automatic_class_levelups);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_class_levelups"), "set_automatic_class_levelups", "get_automatic_class_levelups");
-
 	ClassDB::bind_method(D_METHOD("get_use_class_xp"), &ESS::get_use_class_xp);
 	ClassDB::bind_method(D_METHOD("set_use_class_xp", "value"), &ESS::set_use_class_xp);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_class_xp"), "set_use_class_xp", "get_use_class_xp");
-
-	ClassDB::bind_method(D_METHOD("get_use_global_class_level"), &ESS::get_use_global_class_level);
-	ClassDB::bind_method(D_METHOD("set_use_global_class_level", "value"), &ESS::set_use_global_class_level);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_global_class_level"), "set_use_global_class_level", "get_use_global_class_level");
 
 	ClassDB::bind_method(D_METHOD("get_allow_class_spell_learning"), &ESS::get_allow_class_spell_learning);
 	ClassDB::bind_method(D_METHOD("set_allow_class_spell_learning", "value"), &ESS::set_allow_class_spell_learning);

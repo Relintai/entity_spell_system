@@ -60,12 +60,6 @@ public:
 	bool get_use_class_xp() const;
 	void set_use_class_xp(const bool value);
 
-	bool get_automatic_class_levelups() const;
-	void set_automatic_class_levelups(const bool value);
-
-	bool get_use_global_class_level() const;
-	void set_use_global_class_level(const bool value);
-
 	bool get_allow_class_spell_learning() const;
 	void set_allow_class_spell_learning(const bool value);
 
