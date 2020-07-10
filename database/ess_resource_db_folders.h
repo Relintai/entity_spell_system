@@ -39,8 +39,6 @@ SOFTWARE.
 
 #include "../item_enums.h"
 
-#include "../data/entities/xp_data.h"
-
 #include "../defines.h"
 
 class Aura;
@@ -64,15 +62,11 @@ public:
 	bool get_load_folders() const;
 	void set_load_folders(const bool load);
 
-	String get_xp_data_path();
-	void set_xp_data_path(String path);
-
 	PoolStringArray get_folders() const;
 	void set_folders(const PoolStringArray &folders);
 
 	virtual void _initialize();
 	void load_all();
-	void load_xp_data();
 	void load_folders();
 	void load_folder(const String &folder);
 	void add_resource(const Ref<Resource> &resource);

@@ -20,8 +20,6 @@ sources = [
     "data/auras/aura.cpp",
     "data/auras/aura_group.cpp",
 
-    "data/entities/xp_data.cpp",
-
     "data/items/item_instance.cpp",
     "data/items/item_template.cpp",
     "data/items/equipment_data.cpp",

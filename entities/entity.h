@@ -27,7 +27,6 @@ SOFTWARE.
 
 #include "scene/main/node.h"
 
-#include "../data/entities/xp_data.h"
 #include "../data/items/craft_recipe.h"
 #include "../data/items/item_instance.h"
 #include "../data/spells/spell.h"

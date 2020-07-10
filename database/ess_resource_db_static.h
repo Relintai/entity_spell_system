@@ -29,8 +29,6 @@ SOFTWARE.
 
 #include "../item_enums.h"
 
-#include "../data/entities/xp_data.h"
-
 #include "../defines.h"
 
 class Aura;

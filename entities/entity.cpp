@@ -6114,8 +6114,8 @@ void Entity::_notification_sxp_gained(int value) {
 		}
 	}*/
 
-	if (ESS::get_singleton()->get_resource_db()->get_xp_data()->can_character_level_up(gets_level())) {
-		int xpr = ESS::get_singleton()->get_resource_db()->get_xp_data()->get_character_xp(gets_level());
+	if (ESS::get_singleton()->can_character_level_up(gets_level())) {
+		int xpr = ESS::get_singleton()->get_character_xp(gets_level());
 
 		if (xpr <= gets_xp()) {
 			levelups(1);

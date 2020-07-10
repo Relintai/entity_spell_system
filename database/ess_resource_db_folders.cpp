@@ -44,13 +44,6 @@ void ESSResourceDBFolders::set_load_folders(const bool load) {
 	_load_folders = load;
 }
 
-String ESSResourceDBFolders::get_xp_data_path() {
-	return _xp_data_path;
-}
-void ESSResourceDBFolders::set_xp_data_path(String path) {
-	_xp_data_path = path;
-}
-
 PoolStringArray ESSResourceDBFolders::get_folders() const {
 	return _folders;
 }
@@ -63,20 +56,7 @@ void ESSResourceDBFolders::_initialize() {
 }
 
 void ESSResourceDBFolders::load_all() {
-	load_xp_data();
 	load_folders();
-}
-
-void ESSResourceDBFolders::load_xp_data() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_xp_data_path == "");
-
-	Ref<XPData> d = load_resource(_xp_data_path, "XPData");
-
-	ERR_FAIL_COND(!d.is_valid());
-
-	set_xp_data(d);
 }
 
 void ESSResourceDBFolders::load_folders() {
@@ -141,8 +121,6 @@ void ESSResourceDBFolders::add_resource(const Ref<Resource> &resource) {
 		add_item_template(resource);
 	} else if (cls == "EntitySpeciesData") {
 		add_entity_species_data(resource);
-	} else if (cls == "XPData") {
-		set_xp_data(resource);
 	}
 }
 
@@ -180,11 +158,6 @@ void ESSResourceDBFolders::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_automatic_load", "load"), &ESSResourceDBFolders::set_automatic_load);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "automatic_load"), "set_automatic_load", "get_automatic_load");
 
-	//XPData
-	ClassDB::bind_method(D_METHOD("get_xp_data_path"), &ESSResourceDBFolders::get_xp_data_path);
-	ClassDB::bind_method(D_METHOD("set_xp_data_path", "path"), &ESSResourceDBFolders::set_xp_data_path);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "xp_data_path"), "set_xp_data_path", "get_xp_data_path");
-
 	ClassDB::bind_method(D_METHOD("get_folders"), &ESSResourceDBFolders::get_folders);
 	ClassDB::bind_method(D_METHOD("set_folders", "recipe"), &ESSResourceDBFolders::set_folders);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "folders"), "set_folders", "get_folders");
@@ -192,7 +165,6 @@ void ESSResourceDBFolders::_bind_methods() {
 	//load
 	ClassDB::bind_method(D_METHOD("_initialize"), &ESSResourceDBFolders::_initialize);
 	ClassDB::bind_method(D_METHOD("load_all"), &ESSResourceDBFolders::load_all);
-	ClassDB::bind_method(D_METHOD("load_xp_data"), &ESSResourceDBFolders::load_xp_data);
 	ClassDB::bind_method(D_METHOD("load_folders"), &ESSResourceDBFolders::load_folders);
 	ClassDB::bind_method(D_METHOD("load_folder", "folder"), &ESSResourceDBFolders::load_folder);
 	ClassDB::bind_method(D_METHOD("add_resource", "resource"), &ESSResourceDBFolders::add_resource);

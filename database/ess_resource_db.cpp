@@ -41,13 +41,6 @@ void ESSResourceDB::set_skill_for_armor_type(const int index, const Ref<Aura> &a
 	_armor_type_skills[index] = aura;
 }
 
-Ref<XPData> ESSResourceDB::get_xp_data() {
-	return _xp_data;
-}
-void ESSResourceDB::set_xp_data(const Ref<XPData> &data) {
-	_xp_data = data;
-}
-
 void ESSResourceDB::add_entity_resource(Ref<EntityResource> cls) {
 	if (!cls.is_valid())
 		return;
@@ -233,15 +226,11 @@ int ESSResourceDB::entity_species_path_to_id(const StringName &path) const {
 }
 
 void ESSResourceDB::clear() {
-	_xp_data.unref();
 }
 
 void ESSResourceDB::add_entity_resource_db(Ref<ESSResourceDB> other) {
 	if (!other.is_valid())
 		return;
-
-	if (!_xp_data.is_valid() && other->_xp_data.is_valid())
-		_xp_data = other->_xp_data;
 
 	for (int i = 0; i < other->get_entity_resource_count(); ++i) {
 		add_entity_resource(other->get_entity_resource_index(i));
@@ -285,8 +274,6 @@ ESSResourceDB::ESSResourceDB() {
 }
 
 ESSResourceDB::~ESSResourceDB() {
-	_xp_data.unref();
-
 	_entity_resources_path_to_id.clear();
 	_entity_resources_id_to_path.clear();
 
@@ -319,11 +306,6 @@ void ESSResourceDB::_bind_methods() {
 	for (int i = 0; i < ItemEnums::ARMOR_TYPE_MAX; ++i) {
 		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "skill_for_armor_type_" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_skill_for_armor_type", "get_skill_for_armor_type", i);
 	}
-
-	//XPData
-	ClassDB::bind_method(D_METHOD("get_xp_data"), &ESSResourceDB::get_xp_data);
-	ClassDB::bind_method(D_METHOD("set_xp_data", "data"), &ESSResourceDB::set_xp_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "xp_data", PROPERTY_HINT_RESOURCE_TYPE, "XPData"), "set_xp_data", "get_xp_data");
 
 	//EntityResource
 	ClassDB::bind_method(D_METHOD("add_entity_resource", "cls"), &ESSResourceDB::add_entity_resource);

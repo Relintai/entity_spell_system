@@ -28,7 +28,6 @@ def get_doc_classes():
         "SpellEffectVisualSimple",
         "SpellEffectVisual",
         "Spell",
-        "XPData",
 
         "ESDragAndDrop",
 

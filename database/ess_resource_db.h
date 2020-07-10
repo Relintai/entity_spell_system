@@ -34,8 +34,6 @@ SOFTWARE.
 
 #include "../item_enums.h"
 
-#include "../data/entities/xp_data.h"
-
 #include "core/hash_map.h"
 
 class Aura;
@@ -55,9 +53,6 @@ class ESSResourceDB : public Resource {
 public:
 	Ref<Aura> get_skill_for_armor_type(const int index);
 	void set_skill_for_armor_type(const int index, const Ref<Aura> &aura);
-
-	Ref<XPData> get_xp_data();
-	void set_xp_data(const Ref<XPData> &data);
 
 	virtual Ref<EntityResource> get_entity_resource(int class_id) = 0;
 	virtual Ref<EntityResource> get_entity_resource_index(int index) = 0;
@@ -158,8 +153,6 @@ public:
 
 protected:
 	static void _bind_methods();
-
-	Ref<XPData> _xp_data;
 
 	Ref<Aura> _armor_type_skills[ItemEnums::ARMOR_TYPE_MAX];
 

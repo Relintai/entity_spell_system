@@ -30,7 +30,6 @@ SOFTWARE.
 #include "data/auras/aura.h"
 #include "data/auras/aura_group.h"
 
-#include "data/entities/xp_data.h"
 #include "data/items/equipment_data.h"
 #include "data/spells/spell_cooldown_manipulation_data.h"
 
@@ -164,7 +163,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<ItemContainerData>();
 	ClassDB::register_class<ItemContainerDataEntry>();
 
-	ClassDB::register_class<XPData>();
 	ClassDB::register_class<ItemEnums>();
 	ClassDB::register_class<ItemTemplate>();
 	ClassDB::register_class<ItemInstance>();
