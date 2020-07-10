@@ -74,20 +74,6 @@ void ESS::set_allow_class_recipe_learning(const bool value) {
 	_allow_class_recipe_learning = value;
 }
 
-int ESS::get_max_character_level() const {
-	return _max_character_level;
-}
-void ESS::set_max_character_level(const int value) {
-	_max_character_level = value;
-}
-
-int ESS::get_max_class_level() const {
-	return _max_class_level;
-}
-void ESS::set_max_class_level(const int value) {
-	_max_class_level = value;
-}
-
 int ESS::get_auto_learn_spells() const {
 	return _auto_learn_spells;
 }
@@ -484,6 +470,66 @@ void ESS::dminishing_return_steps_set(const int value) {
 	_dminishing_return_steps = value;
 }
 
+//Levels/XP
+int ESS::get_max_character_level() const {
+	return _character_xps.size();
+}
+int ESS::get_max_class_level() const {
+	return _class_xps.size();
+}
+
+int ESS::get_character_xp(int current_level) {
+	current_level -= 1;
+
+	ERR_FAIL_INDEX_V(current_level, _character_xps.size(), 9999999);
+
+	return _character_xps.get(current_level);
+}
+void ESS::set_character_xp(int current_level, int value) {
+	current_level -= 1;
+
+	ERR_FAIL_INDEX(current_level, _character_xps.size());
+
+	_character_xps.set(current_level, value);
+}
+bool ESS::can_character_level_up(int current_level) {
+	current_level -= 1;
+
+	return current_level < _character_xps.size();
+}
+
+PoolIntArray ESS::get_character_xp_data() {
+	return _character_xps;
+}
+void ESS::set_character_xp_data(const PoolIntArray &data) {
+	_character_xps = data;
+}
+
+int ESS::get_class_xp(int current_level) {
+	current_level -= 1;
+
+	ERR_FAIL_INDEX_V(current_level, _class_xps.size(), 9999999);
+
+	return _class_xps.get(current_level);
+}
+void ESS::set_class_xp(int current_level, int value) {
+	current_level -= 1;
+
+	ERR_FAIL_INDEX(current_level, _class_xps.size());
+
+	_class_xps.set(current_level, value);
+}
+bool ESS::can_class_level_up(int level) {
+	return level < _class_xps.size();
+}
+
+PoolIntArray ESS::get_class_xp_data() {
+	return _class_xps;
+}
+void ESS::set_class_xp_data(const PoolIntArray &data) {
+	_class_xps = data;
+}
+
 void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_use_spell_points"), &ESS::get_use_spell_points);
 	ClassDB::bind_method(D_METHOD("set_use_spell_points", "value"), &ESS::set_use_spell_points);
@@ -508,14 +554,6 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_allow_class_recipe_learning"), &ESS::get_allow_class_recipe_learning);
 	ClassDB::bind_method(D_METHOD("set_allow_class_recipe_learning", "value"), &ESS::set_allow_class_recipe_learning);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_class_recipe_learning"), "set_allow_class_recipe_learning", "get_allow_class_recipe_learning");
-
-	ClassDB::bind_method(D_METHOD("get_max_character_level"), &ESS::get_max_character_level);
-	ClassDB::bind_method(D_METHOD("set_max_character_level", "value"), &ESS::set_max_character_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_character_level"), "set_max_character_level", "get_max_character_level");
-
-	ClassDB::bind_method(D_METHOD("get_max_class_level"), &ESS::get_max_class_level);
-	ClassDB::bind_method(D_METHOD("set_max_class_level", "value"), &ESS::set_max_class_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_class_level"), "set_max_class_level", "get_max_class_level");
 
 	ClassDB::bind_method(D_METHOD("get_auto_learn_spells"), &ESS::get_auto_learn_spells);
 	ClassDB::bind_method(D_METHOD("set_auto_learn_spells", "value"), &ESS::set_auto_learn_spells);
@@ -617,6 +655,29 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("texture_layers_get"), &ESS::texture_layers_get);
 	ClassDB::bind_method(D_METHOD("texture_layers_set", "value"), &ESS::texture_layers_set);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "texture_layers"), "texture_layers_set", "texture_layers_get");
+
+	//Levels/XP
+	ClassDB::bind_method(D_METHOD("get_max_character_level"), &ESS::get_max_character_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_character_level"), "", "get_max_character_level");
+
+	ClassDB::bind_method(D_METHOD("get_max_class_level"), &ESS::get_max_class_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_class_level"), "", "get_max_class_level");
+
+	ClassDB::bind_method(D_METHOD("get_character_xp", "current_level"), &ESS::get_character_xp);
+	ClassDB::bind_method(D_METHOD("set_character_xp", "current_level", "value"), &ESS::set_character_xp);
+	ClassDB::bind_method(D_METHOD("can_character_level_up", "current_level"), &ESS::can_character_level_up);
+
+	ClassDB::bind_method(D_METHOD("get_character_xp_data"), &ESS::get_character_xp_data);
+	ClassDB::bind_method(D_METHOD("set_character_xp_data", "data"), &ESS::set_character_xp_data);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "character_xp_data"), "set_character_xp_data", "get_character_xp_data");
+
+	ClassDB::bind_method(D_METHOD("get_class_xp", "current_level"), &ESS::get_class_xp);
+	ClassDB::bind_method(D_METHOD("set_class_xp", "current_level", "value"), &ESS::set_class_xp);
+	ClassDB::bind_method(D_METHOD("can_class_level_up", "current_level"), &ESS::can_class_level_up);
+
+	ClassDB::bind_method(D_METHOD("get_class_xp_data"), &ESS::get_class_xp_data);
+	ClassDB::bind_method(D_METHOD("set_class_xp_data", "data"), &ESS::set_character_xp_data);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "class_xp_data"), "set_class_xp_data", "get_class_xp_data");
 }
 
 ESS::ESS() {
@@ -631,9 +692,6 @@ ESS::ESS() {
 	_automatic_class_levelups = GLOBAL_DEF("ess/level/automatic_class_levelups", false);
 	_use_global_class_level = GLOBAL_DEF("ess/level/use_global_class_level", false);
 	_auto_learn_spells = GLOBAL_DEF("ess/level/auto_learn_spells", true);
-
-	_max_character_level = GLOBAL_DEF("ess/level/max_character_level", 20);
-	_max_class_level = GLOBAL_DEF("ess/level/max_class_level", 40);
 
 	_automatic_load = GLOBAL_DEF("ess/data/automatic_load", false);
 
@@ -656,6 +714,9 @@ ESS::ESS() {
 	_dminishing_return_categories = GLOBAL_DEF("ess/enums/dminishing_return_categories", "Stun,Sleep,Disorient");
 	_dminishing_return_length = GLOBAL_DEF("ess/enums/dminishing_return_length", 15.0);
 	_dminishing_return_steps = GLOBAL_DEF("ess/enums/dminishing_return_steps", 4);
+
+	_class_xps = GLOBAL_DEF("ess/xp/class_xps", PoolIntArray());
+	_character_xps = GLOBAL_DEF("ess/xp/character_xps", PoolIntArray());
 
 	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load) {
 		call_deferred("load_all");
@@ -681,4 +742,7 @@ ESS::~ESS() {
 	_equip_slot_property_to_id.clear();
 
 	_skeletons_bones.resize(0);
+
+	_class_xps.resize(0);
+	_character_xps.resize(0);
 }

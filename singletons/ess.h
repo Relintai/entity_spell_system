@@ -66,12 +66,6 @@ public:
 	bool get_allow_class_recipe_learning() const;
 	void set_allow_class_recipe_learning(const bool value);
 
-	int get_max_character_level() const;
-	void set_max_character_level(const int value);
-
-	int get_max_class_level() const;
-	void set_max_class_level(const int value);
-
 	int get_auto_learn_spells() const;
 	void set_auto_learn_spells(const int value);
 
@@ -166,6 +160,24 @@ public:
 	int dminishing_return_steps_get() const;
 	void dminishing_return_steps_set(const int value);
 
+	//Levels/XP
+	int get_max_character_level() const;
+	int get_max_class_level() const;
+
+	int get_character_xp(int current_level);
+	void set_character_xp(int current_level, int value);
+	bool can_character_level_up(int current_level);
+
+	PoolIntArray get_character_xp_data();
+	void set_character_xp_data(const PoolIntArray &data);
+
+	int get_class_xp(int current_level);
+	void set_class_xp(int current_level, int value);
+	bool can_class_level_up(int current_level);
+
+	PoolIntArray get_class_xp_data();
+	void set_class_xp_data(const PoolIntArray &data);
+
 	ESS();
 	~ESS();
 
@@ -190,8 +202,6 @@ private:
 	bool _use_class_xp;
 	bool _allow_class_spell_learning;
 	bool _allow_class_recipe_learning;
-	int _max_character_level;
-	int _max_class_level;
 	bool _auto_learn_spells;
 
 	//Stats
@@ -226,6 +236,10 @@ private:
 	String _dminishing_return_categories;
 	float _dminishing_return_length;
 	int _dminishing_return_steps;
+
+	//Levels/XP
+	PoolIntArray _class_xps;
+	PoolIntArray _character_xps;
 };
 
 #endif
