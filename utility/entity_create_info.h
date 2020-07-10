@@ -56,17 +56,11 @@ public:
 	String get_entity_name() const;
 	void set_entity_name(const String &value);
 
-	int get_class_level() const;
-	void set_class_level(const int value);
+	int get_level() const;
+	void set_level(const int value);
 
-	int get_character_level() const;
-	void set_character_level(const int value);
-
-	int get_class_xp() const;
-	void set_class_xp(const int value);
-
-	int get_character_xp() const;
-	void set_character_xp(const int value);
+	int get_xp() const;
+	void set_xp(const int value);
 
 	Transform get_transform() const;
 	void set_transform(const Transform &value);
@@ -109,10 +103,8 @@ private:
 	int _network_owner;
 	EntityEnums::EntityController _entity_controller;
 	String _entity_name;
-	int _class_level;
-	int _character_level;
-	int _class_xp;
-	int _character_xp;
+	int _level;
+	int _xp;
 
 	Transform _transform;
 	Transform2D _transform2d;

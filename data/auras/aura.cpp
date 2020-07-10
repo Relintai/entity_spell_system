@@ -686,19 +686,13 @@ void Aura::notification_sxp_gained(Ref<AuraData> data, int value) {
 		call("_notification_sxp_gained", data, value);
 }
 
-void Aura::notification_sclass_level_up(Ref<AuraData> data, int value) {
+void Aura::notification_slevel_up(Ref<AuraData> data, int value) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_notification_sclass_level_up"))
-		call("_notification_sclass_level_up", data, value);
+	if (has_method("_notification_slevel_up"))
+		call("_notification_slevel_up", data, value);
 }
 
-void Aura::notification_scharacter_level_up(Ref<AuraData> data, int value) {
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_notification_scharacter_level_up"))
-		call("_notification_scharacter_level_up", data, value);
-}
 void Aura::notification_sentity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource) {
 	ERR_FAIL_COND(!data.is_valid());
 	ERR_FAIL_COND(!resource.is_valid());
@@ -784,18 +778,11 @@ void Aura::notification_cxp_gained(Ref<AuraData> data, int value) {
 		call("_notification_cxp_gained", data, value);
 }
 
-void Aura::notification_cclass_level_up(Ref<AuraData> data, int value) {
+void Aura::notification_clevel_up(Ref<AuraData> data, int value) {
 	ERR_FAIL_COND(!data.is_valid());
 
-	if (has_method("_notification_cclass_level_up"))
-		call("_notification_cclass_level_up", data, value);
-}
-
-void Aura::notification_ccharacter_level_up(Ref<AuraData> data, int value) {
-	ERR_FAIL_COND(!data.is_valid());
-
-	if (has_method("_notification_ccharacter_level_up"))
-		call("_notification_ccharacter_level_up", data, value);
+	if (has_method("_notification_clevel_up"))
+		call("_notification_clevel_up", data, value);
 }
 
 void Aura::notification_centity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource) {
@@ -1352,8 +1339,7 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_physics_process", "data"), &Aura::son_physics_process);
 
 	ClassDB::bind_method(D_METHOD("notification_sxp_gained", "data", "value"), &Aura::notification_sxp_gained);
-	ClassDB::bind_method(D_METHOD("notification_sclass_level_up", "data", "value"), &Aura::notification_sclass_level_up);
-	ClassDB::bind_method(D_METHOD("notification_scharacter_level_up", "data", "value"), &Aura::notification_scharacter_level_up);
+	ClassDB::bind_method(D_METHOD("notification_slevel_up", "data", "value"), &Aura::notification_slevel_up);
 
 	ClassDB::bind_method(D_METHOD("notification_sentity_resource_added", "data", "value"), &Aura::notification_sentity_resource_added);
 	ClassDB::bind_method(D_METHOD("notification_sentity_resource_removed", "data", "value"), &Aura::notification_sentity_resource_removed);
@@ -1375,8 +1361,7 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_son_physics_process", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 	BIND_VMETHOD(MethodInfo("_notification_sxp_gained", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_sclass_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_scharacter_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_slevel_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 
 	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
@@ -1403,8 +1388,7 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_cgcd_finished", "data"), &Aura::notification_cgcd_finished);
 
 	ClassDB::bind_method(D_METHOD("notification_cxp_gained", "data", "value"), &Aura::notification_cxp_gained);
-	ClassDB::bind_method(D_METHOD("notification_cclass_level_up", "data", "value"), &Aura::notification_cclass_level_up);
-	ClassDB::bind_method(D_METHOD("notification_ccharacter_level_up", "data", "value"), &Aura::notification_ccharacter_level_up);
+	ClassDB::bind_method(D_METHOD("notification_clevel_up", "data", "value"), &Aura::notification_clevel_up);
 
 	ClassDB::bind_method(D_METHOD("notification_centity_resource_added", "data", "value"), &Aura::notification_centity_resource_added);
 	ClassDB::bind_method(D_METHOD("notification_centity_resource_removed", "data", "value"), &Aura::notification_centity_resource_removed);
@@ -1435,8 +1419,7 @@ void Aura::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_notification_cgcd_finished", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
 	BIND_VMETHOD(MethodInfo("_notification_cxp_gained", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_cclass_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_ccharacter_level_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_clevel_up", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 
 	BIND_VMETHOD(MethodInfo("_notification_centity_resource_added", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));
 	BIND_VMETHOD(MethodInfo("_notification_centity_resource_removed", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData"), PropertyInfo(Variant::INT, "value")));

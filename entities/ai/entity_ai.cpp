@@ -241,32 +241,18 @@ void EntityAI::notification_sxp_gained_bind(Node *entity, int value) {
 	notification_sxp_gained(e, value);
 }
 
-void EntityAI::notification_sclass_level_up(Entity *entity, int value) {
-	if (has_method("_notification_sclass_level_up"))
-		call("_notification_sclass_level_up", entity);
+void EntityAI::notification_slevel_up(Entity *entity, int value) {
+	if (has_method("_notification_slevel_up"))
+		call("_notification_slevel_up", entity);
 }
-void EntityAI::notification_sclass_level_up_bind(Node *entity, int value) {
+void EntityAI::notification_slevel_up_bind(Node *entity, int value) {
 	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
 
 	Entity *e = Object::cast_to<Entity>(entity);
 
 	ERR_FAIL_COND(e == NULL);
 
-	notification_sclass_level_up(e, value);
-}
-
-void EntityAI::notification_scharacter_level_up(Entity *entity, int value) {
-	if (has_method("_notification_scharacter_level_up"))
-		call("_notification_scharacter_level_up", entity);
-}
-void EntityAI::notification_scharacter_level_up_bind(Node *entity, int value) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(entity));
-
-	Entity *e = Object::cast_to<Entity>(entity);
-
-	ERR_FAIL_COND(e == NULL);
-
-	notification_scharacter_level_up(e, value);
+	notification_slevel_up(e, value);
 }
 
 void EntityAI::notification_sentity_resource_added(Ref<EntityResource> resource) {
@@ -436,8 +422,7 @@ void EntityAI::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_sgcd_finished", "entity"), &EntityAI::notification_sgcd_finished_bind);
 
 	ClassDB::bind_method(D_METHOD("notification_sxp_gained", "entity", "value"), &EntityAI::notification_sxp_gained_bind);
-	ClassDB::bind_method(D_METHOD("notification_sclass_level_up", "entity", "value"), &EntityAI::notification_sclass_level_up_bind);
-	ClassDB::bind_method(D_METHOD("notification_scharacter_level_up", "entity", "value"), &EntityAI::notification_scharacter_level_up_bind);
+	ClassDB::bind_method(D_METHOD("notification_slevel_up", "entity", "value"), &EntityAI::notification_slevel_up_bind);
 
 	ClassDB::bind_method(D_METHOD("notification_sentity_resource_added", "resource"), &EntityAI::notification_sentity_resource_added);
 	ClassDB::bind_method(D_METHOD("notification_sentity_resource_removed", "resource"), &EntityAI::notification_sentity_resource_removed);
@@ -454,8 +439,7 @@ void EntityAI::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_notification_sgcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	BIND_VMETHOD(MethodInfo("_notification_sxp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_sclass_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_scharacter_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_slevel_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
 	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
 	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));

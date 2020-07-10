@@ -309,25 +309,15 @@ public:
 	int getc_model_index();
 	void setc_model_index(int value);
 
-	int gets_class_level();
-	void sets_class_level(int value);
-	int getc_class_level();
-	void setc_class_level(int value);
+	int gets_level();
+	void sets_level(int value);
+	int getc_level();
+	void setc_level(int value);
 
-	int gets_character_level();
-	void sets_character_level(int value);
-	int getc_character_level();
-	void setc_character_level(int value);
-
-	int gets_class_xp();
-	void sets_class_xp(int value);
-	int getc_class_xp();
-	void setc_class_xp(int value);
-
-	int gets_character_xp();
-	void sets_character_xp(int value);
-	int getc_character_xp();
-	void setc_character_xp(int value);
+	int gets_xp();
+	void sets_xp(int value);
+	int getc_xp();
+	void setc_xp(int value);
 
 	int gets_money();
 	void sets_money(int value);
@@ -549,8 +539,7 @@ public:
 	void notification_sentity_resource_removed(Ref<EntityResource> resource);
 
 	void notification_sxp_gained(int value);
-	void notification_sclass_level_up(int value);
-	void notification_scharacter_level_up(int value);
+	void notification_slevel_up(int value);
 
 	void notification_sdeath();
 
@@ -572,8 +561,7 @@ public:
 	void notification_centity_resource_removed(Ref<EntityResource> resource);
 
 	void notification_cxp_gained(int value);
-	void notification_cclass_level_up(int value);
-	void notification_ccharacter_level_up(int value);
+	void notification_clevel_up(int value);
 
 	void notification_cdeath();
 
@@ -625,10 +613,8 @@ public:
 	//XP Operations
 	void xp_adds(int value);
 	void xp_addc(int value);
-	void levelup_sclass(int value);
-	void levelup_cclass(int value);
-	void levelup_scharacter(int value);
-	void levelup_ccharacter(int value);
+	void levelups(int value);
+	void levelupc(int value);
 
 	//Aura Manipulation
 	void aura_adds(Ref<AuraData> aura);
@@ -1095,8 +1081,7 @@ public:
 protected:
 	void _crafts(int id);
 	void _notification_sxp_gained(int value);
-	void _notification_scharacter_level_up(int level);
-	void _notification_sclass_level_up(int level);
+	void _notification_slevel_up(int level);
 	void _moved();
 	void _con_target_changed(Node *p_entity, Node *p_old_target);
 	void _notification_sdeath();
@@ -1161,17 +1146,11 @@ private:
 	int _s_model_index;
 	int _c_model_index;
 
-	int _s_class_level;
-	int _c_class_level;
+	int _s_level;
+	int _c_level;
 
-	int _s_character_level;
-	int _c_character_level;
-
-	int _s_class_xp;
-	int _c_class_xp;
-
-	int _s_character_xp;
-	int _c_character_xp;
+	int _s_xp;
+	int _c_xp;
 
 	int _s_money;
 	int _c_money;

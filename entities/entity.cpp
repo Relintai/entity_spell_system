@@ -424,72 +424,38 @@ void Entity::setc_model_index(int value) {
 	}
 }
 
-int Entity::gets_class_level() {
-	return _s_class_level;
+int Entity::gets_level() {
+	return _s_level;
 }
-void Entity::sets_class_level(int value) {
-	_s_class_level = value;
+void Entity::sets_level(int value) {
+	_s_level = value;
 
-	emit_signal("son_character_level_changed", this, value);
+	emit_signal("son_level_changed", this, value);
 
-	VRPC(setc_class_level, value);
+	VRPC(setc_level, value);
 }
-int Entity::getc_class_level() {
-	return _c_class_level;
+int Entity::getc_level() {
+	return _c_level;
 }
-void Entity::setc_class_level(int value) {
-	_c_class_level = value;
+void Entity::setc_level(int value) {
+	_c_level = value;
 
-	emit_signal("con_character_level_changed", this, value);
-}
-
-int Entity::gets_character_level() {
-	return _s_character_level;
-}
-void Entity::sets_character_level(int value) {
-	_s_character_level = value;
-
-	emit_signal("son_character_level_changed", this, value);
-
-	VRPC(setc_character_level, value);
-}
-int Entity::getc_character_level() {
-	return _c_character_level;
-}
-void Entity::setc_character_level(int value) {
-	_c_character_level = value;
-
-	emit_signal("con_character_level_changed", this, value);
+	emit_signal("con_level_changed", this, value);
 }
 
-int Entity::gets_class_xp() {
-	return _s_class_xp;
+int Entity::gets_xp() {
+	return _s_xp;
 }
-void Entity::sets_class_xp(int value) {
-	_s_class_xp = value;
+void Entity::sets_xp(int value) {
+	_s_xp = value;
 
-	ORPC(setc_class_xp, value);
+	ORPC(setc_xp, value);
 }
-int Entity::getc_class_xp() {
-	return _c_class_xp;
+int Entity::getc_xp() {
+	return _c_xp;
 }
-void Entity::setc_class_xp(int value) {
-	_c_class_xp = value;
-}
-
-int Entity::gets_character_xp() {
-	return _s_character_xp;
-}
-void Entity::sets_character_xp(int value) {
-	_s_character_xp = value;
-
-	ORPC(setc_character_xp, value);
-}
-int Entity::getc_character_xp() {
-	return _c_character_xp;
-}
-void Entity::setc_character_xp(int value) {
-	_c_character_xp = value;
+void Entity::setc_xp(int value) {
+	_c_xp = value;
 }
 
 int Entity::gets_money() {
@@ -637,11 +603,9 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 	sets_original_entity_controller(info->get_entity_controller());
 	sets_entity_controller(info->get_entity_controller());
 
-	_s_character_level = info->get_character_level();
-	_s_class_level = info->get_class_level();
+	_s_level = info->get_level();
 
-	_s_class_xp = info->get_class_xp();
-	_s_character_xp = info->get_character_xp();
+	_s_xp = info->get_xp();
 
 	sets_entity_name(info->get_entity_name());
 
@@ -676,11 +640,12 @@ void Entity::_setup() {
 		}
 
 		if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY) {
+			/*
 			if (ESS::get_singleton()->get_use_global_class_level()) {
 				Ref<ClassProfile> cp = ProfileManager::get_singleton()->getc_player_profile()->get_class_profile(gets_entity_data()->get_path());
 
 				if (cp.is_valid()) {
-					int leveldiff = cp->get_level() - _s_class_level;
+					int leveldiff = cp->get_level() - _s_level;
 
 					sets_class_level(cp->get_level());
 
@@ -691,7 +656,7 @@ void Entity::_setup() {
 					sets_class_xp(cp->get_xp());
 				}
 			}
-
+*/
 			setup_actionbars();
 		}
 
@@ -778,19 +743,13 @@ void Entity::_setup() {
 		sets_entity_name(_s_entity_data->get_name());
 	}
 
-	int chl = _s_character_level;
-	int cl = _s_class_level;
-	int chxp = _s_character_xp;
-	int clxp = _s_class_xp;
+	int chl = _s_level;
+	int chxp = _s_xp;
 
-	_s_character_level = 1;
-	_s_class_level = 1;
+	_s_level = 1;
 
-	levelup_scharacter(chl - 1);
-	levelup_sclass(cl - 1);
-
-	sets_class_xp(clxp);
-	sets_character_xp(chxp);
+	levelups(chl - 1);
+	sets_xp(chxp);
 
 	if (ESS::get_singleton()->get_allow_class_spell_learning()) {
 		Ref<ClassProfile> class_profile = ProfileManager::get_singleton()->getc_player_profile()->get_class_profile(_s_entity_data->get_path());
@@ -1119,11 +1078,9 @@ Dictionary Entity::_to_dict() {
 
 	dict["type"] = _s_type;
 	dict["model_index"] = _s_model_index;
-	dict["class_level"] = gets_class_level();
-	dict["character_level"] = _s_character_level;
+	dict["level"] = _s_level;
 
-	dict["class_xp"] = gets_class_xp();
-	dict["character_xp"] = _s_character_xp;
+	dict["xp"] = gets_xp();
 
 	dict["money"] = _s_money;
 
@@ -1340,16 +1297,18 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	sets_model_index(static_cast<int>(static_cast<int>(dict.get("model_index", 0))));
 
+	/*
 	if (ESS::get_singleton()->get_use_global_class_level()) {
-		_s_class_level = (dict.get("class_level", 0));
-		_s_class_xp = (dict.get("class_xp", 0));
+		_s_level = (dict.get("class_level", 0));
+		_s_xp = (dict.get("class_xp", 0));
 	} else {
 		sets_class_level(dict.get("class_level", 0));
-		sets_class_xp(dict.get("class_xp", 0));
+		sets_xp(dict.get("xp", 0));
 	}
+*/
 
-	sets_character_level(dict.get("character_level", 0));
-	sets_character_xp(dict.get("character_xp", 0));
+	sets_level(dict.get("level", 0));
+	sets_xp(dict.get("xp", 0));
 
 	sets_money(dict.get("money", 0));
 
@@ -2873,56 +2832,35 @@ void Entity::copen_window(int window_id) {
 
 //XP Operations
 void Entity::xp_adds(int value) {
-	_s_class_xp += value;
-	_s_character_xp += value;
+	_s_xp += value;
 
 	notification_sxp_gained(value);
 
 	ORPC(xp_addc, value);
 }
 void Entity::xp_addc(int value) {
-	_c_class_xp += value;
-	_c_character_xp += value;
+	_c_xp += value;
 
 	notification_cxp_gained(value);
 }
 
-void Entity::levelup_sclass(int value) {
+void Entity::levelups(int value) {
 	if (value <= 0)
 		return;
 
-	if (_s_class_level == ESS::get_singleton()->get_max_class_level())
+	if (_s_level == ESS::get_singleton()->get_max_character_level())
 		return;
 
-	_s_class_level += value;
+	_s_level += value;
 
-	notification_sclass_level_up(value);
+	notification_slevel_up(value);
 
-	VRPC(levelup_cclass, value);
+	VRPC(levelupc, value);
 }
-void Entity::levelup_cclass(int value) {
-	_c_class_level += value;
+void Entity::levelupc(int value) {
+	_c_level += value;
 
-	notification_cclass_level_up(value);
-}
-
-void Entity::levelup_scharacter(int value) {
-	if (value <= 0)
-		return;
-
-	if (_s_character_level == ESS::get_singleton()->get_max_character_level())
-		return;
-
-	_s_character_level += value;
-
-	notification_scharacter_level_up(value);
-
-	VRPC(levelup_ccharacter, value);
-}
-void Entity::levelup_ccharacter(int value) {
-	_c_character_level += value;
-
-	notification_ccharacter_level_up(value);
+	notification_clevel_up(value);
 }
 
 ////    Spell System    ////
@@ -3180,12 +3118,8 @@ void Entity::notification_sxp_gained(int value) {
 	NOTIFICATION_IMPLS(notification_sxp_gained, "notification_sxp_gained", value);
 }
 
-void Entity::notification_sclass_level_up(int value) {
-	NOTIFICATION_IMPLS(notification_sclass_level_up, "notification_sclass_level_up", value);
-}
-
-void Entity::notification_scharacter_level_up(int value) {
-	NOTIFICATION_IMPLS(notification_scharacter_level_up, "notification_scharacter_level_up", value);
+void Entity::notification_slevel_up(int value) {
+	NOTIFICATION_IMPLS(notification_slevel_up, "notification_slevel_up", value);
 }
 
 void Entity::notification_sentity_resource_added(Ref<EntityResource> resource) {
@@ -3645,12 +3579,8 @@ void Entity::notification_cxp_gained(int value) {
 	NOTIFICATION_IMPLC(notification_cxp_gained, "notification_cxp_gained", value)
 }
 
-void Entity::notification_cclass_level_up(int value) {
-	NOTIFICATION_IMPLC(notification_cclass_level_up, "notification_cclass_level_up", value)
-}
-
-void Entity::notification_ccharacter_level_up(int value) {
-	NOTIFICATION_IMPLC(notification_ccharacter_level_up, "notification_ccharacter_level_up", value)
+void Entity::notification_clevel_up(int value) {
+	NOTIFICATION_IMPLC(notification_clevel_up, "notification_clevel_up", value)
 }
 
 void Entity::notification_centity_resource_added(Ref<EntityResource> resource) {
@@ -5803,17 +5733,13 @@ Entity::Entity() {
 	_s_model_index = 0;
 	_c_model_index = 0;
 
-	_s_class_level = 1;
-	_c_class_level = 1;
+	_s_level = 1;
+	_c_level = 1;
 
-	_s_character_level = 1;
-	_c_character_level = 1;
+	_s_level = 1;
+	_c_level = 1;
 
-	_s_class_xp = 0;
-	_c_class_xp = 0;
-
-	_s_character_xp = 0;
-	_c_character_xp = 0;
+	_s_xp = 0;
 
 	_s_send_flag = 0;
 
@@ -5897,7 +5823,7 @@ Entity::Entity() {
 	SET_RPC_REMOTE("setc_entity_name");
 	SET_RPC_REMOTE("setc_model_index");
 	SET_RPC_REMOTE("setc_class_level");
-	SET_RPC_REMOTE("setc_character_level");
+	SET_RPC_REMOTE("setc_level");
 	SET_RPC_REMOTE("setc_class_xp");
 	SET_RPC_REMOTE("setc_character_xp");
 	SET_RPC_REMOTE("setc_seed");
@@ -6175,6 +6101,7 @@ void Entity::_crafts(int id) {
 }
 
 void Entity::_notification_sxp_gained(int value) {
+	/*
 	if (ESS::get_singleton()->get_use_class_xp() && ESS::get_singleton()->get_automatic_class_levelups()) {
 		if (ESS::get_singleton()->get_resource_db()->get_xp_data()->can_class_level_up(gets_class_level())) {
 
@@ -6185,19 +6112,19 @@ void Entity::_notification_sxp_gained(int value) {
 				sets_class_xp(0);
 			}
 		}
-	}
+	}*/
 
-	if (ESS::get_singleton()->get_resource_db()->get_xp_data()->can_character_level_up(gets_character_level())) {
-		int xpr = ESS::get_singleton()->get_resource_db()->get_xp_data()->get_character_xp(gets_character_level());
+	if (ESS::get_singleton()->get_resource_db()->get_xp_data()->can_character_level_up(gets_level())) {
+		int xpr = ESS::get_singleton()->get_resource_db()->get_xp_data()->get_character_xp(gets_level());
 
-		if (xpr <= gets_character_xp()) {
-			levelup_scharacter(1);
-			sets_character_xp(0);
+		if (xpr <= gets_xp()) {
+			levelups(1);
+			sets_xp(0);
 		}
 	}
 }
 
-void Entity::_notification_scharacter_level_up(int level) {
+void Entity::_notification_slevel_up(int level) {
 	if (!gets_entity_data().is_valid())
 		return;
 
@@ -6207,7 +6134,7 @@ void Entity::_notification_scharacter_level_up(int level) {
 		return;
 
 	for (int i = 0; i < ESS::get_singleton()->stat_get_main_stat_count(); ++i) {
-		int st = gets_entity_data()->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_character_level() - level, gets_character_level());
+		int st = gets_entity_data()->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_level() - level, gets_level());
 
 		stat_mod_base(i, st);
 	}
@@ -6218,16 +6145,6 @@ void Entity::_notification_scharacter_level_up(int level) {
 
 		sets_free_character_talent_points(gets_free_character_talent_points() + level);
 	}
-}
-
-void Entity::_notification_sclass_level_up(int level) {
-	if (!gets_entity_data().is_valid())
-		return;
-
-	Ref<EntityClassData> ecd = gets_entity_data()->get_entity_class_data();
-
-	if (!ecd.is_valid())
-		return;
 
 	if (ESS::get_singleton()->get_use_spell_points())
 		sets_free_spell_points(gets_free_spell_points() + ecd->get_spell_points_per_level() * level);
@@ -6241,7 +6158,7 @@ void Entity::_notification_sclass_level_up(int level) {
 			if (!sp.is_valid())
 				continue;
 
-			if (sp->get_level() <= gets_class_level() && !spell_hass(sp)) {
+			if (sp->get_level() <= gets_level() && !spell_hass(sp)) {
 				Ref<Spell> rs = sp->get_training_required_spell();
 
 				if (rs.is_valid() && !spell_hass(rs)) {
@@ -6620,8 +6537,7 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_notification_sgcd_finished"));
 
 	BIND_VMETHOD(MethodInfo("_notification_sxp_gained", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_sclass_level_up", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_scharacter_level_up", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_slevel_up", PropertyInfo(Variant::INT, "value")));
 
 	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
 	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
@@ -6805,8 +6721,7 @@ void Entity::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_notification_cgcd_finished"));
 
 	BIND_VMETHOD(MethodInfo("_notification_cxp_gained", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_cclass_level_up", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_ccharacter_level_up", PropertyInfo(Variant::INT, "value")));
+	BIND_VMETHOD(MethodInfo("_notification_clevel_up", PropertyInfo(Variant::INT, "value")));
 
 	BIND_VMETHOD(MethodInfo("_notification_centity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
 	BIND_VMETHOD(MethodInfo("_notification_centity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
@@ -6824,8 +6739,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_cgcd_finished"), &Entity::notification_cgcd_finished);
 
 	ClassDB::bind_method(D_METHOD("notification_cxp_gained", "value"), &Entity::notification_cxp_gained);
-	ClassDB::bind_method(D_METHOD("notification_cclass_level_up", "value"), &Entity::notification_cclass_level_up);
-	ClassDB::bind_method(D_METHOD("notification_ccharacter_level_up", "value"), &Entity::notification_ccharacter_level_up);
+	ClassDB::bind_method(D_METHOD("notification_clevel_up", "value"), &Entity::notification_clevel_up);
 
 	ClassDB::bind_method(D_METHOD("notification_centity_resource_added", "resource"), &Entity::notification_centity_resource_added);
 	ClassDB::bind_method(D_METHOD("notification_centity_resource_removed", "resource"), &Entity::notification_centity_resource_removed);
@@ -6872,30 +6786,20 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("notification_sxp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 	ADD_SIGNAL(MethodInfo("notification_cxp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
-	ADD_SIGNAL(MethodInfo("notification_cclass_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	ADD_SIGNAL(MethodInfo("notification_sclass_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("notification_clevel_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	ADD_SIGNAL(MethodInfo("notification_slevel_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
 
-	ADD_SIGNAL(MethodInfo("notification_ccharacter_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	ADD_SIGNAL(MethodInfo("notification_scharacter_level_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-
-	ADD_SIGNAL(MethodInfo("son_class_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
-	ADD_SIGNAL(MethodInfo("con_class_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
-
-	ADD_SIGNAL(MethodInfo("son_character_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
-	ADD_SIGNAL(MethodInfo("con_character_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
+	ADD_SIGNAL(MethodInfo("son_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
+	ADD_SIGNAL(MethodInfo("con_level_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "level")));
 
 	ClassDB::bind_method(D_METHOD("xp_adds", "value"), &Entity::xp_adds);
 	ClassDB::bind_method(D_METHOD("xp_addc", "value"), &Entity::xp_addc);
 
-	ClassDB::bind_method(D_METHOD("levelup_sclass", "value"), &Entity::levelup_sclass);
-	ClassDB::bind_method(D_METHOD("levelup_cclass", "value"), &Entity::levelup_cclass);
-
-	ClassDB::bind_method(D_METHOD("levelup_scharacter", "value"), &Entity::levelup_scharacter);
-	ClassDB::bind_method(D_METHOD("levelup_ccharacter", "value"), &Entity::levelup_ccharacter);
+	ClassDB::bind_method(D_METHOD("levelups", "value"), &Entity::levelups);
+	ClassDB::bind_method(D_METHOD("levelupc", "value"), &Entity::levelupc);
 
 	ClassDB::bind_method(D_METHOD("notification_sxp_gained", "value"), &Entity::notification_sxp_gained);
-	ClassDB::bind_method(D_METHOD("notification_sclass_level_up", "value"), &Entity::notification_sclass_level_up);
-	ClassDB::bind_method(D_METHOD("notification_scharacter_level_up", "value"), &Entity::notification_scharacter_level_up);
+	ClassDB::bind_method(D_METHOD("notification_slevel_up", "value"), &Entity::notification_slevel_up);
 
 	//Aura Manipulation
 	ClassDB::bind_method(D_METHOD("aura_adds", "aura"), &Entity::aura_adds);
@@ -7053,37 +6957,21 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_model_index", "value"), &Entity::setc_model_index);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cmodel_index", PROPERTY_HINT_NONE, "", 0), "setc_model_index", "getc_model_index");
 
-	ClassDB::bind_method(D_METHOD("gets_class_level"), &Entity::gets_class_level);
-	ClassDB::bind_method(D_METHOD("sets_class_level", "value"), &Entity::sets_class_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sclass_level"), "sets_class_level", "gets_class_level");
+	ClassDB::bind_method(D_METHOD("gets_level"), &Entity::gets_level);
+	ClassDB::bind_method(D_METHOD("sets_level", "value"), &Entity::sets_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "slevel"), "sets_level", "gets_level");
 
-	ClassDB::bind_method(D_METHOD("getc_class_level"), &Entity::getc_class_level);
-	ClassDB::bind_method(D_METHOD("setc_class_level", "value"), &Entity::setc_class_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cclass_level", PROPERTY_HINT_NONE, "", 0), "setc_class_level", "getc_class_level");
+	ClassDB::bind_method(D_METHOD("getc_level"), &Entity::getc_level);
+	ClassDB::bind_method(D_METHOD("setc_level", "value"), &Entity::setc_level);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "clevel", PROPERTY_HINT_NONE, "", 0), "setc_level", "getc_level");
 
-	ClassDB::bind_method(D_METHOD("gets_character_level"), &Entity::gets_character_level);
-	ClassDB::bind_method(D_METHOD("sets_character_level", "value"), &Entity::sets_character_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "scharacter_level"), "sets_character_level", "gets_character_level");
+	ClassDB::bind_method(D_METHOD("gets_xp"), &Entity::gets_xp);
+	ClassDB::bind_method(D_METHOD("sets_xp", "value"), &Entity::sets_xp);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "sxp", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_xp", "gets_xp");
 
-	ClassDB::bind_method(D_METHOD("getc_character_level"), &Entity::getc_character_level);
-	ClassDB::bind_method(D_METHOD("setc_character_level", "value"), &Entity::setc_character_level);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "ccharacter_level", PROPERTY_HINT_NONE, "", 0), "setc_character_level", "getc_character_level");
-
-	ClassDB::bind_method(D_METHOD("gets_class_xp"), &Entity::gets_class_xp);
-	ClassDB::bind_method(D_METHOD("sets_class_xp", "value"), &Entity::sets_class_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "sclass_xp", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_class_xp", "gets_class_xp");
-
-	ClassDB::bind_method(D_METHOD("getc_class_xp"), &Entity::getc_class_xp);
-	ClassDB::bind_method(D_METHOD("setc_class_xp", "value"), &Entity::setc_class_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "cclass_xp", PROPERTY_HINT_NONE, "", 0), "setc_class_xp", "getc_class_xp");
-
-	ClassDB::bind_method(D_METHOD("gets_character_xp"), &Entity::gets_character_xp);
-	ClassDB::bind_method(D_METHOD("sets_character_xp", "value"), &Entity::sets_character_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "scharacter_xp", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_character_xp", "gets_character_xp");
-
-	ClassDB::bind_method(D_METHOD("getc_character_xp"), &Entity::getc_character_xp);
-	ClassDB::bind_method(D_METHOD("setc_character_xp", "value"), &Entity::setc_character_xp);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "ccharacter_xp", PROPERTY_HINT_NONE, "", 0), "setc_character_xp", "getc_character_xp");
+	ClassDB::bind_method(D_METHOD("getc_xp"), &Entity::getc_xp);
+	ClassDB::bind_method(D_METHOD("setc_xp", "value"), &Entity::setc_xp);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "cxp", PROPERTY_HINT_NONE, "", 0), "setc_xp", "getc_xp");
 
 	ClassDB::bind_method(D_METHOD("gets_money"), &Entity::gets_money);
 	ClassDB::bind_method(D_METHOD("sets_money", "value"), &Entity::sets_money);
@@ -7640,8 +7528,7 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_crafts", "id"), &Entity::_crafts);
 	ClassDB::bind_method(D_METHOD("_notification_sxp_gained", "value"), &Entity::_notification_sxp_gained);
-	ClassDB::bind_method(D_METHOD("_notification_scharacter_level_up", "level"), &Entity::_notification_scharacter_level_up);
-	ClassDB::bind_method(D_METHOD("_notification_sclass_level_up", "level"), &Entity::_notification_sclass_level_up);
+	ClassDB::bind_method(D_METHOD("_notification_slevel_up", "level"), &Entity::_notification_slevel_up);
 	ClassDB::bind_method(D_METHOD("_moved"), &Entity::_moved);
 	ClassDB::bind_method(D_METHOD("_con_target_changed", "entity", "old_target"), &Entity::_con_target_changed);
 	ClassDB::bind_method(D_METHOD("_notification_sdeath"), &Entity::_notification_sdeath);

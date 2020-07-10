@@ -276,8 +276,7 @@ public:
 	void son_physics_process(Ref<AuraData> data);
 
 	void notification_sxp_gained(Ref<AuraData> data, int value);
-	void notification_sclass_level_up(Ref<AuraData> data, int value);
-	void notification_scharacter_level_up(Ref<AuraData> data, int value);
+	void notification_slevel_up(Ref<AuraData> data, int value);
 
 	void notification_sentity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource);
 	void notification_sentity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource);
@@ -299,8 +298,7 @@ public:
 	void notification_cgcd_finished(Ref<AuraData> data);
 
 	void notification_cxp_gained(Ref<AuraData> data, int value);
-	void notification_cclass_level_up(Ref<AuraData> data, int value);
-	void notification_ccharacter_level_up(Ref<AuraData> data, int value);
+	void notification_clevel_up(Ref<AuraData> data, int value);
 
 	void notification_centity_resource_added(Ref<AuraData> data, Ref<EntityResource> resource);
 	void notification_centity_resource_removed(Ref<AuraData> data, Ref<EntityResource> resource);

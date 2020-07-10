@@ -95,10 +95,8 @@ public:
 
 	void notification_sxp_gained(Entity *entity, int value);
 	void notification_sxp_gained_bind(Node *entity, int value);
-	void notification_sclass_level_up(Entity *entity, int value);
-	void notification_sclass_level_up_bind(Node *entity, int value);
-	void notification_scharacter_level_up(Entity *entity, int value);
-	void notification_scharacter_level_up_bind(Node *entity, int value);
+	void notification_slevel_up(Entity *entity, int value);
+	void notification_slevel_up_bind(Node *entity, int value);
 
 	void notification_sentity_resource_added(Ref<EntityResource> resource);
 	void notification_sentity_resource_removed(Ref<EntityResource> resource);
