@@ -2589,6 +2589,14 @@ Vector<Variant> Entity::sresources_get() {
 }
 void Entity::sresources_set(const Vector<Variant> &resources) {
 	VARIANT_ARRAY_SET(resources, _s_resources, EntityResource);
+
+	for (int i = 0; i < _s_resources.size(); ++i) {
+		Ref<EntityResource> res = _s_resources[i];
+
+		ERR_CONTINUE(!res.is_valid());
+
+		res->set_owner(this);
+	}
 }
 
 void Entity::stake_damage(Ref<SpellDamageInfo> info) {
