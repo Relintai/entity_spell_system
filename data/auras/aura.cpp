@@ -1129,16 +1129,19 @@ void Aura::_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo>
 }
 
 void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> info) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(info->dealer_get()));
+	if (info->dealer_get() && !INSTANCE_VALIDATE(info->dealer_get())) {
+		info->dealer_set(NULL);
+	}
 
 	Math::randomize();
 
 	info->damage_set(_damage_min + (Math::rand() % (_damage_max = _damage_min)));
-	info->source_set_type(SpellDamageInfo::DAMAGE_SOURCE_AURA);
 
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(info->dealer_get()));
-
-	info->dealer_get()->sdeal_damage_to(info);
+	if (info->dealer_get()) {
+		info->dealer_get()->sdeal_damage_to(info);
+	} else {
+		info->receiver_get()->stake_damage(info);
+	}
 }
 
 void Aura::_sapply_passives_heal_receive(Ref<SpellHealInfo> data) {
@@ -1154,16 +1157,19 @@ void Aura::_calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> i
 }
 
 void Aura::_handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info) {
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(info->dealer_get()));
+		if (info->dealer_get() && !INSTANCE_VALIDATE(info->dealer_get())) {
+		info->dealer_set(NULL);
+	}
 
 	Math::randomize();
 
 	info->heal_set(_heal_min + (Math::rand() % (_heal_max = _heal_min)));
-	info->source_set_type(SpellHealInfo::HEAL_SOURCE_AURA);
 
-	ERR_FAIL_COND(!INSTANCE_VALIDATE(info->dealer_get()));
-
-	info->dealer_get()->sdeal_heal_to(info);
+	if (info->dealer_get()) {
+		info->dealer_get()->sdeal_heal_to(info);
+	} else {
+		info->receiver_get()->stake_heal(info);
+	}
 }
 
 void Aura::_validate_property(PropertyInfo &property) const {
