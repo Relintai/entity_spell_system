@@ -2668,14 +2668,7 @@ void Entity::sdeal_damage_to(Ref<SpellDamageInfo> info) {
 	VRPCOBJ12(cdealt_damage_rpc, JSON::print(info->to_dict()), notification_cdamage, SpellEnums::NOTIFICATION_DAMAGE_DEALT_DAMAGE, info);
 
 	//signal
-	emit_signal("son_damage_received", this, info);
-
-	Ref<EntityResource> hp = resource_gets_index(EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH);
-	ERR_FAIL_COND(!hp.is_valid());
-
-	if (hp->get_current_value() <= 0) {
-		dies();
-	}
+	emit_signal("son_dealt_damage", this, info);
 }
 
 void Entity::stake_heal(Ref<SpellHealInfo> info) {
@@ -6454,7 +6447,10 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("son_damage_received", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	ADD_SIGNAL(MethodInfo("con_damage_received", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
+	ADD_SIGNAL(MethodInfo("son_damage_dealt", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	ADD_SIGNAL(MethodInfo("con_damage_dealt", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+
+	ADD_SIGNAL(MethodInfo("son_dealt_damage", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 	ADD_SIGNAL(MethodInfo("con_dealt_damage", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
 
 	ADD_SIGNAL(MethodInfo("son_heal_received", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
