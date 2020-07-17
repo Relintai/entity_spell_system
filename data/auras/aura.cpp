@@ -1125,7 +1125,17 @@ void Aura::_sapply_passives_damage_deal(Ref<SpellDamageInfo> info) {
 }
 
 void Aura::_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
-	aura_data->damage_set(info->get_aura()->damage_get_min());
+	int min_damage = damage_get_min();
+	int max_damage = damage_get_max();
+	
+	Math::randomize();
+	int damage = min_damage + Math::rand() % (max_damage - min_damage);
+
+	if (get_scale_with_level()) {
+		damage = static_cast<int>(damage * static_cast<float>(info->caster_get()->gets_level()) / static_cast<float>(ESS::get_singleton()->get_max_character_level()));
+	}
+
+	aura_data->damage_set(damage);
 }
 
 void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> info) {
@@ -1133,9 +1143,8 @@ void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> inf
 		info->dealer_set(NULL);
 	}
 
-	Math::randomize();
-
-	info->damage_set(_damage_min + (Math::rand() % (_damage_max = _damage_min)));
+	info->damage_set(aura_data->damage_get());
+	//info->source_set_type(get_aura_type());
 
 	if (info->dealer_get()) {
 		info->dealer_get()->sdeal_damage_to(info);
@@ -1153,17 +1162,25 @@ void Aura::_sapply_passives_heal_deal(Ref<SpellHealInfo> data) {
 }
 
 void Aura::_calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
-	aura_data->heal_set(info->get_aura()->heal_get_min());
+	int min_heal = heal_get_min();
+	int max_heal = heal_get_max();
+	
+	Math::randomize();
+	int heal = min_heal + Math::rand() % (max_heal - min_heal);
+
+	if (get_scale_with_level()) {
+		heal = static_cast<int>(heal * static_cast<float>(info->caster_get()->gets_level()) / static_cast<float>(ESS::get_singleton()->get_max_character_level()));
+	}
+
+	aura_data->heal_set(heal);
 }
 
 void Aura::_handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info) {
-		if (info->dealer_get() && !INSTANCE_VALIDATE(info->dealer_get())) {
+	if (info->dealer_get() && !INSTANCE_VALIDATE(info->dealer_get())) {
 		info->dealer_set(NULL);
 	}
 
-	Math::randomize();
-
-	info->heal_set(_heal_min + (Math::rand() % (_heal_max = _heal_min)));
+	info->heal_set(aura_data->heal_get());
 
 	if (info->dealer_get()) {
 		info->dealer_get()->sdeal_heal_to(info);
