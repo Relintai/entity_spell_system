@@ -4652,6 +4652,8 @@ void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_tale
 
 		class_talent_adds(class_talent_id);
 
+		sets_free_class_talent_points(gets_free_class_talent_points() - 1);
+
 		return;
 	}
 }
@@ -4848,8 +4850,6 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 
 	ERR_FAIL_COND(!spec.is_valid());
 
-	ERR_FAIL_COND(!spec.is_valid());
-
 	for (int i = 0; i < spec->get_num_ranks(character_talent_row, character_talent_culomn); ++i) {
 		Ref<Aura> character_talent = spec->get_talent(character_talent_row, character_talent_culomn, i);
 
@@ -4898,6 +4898,8 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 		character_talent->sapply(info);
 
 		character_talent_adds(character_talent_id);
+
+		sets_free_character_talent_points(gets_free_character_talent_points() - 1);
 
 		return;
 	}
