@@ -27,6 +27,11 @@ https://github.com/Relintai/mesh_data_resource.git
 
 Adds mesh support to ModelVisuals. This is exists because in gles2 mesh data cannot be accessed directly from ArrayMeshes.
 
+## Pre-built binaries
+
+You can grab a pre-built editor binary from the [Broken Seals](https://github.com/Relintai/broken_seals/releases) 
+repo, should you want to. It contains all my modules.
+
 ## Overview
 
 The module provides a huge number of script callbacks, usually as virtual methods they usually start with an underscore.
