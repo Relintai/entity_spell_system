@@ -616,7 +616,11 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 	}
 
 	if (has_method("_setup")) {
+#if GODOT4
+		call("_setup");
+#else
 		call_multilevel("_setup");
+#endif
 	}
 }
 
