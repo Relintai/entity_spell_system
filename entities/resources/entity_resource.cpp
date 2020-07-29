@@ -153,6 +153,94 @@ void EntityResource::receivec_update_string(const String str) {
 		call("_receivec_update_string", str);
 }
 
+PoolRealArray EntityResource::get_stacking_mods() {
+	return _stacking_mods;
+}
+void EntityResource::set_stacking_mods(const PoolRealArray &mods) {
+	_stacking_mods.resize(0);
+
+	_stacking_mods.append_array(mods);
+}
+
+void EntityResource::add_stacking_mod(const float value) {
+	_stacking_mods.push_back(value);
+
+	call("_stacking_mod_added", value);
+}
+void EntityResource::remove_stacking_mod(const float value) {
+	for (int i = 0; i < _stacking_mods.size(); ++i) {
+		if (Math::is_equal_approx(_stacking_mods[i], value)) {
+			_stacking_mods.remove(i);
+			call("_stacking_mod_removed", value);
+			return;
+		}
+	}
+}
+
+void EntityResource::add_non_stacking_mod(const float value) {
+	_non_stacking_mods.push_back(value);
+
+	call("_non_stacking_mod_added", value);
+}
+void EntityResource::remove_non_stacking_mod(const float value) {
+	for (int i = 0; i < _non_stacking_mods.size(); ++i) {
+		if (Math::is_equal_approx(_non_stacking_mods[i], value)) {
+			_non_stacking_mods.remove(i);
+			call("_non_stacking_mod_removed", value);
+			return;
+		}
+	}
+}
+
+float EntityResource::get_current_stacking_mod_value() const {
+	return _current_stacking_mod_value;
+}
+float EntityResource::get_current_positive_non_stacking_mod_value() const {
+	return _current_positive_non_stacking_mod_value;
+}
+float EntityResource::get_current_negative_non_stacking_mod_value() const {
+	return _current_negative_non_stacking_mod_value;
+}
+
+void EntityResource::refresh_current_stacking_mod_value() {
+	_current_stacking_mod_value = 0;
+
+	for (int i = 0; i < _non_stacking_mods.size(); ++i) {
+	}
+}
+void EntityResource::refresh_current_non_stacking_mod_values() {
+	_current_positive_non_stacking_mod_value = 0;
+	_current_negative_non_stacking_mod_value = 0;
+
+	for (int i = 0; i < _non_stacking_mods.size(); ++i) {
+		float v = _non_stacking_mods[i];
+		if (v >= 0) {
+			if (v > _current_positive_non_stacking_mod_value) {
+				_current_positive_non_stacking_mod_value = v;
+			}
+		} else {
+			if (v < _current_negative_non_stacking_mod_value) {
+				_current_negative_non_stacking_mod_value = v;
+			}
+		}
+	}
+
+	mods_changed();
+}
+
+void EntityResource::mods_changed() {
+	call("_mods_changed");
+}
+
+PoolRealArray EntityResource::get_non_stacking_mods() {
+	return _non_stacking_mods;
+}
+void EntityResource::set_non_stacking_mods(const PoolRealArray &mods) {
+	_non_stacking_mods.resize(0);
+
+	_non_stacking_mods.append_array(mods);
+}
+
 Dictionary EntityResource::to_dict() {
 	return call("_to_dict");
 }
@@ -175,6 +263,22 @@ Dictionary EntityResource::_to_dict() {
 
 	dict["max"] = _max;
 
+	Array sa;
+	sa.resize(_stacking_mods.size());
+	for (int i = 0; i < _stacking_mods.size(); ++i) {
+		sa.set(i, _stacking_mods[i]);
+	}
+
+	dict["stacking_mods"] = sa;
+
+	Array nsa;
+	nsa.resize(_non_stacking_mods.size());
+	for (int i = 0; i < _non_stacking_mods.size(); ++i) {
+		nsa.set(i, _non_stacking_mods[i]);
+	}
+
+	dict["non_stacking_mods"] = nsa;
+
 	return dict;
 }
 void EntityResource::_from_dict(const Dictionary &dict) {
@@ -189,6 +293,18 @@ void EntityResource::_from_dict(const Dictionary &dict) {
 	//_data_id = dict.get("data_id", 0);
 	_current = dict.get("current", 0);
 	_max = dict.get("max", 0);
+
+	Array sa = dict.get("stacking_mods", 0);
+	_stacking_mods.resize(sa.size());
+	for (int i = 0; i < sa.size(); ++i) {
+		_stacking_mods.set(i, sa[i]);
+	}
+
+	Array nsa = dict.get("non_stacking_mods", 0);
+	_stacking_mods.resize(nsa.size());
+	for (int i = 0; i < nsa.size(); ++i) {
+		_stacking_mods.set(i, nsa[i]);
+	}
 
 	emit_changed();
 }
@@ -205,14 +321,61 @@ EntityResource::EntityResource() {
 
 	_current = 0;
 	_max = 0;
+
+	_current_stacking_mod_value = 0;
+	_current_positive_non_stacking_mod_value = 0;
+	_current_negative_non_stacking_mod_value = 0;
 }
 
 EntityResource::~EntityResource() {
 	_owner = NULL;
 }
 
-void EntityResource::_bind_methods() {
+void EntityResource::_stacking_mod_added(const float value) {
+	_current_stacking_mod_value += value;
 
+	mods_changed();
+}
+void EntityResource::_stacking_mod_removed(const float value) {
+	_current_stacking_mod_value -= value;
+
+	mods_changed();
+}
+
+void EntityResource::_non_stacking_mod_added(const float value) {
+	if (value >= 0) {
+		if (value > _current_positive_non_stacking_mod_value) {
+			_current_positive_non_stacking_mod_value = value;
+			mods_changed();
+		}
+	} else {
+		if (value < _current_negative_non_stacking_mod_value) {
+			_current_negative_non_stacking_mod_value = value;
+			mods_changed();
+		}
+	}
+}
+void EntityResource::_non_stacking_mod_removed(const float value) {
+	if (value >= 0) {
+		if (Math::is_equal_approx(value, _current_positive_non_stacking_mod_value)) {
+			refresh_current_non_stacking_mod_values();
+		}
+	} else {
+		if (Math::is_equal_approx(value, _current_negative_non_stacking_mod_value)) {
+			refresh_current_non_stacking_mod_values();
+		}
+	}
+}
+
+void EntityResource::_mods_changed() {
+	float m = 100.0 + _current_stacking_mod_value + _current_positive_non_stacking_mod_value + _current_negative_non_stacking_mod_value;
+	m /= 100.0;
+	m = static_cast<float>(_max) * m;
+
+	set_current_value(static_cast<int>(m));
+}
+
+void EntityResource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_id"), &EntityResource::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityResource::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
@@ -241,6 +404,29 @@ void EntityResource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_owner", "value"), &EntityResource::set_owner_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "owner", PROPERTY_HINT_RESOURCE_TYPE, "Entity", 0), "set_owner", "get_owner");
 
+	ClassDB::bind_method(D_METHOD("get_stacking_mods"), &EntityResource::get_stacking_mods);
+	ClassDB::bind_method(D_METHOD("set_stacking_mods", "value"), &EntityResource::set_stacking_mods);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "stacking_mods"), "set_stacking_mods", "get_stacking_mods");
+
+	ClassDB::bind_method(D_METHOD("add_stacking_mod", "value"), &EntityResource::add_stacking_mod);
+	ClassDB::bind_method(D_METHOD("remove_stacking_mod", "value"), &EntityResource::remove_stacking_mod);
+
+	ClassDB::bind_method(D_METHOD("get_non_stacking_mods"), &EntityResource::get_non_stacking_mods);
+	ClassDB::bind_method(D_METHOD("set_non_stacking_mods", "value"), &EntityResource::set_non_stacking_mods);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_REAL_ARRAY, "non_stacking_mods"), "set_non_stacking_mods", "get_non_stacking_mods");
+
+	ClassDB::bind_method(D_METHOD("add_non_stacking_mod", "value"), &EntityResource::add_non_stacking_mod);
+	ClassDB::bind_method(D_METHOD("remove_non_stacking_mod", "value"), &EntityResource::remove_non_stacking_mod);
+
+	ClassDB::bind_method(D_METHOD("get_current_stacking_mod_value"), &EntityResource::get_current_stacking_mod_value);
+	ClassDB::bind_method(D_METHOD("get_current_positive_non_stacking_mod_value"), &EntityResource::get_current_positive_non_stacking_mod_value);
+	ClassDB::bind_method(D_METHOD("get_current_negative_non_stacking_mod_value"), &EntityResource::get_current_negative_non_stacking_mod_value);
+
+	ClassDB::bind_method(D_METHOD("refresh_current_stacking_mod_value"), &EntityResource::refresh_current_stacking_mod_value);
+	ClassDB::bind_method(D_METHOD("refresh_current_non_stacking_mod_values"), &EntityResource::refresh_current_non_stacking_mod_values);
+
+	ClassDB::bind_method(D_METHOD("mods_changed"), &EntityResource::mods_changed);
+
 	BIND_VMETHOD(MethodInfo("_notification_sstat_changed", PropertyInfo(Variant::INT, "statid"), PropertyInfo(Variant::REAL, "curent")));
 	BIND_VMETHOD(MethodInfo("_notification_cstat_changed", PropertyInfo(Variant::INT, "statid"), PropertyInfo(Variant::REAL, "curent")));
 
@@ -252,6 +438,14 @@ void EntityResource::_bind_methods() {
 
 	BIND_VMETHOD(MethodInfo("_process_server", PropertyInfo(Variant::REAL, "delta")));
 	BIND_VMETHOD(MethodInfo("_process_client", PropertyInfo(Variant::REAL, "delta")));
+
+	BIND_VMETHOD(MethodInfo("_stacking_mod_added", PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_stacking_mod_removed", PropertyInfo(Variant::REAL, "value")));
+
+	BIND_VMETHOD(MethodInfo("_non_stacking_mod_added", PropertyInfo(Variant::REAL, "value")));
+	BIND_VMETHOD(MethodInfo("_non_stacking_mod_removed", PropertyInfo(Variant::REAL, "value")));
+
+	BIND_VMETHOD(MethodInfo("_mods_changed"));
 
 	ClassDB::bind_method(D_METHOD("process_server", "delta"), &EntityResource::process_server);
 	ClassDB::bind_method(D_METHOD("_process_server", "delta"), &EntityResource::_process_server);
@@ -271,4 +465,12 @@ void EntityResource::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_from_dict", "dict"), &EntityResource::_from_dict);
 	ClassDB::bind_method(D_METHOD("_to_dict"), &EntityResource::_to_dict);
+
+	ClassDB::bind_method(D_METHOD("_stacking_mod_added", "value"), &EntityResource::_stacking_mod_added);
+	ClassDB::bind_method(D_METHOD("_stacking_mod_removed", "value"), &EntityResource::_stacking_mod_removed);
+
+	ClassDB::bind_method(D_METHOD("_non_stacking_mod_added", "value"), &EntityResource::_non_stacking_mod_added);
+	ClassDB::bind_method(D_METHOD("_non_stacking_mod_removed", "value"), &EntityResource::_non_stacking_mod_removed);
+
+	ClassDB::bind_method(D_METHOD("_mods_changed"), &EntityResource::_mods_changed);
 }

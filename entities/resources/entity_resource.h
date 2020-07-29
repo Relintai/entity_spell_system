@@ -25,6 +25,8 @@ SOFTWARE.
 
 #include "core/resource.h"
 
+#include "../../defines.h"
+
 class Entity;
 
 class EntityResource : public Resource {
@@ -72,6 +74,27 @@ public:
 	void receivec_update_full(const int current, const int max);
 	void receivec_update_string(const String str);
 
+	PoolRealArray get_stacking_mods();
+	void set_stacking_mods(const PoolRealArray &mods);
+
+	void add_stacking_mod(const float value);
+	void remove_stacking_mod(const float value);
+
+	PoolRealArray get_non_stacking_mods();
+	void set_non_stacking_mods(const PoolRealArray &mods);
+
+	void add_non_stacking_mod(const float value);
+	void remove_non_stacking_mod(const float value);
+
+	float get_current_stacking_mod_value() const;
+	float get_current_positive_non_stacking_mod_value() const;
+	float get_current_negative_non_stacking_mod_value() const;
+
+	void refresh_current_stacking_mod_value();
+	void refresh_current_non_stacking_mod_values();
+
+	void mods_changed();
+
 	Dictionary to_dict();
 	void from_dict(const Dictionary &dict);
 
@@ -82,6 +105,14 @@ public:
 	~EntityResource();
 
 protected:
+	void _stacking_mod_added(const float value);
+	void _stacking_mod_removed(const float value);
+
+	void _non_stacking_mod_added(const float value);
+	void _non_stacking_mod_removed(const float value);
+
+	void _mods_changed();
+
 	static void _bind_methods();
 
 private:
@@ -96,6 +127,13 @@ private:
 
 	int _current;
 	int _max;
+
+	float _current_stacking_mod_value;
+	float _current_positive_non_stacking_mod_value;
+	float _current_negative_non_stacking_mod_value;
+
+	PoolRealArray _stacking_mods;
+	PoolRealArray _non_stacking_mods;
 };
 
 #endif
