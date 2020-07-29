@@ -235,6 +235,7 @@ public:
 	void set_body(Node *body);
 
 	void instance_body(const Ref<EntityData> &data, const int model_index);
+	void on_body_changed();
 
 	NodePath get_character_skeleton_path();
 	void set_character_skeleton_path(NodePath value);

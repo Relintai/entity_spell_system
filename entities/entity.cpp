@@ -192,7 +192,16 @@ void Entity::instance_body(const Ref<EntityData> &data, const int model_index) {
 
 		add_child(node);
 		set_body(node);
+
+		on_body_changed();
 	}
+}
+
+void Entity::on_body_changed() {
+	if (has_method("_body_changed"))
+		call("_body_changed");
+
+	emit_signal("body_changed", this);
 }
 
 NodePath Entity::get_character_skeleton_path() {
@@ -7335,6 +7344,10 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_character_skeleton", "skeleton"), &Entity::set_character_skeleton);
 
 	ClassDB::bind_method(D_METHOD("instance_body"), &Entity::instance_body);
+	ClassDB::bind_method(D_METHOD("on_body_changed"), &Entity::on_body_changed);
+
+	BIND_VMETHOD(MethodInfo("_body_changed"));
+	ADD_SIGNAL(MethodInfo("body_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	//Transforms
 	ClassDB::bind_method(D_METHOD("get_transform_3d", "only_stored"), &Entity::get_transform_3d, DEFVAL(false));
