@@ -30,11 +30,11 @@ SOFTWARE.
 
 #include "../defines.h"
 
-bool SpellHealInfo::get_immune() {
-	return _immune;
+bool SpellHealInfo::get_immune() const {
+	return _crit;
 }
-void SpellHealInfo::set_immune(bool value) {
-	_immune = value;
+void SpellHealInfo::set_immune(const bool value) {
+	_crit = value;
 }
 
 int SpellHealInfo::heal_get() {
@@ -45,35 +45,34 @@ void SpellHealInfo::heal_set(int value) {
 	_heal = value;
 }
 
-bool SpellHealInfo::crit_get() {
+bool SpellHealInfo::crit_get() const {
 	return _crit;
 }
-
-void SpellHealInfo::crit_set(bool value) {
+void SpellHealInfo::crit_set(const bool value) {
 	_crit = value;
 }
 
-int SpellHealInfo::amount_absorbed_get() {
+int SpellHealInfo::amount_absorbed_get() const {
 	return _amount_absorbed;
 }
-
-void SpellHealInfo::amount_absorbed_set(int value) {
+void SpellHealInfo::amount_absorbed_set(const int value) {
 	_amount_absorbed = value;
 }
 
-SpellEnums::SpellType SpellHealInfo::spell_type_get() {
-	return _spell_type;
+int SpellHealInfo::heal_type_get() const {
+	return _heal_type;
 }
-
-void SpellHealInfo::spell_type_set(SpellEnums::SpellType value) {
-	_spell_type = value;
+void SpellHealInfo::heal_type_set(const int value) {
+	_heal_type = value;
 }
 
 Entity *SpellHealInfo::dealer_get() {
 	return _dealer;
 }
-
-void SpellHealInfo::dealer_set(Node *value) {
+void SpellHealInfo::dealer_set(Entity *value) {
+	_dealer = value;
+}
+void SpellHealInfo::dealer_set_bind(Node *value) {
 	if (!value) {
 		return;
 	}
@@ -90,8 +89,10 @@ void SpellHealInfo::dealer_set(Node *value) {
 Entity *SpellHealInfo::receiver_get() {
 	return _receiver;
 }
-
-void SpellHealInfo::receiver_set(Node *value) {
+void SpellHealInfo::receiver_set(Entity *value) {
+	_receiver = value;
+}
+void SpellHealInfo::receiver_set_bind(Node *value) {
 	if (!value) {
 		return;
 	}
@@ -108,51 +109,53 @@ void SpellHealInfo::receiver_set(Node *value) {
 Ref<Reference> SpellHealInfo::source_get() {
 	return _heal_source;
 }
-
 void SpellHealInfo::source_set(Ref<Reference> value) {
 	_heal_source_type = HEAL_SOURCE_UNKNOWN;
 	_heal_source = value;
+	_heal_source_id = 0;
+
+	if (value->has_method("get_id")) {
+		_heal_source_id = value->call("get_id");
+	}
 }
 
 Ref<Spell> SpellHealInfo::spell_source_get() {
 	return Ref<Spell>(_heal_source);
 }
 
-void SpellHealInfo::spell_source_set(Ref<Spell> value) {
+void SpellHealInfo::spell_source_set(const Ref<Spell> &value) {
 	_heal_source_type = HEAL_SOURCE_SPELL;
 	_heal_source = value;
 
-	ERR_FAIL_COND(!value.is_valid());
-
-	_heal_source_id = value->get_id();
+	if (value.is_valid())
+		_heal_source_id = value->get_id();
 }
 
 Ref<Aura> SpellHealInfo::aura_source_get() {
 	return Ref<Aura>(_heal_source);
 }
 
-void SpellHealInfo::aura_source_set(Ref<Aura> value) {
+void SpellHealInfo::aura_source_set(const Ref<Aura> &value) {
 	_heal_source_type = HEAL_SOURCE_AURA;
 	_heal_source = value;
 
-	ERR_FAIL_COND(!value.is_valid());
-
-	_heal_source_id = value->get_id();
+	if (value.is_valid())
+		_heal_source_id = value->get_id();
 }
 
-int SpellHealInfo::source_get_id() {
+int SpellHealInfo::source_get_id() const {
 	return _heal_source_id;
 }
 
-void SpellHealInfo::source_set_id(int value) {
+void SpellHealInfo::source_set_id(const int value) {
 	_heal_source_id = value;
 }
 
-SpellHealInfo::HealSourceType SpellHealInfo::source_get_type() {
+int SpellHealInfo::source_get_type() const {
 	return _heal_source_type;
 }
 
-void SpellHealInfo::source_set_type(HealSourceType value) {
+void SpellHealInfo::source_set_type(const int value) {
 	_heal_source_type = value;
 }
 
@@ -190,7 +193,8 @@ Dictionary SpellHealInfo::to_dict() {
 	dict["amount_absorbed"] = _amount_absorbed;
 	dict["crit"] = _crit;
 
-	dict["spell_type"] = _spell_type;
+	dict["heal_type"] = _heal_type;
+
 	dict["heal_source_type"] = _heal_source_type;
 	dict["heal_source_id"] = _heal_source_id;
 
@@ -205,32 +209,30 @@ void SpellHealInfo::from_dict(const Dictionary &dict) {
 	_original_heal = dict.get("original_heal", 0);
 	_amount_absorbed = dict.get("amount_absorbed", 0);
 	_crit = dict.get("crit", false);
+	_heal_type = dict.get("heal_type", SpellEnums::SPELL_TYPE_NONE);
 
-	_spell_type = static_cast<SpellEnums::SpellType>(static_cast<int>(dict.get("spell_type", SpellEnums::SPELL_TYPE_NONE)));
-	_heal_source_type = static_cast<HealSourceType>(static_cast<int>(dict.get("heal_source_type", HEAL_SOURCE_UNKNOWN)));
+	_heal_source_type = dict.get("heal_source_type", HEAL_SOURCE_UNKNOWN);
 	_heal_source_id = dict.get("heal_source_id", 0);
 }
 
 SpellHealInfo::SpellHealInfo() {
+	_immune = false;
 	_heal = 0;
 	_original_heal = 0;
 	_crit = false;
-	_spell_type = SpellEnums::SPELL_TYPE_NONE;
+	_heal_type = 0;
 	_dealer = NULL;
 	_receiver = NULL;
 	_heal_source_type = HEAL_SOURCE_UNKNOWN;
-	//Ref<Reference> _heal_source = Ref<;
 	_heal_source_id = 0;
-	_immune = false;
 }
 
 SpellHealInfo::~SpellHealInfo() {
-	//_dealer = NULL;
-	//_receiver = NULL;
-	//_heal_source = Ref<Reference>(NULL);
+	_heal_source.unref();
 }
 
 void SpellHealInfo::_bind_methods() {
+
 	ClassDB::bind_method(D_METHOD("get_immune"), &SpellHealInfo::get_immune);
 	ClassDB::bind_method(D_METHOD("set_immune", "value"), &SpellHealInfo::set_immune);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "immune"), "set_immune", "get_immune");
@@ -247,33 +249,41 @@ void SpellHealInfo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("amount_absorbed_set", "value"), &SpellHealInfo::amount_absorbed_set);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "amount_absorbed"), "amount_absorbed_set", "amount_absorbed_get");
 
-	ClassDB::bind_method(D_METHOD("spell_type_get"), &SpellHealInfo::spell_type_get);
-	ClassDB::bind_method(D_METHOD("spell_type_set", "value"), &SpellHealInfo::spell_type_set);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "spell_type", PROPERTY_HINT_ENUM, "None, Melee, Magic"), "spell_type_set", "spell_type_get");
+	ClassDB::bind_method(D_METHOD("heal_type_get"), &SpellHealInfo::heal_type_get);
+	ClassDB::bind_method(D_METHOD("heal_type_set", "value"), &SpellHealInfo::heal_type_set);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_type_get"), "heal_type_set", "heal_type_get");
 
 	ClassDB::bind_method(D_METHOD("dealer_get"), &SpellHealInfo::dealer_get);
-	ClassDB::bind_method(D_METHOD("dealer_set", "value"), &SpellHealInfo::dealer_set);
+	ClassDB::bind_method(D_METHOD("dealer_set", "value"), &SpellHealInfo::dealer_set_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "dealer", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "dealer_set", "dealer_get");
 
 	ClassDB::bind_method(D_METHOD("receiver_get"), &SpellHealInfo::receiver_get);
-	ClassDB::bind_method(D_METHOD("receiver_set", "value"), &SpellHealInfo::receiver_set);
+	ClassDB::bind_method(D_METHOD("receiver_set", "value"), &SpellHealInfo::receiver_set_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "receiver", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "receiver_set", "receiver_get");
 
 	ClassDB::bind_method(D_METHOD("source_get"), &SpellHealInfo::source_get);
 	ClassDB::bind_method(D_METHOD("source_set", "value"), &SpellHealInfo::source_set);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "heal_source", PROPERTY_HINT_RESOURCE_TYPE, "Resource"), "source_set", "source_get");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "source", PROPERTY_HINT_RESOURCE_TYPE, "Resource"), "source_set", "source_get");
+
+	ClassDB::bind_method(D_METHOD("spell_source_get"), &SpellHealInfo::spell_source_get);
+	ClassDB::bind_method(D_METHOD("spell_source_set", "value"), &SpellHealInfo::spell_source_set);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell_source", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "spell_source_set", "spell_source_get");
+
+	ClassDB::bind_method(D_METHOD("aura_source_get"), &SpellHealInfo::aura_source_get);
+	ClassDB::bind_method(D_METHOD("aura_source_set", "value"), &SpellHealInfo::aura_source_set);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_source", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "aura_source_set", "aura_source_get");
 
 	ClassDB::bind_method(D_METHOD("source_get_id"), &SpellHealInfo::source_get_id);
 	ClassDB::bind_method(D_METHOD("source_set_id", "value"), &SpellHealInfo::source_set_id);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_source_id"), "source_set_id", "source_get_id");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "source_id"), "source_set_id", "source_get_id");
 
 	ClassDB::bind_method(D_METHOD("source_get_type"), &SpellHealInfo::source_get_type);
 	ClassDB::bind_method(D_METHOD("source_set_type", "value"), &SpellHealInfo::source_set_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "heal_source_type", PROPERTY_HINT_ENUM, "Unknown, Spell, Aura"), "source_set_type", "source_get_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "source_type"), "source_set_type", "source_get_type");
 
 	ClassDB::bind_method(D_METHOD("reset"), &SpellHealInfo::reset);
 
-	BIND_ENUM_CONSTANT(HEAL_SOURCE_UNKNOWN);
-	BIND_ENUM_CONSTANT(HEAL_SOURCE_SPELL);
-	BIND_ENUM_CONSTANT(HEAL_SOURCE_AURA);
+	BIND_CONSTANT(HEAL_SOURCE_UNKNOWN);
+	BIND_CONSTANT(HEAL_SOURCE_SPELL);
+	BIND_CONSTANT(HEAL_SOURCE_AURA);
 }

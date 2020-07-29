@@ -1136,7 +1136,7 @@ void Aura::_handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> inf
 	}
 
 	info->damage_set(aura_data->damage_get());
-	//info->source_set_type(get_aura_type());
+	info->aura_source_set(Ref<Aura>(this));
 
 	if (info->dealer_get()) {
 		info->dealer_get()->sdeal_damage_to(info);

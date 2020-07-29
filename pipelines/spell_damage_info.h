@@ -36,7 +36,7 @@ class SpellDamageInfo : public Reference {
 
 public:
 	enum DamageSourceType {
-		DAMAGE_SOURCE_UNKNOWN,
+		DAMAGE_SOURCE_UNKNOWN = 0,
 		DAMAGE_SOURCE_SPELL,
 		DAMAGE_SOURCE_AURA,
 	};
@@ -45,20 +45,20 @@ protected:
 	static void _bind_methods();
 
 public:
-	bool get_immune();
-	void set_immune(bool value);
+	bool get_immune() const;
+	void set_immune(const bool value);
 
-	int damage_get();
-	void damage_set(int value);
+	int damage_get() const;
+	void damage_set(const int value);
 
-	bool crit_get();
-	void crit_set(bool value);
+	bool crit_get() const;
+	void crit_set(const bool value);
 
-	int amount_absorbed_get();
-	void amount_absorbed_set(int value);
+	int amount_absorbed_get() const;
+	void amount_absorbed_set(const int value);
 
-	SpellEnums::SpellType spell_type_get();
-	void spell_type_set(SpellEnums::SpellType value);
+	int damage_type_get() const;
+	void damage_type_set(const int value);
 
 	Entity *dealer_get();
 	void dealer_set(Entity *value);
@@ -72,16 +72,16 @@ public:
 	void source_set(Ref<Reference> value);
 
 	Ref<Spell> spell_source_get();
-	void spell_source_set(Ref<Spell> value);
+	void spell_source_set(const Ref<Spell> &value);
 
 	Ref<Aura> aura_source_get();
-	void aura_source_set(Ref<Aura> value);
+	void aura_source_set(const Ref<Aura> &value);
 
-	int source_get_id();
-	void source_set_id(int value);
+	int source_get_id() const;
+	void source_set_id(const int value);
 
-	DamageSourceType source_get_type();
-	void source_set_type(DamageSourceType value);
+	int source_get_type() const;
+	void source_set_type(const int value);
 
 	void reset();
 
@@ -98,9 +98,9 @@ private:
 	int _original_damage;
 	int _amount_absorbed;
 	bool _crit;
-	SpellEnums::SpellType _spell_type;
+	int _damage_type;
 
-	DamageSourceType _damage_source_type;
+	int _damage_source_type;
 	Ref<Reference> _damage_source;
 	int _damage_source_id;
 
@@ -110,7 +110,5 @@ private:
 	NodePath _dealer_path;
 	NodePath _receiver_path;
 };
-
-VARIANT_ENUM_CAST(SpellDamageInfo::DamageSourceType);
 
 #endif

@@ -995,7 +995,7 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 		Ref<SpellDamageInfo> sdi;
 		sdi.instance();
 
-		sdi->source_set(Ref<Spell>(this));
+		sdi->spell_source_set(Ref<Spell>(this));
 		sdi->dealer_set(info->caster_get());
 		sdi->receiver_set(info->target_get());
 
