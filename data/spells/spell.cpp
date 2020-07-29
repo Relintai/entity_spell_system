@@ -929,7 +929,7 @@ void Spell::_son_spell_hit(Ref<SpellCastInfo> info) {
 void Spell::_calculate_initial_damage(Ref<SpellDamageInfo> data) {
 	Math::randomize();
 
-	data->damage_set(damage_get_min() + (damage_get_max() - damage_get_min() * Math::randf()));
+	data->damage_set(damage_get_min() + (damage_get_max() - damage_get_min()) * Math::randf());
 }
 
 void Spell::_handle_spell_damage(Ref<SpellDamageInfo> data) {
@@ -941,7 +941,7 @@ void Spell::_handle_spell_damage(Ref<SpellDamageInfo> data) {
 void Spell::_calculate_initial_heal(Ref<SpellHealInfo> data) {
 	Math::randomize();
 
-	data->heal_set(heal_get_min() + (heal_get_max() - heal_get_min() * Math::randf()));
+	data->heal_set(heal_get_min() + (heal_get_max() - heal_get_min()) * Math::randf());
 }
 
 void Spell::_handle_spell_heal(Ref<SpellHealInfo> data) {
