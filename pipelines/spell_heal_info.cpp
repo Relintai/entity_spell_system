@@ -221,6 +221,7 @@ SpellHealInfo::SpellHealInfo() {
 	_heal_source_type = HEAL_SOURCE_UNKNOWN;
 	//Ref<Reference> _heal_source = Ref<;
 	_heal_source_id = 0;
+	_immune = false;
 }
 
 SpellHealInfo::~SpellHealInfo() {
