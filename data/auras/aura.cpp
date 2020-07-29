@@ -967,8 +967,6 @@ String Aura::_get_description(const int class_level, const int character_level) 
 void Aura::_sapply(Ref<AuraApplyInfo> info) {
 	ERR_FAIL_COND(info->target_get() == NULL || info->caster_get() == NULL || !info->get_aura().is_valid());
 
-	Ref<Aura> aura = info->get_aura();
-
 	Ref<AuraData> ad = info->target_get()->aura_gets_by(info->caster_get(), _id);
 
 	if (!ad.is_valid()) {
@@ -979,10 +977,7 @@ void Aura::_sapply(Ref<AuraApplyInfo> info) {
 		Entity *owner = ad->get_owner();
 
 		for (int i = 0; i < _aura_stat_attribute_count; ++i) {
-			int stat_index = _aura_stat_attributes[i].stat;
-			owner->stat_mod_base(stat_index, _aura_stat_attributes[i].base_mod);
-			owner->stat_mod_bonus(stat_index, _aura_stat_attributes[i].bonus_mod);
-			owner->stat_mod_percent(stat_index, _aura_stat_attributes[i].percent_mod);
+			owner->stat_mod(_aura_stat_attributes[i].stat, _aura_stat_attributes[i].base_mod, _aura_stat_attributes[i].bonus_mod, _aura_stat_attributes[i].percent_mod);
 		}
 
 		if (_add_states != 0) {
@@ -1007,10 +1002,7 @@ void Aura::_sdeapply(Ref<AuraData> data) {
 	Entity *owner = data->get_owner();
 
 	for (int i = 0; i < _aura_stat_attribute_count; ++i) {
-		int stat_index = _aura_stat_attributes[i].stat;
-		owner->stat_mod_base(stat_index, -_aura_stat_attributes[i].base_mod);
-		owner->stat_mod_bonus(stat_index, -_aura_stat_attributes[i].bonus_mod);
-		owner->stat_mod_percent(stat_index, -_aura_stat_attributes[i].percent_mod);
+		owner->stat_mod(_aura_stat_attributes[i].stat, -_aura_stat_attributes[i].base_mod, -_aura_stat_attributes[i].bonus_mod, -_aura_stat_attributes[i].percent_mod);
 	}
 
 	if (_add_states != 0) {
@@ -1127,7 +1119,7 @@ void Aura::_sapply_passives_damage_deal(Ref<SpellDamageInfo> info) {
 void Aura::_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
 	int min_damage = damage_get_min();
 	int max_damage = damage_get_max();
-	
+
 	Math::randomize();
 	int damage = min_damage + Math::rand() % (max_damage - min_damage);
 
@@ -1164,7 +1156,7 @@ void Aura::_sapply_passives_heal_deal(Ref<SpellHealInfo> data) {
 void Aura::_calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info) {
 	int min_heal = heal_get_min();
 	int max_heal = heal_get_max();
-	
+
 	Math::randomize();
 	int heal = min_heal + Math::rand() % (max_heal - min_heal);
 
