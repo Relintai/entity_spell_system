@@ -92,8 +92,6 @@ Dictionary InputProfile::to_dict() const {
 	return dict;
 }
 void InputProfile::from_dict(const Dictionary &dict) {
-	ERR_FAIL_COND(dict.empty());
-
 	_data = dict.get("data", Array());
 
 	emit_change();
