@@ -116,7 +116,9 @@ Dictionary ClassProfile::to_dict() const {
 	dict["level"] = _level;
 	dict["xp"] = _xp;
 	dict["actionbar_locked"] = _actionbar_locked;
+
 	dict["actionbar_profile"] = _action_bar_profile->to_dict();
+	dict["input_profile"] = _input_profile->to_dict();
 
 	dict["custom_data"] = _custom_data;
 
@@ -132,6 +134,7 @@ void ClassProfile::from_dict(const Dictionary &dict) {
 	_actionbar_locked = dict.get("actionbar_locked", false);
 
 	_action_bar_profile->from_dict(dict.get("actionbar_profile", Dictionary()));
+	_input_profile->from_dict(dict.get("input_profile", Dictionary()));
 
 	_custom_data = dict.get("custom_data", Dictionary());
 
@@ -141,7 +144,9 @@ void ClassProfile::from_dict(const Dictionary &dict) {
 ClassProfile::ClassProfile() {
 	_action_bar_profile.instance();
 	_action_bar_profile->set_owner(this);
+
 	_input_profile.instance();
+	_input_profile->set_owner(this);
 
 	_level = 1;
 	_xp = 0;
@@ -151,7 +156,9 @@ ClassProfile::ClassProfile() {
 ClassProfile::ClassProfile(const StringName &class_path) {
 	_action_bar_profile.instance();
 	_action_bar_profile->set_owner(this);
+
 	_input_profile.instance();
+	_input_profile->set_owner(this);
 
 	_class_path = class_path;
 	_level = 1;
@@ -164,6 +171,7 @@ ClassProfile::ClassProfile(const String &class_name, const StringName &class_pat
 	_action_bar_profile->set_owner(this);
 
 	_input_profile.instance();
+	_input_profile->set_owner(this);
 
 	_character_class_name = class_name;
 	_class_path = class_path;
@@ -181,6 +189,7 @@ ClassProfile::~ClassProfile() {
 
 void ClassProfile::load_defaults() {
 	_action_bar_profile->load_defaults();
+	_input_profile->load_defaults();
 
 	emit_change();
 }

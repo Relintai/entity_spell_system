@@ -66,6 +66,8 @@ public:
 	Dictionary to_dict() const;
 	void from_dict(const Dictionary &dict);
 
+	void on_keybinds_changed(const StringName &class_path);
+
 	ProfileManager();
 	~ProfileManager();
 

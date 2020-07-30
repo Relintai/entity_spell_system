@@ -185,6 +185,12 @@ void ProfileManager::from_dict(const Dictionary &dict) {
 	}
 }
 
+void ProfileManager::on_keybinds_changed(const StringName &class_path) {
+	getc_player_profile()->get_class_profile(class_path)->get_input_profile()->save_from_projectsettings();
+
+	emit_signal("keybinds_changed");
+}
+
 ProfileManager::ProfileManager() {
 	_instance = this;
 
@@ -214,6 +220,7 @@ void ProfileManager::_on_player_profile_changed(Ref<PlayerProfile> profile) {
 }
 
 void ProfileManager::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("keybinds_changed"));
 	ADD_SIGNAL(MethodInfo("changed"));
 
 	BIND_VMETHOD(MethodInfo("_save"));
@@ -252,4 +259,6 @@ void ProfileManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("to_dict"), &ProfileManager::to_dict);
 
 	ClassDB::bind_method(D_METHOD("_on_player_profile_changed", "profile"), &ProfileManager::_on_player_profile_changed);
+
+	ClassDB::bind_method(D_METHOD("on_keybinds_changed", "class_path"), &ProfileManager::on_keybinds_changed);
 }
