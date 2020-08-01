@@ -46,6 +46,18 @@ develop games that can also run locally, with less overhead and simpler logic.
 E.g. this makes it easy to use the visibility system even when you play locally on the server, because you just use the clientside variables,
 and your logic will work the same way.
 
+## Settings
+
+## Singletons
+
+## Enums
+
+### Customizable enums
+
+## ResourceDB
+
+### ResourceDB Classes
+
 ## Entity
 
 This is the main class that can be used for players/mobs/npcs and also other things like chests. 
@@ -53,6 +65,12 @@ This is the main class that can be used for players/mobs/npcs and also other thi
 I ended up merging subclass functionality into it, because
 that way it gains a lot more utility, by sacrificing only a small amount of memory.
 For example this way it is easy to make chests attack the player, or make spell that animate objects.
+
+## Entity Body
+
+model index
+
+### EntitySkeleton
 
 ### Spawning
 
@@ -80,11 +98,17 @@ It stores everything an entity needs.
 
 In order to spawn an entity you need it.
 
+### Vendors
+
+#### Limited vendor inventory items 
+
 ### AI
 
 You can implement ai by extending `EntityAI`, and then assigning it to an EntityData.
 
 When an `Entity` gets spawned it will create a copy for itself, so you can safely use class variables.
+
+### Pets
 
 ### Bags
 
@@ -94,6 +118,16 @@ should you want to.
 Entity will send these over the network.
 
 Also Entities have a target bag property. For example this makes vendors easily implementable.
+
+### SpeciesInstance
+
+### CharacterSkeletons
+
+#### Visuals
+
+#### Attachments
+
+#### ItemVisuals
 
 ### VRPCs
 
@@ -105,6 +139,8 @@ If you want to send data to every client that sees the current entity, use this.
 Spell is the class you need to create spells, it stores the data, and also it has the ability to be scripted.
 
 Aura is also built the same way as spells.
+
+### Talents
 
 ### Infos / Pipelines
 
@@ -121,15 +157,30 @@ SpellDamageInfo, SpellHealInfo
 These are used in the damage and heal calculation. For example these can be used to implement immunities, or absorb effects 
 by modifying their damage values in aura callbacks.
 
+### Projectiles
+
+## Items
+
+### Loot
+
+## XP
+
+After you set 
+
+## Profiles
+
 ## Examples
 
 Eventually I'll create a separate repository with a few examples/demos, but for now you can check the game 
 I've been working on for examples.
 
-For 3d:
+3d:
 https://github.com/Relintai/broken_seals.git
 
-For 2d:
+2d turn based:
+https://github.com/Relintai/broken_seals_roguelike
+
+2d: 
 https://github.com/Relintai/broken_seals_2d.git
 
 ## Compiling
@@ -164,12 +215,3 @@ If you want Godot 4.0:
 For example:
 
 ```scons p=x11 t=release_debug tools=yes```
-
-## TODO
-
-Add to readme: 
-Loot, Species, cds, categ cds, items (crafting etc), Xp, 
-levelling, Stats, drag and drop, talents, vendors, Skills, 
-Profiles, Projectiles, Singletons, Skeleton, 
-Global enums
-resourcedb
