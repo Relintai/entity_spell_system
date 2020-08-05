@@ -11,6 +11,17 @@ It is a c++ engine module, which means you will need to compile it into godot. (
 It supports both godot 3.2 and 4.0 (master). Note that since 4.0 is still in very early stages I only 
 check whether it works from time to time.
 
+## Project setup tl;dr
+
+You need to create an `ESSResourceDB`, and an `ESSEntitySpawner` resource somewhere in you project.
+
+Now you can either go to `ProjectSettings->Ess->Data`, and set the `ess_resource_db_path`, and the 
+`ess_entity_spawner_path` properties and then tick `automatic_load`,
+
+or you can load them yourself and set them into the `ESS` singleton either using 
+`void setup(resource_db: ESSResourceDB, entity_spawner: ESSEntitySpawner)` or the `entity_spawner` and 
+`resource_db` properties.
+
 ### What the module doesn't cover
 
 Movement, and controls.
@@ -50,13 +61,90 @@ and your logic will work the same way.
 
 ## Singletons
 
+The module contians 2 singletons. `ESS`, and `ProfileManager`. Both are accessible from scripts.
+
+### The ESS singleton
+
+Contains the active `ESSResourceDB` instance, and the active `ESSEntitySpawner` instance, and also 
+loads/handles/processes all of the entity and spell system related ProjectSettings, so if you need
+any ESS related value from ProjectSettings, don't query it directly, get it from this singleton.
+
+Customizable enums values are preprocessed, and you usually have multiple ways of getting them.
+
+### The ProfileManager singleton
+
+Contains methods to easily load/save/handle `PlayerProfile`s.
+
+#### PlayerProfile
+
+Contains player-related data, most notably `ClassProfile`s.
+
+#### ClassProfile
+
+Contains class-related data, most notably `ActionBarProfile`s, and `InputProfiles`.
+
+#### ActionBarProfile
+
+Contains the data for a set of actionbars.
+
+#### InputProfileswd
+
+Contains the keybind data for a class.
+
 ## Enums
+
+ESS needs lots of enums to work, and to reduce complexity with includes they ended up in a few separate classes.
+
+I'm still in the process of converting these to be customizable (`ESS` singleton / ProjectSettings).
+
+(Only the ones that worth it will be converted.)
+
+### EntityEnums
+
+Constains Entity-reloated enums, like AIStates, skeleton attach points, entity flags, immunity flags,
+state flags.
+
+### ItemEnums
+
+Contains item-related enums, like rarity, armor type, item types.
+
+### SpellEnums
+
+Contains spell-related enums, like aura types, damage types, spell categories, spell types, trigger types, 
+and quite a few notification constants.
 
 ### Customizable enums
 
-## ResourceDB
+Open `ProjectSettings`, and then go to `ESS/Enums`.
 
-### ResourceDB Classes
+All of the string properties are customizable enums. These require a comma-separated list.
+They are essentially a godot comma separated property hint enum string.
+
+They all have defaults.
+
+Fer example:
+
+If you want you game to work with the following stats: Agility,Intellect,Crit,Weapon Damage,Stamina
+and you want Agility,Intellect,Stamina as you main stats.
+
+Firstly you want to put you main stats at the beginning, because the system will take the first `main_stat_count` 
+stats as main stats.
+
+And then just enter `Agility,Intellect,Stamina,Crit,Weapon Damage` into the `stats` setting, and then 
+set `main_stat_count` to 3.
+
+When these values are expected to be used as properties, the `ESS` singleton will create snace_cased versions automatically.
+`String stat_get_property_name(id: int) const` inside the ESS singleton for example.
+
+So in the example case `ESS.stat_get_property_name(4)` would return `weapon_damage`.
+
+## ESSResourceDB
+
+This is a class that maps ids to resources for quick lookups.
+This is necessary in order to support networking, because you don't want to send resource paths over the network 
+every time somebody casts a spell for example. 
+
+### Subclasses...
 
 ## Entity
 
