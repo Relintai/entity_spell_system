@@ -251,10 +251,10 @@ if you want networking, it might (`CharacterSkeleton`s can also do it) also driv
 Bodies does not need to handle the graphics themselves (`ModelVisualEntries` for example) (you can implement your logic here 
 if you want to), but the `CharacterSkeleton` classes exist for that purpose.
 
-[Complex 3d body script](https://github.com/Relintai/broken_seals/blob/master/game/player/Body.gd)
+[Complex 3d body script](https://github.com/Relintai/broken_seals/blob/master/game/player/Body.gd) \
 [Complex 3d body scene](https://github.com/Relintai/broken_seals/blob/master/game/modules/species/Human/models/HumanFemale.tscn)
 
-[Simple 2d roguelike body script](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/player/Body.gd)
+[Simple 2d roguelike body script](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/player/Body.gd) \
 [Simple 2d roguelike body scene](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/player/Body.gd)
 
 #### SpeciesInstance
@@ -281,14 +281,14 @@ If you want to merge meshes this is where you can implement it.
 
 The 3d variant.
 
-[Complex 3d skeleton scene](https://github.com/Relintai/broken_seals/blob/master/game/modules/species/Human/models/armature_huf.tscn)
+[Complex 3d skeleton scene](https://github.com/Relintai/broken_seals/blob/master/game/modules/species/Human/models/armature_huf.tscn) \
 [Complex 3d skeleton script](https://github.com/Relintai/broken_seals/blob/master/game/player/CharacterSkeletonGD.gd)
 
 #### CharacterSkeleton2D
 
 The 2d variant.
 
-[Simple 2d roguelike skeleton script](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/characters/SimpleCharacter.gd)
+[Simple 2d roguelike skeleton script](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/characters/SimpleCharacter.gd) \
 [Simple 2d roguelike skeleton scene](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/characters/SimpleCharacter.tscn)
 
 #### ModelVisuals
@@ -341,8 +341,8 @@ func sapply_aura() -> void:
 
 ```
 
-[Complete UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player_ui) 
-[Talent UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/talents) 
+[Complete UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player_ui) \
+[Talent UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/talents) \
 [Spellbook UI Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/spellbook) 
 
 ### Infos / Pipelines
