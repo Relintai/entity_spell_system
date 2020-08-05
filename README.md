@@ -165,7 +165,7 @@ model index
 Since spawning (= creating) entities is entirely dependant on the type of game you are making, ESS cannot do
 everything for you. It will set up stats, equipment etc, but there is no way to set up positions for example.
 
-You can implement your spawning logic by inheriting from ESSEntitySpawner, and implementing `_request_entity_spawn`.
+You can implement your spawning logic by inheriting from `ESSEntitySpawner`, and implementing `_request_entity_spawn`.
 
 You will need to register this spawner into the ESS singleton, either by using `setup(resource_db, entity_spawner)`, or 
 by using the provided property/setter `entity_spawner`/`set_entity_spawner()`. 
@@ -186,9 +186,22 @@ It stores everything an entity needs.
 
 In order to spawn an entity you need it.
 
-### Vendors
+#### EntityClassData
 
-#### Limited vendor inventory items 
+`EntityClassData` holds class-related information, like specs (`CharacterSpec`), spells, start spells, start auras, 
+alternative ais, `EntityResource`s (mana for example).
+
+#### CharacterSpec
+
+`CharacterSpec` holds spec-related information, most notably talents.
+
+#### EntityResource
+
+##### EntityResourceHealth
+
+##### EntityResourceSpeed
+
+#### EntityResourceCost
 
 ### AI
 
@@ -196,11 +209,22 @@ You can implement ai by extending `EntityAI`, and then assigning it to an Entity
 
 When an `Entity` gets spawned it will create a copy for itself, so you can safely use class variables.
 
+#### AIFormation
+
+Not yet finished, it was meant as a way to calculate offset pet positions, (If an `Entity` has let's say 
+4 pets you don't just want them all to stay on top of their controller).
+
+If this functionality ends up in `EntityAI`, after pets are finished, this will be removed.
+
 ### Pets
+
+Unfortunately pet support is not yet finished.
+
+It is mostly done though, so you will see pet-related methods scattered around.
 
 ### Bags
 
-Stores item. See `Bag`. It has aquite a few virtual methods, you should be able to implement most inventory types
+Stores items. See `Bag`. It has aquite a few virtual methods, you should be able to implement most inventory types
 should you want to.
 
 Entity will send these over the network.
@@ -222,13 +246,48 @@ Also Entities have a target bag property. For example this makes vendors easily 
 Entities has a networked visibility system. The method itself is called `vrpc`, it works the same way as normal rpcs.
 If you want to send data to every client that sees the current entity, use this. 
 
-## Spells, Auras
+## Spells, Auras, Talents
 
 Spell is the class you need to create spells, it stores the data, and also it has the ability to be scripted.
 
 Aura is also built the same way as spells.
 
-### Talents
+Talents are actually just Auras.
+
+Talent ranks are implemented by deapplying the earlier rank, then applying the new rank.
+
+### How to
+
+Request casting a spell clientside: `void spell_crequest_cast(spell_id: int)`
+Request to learn a spell clientside: `void spell_learn_requestc(id: int)`
+
+Request talent learning clientside:
+`void character_talent_crequest_learn(spec_index: int, character_talent_row: int, character_talent_culomn: int)` or
+`void class_talent_crequest_learn(spec_index: int, class_talent_row: int, class_talent_culomn: int)` 
+
+Apply an aura:
+
+Note that you should only apply auras serverside, they will be sent to clients automatically.
+
+```
+# Or get it from the active ESSResourceDB, etc
+export(Aura) var aura : Aura
+
+func sapply_aura() -> void:
+    var ainfo : AuraApplyInfo = AuraApplyInfo.new()
+            
+    ainfo.caster = info.caster
+    ainfo.target = info.caster
+    ainfo.spell_scale = 1
+    ainfo.aura = aura
+
+    aura.sapply(ainfo)
+
+```
+
+[Complete UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player_ui) 
+[Talent UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/talents) 
+[Spellbook UI Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/spellbook) 
 
 ### Infos / Pipelines
 
@@ -255,7 +314,11 @@ by modifying their damage values in aura callbacks.
 
 After you set 
 
-## Profiles
+## Implementing...
+
+### Vendors
+
+#### Limited vendor inventory items 
 
 ## Examples
 
