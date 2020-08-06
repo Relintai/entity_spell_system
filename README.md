@@ -59,6 +59,8 @@ and your logic will work the same way.
 
 ## Settings
 
+Entity and spell system comes with quite a few settings, you can find these under `ProjectSettings->Ess`.
+
 ## Singletons
 
 The module contians 2 singletons. `ESS`, and `ProfileManager`. Both are accessible from scripts.
