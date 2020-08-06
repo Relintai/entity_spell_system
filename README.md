@@ -197,11 +197,43 @@ alternative ais, `EntityResource`s (mana for example).
 
 #### EntityResource
 
+EntityResources are things like mana, health, or speed. These add greater flexibility over stats.
+
+The resource system is quite flexible, if you add a resource serverside, it will be automatically
+added clientside. (You have to add `EntityResource`s to the active `ESSResourceDB`!)
+
+By default all entities have the build in speed and health resources, as a set index 
+(`EntityEnums::ENTITY_RESOURCE_INDEX_HEALTH` and `EntityEnums::ENTITY_RESOURCE_INDEX_SPEED`).
+
+There is also the `EntityEnums::ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN` constant, so you have 
+the current offset where the custom resources start.
+
+Entity allocates these in it's  `_initialize()` virtual method, if you want to customize them.
+
+Note that `EntityClassData` contains an array, so you can add more resources easily to classes,
+these will be automatically added when the system initializes an `Entity`.
+
 ##### EntityResourceHealth
+
+The standard health resource implementation.
 
 ##### EntityResourceSpeed
 
-#### EntityResourceCost
+The standard speed resource implementation.
+
+#### EntityResourceCostData
+
+This is the class taht lets you implement resource costs. For example mana cost for a spell.
+
+##### EntityResourceCostDataResource
+
+The standard resource cost implementation.
+
+##### EntityResourceCostDataHealth
+
+The standard health resource cost implementation.
+
+It has a resource property, so yu can just assign any resource to this.
 
 ### AI
 
