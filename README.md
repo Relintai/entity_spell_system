@@ -146,7 +146,29 @@ This is a class that maps ids to resources for quick lookups.
 This is necessary in order to support networking, because you don't want to send resource paths over the network 
 every time somebody casts a spell for example. 
 
-### Subclasses...
+### ESSResourceDBStatic
+
+Simple static resource db. Just drag and drop all your data that you use into it with the inspector.
+
+Stores the data as vectors.
+
+Supports id remapping, which means that it can assign new ids to all added resources, so they don't clash.
+The added resource's index will be set as it's id.
+
+This is useful for modding support, as you can just collect every mod's resource dbs, and add them to a static db,
+and with this option enabled the ids will not clash.
+
+You can see an example of this [here](https://github.com/Relintai/broken_seals/blob/master/game/scenes/MainScene.gd).
+
+### ESSResourceDBMap
+
+Stores everything as a vector, and a map.
+
+#### ESSResourceDBFolders
+
+Inherited from `ESSResourceDBMap`.
+
+It will load everything from the folders that you set up into it's `folders` property.
 
 ## Entity
 
