@@ -180,9 +180,93 @@ For example this way it is easy to make chests attack the player, or make spell 
 
 ## Entity Body
 
-model index
+Originally entities used to be inherited from `Spatial` or `Node2D`, so they could contain/drive their own models, 
+but eventually on order to support both 2d, and 3d, bodies were separated from them. This unfortunately 
+complicates the setup a bit, but the upsides overweight the downsides, as this way you don't need to create different
+entities for every model/body you have.
 
-### EntitySkeleton
+Bodies are stored at `EntityData->EntitySpeciesData->ModelDatas (SpeciesModelData)->Body`
+
+When an `Entity` gets initialized, it will instance it's body automatically, but if you want to intance it yourself,
+you can call `void instance_body(entity_data: EntityData, model_index: int)` on an `Entity`.
+
+The `model_index` property tell the `Entity` which one it should use.
+
+Instancing bodies does not happen immediately, but you will probably want to set an `Entity`'s position right where 
+you create it, a few helpers were added:\
+
+`void set_transform_2d(transform: Transform2D, only_stored: bool = false)`\
+`void set_transform_3d(transform: Transform, only_stored: bool = false)`
+
+Your body implementation then can get this from an entity an set itself to the right place.
+
+### CharacterSkeletons
+
+CharacterSkeletons handle the looks of your characters.
+
+They come in two variants, one for 2d, one for 3d.
+
+They have quite a few helper methods.
+
+They can store ModelVisuals, and ModelVisualEntries.
+
+They support attach points. For example a character's hand.
+It adds properties based on the selected entity_type.
+These are based on the values from `ProjectSettings->ESS->Enums->skeletons_bone_attachment_points`.
+
+If you want to merge meshes this is where you can implement it.
+
+#### CharacterSkeleton3D
+
+The 3d variant.
+
+[Complex 3d skeleton scene](https://github.com/Relintai/broken_seals/blob/master/game/modules/species/Human/models/armature_huf.tscn) \
+[Complex 3d skeleton script](https://github.com/Relintai/broken_seals/blob/master/game/player/CharacterSkeletonGD.gd)
+
+#### CharacterSkeleton2D
+
+The 2d variant.
+
+[Simple 2d roguelike skeleton script](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/characters/SimpleCharacter.gd) \
+[Simple 2d roguelike skeleton scene](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/characters/SimpleCharacter.tscn)
+
+#### ModelVisuals
+
+##### ModelVisualEntries
+
+#### Attachments
+
+
+### EntitySpeciesData
+
+Contains data related to a species, like `SpeciesModelData`s, and species specific spells, and auras.
+
+#### SpeciesModelData
+
+Contains a scene of a species's body and it's customizations.
+
+The `customizable_slots_string` and `customizable_colors_string` should be filled with a comma separated string,
+they will add properties. Currently you need to click on something else, and back on the resource for these to show up,
+after a change to the strings.
+
+The body can be any scene, Entity will instance it, and set it to it's body property.
+
+The body should handle movement based on the player's input, it should handle sending position information through the network, 
+if you want networking, it might (`CharacterSkeleton`s can also do it) also drive your animations/animation players if you have it.
+
+Bodies does not need to handle the graphics themselves (`ModelVisualEntries` for example) (you can implement your logic here 
+if you want to), but the `CharacterSkeleton` classes exist for that purpose.
+
+[Complex 3d body script](https://github.com/Relintai/broken_seals/blob/master/game/player/Body.gd) \
+[Complex 3d body scene](https://github.com/Relintai/broken_seals/blob/master/game/modules/species/Human/models/HumanFemale.tscn)
+
+[Simple 2d roguelike body script](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/player/Body.gd) \
+[Simple 2d roguelike body scene](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/player/Body.gd)
+
+#### SpeciesInstance
+
+This class will handle 
+
 
 ### Spawning
 
@@ -286,72 +370,6 @@ should you want to.
 Entity will send these over the network.
 
 Also Entities have a target bag property. For example this makes vendors easily implementable.
-
-### EntitySpeciesData
-
-Contains data related to a species, like `SpeciesModelData`s, and species specific spells, and auras.
-
-#### SpeciesModelData
-
-Contains a scene of a species's body and it's customizations.
-
-The `customizable_slots_string` and `customizable_colors_string` should be filled with a comma separated string,
-they will add properties. Currently you need to click on something else, and back on the resource for these to show up,
-after a change to the strings.
-
-The body can be any scene, Entity will instance it, and set it to it's body property.
-
-The body should handle movement based on the player's input, it should handle sending position information through the network, 
-if you want networking, it might (`CharacterSkeleton`s can also do it) also drive your animations/animation players if you have it.
-
-Bodies does not need to handle the graphics themselves (`ModelVisualEntries` for example) (you can implement your logic here 
-if you want to), but the `CharacterSkeleton` classes exist for that purpose.
-
-[Complex 3d body script](https://github.com/Relintai/broken_seals/blob/master/game/player/Body.gd) \
-[Complex 3d body scene](https://github.com/Relintai/broken_seals/blob/master/game/modules/species/Human/models/HumanFemale.tscn)
-
-[Simple 2d roguelike body script](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/player/Body.gd) \
-[Simple 2d roguelike body scene](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/player/Body.gd)
-
-#### SpeciesInstance
-
-This class will handle 
-
-### CharacterSkeletons
-
-CharacterSkeletons handle the looks of your characters.
-
-They come in two variants, one for 2d, one for 3d.
-
-They have quite a few helper methods.
-
-They can store ModelVisuals, and ModelVisualEntries.
-
-They support attach points. For example a character's hand.
-It adds properties based on the selected entity_type.
-These are based on the values from `ProjectSettings->ESS->Enums->skeletons_bone_attachment_points`.
-
-If you want to merge meshes this is where you can implement it.
-
-#### CharacterSkeleton3D
-
-The 3d variant.
-
-[Complex 3d skeleton scene](https://github.com/Relintai/broken_seals/blob/master/game/modules/species/Human/models/armature_huf.tscn) \
-[Complex 3d skeleton script](https://github.com/Relintai/broken_seals/blob/master/game/player/CharacterSkeletonGD.gd)
-
-#### CharacterSkeleton2D
-
-The 2d variant.
-
-[Simple 2d roguelike skeleton script](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/characters/SimpleCharacter.gd) \
-[Simple 2d roguelike skeleton scene](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/characters/SimpleCharacter.tscn)
-
-#### ModelVisuals
-
-##### ModelVisualEntries
-
-#### Attachments
 
 ### VRPCs
 
