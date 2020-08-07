@@ -466,6 +466,15 @@ by modifying their damage values in aura callbacks.
 
 ### Projectiles
 
+Spells support projectiles, they are created/set up inside `void handle_projectile(info: SpellCastInfo)`.
+
+The default implementation will instance `Spell`'s projectile scene (if set), and then it will try to call a 
+`void setup_projectile(info: SpellCastInfo)` on it if exists.
+
+You can override this behaviour by implementing your own `_void handle_projectile(info: SpellCastInfo)` on `Spell`
+
+Note that the module already adds `SpellFollowProjectile3D`, but this has not been finished yet.
+
 ## Items
 
 Items are implemented using 2 classes, `ItemTemplate`, and `ItemInstance`.
