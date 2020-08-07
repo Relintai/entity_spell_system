@@ -1,7 +1,7 @@
 # Entity Spell System
 
 An entity and spell system for the GODOT Engine, that is usable for both 2d, and 3d games. The main purpose of this 
-module is to handle spells, auras, and most entity-related things like spawning, items, inventory, contaiers, 
+module is to handle spells, auras, and most entity-related things like spawning, items, inventory, containers, 
 vendors, interaction, targeting, equipment (+ visuals), loot, crafting, talents, pets, npcs, etc ...
 
 The module supports networking. It is designed to be authoritative, so players shouldn't be able to cheat by design.
@@ -63,7 +63,7 @@ Entity and spell system comes with quite a few settings, you can find these unde
 
 ## Singletons
 
-The module contians 2 singletons. `ESS`, and `ProfileManager`. Both are accessible from scripts.
+The module contains 2 singletons. `ESS`, and `ProfileManager`. Both are accessible from scripts.
 
 ### The ESS singleton
 
@@ -103,7 +103,7 @@ I'm still in the process of converting these to be customizable (`ESS` singleton
 
 ### EntityEnums
 
-Constains Entity-reloated enums, like AIStates, skeleton attach points, entity flags, immunity flags,
+Contains Entity-related enums, like AIStates, skeleton attach points, entity flags, immunity flags,
 state flags.
 
 ### ItemEnums
@@ -135,7 +135,7 @@ stats as main stats.
 And then just enter `Agility,Intellect,Stamina,Crit,Weapon Damage` into the `stats` setting, and then 
 set `main_stat_count` to 3.
 
-When these values are expected to be used as properties, the `ESS` singleton will create snace_cased versions automatically.
+When these values are expected to be used as properties, the `ESS` singleton will create snake_cased versions automatically.
 `String stat_get_property_name(id: int) const` inside the ESS singleton for example.
 
 So in the example case `ESS.stat_get_property_name(4)` would return `weapon_damage`.
@@ -282,7 +282,7 @@ Not yet finished!
 
 ### Spawning
 
-Since spawning (= creating) entities is entirely dependant on the type of game you are making, ESS cannot do
+Since spawning (= creating) entities is entirely dependent on the type of game you are making, ESS cannot do
 everything for you. It will set up stats, equipment etc, but there is no way to set up positions for example.
 
 You can implement your spawning logic by inheriting from `ESSEntitySpawner`, and implementing `_request_entity_spawn`.
@@ -359,7 +359,7 @@ The standard resource cost implementation.
 
 The standard health resource cost implementation.
 
-It has a resource property, so yu can just assign any resource to this.
+It has a resource property, so you can just assign any resource to this.
 
 ### Interactions
 
@@ -368,14 +368,14 @@ If you want your player to interact with it's target. For example a vendor, or l
 First make sure that you can interact, by checking `Entity.cans_interact()` or `Entity.canc_interact()`.
 If this returns true, you can call `Entity.crequest_interact()`. This will call `Entity.sinteract()` serverside.
 
-Interactions are handled by `EntityData` by default. It has the same methods. If EntityData is not set, the `Entity` 
-will try to call the same overrideable on itself.
+Interactions are handled by `EntityData` by default. It has the same methods. If `EntityData` is not set, the `Entity` 
+will try to call the same overridable on itself.
 
 You can see an example implementation [here](https://github.com/Relintai/broken_seals/blob/master/game/scripts/entities/EntityDataGD.gd).
 
 ### AI
 
-You can implement ai by extending `EntityAI`, and then assigning it to an EntityData.
+You can implement ai by extending `EntityAI`, and then assigning it to an `EntityData`.
 
 When an `Entity` gets spawned it will create a copy for itself, so you can safely use class variables.
 
@@ -394,7 +394,7 @@ It is mostly done though, so you will see pet-related methods scattered around.
 
 ### Bags
 
-Stores items. See `Bag`. It has aquite a few virtual methods, you should be able to implement most inventory types
+Stores items. See `Bag`. It has quite a few virtual methods, you should be able to implement most inventory types
 should you want to.
 
 Entity will send these over the network.
@@ -451,15 +451,15 @@ func sapply_aura() -> void:
 
 ### Infos / Pipelines
 
-SpellCastInfo
+#### SpellCastInfo
 
 Stores information about the state of a spell's cast.
 
-AuraApplyInfo
+#### AuraApplyInfo
 
 Helps to apply auras
 
-SpellDamageInfo, SpellHealInfo
+#### SpellDamageInfo, SpellHealInfo
 
 These are used in the damage and heal calculation. For example these can be used to implement immunities, or absorb effects 
 by modifying their damage values in aura callbacks.
@@ -502,7 +502,7 @@ Now you can start distributing xp, for whatever you'd like to Entities, using `E
 
 ### Vendors
 
-I don't yet have a vendor ui exmaple, however if you want them you can already implement them in a simple way.
+I don't yet have a vendor ui example, however if you want them you can already implement them in a simple way.
 `EntityData` has a `VendorItemData` property, you can display this clientside, and implement a buy request from client to server.
 
 If you also want limited vendor inventory items, you can implement them the same way looting works (create a bag for the vendor, and fill it
