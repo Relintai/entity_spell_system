@@ -361,6 +361,18 @@ The standard health resource cost implementation.
 
 It has a resource property, so yu can just assign any resource to this.
 
+### Interactions
+
+If you want your player to interact with it's target. For example a vendor, or loot.
+
+First make sure that you can interact, by checking `Entity.cans_interact()` or `Entity.canc_interact()`.
+If this returns true, you can call `Entity.crequest_interact()`. This will call `Entity.sinteract()` serverside.
+
+Interactions are handled by `EntityData` by default. It has the same methods. If EntityData is not set, the `Entity` 
+will try to call the same overrideable on itself.
+
+You can see an example implementation [here](https://github.com/Relintai/broken_seals/blob/master/game/scripts/entities/EntityDataGD.gd).
+
 ### AI
 
 You can implement ai by extending `EntityAI`, and then assigning it to an EntityData.
@@ -466,7 +478,11 @@ After you set
 
 ### Vendors
 
-#### Limited vendor inventory items 
+I don't yet have a vendor ui exmaple, however if you want them you can already implement them in a simple way.
+`EntityData` has a `VendorItemData` property, you can display this clientside, and implement a buy request from client to server.
+
+If you also want limited vendor inventory items, you can implement them the same way looting works (create a bag for the vendor, and fill it
+with items), but of course you would show these in a vendor dialog.
 
 ## Examples
 
