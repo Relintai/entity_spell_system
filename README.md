@@ -468,7 +468,20 @@ by modifying their damage values in aura callbacks.
 
 ## Items
 
+Items are implemented using 2 classes, `ItemTemplate`, and `ItemInstance`.
+
+`ItemTemplate` contains all information for a potential item. You can generate `Iteminstance`s with this,
+using it's `ItemInstance create_item_instance()` method. You can also implement your custom item creation logic
+using the `void _create_item_instance()` virtual.
+
+`ItemInstance` is the actual item.
+
 ### Loot
+
+Looting can be implemented using `Entity`'s target bag functionality.
+
+You can see an example implementation [here](https://github.com/Relintai/broken_seals/blob/master/game/scripts/entities/EntityDataGD.gd). \
+And an example ui implementation [here](https://github.com/Relintai/broken_seals/tree/master/game/ui/loot_window).
 
 ## XP
 
