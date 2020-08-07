@@ -276,10 +276,16 @@ everything for you. It will set up stats, equipment etc, but there is no way to 
 
 You can implement your spawning logic by inheriting from `ESSEntitySpawner`, and implementing `_request_entity_spawn`.
 
-You will need to register this spawner into the ESS singleton, either by using `setup(resource_db, entity_spawner)`, or 
-by using the provided property/setter `entity_spawner`/`set_entity_spawner()`. 
+You will need to register this spawner into the ESS singleton.
+
+You can use `setup(resource_db, entity_spawner)`, or by the provided property/setter `entity_spawner`/`set_entity_spawner()`.\
+Or you can set you spawner's path into the `ProjectSettings->Ess->Data->ess_entity_spawner_path` and either tick the `automatic_load` property, or 
+call `ESS.load_entity_spawner()` from a script.
 
 The ESS singleton also contains convenience methods to request spawning an Entity.
+
+[Sample 3d spawner implementation](https://github.com/Relintai/broken_seals/blob/master/game/player/bs_entity_spawner.gd) \
+[Sample 2d spawner implementation](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/player/bs_entity_spawner.gd)
 
 #### EntityCreateInfo
 
@@ -389,11 +395,11 @@ Talent ranks are implemented by deapplying the earlier rank, then applying the n
 
 ### How to
 
-Request casting a spell clientside: `void spell_crequest_cast(spell_id: int)`
+Request casting a spell clientside: `void spell_crequest_cast(spell_id: int)` \
 Request to learn a spell clientside: `void spell_learn_requestc(id: int)`
 
-Request talent learning clientside:
-`void character_talent_crequest_learn(spec_index: int, character_talent_row: int, character_talent_culomn: int)` or
+Request talent learning clientside: \
+`void character_talent_crequest_learn(spec_index: int, character_talent_row: int, character_talent_culomn: int)` or \
 `void class_talent_crequest_learn(spec_index: int, class_talent_row: int, class_talent_culomn: int)` 
 
 Apply an aura:
