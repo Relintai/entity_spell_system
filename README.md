@@ -472,7 +472,9 @@ by modifying their damage values in aura callbacks.
 
 ## XP
 
-After you set 
+You can set all the xp values for your levels in `ProjectSettings->Ess->xp`.
+
+Now you can start distributing xp, for whatever you'd like to Entities, using `Entity.xp_adds(vlaue : int)`
 
 ## Implementing...
 
