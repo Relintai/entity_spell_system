@@ -230,12 +230,23 @@ The 2d variant.
 [Simple 2d roguelike skeleton script](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/characters/SimpleCharacter.gd) \
 [Simple 2d roguelike skeleton scene](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/characters/SimpleCharacter.tscn)
 
-#### ModelVisuals
+#### ModelVisual
 
-##### ModelVisualEntries
+A collection ModelVisualEntries.
 
-#### Attachments
+You will need to use this to define a look. For example if you have an item that will change your character's clothes,
+you will use this.
 
+##### ModelVisualEntry
+
+Contains meshes, textures, texture tints, mesh transforms.
+
+It has 2 modes, `Bone` and `Attachment`.
+
+In the bone mode, you need to select an entity type, and then a concrete bone. This is the "merge this into the final character mesh" mode.
+
+In the attachment mode, you need to select a common attach point (`ProjectSettings->Ess->enums->skeletons_bone_attachment_points`), 
+and the containing mesh will be put on to that point by the CharacterSkeleton. This is how you can implement weapons for example.
 
 ### EntitySpeciesData
 
