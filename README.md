@@ -265,8 +265,9 @@ if you want to), but the `CharacterSkeleton` classes exist for that purpose.
 
 #### SpeciesInstance
 
-This class will handle 
+This class will store character model customization data. E.g. which hairstyle you want for an `Entity`.
 
+Not yet finished!
 
 ### Spawning
 
