@@ -2831,17 +2831,7 @@ void Entity::ssend_open_window(int window_id) {
 	ORPC(copen_window, window_id);
 }
 void Entity::copen_window(int window_id) {
-	switch (window_id) {
-		case EntityEnums::ENTITY_WINDOW_LOOT:
-			emit_signal("onc_open_loot_winow_request");
-			break;
-		case EntityEnums::ENTITY_WINDOW_CONTAINER:
-			emit_signal("onc_open_container_winow_request");
-			break;
-		case EntityEnums::ENTITY_WINDOW_VENDOR:
-			emit_signal("onc_open_vendor_winow_request");
-			break;
-	}
+	emit_signal("onc_open_winow_request", window_id);
 }
 
 //XP Operations
@@ -6497,9 +6487,7 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("cskill_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "skill", PROPERTY_HINT_RESOURCE_TYPE, "EntitySkill")));
 
 	//Windows
-	ADD_SIGNAL(MethodInfo("onc_open_loot_winow_request"));
-	ADD_SIGNAL(MethodInfo("onc_open_container_winow_request"));
-	ADD_SIGNAL(MethodInfo("onc_open_vendor_winow_request"));
+	ADD_SIGNAL(MethodInfo("onc_open_winow_request", PropertyInfo(Variant::INT, "window_id")));
 
 	//setup
 	BIND_VMETHOD(MethodInfo("_setup"));
