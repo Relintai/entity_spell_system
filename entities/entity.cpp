@@ -6272,6 +6272,20 @@ void Entity::_spell_learns(int id) {
 			continue;
 
 		if (sp->get_id() == id) {
+			int req_level = sp->get_level();
+
+			if (req_level > gets_level()) {
+				return;
+			}
+
+			int cost = sp->get_training_cost();
+
+			if (gets_money() < cost) {
+				return;
+			}
+
+			sets_money(gets_money() - cost);
+
 			Ref<Spell> req_spell = sp->get_training_required_spell();
 
 			if (req_spell.is_valid() && !spell_hass(req_spell)) {
