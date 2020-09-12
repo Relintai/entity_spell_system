@@ -50,7 +50,7 @@ public:
 	void set_actionbar_locked(const bool value);
 
 	Ref<InputProfile> get_input_profile();
-	Ref<ActionBarProfile> get_action_bar_profile();
+	Ref<ActionBarProfile> get_default_action_bar_profile();
 
 	void emit_change();
 

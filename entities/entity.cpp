@@ -797,22 +797,24 @@ void Entity::setup_actionbars() {
 		return;
 	}
 
-	//ProfileManager *pm = ProfileManager::get_singleton();
+	get_action_bar_profile();
+	/*
+	ProfileManager *pm = ProfileManager::get_singleton();
 
-	//if (pm != NULL) {
-	//	Ref<ClassProfile> cp = pm->get_class_profile(gets_entity_data()->get_id());
+	if (pm != NULL) {
+		Ref<ClassProfile> cp = get_class_profile();
 
-	//	if (cp.is_valid()) {
-	//		set_actionbar_locked(cp->get_actionbar_locked());
-	//		_action_bar_profile = cp->get_action_bar_profile();
+		if (cp.is_valid()) {
+			set_actionbar_locked(cp->get_actionbar_locked());
+			_action_bar_profile = cp->get_default_action_bar_profile();
 
-	//get_action_bar_profile()->clear_action_bars();
+			get_action_bar_profile()->clear_action_bars();
 
-	//Ref<ActionBarProfile> abp = cp->get_action_bar_profile();
+			Ref<ActionBarProfile> abp = cp->get_action_bar_profile();
 
-	//get_action_bar_profile()->from_actionbar_profile(abp);
-	//}
-	//}
+			get_action_bar_profile()->from_actionbar_profile(abp);
+		}
+	}*/
 
 	if (!gets_bag().is_valid()) {
 		Ref<Bag> bag;
@@ -1277,7 +1279,9 @@ Dictionary Entity::_to_dict() {
 	////     Actionbars    ////
 
 	dict["actionbar_locked"] = _actionbar_locked;
-	//dict["actionbar_profile"] = _action_bar_profile->to_dict();
+
+	if (_action_bar_profile.is_valid())
+		dict["actionbar_profile"] = _action_bar_profile->to_dict();
 
 	// AI
 
@@ -1605,7 +1609,14 @@ void Entity::_from_dict(const Dictionary &dict) {
 	////     Actionbars    ////
 
 	_actionbar_locked = dict.get("actionbar_locked", false);
-	//_action_bar_profile->from_dict(dict.get("actionbar_profile", Dictionary()));
+
+	if (dict.has("actionbar_profile")) {
+
+		if (!_action_bar_profile.is_valid())
+			_action_bar_profile.instance();
+
+		_action_bar_profile->from_dict(dict.get("actionbar_profile", Dictionary()));
+	}
 
 	StringName edp = dict.get("entity_data_path", "");
 
@@ -5370,16 +5381,22 @@ void Entity::set_actionbar_locked(bool value) {
 }
 
 Ref<ActionBarProfile> Entity::get_action_bar_profile() {
+	if (_action_bar_profile.is_valid())
+		return _action_bar_profile;
+
+	_action_bar_profile.instance();
+
 	Ref<ClassProfile> cp = ProfileManager::get_singleton()->getc_player_profile()->get_class_profile(gets_entity_data()->get_path());
 
 	if (cp.is_valid()) {
 		set_actionbar_locked(cp->get_actionbar_locked());
-		return cp->get_action_bar_profile();
+		Ref<ActionBarProfile> p = cp->get_default_action_bar_profile();
+
+		if (p.is_valid())
+			_action_bar_profile->from_actionbar_profile(p);
 	}
 
-	return Ref<ActionBarProfile>();
-
-	//return _action_bar_profile;
+	return _action_bar_profile;
 }
 
 void Entity::loaded() {

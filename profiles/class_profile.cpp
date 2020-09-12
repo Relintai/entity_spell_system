@@ -70,7 +70,7 @@ void ClassProfile::set_actionbar_locked(const bool value) {
 Ref<InputProfile> ClassProfile::get_input_profile() {
 	return _input_profile;
 }
-Ref<ActionBarProfile> ClassProfile::get_action_bar_profile() {
+Ref<ActionBarProfile> ClassProfile::get_default_action_bar_profile() {
 	return _action_bar_profile;
 }
 
@@ -223,7 +223,7 @@ void ClassProfile::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_custom_data", "name"), &ClassProfile::get_custom_data);
 
 	ClassDB::bind_method(D_METHOD("get_input_profile"), &ClassProfile::get_input_profile);
-	ClassDB::bind_method(D_METHOD("get_action_bar_profile"), &ClassProfile::get_action_bar_profile);
+	ClassDB::bind_method(D_METHOD("get_default_action_bar_profile"), &ClassProfile::get_default_action_bar_profile);
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &ClassProfile::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &ClassProfile::to_dict);
