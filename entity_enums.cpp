@@ -30,7 +30,7 @@ const String EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS = "Roo
 const String EntityEnums::BINDING_STRING_AI_STATES = "Off,Rest,Patrol,Follow Path,Regenerate,Attack,Pet Follow,Pet Stop,Pet Attack";
 const String EntityEnums::BINDING_STRING_ENTITY_IMMUNITY_FLAGS = "Stun,Root,Freeze,Silence,Disorient,Fear,Burning,Cold,Pacify,Magic,Poison,Physical,Curse,Bleed,Melee,Holy,Shadow,Nature,Fire,Frost,Lightning,Chaos,Slow,Crit,AOE,Damage,Fall Damage,Projectile,Debuff,Attacks";
 const String EntityEnums::BINDING_STRING_ENTITY_RELATION_TYPE = "Neutral,Friendly,Hostile";
-const String EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE = "Normal,Speak,Loot,Use,Train,None";
+const String EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE = "Normal,Speak,Loot,Use,Train,Vendor,None";
 const String EntityEnums::BINDING_STRING_ENTITY_PLAYSTYLE_TYPE = "Melee,Spell,Hybrid,None";
 const String EntityEnums::BINDING_STRING_ENTITY_WINDOWS = "Loot,Container,Vendor,Trainer";
 const String EntityEnums::BINDING_STRING_ENTITY_ENTITY_RESOURCE_INDICES = "Health,Speed,Resources Begin";
@@ -155,6 +155,7 @@ void EntityEnums::_bind_methods() {
 	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_SPEAK);
 	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_LOOT);
 	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_TRAIN);
+	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_VENDOR);
 	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_USE);
 	BIND_ENUM_CONSTANT(ENITIY_INTERACTION_TYPE_NONE);
 
