@@ -946,6 +946,12 @@ public:
 	void notification_target_items_sswapped(Ref<Bag> bag, int slot_id_1, int slot_id_2);
 	void notification_target_item_sscount_changed(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id);
 
+	//Vendors
+	void vendor_item_buy_crequest(const int index, const int count);
+	void vendor_item_sbuy(const int index, const int count);
+	void vendor_item_sell_crequest(const int slot_id);
+	void vendor_item_ssell(const int slot_id);
+
 	////    Data    ////
 
 	void data_adds(Ref<EntityDataContainer> data);
@@ -1086,6 +1092,8 @@ protected:
 	void _con_target_changed(Node *p_entity, Node *p_old_target);
 	void _notification_sdeath();
 	void _spell_learns(int id);
+	void _vendor_item_sbuy(const int index, const int count);
+	void _vendor_item_ssell(const int slot_id);
 
 	bool _set(const StringName &p_name, const Variant &p_value);
 	bool _get(const StringName &p_name, Variant &r_ret) const;

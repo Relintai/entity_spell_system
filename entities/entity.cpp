@@ -35,6 +35,8 @@ SOFTWARE.
 #include "../pipelines/spell_heal_info.h"
 #include "../profiles/class_profile.h"
 #include "./data/character_spec.h"
+#include "./data/vendor_item_data.h"
+#include "./data/vendor_item_data_entry.h"
 #include "./resources/entity_resource_health.h"
 #include "./resources/entity_resource_speed.h"
 #include "./skills/entity_skill.h"
@@ -5203,7 +5205,6 @@ void Entity::item_addc(int slot_id, Ref<ItemInstance> item) {
 
 	_c_bag->add_item_at(slot_id, item);
 }
-
 void Entity::notification_item_sremoved(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
 	ORPC(item_removec, slot_id);
 }
@@ -5327,6 +5328,20 @@ void Entity::target_item_cchange_count(int slot_id, int new_count) {
 	ERR_FAIL_COND(!ii.is_valid());
 
 	ii->set_stack_size(new_count);
+}
+
+//Vendors
+void Entity::vendor_item_buy_crequest(const int index, const int count) {
+	RPCS(vendor_item_sbuy, index, count);
+}
+void Entity::vendor_item_sbuy(const int index, const int count) {
+	call("_vendor_item_sbuy", index, count);
+}
+void Entity::vendor_item_sell_crequest(const int slot_id) {
+	RPCS(vendor_item_ssell, slot_id);
+}
+void Entity::vendor_item_ssell(const int slot_id) {
+	call("_vendor_item_ssell", slot_id);
 }
 
 ////    DATA    ////
@@ -6300,6 +6315,96 @@ void Entity::_spell_learns(int id) {
 			return;
 		}
 	}
+}
+
+void Entity::_vendor_item_sbuy(const int index, const int count) {
+	if (count <= 0)
+		return;
+
+	Entity *e = gets_target();
+
+	if (!e)
+		return;
+
+	Ref<EntityData> ed = e->gets_entity_data();
+
+	if (!ed.is_valid())
+		return;
+
+	Ref<VendorItemData> vid = ed->get_vendor_item_data();
+
+	if (!vid.is_valid())
+		return;
+
+	if (vid->get_num_vendor_datas() <= index) {
+		return;
+	}
+
+	Ref<VendorItemDataEntry> vide = vid->get_vendor_data(index);
+
+	if (!vide.is_valid())
+		return;
+
+	Ref<ItemTemplate> t = vide->get_item();
+
+	if (!t.is_valid())
+		return;
+
+	int price = vide->get_price();
+
+	if (gets_money() < price)
+		return;
+
+	Ref<Bag> sbag = gets_bag();
+
+	int s = count;
+	if (t->get_stack_size() < s)
+		s = t->get_stack_size();
+
+	Ref<ItemInstance> ii = t->create_item_instance();
+	ii->set_stack_size(s);
+
+	//todo make this work with item templates
+	if (!sbag->can_add_item(ii)) {
+		return;
+	}
+
+	sets_money(gets_money() - price);
+	sbag->add_item(ii);
+}
+void Entity::_vendor_item_ssell(const int slot_id) {
+	Entity *e = gets_target();
+
+	if (!e)
+		return;
+
+	Ref<EntityData> ed = e->gets_entity_data();
+
+	if (!ed.is_valid())
+		return;
+
+	Ref<VendorItemData> vid = ed->get_vendor_item_data();
+
+	if (!vid.is_valid())
+		return;
+
+	Ref<Bag> bag = gets_bag();
+
+	Ref<ItemInstance> ii = bag->get_item(slot_id);
+
+	if (!ii.is_valid())
+		return;
+
+	Ref<ItemTemplate> it = ii->get_item_template();
+
+	int price = it->get_price();
+
+	if (price == 0)
+		return;
+
+	sets_money(gets_money() + price);
+
+	bag->remove_item(slot_id);
 }
 
 void Entity::_notification(int p_what) {
@@ -7462,6 +7567,18 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("notification_target_item_sscount_changed", "bag", "item", "slot_id"), &Entity::notification_target_item_sscount_changed);
 	ClassDB::bind_method(D_METHOD("target_item_cchange_count", "slot_id", "new_count"), &Entity::target_item_cchange_count);
+
+	//Vendors
+	ClassDB::bind_method(D_METHOD("vendor_item_buy_crequest", "index", "count"), &Entity::vendor_item_buy_crequest);
+	ClassDB::bind_method(D_METHOD("vendor_item_sbuy", "index", "count"), &Entity::vendor_item_sbuy);
+	ClassDB::bind_method(D_METHOD("vendor_item_sell_crequest", "slot_id"), &Entity::vendor_item_sell_crequest);
+	ClassDB::bind_method(D_METHOD("vendor_item_ssell", "slot_id"), &Entity::vendor_item_ssell);
+
+	BIND_VMETHOD(MethodInfo("_vendor_item_sbuy", PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::INT, "count")));
+	BIND_VMETHOD(MethodInfo("_vendor_item_ssell", PropertyInfo(Variant::INT, "slot_id")));
+
+	ClassDB::bind_method(D_METHOD("_vendor_item_sbuy", "index", "count"), &Entity::_vendor_item_sbuy);
+	ClassDB::bind_method(D_METHOD("_vendor_item_ssell", "slot_id"), &Entity::_vendor_item_ssell);
 
 	//Actionbars
 
