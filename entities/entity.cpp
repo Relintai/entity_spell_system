@@ -212,13 +212,22 @@ NodePath Entity::get_character_skeleton_path() {
 void Entity::set_character_skeleton_path(NodePath value) {
 	_character_skeleton_path = value;
 
-	_character_skeleton = get_node_or_null(_character_skeleton_path);
+	set_character_skeleton(get_node_or_null(_character_skeleton_path));
 }
 Node *Entity::get_character_skeleton() {
 	return _character_skeleton;
 }
 void Entity::set_character_skeleton(Node *skeleton) {
 	_character_skeleton = skeleton;
+
+	if (INSTANCE_VALIDATE(_character_skeleton) && _character_skeleton->has_method("add_model_visual")) {
+		for (int i = 0; i < _c_equipment.size(); ++i) {
+			Ref<ItemInstance> ii = _c_equipment[i];
+
+			if (ii.is_valid())
+				_character_skeleton->call("add_model_visual", ii->get_item_template()->get_model_visual());
+		}
+	}
 }
 
 //GUID
@@ -2281,7 +2290,7 @@ void Entity::_equips(int equip_slot, int bag_slot) {
 		equip_applys_item(bag_item);
 
 	equip_sets_slot(equip_slot, bag_item);
-	_s_bag->add_item_at(equip_slot, equipped_item, false);
+	_s_bag->add_item_at(bag_slot, equipped_item, false);
 
 	ORPC(equip_csuccess, equip_slot, bag_slot);
 }
