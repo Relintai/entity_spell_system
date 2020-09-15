@@ -1378,7 +1378,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 				ii.instance();
 			}
 
-			ii->from_dict(dict[String::num(i)]);
+			ii->from_dict(equipment[String::num(i)]);
 
 			_s_equipment.write[i] = ii;
 			_c_equipment.write[i] = ii;
