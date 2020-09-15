@@ -194,7 +194,7 @@ void CharacterSkeleton3D::remove_model_visual(Ref<ModelVisual> vis) {
 	if (index == -1)
 		return;
 
-	for (int i = 0; i < _entries.size(); ++i) {
+	for (int i = 0; i < vis->get_visual_entry_count(); ++i) {
 		Ref<ModelVisualEntry> e = vis->get_visual_entry(i);
 
 		if (e.is_valid())
