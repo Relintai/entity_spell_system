@@ -13,14 +13,20 @@ check whether it works from time to time.
 
 ## Project setup tl;dr
 
-You need to create an `ESSResourceDB`, and an `ESSEntitySpawner` resource somewhere in you project.
+### First 
 
-Now you can either go to `ProjectSettings->Ess->Data`, and set the `ess_resource_db_path`, and the 
-`ess_entity_spawner_path` properties and then tick `automatic_load`,
+You need to create an `ESSResourceDB` resource somewhere in you project. (Or alloocate it dynamically.)
 
-or you can load them yourself and set them into the `ESS` singleton either using 
-`void setup(resource_db: ESSResourceDB, entity_spawner: ESSEntitySpawner)` or the `entity_spawner` and 
-`resource_db` properties.
+Now you can either:
+
+-Go to `ProjectSettings->Ess->Data`, and set the `ess_resource_db_path` property also make sure that `automatic_load` is on.
+
+-Or you can load it yourself and set it into the `ESS` singleton either using the `resource_db` property.
+
+### Second
+
+You need to add an `ESSEntitySpawner` somewhere into your SceneTree. I recommend that you create an autoload for it.
+This is where you have to implement your spawning logic.
 
 ### What the module doesn't cover
 
@@ -67,8 +73,8 @@ The module contains 2 singletons. `ESS`, and `ProfileManager`. Both are accessib
 
 ### The ESS singleton
 
-Contains the active `ESSResourceDB` instance, and the active `ESSEntitySpawner` instance, and also 
-loads/handles/processes all of the entity and spell system related ProjectSettings, so if you need
+Contains the active `ESSResourceDB` instance, and for convenience a reference to the active `ESSEntitySpawner` 
+instance. Also loads/handles/processes all of the entity and spell system related ProjectSettings, so if you need
 any ESS related value from ProjectSettings, don't query it directly, get it from this singleton.
 
 Customizable enums values are preprocessed, and you usually have multiple ways of getting them.
@@ -287,11 +293,9 @@ everything for you. It will set up stats, equipment etc, but there is no way to 
 
 You can implement your spawning logic by inheriting from `ESSEntitySpawner`, and implementing `_request_entity_spawn`.
 
-You will need to register this spawner into the ESS singleton.
+You should only have one spawner at any given time. It will register itself into the ESS singleton automatically.
 
-You can use `setup(resource_db, entity_spawner)`, or by the provided property/setter `entity_spawner`/`set_entity_spawner()`.\
-Or you can set you spawner's path into the `ProjectSettings->Ess->Data->ess_entity_spawner_path` and either tick the `automatic_load` property, or 
-call `ESS.load_entity_spawner()` from a script.
+Since it is inherited from Node, I recommend that you create an autoload for it.
 
 The ESS singleton also contains convenience methods to request spawning an Entity.
 
