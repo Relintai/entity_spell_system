@@ -88,11 +88,15 @@ void ESS::set_resource_db(const Ref<ESSResourceDB> &resource_db) {
 	_ess_resource_db = resource_db;
 }
 
-Ref<ESSEntitySpawner> ESS::get_entity_spawner() {
+ESSEntitySpawner *ESS::get_entity_spawner() {
 	return _ess_entity_spawner;
 }
-void ESS::set_entity_spawner(const Ref<ESSEntitySpawner> &spawner) {
+void ESS::set_entity_spawner(ESSEntitySpawner *spawner) {
 	_ess_entity_spawner = spawner;
+}
+
+void ESS::set_entity_spawner_bind(Node *spawner) {
+	_ess_entity_spawner = Object::cast_to<ESSEntitySpawner>(spawner);
 }
 
 String ESS::get_resource_db_path() {
@@ -102,19 +106,12 @@ void ESS::set_resource_db_path(const String &path) {
 	_ess_resource_db_path = path;
 }
 
-String ESS::get_entity_spawner_path() {
-	return _ess_entity_spawner_path;
-}
-void ESS::set_entity_spawner_path(const String &path) {
-	_ess_entity_spawner_path = path;
-}
-
 void ESS::request_entity_spawn(Ref<EntityCreateInfo> info) {
-	if (_ess_entity_spawner.is_valid())
+	if (_ess_entity_spawner)
 		_ess_entity_spawner->request_entity_spawn(info);
 }
 void ESS::request_entity_spawn_deferred(Ref<EntityCreateInfo> info) {
-	if (_ess_entity_spawner.is_valid())
+	if (_ess_entity_spawner)
 		_ess_entity_spawner->request_entity_spawn_deferred(info);
 }
 
@@ -128,18 +125,6 @@ void ESS::load_resource_db() {
 	ERR_FAIL_COND(!d.is_valid());
 
 	_ess_resource_db = d;
-}
-
-void ESS::load_entity_spawner() {
-	_Directory dir;
-
-	ERR_FAIL_COND(_ess_entity_spawner_path == "");
-
-	Ref<ESSEntitySpawner> d = load_resource(_ess_entity_spawner_path, "ESSEntitySpawner");
-
-	ERR_FAIL_COND(!d.is_valid());
-
-	_ess_entity_spawner = d;
 }
 
 Ref<Resource> ESS::load_resource(const String &path, const String &type_hint) {
@@ -160,14 +145,8 @@ Ref<Resource> ESS::load_resource(const String &path, const String &type_hint) {
 
 void ESS::load_all() {
 	load_resource_db();
-	load_entity_spawner();
 
 	_ess_resource_db->initialize();
-}
-
-void ESS::setup(const Ref<ESSResourceDB> &resource_db, const Ref<ESSEntitySpawner> &entity_spawner) {
-	_ess_resource_db = resource_db;
-	_ess_entity_spawner = entity_spawner;
 }
 
 //Stats
@@ -564,20 +543,15 @@ void ESS::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "resource_db", PROPERTY_HINT_RESOURCE_TYPE, "ESSResourceDB"), "set_resource_db", "get_resource_db");
 
 	ClassDB::bind_method(D_METHOD("get_entity_spawner"), &ESS::get_entity_spawner);
-	ClassDB::bind_method(D_METHOD("set_entity_spawner"), &ESS::set_entity_spawner);
+	ClassDB::bind_method(D_METHOD("set_entity_spawner"), &ESS::set_entity_spawner_bind);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "entity_spawner", PROPERTY_HINT_RESOURCE_TYPE, "ESSEntitySpawner"), "set_entity_spawner", "get_entity_spawner");
 
 	ClassDB::bind_method(D_METHOD("get_resource_db_path"), &ESS::get_resource_db_path);
 	ClassDB::bind_method(D_METHOD("set_resource_db_path", "path"), &ESS::set_resource_db_path);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "resource_db_path"), "set_resource_db_path", "get_resource_db_path");
 
-	ClassDB::bind_method(D_METHOD("get_entity_spawner_path"), &ESS::get_entity_spawner_path);
-	ClassDB::bind_method(D_METHOD("set_entity_spawner_path", "path"), &ESS::set_entity_spawner_path);
-	ADD_PROPERTY(PropertyInfo(Variant::STRING, "entity_spawner_path"), "set_entity_spawner_path", "get_entity_spawner_path");
-
 	//load
 	ClassDB::bind_method(D_METHOD("load_resource_db"), &ESS::load_resource_db);
-	ClassDB::bind_method(D_METHOD("load_entity_spawner"), &ESS::load_entity_spawner);
 
 	ClassDB::bind_method(D_METHOD("load_resource", "path", "type_hint"), &ESS::load_resource, DEFVAL(""));
 
@@ -585,8 +559,6 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("request_entity_spawn_deferred", "info"), &ESS::request_entity_spawn_deferred);
 
 	ClassDB::bind_method(D_METHOD("load_all"), &ESS::load_all);
-
-	ClassDB::bind_method(D_METHOD("setup", "resource_db", "entity_spawner"), &ESS::setup);
 
 	//Stats
 	ClassDB::bind_method(D_METHOD("stat_get_string"), &ESS::stat_get_string);
@@ -682,6 +654,7 @@ void ESS::_bind_methods() {
 
 ESS::ESS() {
 	instance = this;
+	_ess_entity_spawner = NULL;
 
 	_use_spell_points = GLOBAL_DEF("ess/spells/use_spell_points", false);
 	_scale_spells_by_default = GLOBAL_DEF("ess/spells/scale_spells_by_default", false);
@@ -696,7 +669,6 @@ ESS::ESS() {
 	_automatic_load = GLOBAL_DEF("ess/data/automatic_load", false);
 
 	_ess_resource_db_path = GLOBAL_DEF("ess/data/ess_resource_db_path", "");
-	_ess_entity_spawner_path = GLOBAL_DEF("ess/data/ess_entity_spawner_path", "");
 
 	stat_set_string(GLOBAL_DEF("ess/enums/stats", "Agility,Strength,Stamina,Intellect,Spirit,Health,Speed,Global Cooldown,Haste"));
 	_stat_main_stat_count = GLOBAL_DEF("ess/enums/main_stat_count", 5);
@@ -727,7 +699,7 @@ ESS::~ESS() {
 	instance = NULL;
 
 	_ess_resource_db.unref();
-	_ess_entity_spawner.unref();
+	_ess_entity_spawner = NULL;
 
 	_stat_id_to_name.clear();
 	_stat_name_to_id.clear();

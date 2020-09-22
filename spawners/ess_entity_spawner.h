@@ -23,20 +23,16 @@ SOFTWARE.
 #ifndef ESS_ENTITY_SPAWNER_H
 #define ESS_ENTITY_SPAWNER_H
 
-#include "core/resource.h"
+#include "scene/main/node.h"
 
 #include "scene/main/scene_tree.h"
 
 class EntityCreateInfo;
 
-class ESSEntitySpawner : public Resource {
-	GDCLASS(ESSEntitySpawner, Resource);
+class ESSEntitySpawner : public Node {
+	GDCLASS(ESSEntitySpawner, Node);
 
 public:
-	_FORCE_INLINE_ SceneTree *get_scene_tree() const {
-		return SceneTree::get_singleton();
-	}
-
 	void request_entity_spawn(Ref<EntityCreateInfo> info);
 	void request_entity_spawn_deferred(Ref<EntityCreateInfo> info);
 

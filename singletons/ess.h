@@ -72,25 +72,20 @@ public:
 	Ref<ESSResourceDB> get_resource_db();
 	void set_resource_db(const Ref<ESSResourceDB> &resource_db);
 
-	Ref<ESSEntitySpawner> get_entity_spawner();
-	void set_entity_spawner(const Ref<ESSEntitySpawner> &spawner);
+	ESSEntitySpawner *get_entity_spawner();
+	void set_entity_spawner(ESSEntitySpawner *spawner);
+	void set_entity_spawner_bind(Node *spawner);
 
 	String get_resource_db_path();
 	void set_resource_db_path(const String &path);
-
-	String get_entity_spawner_path();
-	void set_entity_spawner_path(const String &path);
 
 	void request_entity_spawn(Ref<EntityCreateInfo> info);
 	void request_entity_spawn_deferred(Ref<EntityCreateInfo> info);
 
 	void load_resource_db();
-	void load_entity_spawner();
 	Ref<Resource> load_resource(const String &path, const String &type_hint = "");
 
 	void load_all();
-
-	void setup(const Ref<ESSResourceDB> &resource_db, const Ref<ESSEntitySpawner> &entity_spawner);
 
 	//Stats
 	String stat_get_string() const;
@@ -188,10 +183,9 @@ private:
 	bool _automatic_load;
 
 	Ref<ESSResourceDB> _ess_resource_db;
-	Ref<ESSEntitySpawner> _ess_entity_spawner;
+	ESSEntitySpawner *_ess_entity_spawner;
 
 	String _ess_resource_db_path;
-	String _ess_entity_spawner_path;
 
 	static ESS *instance;
 
