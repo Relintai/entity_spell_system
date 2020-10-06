@@ -738,7 +738,11 @@ String Spell::_get_description(const int class_level, const int character_level)
 		if (pos == str.size() - 1)
 			break;
 
+#if GODOT4
+		char32_t o = str[pos + 1];
+#else
 		CharType o = str[pos + 1];
+#endif
 
 		if (o == '#' || o == '$' || o == '%') {
 			int nsp = str.find_char(' ', pos + 1);

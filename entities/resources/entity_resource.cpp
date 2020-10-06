@@ -26,6 +26,8 @@ SOFTWARE.
 #include "../../singletons/ess.h"
 #include "../entity.h"
 
+#include "../../defines.h"
+
 int EntityResource::get_id() const {
 	return _id;
 }
