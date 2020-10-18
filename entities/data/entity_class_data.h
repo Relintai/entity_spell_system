@@ -48,6 +48,9 @@ class CharacterSpec;
 class Entity;
 class SpellCastInfo;
 class EntityAI;
+class VendorItemData;
+class ItemContainerData;
+class CraftRecipe;
 
 class EntityClassData : public Resource {
 	GDCLASS(EntityClassData, Resource);
@@ -118,6 +121,25 @@ public:
 	Vector<Variant> get_auras();
 	void set_auras(const Vector<Variant> &auras);
 
+	//Data
+	Ref<VendorItemData> get_vendor_item_data() const;
+	void set_vendor_item_data(const Ref<VendorItemData> &data);
+
+	Ref<VendorItemData> get_spell_train_data() const;
+	void set_spell_train_data(const Ref<VendorItemData> &data);
+
+	Ref<ItemContainerData> get_item_container_data() const;
+	void set_item_container_data(const Ref<ItemContainerData> &data);
+
+	//Craft Recipes
+	int get_num_craft_recipes() const;
+
+	Ref<CraftRecipe> get_craft_recipe(int index);
+	void set_craft_recipe(int index, const Ref<CraftRecipe> &recipe);
+
+	Vector<Variant> get_craft_recipes() const;
+	void set_craft_recipes(const Vector<Variant> &recipe);
+
 	//AI
 	int get_num_ais();
 	void set_num_ais(int value);
@@ -157,6 +179,12 @@ private:
 	Vector<Ref<Spell> > _spells;
 	Vector<Ref<Spell> > _start_spells;
 	Vector<Ref<Aura> > _auras;
+
+	Ref<VendorItemData> _vendor_item_data;
+	Ref<VendorItemData> _spell_train_data;
+	Ref<ItemContainerData> _item_container_data;
+	Vector<Ref<CraftRecipe> > _craft_recipes;
+
 	Vector<Ref<EntityAI> > _ais;
 };
 

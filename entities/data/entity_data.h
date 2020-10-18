@@ -38,13 +38,11 @@ SOFTWARE.
 #include "../../data/loot/loot_data_base.h"
 
 #include "entity_class_data.h"
-#include "item_container_data.h"
 
 #include "../../data/items/equipment_data.h"
 
 #include "../../data/species/entity_species_data.h"
 
-#include "../../formations/ai_formation.h"
 #include "../ai/entity_ai.h"
 
 class Aura;
@@ -54,7 +52,6 @@ class CharacterSpec;
 class Entity;
 class SpellCastInfo;
 class AIAction;
-class VendorItemData;
 class CraftRecipe;
 
 class EntityData : public Resource {
@@ -111,24 +108,6 @@ public:
 	Ref<LootDataBase> get_loot_db() const;
 	void set_loot_db(const Ref<LootDataBase> &data);
 
-	Ref<VendorItemData> get_vendor_item_data() const;
-	void set_vendor_item_data(const Ref<VendorItemData> &data);
-
-	Ref<VendorItemData> get_spell_train_data() const;
-	void set_spell_train_data(const Ref<VendorItemData> &data);
-
-	Ref<ItemContainerData> get_item_container_data() const;
-	void set_item_container_data(const Ref<ItemContainerData> &data);
-
-	//Craft Recipes
-	int get_num_craft_recipes() const;
-
-	Ref<CraftRecipe> get_craft_recipe(int index);
-	void set_craft_recipe(int index, const Ref<CraftRecipe> &recipe);
-
-	Vector<Variant> get_craft_recipes() const;
-	void set_craft_recipes(const Vector<Variant> &recipe);
-
 	String generate_name();
 
 	//Setup
@@ -174,10 +153,6 @@ private:
 	Ref<EntityAI> _ai;
 
 	Ref<LootDataBase> _lootdb;
-	Ref<VendorItemData> _vendor_item_data;
-	Ref<VendorItemData> _spell_train_data;
-	Ref<ItemContainerData> _item_container_data;
-	Vector<Ref<CraftRecipe> > _craft_recipes;
 };
 
 #endif

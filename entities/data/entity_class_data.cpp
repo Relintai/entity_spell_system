@@ -23,12 +23,15 @@ SOFTWARE.
 #include "entity_class_data.h"
 
 #include "../../data/auras/aura.h"
+#include "../../data/items/craft_recipe.h"
 #include "../../data/items/item_instance.h"
 #include "../../data/spells/spell.h"
 #include "../../infos/spell_cast_info.h"
 #include "../ai/entity_ai.h"
 #include "../entity.h"
 #include "character_spec.h"
+#include "item_container_data.h"
+#include "vendor_item_data.h"
 
 #include "../../defines.h"
 
@@ -227,6 +230,55 @@ void EntityClassData::set_auras(const Vector<Variant> &auras) {
 	}
 }
 
+Ref<VendorItemData> EntityClassData::get_vendor_item_data() const {
+	return _vendor_item_data;
+}
+void EntityClassData::set_vendor_item_data(const Ref<VendorItemData> &data) {
+	_vendor_item_data = data;
+}
+
+Ref<VendorItemData> EntityClassData::get_spell_train_data() const {
+	return _spell_train_data;
+}
+void EntityClassData::set_spell_train_data(const Ref<VendorItemData> &data) {
+	_spell_train_data = data;
+}
+
+Ref<ItemContainerData> EntityClassData::get_item_container_data() const {
+	return _item_container_data;
+}
+void EntityClassData::set_item_container_data(const Ref<ItemContainerData> &data) {
+	_item_container_data = data;
+}
+
+//Craft Recipes
+int EntityClassData::get_num_craft_recipes() const {
+	return _craft_recipes.size();
+}
+
+Ref<CraftRecipe> EntityClassData::get_craft_recipe(int index) {
+	ERR_FAIL_INDEX_V(index, _craft_recipes.size(), Ref<CraftRecipe>());
+
+	return _craft_recipes[index];
+}
+void EntityClassData::set_craft_recipe(int index, const Ref<CraftRecipe> &craft_data) {
+	ERR_FAIL_INDEX(index, _craft_recipes.size());
+
+	_craft_recipes.set(index, craft_data);
+}
+
+Vector<Variant> EntityClassData::get_craft_recipes() const {
+	VARIANT_ARRAY_GET(_craft_recipes);
+}
+void EntityClassData::set_craft_recipes(const Vector<Variant> &craft_datas) {
+	_craft_recipes.clear();
+	for (int i = 0; i < craft_datas.size(); i++) {
+		Ref<CraftRecipe> craft_data = Ref<CraftRecipe>(craft_datas[i]);
+
+		_craft_recipes.push_back(craft_data);
+	}
+}
+
 ////    AI ACTIONS    ////
 
 int EntityClassData::get_num_ais() {
@@ -306,6 +358,12 @@ EntityClassData::~EntityClassData() {
 	_spells.clear();
 	_specs.clear();
 	_auras.clear();
+
+	_vendor_item_data.unref();
+	_spell_train_data.unref();
+	_item_container_data.unref();
+	_craft_recipes.clear();
+
 	_ais.clear();
 }
 
@@ -390,6 +448,30 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_auras"), &EntityClassData::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &EntityClassData::set_auras);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
+
+	//Vendor
+	ClassDB::bind_method(D_METHOD("get_vendor_item_data"), &EntityClassData::get_vendor_item_data);
+	ClassDB::bind_method(D_METHOD("set_vendor_item_data", "value"), &EntityClassData::set_vendor_item_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "vendor_item_data", PROPERTY_HINT_RESOURCE_TYPE, "VendorItemData"), "set_vendor_item_data", "get_vendor_item_data");
+
+	ClassDB::bind_method(D_METHOD("get_spell_train_data"), &EntityClassData::get_spell_train_data);
+	ClassDB::bind_method(D_METHOD("set_spell_train_data", "value"), &EntityClassData::set_spell_train_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "spell_train_data", PROPERTY_HINT_RESOURCE_TYPE, "VendorItemData"), "set_spell_train_data", "get_spell_train_data");
+
+	//ItemContainerData
+	ClassDB::bind_method(D_METHOD("get_item_container_data"), &EntityClassData::get_item_container_data);
+	ClassDB::bind_method(D_METHOD("set_item_container_data", "value"), &EntityClassData::set_item_container_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "item_container_data", PROPERTY_HINT_RESOURCE_TYPE, "ItemContainerData"), "set_item_container_data", "get_item_container_data");
+
+	//Crafting
+	ClassDB::bind_method(D_METHOD("get_num_craft_recipes"), &EntityClassData::get_num_craft_recipes);
+
+	ClassDB::bind_method(D_METHOD("get_craft_recipe", "index"), &EntityClassData::get_craft_recipe);
+	ClassDB::bind_method(D_METHOD("set_craft_recipe", "index", "recipe"), &EntityClassData::set_craft_recipe);
+
+	ClassDB::bind_method(D_METHOD("get_craft_recipes"), &EntityClassData::get_craft_recipes);
+	ClassDB::bind_method(D_METHOD("set_craft_recipes", "recipe"), &EntityClassData::set_craft_recipes);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "craft_recipes", PROPERTY_HINT_NONE, "17/17:CraftRecipe", PROPERTY_USAGE_DEFAULT, "CraftRecipe"), "set_craft_recipes", "get_craft_recipes");
 
 	////    AI ACTIONS    ////
 	ClassDB::bind_method(D_METHOD("get_num_ais"), &EntityClassData::get_num_ais);

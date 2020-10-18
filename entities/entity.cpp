@@ -739,8 +739,8 @@ void Entity::_setup() {
 		}
 	}
 
-	for (int i = 0; i < _s_entity_data->get_num_craft_recipes(); ++i) {
-		craft_adds_recipe(_s_entity_data->get_craft_recipe(i));
+	for (int i = 0; i < cc->get_num_craft_recipes(); ++i) {
+		craft_adds_recipe(cc->get_craft_recipe(i));
 	}
 
 	if (_s_entity_data->get_equipment_data().is_valid()) {
@@ -6340,7 +6340,12 @@ void Entity::_vendor_item_sbuy(const int index, const int count) {
 	if (!ed.is_valid())
 		return;
 
-	Ref<VendorItemData> vid = ed->get_vendor_item_data();
+	Ref<EntityClassData> ecd = ed->get_entity_class_data();
+
+	if (!ecd.is_valid())
+		return;
+
+	Ref<VendorItemData> vid = ecd->get_vendor_item_data();
 
 	if (!vid.is_valid())
 		return;
@@ -6392,7 +6397,12 @@ void Entity::_vendor_item_ssell(const int slot_id) {
 	if (!ed.is_valid())
 		return;
 
-	Ref<VendorItemData> vid = ed->get_vendor_item_data();
+	Ref<EntityClassData> ecd = ed->get_entity_class_data();
+
+	if (!ecd.is_valid())
+		return;
+
+	Ref<VendorItemData> vid = ecd->get_vendor_item_data();
 
 	if (!vid.is_valid())
 		return;
