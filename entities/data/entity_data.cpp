@@ -159,13 +159,6 @@ Ref<EntityAI> EntityData::_get_ai_instance() {
 	return ai;
 }
 
-Ref<AIFormation> EntityData::get_formation() const {
-	return _formation;
-}
-void EntityData::set_formation(const Ref<AIFormation> &data) {
-	_formation = data;
-}
-
 Ref<LootDataBase> EntityData::get_loot_db() const {
 	return _lootdb;
 }
@@ -325,7 +318,6 @@ EntityData::~EntityData() {
 	_equipment_data.unref();
 
 	_ai.unref();
-	_formation.unref();
 
 	_lootdb.unref();
 	_vendor_item_data.unref();
@@ -408,10 +400,6 @@ void EntityData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_ai_instance"), &EntityData::get_ai_instance);
 	ClassDB::bind_method(D_METHOD("_get_ai_instance"), &EntityData::_get_ai_instance);
-
-	ClassDB::bind_method(D_METHOD("get_formation"), &EntityData::get_formation);
-	ClassDB::bind_method(D_METHOD("set_formation", "value"), &EntityData::set_formation);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "formation", PROPERTY_HINT_RESOURCE_TYPE, "AIFormation"), "set_formation", "get_formation");
 
 	// Loot DB
 	ClassDB::bind_method(D_METHOD("get_loot_db"), &EntityData::get_loot_db);

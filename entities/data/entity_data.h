@@ -108,9 +108,6 @@ public:
 	Ref<EntityAI> get_ai_instance();
 	Ref<EntityAI> _get_ai_instance();
 
-	Ref<AIFormation> get_formation() const;
-	void set_formation(const Ref<AIFormation> &data);
-
 	Ref<LootDataBase> get_loot_db() const;
 	void set_loot_db(const Ref<LootDataBase> &data);
 
@@ -175,7 +172,6 @@ private:
 	Ref<EquipmentData> _equipment_data;
 
 	Ref<EntityAI> _ai;
-	Ref<AIFormation> _formation;
 
 	Ref<LootDataBase> _lootdb;
 	Ref<VendorItemData> _vendor_item_data;
