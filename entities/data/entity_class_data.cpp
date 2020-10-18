@@ -26,6 +26,7 @@ SOFTWARE.
 #include "../../data/items/craft_recipe.h"
 #include "../../data/items/item_instance.h"
 #include "../../data/spells/spell.h"
+#include "../../entities/stats/stat_data.h"
 #include "../../infos/spell_cast_info.h"
 #include "../ai/entity_ai.h"
 #include "../entity.h"
@@ -68,6 +69,14 @@ EntityEnums::EntityClassPlaystyleType EntityClassData::get_playstyle_type() {
 }
 void EntityClassData::set_playstyle_type(EntityEnums::EntityClassPlaystyleType playstyle_type) {
 	_playstyle_type = playstyle_type;
+}
+
+Ref<StatData> EntityClassData::get_stat_data() {
+	return _stat_data;
+}
+
+void EntityClassData::set_stat_data(Ref<StatData> value) {
+	_stat_data = value;
 }
 
 ////    Entity Resources    ////
@@ -355,6 +364,8 @@ EntityClassData::EntityClassData() {
 }
 
 EntityClassData::~EntityClassData() {
+	_stat_data.unref();
+
 	_spells.clear();
 	_specs.clear();
 	_auras.clear();
@@ -391,6 +402,10 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_playstyle_type"), &EntityClassData::get_playstyle_type);
 	ClassDB::bind_method(D_METHOD("set_playstyle_type", "value"), &EntityClassData::set_playstyle_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "playstyle_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_PLAYSTYLE_TYPE), "set_playstyle_type", "get_playstyle_type");
+
+	ClassDB::bind_method(D_METHOD("get_stat_data"), &EntityClassData::get_stat_data);
+	ClassDB::bind_method(D_METHOD("set_stat_data", "value"), &EntityClassData::set_stat_data);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "stat_data", PROPERTY_HINT_RESOURCE_TYPE, "StatData"), "set_stat_data", "get_stat_data");
 
 	////    Entity Resources    ////
 	ClassDB::bind_method(D_METHOD("get_num_entity_resources"), &EntityClassData::get_num_entity_resources);

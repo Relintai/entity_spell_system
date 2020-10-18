@@ -103,14 +103,6 @@ void EntityData::set_bag_size(const int value) {
 	_bag_size = value;
 }
 
-Ref<StatData> EntityData::get_stat_data() {
-	return _stat_data;
-}
-
-void EntityData::set_stat_data(Ref<StatData> value) {
-	_stat_data = value;
-}
-
 Ref<EntitySpeciesData> EntityData::get_entity_species_data() const {
 	return _entity_species_data;
 }
@@ -318,10 +310,6 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_bag_size"), &EntityData::get_bag_size);
 	ClassDB::bind_method(D_METHOD("set_bag_size", "value"), &EntityData::set_bag_size);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "bag_size"), "set_bag_size", "get_bag_size");
-
-	ClassDB::bind_method(D_METHOD("get_stat_data"), &EntityData::get_stat_data);
-	ClassDB::bind_method(D_METHOD("set_stat_data", "value"), &EntityData::set_stat_data);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "stat_data", PROPERTY_HINT_RESOURCE_TYPE, "StatData"), "set_stat_data", "get_stat_data");
 
 	ClassDB::bind_method(D_METHOD("get_entity_species_data"), &EntityData::get_entity_species_data);
 	ClassDB::bind_method(D_METHOD("set_entity_species_data", "value"), &EntityData::set_entity_species_data);

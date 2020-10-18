@@ -698,7 +698,7 @@ void Entity::_setup() {
 	ERR_FAIL_COND(!cc.is_valid());
 
 	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
-		stat_set_base(i, _s_entity_data->get_stat_data()->get_base(i));
+		stat_set_base(i, cc->get_stat_data()->get_base(i));
 	}
 
 	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
@@ -6181,7 +6181,7 @@ void Entity::_notification_slevel_up(int level) {
 		return;
 
 	for (int i = 0; i < ESS::get_singleton()->stat_get_main_stat_count(); ++i) {
-		int st = gets_entity_data()->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_level() - level, gets_level());
+		int st = ecd->get_stat_data()->get_level_stat_data()->get_stat_diff(i, gets_level() - level, gets_level());
 
 		stat_mod_base(i, st);
 	}

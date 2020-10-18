@@ -51,6 +51,7 @@ class EntityAI;
 class VendorItemData;
 class ItemContainerData;
 class CraftRecipe;
+class StatData;
 
 class EntityClassData : public Resource {
 	GDCLASS(EntityClassData, Resource);
@@ -70,6 +71,9 @@ public:
 
 	EntityEnums::EntityClassPlaystyleType get_playstyle_type();
 	void set_playstyle_type(EntityEnums::EntityClassPlaystyleType playstyle_type);
+
+	Ref<StatData> get_stat_data();
+	void set_stat_data(Ref<StatData> value);
 
 	//Entity Resources
 	int get_num_entity_resources();
@@ -173,6 +177,8 @@ private:
 	int _spell_points_per_level;
 
 	EntityEnums::EntityClassPlaystyleType _playstyle_type;
+
+	Ref<StatData> _stat_data;
 
 	Vector<Ref<EntityResource> > _entity_resources;
 	Vector<Ref<CharacterSpec> > _specs;
