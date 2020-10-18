@@ -67,9 +67,6 @@ public:
 	String get_text_description() const;
 	void set_text_description(const String value);
 
-	Ref<EntityData> get_inherits() const;
-	void set_inherits(const Ref<EntityData> &value);
-
 	int get_entity_type() const;
 	void set_entity_type(const int value);
 
@@ -156,8 +153,6 @@ protected:
 
 private:
 	int _id;
-
-	Ref<EntityData> _inherits;
 
 	int _entity_type;
 

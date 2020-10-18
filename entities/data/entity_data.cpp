@@ -48,13 +48,6 @@ void EntityData::set_text_description(String value) {
 	_text_description = value;
 }
 
-Ref<EntityData> EntityData::get_inherits() const {
-	return _inherits;
-}
-void EntityData::set_inherits(const Ref<EntityData> &value) {
-	_inherits = value;
-}
-
 int EntityData::get_entity_type() const {
 	return _entity_type;
 }
@@ -113,10 +106,6 @@ void EntityData::set_bag_size(const int value) {
 }
 
 Ref<StatData> EntityData::get_stat_data() {
-	if (!_stat_data.is_valid() && _inherits.is_valid()) {
-		return _inherits->get_stat_data();
-	}
-
 	return _stat_data;
 }
 
@@ -185,10 +174,6 @@ void EntityData::set_loot_db(const Ref<LootDataBase> &lootdb) {
 }
 
 Ref<VendorItemData> EntityData::get_vendor_item_data() const {
-	if (!_vendor_item_data.is_valid() && _inherits.is_valid()) {
-		return _inherits->get_vendor_item_data();
-	}
-
 	return _vendor_item_data;
 }
 void EntityData::set_vendor_item_data(const Ref<VendorItemData> &data) {
@@ -196,10 +181,6 @@ void EntityData::set_vendor_item_data(const Ref<VendorItemData> &data) {
 }
 
 Ref<VendorItemData> EntityData::get_spell_train_data() const {
-	if (!_spell_train_data.is_valid() && _inherits.is_valid()) {
-		return _inherits->get_spell_train_data();
-	}
-
 	return _spell_train_data;
 }
 void EntityData::set_spell_train_data(const Ref<VendorItemData> &data) {
@@ -207,10 +188,6 @@ void EntityData::set_spell_train_data(const Ref<VendorItemData> &data) {
 }
 
 Ref<ItemContainerData> EntityData::get_item_container_data() const {
-	if (!_vendor_item_data.is_valid() && _inherits.is_valid()) {
-		return _inherits->get_item_container_data();
-	}
-
 	return _item_container_data;
 }
 void EntityData::set_item_container_data(const Ref<ItemContainerData> &data) {
@@ -343,8 +320,6 @@ EntityData::EntityData() {
 	_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
 }
 EntityData::~EntityData() {
-	_inherits.unref();
-
 	_entity_class_data.unref();
 	_entity_species_data.unref();
 	_equipment_data.unref();
