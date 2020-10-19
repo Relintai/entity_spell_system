@@ -730,10 +730,10 @@ void Entity::_setup() {
 	sets_immunity_flags(_s_entity_data->get_immunity_flags());
 	sets_entity_flags(_s_entity_data->get_entity_flags());
 
-	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_NONE) {
-		sets_original_entity_controller(_s_entity_data->get_entity_controller());
-		sets_entity_controller(_s_entity_data->get_entity_controller());
-	}
+	//if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_NONE) {
+	//	sets_original_entity_controller(_s_entity_data->get_entity_controller());
+	//	sets_entity_controller(_s_entity_data->get_entity_controller());
+	//}
 
 	//sets_entity_name(_s_entity_data->get_entity_name());
 	sets_money(_s_entity_data->get_money());

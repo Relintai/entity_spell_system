@@ -75,9 +75,6 @@ public:
 	int get_entity_flags() const;
 	void set_entity_flags(const int value);
 
-	EntityEnums::EntityController get_entity_controller() const;
-	void set_entity_controller(const EntityEnums::EntityController value);
-
 	int get_money() const;
 	void set_money(const int value);
 
@@ -129,7 +126,6 @@ private:
 
 	int _immunity_flags;
 	int _entity_flags;
-	EntityEnums::EntityController _entity_controller;
 
 	String _text_description;
 

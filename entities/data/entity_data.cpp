@@ -75,13 +75,6 @@ void EntityData::set_entity_flags(const int value) {
 	_entity_flags = value;
 }
 
-EntityEnums::EntityController EntityData::get_entity_controller() const {
-	return _entity_controller;
-}
-void EntityData::set_entity_controller(EntityEnums::EntityController value) {
-	_entity_controller = value;
-}
-
 int EntityData::get_money() const {
 	return _money;
 }
@@ -243,7 +236,6 @@ EntityData::EntityData() {
 	_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
 	_immunity_flags = 0;
 	_entity_flags = 0;
-	_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
 }
 EntityData::~EntityData() {
 	_entity_class_data.unref();
@@ -276,10 +268,6 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_interaction_type"), &EntityData::get_entity_interaction_type);
 	ClassDB::bind_method(D_METHOD("set_entity_interaction_type", "value"), &EntityData::set_entity_interaction_type);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_interaction_type", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_INTERACTION_TYPE), "set_entity_interaction_type", "get_entity_interaction_type");
-
-	ClassDB::bind_method(D_METHOD("get_entity_controller"), &EntityData::get_entity_controller);
-	ClassDB::bind_method(D_METHOD("set_entity_controller", "value"), &EntityData::set_entity_controller);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "set_entity_controller", "get_entity_controller");
 
 	ClassDB::bind_method(D_METHOD("get_is_playable"), &EntityData::get_is_playable);
 	ClassDB::bind_method(D_METHOD("set_is_playable", "value"), &EntityData::set_is_playable);
