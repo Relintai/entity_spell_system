@@ -40,8 +40,6 @@ SOFTWARE.
 
 #include "../../data/items/equipment_data.h"
 
-#include "../../data/species/entity_species_data.h"
-
 #include "../ai/entity_ai.h"
 
 class Aura;
@@ -52,6 +50,8 @@ class Entity;
 class SpellCastInfo;
 class AIAction;
 class CraftRecipe;
+class EntitySpeciesData;
+class SpeciesInstance;
 
 class EntityData : public Resource {
 	GDCLASS(EntityData, Resource);
@@ -89,6 +89,9 @@ public:
 
 	Ref<EquipmentData> get_equipment_data() const;
 	void set_equipment_data(const Ref<EquipmentData> &data);
+
+	Ref<SpeciesInstance> get_species_instance() const;
+	void set_species_instance(const Ref<SpeciesInstance> &value);
 
 	Ref<EntityAI> get_ai() const;
 	void set_ai(const Ref<EntityAI> &ai);
@@ -135,6 +138,7 @@ private:
 	Ref<EntityClassData> _entity_class_data;
 	Ref<EntitySpeciesData> _entity_species_data;
 	Ref<EquipmentData> _equipment_data;
+	Ref<SpeciesInstance> _species_instance;
 
 	Ref<EntityAI> _ai;
 

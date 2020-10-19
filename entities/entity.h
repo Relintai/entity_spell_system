@@ -30,7 +30,6 @@ SOFTWARE.
 #include "../data/items/craft_recipe.h"
 #include "../data/items/item_instance.h"
 #include "../data/spells/spell.h"
-#include "./data/entity_data.h"
 #include "core/hash_map.h"
 #include "core/io/json.h"
 #include "core/math/transform.h"
@@ -73,6 +72,7 @@ class EntitySkill;
 class ClassProfile;
 class Spatial;
 class Node2D;
+class EntityData;
 
 enum SpellCastDataSignals {
 	CastFailed,

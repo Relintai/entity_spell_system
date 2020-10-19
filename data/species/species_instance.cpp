@@ -124,6 +124,7 @@ void SpeciesInstance::_from_dict(const Dictionary &dict) {
 }
 
 SpeciesInstance::SpeciesInstance() {
+	_id = 0;
 	_species_id = 0;
 	_skin_color_index = 0;
 	_hair_style_index = 0;

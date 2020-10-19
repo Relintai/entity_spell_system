@@ -28,6 +28,9 @@ SOFTWARE.
 #include "../entity.h"
 #include "character_spec.h"
 
+#include "../../data/species/entity_species_data.h"
+#include "../../data/species/species_instance.h"
+
 #include "../../singletons/ess.h"
 
 #include "../../defines.h"
@@ -108,6 +111,13 @@ Ref<EquipmentData> EntityData::get_equipment_data() const {
 }
 void EntityData::set_equipment_data(const Ref<EquipmentData> &data) {
 	_equipment_data = data;
+}
+
+Ref<SpeciesInstance> EntityData::get_species_instance() const {
+	return _species_instance;
+}
+void EntityData::set_species_instance(const Ref<SpeciesInstance> &value) {
+	_species_instance = value;
 }
 
 Ref<EntityAI> EntityData::get_ai() const {
@@ -241,6 +251,7 @@ EntityData::~EntityData() {
 	_entity_class_data.unref();
 	_entity_species_data.unref();
 	_equipment_data.unref();
+	_species_instance.unref();
 
 	_ai.unref();
 
@@ -298,6 +309,10 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_equipment_data"), &EntityData::get_equipment_data);
 	ClassDB::bind_method(D_METHOD("set_equipment_data", "value"), &EntityData::set_equipment_data);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "equipment_data", PROPERTY_HINT_RESOURCE_TYPE, "EquipmentData"), "set_equipment_data", "get_equipment_data");
+
+	ClassDB::bind_method(D_METHOD("get_species_instance"), &EntityData::get_species_instance);
+	ClassDB::bind_method(D_METHOD("set_species_instance", "value"), &EntityData::set_species_instance);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "species_instance", PROPERTY_HINT_RESOURCE_TYPE, "SpeciesInstance"), "set_species_instance", "get_species_instance");
 
 	//AI
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "EntityAI"), "_get_ai_instance"));

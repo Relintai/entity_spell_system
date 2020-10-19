@@ -27,6 +27,7 @@ SOFTWARE.
 #include "../singletons/profile_manager.h"
 
 #include "../data/auras/aura.h"
+#include "../data/species/entity_species_data.h"
 #include "../data/spells/spell.h"
 #include "../entities/auras/aura_data.h"
 #include "../infos/spell_cast_info.h"
@@ -35,6 +36,7 @@ SOFTWARE.
 #include "../pipelines/spell_heal_info.h"
 #include "../profiles/class_profile.h"
 #include "./data/character_spec.h"
+#include "./data/entity_data.h"
 #include "./data/vendor_item_data.h"
 #include "./data/vendor_item_data_entry.h"
 #include "./resources/entity_resource_health.h"
