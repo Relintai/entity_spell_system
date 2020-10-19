@@ -718,7 +718,14 @@ void Entity::_setup() {
 
 	sets_entity_data_id(_s_entity_data->get_id());
 
-	sets_entity_type(_s_entity_data->get_entity_type());
+	Ref<EntitySpeciesData> spd = _s_entity_data->get_entity_species_data();
+
+	if (spd.is_valid()) {
+		sets_entity_type(spd->get_type());
+	} else {
+		sets_entity_type(0);
+	}
+
 	sets_entity_interaction_type(_s_entity_data->get_entity_interaction_type());
 	sets_immunity_flags(_s_entity_data->get_immunity_flags());
 	sets_entity_flags(_s_entity_data->get_entity_flags());

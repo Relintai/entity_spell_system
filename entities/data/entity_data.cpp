@@ -46,13 +46,6 @@ void EntityData::set_text_description(String value) {
 	_text_description = value;
 }
 
-int EntityData::get_entity_type() const {
-	return _entity_type;
-}
-void EntityData::set_entity_type(const int value) {
-	_entity_type = value;
-}
-
 EntityEnums::EntityInteractionType EntityData::get_entity_interaction_type() const {
 	return _interaction_type;
 }
@@ -247,7 +240,6 @@ EntityData::EntityData() {
 	_bag_size = 0;
 	_is_playable = false;
 
-	_entity_type = 0;
 	_interaction_type = EntityEnums::ENITIY_INTERACTION_TYPE_NORMAL;
 	_immunity_flags = 0;
 	_entity_flags = 0;
@@ -280,10 +272,6 @@ void EntityData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_id"), &EntityData::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityData::set_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "id"), "set_id", "get_id");
-
-	ClassDB::bind_method(D_METHOD("get_entity_type"), &EntityData::get_entity_type);
-	ClassDB::bind_method(D_METHOD("set_entity_type", "value"), &EntityData::set_entity_type);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "entity_type", PROPERTY_HINT_ENUM, ""), "set_entity_type", "get_entity_type");
 
 	ClassDB::bind_method(D_METHOD("get_entity_interaction_type"), &EntityData::get_entity_interaction_type);
 	ClassDB::bind_method(D_METHOD("set_entity_interaction_type", "value"), &EntityData::set_entity_interaction_type);

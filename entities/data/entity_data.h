@@ -63,9 +63,6 @@ public:
 	String get_text_description() const;
 	void set_text_description(const String value);
 
-	int get_entity_type() const;
-	void set_entity_type(const int value);
-
 	EntityEnums::EntityInteractionType get_entity_interaction_type() const;
 	void set_entity_interaction_type(const EntityEnums::EntityInteractionType value);
 
@@ -125,8 +122,6 @@ protected:
 
 private:
 	int _id;
-
-	int _entity_type;
 
 	EntityEnums::EntityInteractionType _interaction_type;
 
