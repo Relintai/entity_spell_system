@@ -87,6 +87,18 @@ public:
 
 	void update_nodes();
 
+	int bone_additional_mesh_transform_bone_index_get(const int index) const;
+	void bone_additional_mesh_transform_bone_index_set(const int index, const int bone_index);
+
+	Transform bone_additional_mesh_transform_transform_get(const int index) const;
+	void bone_additional_mesh_transform_transform_set(const int index, const Transform &transform);
+
+	Transform bone_additional_mesh_transform_user_transform_get(const int index) const;
+	void bone_additional_mesh_transform_user_transform_set(const int index, const Transform &transform);
+
+	void bone_additional_mesh_transform_set_count(const int size);
+	int bone_additional_mesh_transform_get_count() const;
+
 	void add_model_visual(Ref<ModelVisual> vis);
 	void remove_model_visual(Ref<ModelVisual> vis);
 	void remove_model_visual_index(int index);
@@ -139,6 +151,16 @@ protected:
 		}
 	};
 
+	struct BoneModelAdditionalMeshTransforms {
+		int bone_index;
+		Transform transform;
+		Transform user_transform;
+
+		BoneModelAdditionalMeshTransforms() {
+			bone_index = 0;
+		}
+	};
+
 private:
 	int _entity_type;
 	int _model_index;
@@ -149,6 +171,8 @@ private:
 	AnimationTree *_animation_tree;
 
 	Vector<AttachPointNode> _attach_point_nodes;
+
+	Vector<BoneModelAdditionalMeshTransforms> _bone_model_additional_mesh_transforms;
 
 	bool _model_dirty;
 	Vector<Ref<ModelVisual> > _model_visuals;
