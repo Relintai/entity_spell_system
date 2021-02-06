@@ -23,6 +23,19 @@ SOFTWARE.
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/object/object.h"
+#include "core/templates/vector.h"
+#include "core/string/ustring.h"
+#else
+#include "core/object.h"
+#include "core/vector.h"
+#include "core/ustring.h"
+#endif
+
+
 #include "core/io/networked_multiplayer_peer.h"
 
 #include "scene/main/node.h"
@@ -30,13 +43,10 @@ SOFTWARE.
 #include "../data/items/craft_recipe.h"
 #include "../data/items/item_instance.h"
 #include "../data/spells/spell.h"
-#include "core/hash_map.h"
+
 #include "core/io/json.h"
 #include "core/math/transform.h"
 #include "core/math/transform_2d.h"
-#include "core/object.h"
-#include "core/ustring.h"
-#include "core/vector.h"
 
 #include "../data/spells/spell.h"
 #include "./resources/entity_resource.h"

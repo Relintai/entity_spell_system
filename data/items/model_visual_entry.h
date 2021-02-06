@@ -23,9 +23,18 @@ SOFTWARE.
 #ifndef MODEL_VISUAL_ENTRY_H
 #define MODEL_VISUAL_ENTRY_H
 
-#include "core/color.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#include "core/string/ustring.h"
+#include "core/math/color.h"
+#else
 #include "core/resource.h"
 #include "core/ustring.h"
+#include "core/color.h"
+#endif
+
 #include "scene/resources/texture.h"
 
 #include "../../entity_enums.h"

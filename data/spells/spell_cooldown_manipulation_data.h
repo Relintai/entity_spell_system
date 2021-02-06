@@ -23,7 +23,13 @@ SOFTWARE.
 #ifndef SPELL_COOLDOWN_MANIPULATION_DATA_H
 #define SPELL_COOLDOWN_MANIPULATION_DATA_H
 
-#include "core/reference.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
+#include "core/resource.h"
+#endif
 
 class SpellCooldownManipulationData : public Reference {
 	GDCLASS(SpellCooldownManipulationData, Reference);

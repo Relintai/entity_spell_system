@@ -23,7 +23,13 @@ SOFTWARE.
 #ifndef SPECIES_INSTANCE_H
 #define SPECIES_INSTANCE_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
 
 #include "../items/model_visual_entry.h"
 

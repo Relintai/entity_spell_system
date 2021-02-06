@@ -23,7 +23,14 @@ SOFTWARE.
 #ifndef CRAFT_RECIPE_HELPER_H
 #define CRAFT_RECIPE_HELPER_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
+
 #include "item_template.h"
 
 class CraftRecipeHelper : public Resource {

@@ -23,9 +23,17 @@ SOFTWARE.
 #ifndef CLASS_PROFILE_H
 #define CLASS_PROFILE_H
 
-#include "core/dictionary.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/object/reference.h"
+#include "core/string/ustring.h"
+#include "core/variant/dictionary.h"
+#else
 #include "core/reference.h"
 #include "core/ustring.h"
+#include "core/dictionary.h"
+#endif
 
 #include "actionbar/action_bar_profile.h"
 #include "input/input_profile.h"

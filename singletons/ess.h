@@ -23,15 +23,23 @@ SOFTWARE.
 #ifndef ESS_H
 #define ESS_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/object/object.h"
+#include "core/io/resource.h"
+#include "core/string/ustring.h"
+#include "core/config/engine.h"
+#include "core/core_bind.h"
+#else
 #include "core/object.h"
-
-#include "core/engine.h"
-
 #include "core/resource.h"
 #include "core/ustring.h"
-#include "scene/main/node.h"
-
+#include "core/engine.h"
 #include "core/bind/core_bind.h"
+#endif
+
+#include "scene/main/node.h"
 
 #include "../defines.h"
 

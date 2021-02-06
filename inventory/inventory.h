@@ -23,8 +23,15 @@ SOFTWARE.
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-#include "core/reference.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#include "core/templates/vector.h"
+#else
+#include "core/resource.h"
 #include "core/vector.h"
+#endif
 
 #include "../item_enums.h"
 

@@ -23,7 +23,14 @@ SOFTWARE.
 #ifndef ENTITY_AI_H
 #define ENTITY_AI_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
+
 #include "scene/main/node.h"
 
 #include "../../entity_enums.h"

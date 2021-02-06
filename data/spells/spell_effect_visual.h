@@ -23,7 +23,13 @@ SOFTWARE.
 #ifndef SPELL_EFFECT_VISUAL_H
 #define SPELL_EFFECT_VISUAL_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
 
 class SpellEffectVisual : public Resource {
 	GDCLASS(SpellEffectVisual, Resource);

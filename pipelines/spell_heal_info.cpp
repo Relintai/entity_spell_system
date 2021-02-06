@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "spell_heal_info.h"
 
+#include "core/version.h"
+
 #include "../data/auras/aura.h"
 #include "../data/spells/spell.h"
 #include "../database/ess_resource_db.h"
@@ -201,7 +203,11 @@ Dictionary SpellHealInfo::to_dict() {
 	return dict;
 }
 void SpellHealInfo::from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	_immune = dict.get("immune", true);
 	_heal = dict.get("heal", 0);

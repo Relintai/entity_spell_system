@@ -23,7 +23,14 @@ SOFTWARE.
 #ifndef SPELL_ENUMS_H
 #define SPELL_ENUMS_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/object/object.h"
+#include "core/object/class_db.h"
+#else
 #include "core/object.h"
+#endif
 
 class SpellEnums : public Object {
 	GDCLASS(SpellEnums, Object);

@@ -23,7 +23,13 @@ SOFTWARE.
 #ifndef SPELL_INFOS_H
 #define SPELL_INFOS_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
 
 class Spell;
 class Entity;

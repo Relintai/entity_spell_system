@@ -23,9 +23,17 @@ SOFTWARE.
 #ifndef ENTITY_CREATE_INFO_H
 #define ENTITY_CREATE_INFO_H
 
-#include "../entity_enums.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/object/reference.h"
+#include "core/string/ustring.h"
+#else
 #include "core/reference.h"
 #include "core/ustring.h"
+#endif
+
+#include "../entity_enums.h"
 
 class EntityData;
 class SpeciesInstance;

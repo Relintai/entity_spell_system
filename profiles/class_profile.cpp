@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "class_profile.h"
 
+#include "core/version.h"
+
 StringName ClassProfile::get_class_path() const {
 	return _class_path;
 }
@@ -125,7 +127,11 @@ Dictionary ClassProfile::to_dict() const {
 	return dict;
 }
 void ClassProfile::from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	_character_class_name = dict.get("character_class_name", "");
 	_class_path = dict.get("class_path", "");

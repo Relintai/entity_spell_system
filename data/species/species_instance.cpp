@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "species_instance.h"
 
+#include "core/version.h"
+
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
 
@@ -113,7 +115,11 @@ Dictionary SpeciesInstance::_to_dict() {
 	return dict;
 }
 void SpeciesInstance::_from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	_id = dict.get("id", 0);
 	set_species_path(dict.get("species_path", ""));

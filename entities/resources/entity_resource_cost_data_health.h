@@ -23,7 +23,13 @@ SOFTWARE.
 #ifndef ENTITY_RESOURCE_COST_DATA_HEALTH_H
 #define ENTITY_RESOURCE_COST_DATA_HEALTH_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
 
 #include "entity_resource.h"
 #include "entity_resource_cost_data.h"

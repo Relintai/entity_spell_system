@@ -23,7 +23,13 @@ SOFTWARE.
 #ifndef ITEM_CONTAINER_DATA_H
 #define ITEM_CONTAINER_DATA_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
 
 #include "item_container_data_entry.h"
 

@@ -27,6 +27,8 @@ SOFTWARE.
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
 
+#include "core/version.h"
+
 Ref<ItemTemplate> ItemInstance::get_item_template() {
 	return _item_template;
 }
@@ -179,7 +181,6 @@ Dictionary ItemInstance::_to_dict() {
 	Array mods;
 
 	for (int i = 0; i < _modifiers.size(); ++i) {
-
 		Dictionary mdict;
 
 		mdict["stat_id"] = _modifiers[i].stat_id;
@@ -196,7 +197,11 @@ Dictionary ItemInstance::_to_dict() {
 	return dict;
 }
 void ItemInstance::_from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	_item_template_path = dict.get("item_path", 0);
 

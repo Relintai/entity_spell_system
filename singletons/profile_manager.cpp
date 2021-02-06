@@ -23,9 +23,16 @@ SOFTWARE.
 #include "profile_manager.h"
 #include "core/io/json.h"
 #include "core/os/file_access.h"
-#include "core/project_settings.h"
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/config/engine.h"
+#include "core/config/project_settings.h"
+#else
 #include "core/engine.h"
+#include "core/project_settings.h"
+#endif
 
 #include "../defines.h"
 
@@ -163,7 +170,11 @@ Dictionary ProfileManager::to_dict() const {
 	return dict;
 }
 void ProfileManager::from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	clears_player_profiles();
 

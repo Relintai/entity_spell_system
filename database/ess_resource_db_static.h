@@ -23,9 +23,15 @@ SOFTWARE.
 #ifndef ESS_RESOURCE_DB_STATIC_H
 #define ESS_RESOURCE_DB_STATIC_H
 
-#include "ess_resource_db.h"
+#include "core/version.h"
 
+#if VERSION_MAJOR > 3
+#include "core/templates/hash_map.h"
+#else
 #include "core/hash_map.h"
+#endif
+
+#include "ess_resource_db.h"
 
 #include "../item_enums.h"
 

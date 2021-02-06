@@ -23,8 +23,15 @@ SOFTWARE.
 #ifndef SKELETON_MODEL_ENTRY_H
 #define SKELETON_MODEL_ENTRY_H
 
-#include "../data/items/model_visual_entry.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/object/reference.h"
+#else
 #include "core/reference.h"
+#endif
+
+#include "../data/items/model_visual_entry.h"
 
 class SkeletonModelEntry : public Reference {
 	GDCLASS(SkeletonModelEntry, Reference);

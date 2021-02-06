@@ -23,10 +23,19 @@ SOFTWARE.
 #ifndef ENTITY_CLASS_DATA_H
 #define ENTITY_CLASS_DATA_H
 
-#include "core/math/math_funcs.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#include "core/templates/vector.h"
+#include "core/string/ustring.h"
+#else
 #include "core/resource.h"
-#include "core/ustring.h"
 #include "core/vector.h"
+#include "core/ustring.h"
+#endif
+
+#include "core/math/math_funcs.h"
 #include "scene/resources/texture.h"
 
 #include "../../entities/stats/stat_data.h"

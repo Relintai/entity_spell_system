@@ -22,14 +22,19 @@ SOFTWARE.
 
 #include "ess_editor_plugin.h"
 
+#include "core/version.h"
+
 void ESSEditorPlugin::fix_ids(Variant param) {
 }
 
 ESSEditorPlugin::ESSEditorPlugin(EditorNode *p_node) {
-
 	editor = p_node;
 
+#if VERSION_MAJOR > 3
+	//editor->add_tool_menu_item("ESS: make ids unique", this, "fix_ids");
+#else
 	editor->add_tool_menu_item("ESS: make ids unique", this, "fix_ids");
+#endif
 }
 
 ESSEditorPlugin::~ESSEditorPlugin() {

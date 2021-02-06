@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "player_profile.h"
 
+#include "core/version.h"
+
 #include "../defines.h"
 
 const String PlayerProfile::DEFAULT_PROFILE_FILE_NAME = "default.profile";
@@ -144,7 +146,11 @@ Dictionary PlayerProfile::to_dict() const {
 	return dict;
 }
 void PlayerProfile::from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	clear_class_profiles();
 

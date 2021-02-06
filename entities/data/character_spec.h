@@ -23,9 +23,17 @@ SOFTWARE.
 #ifndef CHARACTER_SPEC_H
 #define CHARACTER_SPEC_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#include "core/templates/vector.h"
+#include "core/string/ustring.h"
+#else
 #include "core/resource.h"
-#include "core/ustring.h"
 #include "core/vector.h"
+#include "core/ustring.h"
+#endif
 
 class Aura;
 

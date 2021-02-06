@@ -23,9 +23,17 @@ SOFTWARE.
 #ifndef AURA_DATA_H
 #define AURA_DATA_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
+#else
+#include "core/resource.h"
 #include "core/array.h"
 #include "core/dictionary.h"
-#include "core/resource.h"
+#endif
 
 #include "../../spell_enums.h"
 

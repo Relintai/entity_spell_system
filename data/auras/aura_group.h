@@ -23,7 +23,13 @@ SOFTWARE.
 #ifndef AURA_GROUP_H
 #define AURA_GROUP_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
 
 class AuraGroup : public Resource {
 	GDCLASS(AuraGroup, Resource);

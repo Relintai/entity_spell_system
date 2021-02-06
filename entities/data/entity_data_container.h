@@ -23,8 +23,15 @@ SOFTWARE.
 #ifndef ENTITY_DATA_CONTAINER_H
 #define ENTITY_DATA_CONTAINER_H
 
-#include "core/dictionary.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#include "core/variant/dictionary.h"
+#else
 #include "core/resource.h"
+#include "core/dictionary.h"
+#endif
 
 class EntityDataContainer : public Resource {
 	GDCLASS(EntityDataContainer, Resource);

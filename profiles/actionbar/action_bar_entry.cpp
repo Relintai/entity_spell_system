@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "action_bar_entry.h"
 
+#include "core/version.h"
+
 #include "action_bar_profile.h"
 
 #include "../../defines.h"
@@ -115,7 +117,11 @@ Dictionary ActionBarEntry::to_dict() const {
 	return dict;
 }
 void ActionBarEntry::from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	for (int i = 0; i < _button_entries.size(); ++i) {
 		_button_entries.get(i)->set_owner(NULL);

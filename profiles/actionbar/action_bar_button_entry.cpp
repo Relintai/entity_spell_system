@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "action_bar_button_entry.h"
 
+#include "core/version.h"
+
 #include "action_bar_entry.h"
 
 const String ActionBarButtonEntry::BINDING_STRING_ACTIONBAR_BUTTON_ENTRY_TYPE = "None,Spell,Item";
@@ -91,7 +93,11 @@ Dictionary ActionBarButtonEntry::to_dict() const {
 	return dict;
 }
 void ActionBarButtonEntry::from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	_action_bar_id = dict.get("action_bar_id", 0);
 	_slot_id = dict.get("slot_id", 0);

@@ -22,8 +22,15 @@ SOFTWARE.
 
 #include "input_profile.h"
 
-#include "core/project_settings.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/string/ustring.h"
+#include "core/config/project_settings.h"
+#else
 #include "core/ustring.h"
+#include "core/project_settings.h"
+#endif
 
 #include "../class_profile.h"
 

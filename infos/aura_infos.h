@@ -23,8 +23,15 @@ SOFTWARE.
 #ifndef AURA_INFOS_H
 #define AURA_INFOS_H
 
-#include "../entities/entity.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/object/reference.h"
+#else
 #include "core/reference.h"
+#endif
+
+#include "../entities/entity.h"
 
 class Entity;
 class Aura;

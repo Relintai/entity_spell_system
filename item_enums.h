@@ -23,8 +23,16 @@ SOFTWARE.
 #ifndef ITEM_ENUMS_H
 #define ITEM_ENUMS_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/object/object.h"
+#include "core/string/ustring.h"
+#include "core/object/class_db.h"
+#else
 #include "core/object.h"
 #include "core/ustring.h"
+#endif
 
 class ItemEnums : public Object {
 	GDCLASS(ItemEnums, Object);

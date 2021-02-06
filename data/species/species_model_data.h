@@ -23,11 +23,20 @@ SOFTWARE.
 #ifndef SPECIES_MODEL_DATA_H
 #define SPECIES_MODEL_DATA_H
 
-#include "core/resource.h"
+#include "core/version.h"
 
-#include "core/color.h"
-#include "core/ustring.h"
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#include "core/templates/vector.h"
+#include "core/string/ustring.h"
+#include "core/math/color.h"
+#else
+#include "core/resource.h"
 #include "core/vector.h"
+#include "core/ustring.h"
+#include "core/color.h"
+#endif
+
 #include "scene/resources/packed_scene.h"
 
 #include "../items/model_visual_entry.h"

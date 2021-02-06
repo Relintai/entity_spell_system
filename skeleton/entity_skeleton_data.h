@@ -23,8 +23,15 @@ SOFTWARE.
 #ifndef ENTITY_SKELETON_DATA_H
 #define ENTITY_SKELETON_DATA_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#include "core/string/ustring.h"
+#else
 #include "core/resource.h"
 #include "core/ustring.h"
+#endif
 
 class EntitySkeletonData : public Resource {
 	GDCLASS(EntitySkeletonData, Resource);

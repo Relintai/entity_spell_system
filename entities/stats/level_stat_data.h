@@ -23,7 +23,13 @@ SOFTWARE.
 #ifndef LEVEL_STAT_DATA_H
 #define LEVEL_STAT_DATA_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
 
 class LevelStatData : public Resource {
 	GDCLASS(LevelStatData, Resource);

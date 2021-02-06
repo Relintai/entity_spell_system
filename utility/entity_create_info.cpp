@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "entity_create_info.h"
 
+#include "core/version.h"
+
 #include "../data/species/species_instance.h"
 #include "../entities/data/entity_data.h"
 #include "../entities/entity.h"
@@ -181,7 +183,11 @@ Dictionary EntityCreateInfo::_to_dict() {
 	return dict;
 }
 void EntityCreateInfo::_from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	_guid = dict.get("guid", 0);
 	_networked = dict.get("networked", false);

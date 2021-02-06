@@ -23,16 +23,20 @@ SOFTWARE.
 #ifndef SPELL_H
 #define SPELL_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
+
 #include "scene/resources/texture.h"
 
 #include "../../entity_enums.h"
 #include "../../spell_enums.h"
-
 #include "../../infos/spell_cast_info.h"
-
 #include "../../entities/entity.h"
-
 #include "../../infos/aura_infos.h"
 
 #include "spell_effect_visual.h"

@@ -44,7 +44,11 @@ SOFTWARE.
 #include "./skills/entity_skill.h"
 #include "scene/2d/node_2d.h"
 
+#if VERSION_MAJOR > 3
+#include "core/object/script_language.h"
+#else
 #include "core/script_language.h"
+#endif
 
 #include "core/version.h"
 
@@ -631,7 +635,11 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 
 	sets_entity_name(info->get_entity_name());
 
+#if VERSION_MAJOR > 3
+	if (!info->get_serialized_data().is_empty()) {
+#else
 	if (!info->get_serialized_data().empty()) {
+#endif
 		from_dict(info->get_serialized_data());
 	} else {
 		sets_entity_data(info->get_entity_data());
@@ -1319,7 +1327,11 @@ Dictionary Entity::_to_dict() {
 	return dict;
 }
 void Entity::_from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	////    Transforms    ////
 
@@ -1613,7 +1625,11 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	Dictionary bagd = dict.get("bag", Dictionary());
 
+#if VERSION_MAJOR > 3
+	if (!bagd.is_empty()) {
+#else
 	if (!bagd.empty()) {
+#endif
 		if (!_s_bag.is_valid()) {
 			Ref<Bag> bag;
 			bag.instance();
@@ -1631,7 +1647,6 @@ void Entity::_from_dict(const Dictionary &dict) {
 	_actionbar_locked = dict.get("actionbar_locked", false);
 
 	if (dict.has("actionbar_profile")) {
-
 		if (!_action_bar_profile.is_valid())
 			_action_bar_profile.instance();
 

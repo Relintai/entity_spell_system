@@ -23,7 +23,13 @@ SOFTWARE.
 #ifndef MODEL_VISUAL_H
 #define MODEL_VISUAL_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
 
 #include "../../item_enums.h"
 #include "model_visual_entry.h"

@@ -8,7 +8,7 @@ The module supports networking. It is designed to be authoritative, so players s
 
 It is a c++ engine module, which means you will need to compile it into godot. (See compiling)
 
-It supports both godot 3.2 and 4.0 (master). Note that since 4.0 is still in very early stages I only 
+It supports both godot 3.2 and 4.0 (master [last tested commit](https://github.com/godotengine/godot/commit/b7e10141197fdd9b0dbc4cfa7890329510d36540)). Note that since 4.0 is still in very early stages I only 
 check whether it works from time to time.
 
 ## Project setup tl;dr

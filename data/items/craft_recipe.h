@@ -23,9 +23,17 @@ SOFTWARE.
 #ifndef CRAFT_RECIPE_H
 #define CRAFT_RECIPE_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#include "core/templates/vector.h"
+#include "core/string/ustring.h"
+#else
 #include "core/resource.h"
-#include "core/ustring.h"
 #include "core/vector.h"
+#include "core/ustring.h"
+#endif
 
 #include "item_template.h"
 

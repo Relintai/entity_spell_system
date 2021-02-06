@@ -23,8 +23,15 @@ SOFTWARE.
 #ifndef ACTION_BAR_BUTTON_ENTRY_H
 #define ACTION_BAR_BUTTON_ENTRY_H
 
-#include "core/dictionary.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/object/reference.h"
+#include "core/variant/dictionary.h"
+#else
 #include "core/reference.h"
+#include "core/dictionary.h"
+#endif
 
 class ActionBarEntry;
 

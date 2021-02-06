@@ -23,7 +23,14 @@ SOFTWARE.
 #ifndef ENTITY_SKILL_H
 #define ENTITY_SKILL_H
 
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/io/resource.h"
+#else
 #include "core/resource.h"
+#endif
+
 #include "entity_skill_data.h"
 
 class EntitySkill : public Resource {

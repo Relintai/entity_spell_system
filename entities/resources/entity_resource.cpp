@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "entity_resource.h"
 
+#include "core/version.h"
+
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
 #include "../entity.h"
@@ -284,7 +286,11 @@ Dictionary EntityResource::_to_dict() {
 	return dict;
 }
 void EntityResource::_from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	_dirty = dict.get("dirty", false);
 	_should_process = dict.get("should_process", false);

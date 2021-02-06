@@ -22,6 +22,8 @@ SOFTWARE.
 
 #include "entity_skill.h"
 
+#include "core/version.h"
+
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
 
@@ -101,7 +103,11 @@ Dictionary EntitySkill::_to_dict() {
 	return dict;
 }
 void EntitySkill::_from_dict(const Dictionary &dict) {
+#if VERSION_MAJOR > 3
+	ERR_FAIL_COND(dict.is_empty());
+#else
 	ERR_FAIL_COND(dict.empty());
+#endif
 
 	_skill_id = dict.get("skill_id", 0);
 	_skill_path = dict.get("skill_path", "");

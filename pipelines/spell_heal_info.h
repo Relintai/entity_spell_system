@@ -23,8 +23,15 @@ SOFTWARE.
 #ifndef SPELL_HEAL_INFO_H
 #define SPELL_HEAL_INFO_H
 
-#include "../spell_enums.h"
+#include "core/version.h"
+
+#if VERSION_MAJOR > 3
+#include "core/object/reference.h"
+#else
 #include "core/reference.h"
+#endif
+
+#include "../spell_enums.h"
 #include "scene/main/node.h"
 
 class Entity;

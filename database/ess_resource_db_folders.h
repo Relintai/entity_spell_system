@@ -23,19 +23,29 @@ SOFTWARE.
 #ifndef ESS_RESOURCE_DB_FOLDERS_H
 #define ESS_RESOURCE_DB_FOLDERS_H
 
-#include "ess_resource_db_map.h"
+#include "core/version.h"
 
-#include "core/array.h"
-#include "core/engine.h"
-#include "core/hash_map.h"
-
+#if VERSION_MAJOR > 3
+#include "core/variant/variant.h"
+#include "core/templates/vector.h"
+#include "core/templates/hash_map.h"
+#include "core/string/ustring.h"
+#include "core/config/engine.h"
+#include "core/variant/array.h"
+#include "core/core_bind.h"
+#else
 #include "core/variant.h"
 #include "core/vector.h"
-
+#include "core/hash_map.h"
 #include "core/ustring.h"
-#include "scene/main/node.h"
-
+#include "core/engine.h"
+#include "core/array.h"
 #include "core/bind/core_bind.h"
+#endif
+
+#include "ess_resource_db_map.h"
+
+#include "scene/main/node.h"
 
 #include "../item_enums.h"
 
