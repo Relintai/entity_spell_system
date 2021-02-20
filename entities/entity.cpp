@@ -707,8 +707,12 @@ void Entity::_setup() {
 
 	ERR_FAIL_COND(!cc.is_valid());
 
+	Ref<StatData> stat_data = cc->get_stat_data();
+
+	ERR_FAIL_COND(!stat_data.is_valid());
+	
 	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
-		stat_set_base(i, cc->get_stat_data()->get_base(i));
+		stat_set_base(i, stat_data->get_base(i));
 	}
 
 	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
