@@ -449,9 +449,27 @@ func sapply_aura() -> void:
 
 ```
 
-[Complete UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player_ui) \
-[Talent UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/talents) \
-[Spellbook UI Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/spellbook) 
+[Complete UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui) \
+
+[Player UI Core Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player_ui) \
+
+[Aura Frame Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/auraframe) \
+[Castbar Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/castbar) \
+[Unitframe Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/unitframes) \
+
+[Actionbar Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/actionbars) \
+
+[Character Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/character) \
+[Inventory Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/bags) \
+[Crafting Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/crafting) \
+[Loot Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/loot_window) \
+[Talent Window Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/talents) \
+[Spellbook Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/spellbook)  \
+[Vendor Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/vendor_window) \
+[Trainer Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/trainer) \
+
+[3D Nameplate Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/nameplates) \
+[2D Nameplate Implementation](https://github.com/Relintai/broken_seals_roguelike/tree/master/game/ui/nameplates)
 
 ### Infos / Pipelines
 
@@ -501,16 +519,6 @@ And an example ui implementation [here](https://github.com/Relintai/broken_seals
 You can set all the xp values for your levels in `ProjectSettings->Ess->xp`.
 
 Now you can start distributing xp, for whatever you'd like to Entities, using `Entity.xp_adds(vlaue : int)`
-
-## Implementing...
-
-### Vendors
-
-I don't yet have a vendor ui example, however if you want them you can already implement them in a simple way.
-`EntityData` has a `VendorItemData` property, you can display this clientside, and implement a buy request from client to server.
-
-If you also want limited vendor inventory items, you can implement them the same way looting works (create a bag for the vendor, and fill it
-with items), but of course you would show these in a vendor dialog.
 
 ## Examples
 
