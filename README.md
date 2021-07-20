@@ -449,15 +449,15 @@ func sapply_aura() -> void:
 
 ```
 
-[Complete UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui) \
+[Complete UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui)
 
-[Player UI Core Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player_ui) \
+[Player UI Core Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player_ui)
 
 [Aura Frame Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/auraframe) \
 [Castbar Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/castbar) \
-[Unitframe Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/unitframes) \
+[Unitframe Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/unitframes)
 
-[Actionbar Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/actionbars) \
+[Actionbar Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/actionbars)
 
 [Character Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/character) \
 [Inventory Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/bags) \
@@ -466,7 +466,7 @@ func sapply_aura() -> void:
 [Talent Window Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/talents) \
 [Spellbook Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/spellbook)  \
 [Vendor Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/vendor_window) \
-[Trainer Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/trainer) \
+[Trainer Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/trainer)
 
 [3D Nameplate Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/nameplates) \
 [2D Nameplate Implementation](https://github.com/Relintai/broken_seals_roguelike/tree/master/game/ui/nameplates)
