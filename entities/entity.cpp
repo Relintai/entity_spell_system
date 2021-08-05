@@ -2906,7 +2906,7 @@ bool Entity::_iss_target_in_interact_range() {
 			return false;
 		}
 
-		return (b2d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() > EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
+		return (b2d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() <= EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
 	}
 
 	Spatial *b3d = get_body_3d();
@@ -2918,7 +2918,7 @@ bool Entity::_iss_target_in_interact_range() {
 			return false;
 		}
 
-		return (b3d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() > EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
+		return (b3d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() <= EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
 	}
 
 	return false;
@@ -2939,7 +2939,7 @@ bool Entity::_isc_target_in_interact_range() {
 			return false;
 		}
 
-		return (b2d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() > EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
+		return (b2d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() <= EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
 	}
 
 	Spatial *b3d = get_body_3d();
@@ -2951,7 +2951,7 @@ bool Entity::_isc_target_in_interact_range() {
 			return false;
 		}
 
-		return (b3d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() > EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
+		return (b3d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() <= EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
 	}
 
 	return false;
@@ -6436,6 +6436,10 @@ void Entity::_vendor_item_sbuy(const int index, const int count) {
 	if (!e)
 		return;
 
+	if (!iss_target_in_interact_range()) {
+		return;
+	}
+
 	Ref<EntityData> ed = e->gets_entity_data();
 
 	if (!ed.is_valid())
@@ -6492,6 +6496,10 @@ void Entity::_vendor_item_ssell(const int slot_id) {
 
 	if (!e)
 		return;
+
+	if (!iss_target_in_interact_range()) {
+		return;
+	}
 
 	Ref<EntityData> ed = e->gets_entity_data();
 
