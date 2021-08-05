@@ -27,14 +27,13 @@ SOFTWARE.
 
 #if VERSION_MAJOR > 3
 #include "core/object/object.h"
-#include "core/templates/vector.h"
 #include "core/string/ustring.h"
+#include "core/templates/vector.h"
 #else
 #include "core/object.h"
-#include "core/vector.h"
 #include "core/ustring.h"
+#include "core/vector.h"
 #endif
-
 
 #include "core/io/networked_multiplayer_peer.h"
 
@@ -620,6 +619,11 @@ public:
 	void ssend_open_window(int window_id);
 	void copen_window(int window_id);
 
+	bool iss_target_in_interact_range();
+	bool isc_target_in_interact_range();
+	virtual bool _iss_target_in_interact_range();
+	virtual bool _isc_target_in_interact_range();
+
 	//XP Operations
 	void xp_adds(int value);
 	void xp_addc(int value);
@@ -1196,13 +1200,13 @@ private:
 
 	////    Equipment    ////
 
-	Vector<Ref<ItemInstance> > _s_equipment;
-	Vector<Ref<ItemInstance> > _c_equipment;
+	Vector<Ref<ItemInstance>> _s_equipment;
+	Vector<Ref<ItemInstance>> _c_equipment;
 
 	////    Resources    ////
 
-	Vector<Ref<EntityResource> > _s_resources;
-	Vector<Ref<EntityResource> > _c_resources;
+	Vector<Ref<EntityResource>> _s_resources;
+	Vector<Ref<EntityResource>> _c_resources;
 
 	////    GCD    ////
 
@@ -1223,8 +1227,8 @@ private:
 
 	//// AuraComponent    ////
 
-	Vector<Ref<AuraData> > _s_auras;
-	Vector<Ref<AuraData> > _c_auras;
+	Vector<Ref<AuraData>> _s_auras;
+	Vector<Ref<AuraData>> _c_auras;
 
 	int _s_entity_type;
 	int _c_entity_type;
@@ -1267,8 +1271,8 @@ private:
 
 	////    Data    ////
 
-	Vector<Ref<EntityDataContainer> > _s_data;
-	Vector<Ref<EntityDataContainer> > _c_data;
+	Vector<Ref<EntityDataContainer>> _s_data;
+	Vector<Ref<EntityDataContainer>> _c_data;
 
 	////    Actionbars    ////
 
@@ -1277,21 +1281,21 @@ private:
 
 	////    Crafting System    ////
 
-	Vector<Ref<CraftRecipe> > _s_craft_recipes;
-	Vector<Ref<CraftRecipe> > _c_craft_recipes;
+	Vector<Ref<CraftRecipe>> _s_craft_recipes;
+	Vector<Ref<CraftRecipe>> _c_craft_recipes;
 
 	////    Known Spells    ////
 
 	int _s_free_spell_points;
 	int _c_free_spell_points;
 
-	Vector<Ref<Spell> > _s_spells;
-	Vector<Ref<Spell> > _c_spells;
+	Vector<Ref<Spell>> _s_spells;
+	Vector<Ref<Spell>> _c_spells;
 
 	////    Skills    ////
 
-	Vector<Ref<EntitySkill> > _s_skills;
-	Vector<Ref<EntitySkill> > _c_skills;
+	Vector<Ref<EntitySkill>> _s_skills;
+	Vector<Ref<EntitySkill>> _c_skills;
 
 	////    Stat Allocations    ////
 
@@ -1335,7 +1339,7 @@ private:
 
 	// Callbacks
 
-	Vector<Ref<SpellCastInfo> > _physics_process_scis;
+	Vector<Ref<SpellCastInfo>> _physics_process_scis;
 };
 
 #endif

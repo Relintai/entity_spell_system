@@ -710,7 +710,7 @@ void Entity::_setup() {
 	Ref<StatData> stat_data = cc->get_stat_data();
 
 	ERR_FAIL_COND(!stat_data.is_valid());
-	
+
 	for (int i = 0; i < ESS::get_singleton()->stat_get_count(); ++i) {
 		stat_set_base(i, stat_data->get_base(i));
 	}
@@ -2882,6 +2882,79 @@ void Entity::ssend_open_window(int window_id) {
 }
 void Entity::copen_window(int window_id) {
 	emit_signal("onc_open_winow_request", window_id);
+}
+
+bool Entity::iss_target_in_interact_range() {
+	return call("_iss_target_in_interact_range");
+}
+bool Entity::isc_target_in_interact_range() {
+	return call("_isc_target_in_interact_range");
+}
+bool Entity::_iss_target_in_interact_range() {
+	Entity *t = gets_target();
+
+	if (!ObjectDB::instance_validate(t)) {
+		return false;
+	}
+
+	Node2D *b2d = get_body_2d();
+
+	if (b2d) {
+		Node2D *tb = t->get_body_2d();
+
+		if (!tb) {
+			return false;
+		}
+
+		return (b2d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() > EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
+	}
+
+	Spatial *b3d = get_body_3d();
+
+	if (b3d) {
+		Spatial *tb = t->get_body_3d();
+
+		if (!tb) {
+			return false;
+		}
+
+		return (b3d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() > EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
+	}
+
+	return false;
+}
+bool Entity::_isc_target_in_interact_range() {
+	Entity *t = getc_target();
+
+	if (!ObjectDB::instance_validate(t)) {
+		return false;
+	}
+
+	Node2D *b2d = get_body_2d();
+
+	if (b2d) {
+		Node2D *tb = t->get_body_2d();
+
+		if (!tb) {
+			return false;
+		}
+
+		return (b2d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() > EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
+	}
+
+	Spatial *b3d = get_body_3d();
+
+	if (b3d) {
+		Spatial *tb = t->get_body_3d();
+
+		if (!tb) {
+			return false;
+		}
+
+		return (b3d->get_transform().get_origin() - tb->get_transform().get_origin()).length_squared() > EntityEnums::ENTITY_INTERACT_RANGE_SQUARED;
+	}
+
+	return false;
 }
 
 //XP Operations
@@ -6971,6 +7044,14 @@ void Entity::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("ssend_open_window", "window_id"), &Entity::ssend_open_window);
 	ClassDB::bind_method(D_METHOD("copen_window", "window_id"), &Entity::copen_window);
+
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_iss_target_in_interact_range"));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_isc_target_in_interact_range"));
+
+	ClassDB::bind_method(D_METHOD("iss_target_in_interact_range"), &Entity::iss_target_in_interact_range);
+	ClassDB::bind_method(D_METHOD("isc_target_in_interact_range"), &Entity::isc_target_in_interact_range);
+	ClassDB::bind_method(D_METHOD("_iss_target_in_interact_range"), &Entity::_iss_target_in_interact_range);
+	ClassDB::bind_method(D_METHOD("_isc_target_in_interact_range"), &Entity::_isc_target_in_interact_range);
 
 	//XP Operations
 	ADD_SIGNAL(MethodInfo("notification_sxp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
