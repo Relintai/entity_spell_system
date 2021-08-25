@@ -367,4 +367,6 @@ void ESSMaterialCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("refresh_rects"), &ESSMaterialCache::refresh_rects);
 
 	ClassDB::bind_method(D_METHOD("setup_material_albedo", "texture"), &ESSMaterialCache::setup_material_albedo);
+
+	ClassDB::bind_method(D_METHOD("initial_setup_default"), &ESSMaterialCache::initial_setup_default);
 }
