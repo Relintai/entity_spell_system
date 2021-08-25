@@ -23,6 +23,7 @@ SOFTWARE.
 #include "ess.h"
 
 #include "../database/ess_resource_db.h"
+#include "../material_cache/ess_material_cache.h"
 #include "../spawners/ess_entity_spawner.h"
 #include "../utility/entity_create_info.h"
 
@@ -125,22 +126,6 @@ void ESS::load_resource_db() {
 	ERR_FAIL_COND(!d.is_valid());
 
 	_ess_resource_db = d;
-}
-
-Ref<Resource> ESS::load_resource(const String &path, const String &type_hint) {
-	_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, type_hint);
-
-	ERR_FAIL_COND_V(!resl.is_valid(), Ref<Resource>());
-
-	resl->wait();
-
-	return resl->get_resource();
-#else
-	return rl->load(path, type_hint);
-#endif
 }
 
 void ESS::load_all() {
@@ -509,6 +494,187 @@ void ESS::set_class_xp_data(const PoolIntArray &data) {
 	_class_xps = data;
 }
 
+#ifdef TEXTURE_PACKER_PRESENT
+int ESS::get_texture_flags() const {
+	return _texture_flags;
+}
+void ESS::set_texture_flags(const int flags) {
+	_texture_flags = flags;
+}
+
+int ESS::get_max_atlas_size() const {
+	return _max_atlas_size;
+}
+void ESS::set_max_atlas_size(const int size) {
+	_max_atlas_size = size;
+}
+
+bool ESS::get_keep_original_atlases() const {
+	return _keep_original_atlases;
+}
+void ESS::set_keep_original_atlases(const bool value) {
+	_keep_original_atlases = value;
+}
+
+Color ESS::get_background_color() const {
+	return _background_color;
+}
+void ESS::set_background_color(const Color &color) {
+	_background_color = color;
+}
+
+int ESS::get_margin() const {
+	return _margin;
+}
+void ESS::set_margin(const int margin) {
+	_margin = margin;
+}
+#endif
+
+StringName ESS::get_default_ess_material_cache_class() {
+	return _default_ess_material_cache_class;
+}
+void ESS::set_default_ess_material_cache_class(const StringName &cls_name) {
+	_default_ess_material_cache_class = cls_name;
+}
+
+PoolStringArray ESS::material_paths_get() const {
+	return _material_paths;
+}
+void ESS::material_paths_set(const PoolStringArray &value) {
+	_material_paths = value;
+}
+
+void ESS::material_add(const Ref<Material> &value) {
+	ERR_FAIL_COND(!value.is_valid());
+
+	_materials.push_back(value);
+}
+
+Ref<Material> ESS::material_get(const int index) {
+	ERR_FAIL_INDEX_V(index, _materials.size(), Ref<Material>());
+
+	return _materials[index];
+}
+
+void ESS::material_set(const int index, const Ref<Material> &value) {
+	ERR_FAIL_INDEX(index, _materials.size());
+
+	_materials.set(index, value);
+}
+
+void ESS::material_remove(const int index) {
+	_materials.remove(index);
+}
+
+int ESS::material_get_num() const {
+	return _materials.size();
+}
+
+void ESS::materials_clear() {
+	_materials.clear();
+}
+
+void ESS::materials_load() {
+	_materials.clear();
+
+	for (int i = 0; i < _material_paths.size(); ++i) {
+		StringName path = _material_paths[i];
+
+		ERR_CONTINUE(path == "");
+
+		Ref<Material> d = load_resource(path, "Material");
+
+		ERR_CONTINUE(!d.is_valid());
+
+		_materials.push_back(d);
+	}
+}
+
+void ESS::ensure_materials_loaded() {
+	if (_materials.size() != _material_paths.size()) {
+		materials_load();
+	}
+}
+
+Vector<Variant> ESS::materials_get() {
+	VARIANT_ARRAY_GET(_materials);
+}
+
+void ESS::materials_set(const Vector<Variant> &materials) {
+	_materials.clear();
+
+	for (int i = 0; i < materials.size(); i++) {
+		Ref<Material> material = Ref<Material>(materials[i]);
+
+		_materials.push_back(material);
+	}
+}
+
+Ref<ESSMaterialCache> ESS::material_cache_get(const uint64_t key) {
+	_material_cache_mutex.lock();
+
+	if (_material_cache.has(key)) {
+		Ref<ESSMaterialCache> m = _material_cache[key];
+
+		m->inc_ref_count();
+
+		_material_cache_mutex.unlock();
+
+		return m;
+	}
+
+	ESSMaterialCache *p = Object::cast_to<ESSMaterialCache>(ClassDB::instance(_default_ess_material_cache_class));
+
+	if (!p) {
+		ERR_PRINT("Can't instance the given ESSMaterialCache! class_name: " + String(_default_ess_material_cache_class));
+	}
+
+	Ref<ESSMaterialCache> m(p);
+
+	_material_cache[key] = m;
+
+	_material_cache_mutex.unlock();
+
+	return m;
+}
+void ESS::material_cache_unref(const uint64_t key) {
+	_material_cache_mutex.lock();
+
+	if (!_material_cache.has(key)) {
+		_material_cache_mutex.unlock();
+
+		ERR_PRINT("ESS::material_cache_custom_key_unref: can't find cache!");
+
+		return;
+	}
+
+	Ref<ESSMaterialCache> m = _material_cache[key];
+
+	m->dec_ref_count();
+	if (m->get_ref_count() <= 0) {
+		_material_cache.erase(key);
+	}
+
+	_material_cache_mutex.unlock();
+}
+
+Ref<Resource> ESS::load_resource(const String &path, const String &type_hint) {
+	_ResourceLoader *rl = _ResourceLoader::get_singleton();
+
+#if VERSION_MAJOR < 4
+	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, type_hint);
+
+	ERR_FAIL_COND_V(!resl.is_valid(), Ref<Resource>());
+
+	resl->wait();
+
+	return resl->get_resource();
+#else
+	return rl->load(path, type_hint);
+#endif
+}
+
 void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_use_spell_points"), &ESS::get_use_spell_points);
 	ClassDB::bind_method(D_METHOD("set_use_spell_points", "value"), &ESS::set_use_spell_points);
@@ -650,6 +816,52 @@ void ESS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_class_xp_data"), &ESS::get_class_xp_data);
 	ClassDB::bind_method(D_METHOD("set_class_xp_data", "data"), &ESS::set_character_xp_data);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "class_xp_data"), "set_class_xp_data", "get_class_xp_data");
+
+#ifdef TEXTURE_PACKER_PRESENT
+	ClassDB::bind_method(D_METHOD("get_texture_flags"), &ESS::get_texture_flags);
+	ClassDB::bind_method(D_METHOD("set_texture_flags", "flags"), &ESS::set_texture_flags);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "texture_flags", PROPERTY_HINT_FLAGS, "Mipmaps,Repeat,Filter,Anisotropic Linear,Convert to Linear,Mirrored Repeat,Video Surface"), "set_texture_flags", "get_texture_flags");
+
+	ClassDB::bind_method(D_METHOD("get_max_atlas_size"), &ESS::get_max_atlas_size);
+	ClassDB::bind_method(D_METHOD("set_max_atlas_size", "size"), &ESS::set_max_atlas_size);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_atlas_size"), "set_max_atlas_size", "get_max_atlas_size");
+
+	ClassDB::bind_method(D_METHOD("get_keep_original_atlases"), &ESS::get_keep_original_atlases);
+	ClassDB::bind_method(D_METHOD("set_keep_original_atlases", "value"), &ESS::set_keep_original_atlases);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "keep_original_atlases"), "set_keep_original_atlases", "get_keep_original_atlases");
+
+	ClassDB::bind_method(D_METHOD("get_background_color"), &ESS::get_background_color);
+	ClassDB::bind_method(D_METHOD("set_background_color", "color"), &ESS::set_background_color);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "background_color"), "set_background_color", "get_background_color");
+
+	ClassDB::bind_method(D_METHOD("get_margin"), &ESS::get_margin);
+	ClassDB::bind_method(D_METHOD("set_margin", "size"), &ESS::set_margin);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "margin"), "set_margin", "get_margin");
+#endif
+
+	ClassDB::bind_method(D_METHOD("get_default_ess_material_cache_class"), &ESS::get_default_ess_material_cache_class);
+	ClassDB::bind_method(D_METHOD("set_default_ess_material_cache_class", "cls_name"), &ESS::set_default_ess_material_cache_class);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "default_ess_material_cache_class"), "set_default_ess_material_cache_class", "get_default_ess_material_cache_class");
+
+	ClassDB::bind_method(D_METHOD("material_paths_get"), &ESS::material_paths_get);
+	ClassDB::bind_method(D_METHOD("material_paths_set", "value"), &ESS::material_paths_set);
+	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "material_paths"), "material_paths_set", "material_paths_get");
+
+	ClassDB::bind_method(D_METHOD("material_add", "value"), &ESS::material_add);
+	ClassDB::bind_method(D_METHOD("material_get", "index"), &ESS::material_get);
+	ClassDB::bind_method(D_METHOD("material_set", "index", "value"), &ESS::material_set);
+	ClassDB::bind_method(D_METHOD("material_remove", "index"), &ESS::material_remove);
+	ClassDB::bind_method(D_METHOD("material_get_num"), &ESS::material_get_num);
+	ClassDB::bind_method(D_METHOD("materials_clear"), &ESS::materials_clear);
+	ClassDB::bind_method(D_METHOD("materials_load"), &ESS::materials_load);
+	ClassDB::bind_method(D_METHOD("ensure_materials_loaded"), &ESS::ensure_materials_loaded);
+
+	ClassDB::bind_method(D_METHOD("materials_get"), &ESS::materials_get);
+	ClassDB::bind_method(D_METHOD("materials_set"), &ESS::materials_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "materials", PROPERTY_HINT_NONE, "17/17:Material", PROPERTY_USAGE_DEFAULT, "Material"), "materials_set", "materials_get");
+
+	ClassDB::bind_method(D_METHOD("material_cache_get", "key"), &ESS::material_cache_get);
+	ClassDB::bind_method(D_METHOD("material_cache_unref", "key"), &ESS::material_cache_unref);
 }
 
 ESS::ESS() {
@@ -689,6 +901,27 @@ ESS::ESS() {
 
 	_class_xps = GLOBAL_DEF("ess/xp/class_xps", PoolIntArray());
 	_character_xps = GLOBAL_DEF("ess/xp/character_xps", PoolIntArray());
+
+#if TEXTURE_PACKER_PRESENT
+	_default_ess_material_cache_class = GLOBAL_DEF("ess/material_cache/default_ess_material_cache_class", "ESSMaterialCachePCM");
+#else
+	_default_ess_material_cache_class = GLOBAL_DEF("ess/material_cache/default_ess_material_cache_class", "ESSMaterialCache");
+#endif
+
+#ifdef TEXTURE_PACKER_PRESENT
+#if VERSION_MAJOR < 4
+	_texture_flags = GLOBAL_DEF("ess/material_cache/texture_flags", Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
+#else
+	_texture_flags = GLOBAL_DEF("ess/material_cache/texture_flags", 0);
+#endif
+
+	_max_atlas_size = GLOBAL_DEF("ess/material_cache/max_atlas_size", 1024);
+	_keep_original_atlases = GLOBAL_DEF("ess/material_cache/keep_original_atlases", false);
+	_background_color = GLOBAL_DEF("ess/material_cache/background_color", Color());
+	_margin = GLOBAL_DEF("ess/material_cache/margin", 0);
+#endif
+
+	_material_paths = GLOBAL_DEF("ess/material_cache/material_paths", PoolStringArray());
 
 	if (!Engine::get_singleton()->is_editor_hint() && _automatic_load) {
 		call_deferred("load_all");

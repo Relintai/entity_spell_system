@@ -10,6 +10,12 @@ if os.path.isdir('../mesh_data_resource'):
 if os.path.isdir('../props'):
     module_env.Append(CPPDEFINES=['PROPS_PRESENT'])
 
+has_texture_packer = False
+
+if os.path.isdir('../texture_packer'):
+    has_texture_packer = True
+    module_env.Append(CPPDEFINES=['TEXTURE_PACKER_PRESENT'])
+
 sources = [
     "register_types.cpp",
 
@@ -122,7 +128,12 @@ sources = [
     "editor/ess_editor_plugin.cpp",
 
     "props/prop_data_entity.cpp",
+
+    "material_cache/ess_material_cache.cpp"
 ]
+
+if has_texture_packer:
+    sources.append("material_cache/ess_material_cache_pcm.cpp")
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
     # Shared lib compilation

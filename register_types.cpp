@@ -131,6 +131,9 @@ SOFTWARE.
 #include "database/ess_resource_db_map.h"
 #include "database/ess_resource_db_static.h"
 
+#include "material_cache/ess_material_cache.h"
+#include "material_cache/ess_material_cache_pcm.h"
+
 #if PROPS_PRESENT
 #include "props/prop_data_entity.h"
 #endif
@@ -262,6 +265,9 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<ProfileManager>();
 
 	ClassDB::register_class<ESSEntitySpawner>();
+
+	ClassDB::register_class<ESSMaterialCache>();
+	ClassDB::register_class<ESSMaterialCachePCM>();
 
 	entity_data_manager = memnew(ESS);
 	ClassDB::register_class<ESS>();

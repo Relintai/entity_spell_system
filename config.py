@@ -103,6 +103,9 @@ def get_doc_classes():
         "ESSEntitySpawner",
 
         "PropDataEntity",
+
+        "ESSMaterialCache",
+        "ESSMaterialCachePCM",
     ]
 
 def get_doc_path():

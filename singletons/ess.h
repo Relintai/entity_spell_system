@@ -26,17 +26,17 @@ SOFTWARE.
 #include "core/version.h"
 
 #if VERSION_MAJOR > 3
-#include "core/object/object.h"
-#include "core/io/resource.h"
-#include "core/string/ustring.h"
 #include "core/config/engine.h"
 #include "core/core_bind.h"
+#include "core/io/resource.h"
+#include "core/object/object.h"
+#include "core/string/ustring.h"
 #else
+#include "core/bind/core_bind.h"
+#include "core/engine.h"
 #include "core/object.h"
 #include "core/resource.h"
 #include "core/ustring.h"
-#include "core/engine.h"
-#include "core/bind/core_bind.h"
 #endif
 
 #include "scene/main/node.h"
@@ -46,6 +46,7 @@ SOFTWARE.
 class ESSResourceDB;
 class ESSEntitySpawner;
 class EntityCreateInfo;
+class ESSMaterialCache;
 
 class ESS : public Object {
 	GDCLASS(ESS, Object);
@@ -181,6 +182,44 @@ public:
 	PoolIntArray get_class_xp_data();
 	void set_class_xp_data(const PoolIntArray &data);
 
+#ifdef TEXTURE_PACKER_PRESENT
+	int get_texture_flags() const;
+	void set_texture_flags(const int flags);
+
+	int get_max_atlas_size() const;
+	void set_max_atlas_size(const int size);
+
+	bool get_keep_original_atlases() const;
+	void set_keep_original_atlases(const bool value);
+
+	Color get_background_color() const;
+	void set_background_color(const Color &color);
+
+	int get_margin() const;
+	void set_margin(const int margin);
+#endif
+
+	StringName get_default_ess_material_cache_class();
+	void set_default_ess_material_cache_class(const StringName &cls_name);
+
+	PoolStringArray material_paths_get() const;
+	void material_paths_set(const PoolStringArray &array);
+
+	void material_add(const Ref<Material> &value);
+	Ref<Material> material_get(const int index);
+	void material_set(const int index, const Ref<Material> &value);
+	void material_remove(const int index);
+	int material_get_num() const;
+	void materials_clear();
+	void materials_load();
+	void ensure_materials_loaded();
+
+	Vector<Variant> materials_get();
+	void materials_set(const Vector<Variant> &materials);
+
+	Ref<ESSMaterialCache> material_cache_get(const uint64_t key);
+	void material_cache_unref(const uint64_t key);
+
 	ESS();
 	~ESS();
 
@@ -242,6 +281,23 @@ private:
 	//Levels/XP
 	PoolIntArray _class_xps;
 	PoolIntArray _character_xps;
+
+	StringName _default_ess_material_cache_class;
+
+	Mutex _material_cache_mutex;
+
+	Map<uint64_t, Ref<ESSMaterialCache>> _material_cache;
+
+#ifdef TEXTURE_PACKER_PRESENT
+	int _texture_flags;
+	int _max_atlas_size;
+	bool _keep_original_atlases;
+	Color _background_color;
+	int _margin;
+#endif
+
+	PoolStringArray _material_paths;
+	Vector<Ref<Material>> _materials;
 };
 
 #endif
