@@ -245,7 +245,7 @@ void EntityCreateInfo::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_network_owner"), &EntityCreateInfo::get_network_owner);
 	ClassDB::bind_method(D_METHOD("set_network_owner", "value"), &EntityCreateInfo::set_network_owner);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "network_owner", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "set_network_owner", "get_network_owner");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "network_owner"), "set_network_owner", "get_network_owner");
 
 	ClassDB::bind_method(D_METHOD("get_entity_name"), &EntityCreateInfo::get_entity_name);
 	ClassDB::bind_method(D_METHOD("set_entity_name", "value"), &EntityCreateInfo::set_entity_name);
