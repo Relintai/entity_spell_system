@@ -154,12 +154,18 @@ struct EntityStat {
 	}                                                         \
 	func(__VA_ARGS__);
 
-#define ORPC(func, ...)                                                   \
-	if (is_inside_tree() && get_tree()->has_network_peer()) {             \
-		if (get_tree()->is_network_server() && get_network_master() != 1) \
-			rpc_id(get_network_master(), #func, ##__VA_ARGS__);           \
-	}                                                                     \
-	func(__VA_ARGS__);
+#define ORPC(func, ...)                                             \
+	if (is_inside_tree() && get_tree()->has_network_peer()) {       \
+		if (get_tree()->is_network_server()) {                      \
+			if (get_network_master() != 1) {                        \
+				rpc_id(get_network_master(), #func, ##__VA_ARGS__); \
+			} else {                                                \
+				func(__VA_ARGS__);                                  \
+			}                                                       \
+		}                                                           \
+	} else {                                                        \
+		func(__VA_ARGS__);                                          \
+	}
 
 #define RPCS(func, ...)                                       \
 	if (is_inside_tree() && get_tree()->has_network_peer()) { \
