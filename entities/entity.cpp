@@ -915,7 +915,9 @@ EntityEnums::EntityController Entity::gets_entity_controller() {
 void Entity::sets_entity_controller(EntityEnums::EntityController value) {
 	_s_entity_controller = value;
 
-	ORPC(setc_is_controlled, value == EntityEnums::ENITIY_CONTROLLER_PLAYER);
+	if (is_inside_tree()) {
+		ORPC(setc_is_controlled, value == EntityEnums::ENITIY_CONTROLLER_PLAYER);
+	}
 }
 
 bool Entity::getc_is_controlled() {
@@ -6572,6 +6574,8 @@ void Entity::_notification(int p_what) {
 						_character_skeleton->call("set_model_index", _c_model_index);
 				}
 			}
+
+			sets_entity_controller(gets_entity_controller());
 		} break;
 		case NOTIFICATION_PROCESS: {
 			if (!_maunal_process)
