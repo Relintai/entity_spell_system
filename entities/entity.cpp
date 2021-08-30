@@ -623,7 +623,7 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 
 	sets_entity_player_type(info->get_entity_player_type());
 
-	if (info->get_network_owner() != 0 && get_tree()->is_network_server())
+	if (info->get_network_owner() != 0)
 		set_network_master(info->get_network_owner());
 
 	sets_original_entity_controller(info->get_entity_controller());
