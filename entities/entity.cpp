@@ -1157,7 +1157,8 @@ Dictionary Entity::_to_dict() {
 	dict["entity_type"] = _s_entity_type;
 	dict["immunity_flags"] = _s_immunity_flags;
 	dict["entity_flags"] = _s_entity_flags;
-	dict["entity_controller"] = _s_entity_controller;
+	//dict["entity_controller"] = _s_entity_controller;
+	//dict["entity_controller"] = _s_original_entity_controller;
 
 	////     Stats    ////
 
@@ -1390,10 +1391,11 @@ void Entity::_from_dict(const Dictionary &dict) {
 	//EntityPlayerType not needed
 	sets_immunity_flags(dict.get("immunity_flags", 0));
 	sets_entity_flags(dict.get("entity_flags", 0));
-	EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
+	
+	//EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
 
-	sets_original_entity_controller(contr);
-	sets_entity_controller(contr);
+	//sets_original_entity_controller(contr);
+	//sets_entity_controller(contr);
 
 	////     Stats    ////
 
