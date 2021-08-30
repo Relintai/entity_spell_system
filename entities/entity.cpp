@@ -5984,12 +5984,10 @@ Entity::Entity() {
 	SET_RPC_REMOTE("setc_entity_type");
 	SET_RPC_REMOTE("setc_entity_name");
 	SET_RPC_REMOTE("setc_model_index");
-	SET_RPC_REMOTE("setc_class_level");
 	SET_RPC_REMOTE("setc_level");
-	SET_RPC_REMOTE("setc_class_xp");
-	SET_RPC_REMOTE("setc_character_xp");
+	SET_RPC_REMOTE("setc_xp");
 	SET_RPC_REMOTE("setc_seed");
-	SET_RPC_REMOTE("setc_is_controlled");
+	SET_RPC_REMOTE("setc_entity_controller");
 
 	//EntityType
 
