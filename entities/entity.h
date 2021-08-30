@@ -142,16 +142,16 @@ struct EntityStat {
 #define SET_RPC_PUPPETSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_PUPPETSYNC);
 
 // f.e.   RPC(method, arg0, arg1, etc)
-#define RPC(func, ...)                                        \
-	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		rpc(#func, ##__VA_ARGS__);                            \
-	}                                                         \
+#define RPC(func, ...)                                                                           \
+	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->is_network_server()) { \
+		rpc(#func, ##__VA_ARGS__);                                                               \
+	}                                                                                            \
 	func(__VA_ARGS__);
 
-#define VRPC(func, ...)                                       \
-	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		vrpc(#func, ##__VA_ARGS__);                           \
-	}                                                         \
+#define VRPC(func, ...)                                                                          \
+	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->is_network_server()) { \
+		vrpc(#func, ##__VA_ARGS__);                                                              \
+	}                                                                                            \
 	func(__VA_ARGS__);
 
 #define ORPC(func, ...)                                             \
@@ -192,16 +192,16 @@ struct EntityStat {
 	}                                                         \
 	normalfunc(normal_var);
 
-#define VRPCOBJ12(rpcfunc, rpc_var, normalfunc, normal_var1, normal_var2) \
-	if (is_inside_tree() && get_tree()->has_network_peer()) {             \
-		vrpc(#rpcfunc, rpc_var);                                          \
-	}                                                                     \
+#define VRPCOBJ12(rpcfunc, rpc_var, normalfunc, normal_var1, normal_var2)                        \
+	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->is_network_server()) { \
+		vrpc(#rpcfunc, rpc_var);                                                                 \
+	}                                                                                            \
 	normalfunc(normal_var1, normal_var2);
 
-#define VRPCOBJP(rpcfunc, rpc_var1, rpc_var2, normalfunc, normal_var1, normal_var2) \
-	if (is_inside_tree() && get_tree()->has_network_peer()) {                       \
-		vrpc(#rpcfunc, rpc_var1, rpc_var2);                                         \
-	}                                                                               \
+#define VRPCOBJP(rpcfunc, rpc_var1, rpc_var2, normalfunc, normal_var1, normal_var2)              \
+	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->is_network_server()) { \
+		vrpc(#rpcfunc, rpc_var1, rpc_var2);                                                      \
+	}                                                                                            \
 	normalfunc(normal_var1, normal_var2);
 
 #define ORPCOBJ(rpcfunc, rpc_var, normalfunc, normal_var)                 \
@@ -230,10 +230,10 @@ struct EntityStat {
 	normalfunc(normal_var1, normal_var2);
 
 // f.e. RSET(rset("property", "value"), property, value)
-#define RSET(rset_func, variable, value)                      \
-	if (is_inside_tree() && get_tree()->has_network_peer()) { \
-		rset_func;                                            \
-	}                                                         \
+#define RSET(rset_func, variable, value)                                                         \
+	if (is_inside_tree() && get_tree()->has_network_peer() && get_tree()->is_network_server()) { \
+		rset_func;                                                                               \
+	}                                                                                            \
 	variable = value;
 
 class Entity : public Node {
