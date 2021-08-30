@@ -647,10 +647,6 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 		sets_entity_data(info->get_entity_data());
 	}
 
-	if (info->get_node_name() != "") {
-		set_name(info->get_node_name());
-	}
-
 	if (has_method("_setup")) {
 #if GODOT4
 		call("_setup");
