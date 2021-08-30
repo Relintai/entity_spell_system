@@ -915,18 +915,28 @@ EntityEnums::EntityController Entity::gets_entity_controller() {
 void Entity::sets_entity_controller(EntityEnums::EntityController value) {
 	_s_entity_controller = value;
 
-	if (is_inside_tree()) {
-		ORPC(setc_is_controlled, value == EntityEnums::ENITIY_CONTROLLER_PLAYER);
+	ORPC(setc_entity_controller, value);
+}
+
+EntityEnums::EntityController Entity::getc_entity_controller() {
+	return _s_entity_controller;
+}
+void Entity::setc_entity_controller(EntityEnums::EntityController value) {
+	if (_c_entity_controller == value) {
+		return;
 	}
+
+	_c_entity_controller = value;
+
+	emit_signal("onc_entity_controller_changed");
 }
 
 bool Entity::getc_is_controlled() {
-	return _c_is_controlled;
-}
-void Entity::setc_is_controlled(bool value) {
-	_c_is_controlled = value;
-
-	emit_signal("isc_controlled_changed", value);
+	if (is_inside_tree() && get_tree()->has_network_peer()) {
+		return (_c_entity_controller == EntityEnums::ENITIY_CONTROLLER_PLAYER) && (get_network_master() == get_tree()->get_network_unique_id());
+	} else {
+		return _c_entity_controller == EntityEnums::ENITIY_CONTROLLER_PLAYER;
+	}
 }
 
 Ref<EntityAI> Entity::gets_ai() {
@@ -5954,7 +5964,7 @@ Entity::Entity() {
 
 	_s_original_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
 	_s_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
-	_c_is_controlled = false;
+	_c_entity_controller = EntityEnums::ENITIY_CONTROLLER_NONE;
 
 	_s_pet_owner = NULL;
 	_c_pet_owner = NULL;
@@ -7776,11 +7786,13 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("sets_entity_controller", "value"), &Entity::sets_entity_controller);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sentity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "sets_entity_controller", "gets_entity_controller");
 
-	ADD_SIGNAL(MethodInfo("isc_controlled_changed", PropertyInfo(Variant::BOOL, "value")));
+	ClassDB::bind_method(D_METHOD("getc_entity_controller"), &Entity::getc_entity_controller);
+	ClassDB::bind_method(D_METHOD("setc_entity_controller", "value"), &Entity::setc_entity_controller);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "centity_controller", PROPERTY_HINT_ENUM, EntityEnums::BINDING_STRING_ENTITY_CONTOLLER), "setc_entity_controller", "getc_entity_controller");
+
+	ADD_SIGNAL(MethodInfo("onc_entity_controller_changed"));
 
 	ClassDB::bind_method(D_METHOD("getc_is_controlled"), &Entity::getc_is_controlled);
-	ClassDB::bind_method(D_METHOD("setc_is_controlled", "value"), &Entity::setc_is_controlled);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "c_is_controlled", PROPERTY_HINT_NONE, "", 0), "setc_is_controlled", "getc_is_controlled");
 
 	ClassDB::bind_method(D_METHOD("gets_ai"), &Entity::gets_ai);
 	ClassDB::bind_method(D_METHOD("sets_ai", "value"), &Entity::sets_ai);
