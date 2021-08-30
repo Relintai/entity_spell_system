@@ -64,6 +64,9 @@ public:
 	String get_entity_name() const;
 	void set_entity_name(const String &value);
 
+	String get_node_name() const;
+	void set_node_name(const String &value);
+
 	int get_level() const;
 	void set_level(const int value);
 
@@ -111,6 +114,7 @@ private:
 	int _network_owner;
 	EntityEnums::EntityController _entity_controller;
 	String _entity_name;
+	String _node_name;
 	int _level;
 	int _xp;
 

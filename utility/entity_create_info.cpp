@@ -77,6 +77,13 @@ void EntityCreateInfo::set_entity_name(const String &value) {
 	_entity_name = value;
 }
 
+String EntityCreateInfo::get_node_name() const {
+	return _node_name;
+}
+void EntityCreateInfo::set_node_name(const String &value) {
+	_node_name = value;
+}
+
 int EntityCreateInfo::get_level() const {
 	return _level;
 }
@@ -250,6 +257,10 @@ void EntityCreateInfo::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_entity_name"), &EntityCreateInfo::get_entity_name);
 	ClassDB::bind_method(D_METHOD("set_entity_name", "value"), &EntityCreateInfo::set_entity_name);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "player_name"), "set_entity_name", "get_entity_name");
+
+	ClassDB::bind_method(D_METHOD("get_node_name"), &EntityCreateInfo::get_node_name);
+	ClassDB::bind_method(D_METHOD("set_node_name", "value"), &EntityCreateInfo::set_node_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "node_name"), "set_node_name", "get_node_name");
 
 	ClassDB::bind_method(D_METHOD("get_level"), &EntityCreateInfo::get_level);
 	ClassDB::bind_method(D_METHOD("set_level", "value"), &EntityCreateInfo::set_level);

@@ -633,7 +633,9 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 
 	_s_xp = info->get_xp();
 
-	sets_entity_name(info->get_entity_name());
+	if (info->get_entity_name() != "") {
+		sets_entity_name(info->get_entity_name());
+	}
 
 #if VERSION_MAJOR > 3
 	if (!info->get_serialized_data().is_empty()) {
@@ -643,6 +645,10 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 		from_dict(info->get_serialized_data());
 	} else {
 		sets_entity_data(info->get_entity_data());
+	}
+
+	if (info->get_node_name() != "") {
+		set_name(info->get_node_name());
 	}
 
 	if (has_method("_setup")) {
