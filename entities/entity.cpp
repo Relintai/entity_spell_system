@@ -252,7 +252,7 @@ int Entity::getc_guid() {
 void Entity::setc_guid(int value) {
 	_c_guid = value;
 
-	set_name(String::num(_c_guid));
+	//set_name(String::num(_c_guid));
 }
 
 //Transforms
