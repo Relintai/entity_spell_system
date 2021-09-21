@@ -27,15 +27,16 @@ SOFTWARE.
 #include "../../props/props/prop_data_prop.h"
 #include "../../props/props/prop_data_tiled_wall.h"
 #include "../../props/tiled_wall/tiled_wall_data.h"
-#endif
-
-#include "../singletons/ess.h"
 
 #if MESH_DATA_RESOURCE_PRESENT
 #define PROPS_PRESENT 1
 #include "../../mesh_data_resource/props/prop_data_mesh_data.h"
 #undef PROPS_PRESENT
 #endif
+
+#endif
+
+#include "../singletons/ess.h"
 
 #if VERSION_MAJOR > 3
 
