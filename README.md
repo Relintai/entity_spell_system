@@ -412,13 +412,12 @@ If you want to send data to every client that sees the current entity, use this.
 
 ## Spells, Auras, Talents
 
-Spell is the class you need to create spells, it stores the data, and also it has the ability to be scripted.
+Spell is the class you need to create both spells, and aura.\
+It stores the data, and also it has the ability to be scripted.\
+Talents are actually just spells used as Auras. Right now the system just applies them as a permanent aura.\
+You don't need to worry about applying auras, cast them as spells instead. It they are set to permanent, or they have a duration set they will be applied as an aura automatically.
 
-Aura is also built the same way as spells.
-
-Talents are actually just Auras.
-
-Talent ranks are implemented by deapplying the earlier rank, then applying the new rank.
+Talent ranks are implemented by deapplying the earlier rank first, then applying the new rank.
 
 ### How to
 
@@ -429,13 +428,37 @@ Request talent learning clientside: \
 `void character_talent_crequest_learn(spec_index: int, character_talent_row: int, character_talent_culomn: int)` or \
 `void class_talent_crequest_learn(spec_index: int, class_talent_row: int, class_talent_culomn: int)` 
 
-Apply an aura:
+#### Cast a spell
+
+Note that you should only do this serverside.
+
+```
+# Or get it from the active ESSResourceDB, etc
+export(Spell) var spell : Spell
+
+func scast_spell() -> void:
+	var sci : SpellCastInfo = SpellCastInfo.new()
+
+	sci.caster = info.caster
+	sci.target = info.target
+	sci.has_cast_time = spell.cast_enabled
+	sci.cast_time = spell.cast_cast_time
+	sci.spell_scale = info.spell_scale
+	sci.set_spell(spell)
+
+	spell.cast_starts(sci)
+
+```
+
+#### Apply an aura
+
+Normally you shouldn't do this, this is for more advanced uses. Cast the aura as a spell instead.
 
 Note that you should only apply auras serverside, they will be sent to clients automatically.
 
 ```
 # Or get it from the active ESSResourceDB, etc
-export(Aura) var aura : Aura
+export(Spell) var aura : Spell
 
 func sapply_aura() -> void:
     var ainfo : AuraApplyInfo = AuraApplyInfo.new()
@@ -448,6 +471,8 @@ func sapply_aura() -> void:
     aura.sapply(ainfo)
 
 ```
+
+#### UI
 
 [Complete UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui)
 
