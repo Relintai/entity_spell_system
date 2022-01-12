@@ -1190,7 +1190,7 @@ void Aura::_handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info) {
 
 void Aura::_validate_property(PropertyInfo &property) const {
 	String prop = property.name;
-	if (prop.begins_with("stat_attribute_")) {
+	if (prop.begins_with("aura_stat_attribute_")) {
 		if (prop.ends_with("count"))
 			return;
 
@@ -1203,7 +1203,7 @@ void Aura::_validate_property(PropertyInfo &property) const {
 			property.hint_string = ESS::get_singleton()->stat_get_string();
 	} else if (prop == "diminishing_return_category") {
 		property.hint_string = ESS::get_singleton()->dminishing_return_categories_get();
-	} else if (prop.begins_with("trigger_")) {
+	} else if (prop.begins_with("aura_trigger_")) {
 		if (prop.ends_with("count"))
 			return;
 
