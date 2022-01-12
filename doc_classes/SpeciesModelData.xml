@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SpeciesModelData" inherits="Resource" version="3.2">
+<class name="SpeciesModelData" inherits="Resource" version="3.5">
 	<brief_description>
 		Stores model information for [EntitySpeciesData].
 	</brief_description>
@@ -9,240 +9,175 @@
 	</tutorials>
 	<methods>
 		<method name="add_color_customizable_slot_color">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="color_customizable_slot" type="Color">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="color_customizable_slot" type="Color" />
 			<description>
 			</description>
 		</method>
 		<method name="add_customizable_slot_entry">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="customizable_slot" type="ModelVisualEntry">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="customizable_slot" type="ModelVisualEntry" />
 			<description>
 			</description>
 		</method>
 		<method name="add_visual">
-			<return type="void">
-			</return>
-			<argument index="0" name="visual" type="ModelVisualEntry">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="visual" type="ModelVisualEntry" />
 			<description>
 			</description>
 		</method>
 		<method name="get_color_customizable_count" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_color_customizable_slot_bone_slot_mask" qualifiers="const">
-			<return type="int">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
+			<return type="int" />
+			<argument index="0" name="slot_index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_color_customizable_slot_color" qualifiers="const">
-			<return type="Color">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="index" type="int">
-			</argument>
+			<return type="Color" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_color_customizable_slot_colors" qualifiers="const">
-			<return type="PoolColorArray">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
+			<return type="PoolColorArray" />
+			<argument index="0" name="slot_index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_color_customizable_slot_count" qualifiers="const">
-			<return type="int">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
+			<return type="int" />
+			<argument index="0" name="slot_index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_color_customizable_slot_texture_layer" qualifiers="const">
-			<return type="int">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
+			<return type="int" />
+			<argument index="0" name="slot_index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_customizable_slot_count" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_customizable_slot_entries" qualifiers="const">
-			<return type="Array">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
+			<return type="Array" />
+			<argument index="0" name="slot_index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_customizable_slot_entry" qualifiers="const">
-			<return type="ModelVisualEntry">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="index" type="int">
-			</argument>
+			<return type="ModelVisualEntry" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_customizable_slot_entry_count" qualifiers="const">
-			<return type="int">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
+			<return type="int" />
+			<argument index="0" name="slot_index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_visual" qualifiers="const">
-			<return type="ModelVisualEntry">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="ModelVisualEntry" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_visual_count" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_visuals">
-			<return type="Array">
-			</return>
+			<return type="Array" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_color_customizable_slot_color">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_customizable_slot_entry">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_visual">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_color_customizable_slot_bone_slot_mask">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_color_customizable_slot_color">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="index" type="int">
-			</argument>
-			<argument index="2" name="data" type="Color">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="index" type="int" />
+			<argument index="2" name="data" type="Color" />
 			<description>
 			</description>
 		</method>
 		<method name="set_color_customizable_slot_colors">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="colors" type="PoolColorArray">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="colors" type="PoolColorArray" />
 			<description>
 			</description>
 		</method>
 		<method name="set_color_customizable_slot_texture_layer">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_customizable_slot_entries">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="customizable_slots" type="Array">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="customizable_slots" type="Array" />
 			<description>
 			</description>
 		</method>
 		<method name="set_customizable_slot_entry">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_index" type="int">
-			</argument>
-			<argument index="1" name="index" type="int">
-			</argument>
-			<argument index="2" name="data" type="ModelVisualEntry">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="slot_index" type="int" />
+			<argument index="1" name="index" type="int" />
+			<argument index="2" name="data" type="ModelVisualEntry" />
 			<description>
 			</description>
 		</method>
 		<method name="set_visual">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="data" type="ModelVisualEntry">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="data" type="ModelVisualEntry" />
 			<description>
 			</description>
 		</method>
 		<method name="set_visuals">
-			<return type="void">
-			</return>
-			<argument index="0" name="visuals" type="Array">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="visuals" type="Array" />
 			<description>
 			</description>
 		</method>

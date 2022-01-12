@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="VendorItemData" inherits="Resource" version="3.2">
+<class name="VendorItemData" inherits="Resource" version="3.5">
 	<brief_description>
 		Contains vendor item data for an [Entity]/[EntityData].
 	</brief_description>
@@ -9,26 +9,20 @@
 	</tutorials>
 	<methods>
 		<method name="get_num_vendor_datas">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_vendor_data">
-			<return type="VendorItemDataEntry">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="VendorItemDataEntry" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_vendor_data">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="vendor_data" type="VendorItemDataEntry">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="vendor_data" type="VendorItemDataEntry" />
 			<description>
 			</description>
 		</method>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="CharacterSkeleton3D" inherits="Spatial" version="3.2">
+<class name="CharacterSkeleton3D" inherits="Spatial" version="3.5">
 	<brief_description>
 		3d implementation for [CharacterSkeleton].
-		
+
 		Note: Most of the logic implementation for this is still in gdscript. It will be ported.
 	</brief_description>
 	<description>
@@ -11,228 +11,210 @@
 	</tutorials>
 	<methods>
 		<method name="_build_model" qualifiers="virtual">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="_common_attach_point_index_get" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="point" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="point" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="add_model_visual">
-			<return type="void">
-			</return>
-			<argument index="0" name="vis" type="ModelVisual">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="vis" type="ModelVisual" />
 			<description>
 			</description>
 		</method>
 		<method name="add_model_visual_entry">
-			<return type="void">
-			</return>
-			<argument index="0" name="vis" type="ModelVisual">
-			</argument>
-			<argument index="1" name="ive" type="ModelVisualEntry">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="vis" type="ModelVisual" />
+			<argument index="1" name="ive" type="ModelVisualEntry" />
 			<description>
 			</description>
 		</method>
 		<method name="attach_point_count" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="attach_point_node_get">
-			<return type="Node">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Node" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="attach_point_path_get" qualifiers="const">
-			<return type="NodePath">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="NodePath" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="attach_point_path_set">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="path" type="NodePath">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="path" type="NodePath" />
 			<description>
 			</description>
 		</method>
 		<method name="bake_mesh_array_uv" qualifiers="const">
-			<return type="Array">
-			</return>
-			<argument index="0" name="arr" type="Array">
-			</argument>
-			<argument index="1" name="tex" type="Texture">
-			</argument>
-			<argument index="2" name="mul_color" type="float" default="0.7">
-			</argument>
+			<return type="Array" />
+			<argument index="0" name="arr" type="Array" />
+			<argument index="1" name="tex" type="Texture" />
+			<argument index="2" name="mul_color" type="float" default="0.7" />
+			<description>
+			</description>
+		</method>
+		<method name="bone_additional_mesh_transform_bone_index_get" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="bone_additional_mesh_transform_bone_index_set">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="bone_index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="bone_additional_mesh_transform_transform_get" qualifiers="const">
+			<return type="Transform" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="bone_additional_mesh_transform_transform_set">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="transform" type="Transform" />
+			<description>
+			</description>
+		</method>
+		<method name="bone_additional_mesh_transform_user_transform_get" qualifiers="const">
+			<return type="Transform" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="bone_additional_mesh_transform_user_transform_set">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="transform" type="Transform" />
 			<description>
 			</description>
 		</method>
 		<method name="build_model">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="clear_model_visuals">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="common_attach_point_add">
-			<return type="void">
-			</return>
-			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints">
-			</argument>
-			<argument index="1" name="scene" type="PackedScene">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints" />
+			<argument index="1" name="scene" type="PackedScene" />
 			<description>
 			</description>
 		</method>
 		<method name="common_attach_point_add_timed">
-			<return type="void">
-			</return>
-			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints">
-			</argument>
-			<argument index="1" name="scene" type="PackedScene">
-			</argument>
-			<argument index="2" name="time" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints" />
+			<argument index="1" name="scene" type="PackedScene" />
+			<argument index="2" name="time" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="common_attach_point_index_get">
-			<return type="int">
-			</return>
-			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints">
-			</argument>
+			<return type="int" />
+			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints" />
 			<description>
 			</description>
 		</method>
 		<method name="common_attach_point_node_get">
-			<return type="Node">
-			</return>
-			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints">
-			</argument>
+			<return type="Node" />
+			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints" />
 			<description>
 			</description>
 		</method>
 		<method name="common_attach_point_remove">
-			<return type="void">
-			</return>
-			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints">
-			</argument>
-			<argument index="1" name="scene" type="PackedScene">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="point" type="int" enum="EntityEnums.CommonCharacterSkeletonPoints" />
+			<argument index="1" name="scene" type="PackedScene" />
 			<description>
 			</description>
 		</method>
 		<method name="get_animation_player">
-			<return type="AnimationPlayer">
-			</return>
+			<return type="AnimationPlayer" />
 			<description>
 			</description>
 		</method>
 		<method name="get_animation_tree">
-			<return type="AnimationTree">
-			</return>
+			<return type="AnimationTree" />
 			<description>
 			</description>
 		</method>
 		<method name="get_model_entry">
-			<return type="SkeletonModelEntry">
-			</return>
-			<argument index="0" name="bone_index" type="int">
-			</argument>
-			<argument index="1" name="index" type="int">
-			</argument>
+			<return type="SkeletonModelEntry" />
+			<argument index="0" name="bone_index" type="int" />
+			<argument index="1" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_model_entry_count">
-			<return type="int">
-			</return>
-			<argument index="0" name="bone_index" type="int">
-			</argument>
+			<return type="int" />
+			<argument index="0" name="bone_index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_model_visual">
-			<return type="ModelVisual">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="ModelVisual" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_model_visual_count">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="merge_mesh_array" qualifiers="const">
-			<return type="Array">
-			</return>
-			<argument index="0" name="arr" type="Array">
-			</argument>
+			<return type="Array" />
+			<argument index="0" name="arr" type="Array" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_model_visual">
-			<return type="void">
-			</return>
-			<argument index="0" name="vis" type="ModelVisual">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="vis" type="ModelVisual" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_model_visual_entry">
-			<return type="void">
-			</return>
-			<argument index="0" name="vis" type="ModelVisual">
-			</argument>
-			<argument index="1" name="ive" type="ModelVisualEntry">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="vis" type="ModelVisual" />
+			<argument index="1" name="ive" type="ModelVisualEntry" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_model_visual_index">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="sort_layers">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="update_nodes">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
@@ -241,6 +223,8 @@
 		<member name="animation_player_path" type="NodePath" setter="set_animation_player_path" getter="get_animation_player_path" default="NodePath(&quot;&quot;)">
 		</member>
 		<member name="animation_tree_path" type="NodePath" setter="set_animation_tree_path" getter="get_animation_tree_path" default="NodePath(&quot;&quot;)">
+		</member>
+		<member name="bone_additional_mesh_transform_count" type="int" setter="bone_additional_mesh_transform_set_count" getter="bone_additional_mesh_transform_get_count" default="0">
 		</member>
 		<member name="entity_type" type="int" setter="set_entity_type" getter="get_entity_type" default="0">
 		</member>

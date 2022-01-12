@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="InputProfile" inherits="Reference" version="3.2">
+<class name="InputProfile" inherits="Reference" version="3.5">
 	<brief_description>
 		Will store keybind information. [ProfileManager] related.
 	</brief_description>
@@ -8,7 +8,37 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="get_owner">
+			<return type="ClassProfile" />
+			<description>
+			</description>
+		</method>
+		<method name="load_defaults">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="load_to_projectsettings">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="save_from_projectsettings">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
 	</methods>
+	<members>
+		<member name="data" type="Array" setter="set_data" getter="get_data" default="[  ]">
+		</member>
+	</members>
+	<signals>
+		<signal name="changed">
+			<description>
+			</description>
+		</signal>
+	</signals>
 	<constants>
 	</constants>
 </class>

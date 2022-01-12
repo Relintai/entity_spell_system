@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ModelVisual" inherits="Resource" version="3.2">
+<class name="ModelVisual" inherits="Resource" version="3.5">
 	<brief_description>
 		Contains an item's visual information.
 	</brief_description>
@@ -9,42 +9,32 @@
 	</tutorials>
 	<methods>
 		<method name="add_visual_entry">
-			<return type="void">
-			</return>
-			<argument index="0" name="visual_entry" type="ModelVisualEntry">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="visual_entry" type="ModelVisualEntry" />
 			<description>
 			</description>
 		</method>
 		<method name="get_visual_entry" qualifiers="const">
-			<return type="ModelVisualEntry">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="ModelVisualEntry" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_visual_entry_count" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_visual_entry">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_visual_entry">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="data" type="ModelVisualEntry">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="data" type="ModelVisualEntry" />
 			<description>
 			</description>
 		</method>

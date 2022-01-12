@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PropDataEntity" inherits="PropDataEntry" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="entity_data" type="EntityData" setter="set_entity_data" getter="get_entity_data">
+		</member>
+		<member name="level" type="int" setter="set_level" getter="get_level" default="1">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

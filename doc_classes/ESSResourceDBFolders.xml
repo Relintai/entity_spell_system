@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ESSResourceDBFolders" inherits="ESSResourceDBMap" version="3.2">
+<class name="ESSResourceDBFolders" inherits="ESSResourceDBMap" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -8,46 +8,31 @@
 	</tutorials>
 	<methods>
 		<method name="add_resource">
-			<return type="void">
-			</return>
-			<argument index="0" name="resource" type="Resource">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="resource" type="Resource" />
 			<description>
 			</description>
 		</method>
 		<method name="load_all">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="load_folder">
-			<return type="void">
-			</return>
-			<argument index="0" name="folder" type="String">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="folder" type="String" />
 			<description>
 			</description>
 		</method>
 		<method name="load_folders">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="load_resource">
-			<return type="Resource">
-			</return>
-			<argument index="0" name="path" type="String">
-			</argument>
-			<argument index="1" name="type_hint" type="String" default="&quot;&quot;">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="load_xp_data">
-			<return type="void">
-			</return>
+			<return type="Resource" />
+			<argument index="0" name="path" type="String" />
+			<argument index="1" name="type_hint" type="String" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>
@@ -56,8 +41,6 @@
 		<member name="automatic_load" type="bool" setter="set_automatic_load" getter="get_automatic_load" default="false">
 		</member>
 		<member name="folders" type="PoolStringArray" setter="set_folders" getter="get_folders" default="PoolStringArray(  )">
-		</member>
-		<member name="xp_data_path" type="String" setter="set_xp_data_path" getter="get_xp_data_path" default="&quot;&quot;">
 		</member>
 	</members>
 	<constants>

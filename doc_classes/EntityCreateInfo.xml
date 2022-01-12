@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityCreateInfo" inherits="Reference" version="3.2">
+<class name="EntityCreateInfo" inherits="Reference" version="3.5">
 	<brief_description>
 		Helper class used for [Entity] creation, and setup.
 	</brief_description>
@@ -9,44 +9,30 @@
 	</tutorials>
 	<methods>
 		<method name="_from_dict" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="from_dict">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="to_dict">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
 	</methods>
 	<members>
-		<member name="character_level" type="int" setter="set_character_level" getter="get_character_level" default="0">
-		</member>
-		<member name="character_xp" type="int" setter="set_character_xp" getter="get_character_xp" default="0">
-		</member>
 		<member name="class_id" type="int" setter="set_class_id" getter="get_class_id" default="0">
-		</member>
-		<member name="class_level" type="int" setter="set_class_level" getter="get_class_level" default="0">
-		</member>
-		<member name="class_xp" type="int" setter="set_class_xp" getter="get_class_xp" default="0">
 		</member>
 		<member name="created_entity" type="Entity" setter="set_created_entity" getter="get_created_entity">
 		</member>
@@ -58,9 +44,13 @@
 		</member>
 		<member name="guid" type="int" setter="set_guid" getter="get_guid" default="0">
 		</member>
+		<member name="level" type="int" setter="set_level" getter="get_level" default="0">
+		</member>
 		<member name="network_owner" type="int" setter="set_network_owner" getter="get_network_owner" default="0">
 		</member>
 		<member name="networked" type="bool" setter="set_networked" getter="get_networked" default="false">
+		</member>
+		<member name="node_name" type="String" setter="set_node_name" getter="get_node_name" default="&quot;&quot;">
 		</member>
 		<member name="parent_path" type="NodePath" setter="set_parent_path" getter="get_parent_path" default="NodePath(&quot;&quot;)">
 		</member>
@@ -73,6 +63,8 @@
 		<member name="transform" type="Transform" setter="set_transform" getter="get_transform" default="Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )">
 		</member>
 		<member name="transform2d" type="Transform2D" setter="set_transform2d" getter="get_transform2d" default="Transform2D( 1, 0, 0, 1, 0, 0 )">
+		</member>
+		<member name="xp" type="int" setter="set_xp" getter="get_xp" default="0">
 		</member>
 	</members>
 	<constants>

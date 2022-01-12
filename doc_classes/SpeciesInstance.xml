@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SpeciesInstance" inherits="Resource" version="3.2">
+<class name="SpeciesInstance" inherits="Resource" version="3.5">
 	<brief_description>
 	</brief_description>
 	<description>
@@ -8,30 +8,24 @@
 	</tutorials>
 	<methods>
 		<method name="_from_dict" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="from_dict">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="to_dict">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
@@ -43,7 +37,7 @@
 		</member>
 		<member name="head_index" type="int" setter="set_head_index" getter="get_head_index" default="0">
 		</member>
-		<member name="id" type="int" setter="set_id" getter="get_id" default="116271120">
+		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
 		</member>
 		<member name="skin_color_index" type="int" setter="set_skin_color_index" getter="get_skin_color_index" default="0">
 		</member>

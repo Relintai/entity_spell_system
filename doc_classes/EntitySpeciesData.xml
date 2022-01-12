@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntitySpeciesData" inherits="Resource" version="3.2">
+<class name="EntitySpeciesData" inherits="Resource" version="3.5">
 	<brief_description>
 		Contains visual data for a species.
 	</brief_description>
@@ -9,138 +9,104 @@
 	</tutorials>
 	<methods>
 		<method name="_generate_name" qualifiers="virtual">
-			<return type="String">
-			</return>
-			<argument index="0" name="seed" type="int">
-			</argument>
+			<return type="String" />
+			<argument index="0" name="seed" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="add_aura">
-			<return type="void">
-			</return>
-			<argument index="0" name="aura" type="Aura">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="aura" type="Spell" />
 			<description>
 			</description>
 		</method>
 		<method name="add_model_data">
-			<return type="void">
-			</return>
-			<argument index="0" name="model_data" type="SpeciesModelData">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="model_data" type="SpeciesModelData" />
 			<description>
 			</description>
 		</method>
 		<method name="add_spell">
-			<return type="void">
-			</return>
-			<argument index="0" name="spell" type="Spell">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="spell" type="Spell" />
 			<description>
 			</description>
 		</method>
 		<method name="generate_name">
-			<return type="String">
-			</return>
-			<argument index="0" name="arg0" type="int">
-			</argument>
+			<return type="String" />
+			<argument index="0" name="arg0" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_aura" qualifiers="const">
-			<return type="Aura">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_aura_count" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_model_data" qualifiers="const">
-			<return type="SpeciesModelData">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="SpeciesModelData" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_model_data_count" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_spell" qualifiers="const">
-			<return type="Spell">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_spell_count" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_aura">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_model_data">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_spell">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_aura">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="data" type="Aura">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="data" type="Spell" />
 			<description>
 			</description>
 		</method>
 		<method name="set_model_data">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="data" type="SpeciesModelData">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="data" type="SpeciesModelData" />
 			<description>
 			</description>
 		</method>
 		<method name="set_spell">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="data" type="Spell">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="data" type="Spell" />
 			<description>
 			</description>
 		</method>

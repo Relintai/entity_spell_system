@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityEnums" inherits="Object" version="3.2">
+<class name="EntityEnums" inherits="Object" version="3.5">
 	<brief_description>
 		Contains lots of general-use enums for entities.
 	</brief_description>
@@ -216,9 +216,13 @@
 		</constant>
 		<constant name="ENITIY_INTERACTION_TYPE_LOOT" value="2" enum="EntityInteractionType">
 		</constant>
+		<constant name="ENITIY_INTERACTION_TYPE_TRAIN" value="4" enum="EntityInteractionType">
+		</constant>
+		<constant name="ENITIY_INTERACTION_TYPE_VENDOR" value="5" enum="EntityInteractionType">
+		</constant>
 		<constant name="ENITIY_INTERACTION_TYPE_USE" value="3" enum="EntityInteractionType">
 		</constant>
-		<constant name="ENITIY_INTERACTION_TYPE_NONE" value="4" enum="EntityInteractionType">
+		<constant name="ENITIY_INTERACTION_TYPE_NONE" value="6" enum="EntityInteractionType">
 		</constant>
 		<constant name="ENTITY_CLASS_PLAYSTYLE_TYPE_MELEE" value="0" enum="EntityClassPlaystyleType">
 		</constant>
@@ -234,7 +238,7 @@
 		</constant>
 		<constant name="ENTITY_WINDOW_VENDOR" value="2" enum="EntityWindows">
 		</constant>
-		<constant name="ENTITY_WINDOW_TRAINER" value="2" enum="EntityWindows">
+		<constant name="ENTITY_WINDOW_TRAINER" value="3" enum="EntityWindows">
 		</constant>
 		<constant name="ENTITY_RESOURCE_INDEX_HEALTH" value="0" enum="EntityResourceIndices">
 		</constant>
@@ -243,6 +247,10 @@
 		<constant name="ENTITY_RESOURCE_INDEX_RESOURCES_BEGIN" value="2" enum="EntityResourceIndices">
 		</constant>
 		<constant name="BASE_XP" value="50">
+		</constant>
+		<constant name="ENTITY_INTERACT_RANGE" value="4">
+		</constant>
+		<constant name="ENTITY_INTERACT_RANGE_SQUARED" value="16">
 		</constant>
 	</constants>
 </class>

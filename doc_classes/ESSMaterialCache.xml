@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ESSMaterialCache" inherits="Resource" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_setup_material_albedo" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="dec_ref_count">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="inc_ref_count">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="initial_setup_default">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="material_add">
+			<return type="void" />
+			<argument index="0" name="value" type="Material" />
+			<description>
+			</description>
+		</method>
+		<method name="material_get">
+			<return type="Material" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_get_num" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_lod_get">
+			<return type="Material" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_remove">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="material_set">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="Material" />
+			<description>
+			</description>
+		</method>
+		<method name="materials_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="mutex_lock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="mutex_locked">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="mutex_unlock">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="refresh_rects">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="setup_material_albedo">
+			<return type="void" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="texture_add">
+			<return type="void" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="texture_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="texture_get">
+			<return type="Texture" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="texture_get_atlas">
+			<return type="AtlasTexture" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="texture_get_atlas_tex">
+			<return type="AtlasTexture" />
+			<argument index="0" name="index" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="texture_get_uv_rect">
+			<return type="Rect2" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="texture_remove">
+			<return type="void" />
+			<argument index="0" name="texture" type="Texture" />
+			<description>
+			</description>
+		</method>
+		<method name="texture_remove_index">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="textures_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="initialized" type="bool" setter="set_initialized" getter="get_initialized" default="false">
+		</member>
+		<member name="mat_ref_count" type="int" setter="set_ref_count" getter="get_ref_count" default="0">
+		</member>
+		<member name="materials" type="Array" setter="materials_set" getter="materials_get" default="[  ]">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

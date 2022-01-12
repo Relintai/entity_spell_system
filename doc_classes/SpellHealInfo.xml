@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SpellHealInfo" inherits="Reference" version="3.2">
+<class name="SpellHealInfo" inherits="Reference" version="3.5">
 	<brief_description>
 		Contains heal information. It is passed around in callbacks, so things can modify values. (absorbs, immunities etc.)
 	</brief_description>
@@ -9,8 +9,7 @@
 	</tutorials>
 	<methods>
 		<method name="reset">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
@@ -18,31 +17,35 @@
 	<members>
 		<member name="amount_absorbed" type="int" setter="amount_absorbed_set" getter="amount_absorbed_get" default="0">
 		</member>
+		<member name="aura_source" type="Spell" setter="aura_source_set" getter="aura_source_get">
+		</member>
 		<member name="crit" type="bool" setter="crit_set" getter="crit_get" default="false">
 		</member>
 		<member name="dealer" type="Entity" setter="dealer_set" getter="dealer_get">
 		</member>
 		<member name="heal" type="int" setter="heal_set" getter="heal_get" default="0">
 		</member>
-		<member name="heal_source" type="Reference" setter="source_set" getter="source_get">
+		<member name="heal_type_get" type="int" setter="heal_type_set" getter="heal_type_get" default="0">
 		</member>
-		<member name="heal_source_id" type="int" setter="source_set_id" getter="source_get_id" default="0">
-		</member>
-		<member name="heal_source_type" type="int" setter="source_set_type" getter="source_get_type" enum="SpellHealInfo.HealSourceType" default="0">
-		</member>
-		<member name="immune" type="bool" setter="set_immune" getter="get_immune" default="true">
+		<member name="immune" type="bool" setter="set_immune" getter="get_immune" default="false">
 		</member>
 		<member name="receiver" type="Entity" setter="receiver_set" getter="receiver_get">
 		</member>
-		<member name="spell_type" type="int" setter="spell_type_set" getter="spell_type_get" enum="SpellEnums.SpellType" default="0">
+		<member name="source" type="Reference" setter="source_set" getter="source_get">
+		</member>
+		<member name="source_id" type="int" setter="source_set_id" getter="source_get_id" default="0">
+		</member>
+		<member name="source_type" type="int" setter="source_set_type" getter="source_get_type" default="0">
+		</member>
+		<member name="spell_source" type="Spell" setter="spell_source_set" getter="spell_source_get">
 		</member>
 	</members>
 	<constants>
-		<constant name="HEAL_SOURCE_UNKNOWN" value="0" enum="HealSourceType">
+		<constant name="HEAL_SOURCE_UNKNOWN" value="0">
 		</constant>
-		<constant name="HEAL_SOURCE_SPELL" value="1" enum="HealSourceType">
+		<constant name="HEAL_SOURCE_SPELL" value="1">
 		</constant>
-		<constant name="HEAL_SOURCE_AURA" value="2" enum="HealSourceType">
+		<constant name="HEAL_SOURCE_AURA" value="2">
 		</constant>
 	</constants>
 </class>

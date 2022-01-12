@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="PlayerProfile" inherits="Reference" version="3.2">
+<class name="PlayerProfile" inherits="Reference" version="3.5">
 	<brief_description>
 		Stores the data for a player. Also see [ProfileManager].
 	</brief_description>
@@ -9,72 +9,57 @@
 	</tutorials>
 	<methods>
 		<method name="add_class_profile">
-			<return type="void">
-			</return>
-			<argument index="0" name="profile" type="ClassProfile">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="profile" type="ClassProfile" />
 			<description>
 			</description>
 		</method>
 		<method name="clear_class_profiles">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="emit_change">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="from_dict">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="get_class_profile">
-			<return type="ClassProfile">
-			</return>
-			<argument index="0" name="class_id" type="String">
-			</argument>
+			<return type="ClassProfile" />
+			<argument index="0" name="class_id" type="String" />
 			<description>
 			</description>
 		</method>
 		<method name="get_class_profile_count" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_class_profile_index">
-			<return type="ClassProfile">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="ClassProfile" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="load_defaults">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_class_profile">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="to_dict" qualifiers="const">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
@@ -91,8 +76,7 @@
 	</members>
 	<signals>
 		<signal name="changed">
-			<argument index="0" name="profile" type="PlayerProfile">
-			</argument>
+			<argument index="0" name="profile" type="PlayerProfile" />
 			<description>
 			</description>
 		</signal>

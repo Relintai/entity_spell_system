@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Spell" inherits="Resource" version="3.2">
+<class name="Spell" inherits="Resource" version="3.5">
 	<brief_description>
 		Base [Spell] class. Contains data, and callbacks for spell scripts. Inherit from this to create spells with different functionality.
 	</brief_description>
@@ -8,409 +8,1335 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="_aura_calculate_initial_damage" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="AuraApplyInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_calculate_initial_heal" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="aura_data" type="AuraData" />
+			<argument index="1" name="info" type="AuraApplyInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_get_description" qualifiers="virtual">
+			<return type="String" />
+			<argument index="0" name="class_level" type="int" />
+			<argument index="1" name="character_level" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_removes_dispell" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="info" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_removes_expired" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="info" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_sadd" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="aura" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_sapply" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="info" type="AuraApplyInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_sapply_passives_damage_deal" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_sapply_passives_damage_receive" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_sapply_passives_heal_deal" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="info" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_sapply_passives_heal_receive" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="info" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_sdeapply" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="info" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_sremove" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="aura" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_aura_supdate" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="info" type="AuraData" />
+			<argument index="1" name="delta" type="float" />
+			<description>
+			</description>
+		</method>
 		<method name="_calculate_initial_damage" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_calculate_initial_heal" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellHealInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="data" type="SpellHealInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_cast_finishs" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_cast_interrupts" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_cast_starts" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_cast_starts_triggered" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_aura_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_aura_refresh" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_aura_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_cast_failed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_cast_finished" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_cast_started" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_cast_state_changed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_damage_dealt" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_dealt_damage" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_dealt_heal" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="SpellHealInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_heal_dealt" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="SpellHealInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_con_spell_cast_success" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_equip_con_fail" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="equip_slot" type="int" />
+			<argument index="2" name="item" type="ItemInstance" />
+			<argument index="3" name="old_item" type="ItemInstance" />
+			<argument index="4" name="bag_slot" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_equip_con_success" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="equip_slot" type="int" />
+			<argument index="2" name="item" type="ItemInstance" />
+			<argument index="3" name="old_item" type="ItemInstance" />
+			<argument index="4" name="bag_slot" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_equip_should_deny" qualifiers="virtual">
+			<return type="bool" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="equip_slot" type="int" />
+			<argument index="2" name="item" type="ItemInstance" />
+			<description>
+			</description>
+		</method>
+		<method name="_equip_son_fail" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="equip_slot" type="int" />
+			<argument index="2" name="item" type="ItemInstance" />
+			<argument index="3" name="old_item" type="ItemInstance" />
+			<argument index="4" name="bag_slot" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_equip_son_success" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="equip_slot" type="int" />
+			<argument index="2" name="item" type="ItemInstance" />
+			<argument index="3" name="old_item" type="ItemInstance" />
+			<argument index="4" name="bag_slot" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="_get_description" qualifiers="virtual">
-			<return type="String">
-			</return>
-			<argument index="0" name="class_level" type="int">
-			</argument>
-			<argument index="1" name="character_level" type="int">
-			</argument>
+			<return type="String" />
+			<argument index="0" name="class_level" type="int" />
+			<argument index="1" name="character_level" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_handle_aura_damage" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_handle_aura_heal" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="aura_data" type="AuraData" />
+			<argument index="1" name="spell_heal_info" type="SpellHealInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_handle_effect" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_handle_projectile" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_handle_spell_damage" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_handle_spell_heal" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellHealInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="data" type="SpellHealInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_aura_ccast" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="data" type="AuraData" />
+			<argument index="2" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_aura_scast" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="data" type="AuraData" />
+			<argument index="2" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_caura" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="data" type="AuraData" />
 			<description>
 			</description>
 		</method>
 		<method name="_notification_ccast" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="what" type="int">
-			</argument>
-			<argument index="1" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_ccategory_cooldown_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="id" type="int" />
+			<argument index="2" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_ccategory_cooldown_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="id" type="int" />
+			<argument index="2" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_ccooldown_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="id" type="int" />
+			<argument index="2" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_ccooldown_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="id" type="int" />
+			<argument index="2" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cdamage" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="data" type="AuraData" />
+			<argument index="2" name="data" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cdeath" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_centity_resource_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_centity_resource_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cgcd_finished" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cgcd_started" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="gcd" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cheal" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="data" type="AuraData" />
+			<argument index="2" name="data" type="SpellHealInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_clevel_up" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_cxp_gained" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_saura" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="data" type="AuraData" />
 			<description>
 			</description>
 		</method>
 		<method name="_notification_scast" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="what" type="int">
-			</argument>
-			<argument index="1" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scategory_cooldown_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="id" type="int" />
+			<argument index="2" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scategory_cooldown_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="id" type="int" />
+			<argument index="2" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scooldown_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="id" type="int" />
+			<argument index="2" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_scooldown_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="id" type="int" />
+			<argument index="2" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sdamage" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="data" type="AuraData" />
+			<argument index="2" name="data" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sdeath" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sentity_resource_added" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sentity_resource_removed" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sgcd_finished" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sgcd_started" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="gcd" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sheal" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="data" type="AuraData" />
+			<argument index="2" name="data" type="SpellHealInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_slevel_up" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_notification_sxp_gained" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="_setup_aura_data" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="AuraApplyInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_son_cast_damage_received" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_son_cast_player_moved" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="_son_physics_process" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<argument index="1" name="delta" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
+			<argument index="1" name="delta" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="_son_physics_process_aura" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_son_remove" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_son_remove_dispell" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="_son_remove_expired" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
 			<description>
 			</description>
 		</method>
 		<method name="_son_spell_hit" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_calculate_initial_damage">
+			<return type="void" />
+			<argument index="0" name="aura_data" type="AuraData" />
+			<argument index="1" name="info" type="AuraApplyInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_calculate_initial_heal">
+			<return type="void" />
+			<argument index="0" name="aura_data" type="AuraData" />
+			<argument index="1" name="info" type="AuraApplyInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_damage_set">
+			<return type="void" />
+			<argument index="0" name="min" type="int" />
+			<argument index="1" name="max" type="int" />
+			<argument index="2" name="can_crit" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_get_description">
+			<return type="String" />
+			<argument index="0" name="class_level" type="int" />
+			<argument index="1" name="character_level" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_get_name_translated" qualifiers="const">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_heal_set">
+			<return type="void" />
+			<argument index="0" name="min" type="int" />
+			<argument index="1" name="max" type="int" />
+			<argument index="2" name="can_crit" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_is_talent" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_removes_dispell">
+			<return type="void" />
+			<argument index="0" name="aura" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_removes_expired">
+			<return type="void" />
+			<argument index="0" name="aura" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_sadd">
+			<return type="void" />
+			<argument index="0" name="aura" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_sapply">
+			<return type="void" />
+			<argument index="0" name="info" type="AuraApplyInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_sapply_passives_damage_deal">
+			<return type="void" />
+			<argument index="0" name="data" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_sapply_passives_damage_receive">
+			<return type="void" />
+			<argument index="0" name="data" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_sapply_passives_heal_deal">
+			<return type="void" />
+			<argument index="0" name="data" type="SpellHealInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_sapply_passives_heal_receive">
+			<return type="void" />
+			<argument index="0" name="data" type="SpellHealInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_sdeapply">
+			<return type="void" />
+			<argument index="0" name="aura" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_sremove">
+			<return type="void" />
+			<argument index="0" name="aura" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_stat_attribute_get_base_mod" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_stat_attribute_get_bonus_mod" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_stat_attribute_get_percent_mod" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_stat_attribute_get_stat" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_stat_attribute_set_base_mod">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_stat_attribute_set_bonus_mod">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_stat_attribute_set_percent_mod">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_stat_attribute_set_stat">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_supdate">
+			<return type="void" />
+			<argument index="0" name="aura" type="AuraData" />
+			<argument index="1" name="delta" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_trigger_get_notification_data" qualifiers="const">
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_trigger_get_notification_type" qualifiers="const">
+			<return type="int" enum="SpellEnums.TriggerNotificationType" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_trigger_get_spell" qualifiers="const">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_trigger_get_trigger_type" qualifiers="const">
+			<return type="int" enum="SpellEnums.TriggerType" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_trigger_get_trigger_type_data" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_trigger_set_notification_data">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_trigger_set_notification_type">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="int" enum="SpellEnums.TriggerNotificationType" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_trigger_set_spell">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_trigger_set_trigger_type">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="int" enum="SpellEnums.TriggerType" />
+			<description>
+			</description>
+		</method>
+		<method name="aura_trigger_set_trigger_type_data">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="calculate_initial_damage">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="calculate_initial_heal">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellHealInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="data" type="SpellHealInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="cast_finishs">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="cast_interrupts">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="cast_starts">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="cast_starts_triggered">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
-		<method name="caster_get_aura_apply">
-			<return type="Aura">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+		<method name="equip_con_fail">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="equip_slot" type="int" />
+			<argument index="2" name="item" type="ItemInstance" />
+			<argument index="3" name="old_item" type="ItemInstance" />
+			<argument index="4" name="bag_slot" type="int" />
 			<description>
 			</description>
 		</method>
-		<method name="caster_set_aura_apply">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="aura" type="Aura">
-			</argument>
+		<method name="equip_con_success">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="equip_slot" type="int" />
+			<argument index="2" name="item" type="ItemInstance" />
+			<argument index="3" name="old_item" type="ItemInstance" />
+			<argument index="4" name="bag_slot" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="equip_should_deny">
+			<return type="bool" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="equip_slot" type="int" />
+			<argument index="2" name="item" type="ItemInstance" />
+			<description>
+			</description>
+		</method>
+		<method name="equip_son_fail">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="equip_slot" type="int" />
+			<argument index="2" name="item" type="ItemInstance" />
+			<argument index="3" name="old_item" type="ItemInstance" />
+			<argument index="4" name="bag_slot" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="equip_son_success">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="equip_slot" type="int" />
+			<argument index="2" name="item" type="ItemInstance" />
+			<argument index="3" name="old_item" type="ItemInstance" />
+			<argument index="4" name="bag_slot" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_description">
-			<return type="String">
-			</return>
-			<argument index="0" name="class_level" type="int">
-			</argument>
-			<argument index="1" name="character_level" type="int">
-			</argument>
+			<return type="String" />
+			<argument index="0" name="class_level" type="int" />
+			<argument index="1" name="character_level" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_name_translated" qualifiers="const">
-			<return type="String">
-			</return>
+			<return type="String" />
 			<description>
 			</description>
 		</method>
-		<method name="get_num_caster_aura_applys" qualifiers="const">
-			<return type="int">
-			</return>
+		<method name="handle_aura_damage">
+			<return type="void" />
+			<argument index="0" name="aura_data" type="AuraData" />
+			<argument index="1" name="data" type="SpellDamageInfo" />
 			<description>
 			</description>
 		</method>
-		<method name="get_num_on_learn_auras" qualifiers="const">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_num_target_aura_applys" qualifiers="const">
-			<return type="int">
-			</return>
-			<description>
-			</description>
-		</method>
-		<method name="get_on_learn_aura">
-			<return type="Aura">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="get_target_aura_apply">
-			<return type="Aura">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+		<method name="handle_aura_heal">
+			<return type="void" />
+			<argument index="0" name="aura_data" type="AuraData" />
+			<argument index="1" name="data" type="SpellHealInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="handle_cooldown">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="handle_effect">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="handle_gcd">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="handle_projectile">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="handle_spell_damage">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellDamageInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="data" type="SpellDamageInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="handle_spell_heal">
-			<return type="void">
-			</return>
-			<argument index="0" name="data" type="SpellHealInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="data" type="SpellHealInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="is_aura" qualifiers="const">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_aura_ccast">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="aura" type="AuraData" />
+			<argument index="2" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_aura_scast">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="aura" type="AuraData" />
+			<argument index="2" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_caura">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="data" type="AuraData" />
 			<description>
 			</description>
 		</method>
 		<method name="notification_ccast">
-			<return type="void">
-			</return>
-			<argument index="0" name="what" type="int">
-			</argument>
-			<argument index="1" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccategory_cooldown_added">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="int" />
+			<argument index="2" name="arg2" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccategory_cooldown_removed">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="int" />
+			<argument index="2" name="arg2" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccooldown_added">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="int" />
+			<argument index="2" name="arg2" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_ccooldown_removed">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="int" />
+			<argument index="2" name="arg2" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_cdamage">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="aura" type="AuraData" />
+			<argument index="2" name="info" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_cdeath">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_centity_resource_added">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="EntityResource" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_centity_resource_removed">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="EntityResource" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_cgcd_finished">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_cgcd_started">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_cheal">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="aura" type="AuraData" />
+			<argument index="2" name="info" type="SpellHealInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_clevel_up">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_cxp_gained">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_saura">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="data" type="AuraData" />
 			<description>
 			</description>
 		</method>
 		<method name="notification_scast">
-			<return type="void">
-			</return>
-			<argument index="0" name="what" type="int">
-			</argument>
-			<argument index="1" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
-		<method name="set_num_caster_aura_applys">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+		<method name="notification_scategory_cooldown_added">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="category_cooldown" type="int" />
+			<argument index="2" name="arg2" type="float" />
 			<description>
 			</description>
 		</method>
-		<method name="set_num_on_learn_auras">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+		<method name="notification_scategory_cooldown_removed">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="category_cooldown" type="int" />
+			<argument index="2" name="arg2" type="float" />
 			<description>
 			</description>
 		</method>
-		<method name="set_num_target_aura_applys">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+		<method name="notification_scooldown_added">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="cooldown" type="int" />
+			<argument index="2" name="arg2" type="float" />
 			<description>
 			</description>
 		</method>
-		<method name="set_on_learn_aura">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="aura" type="Aura">
-			</argument>
+		<method name="notification_scooldown_removed">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="cooldown" type="int" />
+			<argument index="2" name="arg2" type="float" />
 			<description>
 			</description>
 		</method>
-		<method name="set_target_aura_apply">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="aura" type="Aura">
-			</argument>
+		<method name="notification_sdamage">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="aura" type="AuraData" />
+			<argument index="2" name="info" type="SpellDamageInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_sdeath">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_sentity_resource_added">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="EntityResource" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_sentity_resource_removed">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="EntityResource" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_sgcd_finished">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_sgcd_started">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="gcd" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_sheal">
+			<return type="void" />
+			<argument index="0" name="what" type="int" />
+			<argument index="1" name="aura" type="AuraData" />
+			<argument index="2" name="info" type="SpellHealInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_slevel_up">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="notification_sxp_gained">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_learn_cast_spells_num_get" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="on_learn_cast_spells_num_set">
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="setup_aura_data">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<argument index="1" name="info" type="AuraApplyInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="son_cast_damage_received">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="son_cast_player_moved">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
 			<description>
 			</description>
 		</method>
 		<method name="son_physics_process">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
-			<argument index="1" name="delta" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
+			<argument index="1" name="delta" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="son_physics_process_aura">
+			<return type="void" />
+			<argument index="0" name="data" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="son_remove">
+			<return type="void" />
+			<argument index="0" name="aura" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="son_remove_dispell">
+			<return type="void" />
+			<argument index="0" name="aura" type="AuraData" />
+			<description>
+			</description>
+		</method>
+		<method name="son_remove_expired">
+			<return type="void" />
+			<argument index="0" name="aura" type="AuraData" />
 			<description>
 			</description>
 		</method>
 		<method name="son_spell_hit">
-			<return type="void">
-			</return>
-			<argument index="0" name="info" type="SpellCastInfo">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="info" type="SpellCastInfo" />
+			<description>
+			</description>
+		</method>
+		<method name="spell_cast_on_caster_get">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="spell_cast_on_caster_set">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="spell" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="spell_cast_on_learn_get">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="spell_cast_on_learn_set">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="spell" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="spell_cast_on_target_get">
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="spell_cast_on_target_set">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="spell" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="spells_cast_on_caster_num_get" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="spells_cast_on_caster_num_set">
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="spells_cast_on_target_num_get" qualifiers="const">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="spells_cast_on_target_num_set">
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
 			<description>
 			</description>
 		</method>
@@ -426,13 +1352,99 @@
 		</member>
 		<member name="aoe_targetType" type="int" setter="set_aoe_target_type" getter="get_aoe_target_type" enum="SpellAOETargetType" default="0">
 		</member>
+		<member name="aura_ability_scale_data_id" type="int" setter="aura_set_ability_scale_data_id" getter="aura_get_ability_scale_data_id" default="1">
+		</member>
+		<member name="aura_absorb_damage_type" type="int" setter="aura_absorb_damage_set_type" getter="aura_absorb_damage_get_type" default="0">
+		</member>
+		<member name="aura_absorb_enabled" type="bool" setter="aura_absorb_set_enabled" getter="aura_absorb_get_enabled" default="false">
+		</member>
+		<member name="aura_absorb_max" type="int" setter="aura_absorb_set_max" getter="aura_absorb_get_max" default="0">
+		</member>
+		<member name="aura_absorb_min" type="int" setter="aura_absorb_set_min" getter="aura_absorb_get_min" default="0">
+		</member>
+		<member name="aura_absorb_scaling_curve" type="Curve" setter="aura_absorb_set_scaling_curve" getter="aura_absorb_get_scaling_curve">
+		</member>
+		<member name="aura_damage_can_crit" type="bool" setter="aura_damage_set_can_crit" getter="aura_damage_get_can_crit" default="false">
+		</member>
+		<member name="aura_damage_enabled" type="bool" setter="aura_damage_set_enabled" getter="aura_damage_get_enabled" default="false">
+		</member>
+		<member name="aura_damage_max" type="int" setter="aura_damage_set_max" getter="aura_damage_get_max" default="0">
+		</member>
+		<member name="aura_damage_min" type="int" setter="aura_damage_set_min" getter="aura_damage_get_min" default="0">
+		</member>
+		<member name="aura_damage_scaling_curve" type="Curve" setter="aura_damage_set_scaling_curve" getter="aura_damage_get_scaling_curve">
+		</member>
+		<member name="aura_damage_type" type="int" setter="aura_damage_set_type" getter="aura_damage_get_type" default="0">
+		</member>
+		<member name="aura_debuff" type="bool" setter="aura_set_is_debuff" getter="aura_get_is_debuff" default="false">
+		</member>
+		<member name="aura_diminishing_return_category" type="int" setter="aura_diminishing_return_category_set" getter="aura_diminishing_return_category_get" default="0">
+		</member>
+		<member name="aura_diminishing_return_enabled" type="bool" setter="aura_diminishing_return_enabled_set" getter="aura_diminishing_return_enabled_get" default="false">
+		</member>
+		<member name="aura_dispell_aura_types" type="int" setter="aura_dispell_set_aura_types" getter="aura_dispell_get_aura_types" default="0">
+		</member>
+		<member name="aura_dispell_count_max" type="int" setter="aura_dispell_set_count_max" getter="aura_dispell_get_count_max" default="0">
+		</member>
+		<member name="aura_dispell_count_min" type="int" setter="aura_dispell_set_count_min" getter="aura_dispell_get_count_min" default="0">
+		</member>
+		<member name="aura_dispell_enabled" type="bool" setter="aura_dispell_set_enabled" getter="aura_dispell_get_enabled" default="false">
+		</member>
+		<member name="aura_group" type="AuraGroup" setter="aura_set_aura_group" getter="aura_get_aura_group">
+		</member>
+		<member name="aura_heal_can_crit" type="bool" setter="aura_heal_set_can_crit" getter="aura_heal_get_can_crit" default="false">
+		</member>
+		<member name="aura_heal_enabled" type="bool" setter="aura_heal_set_enabled" getter="aura_heal_get_enabled" default="false">
+		</member>
+		<member name="aura_heal_max" type="int" setter="aura_heal_set_max" getter="aura_heal_get_max" default="0">
+		</member>
+		<member name="aura_heal_min" type="int" setter="aura_heal_set_min" getter="aura_heal_get_min" default="0">
+		</member>
+		<member name="aura_heal_scaling_curve" type="Curve" setter="aura_heal_set_scaling_curve" getter="aura_heal_get_scaling_curve">
+		</member>
+		<member name="aura_hide" type="bool" setter="aura_set_hide" getter="aura_get_hide" default="false">
+		</member>
+		<member name="aura_permanent" type="bool" setter="aura_set_permanent" getter="aura_get_permanent" default="false">
+		</member>
+		<member name="aura_resource_cost" type="EntityResourceCostData" setter="aura_set_resource_cost" getter="aura_get_resource_cost">
+		</member>
+		<member name="aura_resource_give" type="EntityResourceCostData" setter="aura_set_resource_give" getter="aura_get_resource_give">
+		</member>
+		<member name="aura_scale_with_level" type="bool" setter="aura_set_scale_with_level" getter="aura_get_scale_with_level" default="false">
+		</member>
+		<member name="aura_stat_attribute_count" type="int" setter="aura_stat_attribute_set_count" getter="aura_stat_attribute_get_count" default="0">
+		</member>
+		<member name="aura_states_add" type="int" setter="aura_set_add_states" getter="aura_get_add_states" default="0">
+		</member>
+		<member name="aura_states_remove_effects" type="int" setter="aura_set_remove_effects_with_states" getter="aura_get_remove_effects_with_states" default="0">
+		</member>
+		<member name="aura_states_supress" type="int" setter="aura_set_supress_states" getter="aura_get_supress_states" default="0">
+		</member>
+		<member name="aura_talent_required_spell" type="Spell" setter="aura_set_talent_required_spell" getter="aura_get_talent_required_spell">
+		</member>
+		<member name="aura_talent_required_talent" type="Spell" setter="aura_set_talent_required_talent" getter="aura_get_talent_required_talent">
+		</member>
+		<member name="aura_teaches_spell" type="Spell" setter="aura_set_teaches_spell" getter="aura_get_teaches_spell">
+		</member>
+		<member name="aura_text_description" type="String" setter="aura_set_text_description" getter="aura_get_text_description" default="&quot;&quot;">
+		</member>
+		<member name="aura_text_translation_key" type="String" setter="aura_set_text_translation_key" getter="aura_get_text_translation_key" default="&quot;&quot;">
+		</member>
+		<member name="aura_tick" type="float" setter="aura_set_tick" getter="aura_get_tick" default="0.0">
+		</member>
+		<member name="aura_time" type="float" setter="aura_set_time" getter="aura_get_time" default="0.0">
+		</member>
+		<member name="aura_trigger_count" type="int" setter="aura_trigger_set_count" getter="aura_trigger_get_count" default="0">
+		</member>
+		<member name="aura_type" type="int" setter="aura_set_aura_type" getter="aura_get_aura_type" enum="SpellEnums.AuraType" default="0">
+		</member>
+		<member name="aura_visual_spell_effects" type="SpellEffectVisual" setter="aura_set_visual_spell_effects" getter="aura_get_visual_spell_effects">
+		</member>
 		<member name="cast_can_move_while_casting" type="bool" setter="set_can_move_while_casting" getter="get_can_move_while_casting" default="false">
 		</member>
 		<member name="cast_cast_time" type="float" setter="cast_time_set" getter="cast_time_get" default="0.0">
 		</member>
 		<member name="cast_enabled" type="bool" setter="cast_time_set_enabled" getter="cast_time_get_enabled" default="false">
-		</member>
-		<member name="caster_aura_applys" type="Array" setter="caster_set_aura_applys" getter="caster_get_aura_applys" default="[  ]">
 		</member>
 		<member name="cooldown_cooldown" type="float" setter="set_cooldown" getter="get_cooldown" default="0.0">
 		</member>
@@ -488,8 +1500,6 @@
 		</member>
 		<member name="needs_target" type="bool" setter="set_needs_target" getter="get_needs_target" default="false">
 		</member>
-		<member name="on_learn_auras" type="Array" setter="set_on_learn_auras" getter="get_on_learn_auras" default="[  ]">
-		</member>
 		<member name="projectile_scene" type="PackedScene" setter="projectile_set_scene" getter="projectile_get_scene">
 		</member>
 		<member name="projectile_speed" type="float" setter="projectile_set_speed" getter="projectile_get_speed" default="0.0">
@@ -518,7 +1528,11 @@
 		</member>
 		<member name="spell_type" type="int" setter="spell_type_set" getter="spell_type_get" default="0">
 		</member>
-		<member name="target_aura_applys" type="Array" setter="set_target_aura_applys" getter="get_target_aura_applys" default="[  ]">
+		<member name="spells_cast_on_caster" type="Array" setter="spells_cast_on_caster_set" getter="spells_cast_on_caster_get" default="[  ]">
+		</member>
+		<member name="spells_cast_on_learn" type="Array" setter="spells_cast_on_learn_set" getter="spells_cast_on_learn_get" default="[  ]">
+		</member>
+		<member name="spells_cast_on_target" type="Array" setter="spells_cast_on_target_set" getter="spells_cast_on_target_get" default="[  ]">
 		</member>
 		<member name="target_relation_type" type="int" setter="set_target_relation_type" getter="get_target_relation_type" enum="TargetRelationType" default="2">
 		</member>
@@ -567,6 +1581,10 @@
 		<constant name="SPELL_AOE_TARGET_TYPE_GOUND_TARGET_SELECTION" value="2" enum="SpellAOETargetType">
 		</constant>
 		<constant name="SPELL_AOE_TARGET_TYPE_RANDOM" value="3" enum="SpellAOETargetType">
+		</constant>
+		<constant name="MAX_AURA_STATS" value="5">
+		</constant>
+		<constant name="MAX_TRIGGER_DATA" value="5">
 		</constant>
 	</constants>
 </class>

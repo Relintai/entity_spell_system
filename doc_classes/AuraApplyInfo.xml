@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="AuraApplyInfo" inherits="Reference" version="3.2">
+<class name="AuraApplyInfo" inherits="Reference" version="3.5">
 	<brief_description>
 		Helper class, which is used to apply an [Aura] to an [Entity].
 	</brief_description>
@@ -10,7 +10,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="aura" type="Aura" setter="set_aura" getter="get_aura">
+		<member name="aura" type="Spell" setter="set_aura" getter="get_aura">
 		</member>
 		<member name="caster" type="Entity" setter="caster_set" getter="caster_get">
 		</member>

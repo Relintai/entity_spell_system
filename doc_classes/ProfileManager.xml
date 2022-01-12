@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ProfileManager" inherits="Object" version="3.2">
+<class name="ProfileManager" inherits="Object" version="3.5">
 	<brief_description>
 		Stores, saves, loads per class profile data.
 		Should be added as an autoload, or at least is should be in the scene before spawning entities.
@@ -10,104 +10,89 @@
 	</tutorials>
 	<methods>
 		<method name="_load" qualifiers="virtual">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="_save" qualifiers="virtual">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="adds_player_profile">
-			<return type="void">
-			</return>
-			<argument index="0" name="profile" type="PlayerProfile">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="profile" type="PlayerProfile" />
 			<description>
 			</description>
 		</method>
 		<method name="clears_player_profiles">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="from_dict">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="getc_player_profile">
-			<return type="PlayerProfile">
-			</return>
+			<return type="PlayerProfile" />
 			<description>
 			</description>
 		</method>
 		<method name="gets_player_profile_count" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="gets_player_profile_index">
-			<return type="PlayerProfile">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="PlayerProfile" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="load">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="load_defaults">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="load_profile">
-			<return type="void">
-			</return>
-			<argument index="0" name="name" type="String">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="on_keybinds_changed">
+			<return type="void" />
+			<argument index="0" name="class_path" type="String" />
 			<description>
 			</description>
 		</method>
 		<method name="removes_player_profile">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="save">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="save_profile">
-			<return type="void">
-			</return>
-			<argument index="0" name="name" type="String">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="name" type="String" />
 			<description>
 			</description>
 		</method>
 		<method name="to_dict" qualifiers="const">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
@@ -122,6 +107,10 @@
 	</members>
 	<signals>
 		<signal name="changed">
+			<description>
+			</description>
+		</signal>
+		<signal name="keybinds_changed">
 			<description>
 			</description>
 		</signal>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SpellCastInfo" inherits="Resource" version="3.2">
+<class name="SpellCastInfo" inherits="Resource" version="3.5">
 	<brief_description>
 		Contains spell cast related information, for easy manipulation with auras, spell callbacks, etc.
 	</brief_description>
@@ -9,24 +9,19 @@
 	</tutorials>
 	<methods>
 		<method name="from_dict">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="to_dict">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="update_cast_time">
-			<return type="bool">
-			</return>
-			<argument index="0" name="delta" type="float">
-			</argument>
+			<return type="bool" />
+			<argument index="0" name="delta" type="float" />
 			<description>
 			</description>
 		</method>

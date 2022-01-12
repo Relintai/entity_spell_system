@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ItemTemplate" inherits="Resource" version="3.2">
+<class name="ItemTemplate" inherits="Resource" version="3.5">
 	<brief_description>
 		Contains item information.
 	</brief_description>
@@ -9,296 +9,221 @@
 	</tutorials>
 	<methods>
 		<method name="_create_item_instance" qualifiers="virtual">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="_get_description" qualifiers="virtual">
-			<return type="String">
-			</return>
+			<return type="String" />
 			<description>
 			</description>
 		</method>
 		<method name="create_item_instance">
-			<return type="ItemInstance">
-			</return>
+			<return type="ItemInstance" />
 			<description>
 			</description>
 		</method>
 		<method name="get_animator_weapon_type">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_aura">
-			<return type="Aura">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_description">
-			<return type="String">
-			</return>
+			<return type="String" />
 			<description>
 			</description>
 		</method>
 		<method name="get_grants_spell">
-			<return type="Spell">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_num_auras" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_num_grants_spells" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_num_required_skills" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_num_teaches_spells" qualifiers="const">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_required_skill">
-			<return type="Aura">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_teaches_spell">
-			<return type="Spell">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_aura">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="aura" type="Aura">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="aura" type="Spell" />
 			<description>
 			</description>
 		</method>
 		<method name="set_grants_spell">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="spell" type="Spell">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="spell" type="Spell" />
 			<description>
 			</description>
 		</method>
 		<method name="set_num_auras">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_num_grants_spells">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_num_teaches_spells">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_required_skill">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="aura" type="Aura">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="aura" type="Spell" />
 			<description>
 			</description>
 		</method>
 		<method name="set_teaches_spell">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="spell" type="Spell">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="spell" type="Spell" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_get_max_base_mod" qualifiers="const">
-			<return type="float">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_get_max_bonus_mod" qualifiers="const">
-			<return type="float">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_get_max_percent_mod" qualifiers="const">
-			<return type="float">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_get_min_base_mod" qualifiers="const">
-			<return type="float">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_get_min_bonus_mod" qualifiers="const">
-			<return type="float">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_get_min_percent_mod" qualifiers="const">
-			<return type="float">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_get_scaling_factor" qualifiers="const">
-			<return type="float">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_get_stat_id" qualifiers="const">
-			<return type="int">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_set_max_base_mod">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_set_max_bonus_mod">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_set_max_percent_mod">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_set_min_base_mod">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_set_min_bonus_mod">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_set_min_percent_mod">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_set_scaling_factor">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="stat_modifier_set_stat_id">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="int" />
 			<description>
 			</description>
 		</method>

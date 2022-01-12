@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="EntityClassData" inherits="Resource" version="3.2">
+<class name="EntityClassData" inherits="Resource" version="3.5">
 	<brief_description>
 		Contains all of information for an [Entity]'s class. (Ingame class)
 	</brief_description>
@@ -9,214 +9,180 @@
 	</tutorials>
 	<methods>
 		<method name="_get_ai_instance" qualifiers="virtual">
-			<return type="EntityAI">
-			</return>
+			<return type="EntityAI" />
 			<description>
 			</description>
 		</method>
 		<method name="_setup_resources" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="entity" type="Entity">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="entity" type="Entity" />
 			<description>
 			</description>
 		</method>
 		<method name="get_ai">
-			<return type="EntityAI">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="EntityAI" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_ai_instance">
-			<return type="EntityAI">
-			</return>
+			<return type="EntityAI" />
 			<description>
 			</description>
 		</method>
 		<method name="get_aura">
-			<return type="Aura">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_craft_recipe">
+			<return type="CraftRecipe" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_entity_resource" qualifiers="const">
-			<return type="EntityResource">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="EntityResource" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_num_ais">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_num_auras">
-			<return type="int">
-			</return>
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_num_craft_recipes" qualifiers="const">
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_num_entity_resources">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_num_specs">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_num_spells">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_num_start_spells">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_spec" qualifiers="const">
-			<return type="CharacterSpec">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="CharacterSpec" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_spell">
-			<return type="Spell">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_start_spell">
-			<return type="Spell">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Spell" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_ai">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="action" type="EntityAI">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="action" type="EntityAI" />
 			<description>
 			</description>
 		</method>
 		<method name="set_aura">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="aura" type="Aura">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="aura" type="Spell" />
+			<description>
+			</description>
+		</method>
+		<method name="set_craft_recipe">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="recipe" type="CraftRecipe" />
 			<description>
 			</description>
 		</method>
 		<method name="set_entity_resource">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="entity_resource" type="EntityResource">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="entity_resource" type="EntityResource" />
 			<description>
 			</description>
 		</method>
 		<method name="set_num_ais">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_num_auras">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_num_entity_resources">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_num_specs">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_num_spells">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_num_start_spells">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_spec">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="spec" type="CharacterSpec">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="spec" type="CharacterSpec" />
 			<description>
 			</description>
 		</method>
 		<method name="set_spell">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="spell" type="Spell">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="spell" type="Spell" />
 			<description>
 			</description>
 		</method>
 		<method name="set_start_spell">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="spell" type="Spell">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="spell" type="Spell" />
 			<description>
 			</description>
 		</method>
@@ -226,11 +192,15 @@
 		</member>
 		<member name="auras" type="Array" setter="set_auras" getter="get_auras" default="[  ]">
 		</member>
+		<member name="craft_recipes" type="Array" setter="set_craft_recipes" getter="get_craft_recipes" default="[  ]">
+		</member>
 		<member name="entity_resources" type="Array" setter="set_entity_resources" getter="get_entity_resources" default="[  ]">
 		</member>
 		<member name="icon" type="Texture" setter="set_icon" getter="get_icon">
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
+		</member>
+		<member name="item_container_data" type="ItemContainerData" setter="set_item_container_data" getter="get_item_container_data">
 		</member>
 		<member name="playstyle_type" type="int" setter="set_playstyle_type" getter="get_playstyle_type" enum="EntityEnums.EntityClassPlaystyleType" default="0">
 		</member>
@@ -238,13 +208,19 @@
 		</member>
 		<member name="spell_points_per_level" type="int" setter="set_spell_points_per_level" getter="get_spell_points_per_level" default="1">
 		</member>
+		<member name="spell_train_data" type="VendorItemData" setter="set_spell_train_data" getter="get_spell_train_data">
+		</member>
 		<member name="spells" type="Array" setter="set_spells" getter="get_spells" default="[  ]">
 		</member>
 		<member name="start_spells" type="Array" setter="set_start_spells" getter="get_start_spells" default="[  ]">
 		</member>
+		<member name="stat_data" type="StatData" setter="set_stat_data" getter="get_stat_data">
+		</member>
 		<member name="text_description" type="String" setter="set_text_description" getter="get_text_description" default="&quot;&quot;">
 		</member>
 		<member name="text_name" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
+		</member>
+		<member name="vendor_item_data" type="VendorItemData" setter="set_vendor_item_data" getter="get_vendor_item_data">
 		</member>
 	</members>
 	<constants>

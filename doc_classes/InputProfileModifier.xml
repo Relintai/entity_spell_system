@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="InputProfileModifier" inherits="Reference" version="3.2">
+<class name="InputProfileModifier" inherits="Reference" version="3.5">
 	<brief_description>
 		Stores data for bindable modifiers. Not yet implemented.
 	</brief_description>
@@ -9,94 +9,72 @@
 	</tutorials>
 	<methods>
 		<method name="add_entry">
-			<return type="void">
-			</return>
-			<argument index="0" name="entry" type="InputProfileModifierEntry">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="entry" type="InputProfileModifierEntry" />
 			<description>
 			</description>
 		</method>
 		<method name="add_modifier">
-			<return type="void">
-			</return>
-			<argument index="0" name="modifier" type="String">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="modifier" type="String" />
 			<description>
 			</description>
 		</method>
 		<method name="clear_entries">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="clear_modifiers">
-			<return type="void">
-			</return>
+			<return type="void" />
 			<description>
 			</description>
 		</method>
 		<method name="get_entry">
-			<return type="InputProfileModifierEntry">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="InputProfileModifierEntry" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_entry_count">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_modifier">
-			<return type="String">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_modifier_count">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_entry">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_modifier">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_entry">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="InputProfileModifierEntry">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="InputProfileModifierEntry" />
 			<description>
 			</description>
 		</method>
 		<method name="set_modifier">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="String">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="String" />
 			<description>
 			</description>
 		</method>

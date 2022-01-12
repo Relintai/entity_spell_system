@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ClassProfile" inherits="Reference" version="3.2">
+<class name="ClassProfile" inherits="Reference" version="3.5">
 	<brief_description>
 		Contains all profile information for an [Entity]'s class. Related to [ProfileManager].
 	</brief_description>
@@ -9,62 +9,48 @@
 	</tutorials>
 	<methods>
 		<method name="from_dict">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
-			<description>
-			</description>
-		</method>
-		<method name="get_action_bar_profile">
-			<return type="ActionBarProfile">
-			</return>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="get_custom_data" qualifiers="const">
-			<return type="Variant">
-			</return>
-			<argument index="0" name="name" type="String">
-			</argument>
+			<return type="Variant" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_default_action_bar_profile">
+			<return type="ActionBarProfile" />
 			<description>
 			</description>
 		</method>
 		<method name="get_input_profile">
-			<return type="InputProfile">
-			</return>
+			<return type="InputProfile" />
 			<description>
 			</description>
 		</method>
 		<method name="has_custom_data" qualifiers="const">
-			<return type="bool">
-			</return>
-			<argument index="0" name="name" type="String">
-			</argument>
+			<return type="bool" />
+			<argument index="0" name="name" type="String" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_custom_data">
-			<return type="void">
-			</return>
-			<argument index="0" name="name" type="String">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="name" type="String" />
 			<description>
 			</description>
 		</method>
 		<method name="set_custom_data">
-			<return type="void">
-			</return>
-			<argument index="0" name="name" type="String">
-			</argument>
-			<argument index="1" name="value" type="Variant">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="name" type="String" />
+			<argument index="1" name="value" type="Variant" />
 			<description>
 			</description>
 		</method>
 		<method name="to_dict" qualifiers="const">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>

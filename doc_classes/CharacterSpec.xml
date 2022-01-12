@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="CharacterSpec" inherits="Resource" version="3.2">
+<class name="CharacterSpec" inherits="Resource" version="3.5">
 	<brief_description>
 		Contains data for a character's specialization.
 	</brief_description>
@@ -10,90 +10,64 @@
 	</tutorials>
 	<methods>
 		<method name="get_num_columns" qualifiers="const">
-			<return type="int">
-			</return>
-			<argument index="0" name="row" type="int">
-			</argument>
+			<return type="int" />
+			<argument index="0" name="row" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_num_ranks" qualifiers="const">
-			<return type="int">
-			</return>
-			<argument index="0" name="row" type="int">
-			</argument>
-			<argument index="1" name="culomn" type="int">
-			</argument>
+			<return type="int" />
+			<argument index="0" name="row" type="int" />
+			<argument index="1" name="culomn" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_talent">
-			<return type="Aura">
-			</return>
-			<argument index="0" name="row" type="int">
-			</argument>
-			<argument index="1" name="culomn" type="int">
-			</argument>
-			<argument index="2" name="rank" type="int">
-			</argument>
+			<return type="Spell" />
+			<argument index="0" name="row" type="int" />
+			<argument index="1" name="culomn" type="int" />
+			<argument index="2" name="rank" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_talent_with_id">
-			<return type="Aura">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
+			<return type="Spell" />
+			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_talents">
-			<return type="Array">
-			</return>
+			<return type="Array" />
 			<description>
 			</description>
 		</method>
 		<method name="has_talent_with_id">
-			<return type="bool">
-			</return>
-			<argument index="0" name="id" type="int">
-			</argument>
+			<return type="bool" />
+			<argument index="0" name="id" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_num_columns">
-			<return type="void">
-			</return>
-			<argument index="0" name="row" type="int">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="row" type="int" />
+			<argument index="1" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_num_ranks">
-			<return type="void">
-			</return>
-			<argument index="0" name="row" type="int">
-			</argument>
-			<argument index="1" name="culomn" type="int">
-			</argument>
-			<argument index="2" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="row" type="int" />
+			<argument index="1" name="culomn" type="int" />
+			<argument index="2" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_talent">
-			<return type="void">
-			</return>
-			<argument index="0" name="row" type="int">
-			</argument>
-			<argument index="1" name="culomn" type="int">
-			</argument>
-			<argument index="2" name="rank" type="int">
-			</argument>
-			<argument index="3" name="arg3" type="Aura">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="row" type="int" />
+			<argument index="1" name="culomn" type="int" />
+			<argument index="2" name="rank" type="int" />
+			<argument index="3" name="arg3" type="Spell" />
 			<description>
 			</description>
 		</method>

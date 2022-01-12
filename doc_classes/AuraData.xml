@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="AuraData" inherits="Resource" version="3.2">
+<class name="AuraData" inherits="Resource" version="3.5">
 	<brief_description>
 		Stores an [Aura]'s runtime data on an [Entity].
 	</brief_description>
@@ -9,80 +9,64 @@
 	</tutorials>
 	<methods>
 		<method name="_from_dict" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="_from_send_array" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="arr" type="Array">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="arr" type="Array" />
 			<description>
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="_to_send_array" qualifiers="virtual">
-			<return type="Array">
-			</return>
+			<return type="Array" />
 			<description>
 			</description>
 		</method>
 		<method name="from_dict">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="from_send_array">
-			<return type="void">
-			</return>
-			<argument index="0" name="arr" type="Array">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="arr" type="Array" />
 			<description>
 			</description>
 		</method>
 		<method name="refresh">
-			<return type="void">
-			</return>
-			<argument index="0" name="remaining" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="remaining" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="set_remaining_absorb">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="to_dict">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="to_send_array">
-			<return type="Array">
-			</return>
+			<return type="Array" />
 			<description>
 			</description>
 		</method>
 	</methods>
 	<members>
-		<member name="aura" type="Aura" setter="set_aura" getter="get_aura">
+		<member name="aura" type="Spell" setter="set_aura" getter="get_aura">
 		</member>
 		<member name="aura_id" type="int" setter="set_aura_id" getter="get_aura_id" default="0">
 		</member>

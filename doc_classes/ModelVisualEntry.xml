@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="ModelVisualEntry" inherits="Resource" version="3.2">
+<class name="ModelVisualEntry" inherits="Resource" version="3.5">
 	<brief_description>
 		One Entry for [ModelVisual].
 	</brief_description>
@@ -9,92 +9,67 @@
 	</tutorials>
 	<methods>
 		<method name="get_attachment">
-			<return type="PackedScene">
-			</return>
-			<argument index="0" name="arg0" type="int">
-			</argument>
+			<return type="PackedScene" />
+			<argument index="0" name="arg0" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_color" qualifiers="const">
-			<return type="Color">
-			</return>
-			<argument index="0" name="arg0" type="int">
-			</argument>
+			<return type="Color" />
+			<argument index="0" name="arg0" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_mesh">
-			<return type="MeshDataResource">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="MeshDataResource" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_texture">
-			<return type="Texture">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Texture" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_transform" qualifiers="const">
-			<return type="Transform">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="Transform" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_attachment">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<argument index="1" name="arg1" type="PackedScene">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
+			<argument index="1" name="arg1" type="PackedScene" />
 			<description>
 			</description>
 		</method>
 		<method name="set_color">
-			<return type="void">
-			</return>
-			<argument index="0" name="value" type="int">
-			</argument>
-			<argument index="1" name="arg1" type="Color">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="value" type="int" />
+			<argument index="1" name="arg1" type="Color" />
 			<description>
 			</description>
 		</method>
 		<method name="set_mesh">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="MeshDataResource">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="MeshDataResource" />
 			<description>
 			</description>
 		</method>
 		<method name="set_texture">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="Texture">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="Texture" />
 			<description>
 			</description>
 		</method>
 		<method name="set_transform">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="Transform">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="Transform" />
 			<description>
 			</description>
 		</method>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="StatData" inherits="Resource" version="3.2">
+<class name="StatData" inherits="Resource" version="3.5">
 	<brief_description>
 		Contains a [Stat]'s data.
 	</brief_description>
@@ -9,80 +9,59 @@
 	</tutorials>
 	<methods>
 		<method name="get_base">
-			<return type="float">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_mod_stat_id">
-			<return type="int">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_mod_stat_multiplier">
-			<return type="float">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_target_stat_id">
-			<return type="int">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="has_mod_stats">
-			<return type="bool">
-			</return>
+			<return type="bool" />
 			<description>
 			</description>
 		</method>
 		<method name="set_base">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="entry" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="entry" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="set_mod_stat_id">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="set_mod_stat_multiplier">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="float">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
 			<description>
 			</description>
 		</method>
 		<method name="set_target_stat_id">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="value" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="int" />
 			<description>
 			</description>
 		</method>

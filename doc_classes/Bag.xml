@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="Bag" inherits="Resource" version="3.2">
+<class name="Bag" inherits="Resource" version="3.5">
 	<brief_description>
 		Stores [Entity] inventory.
 	</brief_description>
@@ -9,254 +9,190 @@
 	</tutorials>
 	<methods>
 		<method name="_add_item" qualifiers="virtual">
-			<return type="bool">
-			</return>
-			<argument index="0" name="item" type="ItemInstance">
-			</argument>
+			<return type="bool" />
+			<argument index="0" name="item" type="ItemInstance" />
 			<description>
 			</description>
 		</method>
 		<method name="_add_item_at" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="signal" type="bool">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="item" type="ItemInstance" />
+			<argument index="2" name="signal" type="bool" />
 			<description>
 			</description>
 		</method>
 		<method name="_can_add_item" qualifiers="virtual">
-			<return type="bool">
-			</return>
-			<argument index="0" name="item" type="ItemInstance">
-			</argument>
+			<return type="bool" />
+			<argument index="0" name="item" type="ItemInstance" />
 			<description>
 			</description>
 		</method>
 		<method name="_change_item_equip" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="slot_id" type="int">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="slot_id" type="int" />
+			<argument index="1" name="item" type="ItemInstance" />
 			<description>
 			</description>
 		</method>
 		<method name="_from_dict" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="_get_item" qualifiers="virtual">
-			<return type="ItemInstance">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="ItemInstance" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="_get_item_count" qualifiers="virtual">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="_get_size" qualifiers="virtual">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="_get_valid_item_count" qualifiers="virtual">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="_has_item" qualifiers="virtual">
-			<return type="bool">
-			</return>
-			<argument index="0" name="item" type="ItemTemplate">
-			</argument>
-			<argument index="1" name="count" type="int">
-			</argument>
+			<return type="bool" />
+			<argument index="0" name="item" type="ItemTemplate" />
+			<argument index="1" name="count" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="_is_full" qualifiers="virtual">
-			<return type="bool">
-			</return>
+			<return type="bool" />
 			<description>
 			</description>
 		</method>
 		<method name="_is_overburdened" qualifiers="virtual">
-			<return type="bool">
-			</return>
+			<return type="bool" />
 			<description>
 			</description>
 		</method>
 		<method name="_remove_item" qualifiers="virtual">
-			<return type="ItemInstance">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="ItemInstance" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="_remove_items" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="item" type="ItemTemplate">
-			</argument>
-			<argument index="1" name="count" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="item" type="ItemTemplate" />
+			<argument index="1" name="count" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="_set_size" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="size" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="size" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="_swap_items" qualifiers="virtual">
-			<return type="void">
-			</return>
-			<argument index="0" name="item1_index" type="int">
-			</argument>
-			<argument index="1" name="item2_index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="item1_index" type="int" />
+			<argument index="1" name="item2_index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="_to_dict" qualifiers="virtual">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="add_item">
-			<return type="bool">
-			</return>
-			<argument index="0" name="item" type="ItemInstance">
-			</argument>
+			<return type="bool" />
+			<argument index="0" name="item" type="ItemInstance" />
 			<description>
 			</description>
 		</method>
 		<method name="add_item_at">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="signal" type="bool" default="true">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="item" type="ItemInstance" />
+			<argument index="2" name="signal" type="bool" default="true" />
 			<description>
 			</description>
 		</method>
 		<method name="can_add_item">
-			<return type="bool">
-			</return>
-			<argument index="0" name="item" type="ItemInstance">
-			</argument>
+			<return type="bool" />
+			<argument index="0" name="item" type="ItemInstance" />
 			<description>
 			</description>
 		</method>
 		<method name="change_item_equip">
-			<return type="void">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="item" type="ItemInstance" />
 			<description>
 			</description>
 		</method>
 		<method name="from_dict">
-			<return type="void">
-			</return>
-			<argument index="0" name="dict" type="Dictionary">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="dict" type="Dictionary" />
 			<description>
 			</description>
 		</method>
 		<method name="get_item">
-			<return type="ItemInstance">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="ItemInstance" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="get_item_count">
-			<return type="int">
-			</return>
+			<return type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="has_item">
-			<return type="bool">
-			</return>
-			<argument index="0" name="item" type="ItemTemplate">
-			</argument>
-			<argument index="1" name="count" type="int">
-			</argument>
+			<return type="bool" />
+			<argument index="0" name="item" type="ItemTemplate" />
+			<argument index="1" name="count" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="is_full">
-			<return type="bool">
-			</return>
+			<return type="bool" />
 			<description>
 			</description>
 		</method>
 		<method name="is_overburdened">
-			<return type="bool">
-			</return>
+			<return type="bool" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_item">
-			<return type="ItemInstance">
-			</return>
-			<argument index="0" name="index" type="int">
-			</argument>
+			<return type="ItemInstance" />
+			<argument index="0" name="index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="remove_items">
-			<return type="void">
-			</return>
-			<argument index="0" name="item" type="ItemTemplate">
-			</argument>
-			<argument index="1" name="count" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="item" type="ItemTemplate" />
+			<argument index="1" name="count" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="swap_items">
-			<return type="void">
-			</return>
-			<argument index="0" name="item1_index" type="int">
-			</argument>
-			<argument index="1" name="item2_index" type="int">
-			</argument>
+			<return type="void" />
+			<argument index="0" name="item1_index" type="int" />
+			<argument index="1" name="item2_index" type="int" />
 			<description>
 			</description>
 		</method>
 		<method name="to_dict">
-			<return type="Dictionary">
-			</return>
+			<return type="Dictionary" />
 			<description>
 			</description>
 		</method>
@@ -269,70 +205,52 @@
 	</members>
 	<signals>
 		<signal name="change_item_equip">
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="slot_id" type="int">
-			</argument>
-			<argument index="2" name="item" type="ItemInstance">
-			</argument>
+			<argument index="0" name="bag" type="Bag" />
+			<argument index="1" name="slot_id" type="int" />
+			<argument index="2" name="item" type="ItemInstance" />
 			<description>
 			</description>
 		</signal>
 		<signal name="item_added">
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="slot_id" type="int">
-			</argument>
+			<argument index="0" name="bag" type="Bag" />
+			<argument index="1" name="item" type="ItemInstance" />
+			<argument index="2" name="slot_id" type="int" />
 			<description>
 			</description>
 		</signal>
 		<signal name="item_count_changed">
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="slot_id" type="int">
-			</argument>
+			<argument index="0" name="bag" type="Bag" />
+			<argument index="1" name="item" type="ItemInstance" />
+			<argument index="2" name="slot_id" type="int" />
 			<description>
 			</description>
 		</signal>
 		<signal name="item_removed">
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="item" type="ItemInstance">
-			</argument>
-			<argument index="2" name="slot_id" type="int">
-			</argument>
+			<argument index="0" name="bag" type="Bag" />
+			<argument index="1" name="item" type="ItemInstance" />
+			<argument index="2" name="slot_id" type="int" />
 			<description>
 			</description>
 		</signal>
 		<signal name="item_swapped">
-			<argument index="0" name="bag" type="Bag">
-			</argument>
-			<argument index="1" name="slot_id_1" type="int">
-			</argument>
-			<argument index="2" name="slot_id_2" type="int">
-			</argument>
+			<argument index="0" name="bag" type="Bag" />
+			<argument index="1" name="slot_id_1" type="int" />
+			<argument index="2" name="slot_id_2" type="int" />
 			<description>
 			</description>
 		</signal>
 		<signal name="overburden_removed">
-			<argument index="0" name="bag" type="Bag">
-			</argument>
+			<argument index="0" name="bag" type="Bag" />
 			<description>
 			</description>
 		</signal>
 		<signal name="overburdened">
-			<argument index="0" name="bag" type="Bag">
-			</argument>
+			<argument index="0" name="bag" type="Bag" />
 			<description>
 			</description>
 		</signal>
 		<signal name="size_changed">
-			<argument index="0" name="bag" type="Bag">
-			</argument>
+			<argument index="0" name="bag" type="Bag" />
 			<description>
 			</description>
 		</signal>

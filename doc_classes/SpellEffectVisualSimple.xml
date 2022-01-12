@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SpellEffectVisualSimple" inherits="SpellEffectVisual" version="3.2">
+<class name="SpellEffectVisualSimple" inherits="SpellEffectVisual" version="3.5">
 	<brief_description>
 		Simple implementation od [SpellEfectVisual].
 	</brief_description>
@@ -9,26 +9,22 @@
 	</tutorials>
 	<methods>
 		<method name="has_aura_effect_visual">
-			<return type="bool">
-			</return>
+			<return type="bool" />
 			<description>
 			</description>
 		</method>
 		<method name="has_spell_cast_effect">
-			<return type="bool">
-			</return>
+			<return type="bool" />
 			<description>
 			</description>
 		</method>
 		<method name="has_spell_effect_visual">
-			<return type="bool">
-			</return>
+			<return type="bool" />
 			<description>
 			</description>
 		</method>
 		<method name="has_spell_spell_cast_finish_effect">
-			<return type="bool">
-			</return>
+			<return type="bool" />
 			<description>
 			</description>
 		</method>
@@ -36,13 +32,13 @@
 	<members>
 		<member name="aura_effect_visual" type="PackedScene" setter="set_aura_effect_visual" getter="get_aura_effect_visual">
 		</member>
-		<member name="aura_effect_visual_point" type="int" setter="set_aura_effect_visual_point" getter="get_aura_effect_visual_point" enum="EntityEnums.CommonCharacterSkeletonPoints" default="78729568">
+		<member name="aura_effect_visual_point" type="int" setter="set_aura_effect_visual_point" getter="get_aura_effect_visual_point" enum="EntityEnums.CommonCharacterSkeletonPoints" default="0">
 		</member>
 		<member name="effect_spell_cast_effect_id" type="PackedScene" setter="set_spell_cast_effect" getter="get_spell_cast_effect">
 		</member>
 		<member name="effect_spell_cast_finish_effect" type="PackedScene" setter="set_spell_cast_finish_effect" getter="get_spell_cast_finish_effect">
 		</member>
-		<member name="spell_cast_finish_effect_point" type="int" setter="set_spell_cast_finish_effect_point" getter="get_spell_cast_finish_effect_point" enum="EntityEnums.CommonCharacterSkeletonPoints" default="78729568">
+		<member name="spell_cast_finish_effect_point" type="int" setter="set_spell_cast_finish_effect_point" getter="get_spell_cast_finish_effect_point" enum="EntityEnums.CommonCharacterSkeletonPoints" default="0">
 		</member>
 		<member name="spell_effect_visual" type="PackedScene" setter="set_spell_effect_visual" getter="get_spell_effect_visual">
 		</member>

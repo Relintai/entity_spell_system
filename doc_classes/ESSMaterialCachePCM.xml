@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ESSMaterialCachePCM" inherits="ESSMaterialCache" version="3.5">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="background_color" type="Color" setter="set_background_color" getter="get_background_color" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="keep_original_atlases" type="bool" setter="set_keep_original_atlases" getter="get_keep_original_atlases" default="false">
+		</member>
+		<member name="margin" type="int" setter="set_margin" getter="get_margin" default="0">
+		</member>
+		<member name="max_atlas_size" type="int" setter="set_max_atlas_size" getter="get_max_atlas_size" default="1024">
+		</member>
+		<member name="texture_flags" type="int" setter="set_texture_flags" getter="get_texture_flags" default="5">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>
