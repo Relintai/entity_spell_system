@@ -28,9 +28,9 @@ SOFTWARE.
 #include "../items/craft_recipe.h"
 
 #include "../../entities/auras/aura_data.h"
-#include "../auras/aura_group.h"
-#include "../../infos/aura_infos.h"
 #include "../../entities/data/entity_data.h"
+#include "../../infos/aura_infos.h"
+#include "../auras/aura_group.h"
 
 #include "../../singletons/ess.h"
 
@@ -536,6 +536,13 @@ void Spell::set_training_required_skill_level(const int value) {
 }
 
 // Aura
+
+bool Spell::aura_get_permanent() const {
+	return _aura_permanent;
+}
+void Spell::aura_set_permanent(const bool value) {
+	_aura_permanent = value;
+}
 
 float Spell::aura_get_time() const {
 	return _aura_time;
@@ -1711,6 +1718,7 @@ Spell::Spell() {
 	_projectile_use_speed = false;
 	_projectile_speed = 0;
 
+	_aura_permanent = false;
 	_aura_ability_scale_data_id = 1;
 	_aura_time = 0;
 	_aura_tick = 0;
@@ -2864,6 +2872,10 @@ void Spell::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "training_required_skill_level"), "set_training_required_skill_level", "get_training_required_skill_level");
 
 	ADD_GROUP("Aura", "aura");
+	ClassDB::bind_method(D_METHOD("aura_get_permanent"), &Spell::aura_get_permanent);
+	ClassDB::bind_method(D_METHOD("aura_set_permanent", "value"), &Spell::aura_set_permanent);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "aura_permanent"), "aura_set_permanent", "aura_get_permanent");
+
 	ClassDB::bind_method(D_METHOD("aura_get_time"), &Spell::aura_get_time);
 	ClassDB::bind_method(D_METHOD("aura_set_time", "value"), &Spell::aura_set_time);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "aura_time"), "aura_set_time", "aura_get_time");
@@ -3110,6 +3122,7 @@ void Spell::_bind_methods() {
 		ADD_PROPERTYI(PropertyInfo(Variant::REAL, "aura_stat_attribute_" + itos(i) + "/percent_mod", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "aura_stat_attribute_set_percent_mod", "aura_stat_attribute_get_percent_mod", i);
 	}
 
+	ClassDB::bind_method(D_METHOD("is_aura"), &Spell::is_aura);
 	ClassDB::bind_method(D_METHOD("aura_is_talent"), &Spell::aura_is_talent);
 
 	BIND_ENUM_CONSTANT(TARGET_SELF);

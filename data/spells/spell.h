@@ -298,6 +298,10 @@ public:
 	int get_training_required_skill_level() const;
 	void set_training_required_skill_level(const int value);
 
+	//Auras
+	bool aura_get_permanent() const;
+	void aura_set_permanent(const bool value);
+
 	float aura_get_time() const;
 	void aura_set_time(const float value);
 
@@ -590,6 +594,7 @@ public:
 	void aura_calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
 	void handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info);
 
+	_FORCE_INLINE_ bool is_aura() const { return _aura_permanent || (_aura_time > CMP_EPSILON); }
 	_FORCE_INLINE_ bool aura_is_talent() const { return _aura_type == SpellEnums::AURA_TYPE_TALENT; }
 
 	String get_name_translated() const;
@@ -764,7 +769,7 @@ private:
 	int _training_required_skill_level;
 
 	//Aura
-
+	bool _aura_permanent;
 	float _aura_time;
 	float _aura_tick;
 	Ref<AuraGroup> _aura_group;
