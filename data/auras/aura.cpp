@@ -1584,7 +1584,7 @@ void Aura::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("aura_damage_get_min"), &Aura::aura_damage_get_min);
 	ClassDB::bind_method(D_METHOD("aura_damage_set_min", "value"), &Aura::aura_damage_set_min);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "aura_damage_min"), "damage_set_min", "damage_get_min");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "aura_damage_min"), "aura_damage_set_min", "aura_damage_get_min");
 
 	ClassDB::bind_method(D_METHOD("aura_damage_get_max"), &Aura::aura_damage_get_max);
 	ClassDB::bind_method(D_METHOD("aura_damage_set_max", "value"), &Aura::aura_damage_set_max);
