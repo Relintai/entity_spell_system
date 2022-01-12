@@ -70,9 +70,6 @@ public:
 	Ref<Texture> get_icon();
 	void set_icon(const Ref<Texture> &value);
 
-	Ref<SpellEffectVisual> get_visual_spell_effects();
-	void set_visual_spell_effects(const Ref<SpellEffectVisual> &value);
-
 	float aura_get_time() const;
 	void aura_set_time(const float value);
 
@@ -99,6 +96,9 @@ public:
 
 	bool aura_get_hide() const;
 	void aura_set_hide(const bool value);
+
+	Ref<SpellEffectVisual> aura_get_visual_spell_effects();
+	void aura_set_visual_spell_effects(const Ref<SpellEffectVisual> &value);
 
 	int aura_get_ability_scale_data_id() const;
 	void aura_set_ability_scale_data_id(const int value);
@@ -420,7 +420,7 @@ private:
 
 	bool _aura_scale_with_level;
 
-	Ref<SpellEffectVisual> _visual_spell_effects;
+	Ref<SpellEffectVisual> _aura_visual_spell_effects;
 
 	bool _aura_damage_enabled;
 	int _aura_damage_type;

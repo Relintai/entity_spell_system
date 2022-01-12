@@ -48,13 +48,6 @@ void Aura::set_rank(const int value) {
 	_rank = value;
 }
 
-Ref<SpellEffectVisual> Aura::get_visual_spell_effects() {
-	return _visual_spell_effects;
-}
-void Aura::set_visual_spell_effects(const Ref<SpellEffectVisual> &value) {
-	_visual_spell_effects = value;
-}
-
 float Aura::aura_get_time() const {
 	return _aura_time;
 }
@@ -116,6 +109,13 @@ bool Aura::aura_get_hide() const {
 }
 void Aura::aura_set_hide(const bool value) {
 	_aura_hide = value;
+}
+
+Ref<SpellEffectVisual> Aura::aura_get_visual_spell_effects() {
+	return _aura_visual_spell_effects;
+}
+void Aura::aura_set_visual_spell_effects(const Ref<SpellEffectVisual> &value) {
+	_aura_visual_spell_effects = value;
 }
 
 int Aura::aura_get_ability_scale_data_id() const {
@@ -377,7 +377,7 @@ Aura::~Aura() {
 
 	_aura_teaches_spell.unref();
 
-	_visual_spell_effects.unref();
+	_aura_visual_spell_effects.unref();
 
 	_aura_damage_scaling_curve.unref();
 	_aura_absorb_scaling_curve.unref();
@@ -1510,14 +1510,11 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_icon", "value"), &Aura::set_icon);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "icon", PROPERTY_HINT_RESOURCE_TYPE, "Texture"), "set_icon", "get_icon");
 
-	ClassDB::bind_method(D_METHOD("get_visual_spell_effects"), &Aura::get_visual_spell_effects);
-	ClassDB::bind_method(D_METHOD("set_visual_spell_effects", "value"), &Aura::set_visual_spell_effects);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "visual_spell_effects", PROPERTY_HINT_RESOURCE_TYPE, "SpellEffectVisual"), "set_visual_spell_effects", "get_visual_spell_effects");
-
 	ClassDB::bind_method(D_METHOD("get_rank"), &Aura::get_rank);
 	ClassDB::bind_method(D_METHOD("set_rank", "value"), &Aura::set_rank);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "rank"), "set_rank", "get_rank");
 
+	ADD_GROUP("Aura", "aura");
 	ClassDB::bind_method(D_METHOD("aura_get_time"), &Aura::aura_get_time);
 	ClassDB::bind_method(D_METHOD("aura_set_time", "value"), &Aura::aura_set_time);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "aura_time"), "aura_set_time", "aura_get_time");
@@ -1549,6 +1546,10 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("aura_get_ability_scale_data_id"), &Aura::aura_get_ability_scale_data_id);
 	ClassDB::bind_method(D_METHOD("aura_set_ability_scale_data_id", "value"), &Aura::aura_set_ability_scale_data_id);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "aura_ability_scale_data_id"), "aura_set_ability_scale_data_id", "aura_get_ability_scale_data_id");
+
+	ClassDB::bind_method(D_METHOD("aura_get_visual_spell_effects"), &Aura::aura_get_visual_spell_effects);
+	ClassDB::bind_method(D_METHOD("aura_set_visual_spell_effects", "value"), &Aura::aura_set_visual_spell_effects);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_visual_spell_effects", PROPERTY_HINT_RESOURCE_TYPE, "SpellEffectVisual"), "aura_set_visual_spell_effects", "aura_get_visual_spell_effects");
 
 	ADD_GROUP("Aura Texts", "aura_text");
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_aura_get_description", PropertyInfo(Variant::INT, "class_level"), PropertyInfo(Variant::INT, "character_level")));
