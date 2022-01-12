@@ -1551,11 +1551,11 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("aura_set_visual_spell_effects", "value"), &Aura::aura_set_visual_spell_effects);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_visual_spell_effects", PROPERTY_HINT_RESOURCE_TYPE, "SpellEffectVisual"), "aura_set_visual_spell_effects", "aura_get_visual_spell_effects");
 
-	ADD_GROUP("Aura Texts", "aura_text");
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_aura_get_description", PropertyInfo(Variant::INT, "class_level"), PropertyInfo(Variant::INT, "character_level")));
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
+	ADD_GROUP("Aura Texts", "aura_text");
 	ClassDB::bind_method(D_METHOD("aura_get_text_translation_key"), &Aura::aura_get_text_translation_key);
 	ClassDB::bind_method(D_METHOD("aura_set_text_translation_key", "value"), &Aura::aura_set_text_translation_key);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "aura_text_translation_key"), "aura_set_text_translation_key", "aura_get_text_translation_key");
@@ -1567,10 +1567,6 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("aura_get_name_translated"), &Aura::aura_get_name_translated);
 	ClassDB::bind_method(D_METHOD("aura_get_description", "class_level", "character_level"), &Aura::aura_get_description);
 	ClassDB::bind_method(D_METHOD("_aura_get_description", "class_level", "character_level"), &Aura::_aura_get_description);
-
-	ClassDB::bind_method(D_METHOD("aura_get_teaches_spell"), &Aura::aura_get_teaches_spell);
-	ClassDB::bind_method(D_METHOD("aura_set_teaches_spell", "next_rank"), &Aura::aura_set_teaches_spell);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_teaches_spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "aura_set_teaches_spell", "aura_get_teaches_spell");
 
 	ADD_GROUP("Aura Damage", "aura_damage");
 	//Damage
@@ -1705,6 +1701,11 @@ void Aura::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("aura_get_talent_required_spell"), &Aura::aura_get_talent_required_spell);
 	ClassDB::bind_method(D_METHOD("aura_set_talent_required_spell", "next_rank"), &Aura::aura_set_talent_required_spell);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_talent_required_spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "aura_set_talent_required_spell", "aura_get_talent_required_spell");
+
+	ADD_GROUP("Aura Teaches", "aura_teaches");
+	ClassDB::bind_method(D_METHOD("aura_get_teaches_spell"), &Aura::aura_get_teaches_spell);
+	ClassDB::bind_method(D_METHOD("aura_set_teaches_spell", "next_rank"), &Aura::aura_set_teaches_spell);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_teaches_spell", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "aura_set_teaches_spell", "aura_get_teaches_spell");
 
 	////    Triggers    ////
 	ADD_GROUP("Aura Triggers", "aura_trigger");
