@@ -145,35 +145,35 @@ public:
 	Ref<CraftRecipe> get_teaches_craft_recipe();
 	void set_teaches_craft_recipe(const Ref<CraftRecipe> &value);
 
-	//Caster Aura Apply
-	int get_num_caster_aura_applys() const;
-	void set_num_caster_aura_applys(const int value);
+	//Spells cast on caster
+	int spells_cast_on_caster_num_get() const;
+	void spells_cast_on_caster_num_set(const int value);
 
-	Ref<Aura> caster_get_aura_apply(const int index);
-	void caster_set_aura_apply(const int index, const Ref<Aura> &caster_aura_apply);
+	Ref<Aura> spell_cast_on_caster_get(const int index);
+	void spell_cast_on_caster_set(const int index, const Ref<Aura> &spell);
 
-	Vector<Variant> caster_get_aura_applys();
-	void caster_set_aura_applys(const Vector<Variant> &caster_aura_applys);
+	Vector<Variant> spells_cast_on_caster_get();
+	void spells_cast_on_caster_set(const Vector<Variant> &spells);
 
-	//Target Aura Apply
-	int get_num_target_aura_applys() const;
-	void set_num_target_aura_applys(const int value);
+	//Spells cast on target
+	int spells_cast_on_target_num_get() const;
+	void spells_cast_on_target_num_set(const int value);
 
-	Ref<Aura> get_target_aura_apply(const int index);
-	void set_target_aura_apply(const int index, const Ref<Aura> &target_aura_apply);
+	Ref<Aura> spell_cast_on_target_get(const int index);
+	void spell_cast_on_target_set(const int index, const Ref<Aura> &spell);
 
-	Vector<Variant> get_target_aura_applys();
-	void set_target_aura_applys(const Vector<Variant> &target_aura_applys);
+	Vector<Variant> spells_cast_on_target_get();
+	void spells_cast_on_target_set(const Vector<Variant> &target_aura_applys);
 
-	//Apply Auras On Learn
-	int get_num_on_learn_auras() const;
-	void set_num_on_learn_auras(const int value);
+	//Spells cast On Learn
+	int on_learn_cast_spells_num_get() const;
+	void on_learn_cast_spells_num_set(const int value);
 
-	Ref<Aura> get_on_learn_aura(const int index);
-	void set_on_learn_aura(const int index, const Ref<Aura> &on_learn_aura);
+	Ref<Aura> spell_cast_on_learn_get(const int index);
+	void spell_cast_on_learn_set(const int index, const Ref<Aura> &spell);
 
-	Vector<Variant> get_on_learn_auras();
-	void set_on_learn_auras(const Vector<Variant> &on_learn_auras);
+	Vector<Variant> spells_cast_on_learn_get();
+	void spells_cast_on_learn_set(const Vector<Variant> &spells);
 
 	//Range
 	bool range_get_enabled() const;
@@ -369,9 +369,9 @@ private:
 	SpellTargetType _target_type;
 	TargetRelationType _target_relation_type;
 
-	Vector<Ref<Aura> > _caster_aura_applys;
-	Vector<Ref<Aura> > _target_aura_applys;
-	Vector<Ref<Aura> > _on_learn_auras;
+	Vector<Ref<Aura> > _spells_cast_on_caster;
+	Vector<Ref<Aura> > _spells_cast_on_target;
+	Vector<Ref<Aura> > _on_learn_cast_spells;
 
 	int _level;
 	int _rank;

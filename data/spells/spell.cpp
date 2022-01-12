@@ -185,83 +185,83 @@ void Spell::set_teaches_craft_recipe(const Ref<CraftRecipe> &value) {
 
 ////    Caster Aura Apply    ////
 
-int Spell::get_num_caster_aura_applys() const {
-	return _caster_aura_applys.size();
+int Spell::spells_cast_on_caster_num_get() const {
+	return _spells_cast_on_caster.size();
 }
-void Spell::set_num_caster_aura_applys(const int value) {
-	_caster_aura_applys.resize(value);
-}
-
-Ref<Aura> Spell::caster_get_aura_apply(const int index) {
-	ERR_FAIL_INDEX_V(index, _caster_aura_applys.size(), Ref<Aura>());
-
-	return _caster_aura_applys[index];
-}
-void Spell::caster_set_aura_apply(const int index, const Ref<Aura> &caster_aura_apply) {
-	ERR_FAIL_INDEX(index, _caster_aura_applys.size());
-
-	_caster_aura_applys.set(index, Ref<Aura>(caster_aura_apply));
+void Spell::spells_cast_on_caster_num_set(const int value) {
+	_spells_cast_on_caster.resize(value);
 }
 
-Vector<Variant> Spell::caster_get_aura_applys() {
-	VARIANT_ARRAY_GET(_caster_aura_applys);
+Ref<Aura> Spell::spell_cast_on_caster_get(const int index) {
+	ERR_FAIL_INDEX_V(index, _spells_cast_on_caster.size(), Ref<Aura>());
+
+	return _spells_cast_on_caster[index];
 }
-void Spell::caster_set_aura_applys(const Vector<Variant> &caster_aura_applys) {
-	VARIANT_ARRAY_SET(caster_aura_applys, _caster_aura_applys, Aura);
+void Spell::spell_cast_on_caster_set(const int index, const Ref<Aura> &spell) {
+	ERR_FAIL_INDEX(index, _spells_cast_on_caster.size());
+
+	_spells_cast_on_caster.set(index, Ref<Aura>(spell));
+}
+
+Vector<Variant> Spell::spells_cast_on_caster_get() {
+	VARIANT_ARRAY_GET(_spells_cast_on_caster);
+}
+void Spell::spells_cast_on_caster_set(const Vector<Variant> &spells) {
+	VARIANT_ARRAY_SET(spells, _spells_cast_on_caster, Aura);
 }
 
 ////    Target Aura Apply    ////
 
-int Spell::get_num_target_aura_applys() const {
-	return _target_aura_applys.size();
+int Spell::spells_cast_on_target_num_get() const {
+	return _spells_cast_on_target.size();
 }
-void Spell::set_num_target_aura_applys(const int value) {
-	_target_aura_applys.resize(value);
-}
-
-Ref<Aura> Spell::get_target_aura_apply(const int index) {
-	ERR_FAIL_INDEX_V(index, _target_aura_applys.size(), Ref<Aura>());
-
-	return _target_aura_applys[index];
-}
-void Spell::set_target_aura_apply(const int index, const Ref<Aura> &target_aura_apply) {
-	ERR_FAIL_INDEX(index, _target_aura_applys.size());
-
-	_target_aura_applys.set(index, Ref<Aura>(target_aura_apply));
+void Spell::spells_cast_on_target_num_set(const int value) {
+	_spells_cast_on_target.resize(value);
 }
 
-Vector<Variant> Spell::get_target_aura_applys() {
-	VARIANT_ARRAY_GET(_target_aura_applys);
+Ref<Aura> Spell::spell_cast_on_target_get(const int index) {
+	ERR_FAIL_INDEX_V(index, _spells_cast_on_target.size(), Ref<Aura>());
+
+	return _spells_cast_on_target[index];
 }
-void Spell::set_target_aura_applys(const Vector<Variant> &target_aura_applys) {
-	VARIANT_ARRAY_SET(target_aura_applys, _target_aura_applys, Aura);
+void Spell::spell_cast_on_target_set(const int index, const Ref<Aura> &spell) {
+	ERR_FAIL_INDEX(index, _spells_cast_on_target.size());
+
+	_spells_cast_on_target.set(index, Ref<Aura>(spell));
+}
+
+Vector<Variant> Spell::spells_cast_on_target_get() {
+	VARIANT_ARRAY_GET(_spells_cast_on_target);
+}
+void Spell::spells_cast_on_target_set(const Vector<Variant> &spells) {
+	VARIANT_ARRAY_SET(spells, _spells_cast_on_target, Aura);
 }
 
 ////    Apply Auras On Learn    ////
 
-int Spell::get_num_on_learn_auras() const {
-	return _on_learn_auras.size();
+int Spell::on_learn_cast_spells_num_get() const {
+	return _on_learn_cast_spells.size();
 }
-void Spell::set_num_on_learn_auras(const int value) {
-	_on_learn_auras.resize(value);
-}
-
-Ref<Aura> Spell::get_on_learn_aura(int index) {
-	ERR_FAIL_INDEX_V(index, _on_learn_auras.size(), Ref<Aura>());
-
-	return _on_learn_auras[index];
-}
-void Spell::set_on_learn_aura(const int index, const Ref<Aura> &on_learn_aura_apply) {
-	ERR_FAIL_INDEX(index, _on_learn_auras.size());
-
-	_on_learn_auras.set(index, Ref<Aura>(on_learn_aura_apply));
+void Spell::on_learn_cast_spells_num_set(const int value) {
+	_on_learn_cast_spells.resize(value);
 }
 
-Vector<Variant> Spell::get_on_learn_auras() {
-	VARIANT_ARRAY_GET(_on_learn_auras);
+Ref<Aura> Spell::spell_cast_on_learn_get(int index) {
+	ERR_FAIL_INDEX_V(index, _on_learn_cast_spells.size(), Ref<Aura>());
+
+	return _on_learn_cast_spells[index];
 }
-void Spell::set_on_learn_auras(const Vector<Variant> &on_learn_aura_applys) {
-	VARIANT_ARRAY_SET(on_learn_aura_applys, _on_learn_auras, Aura);
+void Spell::spell_cast_on_learn_set(const int index, const Ref<Aura> &spell) {
+	ERR_FAIL_INDEX(index, _on_learn_cast_spells.size());
+
+	_on_learn_cast_spells.set(index, Ref<Aura>(spell));
+}
+
+Vector<Variant> Spell::spells_cast_on_learn_get() {
+	VARIANT_ARRAY_GET(_on_learn_cast_spells);
+}
+void Spell::spells_cast_on_learn_set(const Vector<Variant> &spells) {
+	VARIANT_ARRAY_SET(spells, _on_learn_cast_spells, Aura);
 }
 
 ////    Range    ////
@@ -847,9 +847,9 @@ Spell::Spell() {
 }
 
 Spell::~Spell() {
-	_caster_aura_applys.clear();
-	_target_aura_applys.clear();
-	_on_learn_auras.clear();
+	_spells_cast_on_caster.clear();
+	_spells_cast_on_target.clear();
+	_on_learn_cast_spells.clear();
 
 	_item_cost.unref();
 	_required_item.unref();
@@ -1006,21 +1006,21 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 		handle_spell_damage(sdi);
 	}
 
-	for (int i = 0; i < _caster_aura_applys.size(); ++i) {
+	for (int i = 0; i < _spells_cast_on_caster.size(); ++i) {
 		Ref<AuraApplyInfo> aai;
 		aai.instance();
 
 		aai->caster_set(info->caster_get());
 		aai->target_set(info->caster_get());
 		aai->spell_scale_set(1);
-		aai->set_aura(_caster_aura_applys[i]);
+		aai->set_aura(_spells_cast_on_caster[i]);
 
-		_caster_aura_applys.get(i)->aura_sapply(aai);
+		_spells_cast_on_caster.get(i)->aura_sapply(aai);
 	}
 
 	if (has_target) {
-		for (int i = 0; i < _target_aura_applys.size(); ++i) {
-			Ref<Aura> aura = _target_aura_applys.get(i);
+		for (int i = 0; i < _spells_cast_on_target.size(); ++i) {
+			Ref<Aura> aura = _spells_cast_on_target.get(i);
 
 			Ref<AuraData> ad;
 
@@ -1178,38 +1178,45 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_teaches_craft_recipe", "value"), &Spell::set_teaches_craft_recipe);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "teaches_craft_recipe", PROPERTY_HINT_RESOURCE_TYPE, "CraftRecipe"), "set_teaches_craft_recipe", "get_teaches_craft_recipe");
 
+	ADD_GROUP("Spells Cast", "spells_cast_");
+
 	//ADD_GROUP("Caster Aura Applys", "caster_aura_applys");
-	ClassDB::bind_method(D_METHOD("get_num_caster_aura_applys"), &Spell::get_num_caster_aura_applys);
-	ClassDB::bind_method(D_METHOD("set_num_caster_aura_applys", "value"), &Spell::set_num_caster_aura_applys);
+	ClassDB::bind_method(D_METHOD("spells_cast_on_caster_num_get"), &Spell::spells_cast_on_caster_num_get);
+	ClassDB::bind_method(D_METHOD("spells_cast_on_caster_num_set", "value"), &Spell::spells_cast_on_caster_num_set);
 
-	ClassDB::bind_method(D_METHOD("caster_get_aura_apply", "index"), &Spell::caster_get_aura_apply);
-	ClassDB::bind_method(D_METHOD("caster_set_aura_apply", "index", "aura"), &Spell::caster_set_aura_apply);
+	ClassDB::bind_method(D_METHOD("spell_cast_on_caster_get", "index"), &Spell::spell_cast_on_caster_get);
+	ClassDB::bind_method(D_METHOD("spell_cast_on_caster_set", "index", "spell"), &Spell::spell_cast_on_caster_set);
 
-	ClassDB::bind_method(D_METHOD("caster_get_aura_applys"), &Spell::caster_get_aura_applys);
-	ClassDB::bind_method(D_METHOD("caster_set_aura_applys", "caster_aura_applys"), &Spell::caster_set_aura_applys);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "caster_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "caster_set_aura_applys", "caster_get_aura_applys");
+	ClassDB::bind_method(D_METHOD("spells_cast_on_caster_get"), &Spell::spells_cast_on_caster_get);
+	ClassDB::bind_method(D_METHOD("spells_cast_on_caster_set", "caster_aura_applys"), &Spell::spells_cast_on_caster_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_caster", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "spells_cast_on_caster_set", "spells_cast_on_caster_get");
 
 	//ADD_GROUP("Target Aura Apply", "target_aura_applys");
-	ClassDB::bind_method(D_METHOD("get_num_target_aura_applys"), &Spell::get_num_target_aura_applys);
-	ClassDB::bind_method(D_METHOD("set_num_target_aura_applys", "value"), &Spell::set_num_target_aura_applys);
+	ClassDB::bind_method(D_METHOD("spells_cast_on_target_num_get"), &Spell::spells_cast_on_target_num_get);
+	ClassDB::bind_method(D_METHOD("spells_cast_on_target_num_set", "value"), &Spell::spells_cast_on_target_num_set);
 
-	ClassDB::bind_method(D_METHOD("get_target_aura_apply", "index"), &Spell::get_target_aura_apply);
-	ClassDB::bind_method(D_METHOD("set_target_aura_apply", "index", "aura"), &Spell::set_target_aura_apply);
+	ClassDB::bind_method(D_METHOD("spell_cast_on_target_get", "index"), &Spell::spell_cast_on_target_get);
+	ClassDB::bind_method(D_METHOD("spell_cast_on_target_set", "index", "spell"), &Spell::spell_cast_on_target_set);
 
-	ClassDB::bind_method(D_METHOD("get_target_aura_applys"), &Spell::get_target_aura_applys);
-	ClassDB::bind_method(D_METHOD("set_target_aura_applys", "target_aura_applys"), &Spell::set_target_aura_applys);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "target_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_target_aura_applys", "get_target_aura_applys");
+	ClassDB::bind_method(D_METHOD("spells_cast_on_target_get"), &Spell::spells_cast_on_target_get);
+	ClassDB::bind_method(D_METHOD("spells_cast_on_target_set", "target_aura_applys"), &Spell::spells_cast_on_target_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_target", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "spells_cast_on_target_set", "spells_cast_on_target_get");
 
 	//ADD_GROUP("Apply Auras On Learn", "on_learn_auras");
-	ClassDB::bind_method(D_METHOD("get_num_on_learn_auras"), &Spell::get_num_on_learn_auras);
-	ClassDB::bind_method(D_METHOD("set_num_on_learn_auras", "value"), &Spell::set_num_on_learn_auras);
+	ClassDB::bind_method(D_METHOD("on_learn_cast_spells_num_get"), &Spell::on_learn_cast_spells_num_get);
+	ClassDB::bind_method(D_METHOD("on_learn_cast_spells_num_set", "value"), &Spell::on_learn_cast_spells_num_set);
 
-	ClassDB::bind_method(D_METHOD("get_on_learn_aura", "index"), &Spell::get_on_learn_aura);
-	ClassDB::bind_method(D_METHOD("set_on_learn_aura", "index", "aura"), &Spell::set_on_learn_aura);
+	ClassDB::bind_method(D_METHOD("spell_cast_on_learn_get", "index"), &Spell::spell_cast_on_learn_get);
+	ClassDB::bind_method(D_METHOD("spell_cast_on_learn_set", "index", "spell"), &Spell::spell_cast_on_learn_set);
 
-	ClassDB::bind_method(D_METHOD("get_on_learn_auras"), &Spell::get_on_learn_auras);
-	ClassDB::bind_method(D_METHOD("set_on_learn_auras", "spells"), &Spell::set_on_learn_auras);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "on_learn_auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_on_learn_auras", "get_on_learn_auras");
+	ClassDB::bind_method(D_METHOD("spells_cast_on_learn_get"), &Spell::spells_cast_on_learn_get);
+	ClassDB::bind_method(D_METHOD("spells_cast_on_learn_set", "spells"), &Spell::spells_cast_on_learn_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_learn", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "spells_cast_on_learn_set", "spells_cast_on_learn_get");
+	
+	//Temporary
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "caster_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "spells_cast_on_caster_set", "spells_cast_on_caster_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "target_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "spells_cast_on_target_set", "spells_cast_on_target_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "on_learn_auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "spells_cast_on_learn_set", "spells_cast_on_learn_get");
 
 	ADD_GROUP("Texts", "text");
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_get_description", PropertyInfo(Variant::INT, "class_level"), PropertyInfo(Variant::INT, "character_level")));
