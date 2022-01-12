@@ -671,7 +671,7 @@ void Entity::_setup() {
 		for (int i = 0; i < _s_auras.size(); ++i) {
 			Ref<AuraData> ad = _s_auras.get(i);
 
-			if (!ad->get_aura()->get_hide())
+			if (!ad->get_aura()->aura_get_hide())
 				VRPCOBJ(aura_addc_rpc, JSON::print(ad->to_dict()), aura_addc, ad);
 		}
 
@@ -726,7 +726,7 @@ void Entity::_setup() {
 		Ref<Aura> a = cc->get_aura(i);
 
 		if (a.is_valid()) {
-			a->sapply_simple(this, this, 1.0);
+			a->aura_sapply_simple(this, this, 1.0);
 		}
 	}
 
@@ -3095,7 +3095,7 @@ void Entity::update_auras(float delta) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->supdate(ad, delta);
+		ad->get_aura()->aura_supdate(ad, delta);
 	}
 }
 
@@ -3105,7 +3105,7 @@ void Entity::sapply_passives_damage_receive(Ref<SpellDamageInfo> info) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->sapply_passives_damage_receive(info);
+		ad->get_aura()->aura_sapply_passives_damage_receive(info);
 	}
 }
 
@@ -3115,7 +3115,7 @@ void Entity::sapply_passives_damage_deal(Ref<SpellDamageInfo> info) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->sapply_passives_damage_deal(info);
+		ad->get_aura()->aura_sapply_passives_damage_deal(info);
 	}
 }
 
@@ -3125,7 +3125,7 @@ void Entity::sapply_passives_heal_receive(Ref<SpellHealInfo> info) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->sapply_passives_heal_receive(info);
+		ad->get_aura()->aura_sapply_passives_heal_receive(info);
 	}
 }
 
@@ -3135,7 +3135,7 @@ void Entity::sapply_passives_heal_deal(Ref<SpellHealInfo> info) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->sapply_passives_heal_deal(info);
+		ad->get_aura()->aura_sapply_passives_heal_deal(info);
 	}
 }
 
@@ -3286,7 +3286,7 @@ void Entity::aura_adds(Ref<AuraData> aura) {
 
 	notification_saura(SpellEnums::NOTIFICATION_AURA_ADDED, aura);
 
-	if (!aura->get_aura()->get_hide())
+	if (!aura->get_aura()->aura_get_hide())
 		VRPCOBJ(aura_addc_rpc, JSON::print(aura->to_dict()), aura_addc, aura);
 }
 
@@ -3311,7 +3311,7 @@ void Entity::aura_removes(Ref<AuraData> aura) {
 	if (removed) {
 		notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, a);
 
-		if (!aura->get_aura()->get_hide())
+		if (!aura->get_aura()->aura_get_hide())
 			VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
 	}
 }
@@ -3333,7 +3333,7 @@ void Entity::aura_removes_exact(Ref<AuraData> aura) {
 
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
-	if (!aura->get_aura()->get_hide())
+	if (!aura->get_aura()->aura_get_hide())
 		VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
 }
 
@@ -3354,7 +3354,7 @@ void Entity::aura_removes_expired(Ref<AuraData> aura) {
 
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
-	if (!aura->get_aura()->get_hide())
+	if (!aura->get_aura()->aura_get_hide())
 		VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
 }
 
@@ -3375,7 +3375,7 @@ void Entity::aura_removes_dispelled(Ref<AuraData> aura) {
 
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
-	if (!aura->get_aura()->get_hide())
+	if (!aura->get_aura()->aura_get_hide())
 		VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
 }
 
@@ -3387,7 +3387,7 @@ void Entity::aura_refresheds(Ref<AuraData> aura) {
 
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REFRESHED, aura);
 
-	if (!aura->get_aura()->get_hide())
+	if (!aura->get_aura()->aura_get_hide())
 		VRPCOBJ(aura_refreshedc_rpc, JSON::print(aura->to_dict()), aura_refreshedc, aura);
 }
 
@@ -3569,7 +3569,7 @@ Ref<AuraData> Entity::aura_gets_with_group_by(Entity *caster, Ref<AuraGroup> aur
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		if (ad->get_aura()->get_aura_group() == aura_group && ad->caster_get() == caster) {
+		if (ad->get_aura()->aura_get_aura_group() == aura_group && ad->caster_get() == caster) {
 			return ad;
 		}
 	}
@@ -4566,7 +4566,7 @@ void Entity::aura_removess_with_group(Ref<AuraGroup> aura_group) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		if (ad->get_aura()->get_aura_group() == aura_group) {
+		if (ad->get_aura()->aura_get_aura_group() == aura_group) {
 			aura_removec(ad);
 
 			_s_auras.remove(i);
@@ -4756,14 +4756,14 @@ void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_tale
 		if (class_talent_hass(class_talent_id))
 			continue;
 
-		if (class_talent->get_talent_required_talent().is_valid()) {
-			if (!class_talent_hass(class_talent->get_talent_required_talent()->get_id())) {
+		if (class_talent->aura_get_talent_required_talent().is_valid()) {
+			if (!class_talent_hass(class_talent->aura_get_talent_required_talent()->get_id())) {
 				return;
 			}
 		}
 
-		if (class_talent->get_talent_required_spell().is_valid()) {
-			if (!spell_hass(class_talent->get_talent_required_spell())) {
+		if (class_talent->aura_get_talent_required_spell().is_valid()) {
+			if (!spell_hass(class_talent->aura_get_talent_required_spell())) {
 				return;
 			}
 		}
@@ -4790,7 +4790,7 @@ void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_tale
 		info->spell_scale_set(1);
 		info->set_aura(class_talent);
 
-		class_talent->sapply(info);
+		class_talent->aura_sapply(info);
 
 		class_talent_adds(class_talent_id);
 
@@ -5003,14 +5003,14 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 		if (character_talent_hass(character_talent_id))
 			continue;
 
-		if (character_talent->get_talent_required_talent().is_valid()) {
-			if (!character_talent_hass(character_talent->get_talent_required_talent()->get_id())) {
+		if (character_talent->aura_get_talent_required_talent().is_valid()) {
+			if (!character_talent_hass(character_talent->aura_get_talent_required_talent()->get_id())) {
 				return;
 			}
 		}
 
-		if (character_talent->get_talent_required_spell().is_valid()) {
-			if (!spell_hass(character_talent->get_talent_required_spell())) {
+		if (character_talent->aura_get_talent_required_spell().is_valid()) {
+			if (!spell_hass(character_talent->aura_get_talent_required_spell())) {
 				return;
 			}
 		}
@@ -5037,7 +5037,7 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 		info->spell_scale_set(1);
 		info->set_aura(character_talent);
 
-		character_talent->sapply(info);
+		character_talent->aura_sapply(info);
 
 		character_talent_adds(character_talent_id);
 

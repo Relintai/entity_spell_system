@@ -1015,7 +1015,7 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 		aai->spell_scale_set(1);
 		aai->set_aura(_caster_aura_applys[i]);
 
-		_caster_aura_applys.get(i)->sapply(aai);
+		_caster_aura_applys.get(i)->aura_sapply(aai);
 	}
 
 	if (has_target) {
@@ -1024,8 +1024,8 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 
 			Ref<AuraData> ad;
 
-			if (aura->get_aura_group().is_valid()) {
-				ad = info->target_get()->aura_gets_with_group_by_bind(info->caster_get(), aura->get_aura_group());
+			if (aura->aura_get_aura_group().is_valid()) {
+				ad = info->target_get()->aura_gets_with_group_by_bind(info->caster_get(), aura->aura_get_aura_group());
 			} else {
 				ad = info->target_get()->aura_gets_by(info->caster_get(), aura->get_id());
 			}
@@ -1042,7 +1042,7 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 			aai->spell_scale_set(1);
 			aai->set_aura(aura);
 
-			aura->sapply(aai);
+			aura->aura_sapply(aai);
 		}
 	}
 }

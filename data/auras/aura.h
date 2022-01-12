@@ -64,200 +64,200 @@ public:
 	int get_id() const;
 	void set_id(const int value);
 
-	Ref<Texture> get_icon();
-	void set_icon(const Ref<Texture> &value);
-
-	float get_time() const;
-	void set_time(const float value);
-
-	Ref<AuraGroup> get_aura_group();
-	void set_aura_group(const Ref<AuraGroup> &value);
-
-	bool get_is_debuff() const;
-	void set_is_debuff(const bool value);
-
-	float get_tick() const;
-	void set_tick(const float value);
-
-	SpellEnums::AuraType get_aura_type() const;
-	void set_aura_type(const SpellEnums::AuraType value);
-
 	int get_rank() const;
 	void set_rank(const int value);
 
-	bool get_scale_with_level() const;
-	void set_scale_with_level(const bool value);
-
-	String get_text_translation_key() const;
-	void set_text_translation_key(const String &value);
-
-	String get_text_description() const;
-	void set_text_description(const String description);
-
-	bool get_hide() const;
-	void set_hide(const bool value);
+	Ref<Texture> get_icon();
+	void set_icon(const Ref<Texture> &value);
 
 	Ref<SpellEffectVisual> get_visual_spell_effects();
 	void set_visual_spell_effects(const Ref<SpellEffectVisual> &value);
 
-	int get_ability_scale_data_id() const;
-	void set_ability_scale_data_id(const int value);
+	float aura_get_time() const;
+	void aura_set_time(const float value);
 
-	float damage_get_scale_for_level(int level) const;
-	float heal_get_scale_for_level(int level) const;
-	float absorb_get_scale_for_level(int level) const;
+	Ref<AuraGroup> aura_get_aura_group();
+	void aura_set_aura_group(const Ref<AuraGroup> &value);
 
-	Ref<Spell> get_teaches_spell();
-	void set_teaches_spell(const Ref<Spell> &spell);
+	bool aura_get_is_debuff() const;
+	void aura_set_is_debuff(const bool value);
+
+	float aura_get_tick() const;
+	void aura_set_tick(const float value);
+
+	SpellEnums::AuraType aura_get_aura_type() const;
+	void aura_set_aura_type(const SpellEnums::AuraType value);
+
+	bool aura_get_scale_with_level() const;
+	void aura_set_scale_with_level(const bool value);
+
+	String aura_get_text_translation_key() const;
+	void aura_set_text_translation_key(const String &value);
+
+	String aura_get_text_description() const;
+	void aura_set_text_description(const String description);
+
+	bool aura_get_hide() const;
+	void aura_set_hide(const bool value);
+
+	int aura_get_ability_scale_data_id() const;
+	void aura_set_ability_scale_data_id(const int value);
+
+	float aura_damage_get_scale_for_level(int level) const;
+	float aura_heal_get_scale_for_level(int level) const;
+	float aura_absorb_get_scale_for_level(int level) const;
+
+	Ref<Spell> aura_get_teaches_spell();
+	void aura_set_teaches_spell(const Ref<Spell> &spell);
 
 	//Damage
-	bool damage_get_enabled() const;
-	void damage_set_enabled(const bool value);
+	bool aura_damage_get_enabled() const;
+	void aura_damage_set_enabled(const bool value);
 
-	int damage_get_type() const;
+	int aura_damage_get_type() const;
 
-	void damage_set_type(const int value);
+	void aura_damage_set_type(const int value);
 
-	int damage_get_min() const;
-	void damage_set_min(const int value);
+	int aura_damage_get_min() const;
+	void aura_damage_set_min(const int value);
 
-	int damage_get_max() const;
-	void damage_set_max(const int value);
+	int aura_damage_get_max() const;
+	void aura_damage_set_max(const int value);
 
-	bool damage_get_can_crit() const;
-	void damage_set_can_crit(const bool value);
+	bool aura_damage_get_can_crit() const;
+	void aura_damage_set_can_crit(const bool value);
 
-	void damage_set(const int min, const int max, const bool can_crit);
+	void aura_damage_set(const int min, const int max, const bool can_crit);
 
 	//Absorb
-	bool absorb_get_enabled() const;
-	void absorb_set_enabled(const bool value);
+	bool aura_absorb_get_enabled() const;
+	void aura_absorb_set_enabled(const bool value);
 
-	int absorb_damage_get_type() const;
-	void absorb_damage_set_type(const int value);
+	int aura_absorb_damage_get_type() const;
+	void aura_absorb_damage_set_type(const int value);
 
-	int absorb_get_min() const;
-	void absorb_set_min(const int value);
+	int aura_absorb_get_min() const;
+	void aura_absorb_set_min(const int value);
 
-	int absorb_get_max() const;
-	void absorb_set_max(const int value);
+	int aura_absorb_get_max() const;
+	void aura_absorb_set_max(const int value);
 
 	//Heal
-	bool heal_get_enabled() const;
-	void heal_set_enabled(const bool value);
+	bool aura_heal_get_enabled() const;
+	void aura_heal_set_enabled(const bool value);
 
-	int heal_get_min() const;
-	void heal_set_min(const int value);
+	int aura_heal_get_min() const;
+	void aura_heal_set_min(const int value);
 
-	int heal_get_max() const;
-	void heal_set_max(const int value);
+	int aura_heal_get_max() const;
+	void aura_heal_set_max(const int value);
 
-	bool heal_get_can_crit() const;
-	void heal_set_can_crit(const bool value);
+	bool aura_heal_get_can_crit() const;
+	void aura_heal_set_can_crit(const bool value);
 
-	void heal_set(const int min, const int max, const bool can_crit);
+	void aura_heal_set(const int min, const int max, const bool can_crit);
 
 	//Dispells
-	bool dispell_get_enabled() const;
-	void dispell_set_enabled(const bool value);
+	bool aura_dispell_get_enabled() const;
+	void aura_dispell_set_enabled(const bool value);
 
-	int dispell_get_count_min() const;
-	void dispell_set_count_min(const int value);
+	int aura_dispell_get_count_min() const;
+	void aura_dispell_set_count_min(const int value);
 
-	int dispell_get_count_max() const;
-	void dispell_set_count_max(const int value);
+	int aura_dispell_get_count_max() const;
+	void aura_dispell_set_count_max(const int value);
 
-	int dispell_get_aura_types() const;
-	void dispell_set_aura_types(const int value);
+	int aura_dispell_get_aura_types() const;
+	void aura_dispell_set_aura_types(const int value);
 
 	//Resources
-	Ref<EntityResourceCostData> get_resource_cost();
-	void set_resource_cost(const Ref<EntityResourceCostData> &value);
+	Ref<EntityResourceCostData> aura_get_resource_cost();
+	void aura_set_resource_cost(const Ref<EntityResourceCostData> &value);
 
-	Ref<EntityResourceCostData> get_resource_give();
-	void set_resource_give(const Ref<EntityResourceCostData> &value);
+	Ref<EntityResourceCostData> aura_get_resource_give();
+	void aura_set_resource_give(const Ref<EntityResourceCostData> &value);
 
-	Ref<Curve> damage_get_scaling_curve() { return _damage_scaling_curve; }
-	void damage_set_scaling_curve(const Ref<Curve> &curve) { _damage_scaling_curve = curve; }
+	Ref<Curve> aura_damage_get_scaling_curve() { return _aura_damage_scaling_curve; }
+	void aura_damage_set_scaling_curve(const Ref<Curve> &curve) { _aura_damage_scaling_curve = curve; }
 
-	Ref<Curve> heal_get_scaling_curve() { return _heal_scaling_curve; }
-	void heal_set_scaling_curve(const Ref<Curve> &curve) { _heal_scaling_curve = curve; }
+	Ref<Curve> aura_heal_get_scaling_curve() { return _aura_heal_scaling_curve; }
+	void aura_heal_set_scaling_curve(const Ref<Curve> &curve) { _aura_heal_scaling_curve = curve; }
 
-	Ref<Curve> absorb_get_scaling_curve() { return _absorb_scaling_curve; }
-	void absorb_set_scaling_curve(const Ref<Curve> &curve) { _absorb_scaling_curve = curve; }
+	Ref<Curve> aura_absorb_get_scaling_curve() { return _aura_absorb_scaling_curve; }
+	void aura_absorb_set_scaling_curve(const Ref<Curve> &curve) { _aura_absorb_scaling_curve = curve; }
 
 	//states
-	int get_add_states() const { return _add_states; }
-	void set_add_states(const int value) { _add_states = value; }
+	int aura_get_add_states() const { return _aura_add_states; }
+	void aura_set_add_states(const int value) { _aura_add_states = value; }
 
-	int get_remove_effects_with_states() const { return _remove_effects_with_states; }
-	void set_remove_effects_with_states(const int value) { _remove_effects_with_states = value; }
+	int aura_get_remove_effects_with_states() const { return _aura_remove_effects_with_states; }
+	void aura_set_remove_effects_with_states(const int value) { _aura_remove_effects_with_states = value; }
 
-	int get_supress_states() const { return _supress_states; }
-	void set_supress_states(const int value) { _supress_states = value; }
+	int aura_get_supress_states() const { return _aura_supress_states; }
+	void aura_set_supress_states(const int value) { _aura_supress_states = value; }
 
 	//DiminishingReturns
-	bool diminishing_return_enabled_get() const;
-	void diminishing_return_enabled_set(const bool value);
+	bool aura_diminishing_return_enabled_get() const;
+	void aura_diminishing_return_enabled_set(const bool value);
 
-	int diminishing_return_category_get() const;
-	void diminishing_return_category_set(const int value);
+	int aura_diminishing_return_category_get() const;
+	void aura_diminishing_return_category_set(const int value);
 
 	//Triggers
-	int trigger_get_count() const;
-	void trigger_set_count(const int count);
+	int aura_trigger_get_count() const;
+	void aura_trigger_set_count(const int count);
 
-	SpellEnums::TriggerNotificationType trigger_get_notification_type(const int index) const;
-	void trigger_set_notification_type(const int index, const SpellEnums::TriggerNotificationType value);
+	SpellEnums::TriggerNotificationType aura_trigger_get_notification_type(const int index) const;
+	void aura_trigger_set_notification_type(const int index, const SpellEnums::TriggerNotificationType value);
 
-	int trigger_get_notification_data(const int index) const;
-	void trigger_set_notification_data(const int index, const int value);
+	int aura_trigger_get_notification_data(const int index) const;
+	void aura_trigger_set_notification_data(const int index, const int value);
 
-	SpellEnums::TriggerType trigger_get_trigger_type(const int index) const;
-	void trigger_set_trigger_type(const int index, const SpellEnums::TriggerType value);
+	SpellEnums::TriggerType aura_trigger_get_trigger_type(const int index) const;
+	void aura_trigger_set_trigger_type(const int index, const SpellEnums::TriggerType value);
 
-	float trigger_get_trigger_type_data(const int index) const;
-	void trigger_set_trigger_type_data(const int index, const float value);
+	float aura_trigger_get_trigger_type_data(const int index) const;
+	void aura_trigger_set_trigger_type_data(const int index, const float value);
 
-	Ref<Spell> trigger_get_spell(const int index) const;
-	void trigger_set_spell(const int index, const Ref<Spell> &value);
+	Ref<Spell> aura_trigger_get_spell(const int index) const;
+	void aura_trigger_set_spell(const int index, const Ref<Spell> &value);
 
 	//Talent
-	Ref<Aura> get_talent_required_talent() const;
-	void set_talent_required_talent(const Ref<Aura> rank);
+	Ref<Aura> aura_get_talent_required_talent() const;
+	void aura_set_talent_required_talent(const Ref<Aura> rank);
 
-	Ref<Spell> get_talent_required_spell() const;
-	void set_talent_required_spell(const Ref<Spell> spell);
+	Ref<Spell> aura_get_talent_required_spell() const;
+	void aura_set_talent_required_spell(const Ref<Spell> spell);
 
 	//AuraStatAttributes
-	int stat_attribute_get_count() const;
-	void stat_attribute_set_count(int count);
+	int aura_stat_attribute_get_count() const;
+	void aura_stat_attribute_set_count(int count);
 
-	int stat_attribute_get_stat(int index) const;
-	void stat_attribute_set_stat(int index, const int value);
+	int aura_stat_attribute_get_stat(int index) const;
+	void aura_stat_attribute_set_stat(int index, const int value);
 
-	float stat_attribute_get_base_mod(int index) const;
-	void stat_attribute_set_base_mod(int index, float value);
+	float aura_stat_attribute_get_base_mod(int index) const;
+	void aura_stat_attribute_set_base_mod(int index, float value);
 
-	float stat_attribute_get_bonus_mod(int index) const;
-	void stat_attribute_set_bonus_mod(int index, float value);
+	float aura_stat_attribute_get_bonus_mod(int index) const;
+	void aura_stat_attribute_set_bonus_mod(int index, float value);
 
-	float stat_attribute_get_percent_mod(int index) const;
-	void stat_attribute_set_percent_mod(int index, float value);
+	float aura_stat_attribute_get_percent_mod(int index) const;
+	void aura_stat_attribute_set_percent_mod(int index, float value);
 
 	////    SpellSystem    ////
 
 	//Commands, c++ only
-	void sapply_simple(Entity *caster, Entity *target, float spell_scale);
+	void aura_sapply_simple(Entity *caster, Entity *target, float spell_scale);
 
 	//Commands
-	void sapply(Ref<AuraApplyInfo> info);
-	void sdeapply(Ref<AuraData> info);
-	void sadd(Ref<AuraData> aura);
-	void sremove(Ref<AuraData> aura);
-	void removes_expired(Ref<AuraData> aura);
-	void removes_dispell(Ref<AuraData> aura);
-	void supdate(Ref<AuraData> aura, float delta);
+	void aura_sapply(Ref<AuraApplyInfo> info);
+	void aura_sdeapply(Ref<AuraData> info);
+	void aura_sadd(Ref<AuraData> aura);
+	void aura_sremove(Ref<AuraData> aura);
+	void aura_removes_expired(Ref<AuraData> aura);
+	void aura_removes_dispell(Ref<AuraData> aura);
+	void aura_supdate(Ref<AuraData> aura, float delta);
 
 	//EventHandlers
 	void notification_saura(int what, Ref<AuraData> data);
@@ -322,44 +322,44 @@ public:
 	//Calculations / Queries
 	void setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
 
-	void sapply_passives_damage_receive(Ref<SpellDamageInfo> info);
-	void sapply_passives_damage_deal(Ref<SpellDamageInfo> info);
-	void calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
+	void aura_sapply_passives_damage_receive(Ref<SpellDamageInfo> info);
+	void aura_sapply_passives_damage_deal(Ref<SpellDamageInfo> info);
+	void aura_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
 	void handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> info);
 
-	void sapply_passives_heal_receive(Ref<SpellHealInfo> info);
-	void sapply_passives_heal_deal(Ref<SpellHealInfo> info);
-	void calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
+	void aura_sapply_passives_heal_receive(Ref<SpellHealInfo> info);
+	void aura_sapply_passives_heal_deal(Ref<SpellHealInfo> info);
+	void aura_calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
 	void handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info);
 
-	_FORCE_INLINE_ bool is_talent() const { return _aura_type == SpellEnums::AURA_TYPE_TALENT; }
+	_FORCE_INLINE_ bool aura_is_talent() const { return _aura_type == SpellEnums::AURA_TYPE_TALENT; }
 
-	String get_name_translated() const;
-	String get_description(const int class_level, const int character_level);
-	String _get_description(const int class_level, const int character_level);
+	String aura_get_name_translated() const;
+	String aura_get_description(const int class_level, const int character_level);
+	String _aura_get_description(const int class_level, const int character_level);
 
 	Aura();
 	~Aura();
 
 protected:
-	virtual void _sapply(Ref<AuraApplyInfo> info);
-	virtual void _sdeapply(Ref<AuraData> info);
-	virtual void _sadd(Ref<AuraData> aura);
-	virtual void _sremove(Ref<AuraData> aura);
-	virtual void _removes_expired(Ref<AuraData> aura);
-	virtual void _removes_dispell(Ref<AuraData> aura);
-	virtual void _supdate(Ref<AuraData> aura, float delta);
+	virtual void _aura_sapply(Ref<AuraApplyInfo> info);
+	virtual void _aura_sdeapply(Ref<AuraData> info);
+	virtual void _aura_sadd(Ref<AuraData> aura);
+	virtual void _aura_sremove(Ref<AuraData> aura);
+	virtual void _aura_removes_expired(Ref<AuraData> aura);
+	virtual void _aura_removes_dispell(Ref<AuraData> aura);
+	virtual void _aura_supdate(Ref<AuraData> aura, float delta);
 
 	virtual void _setup_aura_data(Ref<AuraData> data, Ref<AuraApplyInfo> info);
 
-	virtual void _sapply_passives_damage_receive(Ref<SpellDamageInfo> info);
-	virtual void _sapply_passives_damage_deal(Ref<SpellDamageInfo> info);
-	virtual void _calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
+	virtual void _aura_sapply_passives_damage_receive(Ref<SpellDamageInfo> info);
+	virtual void _aura_sapply_passives_damage_deal(Ref<SpellDamageInfo> info);
+	virtual void _aura_calculate_initial_damage(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
 	virtual void _handle_aura_damage(Ref<AuraData> aura_data, Ref<SpellDamageInfo> info);
 
-	virtual void _sapply_passives_heal_receive(Ref<SpellHealInfo> info);
-	virtual void _sapply_passives_heal_deal(Ref<SpellHealInfo> info);
-	virtual void _calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
+	virtual void _aura_sapply_passives_heal_receive(Ref<SpellHealInfo> info);
+	virtual void _aura_sapply_passives_heal_deal(Ref<SpellHealInfo> info);
+	virtual void _aura_calculate_initial_heal(Ref<AuraData> aura_data, Ref<AuraApplyInfo> info);
 	virtual void _handle_aura_heal(Ref<AuraData> aura_data, Ref<SpellHealInfo> info);
 
 	static void _bind_methods();
@@ -402,69 +402,69 @@ private:
 	};
 
 	int _id;
-	float _time;
-	float _tick;
-	Ref<AuraGroup> _aura_group;
-	Ref<Texture> _icon;
-	SpellEnums::AuraType _aura_type;
-	bool _is_debuff;
-	bool _hide;
-	Ref<Spell> _teaches_spell;
-
-	String _text_translation_key;
-	String _text_description;
-	int ability_scale_data_id;
 	int _rank;
-	bool _scale_with_level;
+	Ref<Texture> _icon;
+
+	float _aura_time;
+	float _aura_tick;
+	Ref<AuraGroup> _aura_group;
+
+	SpellEnums::AuraType _aura_type;
+	bool _aura_is_debuff;
+	bool _aura_hide;
+	Ref<Spell> _aura_teaches_spell;
+
+	String _aura_text_translation_key;
+	String _aura_text_description;
+	int _aura_ability_scale_data_id;
+
+	bool _aura_scale_with_level;
 
 	Ref<SpellEffectVisual> _visual_spell_effects;
 
-	bool _damage_enabled;
-	int _damage_type;
-	int _damage_min;
-	int _damage_max;
-	bool _damage_can_crit;
-	Ref<Curve> _damage_scaling_curve;
+	bool _aura_damage_enabled;
+	int _aura_damage_type;
+	int _aura_damage_min;
+	int _aura_damage_max;
+	bool _aura_damage_can_crit;
+	Ref<Curve> _aura_damage_scaling_curve;
 
-	bool _absorb_enabled;
-	int _absorb_damage_type;
-	int _absorb_min;
-	int _absorb_max;
-	Ref<Curve> _absorb_scaling_curve;
+	bool _aura_absorb_enabled;
+	int _aura_absorb_damage_type;
+	int _aura_absorb_min;
+	int _aura_absorb_max;
+	Ref<Curve> _aura_absorb_scaling_curve;
 
-	bool _heal_enabled;
-	int _heal_min;
-	int _heal_max;
-	bool _heal_can_crit;
-	Ref<Curve> _heal_scaling_curve;
+	bool _aura_heal_enabled;
+	int _aura_heal_min;
+	int _aura_heal_max;
+	bool _aura_heal_can_crit;
+	Ref<Curve> _aura_heal_scaling_curve;
 
-	bool _dispell_enabled;
-	int _dispell_count_min;
-	int _dispell_count_max;
-	int _dispell_aura_types;
+	bool _aura_dispell_enabled;
+	int _aura_dispell_count_min;
+	int _aura_dispell_count_max;
+	int _aura_dispell_aura_types;
 
-	Ref<EntityResourceCostData> _resource_cost;
-	Ref<EntityResourceCostData> _resource_give;
+	Ref<EntityResourceCostData> _aura_resource_cost;
+	Ref<EntityResourceCostData> _aura_resource_give;
 
-	int _add_states;
-	int _remove_effects_with_states;
-	int _supress_states;
+	int _aura_add_states;
+	int _aura_remove_effects_with_states;
+	int _aura_supress_states;
 
-	int _trigger_count;
-	AuraTriggerData _trigger_datas[MAX_TRIGGER_DATA];
+	int _aura_trigger_count;
+	AuraTriggerData _aura_trigger_datas[MAX_TRIGGER_DATA];
 
 	int _aura_stat_attribute_count;
 	AuraStatAttribute _aura_stat_attributes[MAX_AURA_STATS];
 
-	bool _diminishing_return_enabled;
-	int _diminishing_return_category;
-
-	static const int DIMINISHING_RETURN_ROOT_AURA_ID = 1;
-	static const int DIMINISHING_RETURN_TIME = 15;
+	bool _aura_diminishing_return_enabled;
+	int _aura_diminishing_return_category;
 
 	//Talent
-	Ref<Aura> _talent_required_talent;
-	Ref<Spell> _talent_required_spell;
+	Ref<Aura> _aura_talent_required_talent;
+	Ref<Spell> _aura_talent_required_spell;
 };
 
 #endif
