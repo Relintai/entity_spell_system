@@ -1936,43 +1936,69 @@ void Spell::_handle_effect(Ref<SpellCastInfo> info) {
 		handle_spell_damage(sdi);
 	}
 
-	for (int i = 0; i < _spells_cast_on_caster.size(); ++i) {
+	if (is_aura()) {
+		Ref<AuraData> ad;
+
+		if (aura_get_aura_group().is_valid()) {
+			ad = info->target_get()->aura_gets_with_group_by_bind(info->caster_get(), aura_get_aura_group());
+		} else {
+			ad = info->target_get()->aura_gets_by(info->caster_get(), get_id());
+		}
+
+		if (ad.is_valid()) {
+			info->target_get()->aura_removes_exact(ad);
+		}
+
 		Ref<AuraApplyInfo> aai;
 		aai.instance();
 
 		aai->caster_set(info->caster_get());
-		aai->target_set(info->caster_get());
+		aai->target_set(info->target_get());
 		aai->spell_scale_set(1);
-		aai->set_aura(_spells_cast_on_caster[i]);
+		aai->set_aura(Ref<Spell>(this));
 
-		_spells_cast_on_caster.get(i)->aura_sapply(aai);
+		aura_sapply(aai);
+	}
+
+	for (int i = 0; i < _spells_cast_on_caster.size(); ++i) {
+		Ref<Spell> spell = _spells_cast_on_caster.get(i);
+
+		if (!spell.is_valid()) {
+			continue;
+		}
+
+		Ref<SpellCastInfo> sci;
+		sci.instance();
+
+		sci->caster_set(info->caster_get());
+		sci->target_set(info->caster_get());
+		sci->has_cast_time_set(spell->cast_time_get_enabled());
+		sci->cast_time_set(spell->cast_time_get());
+		sci->spell_scale_set(info->spell_scale_get());
+		sci->set_spell(spell);
+
+		spell->cast_starts(sci);
 	}
 
 	if (has_target) {
 		for (int i = 0; i < _spells_cast_on_target.size(); ++i) {
-			Ref<Spell> aura = _spells_cast_on_target.get(i);
+			Ref<Spell> spell = _spells_cast_on_target.get(i);
 
-			Ref<AuraData> ad;
-
-			if (aura->aura_get_aura_group().is_valid()) {
-				ad = info->target_get()->aura_gets_with_group_by_bind(info->caster_get(), aura->aura_get_aura_group());
-			} else {
-				ad = info->target_get()->aura_gets_by(info->caster_get(), aura->get_id());
+			if (!spell.is_valid()) {
+				continue;
 			}
 
-			if (ad.is_valid()) {
-				info->target_get()->aura_removes_exact(ad);
-			}
+			Ref<SpellCastInfo> sci;
+			sci.instance();
 
-			Ref<AuraApplyInfo> aai;
-			aai.instance();
+			sci->caster_set(info->caster_get());
+			sci->target_set(info->target_get());
+			sci->has_cast_time_set(spell->cast_time_get_enabled());
+			sci->cast_time_set(spell->cast_time_get());
+			sci->spell_scale_set(info->spell_scale_get());
+			sci->set_spell(spell);
 
-			aai->caster_set(info->caster_get());
-			aai->target_set(info->target_get());
-			aai->spell_scale_set(1);
-			aai->set_aura(aura);
-
-			aura->aura_sapply(aai);
+			spell->cast_starts(sci);
 		}
 	}
 }
