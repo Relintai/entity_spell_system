@@ -26,7 +26,6 @@ SOFTWARE.
 
 #include "../../infos/spell_cast_info.h"
 
-#include "../../data/auras/aura.h"
 #include "../../data/items/item_instance.h"
 #include "../../entities/auras/aura_data.h"
 #include "../../entities/resources/entity_resource.h"

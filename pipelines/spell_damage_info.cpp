@@ -24,7 +24,6 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#include "../data/auras/aura.h"
 #include "../data/spells/spell.h"
 #include "../database/ess_resource_db.h"
 #include "../entities/entity.h"
@@ -132,11 +131,11 @@ void SpellDamageInfo::spell_source_set(const Ref<Spell> &value) {
 		_damage_source_id = value->get_id();
 }
 
-Ref<Aura> SpellDamageInfo::aura_source_get() {
-	return Ref<Aura>(_damage_source);
+Ref<Spell> SpellDamageInfo::aura_source_get() {
+	return Ref<Spell>(_damage_source);
 }
 
-void SpellDamageInfo::aura_source_set(const Ref<Aura> &value) {
+void SpellDamageInfo::aura_source_set(const Ref<Spell> &value) {
 	_damage_source_type = DAMAGE_SOURCE_AURA;
 	_damage_source = value;
 
@@ -174,7 +173,7 @@ void SpellDamageInfo::resolve_references(Node *owner) {
 	if (_damage_source_type == DAMAGE_SOURCE_SPELL) {
 		_damage_source = ESS::get_singleton()->get_resource_db()->get_spell(_damage_source_id);
 	} else if (_damage_source_type == DAMAGE_SOURCE_AURA) {
-		_damage_source = ESS::get_singleton()->get_resource_db()->get_aura(_damage_source_id);
+		_damage_source = ESS::get_singleton()->get_resource_db()->get_spell(_damage_source_id);
 	}
 }
 

@@ -22,7 +22,6 @@ SOFTWARE.
 
 #include "ess_resource_db_folders.h"
 
-#include "../data/auras/aura.h"
 #include "../data/items/craft_recipe.h"
 #include "../data/species/entity_species_data.h"
 #include "../data/spells/spell.h"
@@ -113,8 +112,6 @@ void ESSResourceDBFolders::add_resource(const Ref<Resource> &resource) {
 		add_entity_data(resource);
 	} else if (cls == "Spell") {
 		add_spell(resource);
-	} else if (cls == "Aura") {
-		add_aura(resource);
 	} else if (cls == "CraftRecipe") {
 		add_craft_recipe(resource);
 	} else if (cls == "ItemTemplate") {

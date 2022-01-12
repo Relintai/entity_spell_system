@@ -36,7 +36,6 @@ SOFTWARE.
 
 class Entity;
 class Spell;
-class Aura;
 
 class SpellHealInfo : public Reference {
 	GDCLASS(SpellHealInfo, Reference);
@@ -84,8 +83,8 @@ public:
 	Ref<Spell> spell_source_get();
 	void spell_source_set(const Ref<Spell> &value);
 
-	Ref<Aura> aura_source_get();
-	void aura_source_set(const Ref<Aura> &value);
+	Ref<Spell> aura_source_get();
+	void aura_source_set(const Ref<Spell> &value);
 
 	int source_get_id() const;
 	void source_set_id(const int value);

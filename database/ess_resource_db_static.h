@@ -37,7 +37,6 @@ SOFTWARE.
 
 #include "../defines.h"
 
-class Aura;
 class Spell;
 class EntityData;
 class CraftRecipe;
@@ -89,13 +88,6 @@ public:
 	Vector<Variant> get_spells() const;
 	void set_spells(const Vector<Variant> &data);
 
-	Ref<Aura> get_aura(int aura_id);
-	Ref<Aura> get_aura_index(int index);
-	int get_aura_count();
-	void add_aura(Ref<Aura> aura);
-	Vector<Variant> get_auras() const;
-	void set_auras(const Vector<Variant> &data);
-
 	Ref<CraftRecipe> get_craft_recipe(int craft_id);
 	Ref<CraftRecipe> get_craft_recipe_index(int index);
 	int get_craft_recipe_count();
@@ -132,7 +124,6 @@ private:
 	Vector<Ref<EntitySkillData> > _entity_skills;
 	Vector<Ref<EntityData> > _entity_datas;
 	Vector<Ref<Spell> > _spells;
-	Vector<Ref<Aura> > _auras;
 	Vector<Ref<CraftRecipe> > _craft_recipes;
 	Vector<Ref<ItemTemplate> > _item_templates;
 	Vector<Ref<EntitySpeciesData> > _entity_species_datas;

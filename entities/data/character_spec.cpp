@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "character_spec.h"
 
-#include "../../data/auras/aura.h"
+#include "../../data/spells/spell.h"
 
 #include "../../defines.h"
 
@@ -88,14 +88,14 @@ Vector<Variant> CharacterSpec::get_talents() {
 	return r;
 }
 
-Ref<Aura> CharacterSpec::get_talent(const int row, const int column, const int rank) {
-	ERR_FAIL_INDEX_V(row, _rows.size(), Ref<Aura>());
-	ERR_FAIL_INDEX_V(column, _rows[row].size(), Ref<Aura>());
-	ERR_FAIL_INDEX_V(rank, _rows[row][column].size(), Ref<Aura>());
+Ref<Spell> CharacterSpec::get_talent(const int row, const int column, const int rank) {
+	ERR_FAIL_INDEX_V(row, _rows.size(), Ref<Spell>());
+	ERR_FAIL_INDEX_V(column, _rows[row].size(), Ref<Spell>());
+	ERR_FAIL_INDEX_V(rank, _rows[row][column].size(), Ref<Spell>());
 
 	return _rows[row][column][rank];
 }
-void CharacterSpec::set_talent(const int row, const int column, const int rank, const Ref<Aura> &talent) {
+void CharacterSpec::set_talent(const int row, const int column, const int rank, const Ref<Spell> &talent) {
 	ERR_FAIL_INDEX(row, _rows.size());
 	ERR_FAIL_INDEX(column, _rows[row].size());
 	ERR_FAIL_INDEX(rank, _rows[row][column].size());
@@ -107,7 +107,7 @@ bool CharacterSpec::has_talent_with_id(const int id) {
 	for (int i = 0; i < _rows.size(); ++i) {
 		for (int j = 0; j < _rows[i].size(); ++j) {
 			for (int k = 0; k < _rows[i][j].size(); ++k) {
-				const Ref<Aura> a = _rows[i][j][k];
+				const Ref<Spell> a = _rows[i][j][k];
 
 				if (a.is_valid() && a->get_id() == id)
 					return true;
@@ -118,11 +118,11 @@ bool CharacterSpec::has_talent_with_id(const int id) {
 	return false;
 }
 
-Ref<Aura> CharacterSpec::get_talent_with_id(const int id) {
+Ref<Spell> CharacterSpec::get_talent_with_id(const int id) {
 	for (int i = 0; i < _rows.size(); ++i) {
 		for (int j = 0; j < _rows[i].size(); ++j) {
 			for (int k = 0; k < _rows[i][j].size(); ++k) {
-				const Ref<Aura> a = _rows[i][j][k];
+				const Ref<Spell> a = _rows[i][j][k];
 
 				if (a.is_valid() && a->get_id() == id)
 					return a;
@@ -130,7 +130,7 @@ Ref<Aura> CharacterSpec::get_talent_with_id(const int id) {
 		}
 	}
 
-	return Ref<Aura>();
+	return Ref<Spell>();
 }
 
 CharacterSpec::CharacterSpec() {
@@ -254,7 +254,7 @@ void CharacterSpec::_get_property_list(List<PropertyInfo> *p_list) const {
 			p_list->push_back(PropertyInfo(Variant::INT, "row_" + itos(i) + "/column_" + itos(j) + "/size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_UPDATE_ALL_IF_MODIFIED));
 
 			for (int k = 0; k < _rows[i][j].size(); ++k) {
-				p_list->push_back(PropertyInfo(Variant::OBJECT, "row_" + itos(i) + "/column_" + itos(j) + "/entry_" + itos(k), PROPERTY_HINT_RESOURCE_TYPE, "Aura", PROPERTY_USAGE_DEFAULT));
+				p_list->push_back(PropertyInfo(Variant::OBJECT, "row_" + itos(i) + "/column_" + itos(j) + "/entry_" + itos(k), PROPERTY_HINT_RESOURCE_TYPE, "Spell", PROPERTY_USAGE_DEFAULT));
 			}
 		}
 	}

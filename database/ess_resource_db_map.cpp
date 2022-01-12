@@ -22,7 +22,6 @@ SOFTWARE.
 
 #include "ess_resource_db_map.h"
 
-#include "../data/auras/aura.h"
 #include "../data/items/craft_recipe.h"
 #include "../data/species/entity_species_data.h"
 #include "../data/spells/spell.h"
@@ -179,46 +178,6 @@ void ESSResourceDBMap::set_spells(const Vector<Variant> &data) {
 	}
 }
 
-void ESSResourceDBMap::add_aura(Ref<Aura> aura) {
-	ERR_FAIL_COND(!aura.is_valid());
-
-	_auras.push_back(aura);
-	_aura_map.set(aura->get_id(), aura);
-	_aura_id_to_path.set(aura->get_id(), aura->get_path());
-	_aura_path_to_id.set(aura->get_path(), aura->get_id());
-}
-
-Ref<Aura> ESSResourceDBMap::get_aura(int aura_id) {
-	ERR_FAIL_COND_V_MSG(!_aura_map.has(aura_id), Ref<Aura>(), "Could not find Aura! Id:" + String::num(aura_id));
-
-	return _aura_map.get(aura_id);
-}
-
-Ref<Aura> ESSResourceDBMap::get_aura_index(int index) {
-	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>());
-
-	return _auras.get(index);
-}
-
-int ESSResourceDBMap::get_aura_count() {
-	return _auras.size();
-}
-
-Vector<Variant> ESSResourceDBMap::get_auras() const {
-	VARIANT_ARRAY_GET(_auras);
-}
-void ESSResourceDBMap::set_auras(const Vector<Variant> &data) {
-	_auras.clear();
-	_aura_map.clear();
-	for (int i = 0; i < data.size(); i++) {
-		Ref<Aura> d = Ref<Aura>(data[i]);
-
-		ERR_CONTINUE(!d.is_valid());
-
-		add_aura(d);
-	}
-}
-
 //Craft Data
 void ESSResourceDBMap::add_craft_recipe(Ref<CraftRecipe> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
@@ -351,9 +310,6 @@ ESSResourceDBMap::~ESSResourceDBMap() {
 
 	_spells.clear();
 	_spell_map.clear();
-
-	_auras.clear();
-	_aura_map.clear();
 
 	_craft_recipes.clear();
 	_craft_recipe_map.clear();

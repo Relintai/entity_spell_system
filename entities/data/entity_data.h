@@ -51,7 +51,6 @@ SOFTWARE.
 
 #include "../ai/entity_ai.h"
 
-class Aura;
 class Spell;
 class Entity;
 class CharacterSpec;

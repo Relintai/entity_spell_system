@@ -24,7 +24,6 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#include "../data/auras/aura.h"
 #include "../data/spells/spell.h"
 #include "../database/ess_resource_db.h"
 #include "../entities/entity.h"
@@ -133,11 +132,11 @@ void SpellHealInfo::spell_source_set(const Ref<Spell> &value) {
 		_heal_source_id = value->get_id();
 }
 
-Ref<Aura> SpellHealInfo::aura_source_get() {
-	return Ref<Aura>(_heal_source);
+Ref<Spell> SpellHealInfo::aura_source_get() {
+	return Ref<Spell>(_heal_source);
 }
 
-void SpellHealInfo::aura_source_set(const Ref<Aura> &value) {
+void SpellHealInfo::aura_source_set(const Ref<Spell> &value) {
 	_heal_source_type = HEAL_SOURCE_AURA;
 	_heal_source = value;
 
@@ -175,7 +174,7 @@ void SpellHealInfo::resolve_references(Node *owner) {
 	if (_heal_source_type == HEAL_SOURCE_SPELL) {
 		_heal_source = ESS::get_singleton()->get_resource_db()->get_spell(_heal_source_id);
 	} else if (_heal_source_type == HEAL_SOURCE_AURA) {
-		_heal_source = ESS::get_singleton()->get_resource_db()->get_aura(_heal_source_id);
+		_heal_source = ESS::get_singleton()->get_resource_db()->get_spell(_heal_source_id);
 	}
 }
 
@@ -277,7 +276,7 @@ void SpellHealInfo::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("aura_source_get"), &SpellHealInfo::aura_source_get);
 	ClassDB::bind_method(D_METHOD("aura_source_set", "value"), &SpellHealInfo::aura_source_set);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_source", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "aura_source_set", "aura_source_get");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_source", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "aura_source_set", "aura_source_get");
 
 	ClassDB::bind_method(D_METHOD("source_get_id"), &SpellHealInfo::source_get_id);
 	ClassDB::bind_method(D_METHOD("source_set_id", "value"), &SpellHealInfo::source_set_id);

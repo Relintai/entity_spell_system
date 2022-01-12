@@ -49,7 +49,6 @@ SOFTWARE.
 
 #include "../resources/entity_resource.h"
 
-class Aura;
 class Spell;
 class Entity;
 class ItemInstance;
@@ -128,8 +127,8 @@ public:
 	int get_num_auras();
 	void set_num_auras(int value);
 
-	Ref<Aura> get_aura(int index);
-	void set_aura(int index, Ref<Aura> aura);
+	Ref<Spell> get_aura(int index);
+	void set_aura(int index, Ref<Spell> aura);
 
 	Vector<Variant> get_auras();
 	void set_auras(const Vector<Variant> &auras);
@@ -193,7 +192,7 @@ private:
 	Vector<Ref<CharacterSpec> > _specs;
 	Vector<Ref<Spell> > _spells;
 	Vector<Ref<Spell> > _start_spells;
-	Vector<Ref<Aura> > _auras;
+	Vector<Ref<Spell> > _auras;
 
 	Ref<VendorItemData> _vendor_item_data;
 	Ref<VendorItemData> _spell_train_data;

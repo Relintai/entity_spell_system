@@ -43,7 +43,6 @@ SOFTWARE.
 
 #include "../item_enums.h"
 
-class Aura;
 class Spell;
 class EntityData;
 class CraftRecipe;
@@ -58,8 +57,8 @@ class ESSResourceDB : public Resource {
 	GDCLASS(ESSResourceDB, Resource);
 
 public:
-	Ref<Aura> get_skill_for_armor_type(const int index);
-	void set_skill_for_armor_type(const int index, const Ref<Aura> &aura);
+	Ref<Spell> get_skill_for_armor_type(const int index);
+	void set_skill_for_armor_type(const int index, const Ref<Spell> &aura);
 
 	virtual Ref<EntityResource> get_entity_resource(int class_id) = 0;
 	virtual Ref<EntityResource> get_entity_resource_index(int index) = 0;
@@ -104,17 +103,6 @@ public:
 	Ref<Spell> get_spell_path(const StringName &path);
 	StringName spell_id_to_path(const int id) const;
 	int spell_path_to_id(const StringName &path) const;
-
-	virtual Ref<Aura> get_aura(int aura_id) = 0;
-	virtual Ref<Aura> get_aura_index(int index) = 0;
-	virtual int get_aura_count() = 0;
-	virtual void add_aura(Ref<Aura> aura);
-	virtual Vector<Variant> get_auras() const = 0;
-	virtual void set_auras(const Vector<Variant> &data) = 0;
-
-	Ref<Aura> get_aura_path(const StringName &path);
-	StringName aura_id_to_path(const int id) const;
-	int aura_path_to_id(const StringName &path) const;
 
 	virtual Ref<CraftRecipe> get_craft_recipe(int craft_id) = 0;
 	virtual Ref<CraftRecipe> get_craft_recipe_index(int index) = 0;
@@ -161,7 +149,7 @@ public:
 protected:
 	static void _bind_methods();
 
-	Ref<Aura> _armor_type_skills[ItemEnums::ARMOR_TYPE_MAX];
+	Ref<Spell> _armor_type_skills[ItemEnums::ARMOR_TYPE_MAX];
 
 	HashMap<int, StringName> _entity_resources_id_to_path;
 	HashMap<StringName, int> _entity_resources_path_to_id;
@@ -174,9 +162,6 @@ protected:
 
 	HashMap<int, StringName> _spell_id_to_path;
 	HashMap<StringName, int> _spell_path_to_id;
-
-	HashMap<int, StringName> _aura_id_to_path;
-	HashMap<StringName, int> _aura_path_to_id;
 
 	HashMap<int, StringName> _craft_recipe_id_to_path;
 	HashMap<StringName, int> _craft_recipe_path_to_id;

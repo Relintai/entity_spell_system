@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#include "../../data/auras/aura.h"
+#include "../../data/spells/spell.h"
 #include "../../database/ess_resource_db.h"
 #include "../../singletons/ess.h"
 #include "../entity.h"
@@ -156,7 +156,7 @@ void AuraData::spell_scale_set(float value) {
 	_spell_scale = value;
 }
 
-Ref<Aura> AuraData::get_aura() {
+Ref<Spell> AuraData::get_aura() {
 	//if (_aura == NULL) {
 	//TODO fix!
 	//_aura = Auras::getInstance()->GetData(get_aura_id());
@@ -165,7 +165,7 @@ Ref<Aura> AuraData::get_aura() {
 	return _aura;
 }
 
-void AuraData::set_aura(Ref<Aura> aura) {
+void AuraData::set_aura(Ref<Spell> aura) {
 	_aura = aura;
 
 	if (aura.is_valid())
@@ -325,7 +325,7 @@ void AuraData::_from_dict(const Dictionary &dict) {
 	_aura_group = dict.get("aura_group", 0);
 	//int aura_id = dict.get("aura_id", 0);
 
-	_aura = ESS::get_singleton()->get_resource_db()->get_aura_path(_aura_path);
+	_aura = ESS::get_singleton()->get_resource_db()->get_spell_path(_aura_path);
 
 	_is_timed = dict.get("is_timed", true);
 	_damage = dict.get("damage", 0);

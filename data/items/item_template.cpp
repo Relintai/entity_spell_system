@@ -23,7 +23,6 @@ SOFTWARE.
 #include "item_template.h"
 
 #include "../../entities/data/entity_class_data.h"
-#include "../auras/aura.h"
 #include "../spells/spell.h"
 #include "item_instance.h"
 
@@ -220,22 +219,22 @@ void ItemTemplate::set_num_auras(int value) {
 	_auras.resize(value);
 }
 
-Ref<Aura> ItemTemplate::get_aura(const int index) {
-	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>());
+Ref<Spell> ItemTemplate::get_aura(const int index) {
+	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Spell>());
 
 	return _auras[index];
 }
-void ItemTemplate::set_aura(const int index, const Ref<Aura> &aura) {
+void ItemTemplate::set_aura(const int index, const Ref<Spell> &aura) {
 	ERR_FAIL_INDEX(index, _auras.size());
 
-	_auras.set(index, Ref<Aura>(aura));
+	_auras.set(index, Ref<Spell>(aura));
 }
 
 Vector<Variant> ItemTemplate::get_auras() {
 	VARIANT_ARRAY_GET(_auras);
 }
 void ItemTemplate::set_auras(const Vector<Variant> &auras) {
-	VARIANT_ARRAY_SET(auras, _auras, Aura);
+	VARIANT_ARRAY_SET(auras, _auras, Spell);
 }
 
 //Required Skills
@@ -243,12 +242,12 @@ int ItemTemplate::get_num_required_skills() const {
 	return _required_skills.size();
 }
 
-Ref<Aura> ItemTemplate::get_required_skill(const int index) {
-	ERR_FAIL_INDEX_V(index, _required_skills.size(), Ref<Aura>());
+Ref<Spell> ItemTemplate::get_required_skill(const int index) {
+	ERR_FAIL_INDEX_V(index, _required_skills.size(), Ref<Spell>());
 
 	return _required_skills.get(index);
 }
-void ItemTemplate::set_required_skill(const int index, const Ref<Aura> &aura) {
+void ItemTemplate::set_required_skill(const int index, const Ref<Spell> &aura) {
 	ERR_FAIL_INDEX(index, _required_skills.size());
 
 	_required_skills.set(index, aura);
@@ -258,7 +257,7 @@ Vector<Variant> ItemTemplate::get_required_skills() {
 	VARIANT_ARRAY_GET(_required_skills);
 }
 void ItemTemplate::set_required_skills(const Vector<Variant> &skills) {
-	VARIANT_ARRAY_SET(skills, _required_skills, Aura);
+	VARIANT_ARRAY_SET(skills, _required_skills, Spell);
 }
 
 //use spell
@@ -537,7 +536,7 @@ void ItemTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_auras"), &ItemTemplate::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &ItemTemplate::set_auras);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_auras", "get_auras");
 
 	////    Required Skills    ////
 	ClassDB::bind_method(D_METHOD("get_num_required_skills"), &ItemTemplate::get_num_required_skills);
@@ -547,7 +546,7 @@ void ItemTemplate::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_required_skills"), &ItemTemplate::get_required_skills);
 	ClassDB::bind_method(D_METHOD("set_required_skills", "auras"), &ItemTemplate::set_required_skills);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "required_skills", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_required_skills", "get_required_skills");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "required_skills", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_required_skills", "get_required_skills");
 
 	//Use spell
 	ClassDB::bind_method(D_METHOD("get_use_spell"), &ItemTemplate::get_use_spell);

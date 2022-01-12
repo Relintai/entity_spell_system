@@ -40,7 +40,6 @@ SOFTWARE.
 #include "species_model_data.h"
 
 class Spell;
-class Aura;
 
 class EntitySpeciesData : public Resource {
 	GDCLASS(EntitySpeciesData, Resource);
@@ -78,9 +77,9 @@ public:
 	void set_spells(const Vector<Variant> &spells);
 
 	//Auras
-	Ref<Aura> get_aura(const int index) const;
-	void set_aura(const int index, const Ref<Aura> &aura);
-	void add_aura(const Ref<Aura> &aura);
+	Ref<Spell> get_aura(const int index) const;
+	void set_aura(const int index, const Ref<Spell> &aura);
+	void add_aura(const Ref<Spell> &aura);
 	void remove_aura(const int index);
 
 	int get_aura_count() const;
@@ -104,7 +103,7 @@ private:
 
 	Vector<Ref<SpeciesModelData> > _model_datas;
 	Vector<Ref<Spell> > _spells;
-	Vector<Ref<Aura> > _auras;
+	Vector<Ref<Spell> > _auras;
 };
 
 #endif

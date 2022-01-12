@@ -27,7 +27,6 @@ SOFTWARE.
 
 #include "singletons/ess.h"
 
-#include "data/auras/aura.h"
 #include "data/auras/aura_group.h"
 
 #include "data/items/equipment_data.h"
@@ -153,7 +152,6 @@ void register_entity_spell_system_types() {
 	ClassDB::register_class<CraftRecipe>();
 
 	ClassDB::register_class<Spell>();
-	ClassDB::register_class<Aura>();
 	ClassDB::register_class<AuraGroup>();
 
 	ClassDB::register_class<EntityData>();

@@ -37,7 +37,7 @@ SOFTWARE.
 
 #include "../../spell_enums.h"
 
-class Aura;
+class Spell;
 class Entity;
 
 class AuraData : public Resource {
@@ -68,8 +68,8 @@ public:
 	float spell_scale_get();
 	void spell_scale_set(float value);
 
-	Ref<Aura> get_aura();
-	void set_aura(Ref<Aura> aura);
+	Ref<Spell> get_aura();
+	void set_aura(Ref<Spell> aura);
 
 	void refresh(float remaining);
 
@@ -125,7 +125,7 @@ private:
 	NodePath _caster_path;
 	float _spell_scale;
 	int _aura_group;
-	Ref<Aura> _aura;
+	Ref<Spell> _aura;
 
 	bool _is_timed;
 	int _damage;

@@ -51,7 +51,6 @@ SOFTWARE.
 
 #include "../defines.h"
 
-class Aura;
 class Spell;
 class EntityData;
 class CraftRecipe;

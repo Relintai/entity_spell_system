@@ -39,7 +39,6 @@ SOFTWARE.
 #include "model_visual.h"
 
 class ItemInstance;
-class Aura;
 class Spell;
 class EntityClassData;
 
@@ -122,8 +121,8 @@ public:
 	int get_num_auras() const;
 	void set_num_auras(const int value);
 
-	Ref<Aura> get_aura(const int index);
-	void set_aura(const int index, const Ref<Aura> &aura);
+	Ref<Spell> get_aura(const int index);
+	void set_aura(const int index, const Ref<Spell> &aura);
 
 	Vector<Variant> get_auras();
 	void set_auras(const Vector<Variant> &auras);
@@ -131,8 +130,8 @@ public:
 	//Required Skills
 	int get_num_required_skills() const;
 
-	Ref<Aura> get_required_skill(const int index);
-	void set_required_skill(const int index, const Ref<Aura> &skills);
+	Ref<Spell> get_required_skill(const int index);
+	void set_required_skill(const int index, const Ref<Spell> &skills);
 
 	Vector<Variant> get_required_skills();
 	void set_required_skills(const Vector<Variant> &grants_spells);
@@ -186,7 +185,7 @@ public:
 
 public:
 	struct SkillEntry {
-		Ref<Aura> aura;
+		Ref<Spell> aura;
 		int level;
 	};
 
@@ -253,8 +252,8 @@ private:
 
 	Vector<Ref<Spell> > _teaches_spells;
 	Vector<Ref<Spell> > _grants_spells;
-	Vector<Ref<Aura> > _auras;
-	Vector<Ref<Aura> > _required_skills;
+	Vector<Ref<Spell> > _auras;
+	Vector<Ref<Spell> > _required_skills;
 	Ref<Spell> _use_spell;
 	int _charges;
 	bool _consumed;

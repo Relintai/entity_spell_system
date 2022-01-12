@@ -34,7 +34,7 @@ SOFTWARE.
 #include "../entities/entity.h"
 
 class Entity;
-class Aura;
+class Spell;
 
 class AuraApplyInfo : public Reference {
 	GDCLASS(AuraApplyInfo, Reference);
@@ -51,11 +51,11 @@ public:
 	float spell_scale_get() const;
 	void spell_scale_set(float value);
 
-	Ref<Aura> get_aura() const;
-	void set_aura(Ref<Aura> aura);
+	Ref<Spell> get_aura() const;
+	void set_aura(Ref<Spell> aura);
 
 	AuraApplyInfo();
-	AuraApplyInfo(Entity *_caster, Entity *_target, float _spell_scale, Aura *_aura);
+	AuraApplyInfo(Entity *_caster, Entity *_target, float _spell_scale, Spell *_aura);
 	AuraApplyInfo(Entity *_caster, Entity *_target, float _spell_scale);
 
 protected:
@@ -65,7 +65,7 @@ private:
 	Entity *_caster;
 	Entity *_target;
 	float _spell_scale;
-	Aura *_aura;
+	Spell *_aura;
 };
 
 #endif

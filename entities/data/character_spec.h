@@ -35,7 +35,7 @@ SOFTWARE.
 #include "core/ustring.h"
 #endif
 
-class Aura;
+class Spell;
 
 class CharacterSpec : public Resource {
 	GDCLASS(CharacterSpec, Resource);
@@ -55,11 +55,11 @@ public:
 
 	Vector<Variant> get_talents();
 
-	Ref<Aura> get_talent(const int row, const int column, const int rank);
-	void set_talent(const int row, const int column, const int rank, const Ref<Aura> &talent);
+	Ref<Spell> get_talent(const int row, const int column, const int rank);
+	void set_talent(const int row, const int column, const int rank, const Ref<Spell> &talent);
 
 	bool has_talent_with_id(const int id);
-	Ref<Aura> get_talent_with_id(const int id);
+	Ref<Spell> get_talent_with_id(const int id);
 
 	CharacterSpec();
 	~CharacterSpec();
@@ -72,7 +72,7 @@ protected:
 
 private:
 	int _id;
-	Vector<Vector<Vector<Ref<Aura> > > > _rows;
+	Vector<Vector<Vector<Ref<Spell> > > > _rows;
 };
 
 #endif

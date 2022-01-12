@@ -22,7 +22,6 @@ SOFTWARE.
 
 #include "ess_resource_db_static.h"
 
-#include "../data/auras/aura.h"
 #include "../data/items/craft_recipe.h"
 #include "../data/species/entity_species_data.h"
 #include "../data/spells/spell.h"
@@ -174,44 +173,6 @@ void ESSResourceDBStatic::set_spells(const Vector<Variant> &data) {
 	}
 }
 
-void ESSResourceDBStatic::add_aura(Ref<Aura> aura) {
-	if (_remap_ids && aura.is_valid())
-		aura->set_id(_auras.size());
-
-	_auras.push_back(aura);
-
-	ESSResourceDB::add_aura(aura);
-}
-
-Ref<Aura> ESSResourceDBStatic::get_aura(int id) {
-	if (id < 0 || id >= _auras.size())
-		return Ref<Aura>();
-
-	return _auras.get(id);
-}
-
-Ref<Aura> ESSResourceDBStatic::get_aura_index(int index) {
-	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>());
-
-	return _auras.get(index);
-}
-
-int ESSResourceDBStatic::get_aura_count() {
-	return _auras.size();
-}
-
-Vector<Variant> ESSResourceDBStatic::get_auras() const {
-	VARIANT_ARRAY_GET(_auras);
-}
-void ESSResourceDBStatic::set_auras(const Vector<Variant> &data) {
-	_auras.clear();
-	for (int i = 0; i < data.size(); i++) {
-		Ref<Aura> d = Ref<Aura>(data[i]);
-
-		add_aura(d);
-	}
-}
-
 //Craft Data
 void ESSResourceDBStatic::add_craft_recipe(Ref<CraftRecipe> cda) {
 	if (_remap_ids && cda.is_valid())
@@ -327,7 +288,6 @@ void ESSResourceDBStatic::clear() {
 	_entity_skills.clear();
 	_entity_datas.clear();
 	_spells.clear();
-	_auras.clear();
 	_craft_recipes.clear();
 	_item_templates.clear();
 	_entity_species_datas.clear();
@@ -342,7 +302,6 @@ ESSResourceDBStatic::~ESSResourceDBStatic() {
 	_entity_skills.clear();
 	_entity_datas.clear();
 	_spells.clear();
-	_auras.clear();
 	_craft_recipes.clear();
 	_item_templates.clear();
 	_entity_species_datas.clear();
@@ -357,7 +316,6 @@ void ESSResourceDBStatic::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_skills", PROPERTY_HINT_NONE, "17/17:EntitySkillData", PROPERTY_USAGE_DEFAULT, "EntitySkillData"), "set_entity_skills", "get_entity_skills");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_datas", PROPERTY_HINT_NONE, "17/17:EntityData", PROPERTY_USAGE_DEFAULT, "EntityData"), "set_entity_datas", "get_entity_datas");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_spells", "get_spells");
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "craft_recipes", PROPERTY_HINT_NONE, "17/17:CraftRecipe", PROPERTY_USAGE_DEFAULT, "CraftRecipe"), "set_craft_recipes", "get_craft_recipes");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "item_templates", PROPERTY_HINT_NONE, "17/17:ItemTemplate", PROPERTY_USAGE_DEFAULT, "ItemTemplate"), "set_item_templates", "get_item_templates");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "entity_species_datas", PROPERTY_HINT_NONE, "17/17:EntitySpeciesData", PROPERTY_USAGE_DEFAULT, "EntitySpeciesData"), "set_entity_species_datas", "get_entity_species_datas");

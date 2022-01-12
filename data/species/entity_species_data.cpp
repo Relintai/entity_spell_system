@@ -22,7 +22,6 @@ SOFTWARE.
 
 #include "entity_species_data.h"
 
-#include "../auras/aura.h"
 #include "../spells/spell.h"
 
 #include "../../singletons/ess.h"
@@ -116,17 +115,17 @@ void EntitySpeciesData::set_spells(const Vector<Variant> &spells) {
 
 //Auras
 
-Ref<Aura> EntitySpeciesData::get_aura(const int index) const {
-	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>());
+Ref<Spell> EntitySpeciesData::get_aura(const int index) const {
+	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Spell>());
 
 	return _auras.get(index);
 }
-void EntitySpeciesData::set_aura(const int index, const Ref<Aura> &aura) {
+void EntitySpeciesData::set_aura(const int index, const Ref<Spell> &aura) {
 	ERR_FAIL_INDEX(index, _auras.size());
 
 	_auras.set(index, aura);
 }
-void EntitySpeciesData::add_aura(const Ref<Aura> &aura) {
+void EntitySpeciesData::add_aura(const Ref<Spell> &aura) {
 	_auras.push_back(aura);
 }
 void EntitySpeciesData::remove_aura(const int index) {
@@ -145,7 +144,7 @@ Vector<Variant> EntitySpeciesData::get_auras() {
 void EntitySpeciesData::set_auras(const Vector<Variant> &auras) {
 	_auras.clear();
 	for (int i = 0; i < auras.size(); i++) {
-		Ref<Aura> aura = Ref<Aura>(auras[i]);
+		Ref<Spell> aura = Ref<Spell>(auras[i]);
 
 		_auras.push_back(aura);
 	}
@@ -229,5 +228,5 @@ void EntitySpeciesData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_auras"), &EntitySpeciesData::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &EntitySpeciesData::set_auras);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_auras", "get_auras");
 }

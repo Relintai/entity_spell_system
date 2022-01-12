@@ -22,7 +22,6 @@ SOFTWARE.
 
 #include "entity_data.h"
 
-#include "../../data/auras/aura.h"
 #include "../../data/spells/spell.h"
 #include "../../infos/spell_cast_info.h"
 #include "../entity.h"

@@ -22,7 +22,6 @@ SOFTWARE.
 
 #include "ess_resource_db.h"
 
-#include "../data/auras/aura.h"
 #include "../data/items/craft_recipe.h"
 #include "../data/species/entity_species_data.h"
 #include "../data/spells/spell.h"
@@ -30,12 +29,12 @@ SOFTWARE.
 #include "../entities/resources/entity_resource.h"
 #include "../entities/skills/entity_skill_data.h"
 
-Ref<Aura> ESSResourceDB::get_skill_for_armor_type(const int index) {
-	ERR_FAIL_INDEX_V(index, ItemEnums::ARMOR_TYPE_MAX, Ref<Aura>());
+Ref<Spell> ESSResourceDB::get_skill_for_armor_type(const int index) {
+	ERR_FAIL_INDEX_V(index, ItemEnums::ARMOR_TYPE_MAX, Ref<Spell>());
 
 	return _armor_type_skills[index];
 }
-void ESSResourceDB::set_skill_for_armor_type(const int index, const Ref<Aura> &aura) {
+void ESSResourceDB::set_skill_for_armor_type(const int index, const Ref<Spell> &aura) {
 	ERR_FAIL_INDEX(index, ItemEnums::ARMOR_TYPE_MAX);
 
 	_armor_type_skills[index] = aura;
@@ -87,18 +86,6 @@ void ESSResourceDB::add_spell(Ref<Spell> spell) {
 
 Ref<Spell> ESSResourceDB::get_spell_path(const StringName &path) {
 	return get_spell(spell_path_to_id(path));
-}
-
-void ESSResourceDB::add_aura(Ref<Aura> aura) {
-	if (!aura.is_valid())
-		return;
-
-	_aura_id_to_path.set(aura->get_id(), aura->get_path());
-	_aura_path_to_id.set(aura->get_path(), aura->get_id());
-}
-
-Ref<Aura> ESSResourceDB::get_aura_path(const StringName &path) {
-	return get_aura(aura_path_to_id(path));
 }
 
 void ESSResourceDB::add_craft_recipe(Ref<CraftRecipe> cda) {
@@ -181,17 +168,6 @@ int ESSResourceDB::spell_path_to_id(const StringName &path) const {
 	return _spell_path_to_id[path];
 }
 
-StringName ESSResourceDB::aura_id_to_path(const int id) const {
-	ERR_FAIL_COND_V(!_aura_id_to_path.has(id), StringName());
-
-	return _aura_id_to_path[id];
-}
-int ESSResourceDB::aura_path_to_id(const StringName &path) const {
-	ERR_FAIL_COND_V(!_aura_path_to_id.has(path), 0);
-
-	return _aura_path_to_id[path];
-}
-
 StringName ESSResourceDB::craft_recipe_id_to_path(const int id) const {
 	ERR_FAIL_COND_V(!_craft_recipe_id_to_path.has(id), StringName());
 
@@ -248,10 +224,6 @@ void ESSResourceDB::add_entity_resource_db(Ref<ESSResourceDB> other) {
 		add_spell(other->get_spell_index(i));
 	}
 
-	for (int i = 0; i < other->get_aura_count(); ++i) {
-		add_aura(other->get_aura_index(i));
-	}
-
 	for (int i = 0; i < other->get_craft_recipe_count(); ++i) {
 		add_craft_recipe(other->get_craft_recipe_index(i));
 	}
@@ -286,9 +258,6 @@ ESSResourceDB::~ESSResourceDB() {
 	_spell_path_to_id.clear();
 	_spell_id_to_path.clear();
 
-	_aura_path_to_id.clear();
-	_aura_id_to_path.clear();
-
 	_craft_recipe_path_to_id.clear();
 	_craft_recipe_id_to_path.clear();
 
@@ -304,7 +273,7 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_skill_for_armor_type", "index", "aura"), &ESSResourceDB::set_skill_for_armor_type);
 
 	for (int i = 0; i < ItemEnums::ARMOR_TYPE_MAX; ++i) {
-		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "skill_for_armor_type_" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_skill_for_armor_type", "get_skill_for_armor_type", i);
+		ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "skill_for_armor_type_" + itos(i), PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_skill_for_armor_type", "get_skill_for_armor_type", i);
 	}
 
 	//EntityResource
@@ -354,18 +323,6 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_spell_path", "path"), &ESSResourceDB::get_spell_path);
 	ClassDB::bind_method(D_METHOD("spell_id_to_path", "id"), &ESSResourceDB::spell_id_to_path);
 	ClassDB::bind_method(D_METHOD("spell_path_to_id", "path"), &ESSResourceDB::spell_path_to_id);
-
-	//Aura
-	ClassDB::bind_method(D_METHOD("add_aura", "spell"), &ESSResourceDB::add_aura);
-	ClassDB::bind_method(D_METHOD("get_aura", "id"), &ESSResourceDB::get_aura);
-	ClassDB::bind_method(D_METHOD("get_aura_index", "index"), &ESSResourceDB::get_aura_index);
-	ClassDB::bind_method(D_METHOD("get_aura_count"), &ESSResourceDB::get_aura_count);
-	ClassDB::bind_method(D_METHOD("get_auras"), &ESSResourceDB::get_auras);
-	ClassDB::bind_method(D_METHOD("set_auras", "recipe"), &ESSResourceDB::set_auras);
-
-	ClassDB::bind_method(D_METHOD("get_aura_path", "path"), &ESSResourceDB::get_aura_path);
-	ClassDB::bind_method(D_METHOD("aura_id_to_path", "id"), &ESSResourceDB::aura_id_to_path);
-	ClassDB::bind_method(D_METHOD("aura_path_to_id", "path"), &ESSResourceDB::aura_path_to_id);
 
 	//Craft Data
 	ClassDB::bind_method(D_METHOD("add_craft_recipe", "craft_recipe"), &ESSResourceDB::add_craft_recipe);

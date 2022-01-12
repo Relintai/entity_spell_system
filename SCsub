@@ -23,7 +23,6 @@ sources = [
     "spell_enums.cpp",
     "item_enums.cpp",
 
-    "data/auras/aura.cpp",
     "data/auras/aura_group.cpp",
 
     "data/items/item_instance.cpp",

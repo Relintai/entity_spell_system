@@ -26,7 +26,6 @@ SOFTWARE.
 #include "../singletons/ess.h"
 #include "../singletons/profile_manager.h"
 
-#include "../data/auras/aura.h"
 #include "../data/species/entity_species_data.h"
 #include "../data/spells/spell.h"
 #include "../entities/auras/aura_data.h"
@@ -147,6 +146,20 @@ SOFTWARE.
 	for (int i = 0; i < _s_auras.size(); ++i) {                                        \
 		Ref<AuraData> ad = _s_auras.get(i);                                            \
 		ad->get_aura()->func(what, ad, __VA_ARGS__);                                   \
+	}                                                                                  \
+                                                                                       \
+	emit_signal(signal, what, __VA_ARGS__);
+
+#define NOTIFICATION_AURA_DIFF_IMPLS(func, aura_func, signal, what, ...)                               \
+	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) \
+		_s_ai->func(what, __VA_ARGS__);                                                \
+                                                                                       \
+	if (has_method("_" #func))                                                         \
+		call("_" #func, what, __VA_ARGS__);                                            \
+                                                                                       \
+	for (int i = 0; i < _s_auras.size(); ++i) {                                        \
+		Ref<AuraData> ad = _s_auras.get(i);                                            \
+		ad->get_aura()->aura_func(what, ad, __VA_ARGS__);                                   \
 	}                                                                                  \
                                                                                        \
 	emit_signal(signal, what, __VA_ARGS__);
@@ -723,7 +736,7 @@ void Entity::_setup() {
 	}
 
 	for (int i = 0; i < cc->get_num_auras(); ++i) {
-		Ref<Aura> a = cc->get_aura(i);
+		Ref<Spell> a = cc->get_aura(i);
 
 		if (a.is_valid()) {
 			a->aura_sapply_simple(this, this, 1.0);
@@ -3176,7 +3189,7 @@ void Entity::notification_sheal(int what, Ref<SpellHealInfo> info) {
 void Entity::notification_scast(int what, Ref<SpellCastInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
 
-	NOTIFICATION_AURA_IMPLS(notification_scast, "notification_scast", what, info);
+	NOTIFICATION_AURA_DIFF_IMPLS(notification_scast, notification_aura_scast, "notification_scast", what, info);
 }
 void Entity::notification_sdamage(int what, Ref<SpellDamageInfo> info) {
 	ERR_FAIL_COND(!info.is_valid());
@@ -3241,7 +3254,7 @@ void Entity::son_physics_process(float delta) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->son_physics_process(ad);
+		ad->get_aura()->son_physics_process_aura(ad);
 	}
 
 	if (_physics_process_scis.size() > 0) {
@@ -3677,7 +3690,7 @@ void Entity::notification_ccast(int what, Ref<SpellCastInfo> info) {
 	for (int i = 0; i < _c_auras.size(); ++i) {
 		Ref<AuraData> ad = _c_auras.get(i);
 
-		ad->get_aura()->notification_ccast(what, ad, info);
+		ad->get_aura()->notification_aura_ccast(what, ad, info);
 	}
 
 	if (has_method("_notification_ccast"))
@@ -3742,7 +3755,7 @@ void Entity::cast_starts(Ref<SpellCastInfo> info) {
 	for (int i = 0; i < _s_auras.size(); ++i) {
 		Ref<AuraData> ad = _s_auras.get(i);
 
-		ad->get_aura()->notification_scast(SpellEnums::NOTIFICATION_CAST_STARTED, ad, info);
+		ad->get_aura()->notification_aura_scast(SpellEnums::NOTIFICATION_CAST_STARTED, ad, info);
 	}
 
 	_s_spell_cast_info->is_casting_set(true);
@@ -4746,7 +4759,7 @@ void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_tale
 	ERR_FAIL_COND(!spec.is_valid());
 
 	for (int i = 0; i < spec->get_num_ranks(class_talent_row, class_talent_culomn); ++i) {
-		Ref<Aura> class_talent = spec->get_talent(class_talent_row, class_talent_culomn, i);
+		Ref<Spell> class_talent = spec->get_talent(class_talent_row, class_talent_culomn, i);
 
 		if (!class_talent.is_valid())
 			return;
@@ -4769,7 +4782,7 @@ void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_tale
 		}
 
 		if (i > 0) {
-			Ref<Aura> pt = spec->get_talent(class_talent_row, class_talent_culomn, i - 1);
+			Ref<Spell> pt = spec->get_talent(class_talent_row, class_talent_culomn, i - 1);
 
 			for (int j = 0; j < aura_gets_count(); ++j) {
 				Ref<AuraData> ad = aura_gets(j);
@@ -4993,7 +5006,7 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 	ERR_FAIL_COND(!spec.is_valid());
 
 	for (int i = 0; i < spec->get_num_ranks(character_talent_row, character_talent_culomn); ++i) {
-		Ref<Aura> character_talent = spec->get_talent(character_talent_row, character_talent_culomn, i);
+		Ref<Spell> character_talent = spec->get_talent(character_talent_row, character_talent_culomn, i);
 
 		if (!character_talent.is_valid())
 			return;
@@ -5016,7 +5029,7 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 		}
 
 		if (i > 0) {
-			Ref<Aura> pt = spec->get_talent(character_talent_row, character_talent_culomn, i - 1);
+			Ref<Spell> pt = spec->get_talent(character_talent_row, character_talent_culomn, i - 1);
 
 			for (int j = 0; j < aura_gets_count(); ++j) {
 				Ref<AuraData> ad = aura_gets(j);

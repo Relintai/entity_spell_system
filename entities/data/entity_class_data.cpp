@@ -22,7 +22,6 @@ SOFTWARE.
 
 #include "entity_class_data.h"
 
-#include "../../data/auras/aura.h"
 #include "../../data/items/craft_recipe.h"
 #include "../../data/items/item_instance.h"
 #include "../../data/spells/spell.h"
@@ -216,12 +215,12 @@ void EntityClassData::set_num_auras(int value) {
 	_auras.resize(value);
 }
 
-Ref<Aura> EntityClassData::get_aura(int index) {
-	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Aura>());
+Ref<Spell> EntityClassData::get_aura(int index) {
+	ERR_FAIL_INDEX_V(index, _auras.size(), Ref<Spell>());
 
 	return _auras[index];
 }
-void EntityClassData::set_aura(int index, Ref<Aura> aura) {
+void EntityClassData::set_aura(int index, Ref<Spell> aura) {
 	ERR_FAIL_INDEX(index, _auras.size());
 
 	_auras.set(index, aura);
@@ -233,7 +232,7 @@ Vector<Variant> EntityClassData::get_auras() {
 void EntityClassData::set_auras(const Vector<Variant> &auras) {
 	_auras.clear();
 	for (int i = 0; i < auras.size(); i++) {
-		Ref<Aura> aura = Ref<Aura>(auras[i]);
+		Ref<Spell> aura = Ref<Spell>(auras[i]);
 
 		_auras.push_back(aura);
 	}
@@ -462,7 +461,7 @@ void EntityClassData::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_auras"), &EntityClassData::get_auras);
 	ClassDB::bind_method(D_METHOD("set_auras", "auras"), &EntityClassData::set_auras);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "set_auras", "get_auras");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "auras", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "set_auras", "get_auras");
 
 	//Vendor
 	ClassDB::bind_method(D_METHOD("get_vendor_item_data"), &EntityClassData::get_vendor_item_data);

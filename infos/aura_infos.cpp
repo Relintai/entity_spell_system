@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "aura_infos.h"
 
-#include "../data/auras/aura.h"
+#include "../data/spells/spell.h"
 
 Entity *AuraApplyInfo::caster_get() const {
 	return _caster;
@@ -76,11 +76,11 @@ void AuraApplyInfo::spell_scale_set(float value) {
 	_spell_scale = value;
 }
 
-Ref<Aura> AuraApplyInfo::get_aura() const {
-	return Ref<Aura>(_aura);
+Ref<Spell> AuraApplyInfo::get_aura() const {
+	return Ref<Spell>(_aura);
 }
 
-void AuraApplyInfo::set_aura(Ref<Aura> aura) {
+void AuraApplyInfo::set_aura(Ref<Spell> aura) {
 	_aura = (*aura);
 }
 
@@ -91,7 +91,7 @@ AuraApplyInfo::AuraApplyInfo() {
 	_aura = NULL;
 }
 
-AuraApplyInfo::AuraApplyInfo(Entity *caster, Entity *target, float spell_scale, Aura *aura) {
+AuraApplyInfo::AuraApplyInfo(Entity *caster, Entity *target, float spell_scale, Spell *aura) {
 	_caster = caster;
 	_target = target;
 	_spell_scale = spell_scale;
@@ -120,5 +120,5 @@ void AuraApplyInfo::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_aura"), &AuraApplyInfo::get_aura);
 	ClassDB::bind_method(D_METHOD("set_aura", "aura"), &AuraApplyInfo::set_aura);
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura", PROPERTY_HINT_RESOURCE_TYPE, "Aura"), "set_aura", "get_aura");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura", PROPERTY_HINT_RESOURCE_TYPE, "Spell"), "set_aura", "get_aura");
 }
