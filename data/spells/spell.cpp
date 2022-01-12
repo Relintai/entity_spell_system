@@ -1213,11 +1213,6 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("spells_cast_on_learn_set", "spells"), &Spell::spells_cast_on_learn_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_learn", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "spells_cast_on_learn_set", "spells_cast_on_learn_get");
 	
-	//Temporary
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "caster_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "spells_cast_on_caster_set", "spells_cast_on_caster_get");
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "target_aura_applys", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "spells_cast_on_target_set", "spells_cast_on_target_get");
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "on_learn_auras", PROPERTY_HINT_NONE, "17/17:Aura", PROPERTY_USAGE_DEFAULT, "Aura"), "spells_cast_on_learn_set", "spells_cast_on_learn_get");
-
 	ADD_GROUP("Texts", "text");
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_get_description", PropertyInfo(Variant::INT, "class_level"), PropertyInfo(Variant::INT, "character_level")));
 
