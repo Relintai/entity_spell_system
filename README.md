@@ -16,7 +16,7 @@ This module is developed with the 3.x branch of godot, usually at the newest rev
 3.3 - Will more likely work, might need smaller changes by now. (TODO check.)\
 3.4 - Should work without any issues. (TODO check.)\
 3.x - Works.\
-4.0 - Have been fixing support from time to time. Currently it won't build on the latest master, and it will take considerable amount of work to get it to work again after the virtual method binding rework. It will be done eventually, but it will take time. [Here](https://github.com/godotengine/godot/commit/b7e10141197fdd9b0dbc4cfa7890329510d36540))'s the last know-to-work commit.
+4.0 - Have been fixing support from time to time. Currently it won't build on the latest master, and it will take considerable amount of work to get it to work again after the virtual method binding rework. It will be done eventually, but it will take time. [Here](https://github.com/godotengine/godot/commit/b7e10141197fdd9b0dbc4cfa7890329510d36540)'s the last know-to-work commit.
 
 ## Project setup tl;dr
 
