@@ -8,8 +8,15 @@ The module supports networking. It is designed to be authoritative, so players s
 
 It is a c++ engine module, which means you will need to compile it into godot. (See compiling)
 
-It supports both godot 3.2 and 4.0 (master [last tested commit](https://github.com/godotengine/godot/commit/b7e10141197fdd9b0dbc4cfa7890329510d36540)). Note that since 4.0 is still in very early stages I only 
-check whether it works from time to time.
+## Godot Version Support
+
+This module is developed with the 3.x branch of godot, usually at the newest revisions.
+
+3.2 - Will likely work, probably needs changes by now. (TODO check.)\
+3.3 - Will more likely work, might need smaller changes by now. (TODO check.)\
+3.4 - Should work without any issues. (TODO check.)\
+3.x - Works.\
+4.0 - Have been fixing support from time to time. Currently it won't build on the latest master, and it will take considerable amount of work to get it to work again after the virtual method binding rework. It will be done eventually, but it will take time. [Here](https://github.com/godotengine/godot/commit/b7e10141197fdd9b0dbc4cfa7890329510d36540))'s the last know-to-work commit.
 
 ## Project setup tl;dr
 
