@@ -568,12 +568,12 @@ https://github.com/Relintai/broken_seals_2d.git
 
 ## Compiling
 
-First make sure that you can compile godot. See the official docs: https://docs.godotengine.org/en/3.2/development/compiling/index.html
+First make sure that you can compile godot. See the official docs: https://docs.godotengine.org/en/3.x/development/compiling/index.html
 
 1. Clone the engine if you haven't already:
 
-If you want Godot 3.2:
-```git clone -b 3.2 https://github.com/godotengine/godot.git godot```
+If you want Godot 3.x:
+```git clone -b 3.x https://github.com/godotengine/godot.git godot```
 
 If you want Godot 4.0:
 ```git clone https://github.com/godotengine/godot.git godot```
