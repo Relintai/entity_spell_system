@@ -233,7 +233,7 @@ If you want to merge meshes this is where you can implement it.
 
 The 3d variant.
 
-[Complex 3d skeleton scene](https://github.com/Relintai/broken_seals/blob/master/game/modules/species/Human/models/armature_huf.tscn) \
+[Complex 3d skeleton scene](https://github.com/Relintai/broken_seals/blob/master/game/models/entities/human/models/armature_huf.tscn) \
 [Complex 3d skeleton script](https://github.com/Relintai/broken_seals/blob/master/game/player/CharacterSkeletonGD.gd)
 
 #### CharacterSkeleton2D
@@ -282,7 +282,7 @@ Bodies does not need to handle the graphics themselves (`ModelVisualEntries` for
 if you want to), but the `CharacterSkeleton` classes exist for that purpose.
 
 [Complex 3d body script](https://github.com/Relintai/broken_seals/blob/master/game/player/Body.gd) \
-[Complex 3d body scene](https://github.com/Relintai/broken_seals/blob/master/game/modules/species/Human/models/HumanFemale.tscn)
+[Complex 3d body scene](https://github.com/Relintai/broken_seals/blob/master/game/models/entities/human/models/HumanFemale.tscn)
 
 [Simple 2d roguelike body script](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/player/Body.gd) \
 [Simple 2d roguelike body scene](https://github.com/Relintai/broken_seals_roguelike/blob/master/game/player/Body.gd)
@@ -481,26 +481,26 @@ func sapply_aura() -> void:
 
 #### UI
 
-[Complete UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui)
+[Complete UI Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player)
 
-[Player UI Core Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player_ui)
+[Player UI Core Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/player_ui)
 
-[Aura Frame Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/auraframe) \
-[Castbar Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/castbar) \
-[Unitframe Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/unitframes)
+[Aura Frame Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/auraframe) \
+[Castbar Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/castbar) \
+[Unitframe Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/unitframes)
 
-[Actionbar Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/actionbars)
+[Actionbar Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/actionbars)
 
-[Character Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/character) \
-[Inventory Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/bags) \
-[Crafting Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/crafting) \
-[Loot Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/loot_window) \
-[Talent Window Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/talents) \
-[Spellbook Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/spellbook)  \
-[Vendor Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/vendor_window) \
-[Trainer Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/trainer)
+[Character Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/character) \
+[Inventory Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/player/ui/bags) \
+[Crafting Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/crafting) \
+[Loot Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/loot_window) \
+[Talent Window Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/talents) \
+[Spellbook Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/spellbook)  \
+[Vendor Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/vendor_window) \
+[Trainer Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/trainer)
 
-[3D Nameplate Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/nameplates) \
+[3D Nameplate Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/world/nameplates) \
 [2D Nameplate Implementation](https://github.com/Relintai/broken_seals_roguelike/tree/master/game/ui/nameplates)
 
 ### Infos / Pipelines
@@ -544,7 +544,7 @@ using the `void _create_item_instance()` virtual.
 Looting can be implemented using `Entity`'s target bag functionality.
 
 You can see an example implementation [here](https://github.com/Relintai/broken_seals/blob/master/game/scripts/entities/EntityDataGD.gd). \
-And an example ui implementation [here](https://github.com/Relintai/broken_seals/tree/master/game/ui/loot_window).
+And an example ui implementation [here](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/loot_window).
 
 ## XP
 
