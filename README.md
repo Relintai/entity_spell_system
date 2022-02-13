@@ -492,7 +492,7 @@ func sapply_aura() -> void:
 [Actionbar Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/actionbars)
 
 [Character Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/character) \
-[Inventory Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/player/ui/bags) \
+[Inventory Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/bags) \
 [Crafting Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/crafting) \
 [Loot Window Implementation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/loot_window) \
 [Talent Window Implemetation](https://github.com/Relintai/broken_seals/tree/master/game/ui/player/talents) \
