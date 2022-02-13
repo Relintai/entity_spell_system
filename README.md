@@ -171,7 +171,7 @@ The added resource's index will be set as it's id.
 This is useful for modding support, as you can just collect every mod's resource dbs, and add them to a static db,
 and with this option enabled the ids will not clash.
 
-You can see an example of this [here](https://github.com/Relintai/broken_seals/blob/master/game/scenes/MainScene.gd).
+You can see an example of this [here](https://github.com/Relintai/broken_seals/blob/master/game/scripts/game_modules/DataManager.gd).
 
 ### ESSResourceDBMap
 
