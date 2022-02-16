@@ -93,8 +93,8 @@ Rect2 ESSMaterialCachePCM::texture_get_uv_rect(const Ref<Texture> &texture) {
 		return Rect2(0, 0, 1, 1);
 	}
 
-	float w = image->get_width();
-	float h = image->get_height();
+	float w = tex->get_width();
+	float h = tex->get_height();
 
 	region.position = Size2(region.position.x / w, region.position.y / h);
 	region.size = Size2(region.size.x / w, region.size.y / h);
