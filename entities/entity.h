@@ -37,8 +37,6 @@ SOFTWARE.
 
 #include "core/io/networked_multiplayer_peer.h"
 
-#include "scene/main/node.h"
-
 #include "../data/items/craft_recipe.h"
 #include "../data/items/item_instance.h"
 #include "../data/spells/spell.h"
@@ -68,6 +66,22 @@ SOFTWARE.
 #include "../defines.h"
 
 #include spatial_h_path
+
+#ifndef ESS_ENTITY_BASE_CLASS
+// By default Entity inherits from Node
+#define ENTITY_BASE_CLASS Node
+#include "scene/main/node.h"
+#else
+// We turn the ESS_ENTITY_BASE_CLASS define into a text replace macro
+#define ENTITY_BASE_CLASS ESS_ENTITY_BASE_CLASS
+
+// Abuse pre-processor macros to quote what's inside the ESS_ENTITY_BASE_CLASS_INCLUDE define
+#define _ENTITY_BASE_CLASS_QUOTE(x) #x
+#define _ENTITY_BASE_CLASS_QUOTE_H(x) _ENTITY_BASE_CLASS_QUOTE(x)
+
+#include _ENTITY_BASE_CLASS_QUOTE_H(ESS_ENTITY_BASE_CLASS_INCLUDE)
+#endif
+
 
 class EntityData;
 class AuraData;
@@ -236,8 +250,8 @@ struct EntityStat {
 	}                                                                                            \
 	variable = value;
 
-class Entity : public Node {
-	GDCLASS(Entity, Node);
+class Entity : public ENTITY_BASE_CLASS {
+	GDCLASS(Entity, ENTITY_BASE_CLASS);
 
 public:
 	////    Base    ////
