@@ -5,14 +5,7 @@ def can_build(env, platform):
 
 
 def configure(env):
-    from SCons.Script import Variables, Help
-
-    envvars = Variables()
-    envvars.Add("ess_entity_base_class", "What class Entity should inherit from. Default is Node.")
-    envvars.Add("ess_entity_base_class_include", "What The include for that class. Default is scene/main/node.h")
-
-    envvars.Update(env)
-    Help(envvars.GenerateHelpText(env))
+	pass
 
 
 def get_doc_classes():

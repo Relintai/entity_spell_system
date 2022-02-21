@@ -4,10 +4,6 @@ Import('env')
 
 module_env = env.Clone()
 
-if "ess_entity_base_class" in module_env:
-    module_env.Append(CPPDEFINES=[('ESS_ENTITY_BASE_CLASS', module_env["ess_entity_base_class"])])
-    module_env.Append(CPPDEFINES=[('ESS_ENTITY_BASE_CLASS_INCLUDE', module_env["ess_entity_base_class_include"])])
-
 if os.path.isdir('../mesh_data_resource'):
     module_env.Append(CPPDEFINES=['MESH_DATA_RESOURCE_PRESENT'])
 
