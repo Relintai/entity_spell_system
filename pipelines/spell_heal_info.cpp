@@ -107,10 +107,10 @@ void SpellHealInfo::receiver_set_bind(Node *value) {
 	_receiver = e;
 }
 
-Ref<Reference> SpellHealInfo::source_get() {
+Ref<RefCounted> SpellHealInfo::source_get() {
 	return _heal_source;
 }
-void SpellHealInfo::source_set(Ref<Reference> value) {
+void SpellHealInfo::source_set(Ref<RefCounted> value) {
 	_heal_source_type = HEAL_SOURCE_UNKNOWN;
 	_heal_source = value;
 	_heal_source_id = 0;

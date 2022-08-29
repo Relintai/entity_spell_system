@@ -201,7 +201,7 @@ void CharacterSkeleton2D::remove_model_visual(Ref<ModelVisual> vis) {
 			remove_model_visual_entry(vis, e);
 	}
 
-	_model_visuals.remove(index);
+	_model_visuals.remove_at(index);
 
 	set_process(true);
 	_model_dirty = true;
@@ -212,7 +212,7 @@ void CharacterSkeleton2D::remove_model_visual_index(int index) {
 	set_process(true);
 	_model_dirty = true;
 
-	_model_visuals.remove(index);
+	_model_visuals.remove_at(index);
 }
 Ref<ModelVisual> CharacterSkeleton2D::get_model_visual(int index) {
 	ERR_FAIL_INDEX_V(index, _model_visuals.size(), Ref<ModelVisual>());
@@ -268,7 +268,7 @@ void CharacterSkeleton2D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 	}
 
 	Ref<SkeletonModelEntry> e;
-	e.instance();
+	e.instantiate();
 
 	e->set_priority(vis->get_layer());
 	//e->set_color(ive->get_color());
@@ -551,7 +551,7 @@ void CharacterSkeleton2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_model_visual_count"), &CharacterSkeleton2D::get_model_visual_count);
 	ClassDB::bind_method(D_METHOD("clear_model_visuals"), &CharacterSkeleton2D::clear_model_visuals);
 
-	BIND_VMETHOD(MethodInfo("_build_model"));
+	D_METHOD("_build_model");
 
 	ClassDB::bind_method(D_METHOD("get_model_dirty"), &CharacterSkeleton2D::get_model_dirty);
 	ClassDB::bind_method(D_METHOD("set_model_dirty", "value"), &CharacterSkeleton2D::set_model_dirty);
@@ -586,7 +586,7 @@ void CharacterSkeleton2D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("attach_point_count"), &CharacterSkeleton2D::attach_point_count);
 
-	BIND_VMETHOD(MethodInfo("_common_attach_point_index_get", PropertyInfo(Variant::INT, "point", PROPERTY_HINT_NONE, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS)));
+	D_METHOD("_common_attach_point_index_get", "point", PROPERTY_HINT_NONE, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS);
 
 	ClassDB::bind_method(D_METHOD("common_attach_point_node_get", "point"), &CharacterSkeleton2D::common_attach_point_node_get);
 	ClassDB::bind_method(D_METHOD("common_attach_point_add", "point", "scene"), &CharacterSkeleton2D::common_attach_point_add);

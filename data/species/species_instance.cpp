@@ -171,8 +171,8 @@ void SpeciesInstance::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "head_index"), "set_head_index", "get_head_index");
 
 	//Serialization
-	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	D_METHOD("_from_dict", "dict");
+	D_METHOD("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &SpeciesInstance::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &SpeciesInstance::to_dict);

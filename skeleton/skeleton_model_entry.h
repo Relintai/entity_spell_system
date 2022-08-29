@@ -26,15 +26,15 @@ SOFTWARE.
 #include "core/version.h"
 
 #if VERSION_MAJOR > 3
-#include "core/object/reference.h"
+#include "core/object/ref_counted.h"
 #else
 #include "core/reference.h"
 #endif
 
 #include "../data/items/model_visual_entry.h"
 
-class SkeletonModelEntry : public Reference {
-	GDCLASS(SkeletonModelEntry, Reference);
+class SkeletonModelEntry : public RefCounted {
+	GDCLASS(SkeletonModelEntry, RefCounted);
 
 public:
 	int get_count() const;

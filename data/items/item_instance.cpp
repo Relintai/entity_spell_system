@@ -98,7 +98,7 @@ void ItemInstance::add_item_stat_modifier(const int stat_id, const int base_mod,
 void ItemInstance::remove_item_stat_modifier(const int index) {
 	ERR_FAIL_INDEX(index, _modifiers.size());
 
-	_modifiers.remove(index);
+	_modifiers.remove_at(index);
 }
 void ItemInstance::clear_item_stat_modifiers() {
 	_modifiers.clear();
@@ -271,12 +271,12 @@ void ItemInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("stat_modifiers_set", "mods"), &ItemInstance::stat_modifiers_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "stat_modifiers", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT, ""), "stat_modifiers_set", "stat_modifiers_get");
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_get_description"));
+	D_METHOD("_get_description", "desc");
 	ClassDB::bind_method(D_METHOD("get_description"), &ItemInstance::get_description);
 
 	//Serialization
-	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	D_METHOD("_from_dict", "dict");
+	D_METHOD("_to_dict", "dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &ItemInstance::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &ItemInstance::to_dict);

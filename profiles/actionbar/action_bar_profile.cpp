@@ -99,7 +99,7 @@ Ref<ActionBarEntry> ActionBarProfile::get_action_bar(int index) {
 void ActionBarProfile::remove_action_bar(const int index) {
 	_action_bars.get(index)->set_owner(NULL);
 
-	_action_bars.remove(index);
+	_action_bars.remove_at(index);
 
 	emit_change();
 }
@@ -152,7 +152,7 @@ void ActionBarProfile::from_dict(const Dictionary &dict) {
 
 	for (int i = 0; i < arr.size(); ++i) {
 		Ref<ActionBarEntry> e;
-		e.instance();
+		e.instantiate();
 
 		e->from_dict(arr.get(i));
 		e->set_owner(this);

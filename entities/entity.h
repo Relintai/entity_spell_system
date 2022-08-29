@@ -35,7 +35,7 @@ SOFTWARE.
 #include "core/vector.h"
 #endif
 
-#include "core/io/networked_multiplayer_peer.h"
+#include "scene/main/multiplayer_peer.h"
 
 #include "scene/main/node.h"
 
@@ -44,7 +44,7 @@ SOFTWARE.
 #include "../data/spells/spell.h"
 
 #include "core/io/json.h"
-#include "core/math/transform.h"
+#include "core/math/transform_3d.h"
 #include "core/math/transform_2d.h"
 
 #include "../data/spells/spell.h"
@@ -258,8 +258,8 @@ public:
 	void set_character_skeleton(Node *skeleton);
 
 	//Transforms
-	Transform get_transform_3d(bool only_stored = false) const;
-	void set_transform_3d(const Transform &transform, bool only_stored = false);
+	Transform3D get_transform_3d(bool only_stored = false) const;
+	void set_transform_3d(const Transform3D &transform, bool only_stored = false);
 
 	Transform2D get_transform_2d(bool only_stored = false) const;
 	void set_transform_2d(const Transform2D &transform, bool only_stored = false);
@@ -1154,7 +1154,7 @@ private:
 
 	////    Transforms    ////
 
-	Transform _transform;
+	Transform3D _transform;
 	Transform2D _transform_2d;
 
 	////    PlayerData    ////

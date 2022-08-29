@@ -39,8 +39,8 @@ class Player;
 class itemTemplate;
 class ItemInstance;
 
-class Inventory : public Reference {
-	GDCLASS(Inventory, Reference);
+class Inventory : public RefCounted {
+	GDCLASS(Inventory, RefCounted);
 
 public:
 	int get_allowed_item_types() const;

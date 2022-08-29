@@ -98,11 +98,11 @@ public:
 	int bone_additional_mesh_transform_bone_index_get(const int index) const;
 	void bone_additional_mesh_transform_bone_index_set(const int index, const int bone_index);
 
-	Transform bone_additional_mesh_transform_transform_get(const int index) const;
-	void bone_additional_mesh_transform_transform_set(const int index, const Transform &transform);
+	Transform3D bone_additional_mesh_transform_transform_get(const int index) const;
+	void bone_additional_mesh_transform_transform_set(const int index, const Transform3D &transform);
 
-	Transform bone_additional_mesh_transform_user_transform_get(const int index) const;
-	void bone_additional_mesh_transform_user_transform_set(const int index, const Transform &transform);
+	Transform3D bone_additional_mesh_transform_user_transform_get(const int index) const;
+	void bone_additional_mesh_transform_user_transform_set(const int index, const Transform3D &transform);
 
 	void bone_additional_mesh_transform_set_count(const int size);
 	int bone_additional_mesh_transform_get_count() const;
@@ -161,8 +161,8 @@ protected:
 
 	struct BoneModelAdditionalMeshTransforms {
 		int bone_index;
-		Transform transform;
-		Transform user_transform;
+		Transform3D transform;
+		Transform3D user_transform;
 
 		BoneModelAdditionalMeshTransforms() {
 			bone_index = 0;

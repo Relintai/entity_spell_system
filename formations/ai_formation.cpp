@@ -75,8 +75,8 @@ AIFormation::AIFormation() {
 }
 
 void AIFormation::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_on_set_owner"));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::VECTOR3, "pos"), "_get_position", PropertyInfo(Variant::INT, "slot_index")));
+	D_METHOD("_on_set_owner");
+	D_METHOD("_get_position", "slot_index");
 
 	ClassDB::bind_method(D_METHOD("get_owner"), &AIFormation::get_owner);
 	ClassDB::bind_method(D_METHOD("set_owner", "entity"), &AIFormation::set_owner_bind);

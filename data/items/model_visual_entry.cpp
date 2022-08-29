@@ -106,12 +106,12 @@ void ModelVisualEntry::set_attachment(const int index, const Ref<PackedScene> &a
 	_entries.write[index].attachment = attachment;
 }
 
-Transform ModelVisualEntry::get_transform(const int index) const {
-	ERR_FAIL_INDEX_V(index, _entries.size(), Transform());
+Transform3D ModelVisualEntry::get_transform(const int index) const {
+	ERR_FAIL_INDEX_V(index, _entries.size(), Transform3D());
 
 	return _entries[index].transform;
 }
-void ModelVisualEntry::set_transform(const int index, const Transform &transform) {
+void ModelVisualEntry::set_transform(const int index, const Transform3D &transform) {
 	ERR_FAIL_INDEX(index, _entries.size());
 
 	_entries.write[index].transform = transform;
@@ -228,7 +228,7 @@ void ModelVisualEntry::_get_property_list(List<PropertyInfo> *p_list) const {
 		} else {
 			p_list->push_back(PropertyInfo(Variant::OBJECT, "entry_" + itos(i) + "/attachment", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
 		}
-		p_list->push_back(PropertyInfo(Variant::TRANSFORM, "entry_" + itos(i) + "/transform", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
+		p_list->push_back(PropertyInfo(Variant::TRANSFORM3D, "entry_" + itos(i) + "/transform", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL));
 	}
 }
 

@@ -83,7 +83,7 @@ void ProfileManager::clears_player_profiles() {
 	_s_player_profiles.clear();
 }
 void ProfileManager::removes_player_profile(const int index) {
-	_s_player_profiles.remove(index);
+	_s_player_profiles.remove_at(index);
 }
 
 Ref<PlayerProfile> ProfileManager::getc_player_profile() {
@@ -186,7 +186,7 @@ void ProfileManager::from_dict(const Dictionary &dict) {
 
 	for (int i = 0; i < arr.size(); ++i) {
 		Ref<PlayerProfile> c;
-		c.instance();
+		c.instantiate();
 
 		c->from_dict(arr.get(i));
 
@@ -209,7 +209,7 @@ ProfileManager::ProfileManager() {
 	_automatic_save = GLOBAL_DEF("ess/profiles/automatic_save", false);
 	_save_file = GLOBAL_DEF("ess/profiles/save_file", "user://profile.save");
 
-	_c_player_profile.instance();
+	_c_player_profile.instantiate();
 
 	_c_player_profile->CONNECT("changed", this, ProfileManager, _on_player_profile_changed);
 
@@ -234,8 +234,8 @@ void ProfileManager::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("keybinds_changed"));
 	ADD_SIGNAL(MethodInfo("changed"));
 
-	BIND_VMETHOD(MethodInfo("_save"));
-	BIND_VMETHOD(MethodInfo("_load"));
+	D_METHOD("_save");
+	D_METHOD("_load");
 
 	ClassDB::bind_method(D_METHOD("_save"), &ProfileManager::_save);
 	ClassDB::bind_method(D_METHOD("_load"), &ProfileManager::_load);

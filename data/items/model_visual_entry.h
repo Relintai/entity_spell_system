@@ -88,8 +88,8 @@ public:
 	Ref<PackedScene> get_attachment(const int index);
 	void set_attachment(const int index, const Ref<PackedScene> &attachment);
 
-	Transform get_transform(const int index) const;
-	void set_transform(const int index, const Transform &transform);
+	Transform3D get_transform(const int index) const;
+	void set_transform(const int index, const Transform3D &transform);
 
 	int get_size() const;
 	void set_size(const int value);
@@ -106,7 +106,7 @@ protected:
 		Color color;
 
 		Ref<PackedScene> attachment;
-		Transform transform;
+		Transform3D transform;
 
 		MVEE() {
 			color = Color(1, 1, 1, 1);

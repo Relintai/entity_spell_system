@@ -435,25 +435,25 @@ void EntityResource::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("mods_changed"), &EntityResource::mods_changed);
 
-	BIND_VMETHOD(MethodInfo("_notification_sstat_changed", PropertyInfo(Variant::INT, "statid"), PropertyInfo(Variant::REAL, "curent")));
-	BIND_VMETHOD(MethodInfo("_notification_cstat_changed", PropertyInfo(Variant::INT, "statid"), PropertyInfo(Variant::REAL, "curent")));
+	D_METHOD("_notification_sstat_changed", "statid", "curent");
+	D_METHOD("_notification_cstat_changed", "statid", "curent");
 
-	BIND_VMETHOD(MethodInfo("_ons_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	BIND_VMETHOD(MethodInfo("_onc_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	D_METHOD("_ons_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
+	D_METHOD("_onc_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
 
-	BIND_VMETHOD(MethodInfo("_ons_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	BIND_VMETHOD(MethodInfo("_onc_added", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	D_METHOD("_ons_added", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
+	D_METHOD("_onc_added", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
 
-	BIND_VMETHOD(MethodInfo("_process_server", PropertyInfo(Variant::REAL, "delta")));
-	BIND_VMETHOD(MethodInfo("_process_client", PropertyInfo(Variant::REAL, "delta")));
+	D_METHOD("_process_server", "delta");
+	D_METHOD("_process_client", "delta");
 
-	BIND_VMETHOD(MethodInfo("_stacking_mod_added", PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("_stacking_mod_removed", PropertyInfo(Variant::REAL, "value")));
+	D_METHOD("_stacking_mod_added", "value");
+	D_METHOD("_stacking_mod_removed", "value");
 
-	BIND_VMETHOD(MethodInfo("_non_stacking_mod_added", PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("_non_stacking_mod_removed", PropertyInfo(Variant::REAL, "value")));
+	D_METHOD("_non_stacking_mod_added", "value");
+	D_METHOD("_non_stacking_mod_removed", "value");
 
-	BIND_VMETHOD(MethodInfo("_mods_changed"));
+	D_METHOD("_mods_changed");
 
 	ClassDB::bind_method(D_METHOD("process_server", "delta"), &EntityResource::process_server);
 	ClassDB::bind_method(D_METHOD("_process_server", "delta"), &EntityResource::_process_server);
@@ -461,12 +461,12 @@ void EntityResource::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("process_client", "delta"), &EntityResource::process_client);
 	ClassDB::bind_method(D_METHOD("_process_client", "delta"), &EntityResource::_process_client);
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "str"), "_gets_update_string"));
-	BIND_VMETHOD(MethodInfo("_receivec_update_string", PropertyInfo(Variant::STRING, "str")));
+	D_METHOD("_gets_update_string");
+	D_METHOD("_receivec_update_string", "str");
 
 	//Serialization
-	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	D_METHOD("_from_dict", "dict");
+	D_METHOD("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntityResource::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &EntityResource::to_dict);

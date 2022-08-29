@@ -447,8 +447,8 @@ void AuraData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "slow"), "set_slow", "get_slow");
 
 	//Serialization
-	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	D_METHOD("_from_dict", "dict");
+	D_METHOD("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &AuraData::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &AuraData::to_dict);
@@ -456,8 +456,8 @@ void AuraData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_to_dict"), &AuraData::_to_dict);
 
 	//Networking
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::ARRAY, "arr"), "_to_send_array"));
-	BIND_VMETHOD(MethodInfo("_from_send_array", PropertyInfo(Variant::ARRAY, "arr")));
+	D_METHOD("_to_send_array");
+	D_METHOD("_from_send_array", "arr");
 
 	ClassDB::bind_method(D_METHOD("to_send_array"), &AuraData::to_send_array);
 	ClassDB::bind_method(D_METHOD("from_send_array", "arr"), &AuraData::from_send_array);

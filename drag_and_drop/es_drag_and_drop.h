@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/version.h"
 
 #if VERSION_MAJOR > 3
-#include "core/object/reference.h"
+#include "core/object/ref_counted.h"
 #include "core/string/ustring.h"
 #else
 #include "core/reference.h"
@@ -35,8 +35,8 @@ SOFTWARE.
 
 #include "scene/main/node.h"
 
-class ESDragAndDrop : public Reference {
-	GDCLASS(ESDragAndDrop, Reference);
+class ESDragAndDrop : public RefCounted {
+	GDCLASS(ESDragAndDrop, RefCounted);
 
 public:
 	static const String BINDING_STRING_ES_DRAG_AND_DROP_TYPE;

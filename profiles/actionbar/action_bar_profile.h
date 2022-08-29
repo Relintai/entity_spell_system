@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/version.h"
 
 #if VERSION_MAJOR > 3
-#include "core/object/reference.h"
+#include "core/object/ref_counted.h"
 #include "core/templates/vector.h"
 #include "core/string/ustring.h"
 #include "core/variant/array.h"
@@ -43,8 +43,8 @@ SOFTWARE.
 
 class ClassProfile;
 
-class ActionBarProfile : public Reference {
-	GDCLASS(ActionBarProfile, Reference);
+class ActionBarProfile : public RefCounted {
+	GDCLASS(ActionBarProfile, RefCounted);
 
 public:
 	Ref<ClassProfile> get_owner();

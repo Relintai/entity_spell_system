@@ -43,7 +43,7 @@ void InputProfileModifier::set_modifier(int index, String value) {
 }
 
 void InputProfileModifier::remove_modifier(int index) {
-	_modifier_actions->remove(index);
+	_modifier_actions->remove_at(index);
 }
 
 int InputProfileModifier::get_entry_count() {
@@ -67,7 +67,7 @@ void InputProfileModifier::set_entry(int index, Ref<InputProfileModifierEntry> v
 }
 
 void InputProfileModifier::remove_entry(int index) {
-	_entries->remove(index);
+	_entries->remove_at(index);
 }
 
 InputProfileModifier::InputProfileModifier() {

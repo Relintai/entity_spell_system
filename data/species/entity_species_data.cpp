@@ -67,7 +67,7 @@ void EntitySpeciesData::add_model_data(const Ref<SpeciesModelData> &model_data) 
 void EntitySpeciesData::remove_model_data(const int index) {
 	ERR_FAIL_INDEX(index, _model_datas.size());
 
-	_model_datas.remove(index);
+	_model_datas.remove_at(index);
 }
 
 int EntitySpeciesData::get_model_data_count() const {
@@ -99,7 +99,7 @@ void EntitySpeciesData::add_spell(const Ref<Spell> &spell) {
 void EntitySpeciesData::remove_spell(const int index) {
 	ERR_FAIL_INDEX(index, _spells.size());
 
-	_spells.remove(index);
+	_spells.remove_at(index);
 }
 
 int EntitySpeciesData::get_spell_count() const {
@@ -131,7 +131,7 @@ void EntitySpeciesData::add_aura(const Ref<Spell> &aura) {
 void EntitySpeciesData::remove_aura(const int index) {
 	ERR_FAIL_INDEX(index, _auras.size());
 
-	_auras.remove(index);
+	_auras.remove_at(index);
 }
 
 int EntitySpeciesData::get_aura_count() const {
@@ -176,7 +176,7 @@ void EntitySpeciesData::_validate_property(PropertyInfo &property) const {
 }
 
 void EntitySpeciesData::_bind_methods() {
-	BIND_VMETHOD(MethodInfo(Variant::STRING, "_generate_name", PropertyInfo(Variant::INT, "seed")));
+	D_METHOD("_generate_name", "seed");
 
 	ClassDB::bind_method(D_METHOD("generate_name"), &EntitySpeciesData::generate_name);
 

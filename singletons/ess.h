@@ -286,7 +286,7 @@ private:
 
 	Mutex _material_cache_mutex;
 
-	Map<uint64_t, Ref<ESSMaterialCache>> _material_cache;
+	VMap<uint64_t, Ref<ESSMaterialCache>> _material_cache;
 
 #ifdef TEXTURE_PACKER_PRESENT
 	int _texture_flags;

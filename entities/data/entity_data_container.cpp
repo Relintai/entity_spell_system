@@ -53,8 +53,8 @@ EntityDataContainer::~EntityDataContainer() {
 
 void EntityDataContainer::_bind_methods() {
 	//Serialization
-	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	D_METHOD("from_dict", "dict");
+	D_METHOD("to_dict", "dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntityDataContainer::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &EntityDataContainer::to_dict);

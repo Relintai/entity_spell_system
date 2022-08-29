@@ -98,10 +98,10 @@ void EntityCreateInfo::set_xp(const int value) {
 	_xp = value;
 }
 
-Transform EntityCreateInfo::get_transform() const {
+Transform3D EntityCreateInfo::get_transform() const {
 	return _transform;
 }
-void EntityCreateInfo::set_transform(const Transform &value) {
+void EntityCreateInfo::set_transform(const Transform3D &value) {
 	_transform = value;
 }
 
@@ -205,7 +205,7 @@ void EntityCreateInfo::_from_dict(const Dictionary &dict) {
 	_entity_name = dict.get("entity_name", "");
 	_level = dict.get("level", 0);
 	_xp = dict.get("xp", 0);
-	_transform = dict.get("transform", Transform());
+	_transform = dict.get("transform", Transform3D());
 	_transform2d = dict.get("transform2d", Transform2D());
 	_species_instance = dict.get("species_instance", Ref<SpeciesInstance>());
 	_serialized_data = dict.get("serialized_data", Dictionary());
@@ -272,11 +272,11 @@ void EntityCreateInfo::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_transform"), &EntityCreateInfo::get_transform);
 	ClassDB::bind_method(D_METHOD("set_transform", "value"), &EntityCreateInfo::set_transform);
-	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM, "transform"), "set_transform", "get_transform");
+	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM3D, "transform"), "set_transform", "get_transform");
 
 	ClassDB::bind_method(D_METHOD("get_transform2d"), &EntityCreateInfo::get_transform2d);
 	ClassDB::bind_method(D_METHOD("set_transform2d", "value"), &EntityCreateInfo::set_transform2d);
-	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM2D, "transform2d"), "set_transform2d", "get_transform2d");
+	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM3D2D, "transform2d"), "set_transform2d", "get_transform2d");
 
 	ClassDB::bind_method(D_METHOD("get_entity_data"), &EntityCreateInfo::get_entity_data);
 	ClassDB::bind_method(D_METHOD("set_entity_data", "value"), &EntityCreateInfo::set_entity_data);
@@ -299,8 +299,8 @@ void EntityCreateInfo::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "created_entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_created_entity", "get_created_entity");
 
 	//Serialization
-	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	D_METHOD("_from_dict", "dict");
+	D_METHOD("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntityCreateInfo::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &EntityCreateInfo::to_dict);

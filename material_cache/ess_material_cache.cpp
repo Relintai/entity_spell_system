@@ -122,7 +122,7 @@ void ESSMaterialCache::material_set(const int index, const Ref<Material> &value)
 }
 
 void ESSMaterialCache::material_remove(const int index) {
-	_materials.remove(index);
+	_materials.remove_at(index);
 }
 
 int ESSMaterialCache::material_get_num() const {
@@ -161,7 +161,7 @@ void ESSMaterialCache::texture_remove(const Ref<Texture> &texture) {
 void ESSMaterialCache::texture_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _textures.size());
 
-	_textures.remove(index);
+	_textures.remove_at(index);
 }
 void ESSMaterialCache::textures_clear() {
 	_textures.clear();
@@ -336,7 +336,7 @@ void ESSMaterialCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("inc_ref_count"), &ESSMaterialCache::inc_ref_count);
 	ClassDB::bind_method(D_METHOD("dec_ref_count"), &ESSMaterialCache::dec_ref_count);
 
-	BIND_VMETHOD(MethodInfo("_setup_material_albedo", PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture")));
+	D_METHOD("_setup_material_albedo", "texture", PROPERTY_HINT_RESOURCE_TYPE, "Texture");
 
 	ClassDB::bind_method(D_METHOD("material_get", "index"), &ESSMaterialCache::material_get);
 	ClassDB::bind_method(D_METHOD("material_lod_get", "index"), &ESSMaterialCache::material_lod_get);

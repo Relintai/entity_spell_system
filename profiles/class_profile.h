@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/version.h"
 
 #if VERSION_MAJOR > 3
-#include "core/object/reference.h"
+#include "core/object/ref_counted.h"
 #include "core/string/ustring.h"
 #include "core/variant/dictionary.h"
 #else
@@ -38,8 +38,8 @@ SOFTWARE.
 #include "actionbar/action_bar_profile.h"
 #include "input/input_profile.h"
 
-class ClassProfile : public Reference {
-	GDCLASS(ClassProfile, Reference);
+class ClassProfile : public RefCounted {
+	GDCLASS(ClassProfile, RefCounted);
 
 public:
 	StringName get_class_path() const;

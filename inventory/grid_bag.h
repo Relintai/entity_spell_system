@@ -38,8 +38,8 @@ SOFTWARE.
 class itemTemplate;
 class ItemInstance;
 
-class GridBag : public Reference {
-	GDCLASS(GridBag, Reference);
+class GridBag : public RefCounted {
+	GDCLASS(GridBag, RefCounted);
 
 public:
 	int get_allowed_item_types() const;

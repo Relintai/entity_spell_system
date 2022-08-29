@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/version.h"
 
 #if VERSION_MAJOR > 3
-#include "core/object/reference.h"
+#include "core/object/ref_counted.h"
 #else
 #include "core/reference.h"
 #endif
@@ -36,8 +36,8 @@ SOFTWARE.
 class Entity;
 class Spell;
 
-class AuraApplyInfo : public Reference {
-	GDCLASS(AuraApplyInfo, Reference);
+class AuraApplyInfo : public RefCounted {
+	GDCLASS(AuraApplyInfo, RefCounted);
 
 public:
 	Entity *caster_get() const;

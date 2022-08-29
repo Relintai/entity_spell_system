@@ -140,7 +140,7 @@ SOFTWARE.
 static ESS *entity_data_manager = NULL;
 static ProfileManager *profile_manager = NULL;
 
-void register_entity_spell_system_types() {
+void initialize_entity_spell_system_module(ModuleInitializationLevel p_level) {
 #if PROPS_PRESENT
 	ClassDB::register_class<PropDataEntity>();
 #endif
@@ -280,7 +280,7 @@ void register_entity_spell_system_types() {
 #endif
 }
 
-void unregister_entity_spell_system_types() {
+void uninitialize_entity_spell_system_module(ModuleInitializationLevel p_level) {
 	if (entity_data_manager) {
 		memdelete(entity_data_manager);
 	}

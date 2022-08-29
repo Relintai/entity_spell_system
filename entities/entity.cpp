@@ -209,7 +209,7 @@ void Entity::instance_body(const Ref<EntityData> &data, const int model_index) {
 			data->get_entity_species_data()->get_model_data_count() > model_index &&
 			data->get_entity_species_data()->get_model_data(model_index).is_valid() &&
 			data->get_entity_species_data()->get_model_data(model_index)->get_body().is_valid()) {
-		Node *node = data->get_entity_species_data()->get_model_data(model_index)->get_body()->instance();
+		Node *node = data->get_entity_species_data()->get_model_data(model_index)->get_body()->instantiate();
 
 		add_child(node);
 		set_body(node);
@@ -269,7 +269,7 @@ void Entity::setc_guid(int value) {
 }
 
 //Transforms
-Transform Entity::get_transform_3d(bool only_stored) const {
+Transform3D Entity::get_transform_3d(bool only_stored) const {
 	if (!only_stored && _body_3d) {
 		ERR_FAIL_COND_V(!INSTANCE_VALIDATE(_body_3d), _transform);
 
@@ -278,7 +278,7 @@ Transform Entity::get_transform_3d(bool only_stored) const {
 
 	return _transform;
 }
-void Entity::set_transform_3d(const Transform &transform, bool only_stored) {
+void Entity::set_transform_3d(const Transform3D &transform, bool only_stored) {
 	if (!only_stored && _body_3d) {
 		ERR_FAIL_COND(!INSTANCE_VALIDATE(_body_3d));
 
@@ -865,7 +865,7 @@ void Entity::setup_actionbars() {
 
 	if (!gets_bag().is_valid()) {
 		Ref<Bag> bag;
-		bag.instance();
+		bag.instantiate();
 
 		bag->set_size(gets_entity_data()->get_bag_size());
 
@@ -1005,7 +1005,7 @@ void Entity::pet_removes_index(int index) {
 
 	Entity *entity = _s_pets.get(index);
 
-	_s_pets.remove(index);
+	_s_pets.remove_at(index);
 
 	sees_removes(entity);
 
@@ -1079,7 +1079,7 @@ void Entity::pet_removec_index(int index) {
 
 	//Entity *entity = _c_pets.get(index);
 
-	_c_pets.remove(index);
+	_c_pets.remove_at(index);
 
 	//#if VERSION_MAJOR < 4
 	//ERR_FAIL_COND(!ObjectDB::instance_validate(entity));
@@ -1438,7 +1438,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 			Ref<ItemInstance> ii = _s_equipment[i];
 
 			if (!ii.is_valid()) {
-				ii.instance();
+				ii.instantiate();
 			}
 
 			ii->from_dict(equipment[String::num(i)]);
@@ -1510,7 +1510,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	for (int i = 0; i < auras.size(); ++i) {
 		Ref<AuraData> r;
-		r.instance();
+		r.instantiate();
 
 		r->from_dict(auras.get(String::num(i), Dictionary()));
 		r->set_owner(this);
@@ -1646,7 +1646,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	for (int i = 0; i < skills.size(); ++i) {
 		Ref<EntitySkill> r;
-		r.instance();
+		r.instantiate();
 
 		r->from_dict(skills.get(String::num(i), Dictionary()));
 
@@ -1665,7 +1665,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 #endif
 		if (!_s_bag.is_valid()) {
 			Ref<Bag> bag;
-			bag.instance();
+			bag.instantiate();
 
 			bag->from_dict(bagd);
 
@@ -1681,7 +1681,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 	if (dict.has("actionbar_profile")) {
 		if (!_action_bar_profile.is_valid())
-			_action_bar_profile.instance();
+			_action_bar_profile.instantiate();
 
 		_action_bar_profile->from_dict(dict.get("actionbar_profile", Dictionary()));
 	}
@@ -2522,7 +2522,7 @@ void Entity::resource_removes(int index) {
 	ERR_FAIL_INDEX(index, _s_resources.size());
 
 	Ref<EntityResource> res = _s_resources.get(index);
-	_s_resources.remove(index);
+	_s_resources.remove_at(index);
 
 	notification_sentity_resource_removed(res);
 
@@ -2544,7 +2544,7 @@ void Entity::resource_addc_rpc(int index, String data) {
 	res = Ref<EntityResource>(Object::cast_to<EntityResource>(ClassDB::instance(clsname)));
 
 	ERR_FAIL_COND(!res.is_valid());
-	//res.instance();
+	//res.instantiate();
 
 	String script_path = dict.get("script", "");
 
@@ -2617,7 +2617,7 @@ void Entity::resource_removec(int index) {
 	ERR_FAIL_INDEX(index, _c_resources.size());
 
 	Ref<EntityResource> res = _c_resources.get(index);
-	_c_resources.remove(index);
+	_c_resources.remove_at(index);
 
 	notification_centity_resource_removed(res);
 }
@@ -2826,7 +2826,7 @@ void Entity::sdeal_heal_to(Ref<SpellHealInfo> info) {
 //Damage, Heal RPCs
 void Entity::cdamage_dealt_rpc(String data) {
 	Ref<SpellDamageInfo> info;
-	info.instance();
+	info.instantiate();
 	info->from_dict(data_as_dict(data));
 	info->resolve_references(this);
 
@@ -2834,7 +2834,7 @@ void Entity::cdamage_dealt_rpc(String data) {
 }
 void Entity::cdealt_damage_rpc(String data) {
 	Ref<SpellDamageInfo> info;
-	info.instance();
+	info.instantiate();
 	info->from_dict(data_as_dict(data));
 	info->resolve_references(this);
 
@@ -2842,7 +2842,7 @@ void Entity::cdealt_damage_rpc(String data) {
 }
 void Entity::cheal_dealt_rpc(String data) {
 	Ref<SpellHealInfo> info;
-	info.instance();
+	info.instantiate();
 	info->from_dict(data_as_dict(data));
 	info->resolve_references(this);
 
@@ -2850,7 +2850,7 @@ void Entity::cheal_dealt_rpc(String data) {
 }
 void Entity::cdealt_heal_rpc(String data) {
 	Ref<SpellHealInfo> info;
-	info.instance();
+	info.instantiate();
 	info->from_dict(data_as_dict(data));
 	info->resolve_references(this);
 
@@ -3069,7 +3069,7 @@ void Entity::_item_uses(int item_id) {
 			return;
 
 		Ref<SpellCastInfo> info;
-		info.instance();
+		info.instantiate();
 
 		info->caster_set(this);
 		info->target_set(gets_target());
@@ -3088,7 +3088,7 @@ void Entity::_item_uses(int item_id) {
 			return;
 
 		Ref<SpellCastInfo> info;
-		info.instance();
+		info.instantiate();
 
 		info->caster_set(this);
 		info->target_set(gets_target());
@@ -3406,7 +3406,7 @@ void Entity::aura_refresheds(Ref<AuraData> aura) {
 
 void Entity::aura_addc_rpc(String data) {
 	Ref<AuraData> aura;
-	aura.instance();
+	aura.instantiate();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
 	aura->resolve_references(this);
@@ -3416,7 +3416,7 @@ void Entity::aura_addc_rpc(String data) {
 
 void Entity::aura_removec_rpc(String data) {
 	Ref<AuraData> aura;
-	aura.instance();
+	aura.instantiate();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
 	aura->resolve_references(this);
@@ -3426,7 +3426,7 @@ void Entity::aura_removec_rpc(String data) {
 
 void Entity::aura_removec_exact_rpc(String data) {
 	Ref<AuraData> aura;
-	aura.instance();
+	aura.instantiate();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
 	aura->resolve_references(this);
@@ -3436,7 +3436,7 @@ void Entity::aura_removec_exact_rpc(String data) {
 
 void Entity::aura_removec_expired_rpc(String data) {
 	Ref<AuraData> aura;
-	aura.instance();
+	aura.instantiate();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
 	aura->resolve_references(this);
@@ -3446,7 +3446,7 @@ void Entity::aura_removec_expired_rpc(String data) {
 
 void Entity::aura_removec_dispelled_rpc(String data) {
 	Ref<AuraData> aura;
-	aura.instance();
+	aura.instantiate();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
 	aura->resolve_references(this);
@@ -3456,7 +3456,7 @@ void Entity::aura_removec_dispelled_rpc(String data) {
 
 void Entity::aura_refreshedc_rpc(String data) {
 	Ref<AuraData> aura;
-	aura.instance();
+	aura.instantiate();
 	aura->from_dict(data_as_dict(data));
 	aura->set_owner(this);
 	aura->resolve_references(this);
@@ -3799,7 +3799,7 @@ void Entity::cast_interrupts() {
 
 void Entity::cast_startc_rpc(String data) {
 	Ref<SpellCastInfo> info;
-	info.instance();
+	info.instantiate();
 	info->from_dict(data_as_dict(data));
 	info->resolve_references(this);
 
@@ -3844,7 +3844,7 @@ void Entity::cast_spell_successs(Ref<SpellCastInfo> info) {
 
 void Entity::cast_spell_successc_rpc(String data) {
 	Ref<SpellCastInfo> info;
-	info.instance();
+	info.instantiate();
 	info->from_dict(data_as_dict(data));
 	info->resolve_references(this);
 
@@ -4489,7 +4489,7 @@ void Entity::skill_addc_id(int skill_id, int value, int max_value) {
 	ERR_FAIL_COND(skill_hasc_id(skill_id));
 
 	Ref<EntitySkill> skill;
-	skill.instance();
+	skill.instantiate();
 
 	skill->set_skill_id(skill_id);
 	skill->set_current(value);
@@ -4796,7 +4796,7 @@ void Entity::_class_talent_sreceive_learn_request(int spec_index, int class_tale
 		}
 
 		Ref<AuraApplyInfo> info;
-		info.instance();
+		info.instantiate();
 
 		info->caster_set(this);
 		info->target_set(this);
@@ -5043,7 +5043,7 @@ void Entity::_character_talent_sreceive_learn_request(int spec_index, int charac
 		}
 
 		Ref<AuraApplyInfo> info;
-		info.instance();
+		info.instantiate();
 
 		info->caster_set(this);
 		info->target_set(this);
@@ -5296,14 +5296,14 @@ void Entity::setc_target_bag(const Ref<Bag> bag) {
 
 void Entity::setc_bag_rpc(String data) {
 	Ref<Bag> bag;
-	bag.instance();
+	bag.instantiate();
 	bag->from_dict(data_as_dict(data));
 
 	setc_bag(bag);
 }
 void Entity::setc_target_bag_rpc(String data) {
 	Ref<Bag> bag;
-	bag.instance();
+	bag.instantiate();
 	bag->from_dict(data_as_dict(data));
 
 	setc_target_bag(bag);
@@ -5334,7 +5334,7 @@ void Entity::notification_item_sadded(Ref<Bag> bag, Ref<ItemInstance> item, int 
 }
 void Entity::item_addc_rpc(int slot_id, String item_data) {
 	Ref<ItemInstance> ii;
-	ii.instance();
+	ii.instantiate();
 	ii->from_dict(data_as_dict(item_data));
 
 	item_addc(slot_id, ii);
@@ -5405,7 +5405,7 @@ void Entity::notification_target_item_sadded(Ref<Bag> bag, Ref<ItemInstance> ite
 }
 void Entity::target_item_addc_rpc(int slot_id, String item_data) {
 	Ref<ItemInstance> ii;
-	ii.instance();
+	ii.instantiate();
 	ii->from_dict(data_as_dict(item_data));
 
 	target_item_addc(slot_id, ii);
@@ -5490,7 +5490,7 @@ void Entity::data_adds(Ref<EntityDataContainer> data) {
 void Entity::data_removes(int index) {
 	ERR_FAIL_INDEX(index, _s_data.size());
 
-	_s_data.remove(index);
+	_s_data.remove_at(index);
 }
 Ref<EntityDataContainer> Entity::data_gets(int index) {
 	ERR_FAIL_INDEX_V(index, _s_data.size(), Ref<EntityDataContainer>());
@@ -5507,7 +5507,7 @@ void Entity::data_addc(Ref<EntityDataContainer> data) {
 void Entity::data_removec(int index) {
 	ERR_FAIL_INDEX(index, _c_data.size());
 
-	_c_data.remove(index);
+	_c_data.remove_at(index);
 }
 Ref<EntityDataContainer> Entity::data_getc(int index) {
 	ERR_FAIL_INDEX_V(index, _c_data.size(), Ref<EntityDataContainer>());
@@ -5538,7 +5538,7 @@ Ref<ActionBarProfile> Entity::get_action_bar_profile() {
 	if (_action_bar_profile.is_valid())
 		return _action_bar_profile;
 
-	_action_bar_profile.instance();
+	_action_bar_profile.instantiate();
 
 	Ref<ClassProfile> cp = ProfileManager::get_singleton()->getc_player_profile()->get_class_profile(gets_entity_data()->get_path());
 
@@ -5691,13 +5691,13 @@ void Entity::sees_removes_index(int index) {
 	Entity *e = _s_sees.get(index);
 
 	if (unlikely(!INSTANCE_VALIDATE(e))) {
-		_s_sees.remove(index);
+		_s_sees.remove_at(index);
 		return;
 	}
 
 	e->seen_by_removes(this);
 
-	_s_sees.remove(index);
+	_s_sees.remove_at(index);
 }
 void Entity::sees_removes(Entity *entity) {
 	if (unlikely(!INSTANCE_VALIDATE(entity))) {
@@ -5745,7 +5745,7 @@ Entity *Entity::seen_by_gets(int index) {
 	return _s_seen_by.get(index);
 }
 void Entity::seen_by_removes_index(int index) {
-	_s_seen_by.remove(index);
+	_s_seen_by.remove_at(index);
 }
 void Entity::seen_by_removes(Entity *entity) {
 	_s_seen_by.erase(entity);
@@ -5971,7 +5971,7 @@ Entity::Entity() {
 	_s_free_spell_points = 0;
 	_c_free_spell_points = 0;
 
-	//_action_bar_profile.instance();
+	//_action_bar_profile.instantiate();
 	_actionbar_locked = false;
 
 	_stats.resize(ESS::get_singleton()->stat_get_count());
@@ -6781,8 +6781,8 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("onc_open_winow_request", PropertyInfo(Variant::INT, "window_id")));
 
 	//setup
-	BIND_VMETHOD(MethodInfo("_setup"));
-	BIND_VMETHOD(MethodInfo("_initialize"));
+	D_METHOD("_setup");
+	D_METHOD("_initialize");
 
 	ClassDB::bind_method(D_METHOD("_initialize"), &Entity::_initialize);
 	ClassDB::bind_method(D_METHOD("setup", "info"), &Entity::setup);
@@ -6829,19 +6829,19 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_cstat_changed", "stat"), &Entity::notification_cstat_changed);
 
 	//EventHandlers
-	BIND_VMETHOD(MethodInfo("_notification_sdeath"));
+	D_METHOD("_notification_sdeath");
 
-	BIND_VMETHOD(MethodInfo("_notification_sgcd_started", PropertyInfo(Variant::REAL, "gcd")));
-	BIND_VMETHOD(MethodInfo("_notification_sgcd_finished"));
+	D_METHOD("_notification_sgcd_started", "gcd");
+	D_METHOD("_notification_sgcd_finished");
 
-	BIND_VMETHOD(MethodInfo("_notification_sxp_gained", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_slevel_up", PropertyInfo(Variant::INT, "value")));
+	D_METHOD("_notification_sxp_gained", "value");
+	D_METHOD("_notification_slevel_up", "value");
 
-	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
-	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	D_METHOD("_notification_sentity_resource_added", "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource");
+	D_METHOD("_notification_sentity_resource_removed", "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource");
 
-	BIND_VMETHOD(MethodInfo("_son_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	BIND_VMETHOD(MethodInfo("_con_target_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	D_METHOD("_son_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
+	D_METHOD("_con_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
 
 	//Serverside
 	ADD_SIGNAL(MethodInfo("notification_sdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
@@ -6849,10 +6849,10 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("notification_scast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("notification_saura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
-	BIND_VMETHOD(MethodInfo("_notification_saura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_notification_sheal", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
-	BIND_VMETHOD(MethodInfo("_notification_scast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_notification_sdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	D_METHOD("_notification_saura", "what", "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData");
+	D_METHOD("_notification_sheal", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo");
+	D_METHOD("_notification_scast", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo");
+	D_METHOD("_notification_sdamage", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo");
 
 	ClassDB::bind_method(D_METHOD("notification_saura", "what", "data"), &Entity::notification_saura);
 	ClassDB::bind_method(D_METHOD("notification_sheal", "what", "info"), &Entity::notification_sheal);
@@ -6865,10 +6865,10 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("notification_ccast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("notification_caura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
-	BIND_VMETHOD(MethodInfo("_notification_caura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_notification_cheal", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
-	BIND_VMETHOD(MethodInfo("_notification_ccast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_notification_cdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	D_METHOD("_notification_caura", "what", "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData");
+	D_METHOD("_notification_cheal", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo");
+	D_METHOD("_notification_ccast", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo");
+	D_METHOD("_notification_cdamage", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo");
 
 	ClassDB::bind_method(D_METHOD("notification_caura", "what", "data"), &Entity::notification_caura);
 	ClassDB::bind_method(D_METHOD("notification_cheal", "what", "info"), &Entity::notification_cheal);
@@ -6893,8 +6893,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_free_class_talent_points", "value"), &Entity::setc_free_class_talent_points);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_class_talent_points", PROPERTY_HINT_NONE, "", 0), "setc_free_class_talent_points", "getc_free_class_talent_points");
 
-	BIND_VMETHOD(MethodInfo("_class_talent_sreceive_learn_request", PropertyInfo(Variant::INT, "spec_index"), PropertyInfo(Variant::INT, "class_talent_row"), PropertyInfo(Variant::INT, "class_talent_culomn")));
-	BIND_VMETHOD(MethodInfo("_class_talent_sreceive_reset_request"));
+	D_METHOD("_class_talent_sreceive_learn_request", "spec_index", "class_talent_row", "class_talent_culomn");
+	D_METHOD("_class_talent_sreceive_reset_request");
 
 	ADD_SIGNAL(MethodInfo("sclass_talent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "class_talent_id")));
 	ADD_SIGNAL(MethodInfo("cclass_talent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "class_talent_id")));
@@ -6902,11 +6902,11 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("sclass_talent_reset", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("cclass_talent_reset", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	BIND_VMETHOD(MethodInfo("_son_class_talent_learned", PropertyInfo(Variant::INT, "class_talent_id")));
-	BIND_VMETHOD(MethodInfo("_con_class_talent_learned", PropertyInfo(Variant::INT, "class_talent_id")));
+	D_METHOD("_son_class_talent_learned", "class_talent_id");
+	D_METHOD("_con_class_talent_learned", "class_talent_id");
 
-	BIND_VMETHOD(MethodInfo("_son_class_talent_reset"));
-	BIND_VMETHOD(MethodInfo("_con_class_talent_reset"));
+	D_METHOD("_son_class_talent_reset");
+	D_METHOD("_con_class_talent_reset");
 
 	ClassDB::bind_method(D_METHOD("class_talent_crequest_learn", "spec_index", "class_talent_row", "class_talent_culomn"), &Entity::class_talent_crequest_learn);
 	ClassDB::bind_method(D_METHOD("class_talent_sreceive_learn_request", "spec_index", "class_talent_row", "class_talent_culomn"), &Entity::class_talent_sreceive_learn_request);
@@ -6947,8 +6947,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setc_free_character_talent_points", "value"), &Entity::setc_free_character_talent_points);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cfree_character_talent_points", PROPERTY_HINT_NONE, "", 0), "setc_free_character_talent_points", "getc_free_character_talent_points");
 
-	BIND_VMETHOD(MethodInfo("_character_talent_sreceive_learn_request", PropertyInfo(Variant::INT, "spec_index"), PropertyInfo(Variant::INT, "character_talent_row"), PropertyInfo(Variant::INT, "character_talent_culomn")));
-	BIND_VMETHOD(MethodInfo("_character_talent_sreceive_reset_request"));
+	D_METHOD("_character_talent_sreceive_learn_request", "spec_index", "character_talent_row", "character_talent_culomn");
+	D_METHOD("_character_talent_sreceive_reset_request");
 
 	ADD_SIGNAL(MethodInfo("scharacter_talent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "character_talent_id")));
 	ADD_SIGNAL(MethodInfo("ccharacter_talent_learned", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "character_talent_id")));
@@ -6956,11 +6956,11 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("scharacter_talent_reset", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 	ADD_SIGNAL(MethodInfo("ccharacter_talent_reset", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
-	BIND_VMETHOD(MethodInfo("_son_character_talent_learned", PropertyInfo(Variant::INT, "character_talent_id")));
-	BIND_VMETHOD(MethodInfo("_con_character_talent_learned", PropertyInfo(Variant::INT, "character_talent_id")));
+	D_METHOD("_son_character_talent_learned", "character_talent_id");
+	D_METHOD("_con_character_talent_learned", "character_talent_id");
 
-	BIND_VMETHOD(MethodInfo("_son_character_talent_reset"));
-	BIND_VMETHOD(MethodInfo("_con_character_talent_reset"));
+	D_METHOD("_son_character_talent_reset");
+	D_METHOD("_con_character_talent_reset");
 
 	ClassDB::bind_method(D_METHOD("character_talent_crequest_learn", "spec_index", "character_talent_row", "character_talent_culomn"), &Entity::character_talent_crequest_learn);
 	ClassDB::bind_method(D_METHOD("character_talent_sreceive_learn_request", "spec_index", "character_talent_row", "character_talent_culomn"), &Entity::character_talent_sreceive_learn_request);
@@ -6992,10 +6992,10 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_INT_ARRAY, "scharacter_talents", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_ENTITY_HIDDEN), "scharacter_talents_set", "scharacter_talents_get");
 
 	//Cooldowns
-	BIND_VMETHOD(MethodInfo("notification_scooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_scooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_scategory_cooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_scategory_cooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	D_METHOD("notification_scooldown_added", "id", "value");
+	D_METHOD("notification_scooldown_removed", "id", "value");
+	D_METHOD("notification_scategory_cooldown_added", "id", "value");
+	D_METHOD("notification_scategory_cooldown_removed", "id", "value");
 
 	ClassDB::bind_method(D_METHOD("notification_scooldown_added", "cooldown"), &Entity::notification_scooldown_added);
 	ClassDB::bind_method(D_METHOD("notification_scooldown_removed", "cooldown"), &Entity::notification_scooldown_removed);
@@ -7003,30 +7003,30 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_scategory_cooldown_removed", "category_cooldown"), &Entity::notification_scategory_cooldown_removed);
 
 	//Clientside EventHandlers
-	BIND_VMETHOD(MethodInfo("_notification_cdeath"));
+	D_METHOD("_notification_cdeath");
 
-	BIND_VMETHOD(MethodInfo("notification_ccooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_ccooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_ccategory_cooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("notification_ccategory_cooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	D_METHOD("notification_ccooldown_added", "id", "value");
+	D_METHOD("notification_ccooldown_removed", "id", "value");
+	D_METHOD("notification_ccategory_cooldown_added", "id", "value");
+	D_METHOD("notification_ccategory_cooldown_removed", "id", "value");
 
 	ClassDB::bind_method(D_METHOD("notification_ccooldown_added", "cooldown"), &Entity::notification_ccooldown_added);
 	ClassDB::bind_method(D_METHOD("notification_ccooldown_removed", "cooldown"), &Entity::notification_ccooldown_removed);
 	ClassDB::bind_method(D_METHOD("notification_ccategory_cooldown_added", "category_cooldown"), &Entity::notification_ccategory_cooldown_added);
 	ClassDB::bind_method(D_METHOD("notification_ccategory_cooldown_removed", "category_cooldown"), &Entity::notification_ccategory_cooldown_removed);
 
-	BIND_VMETHOD(MethodInfo("_notification_cgcd_started", PropertyInfo(Variant::REAL, "gcd")));
-	BIND_VMETHOD(MethodInfo("_notification_cgcd_finished"));
+	D_METHOD("_notification_cgcd_started", "gcd");
+	D_METHOD("_notification_cgcd_finished");
 
-	BIND_VMETHOD(MethodInfo("_notification_cxp_gained", PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_clevel_up", PropertyInfo(Variant::INT, "value")));
+	D_METHOD("_notification_cxp_gained", "value");
+	D_METHOD("_notification_clevel_up", "value");
 
-	BIND_VMETHOD(MethodInfo("_notification_centity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
-	BIND_VMETHOD(MethodInfo("_notification_centity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	D_METHOD("_notification_centity_resource_added", "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource");
+	D_METHOD("_notification_centity_resource_removed", "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource");
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_canc_interact"));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "value"), "_cans_interact"));
-	BIND_VMETHOD(MethodInfo("_sinteract"));
+	D_METHOD("_canc_interact");
+	D_METHOD("_cans_interact");
+	D_METHOD("_sinteract");
 
 	ClassDB::bind_method(D_METHOD("cast_spell_successc", "info"), &Entity::cast_spell_successc);
 	ClassDB::bind_method(D_METHOD("cast_spell_successc_rpc", "data"), &Entity::cast_spell_successc_rpc);
@@ -7050,7 +7050,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("spell_casts", "spell_id"), &Entity::spell_casts);
 	ClassDB::bind_method(D_METHOD("spell_crequest_cast", "spell_id"), &Entity::spell_crequest_cast);
 
-	BIND_VMETHOD(MethodInfo("_item_uses", PropertyInfo(Variant::INT, "item_id")));
+	D_METHOD("_item_uses", "item_id");
 
 	ClassDB::bind_method(D_METHOD("item_uses", "item_id"), &Entity::item_uses);
 	ClassDB::bind_method(D_METHOD("item_crequest_use", "item_id"), &Entity::item_crequest_use);
@@ -7080,8 +7080,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("ssend_open_window", "window_id"), &Entity::ssend_open_window);
 	ClassDB::bind_method(D_METHOD("copen_window", "window_id"), &Entity::copen_window);
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_iss_target_in_interact_range"));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_isc_target_in_interact_range"));
+	D_METHOD("_iss_target_in_interact_range");
+	D_METHOD("_isc_target_in_interact_range");
 
 	ClassDB::bind_method(D_METHOD("iss_target_in_interact_range"), &Entity::iss_target_in_interact_range);
 	ClassDB::bind_method(D_METHOD("isc_target_in_interact_range"), &Entity::isc_target_in_interact_range);
@@ -7143,14 +7143,14 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sauras", PROPERTY_HINT_NONE, "17/17:AuraData", PROPERTY_USAGE_ENTITY_HIDDEN, "AuraData"), "sauras_set", "sauras_get");
 
 	//Hooks
-	BIND_VMETHOD(MethodInfo("_moved"));
+	D_METHOD("_moved");
 	ClassDB::bind_method(D_METHOD("moved"), &Entity::moved);
 
 	ADD_SIGNAL(MethodInfo("notification_cmouse_entered"));
 	ADD_SIGNAL(MethodInfo("notification_cmouse_exited"));
 
-	BIND_VMETHOD(MethodInfo("_notification_cmouse_enter"));
-	BIND_VMETHOD(MethodInfo("_notification_cmouse_exit"));
+	D_METHOD("_notification_cmouse_enter");
+	D_METHOD("_notification_cmouse_exit");
 
 	ClassDB::bind_method(D_METHOD("notification_cmouse_enter"), &Entity::notification_cmouse_enter);
 	ClassDB::bind_method(D_METHOD("notification_cmouse_exit"), &Entity::notification_cmouse_exit);
@@ -7158,8 +7158,8 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("notification_ctargeted"));
 	ADD_SIGNAL(MethodInfo("notification_cuntargeted"));
 
-	BIND_VMETHOD(MethodInfo("_notification_ctargeted"));
-	BIND_VMETHOD(MethodInfo("_notification_cuntargeted"));
+	D_METHOD("_notification_ctargeted");
+	D_METHOD("_notification_cuntargeted");
 
 	ClassDB::bind_method(D_METHOD("notification_ctargeted"), &Entity::notification_ctargeted);
 	ClassDB::bind_method(D_METHOD("notification_cuntargeted"), &Entity::notification_cuntargeted);
@@ -7218,8 +7218,8 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cseed", PROPERTY_HINT_NONE, "", 0), "setc_seed", "getc_seed");
 
 	//Interaction type
-	BIND_VMETHOD(MethodInfo("_gets_relation_to", PropertyInfo(Variant::OBJECT, "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
-	BIND_VMETHOD(MethodInfo("_getc_relation_to", PropertyInfo(Variant::OBJECT, "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	D_METHOD("_gets_relation_to", "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
+	D_METHOD("_getc_relation_to", "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
 
 	ClassDB::bind_method(D_METHOD("gets_relation_to", "to"), &Entity::gets_relation_to_bind);
 	ClassDB::bind_method(D_METHOD("_gets_relation_to", "to"), &Entity::_gets_relation_to);
@@ -7307,12 +7307,12 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("equip_con_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
 	ADD_SIGNAL(MethodInfo("equip_con_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_equip_should_deny", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	D_METHOD("_equip_should_deny", "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
 
-	BIND_VMETHOD(MethodInfo("_equip_son_success", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
-	BIND_VMETHOD(MethodInfo("_equip_son_fail", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
-	BIND_VMETHOD(MethodInfo("_equip_con_success", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
-	BIND_VMETHOD(MethodInfo("_equip_con_fail", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
+	D_METHOD("_equip_son_success", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "bag_slot");
+	D_METHOD("_equip_son_fail", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "bag_slot");
+	D_METHOD("_equip_con_success", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "bag_slot");
+	D_METHOD("_equip_con_fail", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "bag_slot");
 
 	ADD_SIGNAL(MethodInfo("equipment_changed", PropertyInfo(Variant::INT, "slot")));
 
@@ -7323,7 +7323,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("equip_con_success", "equip_slot", "item", "old_item", "bag_slot"), &Entity::equip_con_success);
 	ClassDB::bind_method(D_METHOD("equip_con_fail", "equip_slot", "item", "old_item", "bag_slot"), &Entity::equip_con_fail);
 
-	BIND_VMETHOD(MethodInfo("_equips", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::INT, "bag_slot")));
+	D_METHOD("_equips", "equip_slot", "bag_slot");
 
 	ClassDB::bind_method(D_METHOD("equip_crequest", "equip_slot", "bag_slot"), &Entity::equip_crequest);
 	ClassDB::bind_method(D_METHOD("equips", "equip_slot", "bag_slot"), &Entity::equips);
@@ -7335,13 +7335,13 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("equip_gets_slot", "index"), &Entity::equip_gets_slot);
 	ClassDB::bind_method(D_METHOD("equip_getc_slot", "index"), &Entity::equip_getc_slot);
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "can"), "_equip_can_equip_item", PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	D_METHOD("_equip_can_equip_item", "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
 
 	ClassDB::bind_method(D_METHOD("equip_can_equip_item", "equip_slot", "item"), &Entity::equip_can_equip_item);
 	ClassDB::bind_method(D_METHOD("_equip_can_equip_item", "equip_slot", "item"), &Entity::_equip_can_equip_item);
 
-	BIND_VMETHOD(MethodInfo("_equip_applys_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
-	BIND_VMETHOD(MethodInfo("_equip_deapplys_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	D_METHOD("_equip_applys_item", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
+	D_METHOD("_equip_deapplys_item", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
 
 	ClassDB::bind_method(D_METHOD("equip_applys_item", "item"), &Entity::equip_applys_item);
 	ClassDB::bind_method(D_METHOD("equip_deapplys_item", "item"), &Entity::equip_deapplys_item);
@@ -7349,8 +7349,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_equip_applys_item", "item"), &Entity::_equip_applys_item);
 	ClassDB::bind_method(D_METHOD("_equip_deapplys_item", "item"), &Entity::_equip_deapplys_item);
 
-	BIND_VMETHOD(MethodInfo("_equip_applyc_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
-	BIND_VMETHOD(MethodInfo("_equip_deapplyc_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	D_METHOD("_equip_applyc_item", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
+	D_METHOD("_equip_deapplyc_item", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
 
 	ClassDB::bind_method(D_METHOD("cequip_applys_item", "item"), &Entity::equip_applyc_item);
 	ClassDB::bind_method(D_METHOD("equip_deapplyc_item", "item"), &Entity::equip_deapplyc_item);
@@ -7564,7 +7564,7 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "sspells", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_ENTITY_HIDDEN, "Spell"), "sspells_set", "sspells_get");
 
 	//Crafting
-	BIND_VMETHOD(MethodInfo("_crafts", PropertyInfo(Variant::INT, "id")));
+	D_METHOD("_crafts", "id");
 
 	ADD_SIGNAL(MethodInfo("crafts_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
 	ADD_SIGNAL(MethodInfo("ccraft_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
@@ -7633,7 +7633,7 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("instance_body"), &Entity::instance_body);
 	ClassDB::bind_method(D_METHOD("on_body_changed"), &Entity::on_body_changed);
 
-	BIND_VMETHOD(MethodInfo("_body_changed"));
+	D_METHOD("_body_changed");
 	ADD_SIGNAL(MethodInfo("body_changed", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
 
 	//Transforms
@@ -7737,8 +7737,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("vendor_item_sell_crequest", "slot_id"), &Entity::vendor_item_sell_crequest);
 	ClassDB::bind_method(D_METHOD("vendor_item_ssell", "slot_id"), &Entity::vendor_item_ssell);
 
-	BIND_VMETHOD(MethodInfo("_vendor_item_sbuy", PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::INT, "count")));
-	BIND_VMETHOD(MethodInfo("_vendor_item_ssell", PropertyInfo(Variant::INT, "slot_id")));
+	D_METHOD("_vendor_item_sbuy", "index", "count");
+	D_METHOD("_vendor_item_ssell", "slot_id");
 
 	ClassDB::bind_method(D_METHOD("_vendor_item_sbuy", "index", "count"), &Entity::_vendor_item_sbuy);
 	ClassDB::bind_method(D_METHOD("_vendor_item_ssell", "slot_id"), &Entity::_vendor_item_ssell);
@@ -7812,8 +7812,8 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "sai", PROPERTY_HINT_RESOURCE_TYPE, "EntityAI", PROPERTY_USAGE_ENTITY_HIDDEN), "sets_ai", "gets_ai");
 
 	//Serialization
-	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	D_METHOD("_from_dict", "dict");
+	D_METHOD("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("is_deserialized"), &Entity::is_deserialized);
 

@@ -564,7 +564,7 @@ void ESS::material_set(const int index, const Ref<Material> &value) {
 }
 
 void ESS::material_remove(const int index) {
-	_materials.remove(index);
+	_materials.remove_at(index);
 }
 
 int ESS::material_get_num() const {

@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/version.h"
 
 #if VERSION_MAJOR > 3
-#include "core/object/reference.h"
+#include "core/object/ref_counted.h"
 #include "core/string/ustring.h"
 #else
 #include "core/reference.h"
@@ -39,8 +39,8 @@ class EntityData;
 class SpeciesInstance;
 class Entity;
 
-class EntityCreateInfo : public Reference {
-	GDCLASS(EntityCreateInfo, Reference);
+class EntityCreateInfo : public RefCounted {
+	GDCLASS(EntityCreateInfo, RefCounted);
 
 public:
 	int get_guid() const;
@@ -73,8 +73,8 @@ public:
 	int get_xp() const;
 	void set_xp(const int value);
 
-	Transform get_transform() const;
-	void set_transform(const Transform &value);
+	Transform3D get_transform() const;
+	void set_transform(const Transform3D &value);
 
 	Transform2D get_transform2d() const;
 	void set_transform2d(const Transform2D &value);
@@ -118,7 +118,7 @@ private:
 	int _level;
 	int _xp;
 
-	Transform _transform;
+	Transform3D _transform;
 	Transform2D _transform2d;
 
 	Ref<EntityData> _entity_data;

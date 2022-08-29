@@ -136,7 +136,7 @@ void ActionBarEntry::from_dict(const Dictionary &dict) {
 
 	for (int i = 0; i < arr.size(); ++i) {
 		Ref<ActionBarButtonEntry> e;
-		e.instance();
+		e.instantiate();
 
 		e->from_dict(arr.get(i));
 		e->set_owner(this);

@@ -49,7 +49,7 @@ ESSEntitySpawner::~ESSEntitySpawner() {
 }
 
 void ESSEntitySpawner::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_request_entity_spawn", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
+	D_METHOD("_request_entity_spawn", "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo");
 	ADD_SIGNAL(MethodInfo("on_entity_spawn", PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "EntityCreateInfo")));
 
 	ClassDB::bind_method(D_METHOD("request_entity_spawn", "info"), &ESSEntitySpawner::request_entity_spawn);

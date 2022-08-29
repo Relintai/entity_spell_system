@@ -31,8 +31,8 @@ SOFTWARE.
 #include "core/resource.h"
 #endif
 
-class SpellCooldownManipulationData : public Reference {
-	GDCLASS(SpellCooldownManipulationData, Reference);
+class SpellCooldownManipulationData : public RefCounted {
+	GDCLASS(SpellCooldownManipulationData, RefCounted);
 
 public:
 	void set_id() {}

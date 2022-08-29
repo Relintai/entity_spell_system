@@ -26,7 +26,7 @@ SOFTWARE.
 #include "core/version.h"
 
 #if VERSION_MAJOR > 3
-#include "core/object/reference.h"
+#include "core/object/ref_counted.h"
 #else
 #include "core/reference.h"
 #endif
@@ -37,8 +37,8 @@ SOFTWARE.
 class Entity;
 class Spell;
 
-class SpellDamageInfo : public Reference {
-	GDCLASS(SpellDamageInfo, Reference);
+class SpellDamageInfo : public RefCounted {
+	GDCLASS(SpellDamageInfo, RefCounted);
 
 public:
 	enum DamageSourceType {
@@ -74,8 +74,8 @@ public:
 	void receiver_set(Entity *value);
 	void receiver_set_bind(Node *value);
 
-	Ref<Reference> source_get();
-	void source_set(Ref<Reference> value);
+	Ref<RefCounted> source_get();
+	void source_set(Ref<RefCounted> value);
 
 	Ref<Spell> spell_source_get();
 	void spell_source_set(const Ref<Spell> &value);
@@ -107,7 +107,7 @@ private:
 	int _damage_type;
 
 	int _damage_source_type;
-	Ref<Reference> _damage_source;
+	Ref<RefCounted> _damage_source;
 	int _damage_source_id;
 
 	Entity *_dealer;

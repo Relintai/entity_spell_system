@@ -278,7 +278,7 @@ void LootDataBase::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_item", "index"), &LootDataBase::get_item);
 	ClassDB::bind_method(D_METHOD("set_item", "index", "value"), &LootDataBase::set_item);
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::ARRAY, "arr"), "_get_loot"));
+	D_METHOD("_get_loot");
 
 	ClassDB::bind_method(D_METHOD("get_loot"), &LootDataBase::get_loot);
 	ClassDB::bind_method(D_METHOD("_get_loot"), &LootDataBase::_get_loot);

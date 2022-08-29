@@ -20,5 +20,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-void register_entity_spell_system_types();
-void unregister_entity_spell_system_types();
+void initialize_entity_spell_system_module(ModuleInitializationLevel p_level);
+void uninitialize_entity_spell_system_module(ModuleInitializationLevel p_level);

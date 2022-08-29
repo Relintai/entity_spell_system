@@ -148,10 +148,10 @@ void ClassProfile::from_dict(const Dictionary &dict) {
 }
 
 ClassProfile::ClassProfile() {
-	_action_bar_profile.instance();
+	_action_bar_profile.instantiate();
 	_action_bar_profile->set_owner(this);
 
-	_input_profile.instance();
+	_input_profile.instantiate();
 	_input_profile->set_owner(this);
 
 	_level = 1;
@@ -160,10 +160,10 @@ ClassProfile::ClassProfile() {
 }
 
 ClassProfile::ClassProfile(const StringName &class_path) {
-	_action_bar_profile.instance();
+	_action_bar_profile.instantiate();
 	_action_bar_profile->set_owner(this);
 
-	_input_profile.instance();
+	_input_profile.instantiate();
 	_input_profile->set_owner(this);
 
 	_class_path = class_path;
@@ -173,10 +173,10 @@ ClassProfile::ClassProfile(const StringName &class_path) {
 }
 
 ClassProfile::ClassProfile(const String &class_name, const StringName &class_path, const int level, const int xp, const bool locked) {
-	_action_bar_profile.instance();
+	_action_bar_profile.instantiate();
 	_action_bar_profile->set_owner(this);
 
-	_input_profile.instance();
+	_input_profile.instantiate();
 	_input_profile->set_owner(this);
 
 	_character_class_name = class_name;
