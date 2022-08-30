@@ -438,11 +438,11 @@ void EntityResource::_bind_methods() {
 	D_METHOD("_notification_sstat_changed", "statid", "curent");
 	D_METHOD("_notification_cstat_changed", "statid", "curent");
 
-	D_METHOD("_ons_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
-	D_METHOD("_onc_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
+	D_METHOD("_ons_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", "Entity");
+	D_METHOD("_onc_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", "Entity");
 
-	D_METHOD("_ons_added", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
-	D_METHOD("_onc_added", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
+	D_METHOD("_ons_added", "entity", "Entity");
+	D_METHOD("_onc_added", "entity", "Entity");
 
 	D_METHOD("_process_server", "delta");
 	D_METHOD("_process_client", "delta");

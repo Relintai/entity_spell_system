@@ -6837,11 +6837,11 @@ void Entity::_bind_methods() {
 	D_METHOD("_notification_sxp_gained", "value");
 	D_METHOD("_notification_slevel_up", "value");
 
-	D_METHOD("_notification_sentity_resource_added", "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource");
-	D_METHOD("_notification_sentity_resource_removed", "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource");
+	D_METHOD("_notification_sentity_resource_added", "resource", "EntityResource");
+	D_METHOD("_notification_sentity_resource_removed", "resource", "EntityResource");
 
-	D_METHOD("_son_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
-	D_METHOD("_con_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
+	D_METHOD("_son_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", "Entity");
+	D_METHOD("_con_target_changed", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "old_target", "Entity");
 
 	//Serverside
 	ADD_SIGNAL(MethodInfo("notification_sdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
@@ -6849,10 +6849,10 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("notification_scast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("notification_saura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
-	D_METHOD("_notification_saura", "what", "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData");
-	D_METHOD("_notification_sheal", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo");
-	D_METHOD("_notification_scast", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo");
-	D_METHOD("_notification_sdamage", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo");
+	D_METHOD("_notification_saura", "what", "data", "AuraData");
+	D_METHOD("_notification_sheal", "what", "info", "SpellHealInfo");
+	D_METHOD("_notification_scast", "what", "info", "SpellCastInfo");
+	D_METHOD("_notification_sdamage", "what", "info", "SpellDamageInfo");
 
 	ClassDB::bind_method(D_METHOD("notification_saura", "what", "data"), &Entity::notification_saura);
 	ClassDB::bind_method(D_METHOD("notification_sheal", "what", "info"), &Entity::notification_sheal);
@@ -6865,10 +6865,10 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("notification_ccast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "spell_cast_info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
 	ADD_SIGNAL(MethodInfo("notification_caura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "aura_data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
 
-	D_METHOD("_notification_caura", "what", "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData");
-	D_METHOD("_notification_cheal", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo");
-	D_METHOD("_notification_ccast", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo");
-	D_METHOD("_notification_cdamage", "what", "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo");
+	D_METHOD("_notification_caura", "what", "data", "AuraData");
+	D_METHOD("_notification_cheal", "what", "info", "SpellHealInfo");
+	D_METHOD("_notification_ccast", "what", "info", "SpellCastInfo");
+	D_METHOD("_notification_cdamage", "what", "info", "SpellDamageInfo");
 
 	ClassDB::bind_method(D_METHOD("notification_caura", "what", "data"), &Entity::notification_caura);
 	ClassDB::bind_method(D_METHOD("notification_cheal", "what", "info"), &Entity::notification_cheal);
@@ -7021,8 +7021,8 @@ void Entity::_bind_methods() {
 	D_METHOD("_notification_cxp_gained", "value");
 	D_METHOD("_notification_clevel_up", "value");
 
-	D_METHOD("_notification_centity_resource_added", "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource");
-	D_METHOD("_notification_centity_resource_removed", "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource");
+	D_METHOD("_notification_centity_resource_added", "resource", "EntityResource");
+	D_METHOD("_notification_centity_resource_removed", "resource", "EntityResource");
 
 	D_METHOD("_canc_interact");
 	D_METHOD("_cans_interact");
@@ -7218,8 +7218,8 @@ void Entity::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cseed", PROPERTY_HINT_NONE, "", 0), "setc_seed", "getc_seed");
 
 	//Interaction type
-	D_METHOD("_gets_relation_to", "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
-	D_METHOD("_getc_relation_to", "to", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
+	D_METHOD("_gets_relation_to", "to", "Entity");
+	D_METHOD("_getc_relation_to", "to", "Entity");
 
 	ClassDB::bind_method(D_METHOD("gets_relation_to", "to"), &Entity::gets_relation_to_bind);
 	ClassDB::bind_method(D_METHOD("_gets_relation_to", "to"), &Entity::_gets_relation_to);
@@ -7307,12 +7307,12 @@ void Entity::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("equip_con_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
 	ADD_SIGNAL(MethodInfo("equip_con_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
 
-	D_METHOD("_equip_should_deny", "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
+	D_METHOD("_equip_should_deny", "equip_slot", "item", "ItemInstance");
 
-	D_METHOD("_equip_son_success", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "bag_slot");
-	D_METHOD("_equip_son_fail", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "bag_slot");
-	D_METHOD("_equip_con_success", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "bag_slot");
-	D_METHOD("_equip_con_fail", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "bag_slot");
+	D_METHOD("_equip_son_success", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", "ItemInstance", "bag_slot");
+	D_METHOD("_equip_son_fail", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", "ItemInstance", "bag_slot");
+	D_METHOD("_equip_con_success", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", "ItemInstance", "bag_slot");
+	D_METHOD("_equip_con_fail", PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", "ItemInstance", "bag_slot");
 
 	ADD_SIGNAL(MethodInfo("equipment_changed", PropertyInfo(Variant::INT, "slot")));
 
@@ -7335,13 +7335,13 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("equip_gets_slot", "index"), &Entity::equip_gets_slot);
 	ClassDB::bind_method(D_METHOD("equip_getc_slot", "index"), &Entity::equip_getc_slot);
 
-	D_METHOD("_equip_can_equip_item", "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
+	D_METHOD("_equip_can_equip_item", "equip_slot", "item", "ItemInstance");
 
 	ClassDB::bind_method(D_METHOD("equip_can_equip_item", "equip_slot", "item"), &Entity::equip_can_equip_item);
 	ClassDB::bind_method(D_METHOD("_equip_can_equip_item", "equip_slot", "item"), &Entity::_equip_can_equip_item);
 
-	D_METHOD("_equip_applys_item", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
-	D_METHOD("_equip_deapplys_item", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
+	D_METHOD("_equip_applys_item", "item", "ItemInstance");
+	D_METHOD("_equip_deapplys_item", "item", "ItemInstance");
 
 	ClassDB::bind_method(D_METHOD("equip_applys_item", "item"), &Entity::equip_applys_item);
 	ClassDB::bind_method(D_METHOD("equip_deapplys_item", "item"), &Entity::equip_deapplys_item);
@@ -7349,8 +7349,8 @@ void Entity::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_equip_applys_item", "item"), &Entity::_equip_applys_item);
 	ClassDB::bind_method(D_METHOD("_equip_deapplys_item", "item"), &Entity::_equip_deapplys_item);
 
-	D_METHOD("_equip_applyc_item", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
-	D_METHOD("_equip_deapplyc_item", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance");
+	D_METHOD("_equip_applyc_item", "item", "ItemInstance");
+	D_METHOD("_equip_deapplyc_item", "item", "ItemInstance");
 
 	ClassDB::bind_method(D_METHOD("cequip_applys_item", "item"), &Entity::equip_applyc_item);
 	ClassDB::bind_method(D_METHOD("equip_deapplyc_item", "item"), &Entity::equip_deapplyc_item);

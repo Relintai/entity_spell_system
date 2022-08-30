@@ -378,7 +378,7 @@ EntityClassData::~EntityClassData() {
 }
 
 void EntityClassData::_bind_methods() {
-	D_METHOD("_setup_resources", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
+	D_METHOD("_setup_resources", "entity", "Entity");
 
 	ClassDB::bind_method(D_METHOD("get_id"), &EntityClassData::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityClassData::set_id);

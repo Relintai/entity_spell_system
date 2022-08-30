@@ -265,8 +265,8 @@ void EntityData::_validate_property(PropertyInfo &property) const {
 
 void EntityData::_bind_methods() {
 	//Interactions
-	D_METHOD("_cans_interact", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
-	D_METHOD("_sinteract", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity");
+	D_METHOD("_cans_interact", "entity", "Entity");
+	D_METHOD("_sinteract", "entity", "Entity");
 
 	ClassDB::bind_method(D_METHOD("cans_interact", "entity"), &EntityData::cans_interact_bind);
 	ClassDB::bind_method(D_METHOD("sinteract", "entity"), &EntityData::sinteract_bind);
