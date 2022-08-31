@@ -441,7 +441,7 @@ void ItemTemplate::_validate_property(PropertyInfo &property) const {
 }
 
 void ItemTemplate::_bind_methods() {
-	D_METHOD("_create_item_instance");
+	GDVIRTUAL_BIND("_create_item_instance");
 
 	ClassDB::bind_method(D_METHOD("create_item_instance"), &ItemTemplate::create_item_instance);
 
@@ -568,7 +568,7 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_text_translation_key", "value"), &ItemTemplate::set_text_translation_key);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_translation_key"), "set_text_translation_key", "get_text_translation_key");
 
-	D_METHOD("_get_description");
+	GDVIRTUAL_BIND("_get_description");
 	ClassDB::bind_method(D_METHOD("get_description"), &ItemTemplate::get_description);
 
 	//StatMods Property binds

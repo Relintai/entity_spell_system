@@ -27,7 +27,6 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/variant/variant.h"
 #include "core/templates/vector.h"
 #include "core/templates/hash_map.h"
@@ -35,15 +34,7 @@ SOFTWARE.
 #include "core/config/engine.h"
 #include "core/variant/array.h"
 #include "core/core_bind.h"
-#else
-#include "core/variant.h"
-#include "core/vector.h"
-#include "core/hash_map.h"
-#include "core/ustring.h"
-#include "core/engine.h"
-#include "core/array.h"
-#include "core/bind/core_bind.h"
-#endif
+
 
 #include "scene/main/node.h"
 

@@ -25,13 +25,9 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/io/resource.h"
 #include "core/templates/vector.h"
-#else
-#include "core/resource.h"
-#include "core/vector.h"
-#endif
+
 
 #include "scene/resources/texture.h"
 

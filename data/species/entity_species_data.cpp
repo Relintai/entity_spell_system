@@ -176,7 +176,7 @@ void EntitySpeciesData::_validate_property(PropertyInfo &property) const {
 }
 
 void EntitySpeciesData::_bind_methods() {
-	D_METHOD("_generate_name", "seed");
+	GDVIRTUAL_BIND("_generate_name", "seed");
 
 	ClassDB::bind_method(D_METHOD("generate_name"), &EntitySpeciesData::generate_name);
 

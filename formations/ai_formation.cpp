@@ -75,8 +75,8 @@ AIFormation::AIFormation() {
 }
 
 void AIFormation::_bind_methods() {
-	D_METHOD("_on_set_owner");
-	D_METHOD("_get_position", "slot_index");
+	GDVIRTUAL_BIND("_on_set_owner");
+	GDVIRTUAL_BIND("_get_position", "slot_index");
 
 	ClassDB::bind_method(D_METHOD("get_owner"), &AIFormation::get_owner);
 	ClassDB::bind_method(D_METHOD("set_owner", "entity"), &AIFormation::set_owner_bind);

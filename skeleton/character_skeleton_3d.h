@@ -25,15 +25,10 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/templates/vector.h"
 #include "core/string/ustring.h"
 #include "core/string/node_path.h"
-#else
-#include "core/vector.h"
-#include "core/ustring.h"
-#include "core/node_path.h"
-#endif
+
 
 #include "scene/main/node.h"
 

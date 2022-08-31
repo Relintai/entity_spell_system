@@ -308,11 +308,8 @@ Dictionary AuraData::_to_dict() {
 	return dict;
 }
 void AuraData::_from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 	ERR_FAIL_COND(!ESS::get_singleton()->get_resource_db().is_valid());
 
 	_aura_id = dict.get("aura_id", 0);
@@ -447,8 +444,8 @@ void AuraData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "slow"), "set_slow", "get_slow");
 
 	//Serialization
-	D_METHOD("_from_dict", "dict");
-	D_METHOD("_to_dict");
+	GDVIRTUAL_BIND("_from_dict", "dict");
+	GDVIRTUAL_BIND("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &AuraData::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &AuraData::to_dict);
@@ -456,8 +453,8 @@ void AuraData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_to_dict"), &AuraData::_to_dict);
 
 	//Networking
-	D_METHOD("_to_send_array");
-	D_METHOD("_from_send_array", "arr");
+	GDVIRTUAL_BIND("_to_send_array");
+	GDVIRTUAL_BIND("_from_send_array", "arr");
 
 	ClassDB::bind_method(D_METHOD("to_send_array"), &AuraData::to_send_array);
 	ClassDB::bind_method(D_METHOD("from_send_array", "arr"), &AuraData::from_send_array);

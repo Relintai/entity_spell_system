@@ -132,13 +132,9 @@ Dictionary ActionBarProfile::to_dict() const {
 	return dict;
 }
 void ActionBarProfile::from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	if (dict.is_empty())
 		return;
-#else
-	if (dict.empty())
-		return;
-#endif
+
 
 	for (int i = 0; i < _action_bars.size(); ++i) {
 		_action_bars.get(i)->set_owner(NULL);

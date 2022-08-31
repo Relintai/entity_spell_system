@@ -25,13 +25,9 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/object/ref_counted.h"
 #include "core/string/ustring.h"
-#else
-#include "core/reference.h"
-#include "core/ustring.h"
-#endif
+
 
 #include "../entity_enums.h"
 

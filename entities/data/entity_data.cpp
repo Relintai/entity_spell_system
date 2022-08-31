@@ -265,8 +265,8 @@ void EntityData::_validate_property(PropertyInfo &property) const {
 
 void EntityData::_bind_methods() {
 	//Interactions
-	D_METHOD("_cans_interact", "entity", "Entity");
-	D_METHOD("_sinteract", "entity", "Entity");
+	GDVIRTUAL_BIND("_cans_interact", "entity", "Entity");
+	GDVIRTUAL_BIND("_sinteract", "entity", "Entity");
 
 	ClassDB::bind_method(D_METHOD("cans_interact", "entity"), &EntityData::cans_interact_bind);
 	ClassDB::bind_method(D_METHOD("sinteract", "entity"), &EntityData::sinteract_bind);
@@ -314,7 +314,7 @@ void EntityData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "species_instance", PROPERTY_HINT_RESOURCE_TYPE, "SpeciesInstance"), "set_species_instance", "get_species_instance");
 
 	//AI
-	D_METHOD("_get_ai_instance");
+	GDVIRTUAL_BIND("_get_ai_instance");
 
 	ClassDB::bind_method(D_METHOD("get_ai"), &EntityData::get_ai);
 	ClassDB::bind_method(D_METHOD("set_ai", "value"), &EntityData::set_ai);
@@ -329,7 +329,7 @@ void EntityData::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "loot_db", PROPERTY_HINT_RESOURCE_TYPE, "LootDataBase"), "set_loot_db", "get_loot_db");
 
 	ClassDB::bind_method(D_METHOD("generate_name"), &EntityData::generate_name);
-	D_METHOD("_generate_name");
+	GDVIRTUAL_BIND("_generate_name");
 
 	ADD_GROUP("Immunities", "immunity");
 	ClassDB::bind_method(D_METHOD("get_immunity_flags"), &EntityData::get_immunity_flags);

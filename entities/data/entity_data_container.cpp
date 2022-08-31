@@ -39,11 +39,8 @@ Dictionary EntityDataContainer::_to_dict() {
 	return dict;
 }
 void EntityDataContainer::_from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 }
 
 EntityDataContainer::EntityDataContainer() {
@@ -53,8 +50,8 @@ EntityDataContainer::~EntityDataContainer() {
 
 void EntityDataContainer::_bind_methods() {
 	//Serialization
-	D_METHOD("from_dict", "dict");
-	D_METHOD("to_dict", "dict");
+	GDVIRTUAL_BIND("from_dict", "dict");
+	GDVIRTUAL_BIND("to_dict", "dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntityDataContainer::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &EntityDataContainer::to_dict);

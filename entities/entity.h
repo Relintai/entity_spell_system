@@ -25,15 +25,10 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/object/object.h"
 #include "core/string/ustring.h"
 #include "core/templates/vector.h"
-#else
-#include "core/object.h"
-#include "core/ustring.h"
-#include "core/vector.h"
-#endif
+
 
 #include "scene/main/multiplayer_peer.h"
 

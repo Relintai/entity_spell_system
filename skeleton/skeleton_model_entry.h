@@ -25,11 +25,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/object/ref_counted.h"
-#else
-#include "core/reference.h"
-#endif
+
 
 #include "../data/items/model_visual_entry.h"
 

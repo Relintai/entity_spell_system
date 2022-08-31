@@ -190,11 +190,8 @@ Dictionary EntityCreateInfo::_to_dict() {
 	return dict;
 }
 void EntityCreateInfo::_from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 
 	_guid = dict.get("guid", 0);
 	_networked = dict.get("networked", false);
@@ -299,8 +296,8 @@ void EntityCreateInfo::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "created_entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_created_entity", "get_created_entity");
 
 	//Serialization
-	D_METHOD("_from_dict", "dict");
-	D_METHOD("_to_dict");
+	GDVIRTUAL_BIND("_from_dict", "dict");
+	GDVIRTUAL_BIND("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntityCreateInfo::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &EntityCreateInfo::to_dict);

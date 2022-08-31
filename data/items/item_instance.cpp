@@ -197,11 +197,8 @@ Dictionary ItemInstance::_to_dict() {
 	return dict;
 }
 void ItemInstance::_from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 
 	_item_template_path = dict.get("item_path", 0);
 
@@ -271,12 +268,12 @@ void ItemInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("stat_modifiers_set", "mods"), &ItemInstance::stat_modifiers_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "stat_modifiers", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT, ""), "stat_modifiers_set", "stat_modifiers_get");
 
-	D_METHOD("_get_description", "desc");
+	GDVIRTUAL_BIND("_get_description", "desc");
 	ClassDB::bind_method(D_METHOD("get_description"), &ItemInstance::get_description);
 
 	//Serialization
-	D_METHOD("_from_dict", "dict");
-	D_METHOD("_to_dict", "dict");
+	GDVIRTUAL_BIND("_from_dict", "dict");
+	GDVIRTUAL_BIND("_to_dict", "dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &ItemInstance::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &ItemInstance::to_dict);

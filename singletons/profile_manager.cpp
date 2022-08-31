@@ -26,13 +26,9 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
-#else
-#include "core/engine.h"
-#include "core/project_settings.h"
-#endif
+
 
 #include "../defines.h"
 
@@ -170,11 +166,8 @@ Dictionary ProfileManager::to_dict() const {
 	return dict;
 }
 void ProfileManager::from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 
 	clears_player_profiles();
 
@@ -234,8 +227,8 @@ void ProfileManager::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("keybinds_changed"));
 	ADD_SIGNAL(MethodInfo("changed"));
 
-	D_METHOD("_save");
-	D_METHOD("_load");
+	GDVIRTUAL_BIND("_save");
+	GDVIRTUAL_BIND("_load");
 
 	ClassDB::bind_method(D_METHOD("_save"), &ProfileManager::_save);
 	ClassDB::bind_method(D_METHOD("_load"), &ProfileManager::_load);

@@ -551,7 +551,7 @@ void CharacterSkeleton2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_model_visual_count"), &CharacterSkeleton2D::get_model_visual_count);
 	ClassDB::bind_method(D_METHOD("clear_model_visuals"), &CharacterSkeleton2D::clear_model_visuals);
 
-	D_METHOD("_build_model");
+	GDVIRTUAL_BIND("_build_model");
 
 	ClassDB::bind_method(D_METHOD("get_model_dirty"), &CharacterSkeleton2D::get_model_dirty);
 	ClassDB::bind_method(D_METHOD("set_model_dirty", "value"), &CharacterSkeleton2D::set_model_dirty);
@@ -586,7 +586,7 @@ void CharacterSkeleton2D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("attach_point_count"), &CharacterSkeleton2D::attach_point_count);
 
-	D_METHOD("_common_attach_point_index_get", "point", PROPERTY_HINT_NONE, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS);
+	GDVIRTUAL_BIND("_common_attach_point_index_get", "point", PROPERTY_HINT_NONE, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS);
 
 	ClassDB::bind_method(D_METHOD("common_attach_point_node_get", "point"), &CharacterSkeleton2D::common_attach_point_node_get);
 	ClassDB::bind_method(D_METHOD("common_attach_point_add", "point", "scene"), &CharacterSkeleton2D::common_attach_point_add);

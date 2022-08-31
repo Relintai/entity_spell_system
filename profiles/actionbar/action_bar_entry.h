@@ -25,17 +25,11 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/object/ref_counted.h"
 #include "core/templates/vector.h"
 #include "core/variant/array.h"
 #include "core/variant/dictionary.h"
-#else
-#include "core/reference.h"
-#include "core/vector.h"
-#include "core/array.h"
-#include "core/dictionary.h"
-#endif
+
 
 #include "action_bar_button_entry.h"
 

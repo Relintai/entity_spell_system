@@ -25,11 +25,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/io/resource.h"
-#else
-#include "core/resource.h"
-#endif
+
 
 #include "../../entity_enums.h"
 #include "level_stat_data.h"
