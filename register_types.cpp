@@ -140,152 +140,158 @@ SOFTWARE.
 static ESS *entity_data_manager = NULL;
 static ProfileManager *profile_manager = NULL;
 
-void initialize_entity_spell_system_module(GDNativeInitializationLevel p_level) {
+void initialize_entity_spell_system_module(ModuleInitializationLevel p_level) {
+	if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE) {
 #if PROPS_PRESENT
-	ClassDB::register_class<PropDataEntity>();
+		GDREGISTER_CLASS(PropDataEntity);
 #endif
 
-	ClassDB::register_class<SpellEnums>();
+		GDREGISTER_CLASS(SpellEnums);
 
-	//data
-	ClassDB::register_class<CraftRecipeHelper>();
-	ClassDB::register_class<CraftRecipe>();
+		//data
+		GDREGISTER_CLASS(CraftRecipeHelper);
+		GDREGISTER_CLASS(CraftRecipe);
 
-	ClassDB::register_class<Spell>();
-	ClassDB::register_class<AuraGroup>();
+		GDREGISTER_CLASS(Spell);
+		GDREGISTER_CLASS(AuraGroup);
 
-	ClassDB::register_class<EntityData>();
-	ClassDB::register_class<EntityClassData>();
-	ClassDB::register_class<VendorItemData>();
-	ClassDB::register_class<VendorItemDataEntry>();
+		GDREGISTER_CLASS(EntityData);
+		GDREGISTER_CLASS(EntityClassData);
+		GDREGISTER_CLASS(VendorItemData);
+		GDREGISTER_CLASS(VendorItemDataEntry);
 
-	ClassDB::register_class<EntityDataContainer>();
+		GDREGISTER_CLASS(EntityDataContainer);
 
-	ClassDB::register_class<ItemContainerData>();
-	ClassDB::register_class<ItemContainerDataEntry>();
+		GDREGISTER_CLASS(ItemContainerData);
+		GDREGISTER_CLASS(ItemContainerDataEntry);
 
-	ClassDB::register_class<ItemEnums>();
-	ClassDB::register_class<ItemTemplate>();
-	ClassDB::register_class<ItemInstance>();
-	ClassDB::register_class<SpellCooldownManipulationData>();
+		GDREGISTER_CLASS(ItemEnums);
+		GDREGISTER_CLASS(ItemTemplate);
+		GDREGISTER_CLASS(ItemInstance);
+		GDREGISTER_CLASS(SpellCooldownManipulationData);
 
-	ClassDB::register_class<EquipmentData>();
+		GDREGISTER_CLASS(EquipmentData);
 
-	ClassDB::register_class<EntitySkill>();
-	ClassDB::register_class<EntitySkillData>();
+		GDREGISTER_CLASS(EntitySkill);
+		GDREGISTER_CLASS(EntitySkillData);
 
-	ClassDB::register_class<ModelVisual>();
-	ClassDB::register_class<ModelVisualEntry>();
+		GDREGISTER_CLASS(ModelVisual);
+		GDREGISTER_CLASS(ModelVisualEntry);
 
-	ClassDB::register_class<CharacterAtlas>();
-	ClassDB::register_class<CharacterAtlasEntry>();
+		GDREGISTER_CLASS(CharacterAtlas);
+		GDREGISTER_CLASS(CharacterAtlasEntry);
 
-	ClassDB::register_class<CharacterBones>();
+		GDREGISTER_CLASS(CharacterBones);
 
-	//entity data
-	ClassDB::register_class<EntityEnums>();
+		//entity data
+		GDREGISTER_CLASS(EntityEnums);
 
-	ClassDB::register_class<StatData>();
+		GDREGISTER_CLASS(StatData);
 
-	ClassDB::register_class<LevelStatData>();
-	ClassDB::register_class<SimpleLevelStatData>();
-	ClassDB::register_class<ComplexLevelStatData>();
+		GDREGISTER_CLASS(LevelStatData);
+		GDREGISTER_CLASS(SimpleLevelStatData);
+		GDREGISTER_CLASS(ComplexLevelStatData);
 
-	ClassDB::register_class<CharacterSpec>();
+		GDREGISTER_CLASS(CharacterSpec);
 
-	ClassDB::register_class<Bag>();
+		GDREGISTER_CLASS(Bag);
 
-	ClassDB::register_class<SpellDamageInfo>();
-	ClassDB::register_class<SpellHealInfo>();
-	ClassDB::register_class<AuraData>();
+		GDREGISTER_CLASS(SpellDamageInfo);
+		GDREGISTER_CLASS(SpellHealInfo);
+		GDREGISTER_CLASS(AuraData);
 
-	ClassDB::register_class<EntityResourceCostData>();
-	ClassDB::register_class<EntityResourceCostDataHealth>();
-	ClassDB::register_class<EntityResourceCostDataResource>();
-	ClassDB::register_class<EntityResource>();
-	ClassDB::register_class<EntityResourceHealth>();
-	ClassDB::register_class<EntityResourceSpeed>();
+		GDREGISTER_CLASS(EntityResourceCostData);
+		GDREGISTER_CLASS(EntityResourceCostDataHealth);
+		GDREGISTER_CLASS(EntityResourceCostDataResource);
+		GDREGISTER_CLASS(EntityResource);
+		GDREGISTER_CLASS(EntityResourceHealth);
+		GDREGISTER_CLASS(EntityResourceSpeed);
 
-	//entities
-	ClassDB::register_class<EntityCreateInfo>();
-	ClassDB::register_class<Entity>();
+		//entities
+		GDREGISTER_CLASS(EntityCreateInfo);
+		GDREGISTER_CLASS(Entity);
 
-	//spellinfos
-	ClassDB::register_class<SpellCastInfo>();
+		//spellinfos
+		GDREGISTER_CLASS(SpellCastInfo);
 
-	//aurainfos
-	ClassDB::register_class<AuraApplyInfo>();
+		//aurainfos
+		GDREGISTER_CLASS(AuraApplyInfo);
 
-	//UI
-	ClassDB::register_class<ESDragAndDrop>();
+		//UI
+		GDREGISTER_CLASS(ESDragAndDrop);
 
-	//Skeleton
-	ClassDB::register_class<CharacterSkeleton2D>();
-	ClassDB::register_class<CharacterSkeleton3D>();
+		//Skeleton
+		GDREGISTER_CLASS(CharacterSkeleton2D);
+		GDREGISTER_CLASS(CharacterSkeleton3D);
 
-	ClassDB::register_class<EntitySpeciesData>();
-	ClassDB::register_class<SpeciesModelData>();
-	ClassDB::register_class<SpeciesInstance>();
+		GDREGISTER_CLASS(EntitySpeciesData);
+		GDREGISTER_CLASS(SpeciesModelData);
+		GDREGISTER_CLASS(SpeciesInstance);
 
-	ClassDB::register_class<SkeletonModelEntry>();
+		GDREGISTER_CLASS(SkeletonModelEntry);
 
-	ClassDB::register_class<LootDataBase>();
+		GDREGISTER_CLASS(LootDataBase);
 
-	ClassDB::register_class<SpellEffectVisual>();
-	ClassDB::register_class<SpellEffectVisualSimple>();
+		GDREGISTER_CLASS(SpellEffectVisual);
+		GDREGISTER_CLASS(SpellEffectVisualSimple);
 
-	//Projectiles
-	ClassDB::register_class<SpellFollowProjectile3D>();
+		//Projectiles
+		GDREGISTER_CLASS(SpellFollowProjectile3D);
 
-	//AI
-	ClassDB::register_class<EntityAI>();
+		//AI
+		GDREGISTER_CLASS(EntityAI);
 
-	ClassDB::register_class<AIFormation>();
+		GDREGISTER_CLASS(AIFormation);
 
-	//Resources
-	ClassDB::register_virtual_class<ESSResourceDB>();
-	ClassDB::register_class<ESSResourceDBStatic>();
-	ClassDB::register_class<ESSResourceDBFolders>();
-	ClassDB::register_class<ESSResourceDBMap>();
+		//Resources
+		GDREGISTER_VIRTUAL_CLASS(ESSResourceDB);
+		GDREGISTER_CLASS(ESSResourceDBStatic);
+		GDREGISTER_CLASS(ESSResourceDBFolders);
+		GDREGISTER_CLASS(ESSResourceDBMap);
 
-	//ProfileManager
-	ClassDB::register_class<InputProfileModifier>();
-	ClassDB::register_class<InputProfileModifierEntry>();
-	ClassDB::register_class<InputProfile>();
+		//ProfileManager
+		GDREGISTER_CLASS(InputProfileModifier);
+		GDREGISTER_CLASS(InputProfileModifierEntry);
+		GDREGISTER_CLASS(InputProfile);
 
-	ClassDB::register_class<ActionBarButtonEntry>();
-	ClassDB::register_class<ActionBarEntry>();
-	ClassDB::register_class<ActionBarProfile>();
+		GDREGISTER_CLASS(ActionBarButtonEntry);
+		GDREGISTER_CLASS(ActionBarEntry);
+		GDREGISTER_CLASS(ActionBarProfile);
 
-	ClassDB::register_class<ClassProfile>();
-	ClassDB::register_class<PlayerProfile>();
+		GDREGISTER_CLASS(ClassProfile);
+		GDREGISTER_CLASS(PlayerProfile);
 
-	ClassDB::register_class<ProfileManager>();
+		GDREGISTER_CLASS(ProfileManager);
 
-	ClassDB::register_class<ESSEntitySpawner>();
+		GDREGISTER_CLASS(ESSEntitySpawner);
 
-	ClassDB::register_class<ESSMaterialCache>();
-	ClassDB::register_class<ESSMaterialCachePCM>();
+		GDREGISTER_CLASS(ESSMaterialCache);
+		GDREGISTER_CLASS(ESSMaterialCachePCM);
 
-	entity_data_manager = memnew(ESS);
-	ClassDB::register_class<ESS>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("ESS", ESS::get_singleton()));
+		entity_data_manager = memnew(ESS);
+		GDREGISTER_CLASS(ESS);
+		Engine::get_singleton()->add_singleton(Engine::Singleton("ESS", ESS::get_singleton()));
 
-	profile_manager = memnew(ProfileManager);
-	ClassDB::register_class<ProfileManager>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("ProfileManager", ProfileManager::get_singleton()));
+		profile_manager = memnew(ProfileManager);
+		GDREGISTER_CLASS(ProfileManager);
+		Engine::get_singleton()->add_singleton(Engine::Singleton("ProfileManager", ProfileManager::get_singleton()));
+	}
 
 #ifdef TOOLS_ENABLED
-	//EditorPlugins::add_by_type<ESSEditorPlugin>();
+	if (p_level == MODULE_INITIALIZATION_LEVEL_EDITOR) {
+		EditorPlugins::add_by_type<ESSEditorPlugin>();
+	}
 #endif
 }
 
-void uninitialize_entity_spell_system_module(GDNativeInitializationLevel p_level) {
-	if (entity_data_manager) {
-		memdelete(entity_data_manager);
-	}
+void uninitialize_entity_spell_system_module(ModuleInitializationLevel p_level) {
+	if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE) {
+		if (entity_data_manager) {
+			memdelete(entity_data_manager);
+		}
 
-	if (profile_manager) {
-		memdelete(profile_manager);
+		if (profile_manager) {
+			memdelete(profile_manager);
+		}
 	}
 }

@@ -20,5 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#ifndef ENTITY_SPELL_SYSTEM_REGISTER_TYPES_H
+#define ENTITY_SPELL_SYSTEM_REGISTER_TYPES_H
+
+#include "modules/register_module_types.h"
+
 void initialize_entity_spell_system_module(ModuleInitializationLevel p_level);
 void uninitialize_entity_spell_system_module(ModuleInitializationLevel p_level);
+
+#endif
