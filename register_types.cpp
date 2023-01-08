@@ -244,7 +244,7 @@ void initialize_entity_spell_system_module(ModuleInitializationLevel p_level) {
 		GDREGISTER_CLASS(AIFormation);
 
 		//Resources
-		GDREGISTER_VIRTUAL_CLASS(ESSResourceDB);
+		GDREGISTER_ABSTRACT_CLASS(ESSResourceDB);
 		GDREGISTER_CLASS(ESSResourceDBStatic);
 		GDREGISTER_CLASS(ESSResourceDBFolders);
 		GDREGISTER_CLASS(ESSResourceDBMap);
