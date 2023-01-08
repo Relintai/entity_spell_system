@@ -44,8 +44,8 @@ void ESSResourceDB::add_entity_resource(Ref<EntityResource> cls) {
 	if (!cls.is_valid())
 		return;
 
-	_entity_resources_id_to_path.set(cls->get_id(), cls->get_path());
-	_entity_resources_path_to_id.set(cls->get_path(), cls->get_id());
+	_entity_resources_id_to_path.insert(cls->get_id(), cls->get_path());
+	_entity_resources_path_to_id.insert(cls->get_path(), cls->get_id());
 }
 
 Ref<EntityResource> ESSResourceDB::get_entity_resource_path(const StringName &path) {
@@ -56,8 +56,8 @@ void ESSResourceDB::add_entity_skill(Ref<EntitySkillData> cls) {
 	if (!cls.is_valid())
 		return;
 
-	_entity_skill_id_to_path.set(cls->get_id(), cls->get_path());
-	_entity_skill_path_to_id.set(cls->get_path(), cls->get_id());
+	_entity_skill_id_to_path.insert(cls->get_id(), cls->get_path());
+	_entity_skill_path_to_id.insert(cls->get_path(), cls->get_id());
 }
 
 Ref<EntitySkillData> ESSResourceDB::get_entity_skill_path(const StringName &path) {
@@ -68,8 +68,8 @@ void ESSResourceDB::add_entity_data(Ref<EntityData> cls) {
 	if (!cls.is_valid())
 		return;
 
-	_entity_data_id_to_path.set(cls->get_id(), cls->get_path());
-	_entity_data_path_to_id.set(cls->get_path(), cls->get_id());
+	_entity_data_id_to_path.insert(cls->get_id(), cls->get_path());
+	_entity_data_path_to_id.insert(cls->get_path(), cls->get_id());
 }
 
 Ref<EntityData> ESSResourceDB::get_entity_data_path(const StringName &path) {
@@ -80,8 +80,8 @@ void ESSResourceDB::add_spell(Ref<Spell> spell) {
 	if (!spell.is_valid())
 		return;
 
-	_spell_id_to_path.set(spell->get_id(), spell->get_path());
-	_spell_path_to_id.set(spell->get_path(), spell->get_id());
+	_spell_id_to_path.insert(spell->get_id(), spell->get_path());
+	_spell_path_to_id.insert(spell->get_path(), spell->get_id());
 }
 
 Ref<Spell> ESSResourceDB::get_spell_path(const StringName &path) {
@@ -92,8 +92,8 @@ void ESSResourceDB::add_craft_recipe(Ref<CraftRecipe> cda) {
 	if (!cda.is_valid())
 		return;
 
-	_craft_recipe_id_to_path.set(cda->get_id(), cda->get_path());
-	_craft_recipe_path_to_id.set(cda->get_path(), cda->get_id());
+	_craft_recipe_id_to_path.insert(cda->get_id(), cda->get_path());
+	_craft_recipe_path_to_id.insert(cda->get_path(), cda->get_id());
 }
 
 Ref<CraftRecipe> ESSResourceDB::get_craft_recipe_path(const StringName &path) {
@@ -104,8 +104,8 @@ void ESSResourceDB::add_item_template(Ref<ItemTemplate> cda) {
 	if (!cda.is_valid())
 		return;
 
-	_item_template_id_to_path.set(cda->get_id(), cda->get_path());
-	_item_template_path_to_id.set(cda->get_path(), cda->get_id());
+	_item_template_id_to_path.insert(cda->get_id(), cda->get_path());
+	_item_template_path_to_id.insert(cda->get_path(), cda->get_id());
 }
 
 Ref<ItemTemplate> ESSResourceDB::get_item_template_path(const StringName &path) {
@@ -116,8 +116,8 @@ void ESSResourceDB::add_entity_species_data(Ref<EntitySpeciesData> cda) {
 	if (!cda.is_valid())
 		return;
 
-	_entity_species_id_to_path.set(cda->get_id(), cda->get_path());
-	_entity_species_path_to_id.set(cda->get_path(), cda->get_id());
+	_entity_species_id_to_path.insert(cda->get_id(), cda->get_path());
+	_entity_species_path_to_id.insert(cda->get_path(), cda->get_id());
 }
 
 Ref<EntitySpeciesData> ESSResourceDB::get_entity_species_data_path(const StringName &path) {
