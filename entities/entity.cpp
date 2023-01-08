@@ -5767,33 +5767,28 @@ int Entity::seen_by_gets_count() {
 	return _s_seen_by.size();
 }
 
-void Entity::vrpc(const StringName &p_method, VARIANT_ARG_DECLARE) {
-	VARIANT_ARGPTRS;
-
-	int argc = 0;
-	for (int i = 0; i < VARIANT_ARG_MAX; i++) {
-		if (argptr[i]->get_type() == Variant::NIL)
-			break;
-		argc++;
-	}
-
+Error Entity::_vrpc(const StringName &p_method, const Variant **p_arg, int p_argcount) {
 	for (int i = 0; i < _s_seen_by.size(); ++i) {
 		Entity *e = _s_seen_by.get(i);
 
 		if (unlikely(!INSTANCE_VALIDATE(e))) {
-			_s_seen_by.remove(i);
+			_s_seen_by.remove_at(i);
 			--i;
 			continue;
 		}
 
-		int netm = e->get_network_master();
+		int netm = e->get_multiplayer_authority();
 
-		if (netm != 1)
-			rpcp(netm, false, p_method, argptr, argc);
+		if (netm != 1) {
+			rpcp(netm, p_method, p_arg, p_argcount);
+		}
 	}
 
-	if (get_network_master() != 1)
-		rpcp(get_network_master(), false, p_method, argptr, argc);
+	if (get_multiplayer_authority() != 1) {
+		rpcp(get_multiplayer_authority(), p_method, p_arg, p_argcount);
+	}
+
+	return OK;
 }
 
 #if VERSION_MAJOR < 4

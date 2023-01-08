@@ -1082,7 +1082,10 @@ public:
 	void seen_by_adds_bind(Node *entity);
 	int seen_by_gets_count();
 
-	void vrpc(const StringName &p_method, VARIANT_ARG_LIST);
+	template <typename... VarArgs>
+	Error vrpc(const StringName &p_method, VarArgs... p_args);
+
+	Error _vrpc(const StringName &p_method, const Variant **p_arg, int p_argcount);
 #if VERSION_MAJOR < 4
 	Variant _vrpc_bind(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
 #else
@@ -1345,5 +1348,15 @@ private:
 
 	Vector<Ref<SpellCastInfo>> _physics_process_scis;
 };
+
+template <typename... VarArgs>
+Error Entity::vrpc(const StringName &p_method, VarArgs... p_args) {
+	Variant args[sizeof...(p_args) + 1] = { p_args..., Variant() }; // +1 makes sure zero sized arrays are also supported.
+	const Variant *argptrs[sizeof...(p_args) + 1];
+	for (uint32_t i = 0; i < sizeof...(p_args); i++) {
+		argptrs[i] = &args[i];
+	}
+	return _vrpc(p_method, sizeof...(p_args) == 0 ? nullptr : (const Variant **)argptrs, sizeof...(p_args));
+}
 
 #endif
