@@ -28,11 +28,12 @@ SOFTWARE.
 #include "core/object/object.h"
 #include "core/string/ustring.h"
 #include "core/templates/vector.h"
+#include "core/variant/dictionary.h"
 
 #include "scene/main/multiplayer_peer.h"
 
-#include "scene/main/node.h"
 #include "scene/main/multiplayer_api.h"
+#include "scene/main/node.h"
 
 #include "../data/items/craft_recipe.h"
 #include "../data/items/item_instance.h"
@@ -125,13 +126,75 @@ struct EntityStat {
 	}
 };
 
-#define SET_RPC_OFF(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_DISABLED);
-#define SET_RPC_REMOTE(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_REMOTE);
-#define SET_RPC_MASTER(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_MASTER);
-#define SET_RPC_PUPPET(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_PUPPET);
-#define SET_RPC_REMOTESYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_REMOTESYNC);
-#define SET_RPC_MASTERSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_MASTERSYNC);
-#define SET_RPC_PUPPETSYNC(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_PUPPETSYNC);
+#define SET_RPC_OFF(p_method_name)                                             \
+	{                                                                          \
+		Dictionary rpc_config_dict;                                            \
+		rpc_config_dict["rpc_mode"] = MultiplayerAPI::RPC_MODE_DISABLED;            \
+		rpc_config_dict["channel"] = 0;                                             \
+		rpc_config_dict["call_local"] = false;                                      \
+		rpc_config_dict["transfer_mode"] = MultiplayerPeer::TRANSFER_MODE_RELIABLE; \
+		rpc_config(p_method_name, rpc_config_dict);                            \
+	}
+
+#define SET_RPC_REMOTE(p_method_name)                                          \
+	{                                                                          \
+		Dictionary rpc_config_dict;                                            \
+		rpc_config_dict["rpc_mode"] = MultiplayerAPI::RPC_MODE_ANY_PEER;            \
+		rpc_config_dict["channel"] = 0;                                             \
+		rpc_config_dict["call_local"] = false;                                      \
+		rpc_config_dict["transfer_mode"] = MultiplayerPeer::TRANSFER_MODE_RELIABLE; \
+		rpc_config(p_method_name, rpc_config_dict);                            \
+	}
+
+#define SET_RPC_MASTER(p_method_name)                                          \
+	{                                                                          \
+		Dictionary rpc_config_dict;                                            \
+		rpc_config_dict["rpc_mode"] = MultiplayerAPI::RPC_MODE_AUTHORITY;           \
+		rpc_config_dict["channel"] = 0;                                             \
+		rpc_config_dict["call_local"] = false;                                      \
+		rpc_config_dict["transfer_mode"] = MultiplayerPeer::TRANSFER_MODE_RELIABLE; \
+		rpc_config(p_method_name, rpc_config_dict);                            \
+	}
+
+#define SET_RPC_PUPPET(p_method_name)                                          \
+	{                                                                          \
+		Dictionary rpc_config_dict;                                            \
+		rpc_config_dict["rpc_mode"] = MultiplayerAPI::RPC_MODE_ANY_PEER;            \
+		rpc_config_dict["channel"] = 0;                                             \
+		rpc_config_dict["call_local"] = false;                                      \
+		rpc_config_dict["transfer_mode"] = MultiplayerPeer::TRANSFER_MODE_RELIABLE; \
+		rpc_config(p_method_name, rpc_config_dict);                            \
+	}
+
+#define SET_RPC_REMOTESYNC(p_method_name)                                      \
+	{                                                                          \
+		Dictionary rpc_config_dict;                                            \
+		rpc_config_dict["rpc_mode"] = MultiplayerAPI::RPC_MODE_ANY_PEER;            \
+		rpc_config_dict["channel"] = 0;                                             \
+		rpc_config_dict["call_local"] = true;                                       \
+		rpc_config_dict["transfer_mode"] = MultiplayerPeer::TRANSFER_MODE_RELIABLE; \
+		rpc_config(p_method_name, rpc_config_dict);                            \
+	}
+
+#define SET_RPC_MASTERSYNC(p_method_name)                                      \
+	{                                                                          \
+		Dictionary rpc_config_dict;                                            \
+		rpc_config_dict["rpc_mode"] = MultiplayerAPI::RPC_MODE_AUTHORITY;           \
+		rpc_config_dict["channel"] = 0;                                             \
+		rpc_config_dict["call_local"] = true;                                       \
+		rpc_config_dict["transfer_mode"] = MultiplayerPeer::TRANSFER_MODE_RELIABLE; \
+		rpc_config(p_method_name, rpc_config_dict);                            \
+	}
+
+#define SET_RPC_PUPPETSYNC(p_method_name)                                      \
+	{                                                                          \
+		Dictionary rpc_config_dict;                                            \
+		rpc_config_dict["rpc_mode"] = MultiplayerAPI::RPC_MODE_ANY_PEER;            \
+		rpc_config_dict["channel"] = 0;                                             \
+		rpc_config_dict["call_local"] = true;                                       \
+		rpc_config_dict["transfer_mode"] = MultiplayerPeer::TRANSFER_MODE_RELIABLE; \
+		rpc_config(p_method_name, rpc_config_dict);                            \
+	}
 
 // f.e.   RPC(method, arg0, arg1, etc)
 #define RPC(func, ...)                                                      \
