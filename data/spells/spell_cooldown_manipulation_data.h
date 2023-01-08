@@ -25,14 +25,11 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/io/resource.h"
-#else
-#include "core/resource.h"
-#endif
 
-class SpellCooldownManipulationData : public Reference {
-	GDCLASS(SpellCooldownManipulationData, Reference);
+
+class SpellCooldownManipulationData : public RefCounted {
+	GDCLASS(SpellCooldownManipulationData, RefCounted);
 
 public:
 	void set_id() {}

@@ -103,11 +103,8 @@ Dictionary EntitySkill::_to_dict() {
 	return dict;
 }
 void EntitySkill::_from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 
 	_skill_id = dict.get("skill_id", 0);
 	_skill_path = dict.get("skill_path", "");
@@ -153,8 +150,8 @@ void EntitySkill::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "disabled"), "set_disabled", "get_disabled");
 
 	//Serialization
-	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	GDVIRTUAL_BIND("_from_dict", "dict");
+	GDVIRTUAL_BIND("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntitySkill::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &EntitySkill::to_dict);

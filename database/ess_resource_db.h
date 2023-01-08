@@ -25,21 +25,13 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/io/resource.h"
 #include "core/templates/vector.h"
 #include "core/templates/hash_map.h"
 #include "core/string/ustring.h"
 #include "core/core_bind.h"
 #include "core/variant/variant.h"
-#else
-#include "core/resource.h"
-#include "core/vector.h"
-#include "core/hash_map.h"
-#include "core/ustring.h"
-#include "core/bind/core_bind.h"
-#include "core/variant.h"
-#endif
+
 
 #include "../item_enums.h"
 

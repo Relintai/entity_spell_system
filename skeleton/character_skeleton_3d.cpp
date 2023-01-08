@@ -182,23 +182,23 @@ void CharacterSkeleton3D::bone_additional_mesh_transform_bone_index_set(const in
 	_bone_model_additional_mesh_transforms.write[index].bone_index = bone_index;
 }
 
-Transform CharacterSkeleton3D::bone_additional_mesh_transform_transform_get(const int index) const {
-	ERR_FAIL_INDEX_V(index, _bone_model_additional_mesh_transforms.size(), Transform());
+Transform3D CharacterSkeleton3D::bone_additional_mesh_transform_transform_get(const int index) const {
+	ERR_FAIL_INDEX_V(index, _bone_model_additional_mesh_transforms.size(), Transform3D());
 
 	return _bone_model_additional_mesh_transforms[index].transform;
 }
-void CharacterSkeleton3D::bone_additional_mesh_transform_transform_set(const int index, const Transform &transform) {
+void CharacterSkeleton3D::bone_additional_mesh_transform_transform_set(const int index, const Transform3D &transform) {
 	ERR_FAIL_INDEX(index, _bone_model_additional_mesh_transforms.size());
 
 	_bone_model_additional_mesh_transforms.write[index].transform = transform;
 }
 
-Transform CharacterSkeleton3D::bone_additional_mesh_transform_user_transform_get(const int index) const {
-	ERR_FAIL_INDEX_V(index, _bone_model_additional_mesh_transforms.size(), Transform());
+Transform3D CharacterSkeleton3D::bone_additional_mesh_transform_user_transform_get(const int index) const {
+	ERR_FAIL_INDEX_V(index, _bone_model_additional_mesh_transforms.size(), Transform3D());
 
 	return _bone_model_additional_mesh_transforms[index].user_transform;
 }
-void CharacterSkeleton3D::bone_additional_mesh_transform_user_transform_set(const int index, const Transform &transform) {
+void CharacterSkeleton3D::bone_additional_mesh_transform_user_transform_set(const int index, const Transform3D &transform) {
 	ERR_FAIL_INDEX(index, _bone_model_additional_mesh_transforms.size());
 
 	_bone_model_additional_mesh_transforms.write[index].user_transform = transform;
@@ -241,7 +241,7 @@ void CharacterSkeleton3D::remove_model_visual(Ref<ModelVisual> vis) {
 			remove_model_visual_entry(vis, e);
 	}
 
-	_model_visuals.remove(index);
+	_model_visuals.remove_at(index);
 
 	set_process(true);
 	_model_dirty = true;
@@ -252,7 +252,7 @@ void CharacterSkeleton3D::remove_model_visual_index(int index) {
 	set_process(true);
 	_model_dirty = true;
 
-	_model_visuals.remove(index);
+	_model_visuals.remove_at(index);
 }
 Ref<ModelVisual> CharacterSkeleton3D::get_model_visual(int index) {
 	ERR_FAIL_INDEX_V(index, _model_visuals.size(), Ref<ModelVisual>());
@@ -308,7 +308,7 @@ void CharacterSkeleton3D::add_model_visual_entry(Ref<ModelVisual> vis, Ref<Model
 	}
 
 	Ref<SkeletonModelEntry> e;
-	e.instance();
+	e.instantiate();
 
 	e->set_priority(vis->get_layer());
 	//e->set_color(ive->get_color());
@@ -551,13 +551,13 @@ bool CharacterSkeleton3D::_set(const StringName &p_name, const Variant &p_value)
 
 			return true;
 		} else if (p == "transform") {
-			Transform tf = p_value;
+			Transform3D tf = p_value;
 
 			_bone_model_additional_mesh_transforms.write[index].transform = tf;
 
 			return true;
 		} else if (p == "user_transform") {
-			Transform tf = p_value;
+			Transform3D tf = p_value;
 
 			_bone_model_additional_mesh_transforms.write[index].user_transform = tf;
 
@@ -624,8 +624,8 @@ void CharacterSkeleton3D::_get_property_list(List<PropertyInfo> *p_list) const {
 
 	for (int i = 0; i < _bone_model_additional_mesh_transforms.size(); ++i) {
 		p_list->push_back(PropertyInfo(Variant::INT, "bone_model_additional_mesh_transforms/" + itos(i) + "/bone_index", PROPERTY_HINT_ENUM, ESS::get_singleton()->skeletons_bones_index_get(_entity_type)));
-		p_list->push_back(PropertyInfo(Variant::TRANSFORM, "bone_model_additional_mesh_transforms/" + itos(i) + "/transform"));
-		p_list->push_back(PropertyInfo(Variant::TRANSFORM, "bone_model_additional_mesh_transforms/" + itos(i) + "/user_transform"));
+		p_list->push_back(PropertyInfo(Variant::TRANSFORM3D, "bone_model_additional_mesh_transforms/" + itos(i) + "/transform"));
+		p_list->push_back(PropertyInfo(Variant::TRANSFORM3D, "bone_model_additional_mesh_transforms/" + itos(i) + "/user_transform"));
 	}
 }
 
@@ -651,7 +651,7 @@ void CharacterSkeleton3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_model_visual_count"), &CharacterSkeleton3D::get_model_visual_count);
 	ClassDB::bind_method(D_METHOD("clear_model_visuals"), &CharacterSkeleton3D::clear_model_visuals);
 
-	BIND_VMETHOD(MethodInfo("_build_model"));
+	GDVIRTUAL_BIND("_build_model");
 
 	ClassDB::bind_method(D_METHOD("get_model_dirty"), &CharacterSkeleton3D::get_model_dirty);
 	ClassDB::bind_method(D_METHOD("set_model_dirty", "value"), &CharacterSkeleton3D::set_model_dirty);
@@ -700,7 +700,7 @@ void CharacterSkeleton3D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("attach_point_count"), &CharacterSkeleton3D::attach_point_count);
 
-	BIND_VMETHOD(MethodInfo("_common_attach_point_index_get", PropertyInfo(Variant::INT, "point", PROPERTY_HINT_NONE, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS)));
+	GDVIRTUAL_BIND("_common_attach_point_index_get", "point", PROPERTY_HINT_NONE, EntityEnums::BINDING_STRING_COMMON_CHARCATER_SKELETON_POINTS);
 
 	ClassDB::bind_method(D_METHOD("common_attach_point_node_get", "point"), &CharacterSkeleton3D::common_attach_point_node_get);
 	ClassDB::bind_method(D_METHOD("common_attach_point_add", "point", "scene"), &CharacterSkeleton3D::common_attach_point_add);

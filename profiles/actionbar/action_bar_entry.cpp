@@ -117,11 +117,8 @@ Dictionary ActionBarEntry::to_dict() const {
 	return dict;
 }
 void ActionBarEntry::from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 
 	for (int i = 0; i < _button_entries.size(); ++i) {
 		_button_entries.get(i)->set_owner(NULL);
@@ -136,7 +133,7 @@ void ActionBarEntry::from_dict(const Dictionary &dict) {
 
 	for (int i = 0; i < arr.size(); ++i) {
 		Ref<ActionBarButtonEntry> e;
-		e.instance();
+		e.instantiate();
 
 		e->from_dict(arr.get(i));
 		e->set_owner(this);

@@ -354,13 +354,13 @@ EntityAI::~EntityAI() {
 }
 
 void EntityAI::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_on_set_owner"));
+	GDVIRTUAL_BIND("_on_set_owner");
 
-	BIND_VMETHOD(MethodInfo("_update", PropertyInfo(Variant::REAL, "delta")));
-	BIND_VMETHOD(MethodInfo("_pet_update", PropertyInfo(Variant::REAL, "delta")));
+	GDVIRTUAL_BIND("_update", "delta");
+	GDVIRTUAL_BIND("_pet_update", "delta");
 
-	BIND_VMETHOD(MethodInfo("_move", PropertyInfo(Variant::REAL, "delta")));
-	BIND_VMETHOD(MethodInfo("_pet_move", PropertyInfo(Variant::REAL, "delta")));
+	GDVIRTUAL_BIND("_move", "delta");
+	GDVIRTUAL_BIND("_pet_move", "delta");
 
 	ClassDB::bind_method(D_METHOD("get_enabled"), &EntityAI::get_enabled);
 	ClassDB::bind_method(D_METHOD("set_enabled", "value"), &EntityAI::set_enabled);
@@ -399,10 +399,10 @@ void EntityAI::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_on_set_owner"), &EntityAI::_on_set_owner);
 
 	//EventHandlers
-	BIND_VMETHOD(MethodInfo("_notification_saura", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "AuraData")));
-	BIND_VMETHOD(MethodInfo("_notification_sheal", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellHealInfo")));
-	BIND_VMETHOD(MethodInfo("_notification_scast", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellCastInfo")));
-	BIND_VMETHOD(MethodInfo("_notification_sdamage", PropertyInfo(Variant::INT, "what"), PropertyInfo(Variant::OBJECT, "info", PROPERTY_HINT_RESOURCE_TYPE, "SpellDamageInfo")));
+	GDVIRTUAL_BIND("_notification_saura", "what", "data", "AuraData");
+	GDVIRTUAL_BIND("_notification_sheal", "what", "info", "SpellHealInfo");
+	GDVIRTUAL_BIND("_notification_scast", "what", "info", "SpellCastInfo");
+	GDVIRTUAL_BIND("_notification_sdamage", "what", "info", "SpellDamageInfo");
 
 	ClassDB::bind_method(D_METHOD("notification_saura", "what", "data"), &EntityAI::notification_saura);
 	ClassDB::bind_method(D_METHOD("notification_sheal", "what", "info"), &EntityAI::notification_sheal);
@@ -426,31 +426,31 @@ void EntityAI::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_sentity_resource_added", "resource"), &EntityAI::notification_sentity_resource_added);
 	ClassDB::bind_method(D_METHOD("notification_sentity_resource_removed", "resource"), &EntityAI::notification_sentity_resource_removed);
 
-	BIND_VMETHOD(MethodInfo("_notification_sdeath", PropertyInfo(Variant::OBJECT, "data", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	GDVIRTUAL_BIND("_notification_sdeath", "data", "Entity");
 
-	BIND_VMETHOD(MethodInfo("_notification_scooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_scooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	GDVIRTUAL_BIND("_notification_scooldown_added", "id", "value");
+	GDVIRTUAL_BIND("_notification_scooldown_removed", "id", "value");
 
-	BIND_VMETHOD(MethodInfo("_notification_scategory_cooldown_added", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_scategory_cooldown_removed", PropertyInfo(Variant::INT, "id"), PropertyInfo(Variant::REAL, "value")));
+	GDVIRTUAL_BIND("_notification_scategory_cooldown_added", "id", "value");
+	GDVIRTUAL_BIND("_notification_scategory_cooldown_removed", "id", "value");
 
-	BIND_VMETHOD(MethodInfo("_notification_sgcd_started", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::REAL, "gcd")));
-	BIND_VMETHOD(MethodInfo("_notification_sgcd_finished", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity")));
+	GDVIRTUAL_BIND("_notification_sgcd_started", "entity", "Entity", "gcd");
+	GDVIRTUAL_BIND("_notification_sgcd_finished", "entity", "Entity");
 
-	BIND_VMETHOD(MethodInfo("_notification_sxp_gained", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
-	BIND_VMETHOD(MethodInfo("_notification_slevel_up", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "value")));
+	GDVIRTUAL_BIND("_notification_sxp_gained", "entity", "Entity", "value");
+	GDVIRTUAL_BIND("_notification_slevel_up", "entity", "Entity", "value");
 
-	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_added", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
-	BIND_VMETHOD(MethodInfo("_notification_sentity_resource_removed", PropertyInfo(Variant::OBJECT, "resource", PROPERTY_HINT_RESOURCE_TYPE, "EntityResource")));
+	GDVIRTUAL_BIND("_notification_sentity_resource_added", "resource", "EntityResource");
+	GDVIRTUAL_BIND("_notification_sentity_resource_removed", "resource", "EntityResource");
 
 	//Equipment
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "ret"), "_equip_should_deny", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	GDVIRTUAL_BIND("_equip_should_deny", "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity", "equip_slot", "item", "ItemInstance");
 
-	BIND_VMETHOD(MethodInfo("_equip_son_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
-	BIND_VMETHOD(MethodInfo("_equip_son_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
-	BIND_VMETHOD(MethodInfo("_equip_con_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
-	BIND_VMETHOD(MethodInfo("_equip_con_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::OBJECT, "old_item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "bag_slot")));
+	GDVIRTUAL_BIND("_equip_son_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", "ItemInstance", "bag_slot");
+	GDVIRTUAL_BIND("_equip_son_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", "ItemInstance", "bag_slot");
+	GDVIRTUAL_BIND("_equip_con_success", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", "ItemInstance", "bag_slot");
+	GDVIRTUAL_BIND("_equip_con_fail", PropertyInfo(Variant::OBJECT, "entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), PropertyInfo(Variant::INT, "equip_slot", "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance", "old_item", "ItemInstance", "bag_slot");
 
 	ClassDB::bind_method(D_METHOD("equip_should_deny", "entity", "equip_slot", "item"), &EntityAI::equip_should_deny_bind);
 

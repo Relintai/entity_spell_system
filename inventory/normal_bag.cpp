@@ -47,7 +47,7 @@ Ref<ItemInstance> Bag::remove_item(const int index) {
 
 	Ref<ItemInstance> item = _items.get(index);
 
-	_items.remove(index);
+	_items.remove_at(index);
 
 	//Go over everything, to make sure item site changes won't cause bugs.
 	for (int x = 0; x < _size_x; ++x) {

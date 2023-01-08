@@ -25,18 +25,14 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/object/reference.h"
+#include "core/object/ref_counted.h"
 #include "core/variant/dictionary.h"
-#else
-#include "core/reference.h"
-#include "core/dictionary.h"
-#endif
+
 
 class ActionBarEntry;
 
-class ActionBarButtonEntry : public Reference {
-	GDCLASS(ActionBarButtonEntry, Reference);
+class ActionBarButtonEntry : public RefCounted {
+	GDCLASS(ActionBarButtonEntry, RefCounted);
 
 public:
 	static const String BINDING_STRING_ACTIONBAR_BUTTON_ENTRY_TYPE;

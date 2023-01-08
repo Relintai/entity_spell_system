@@ -25,24 +25,18 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/object/reference.h"
+#include "core/object/ref_counted.h"
 #include "core/templates/vector.h"
 #include "core/variant/array.h"
 #include "core/variant/dictionary.h"
-#else
-#include "core/reference.h"
-#include "core/vector.h"
-#include "core/array.h"
-#include "core/dictionary.h"
-#endif
+
 
 #include "action_bar_button_entry.h"
 
 class ActionBarProfile;
 
-class ActionBarEntry : public Reference {
-	GDCLASS(ActionBarEntry, Reference);
+class ActionBarEntry : public RefCounted {
+	GDCLASS(ActionBarEntry, RefCounted);
 
 public:
 	Ref<ActionBarProfile> get_owner();

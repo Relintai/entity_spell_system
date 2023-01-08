@@ -115,11 +115,8 @@ Dictionary SpeciesInstance::_to_dict() {
 	return dict;
 }
 void SpeciesInstance::_from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 
 	_id = dict.get("id", 0);
 	set_species_path(dict.get("species_path", ""));
@@ -171,8 +168,8 @@ void SpeciesInstance::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "head_index"), "set_head_index", "get_head_index");
 
 	//Serialization
-	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	GDVIRTUAL_BIND("_from_dict", "dict");
+	GDVIRTUAL_BIND("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &SpeciesInstance::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &SpeciesInstance::to_dict);

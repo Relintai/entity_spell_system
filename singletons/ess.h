@@ -25,19 +25,12 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/config/engine.h"
 #include "core/core_bind.h"
 #include "core/io/resource.h"
 #include "core/object/object.h"
 #include "core/string/ustring.h"
-#else
-#include "core/bind/core_bind.h"
-#include "core/engine.h"
-#include "core/object.h"
-#include "core/resource.h"
-#include "core/ustring.h"
-#endif
+
 
 #include "scene/main/node.h"
 
@@ -286,7 +279,7 @@ private:
 
 	Mutex _material_cache_mutex;
 
-	Map<uint64_t, Ref<ESSMaterialCache>> _material_cache;
+	VMap<uint64_t, Ref<ESSMaterialCache>> _material_cache;
 
 #ifdef TEXTURE_PACKER_PRESENT
 	int _texture_flags;

@@ -25,15 +25,10 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/io/resource.h"
 #include "core/string/ustring.h"
 #include "core/math/color.h"
-#else
-#include "core/resource.h"
-#include "core/ustring.h"
-#include "core/color.h"
-#endif
+
 
 #include "scene/resources/texture.h"
 
@@ -88,8 +83,8 @@ public:
 	Ref<PackedScene> get_attachment(const int index);
 	void set_attachment(const int index, const Ref<PackedScene> &attachment);
 
-	Transform get_transform(const int index) const;
-	void set_transform(const int index, const Transform &transform);
+	Transform3D get_transform(const int index) const;
+	void set_transform(const int index, const Transform3D &transform);
 
 	int get_size() const;
 	void set_size(const int value);
@@ -106,7 +101,7 @@ protected:
 		Color color;
 
 		Ref<PackedScene> attachment;
-		Transform transform;
+		Transform3D transform;
 
 		MVEE() {
 			color = Color(1, 1, 1, 1);

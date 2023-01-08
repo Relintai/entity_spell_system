@@ -163,7 +163,7 @@ void ESSMaterialCachePCM::_setup_material_albedo(Ref<Texture> texture) {
 }
 
 ESSMaterialCachePCM::ESSMaterialCachePCM() {
-	_packer.instance();
+	_packer.instantiate();
 
 #if GODOT4
 #warning implement

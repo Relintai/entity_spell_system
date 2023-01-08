@@ -26,13 +26,9 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
-#else
-#include "core/engine.h"
-#include "core/project_settings.h"
-#endif
+
 
 #include "../defines.h"
 
@@ -83,7 +79,7 @@ void ProfileManager::clears_player_profiles() {
 	_s_player_profiles.clear();
 }
 void ProfileManager::removes_player_profile(const int index) {
-	_s_player_profiles.remove(index);
+	_s_player_profiles.remove_at(index);
 }
 
 Ref<PlayerProfile> ProfileManager::getc_player_profile() {
@@ -170,11 +166,8 @@ Dictionary ProfileManager::to_dict() const {
 	return dict;
 }
 void ProfileManager::from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 
 	clears_player_profiles();
 
@@ -186,7 +179,7 @@ void ProfileManager::from_dict(const Dictionary &dict) {
 
 	for (int i = 0; i < arr.size(); ++i) {
 		Ref<PlayerProfile> c;
-		c.instance();
+		c.instantiate();
 
 		c->from_dict(arr.get(i));
 
@@ -209,7 +202,7 @@ ProfileManager::ProfileManager() {
 	_automatic_save = GLOBAL_DEF("ess/profiles/automatic_save", false);
 	_save_file = GLOBAL_DEF("ess/profiles/save_file", "user://profile.save");
 
-	_c_player_profile.instance();
+	_c_player_profile.instantiate();
 
 	_c_player_profile->CONNECT("changed", this, ProfileManager, _on_player_profile_changed);
 
@@ -234,8 +227,8 @@ void ProfileManager::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("keybinds_changed"));
 	ADD_SIGNAL(MethodInfo("changed"));
 
-	BIND_VMETHOD(MethodInfo("_save"));
-	BIND_VMETHOD(MethodInfo("_load"));
+	GDVIRTUAL_BIND("_save");
+	GDVIRTUAL_BIND("_load");
 
 	ClassDB::bind_method(D_METHOD("_save"), &ProfileManager::_save);
 	ClassDB::bind_method(D_METHOD("_load"), &ProfileManager::_load);

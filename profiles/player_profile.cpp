@@ -83,7 +83,7 @@ void PlayerProfile::clear_class_profiles() {
 void PlayerProfile::remove_class_profile(const int index) {
 	_class_profiles.get(index)->DISCONNECT("changed", this, PlayerProfile, _on_class_profile_changed);
 
-	_class_profiles.remove(index);
+	_class_profiles.remove_at(index);
 
 	emit_change();
 }
@@ -146,11 +146,8 @@ Dictionary PlayerProfile::to_dict() const {
 	return dict;
 }
 void PlayerProfile::from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 
 	clear_class_profiles();
 
@@ -161,7 +158,7 @@ void PlayerProfile::from_dict(const Dictionary &dict) {
 
 	for (int i = 0; i < arr.size(); ++i) {
 		Ref<ClassProfile> c;
-		c.instance();
+		c.instantiate();
 
 		c->from_dict(arr.get(i));
 

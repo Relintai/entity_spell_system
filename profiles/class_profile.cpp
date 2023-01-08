@@ -127,11 +127,8 @@ Dictionary ClassProfile::to_dict() const {
 	return dict;
 }
 void ClassProfile::from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 
 	_character_class_name = dict.get("character_class_name", "");
 	_class_path = dict.get("class_path", "");
@@ -148,10 +145,10 @@ void ClassProfile::from_dict(const Dictionary &dict) {
 }
 
 ClassProfile::ClassProfile() {
-	_action_bar_profile.instance();
+	_action_bar_profile.instantiate();
 	_action_bar_profile->set_owner(this);
 
-	_input_profile.instance();
+	_input_profile.instantiate();
 	_input_profile->set_owner(this);
 
 	_level = 1;
@@ -160,10 +157,10 @@ ClassProfile::ClassProfile() {
 }
 
 ClassProfile::ClassProfile(const StringName &class_path) {
-	_action_bar_profile.instance();
+	_action_bar_profile.instantiate();
 	_action_bar_profile->set_owner(this);
 
-	_input_profile.instance();
+	_input_profile.instantiate();
 	_input_profile->set_owner(this);
 
 	_class_path = class_path;
@@ -173,10 +170,10 @@ ClassProfile::ClassProfile(const StringName &class_path) {
 }
 
 ClassProfile::ClassProfile(const String &class_name, const StringName &class_path, const int level, const int xp, const bool locked) {
-	_action_bar_profile.instance();
+	_action_bar_profile.instantiate();
 	_action_bar_profile->set_owner(this);
 
-	_input_profile.instance();
+	_input_profile.instantiate();
 	_input_profile->set_owner(this);
 
 	_character_class_name = class_name;

@@ -377,7 +377,7 @@ Ref<ItemInstance> ItemTemplate::create_item_instance() {
 	}
 
 	Ref<ItemInstance> item;
-	item.instance();
+	item.instantiate();
 
 	//todo setup
 	//ERR_EXPLAIN("NOT YET IMPLEMENTED!");
@@ -441,7 +441,7 @@ void ItemTemplate::_validate_property(PropertyInfo &property) const {
 }
 
 void ItemTemplate::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_create_item_instance"));
+	GDVIRTUAL_BIND("_create_item_instance");
 
 	ClassDB::bind_method(D_METHOD("create_item_instance"), &ItemTemplate::create_item_instance);
 
@@ -568,7 +568,7 @@ void ItemTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_text_translation_key", "value"), &ItemTemplate::set_text_translation_key);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_translation_key"), "set_text_translation_key", "get_text_translation_key");
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::STRING, "desc"), "_get_description"));
+	GDVIRTUAL_BIND("_get_description");
 	ClassDB::bind_method(D_METHOD("get_description"), &ItemTemplate::get_description);
 
 	//StatMods Property binds

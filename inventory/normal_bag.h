@@ -25,21 +25,17 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/io/resource.h"
 #include "core/templates/vector.h"
-#else
-#include "core/resource.h"
-#include "core/vector.h"
-#endif
+
 
 #include "../item_enums.h"
 
 class itemTemplate;
 class ItemInstance;
 
-class Bag : public Reference {
-	GDCLASS(Bag, Reference);
+class Bag : public RefCounted {
+	GDCLASS(Bag, RefCounted);
 
 public:
 	int get_allowed_item_types() const;

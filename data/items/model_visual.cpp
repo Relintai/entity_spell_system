@@ -51,7 +51,7 @@ void ModelVisual::add_visual_entry(const Ref<ModelVisualEntry> visual_entry) {
 void ModelVisual::remove_visual_entry(const int index) {
 	ERR_FAIL_INDEX(index, _visual_entries.size());
 
-	_visual_entries.remove(index);
+	_visual_entries.remove_at(index);
 }
 
 int ModelVisual::get_visual_entry_count() const {

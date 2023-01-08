@@ -31,7 +31,7 @@ int LevelStatData::get_stat_diff(int main_stat, int old_level, int new_level) {
 
 void LevelStatData::_bind_methods() {
 
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "diff"), "_get_stat_diff", PropertyInfo(Variant::INT, "main_stat"), PropertyInfo(Variant::INT, "old_level"), PropertyInfo(Variant::INT, "new_level")));
+	GDVIRTUAL_BIND("_get_stat_diff", "main_stat", "old_level", "new_level");
 
 	ClassDB::bind_method(D_METHOD("get_stat_diff", "stat", "old_level", "new_level"), &LevelStatData::get_stat_diff);
 }

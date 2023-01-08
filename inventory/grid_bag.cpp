@@ -193,7 +193,7 @@ Ref<ItemInstance> GridBag::get_and_remove_item(const int index) {
 
 	Ref<ItemInstance> item = _items.get(index);
 
-	_items.remove(index);
+	_items.remove_at(index);
 
 	//Go over everything, to make sure item site changes won't cause bugs.
 	for (int x = 0; x < _size_x; ++x) {
@@ -212,7 +212,7 @@ Ref<ItemInstance> GridBag::get_and_remove_item(const int index) {
 void GridBag::remove_item(const int index) {
 	ERR_FAIL_INDEX(index, _items.size());
 
-	_items.remove(index);
+	_items.remove_at(index);
 
 	//Go over everything, to make sure item site changes won't cause bugs.
 	for (int x = 0; x < _size_x; ++x) {
@@ -230,7 +230,7 @@ void GridBag::basic_add_item(const Ref<ItemInstance> item) {
 	_items.push_back(item);
 }
 void GridBag::basic_remove_item(const int index) {
-	_items.remove(index);
+	_items.remove_at(index);
 }
 
 int GridBag::get_item_count() const {

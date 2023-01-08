@@ -107,10 +107,10 @@ void SpellHealInfo::receiver_set_bind(Node *value) {
 	_receiver = e;
 }
 
-Ref<Reference> SpellHealInfo::source_get() {
+Ref<RefCounted> SpellHealInfo::source_get() {
 	return _heal_source;
 }
-void SpellHealInfo::source_set(Ref<Reference> value) {
+void SpellHealInfo::source_set(Ref<RefCounted> value) {
 	_heal_source_type = HEAL_SOURCE_UNKNOWN;
 	_heal_source = value;
 	_heal_source_id = 0;
@@ -202,11 +202,8 @@ Dictionary SpellHealInfo::to_dict() {
 	return dict;
 }
 void SpellHealInfo::from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 
 	_immune = dict.get("immune", true);
 	_heal = dict.get("heal", 0);

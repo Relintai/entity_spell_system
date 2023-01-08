@@ -25,11 +25,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/object/reference.h"
-#else
-#include "core/reference.h"
-#endif
+#include "core/object/ref_counted.h"
+
 
 #include "../spell_enums.h"
 #include "scene/main/node.h"
@@ -37,8 +34,8 @@ SOFTWARE.
 class Entity;
 class Spell;
 
-class SpellHealInfo : public Reference {
-	GDCLASS(SpellHealInfo, Reference);
+class SpellHealInfo : public RefCounted {
+	GDCLASS(SpellHealInfo, RefCounted);
 
 public:
 	enum HealSourceType {
@@ -77,8 +74,8 @@ public:
 	void receiver_set(Entity *value);
 	void receiver_set_bind(Node *value);
 
-	Ref<Reference> source_get();
-	void source_set(Ref<Reference> value);
+	Ref<RefCounted> source_get();
+	void source_set(Ref<RefCounted> value);
 
 	Ref<Spell> spell_source_get();
 	void spell_source_set(const Ref<Spell> &value);
@@ -110,7 +107,7 @@ private:
 	int _heal_type;
 
 	int _heal_source_type;
-	Ref<Reference> _heal_source;
+	Ref<RefCounted> _heal_source;
 	int _heal_source_id;
 
 	Entity *_dealer;

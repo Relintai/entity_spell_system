@@ -25,20 +25,15 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/object/reference.h"
+#include "core/object/ref_counted.h"
 #include "core/string/ustring.h"
 #include "core/variant/dictionary.h"
-#else
-#include "core/reference.h"
-#include "core/ustring.h"
-#include "core/dictionary.h"
-#endif
+
 
 #include "class_profile.h"
 
-class PlayerProfile : public Reference {
-	GDCLASS(PlayerProfile, Reference);
+class PlayerProfile : public RefCounted {
+	GDCLASS(PlayerProfile, RefCounted);
 
 public:
 	static const String DEFAULT_PROFILE_FILE_NAME;

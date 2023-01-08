@@ -106,10 +106,10 @@ void SpellDamageInfo::receiver_set_bind(Node *value) {
 	_receiver = e;
 }
 
-Ref<Reference> SpellDamageInfo::source_get() {
+Ref<RefCounted> SpellDamageInfo::source_get() {
 	return _damage_source;
 }
-void SpellDamageInfo::source_set(Ref<Reference> value) {
+void SpellDamageInfo::source_set(Ref<RefCounted> value) {
 	_damage_source_type = DAMAGE_SOURCE_UNKNOWN;
 	_damage_source = value;
 	_damage_source_id = 0;
@@ -201,11 +201,8 @@ Dictionary SpellDamageInfo::to_dict() {
 	return dict;
 }
 void SpellDamageInfo::from_dict(const Dictionary &dict) {
-#if VERSION_MAJOR > 3
 	ERR_FAIL_COND(dict.is_empty());
-#else
-	ERR_FAIL_COND(dict.empty());
-#endif
+
 
 	_immune = dict.get("immune", true);
 	_damage = dict.get("damage", 0);

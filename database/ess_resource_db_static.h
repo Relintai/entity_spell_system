@@ -25,11 +25,8 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
 #include "core/templates/hash_map.h"
-#else
-#include "core/hash_map.h"
-#endif
+
 
 #include "ess_resource_db.h"
 

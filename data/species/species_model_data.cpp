@@ -27,11 +27,8 @@ SOFTWARE.
 #include "../../defines.h"
 #include "../../singletons/ess.h"
 
-#if VERSION_MAJOR > 3
 #include "core/string/ustring.h"
-#else
-#include "core/ustring.h"
-#endif
+
 
 
 int SpeciesModelData::get_id() {
@@ -73,7 +70,7 @@ void SpeciesModelData::add_visual(const Ref<ModelVisualEntry> &visual) {
 void SpeciesModelData::remove_visual(const int index) {
 	ERR_FAIL_INDEX(index, _visuals.size());
 
-	_visuals.remove(index);
+	_visuals.remove_at(index);
 }
 
 int SpeciesModelData::get_visual_count() const {
@@ -123,7 +120,7 @@ void SpeciesModelData::remove_customizable_slot_entry(const int slot_index, cons
 	ERR_FAIL_INDEX(slot_index, _customizable_slots.size());
 	ERR_FAIL_INDEX(index, _customizable_slots.size());
 
-	_customizable_slots.write[slot_index].remove(index);
+	_customizable_slots.write[slot_index].remove_at(index);
 }
 
 int SpeciesModelData::get_customizable_slot_count() const {
@@ -196,7 +193,7 @@ void SpeciesModelData::remove_color_customizable_slot_color(const int slot_index
 	ERR_FAIL_INDEX(slot_index, _customizable_color_slots.size());
 	ERR_FAIL_INDEX(index, _customizable_color_slots.size());
 
-	_customizable_color_slots.write[slot_index].colors.remove(index);
+	_customizable_color_slots.write[slot_index].colors.remove_at(index);
 }
 
 Vector<Color> SpeciesModelData::get_color_customizable_slot_colors(const int slot_index) const {

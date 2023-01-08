@@ -362,7 +362,7 @@ void Bag::_from_dict(const Dictionary &dict) {
 
 	for (int i = 0; i < keys.size(); ++i) {
 		Ref<ItemInstance> ii;
-		ii.instance();
+		ii.instantiate();
 
 		ii->from_dict(items[keys.get(i)]);
 
@@ -388,21 +388,21 @@ Bag::~Bag() {
 }
 
 void Bag::_bind_methods() {
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "could_add"), "_add_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
-	BIND_VMETHOD(MethodInfo("_add_item_at", PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::BOOL, "signal")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_get_item", PropertyInfo(Variant::INT, "index")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_remove_item", PropertyInfo(Variant::INT, "index")));
-	BIND_VMETHOD(MethodInfo("_swap_items", PropertyInfo(Variant::INT, "item1_index"), PropertyInfo(Variant::INT, "item2_index")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "can"), "_can_add_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "count"), "_get_item_count"));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "count"), "_get_valid_item_count"));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "size"), "_get_size"));
-	BIND_VMETHOD(MethodInfo("_set_size", PropertyInfo(Variant::INT, "size")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "full"), "_is_full"));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "overburdened"), "_is_overburdened"));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::BOOL, "has"), "_has_item", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemTemplate"), PropertyInfo(Variant::INT, "count")));
-	BIND_VMETHOD(MethodInfo("_remove_items", PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemTemplate"), PropertyInfo(Variant::INT, "count")));
-	BIND_VMETHOD(MethodInfo("_change_item_equip", PropertyInfo(Variant::INT, "slot_id"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance")));
+	GDVIRTUAL_BIND("_add_item", "item", "ItemInstance");
+	GDVIRTUAL_BIND("_add_item_at", "index", "item", "ItemInstance", "signal");
+	GDVIRTUAL_BIND("_get_item", "index");
+	GDVIRTUAL_BIND("_remove_item", "index");
+	GDVIRTUAL_BIND("_swap_items", "item1_index", "item2_index");
+	GDVIRTUAL_BIND("_can_add_item", "item", "ItemInstance");
+	GDVIRTUAL_BIND("_get_item_count");
+	GDVIRTUAL_BIND("_get_valid_item_count");
+	GDVIRTUAL_BIND("_get_size");
+	GDVIRTUAL_BIND("_set_size", "size");
+	GDVIRTUAL_BIND("_is_full");
+	GDVIRTUAL_BIND("_is_overburdened");
+	GDVIRTUAL_BIND("_has_item", "item", "ItemTemplate", "count");
+	GDVIRTUAL_BIND("_remove_items", "item", "ItemTemplate", "count");
+	GDVIRTUAL_BIND("_change_item_equip", "slot_id", "item", "ItemInstance");
 
 	ADD_SIGNAL(MethodInfo("item_added", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "slot_id")));
 	ADD_SIGNAL(MethodInfo("item_removed", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "slot_id")));
@@ -442,8 +442,8 @@ void Bag::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_remove_items", "item", "count"), &Bag::_remove_items);
 
 	//Serialization
-	BIND_VMETHOD(MethodInfo("_from_dict", PropertyInfo(Variant::DICTIONARY, "dict")));
-	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::DICTIONARY, "dict"), "_to_dict"));
+	GDVIRTUAL_BIND("_from_dict", "dict");
+	GDVIRTUAL_BIND("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &Bag::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &Bag::to_dict);

@@ -25,20 +25,15 @@ SOFTWARE.
 
 #include "core/version.h"
 
-#if VERSION_MAJOR > 3
-#include "core/object/reference.h"
+#include "core/object/ref_counted.h"
 #include "core/templates/vector.h"
 #include "core/string/ustring.h"
-#else
-#include "core/reference.h"
-#include "core/vector.h"
-#include "core/ustring.h"
-#endif
+
 
 #include "input_profile_modifier_entry.h"
 
-class InputProfileModifier : public Reference {
-	GDCLASS(InputProfileModifier, Reference);
+class InputProfileModifier : public RefCounted {
+	GDCLASS(InputProfileModifier, RefCounted);
 
 public:
 	int get_modifier_count();
