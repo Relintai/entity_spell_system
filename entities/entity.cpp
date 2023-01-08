@@ -45,7 +45,6 @@ SOFTWARE.
 
 #include "core/object/script_language.h"
 
-
 #include "core/version.h"
 
 #include "../defines.h"
@@ -147,7 +146,7 @@ SOFTWARE.
                                                                                        \
 	emit_signal(signal, what, __VA_ARGS__);
 
-#define NOTIFICATION_AURA_DIFF_IMPLS(func, aura_func, signal, what, ...)                               \
+#define NOTIFICATION_AURA_DIFF_IMPLS(func, aura_func, signal, what, ...)               \
 	if (_s_entity_controller == EntityEnums::ENITIY_CONTROLLER_AI && _s_ai.is_valid()) \
 		_s_ai->func(what, __VA_ARGS__);                                                \
                                                                                        \
@@ -156,7 +155,7 @@ SOFTWARE.
                                                                                        \
 	for (int i = 0; i < _s_auras.size(); ++i) {                                        \
 		Ref<AuraData> ad = _s_auras.get(i);                                            \
-		ad->get_aura()->aura_func(what, ad, __VA_ARGS__);                                   \
+		ad->get_aura()->aura_func(what, ad, __VA_ARGS__);                              \
 	}                                                                                  \
                                                                                        \
 	emit_signal(signal, what, __VA_ARGS__);
@@ -648,7 +647,6 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 	}
 
 	if (!info->get_serialized_data().is_empty()) {
-
 		from_dict(info->get_serialized_data());
 	} else {
 		sets_entity_data(info->get_entity_data());
@@ -1355,7 +1353,6 @@ Dictionary Entity::_to_dict() {
 void Entity::_from_dict(const Dictionary &dict) {
 	ERR_FAIL_COND(dict.is_empty());
 
-
 	////    Transforms    ////
 
 	//Not needed for now
@@ -1395,7 +1392,7 @@ void Entity::_from_dict(const Dictionary &dict) {
 	//EntityPlayerType not needed
 	sets_immunity_flags(dict.get("immunity_flags", 0));
 	sets_entity_flags(dict.get("entity_flags", 0));
-	
+
 	//EntityEnums::EntityController contr = static_cast<EntityEnums::EntityController>(static_cast<int>(dict.get("entity_controller", 0)));
 
 	//sets_original_entity_controller(contr);
@@ -1650,7 +1647,6 @@ void Entity::_from_dict(const Dictionary &dict) {
 	Dictionary bagd = dict.get("bag", Dictionary());
 
 	if (!bagd.is_empty()) {
-
 		if (!_s_bag.is_valid()) {
 			Ref<Bag> bag;
 			bag.instantiate();
@@ -4586,8 +4582,10 @@ void Entity::target_crequest_change(NodePath path) {
 }
 
 void Entity::target_net_sets(NodePath path) {
-	if (!ISSERVER())
+	Ref<MultiplayerAPI> _multiplayer_api = get_multiplayer();
+	if (!_multiplayer_api.is_valid() && !_multiplayer_api->is_server()) {
 		return;
+	}
 
 	Node *p_target = get_node_or_null(path);
 
@@ -5611,7 +5609,8 @@ void Entity::update(float delta) {
 
 	update_auras(delta);
 
-	if (ISSERVER()) {
+	Ref<MultiplayerAPI> _multiplayer_api = get_multiplayer();
+	if (_multiplayer_api.is_valid() && _multiplayer_api->is_server()) {
 		if (_s_spell_cast_info.is_valid() && _s_spell_cast_info->is_casting_get()) {
 			if (_s_spell_cast_info->update_cast_time(delta)) {
 				cast_finishs();
@@ -5648,7 +5647,7 @@ void Entity::update(float delta) {
 		}
 	}
 
-	if (ISCLIENT()) {
+	if (_multiplayer_api.is_valid() && !_multiplayer_api->is_server()) {
 		if (_c_spell_cast_info.is_valid() && _c_spell_cast_info->is_casting_get()) {
 			_c_spell_cast_info->update_cast_time(delta);
 		}
@@ -6354,36 +6353,36 @@ void Entity::_notification_sdeath() {
 	/*
 	if dead:
 		return
-	
+
 	if starget == null:
 		queue_free()
 		return
-		
+
 	#warning-ignore:unused_variable
 	for i in range(aura_gets_count()):
 		aura_removes(aura_gets(0))
-	
+
 	dead = true
-	
+
 	var ldiff : float = slevel - starget.slevel + 10.0
-	
+
 	if ldiff < 0:
 		ldiff = 0
-		
+
 	if ldiff > 15:
 		ldiff = 15
-		
+
 	ldiff /= 10.0
-	
+
 	starget.xp_adds(int(5.0 * slevel * ldiff))
-		
+
 	starget = null
-	
+
 	sentity_interaction_type = EntityEnums.ENITIY_INTERACTION_TYPE_LOOT
 	ai_state = EntityEnums.AI_STATE_OFF
-	
+
 	anim_node_state_machine.travel("dead")
-	
+
 #	set_process(false)
 	set_physics_process(false)
 	*/

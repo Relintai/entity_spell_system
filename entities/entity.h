@@ -32,6 +32,7 @@ SOFTWARE.
 #include "scene/main/multiplayer_peer.h"
 
 #include "scene/main/node.h"
+#include "scene/main/multiplayer_api.h"
 
 #include "../data/items/craft_recipe.h"
 #include "../data/items/item_instance.h"
@@ -123,9 +124,6 @@ struct EntityStat {
 		ccurrent = 0;
 	}
 };
-
-#define ISSERVER() (is_inside_tree() && (!get_tree()->has_network_peer() || (get_tree()->has_network_peer() && get_tree()->is_network_server())))
-#define ISCLIENT() (is_inside_tree() && get_tree()->has_network_peer() && !get_tree()->is_network_server())
 
 #define SET_RPC_OFF(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_DISABLED);
 #define SET_RPC_REMOTE(p_method_name) rpc_config(p_method_name, MultiplayerAPI::RPC_MODE_REMOTE);
