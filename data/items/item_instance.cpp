@@ -268,12 +268,12 @@ void ItemInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("stat_modifiers_set", "mods"), &ItemInstance::stat_modifiers_set);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "stat_modifiers", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT, ""), "stat_modifiers_set", "stat_modifiers_get");
 
-	//GDVIRTUAL_BIND("_get_description", "desc");
+	////GDVIRTUAL_BIND("_get_description", "desc");
 	ClassDB::bind_method(D_METHOD("get_description"), &ItemInstance::get_description);
 
 	//Serialization
-	//GDVIRTUAL_BIND("_from_dict", "dict");
-	//GDVIRTUAL_BIND("_to_dict", "dict");
+	////GDVIRTUAL_BIND("_from_dict", "dict");
+	////GDVIRTUAL_BIND("_to_dict", "dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &ItemInstance::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &ItemInstance::to_dict);

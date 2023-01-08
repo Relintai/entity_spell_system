@@ -227,8 +227,8 @@ void ProfileManager::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("keybinds_changed"));
 	ADD_SIGNAL(MethodInfo("changed"));
 
-	GDVIRTUAL_BIND("_save");
-	GDVIRTUAL_BIND("_load");
+	//GDVIRTUAL_BIND("_save");
+	//GDVIRTUAL_BIND("_load");
 
 	ClassDB::bind_method(D_METHOD("_save"), &ProfileManager::_save);
 	ClassDB::bind_method(D_METHOD("_load"), &ProfileManager::_load);

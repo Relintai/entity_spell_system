@@ -378,7 +378,7 @@ EntityClassData::~EntityClassData() {
 }
 
 void EntityClassData::_bind_methods() {
-	GDVIRTUAL_BIND("_setup_resources", "entity", "Entity");
+	//GDVIRTUAL_BIND("_setup_resources", "entity", "Entity");
 
 	ClassDB::bind_method(D_METHOD("get_id"), &EntityClassData::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "value"), &EntityClassData::set_id);
@@ -498,7 +498,7 @@ void EntityClassData::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_ais", "auras"), &EntityClassData::set_ais);
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "ais", PROPERTY_HINT_NONE, "17/17:EntityAI", PROPERTY_USAGE_DEFAULT, "EntityAI"), "set_ais", "get_ais");
 
-	GDVIRTUAL_BIND("_get_ai_instance");
+	//GDVIRTUAL_BIND("_get_ai_instance");
 
 	ClassDB::bind_method(D_METHOD("get_ai_instance"), &EntityClassData::get_ai_instance);
 	ClassDB::bind_method(D_METHOD("_get_ai_instance"), &EntityClassData::_get_ai_instance);

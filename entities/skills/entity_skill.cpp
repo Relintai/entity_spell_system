@@ -150,8 +150,8 @@ void EntitySkill::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "disabled"), "set_disabled", "get_disabled");
 
 	//Serialization
-	GDVIRTUAL_BIND("_from_dict", "dict");
-	GDVIRTUAL_BIND("_to_dict");
+	//GDVIRTUAL_BIND("_from_dict", "dict");
+	//GDVIRTUAL_BIND("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntitySkill::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &EntitySkill::to_dict);

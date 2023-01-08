@@ -296,8 +296,8 @@ void EntityCreateInfo::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "created_entity", PROPERTY_HINT_RESOURCE_TYPE, "Entity"), "set_created_entity", "get_created_entity");
 
 	//Serialization
-	GDVIRTUAL_BIND("_from_dict", "dict");
-	GDVIRTUAL_BIND("_to_dict");
+	//GDVIRTUAL_BIND("_from_dict", "dict");
+	//GDVIRTUAL_BIND("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntityCreateInfo::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &EntityCreateInfo::to_dict);

@@ -50,8 +50,8 @@ EntityDataContainer::~EntityDataContainer() {
 
 void EntityDataContainer::_bind_methods() {
 	//Serialization
-	GDVIRTUAL_BIND("from_dict", "dict");
-	GDVIRTUAL_BIND("to_dict", "dict");
+	//GDVIRTUAL_BIND("from_dict", "dict");
+	//GDVIRTUAL_BIND("to_dict", "dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &EntityDataContainer::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &EntityDataContainer::to_dict);

@@ -388,21 +388,21 @@ Bag::~Bag() {
 }
 
 void Bag::_bind_methods() {
-	GDVIRTUAL_BIND("_add_item", "item", "ItemInstance");
-	GDVIRTUAL_BIND("_add_item_at", "index", "item", "ItemInstance", "signal");
-	GDVIRTUAL_BIND("_get_item", "index");
-	GDVIRTUAL_BIND("_remove_item", "index");
-	GDVIRTUAL_BIND("_swap_items", "item1_index", "item2_index");
-	GDVIRTUAL_BIND("_can_add_item", "item", "ItemInstance");
-	GDVIRTUAL_BIND("_get_item_count");
-	GDVIRTUAL_BIND("_get_valid_item_count");
-	GDVIRTUAL_BIND("_get_size");
-	GDVIRTUAL_BIND("_set_size", "size");
-	GDVIRTUAL_BIND("_is_full");
-	GDVIRTUAL_BIND("_is_overburdened");
-	GDVIRTUAL_BIND("_has_item", "item", "ItemTemplate", "count");
-	GDVIRTUAL_BIND("_remove_items", "item", "ItemTemplate", "count");
-	GDVIRTUAL_BIND("_change_item_equip", "slot_id", "item", "ItemInstance");
+	//GDVIRTUAL_BIND("_add_item", "item", "ItemInstance");
+	//GDVIRTUAL_BIND("_add_item_at", "index", "item", "ItemInstance", "signal");
+	//GDVIRTUAL_BIND("_get_item", "index");
+	//GDVIRTUAL_BIND("_remove_item", "index");
+	//GDVIRTUAL_BIND("_swap_items", "item1_index", "item2_index");
+	//GDVIRTUAL_BIND("_can_add_item", "item", "ItemInstance");
+	//GDVIRTUAL_BIND("_get_item_count");
+	//GDVIRTUAL_BIND("_get_valid_item_count");
+	//GDVIRTUAL_BIND("_get_size");
+	//GDVIRTUAL_BIND("_set_size", "size");
+	//GDVIRTUAL_BIND("_is_full");
+	//GDVIRTUAL_BIND("_is_overburdened");
+	//GDVIRTUAL_BIND("_has_item", "item", "ItemTemplate", "count");
+	//GDVIRTUAL_BIND("_remove_items", "item", "ItemTemplate", "count");
+	//GDVIRTUAL_BIND("_change_item_equip", "slot_id", "item", "ItemInstance");
 
 	ADD_SIGNAL(MethodInfo("item_added", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "slot_id")));
 	ADD_SIGNAL(MethodInfo("item_removed", PropertyInfo(Variant::OBJECT, "bag", PROPERTY_HINT_RESOURCE_TYPE, "Bag"), PropertyInfo(Variant::OBJECT, "item", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), PropertyInfo(Variant::INT, "slot_id")));
@@ -442,8 +442,8 @@ void Bag::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_remove_items", "item", "count"), &Bag::_remove_items);
 
 	//Serialization
-	GDVIRTUAL_BIND("_from_dict", "dict");
-	GDVIRTUAL_BIND("_to_dict");
+	//GDVIRTUAL_BIND("_from_dict", "dict");
+	//GDVIRTUAL_BIND("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &Bag::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &Bag::to_dict);

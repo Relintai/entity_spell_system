@@ -168,8 +168,8 @@ void SpeciesInstance::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "head_index"), "set_head_index", "get_head_index");
 
 	//Serialization
-	GDVIRTUAL_BIND("_from_dict", "dict");
-	GDVIRTUAL_BIND("_to_dict");
+	//GDVIRTUAL_BIND("_from_dict", "dict");
+	//GDVIRTUAL_BIND("_to_dict");
 
 	ClassDB::bind_method(D_METHOD("from_dict", "dict"), &SpeciesInstance::from_dict);
 	ClassDB::bind_method(D_METHOD("to_dict"), &SpeciesInstance::to_dict);

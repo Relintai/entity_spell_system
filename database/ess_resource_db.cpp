@@ -363,6 +363,6 @@ void ESSResourceDB::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("clear"), &ESSResourceDB::clear);
 	ClassDB::bind_method(D_METHOD("add_entity_resource_db", "other"), &ESSResourceDB::add_entity_resource_db);
 
-	//GDVIRTUAL_BIND("_initialize");
+	////GDVIRTUAL_BIND("_initialize");
 	ClassDB::bind_method(D_METHOD("initialize"), &ESSResourceDB::initialize);
 }

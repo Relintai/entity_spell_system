@@ -2348,10 +2348,10 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("cast_interrupts", "info"), &Spell::cast_interrupts);
 	ClassDB::bind_method(D_METHOD("cast_finishs", "info"), &Spell::cast_finishs);
 
-	GDVIRTUAL_BIND("_cast_starts", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_cast_starts_triggered", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_cast_interrupts", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_cast_finishs", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_cast_starts", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_cast_starts_triggered", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_cast_interrupts", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_cast_finishs", "info", "SpellCastInfo");
 
 	//Aura Commands
 	ClassDB::bind_method(D_METHOD("aura_sapply", "info"), &Spell::aura_sapply);
@@ -2362,13 +2362,13 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("aura_removes_dispell", "aura"), &Spell::aura_removes_dispell);
 	ClassDB::bind_method(D_METHOD("aura_supdate", "aura", "delta"), &Spell::aura_supdate);
 
-	GDVIRTUAL_BIND("_aura_sapply", "info", "AuraApplyInfo");
-	GDVIRTUAL_BIND("_aura_sdeapply", "info", "AuraData");
-	GDVIRTUAL_BIND("_aura_sadd", "aura", "AuraData");
-	GDVIRTUAL_BIND("_aura_sremove", "aura", "AuraData");
-	GDVIRTUAL_BIND("_aura_removes_expired", "info", "AuraData");
-	GDVIRTUAL_BIND("_aura_removes_dispell", "info", "AuraData");
-	GDVIRTUAL_BIND("_aura_supdate", "info", "AuraData", "delta");
+	//GDVIRTUAL_BIND("_aura_sapply", "info", "AuraApplyInfo");
+	//GDVIRTUAL_BIND("_aura_sdeapply", "info", "AuraData");
+	//GDVIRTUAL_BIND("_aura_sadd", "aura", "AuraData");
+	//GDVIRTUAL_BIND("_aura_sremove", "aura", "AuraData");
+	//GDVIRTUAL_BIND("_aura_removes_expired", "info", "AuraData");
+	//GDVIRTUAL_BIND("_aura_removes_dispell", "info", "AuraData");
+	//GDVIRTUAL_BIND("_aura_supdate", "info", "AuraData", "delta");
 
 	ClassDB::bind_method(D_METHOD("_aura_sapply", "info"), &Spell::_aura_sapply);
 	ClassDB::bind_method(D_METHOD("_aura_sdeapply", "aura"), &Spell::_aura_sdeapply);
@@ -2384,23 +2384,23 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("son_spell_hit", "info"), &Spell::son_spell_hit);
 	ClassDB::bind_method(D_METHOD("son_physics_process", "info", "delta"), &Spell::son_physics_process);
 
-	GDVIRTUAL_BIND("_son_cast_player_moved", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_son_cast_damage_received", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_son_spell_hit", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_son_physics_process", "info", "SpellCastInfo", "delta");
+	//GDVIRTUAL_BIND("_son_cast_player_moved", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_son_cast_damage_received", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_son_spell_hit", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_son_physics_process", "info", "SpellCastInfo", "delta");
 
 	//Clientside Event Handlers
-	GDVIRTUAL_BIND("_notification_scast", "what", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_notification_scast", "what", "info", "SpellCastInfo");
 	ClassDB::bind_method(D_METHOD("notification_scast", "what", "info"), &Spell::notification_scast);
 
-	GDVIRTUAL_BIND("_notification_ccast", "what", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_notification_ccast", "what", "info", "SpellCastInfo");
 	ClassDB::bind_method(D_METHOD("notification_ccast", "what", "info"), &Spell::notification_ccast);
 
 	//Aura EventHandlers
-	GDVIRTUAL_BIND("_notification_saura", "what", "data", "AuraData");
-	GDVIRTUAL_BIND("_notification_sheal", "what", "data", "AuraData", "data", "SpellHealInfo");
-	GDVIRTUAL_BIND("_notification_aura_scast", "what", "data", "AuraData", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_notification_sdamage", "what", "data", "AuraData", "data", "SpellDamageInfo");
+	//GDVIRTUAL_BIND("_notification_saura", "what", "data", "AuraData");
+	//GDVIRTUAL_BIND("_notification_sheal", "what", "data", "AuraData", "data", "SpellHealInfo");
+	//GDVIRTUAL_BIND("_notification_aura_scast", "what", "data", "AuraData", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_notification_sdamage", "what", "data", "AuraData", "data", "SpellDamageInfo");
 
 	ClassDB::bind_method(D_METHOD("notification_saura", "what", "data"), &Spell::notification_saura);
 	ClassDB::bind_method(D_METHOD("notification_sheal", "what", "aura", "info"), &Spell::notification_sheal);
@@ -2430,33 +2430,33 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_sentity_resource_added", "data", "value"), &Spell::notification_sentity_resource_added);
 	ClassDB::bind_method(D_METHOD("notification_sentity_resource_removed", "data", "value"), &Spell::notification_sentity_resource_removed);
 
-	GDVIRTUAL_BIND("_son_remove", "data", "AuraData");
-	GDVIRTUAL_BIND("_son_remove_expired", "data", "AuraData");
-	GDVIRTUAL_BIND("_son_remove_dispell", "data", "AuraData");
+	//GDVIRTUAL_BIND("_son_remove", "data", "AuraData");
+	//GDVIRTUAL_BIND("_son_remove_expired", "data", "AuraData");
+	//GDVIRTUAL_BIND("_son_remove_dispell", "data", "AuraData");
 
-	GDVIRTUAL_BIND("_notification_sdeath", "data", "AuraData");
+	//GDVIRTUAL_BIND("_notification_sdeath", "data", "AuraData");
 
-	GDVIRTUAL_BIND("_notification_scooldown_added", "data", "AuraData", "id", "value");
-	GDVIRTUAL_BIND("_notification_scooldown_removed", "data", "AuraData", "id", "value");
-	GDVIRTUAL_BIND("_notification_scategory_cooldown_added", "data", "AuraData", "id", "value");
-	GDVIRTUAL_BIND("_notification_scategory_cooldown_removed", "data", "AuraData", "id", "value");
+	//GDVIRTUAL_BIND("_notification_scooldown_added", "data", "AuraData", "id", "value");
+	//GDVIRTUAL_BIND("_notification_scooldown_removed", "data", "AuraData", "id", "value");
+	//GDVIRTUAL_BIND("_notification_scategory_cooldown_added", "data", "AuraData", "id", "value");
+	//GDVIRTUAL_BIND("_notification_scategory_cooldown_removed", "data", "AuraData", "id", "value");
 
-	GDVIRTUAL_BIND("_notification_sgcd_started", "data", "AuraData", "gcd");
-	GDVIRTUAL_BIND("_notification_sgcd_finished", "data", "AuraData");
+	//GDVIRTUAL_BIND("_notification_sgcd_started", "data", "AuraData", "gcd");
+	//GDVIRTUAL_BIND("_notification_sgcd_finished", "data", "AuraData");
 
-	GDVIRTUAL_BIND("_son_physics_process_aura", "data", "AuraData");
+	//GDVIRTUAL_BIND("_son_physics_process_aura", "data", "AuraData");
 
-	GDVIRTUAL_BIND("_notification_sxp_gained", "data", "AuraData", "value");
-	GDVIRTUAL_BIND("_notification_slevel_up", "data", "AuraData", "value");
+	//GDVIRTUAL_BIND("_notification_sxp_gained", "data", "AuraData", "value");
+	//GDVIRTUAL_BIND("_notification_slevel_up", "data", "AuraData", "value");
 
-	GDVIRTUAL_BIND("_notification_sentity_resource_added", "data", "AuraData", "value");
-	GDVIRTUAL_BIND("_notification_sentity_resource_removed", "data", "AuraData", "value");
+	//GDVIRTUAL_BIND("_notification_sentity_resource_added", "data", "AuraData", "value");
+	//GDVIRTUAL_BIND("_notification_sentity_resource_removed", "data", "AuraData", "value");
 
 	//Aura Clientside Event Handlers
-	GDVIRTUAL_BIND("_notification_caura", "what", "data", "AuraData");
-	GDVIRTUAL_BIND("_notification_cheal", "what", "data", "AuraData", "data", "SpellHealInfo");
-	GDVIRTUAL_BIND("_notification_aura_ccast", "what", "data", "AuraData", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_notification_cdamage", "what", "data", "AuraData", "data", "SpellDamageInfo");
+	//GDVIRTUAL_BIND("_notification_caura", "what", "data", "AuraData");
+	//GDVIRTUAL_BIND("_notification_cheal", "what", "data", "AuraData", "data", "SpellHealInfo");
+	//GDVIRTUAL_BIND("_notification_aura_ccast", "what", "data", "AuraData", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_notification_cdamage", "what", "data", "AuraData", "data", "SpellDamageInfo");
 
 	ClassDB::bind_method(D_METHOD("notification_caura", "what", "data"), &Spell::notification_caura);
 	ClassDB::bind_method(D_METHOD("notification_cheal", "what", "aura", "info"), &Spell::notification_cheal);
@@ -2479,45 +2479,45 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("notification_centity_resource_added", "data", "value"), &Spell::notification_centity_resource_added);
 	ClassDB::bind_method(D_METHOD("notification_centity_resource_removed", "data", "value"), &Spell::notification_centity_resource_removed);
 
-	GDVIRTUAL_BIND("_con_cast_failed", "data", "AuraData", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_con_cast_started", "data", "AuraData", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_con_cast_state_changed", "data", "AuraData", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_con_cast_finished", "data", "AuraData", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_con_spell_cast_success", "data", "AuraData", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_con_cast_failed", "data", "AuraData", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_con_cast_started", "data", "AuraData", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_con_cast_state_changed", "data", "AuraData", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_con_cast_finished", "data", "AuraData", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_con_spell_cast_success", "data", "AuraData", "info", "SpellCastInfo");
 
-	GDVIRTUAL_BIND("_notification_cdeath", "data", "AuraData");
+	//GDVIRTUAL_BIND("_notification_cdeath", "data", "AuraData");
 
-	GDVIRTUAL_BIND("_notification_ccooldown_added", "data", "AuraData",  "id", "value");
-	GDVIRTUAL_BIND("_notification_ccooldown_removed", "data", "AuraData",  "id", "value");
-	GDVIRTUAL_BIND("_notification_ccategory_cooldown_added", "data", "AuraData",  "id", "value");
-	GDVIRTUAL_BIND("_notification_ccategory_cooldown_removed", "data", "AuraData",  "id", "value");
+	//GDVIRTUAL_BIND("_notification_ccooldown_added", "data", "AuraData",  "id", "value");
+	//GDVIRTUAL_BIND("_notification_ccooldown_removed", "data", "AuraData",  "id", "value");
+	//GDVIRTUAL_BIND("_notification_ccategory_cooldown_added", "data", "AuraData",  "id", "value");
+	//GDVIRTUAL_BIND("_notification_ccategory_cooldown_removed", "data", "AuraData",  "id", "value");
 
-	GDVIRTUAL_BIND("_con_aura_added", "data", "AuraData");
-	GDVIRTUAL_BIND("_con_aura_removed", "data", "AuraData");
-	GDVIRTUAL_BIND("_con_aura_refresh", "data", "AuraData");
+	//GDVIRTUAL_BIND("_con_aura_added", "data", "AuraData");
+	//GDVIRTUAL_BIND("_con_aura_removed", "data", "AuraData");
+	//GDVIRTUAL_BIND("_con_aura_refresh", "data", "AuraData");
 
-	GDVIRTUAL_BIND("_con_damage_dealt", "data", "AuraData", "info", "SpellDamageInfo");
-	GDVIRTUAL_BIND("_con_dealt_damage", "data", "AuraData", "info", "SpellDamageInfo");
-	GDVIRTUAL_BIND("_con_heal_dealt", "data", "AuraData", "info", "SpellHealInfo");
-	GDVIRTUAL_BIND("_con_dealt_heal", "data", "AuraData", "info", "SpellHealInfo");
+	//GDVIRTUAL_BIND("_con_damage_dealt", "data", "AuraData", "info", "SpellDamageInfo");
+	//GDVIRTUAL_BIND("_con_dealt_damage", "data", "AuraData", "info", "SpellDamageInfo");
+	//GDVIRTUAL_BIND("_con_heal_dealt", "data", "AuraData", "info", "SpellHealInfo");
+	//GDVIRTUAL_BIND("_con_dealt_heal", "data", "AuraData", "info", "SpellHealInfo");
 
-	GDVIRTUAL_BIND("_notification_cgcd_started", "data", "AuraData", "gcd");
-	GDVIRTUAL_BIND("_notification_cgcd_finished", "data", "AuraData");
+	//GDVIRTUAL_BIND("_notification_cgcd_started", "data", "AuraData", "gcd");
+	//GDVIRTUAL_BIND("_notification_cgcd_finished", "data", "AuraData");
 
-	GDVIRTUAL_BIND("_notification_cxp_gained", "data", "AuraData",  "value");
-	GDVIRTUAL_BIND("_notification_clevel_up", "data", "AuraData",  "value");
+	//GDVIRTUAL_BIND("_notification_cxp_gained", "data", "AuraData",  "value");
+	//GDVIRTUAL_BIND("_notification_clevel_up", "data", "AuraData",  "value");
 
-	GDVIRTUAL_BIND("_notification_centity_resource_added", "data", "AuraData",  "value");
-	GDVIRTUAL_BIND("_notification_centity_resource_removed", "data", "AuraData",  "value");
+	//GDVIRTUAL_BIND("_notification_centity_resource_added", "data", "AuraData",  "value");
+	//GDVIRTUAL_BIND("_notification_centity_resource_removed", "data", "AuraData",  "value");
 
 	//Equipment
 
-	GDVIRTUAL_BIND("_equip_should_deny", "data", "AuraData", "equip_slot", "item", "ItemInstance");
+	//GDVIRTUAL_BIND("_equip_should_deny", "data", "AuraData", "equip_slot", "item", "ItemInstance");
 
-	GDVIRTUAL_BIND("_equip_son_success", "data", "AuraData", "equip_slot", "item", "ItemInstance", "old_item", "ItemInstance", "bag_slot");
-	GDVIRTUAL_BIND("_equip_son_fail", "data", "AuraData", "equip_slot", "item", "ItemInstance", "old_item", "ItemInstance", "bag_slot");
-	GDVIRTUAL_BIND("_equip_con_success", "data", "AuraData", "equip_slot", "item", "ItemInstance", "old_item", "ItemInstance", "bag_slot");
-	GDVIRTUAL_BIND("_equip_con_fail", "data", "AuraData", "equip_slot", "item", "ItemInstance", "old_item", "ItemInstance", "bag_slot");
+	//GDVIRTUAL_BIND("_equip_son_success", "data", "AuraData", "equip_slot", "item", "ItemInstance", "old_item", "ItemInstance", "bag_slot");
+	//GDVIRTUAL_BIND("_equip_son_fail", "data", "AuraData", "equip_slot", "item", "ItemInstance", "old_item", "ItemInstance", "bag_slot");
+	//GDVIRTUAL_BIND("_equip_con_success", "data", "AuraData", "equip_slot", "item", "ItemInstance", "old_item", "ItemInstance", "bag_slot");
+	//GDVIRTUAL_BIND("_equip_con_fail", "data", "AuraData", "equip_slot", "item", "ItemInstance", "old_item", "ItemInstance", "bag_slot");
 
 	ClassDB::bind_method(D_METHOD("equip_should_deny", "data", "equip_slot", "item"), &Spell::equip_should_deny);
 
@@ -2530,20 +2530,20 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("calculate_initial_damage", "data"), &Spell::calculate_initial_damage);
 	ClassDB::bind_method(D_METHOD("handle_spell_damage", "data"), &Spell::handle_spell_damage);
 
-	GDVIRTUAL_BIND("_calculate_initial_damage", "data", "SpellDamageInfo");
-	GDVIRTUAL_BIND("_handle_spell_damage", "data", "SpellDamageInfo");
+	//GDVIRTUAL_BIND("_calculate_initial_damage", "data", "SpellDamageInfo");
+	//GDVIRTUAL_BIND("_handle_spell_damage", "data", "SpellDamageInfo");
 
 	ClassDB::bind_method(D_METHOD("calculate_initial_heal", "data"), &Spell::calculate_initial_heal);
 	ClassDB::bind_method(D_METHOD("handle_spell_heal", "data"), &Spell::handle_spell_heal);
 
-	GDVIRTUAL_BIND("_calculate_initial_heal", "data", "SpellHealInfo");
-	GDVIRTUAL_BIND("_handle_spell_heal", "data", "SpellHealInfo");
+	//GDVIRTUAL_BIND("_calculate_initial_heal", "data", "SpellHealInfo");
+	//GDVIRTUAL_BIND("_handle_spell_heal", "data", "SpellHealInfo");
 
 	ClassDB::bind_method(D_METHOD("handle_projectile", "info"), &Spell::handle_projectile);
 	ClassDB::bind_method(D_METHOD("handle_effect", "info"), &Spell::handle_effect);
 
-	GDVIRTUAL_BIND("_handle_projectile", "info", "SpellCastInfo");
-	GDVIRTUAL_BIND("_handle_effect", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_handle_projectile", "info", "SpellCastInfo");
+	//GDVIRTUAL_BIND("_handle_effect", "info", "SpellCastInfo");
 
 	ClassDB::bind_method(D_METHOD("handle_gcd", "info"), &Spell::handle_gcd);
 	ClassDB::bind_method(D_METHOD("handle_cooldown", "info"), &Spell::handle_cooldown);
@@ -2567,7 +2567,7 @@ void Spell::_bind_methods() {
 	//Aura Calculations / Queries
 	ClassDB::bind_method(D_METHOD("setup_aura_data", "data", "info"), &Spell::setup_aura_data);
 
-	GDVIRTUAL_BIND("_setup_aura_data", "data", "AuraData", "info", "AuraApplyInfo");
+	//GDVIRTUAL_BIND("_setup_aura_data", "data", "AuraData", "info", "AuraApplyInfo");
 
 	ClassDB::bind_method(D_METHOD("_setup_aura_data", "data", "info"), &Spell::_setup_aura_data);
 
@@ -2577,10 +2577,10 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("aura_calculate_initial_damage", "aura_data", "info"), &Spell::aura_calculate_initial_damage);
 	ClassDB::bind_method(D_METHOD("handle_aura_damage", "aura_data", "data"), &Spell::handle_aura_damage);
 
-	GDVIRTUAL_BIND("_aura_sapply_passives_damage_receive", "data", "SpellDamageInfo");
-	GDVIRTUAL_BIND("_aura_sapply_passives_damage_deal", "data", "SpellDamageInfo");
-	GDVIRTUAL_BIND("_aura_calculate_initial_damage", "data", "AuraData", "info", "AuraApplyInfo");
-	GDVIRTUAL_BIND("_handle_aura_damage", "data", "AuraData", "info", "SpellDamageInfo");
+	//GDVIRTUAL_BIND("_aura_sapply_passives_damage_receive", "data", "SpellDamageInfo");
+	//GDVIRTUAL_BIND("_aura_sapply_passives_damage_deal", "data", "SpellDamageInfo");
+	//GDVIRTUAL_BIND("_aura_calculate_initial_damage", "data", "AuraData", "info", "AuraApplyInfo");
+	//GDVIRTUAL_BIND("_handle_aura_damage", "data", "AuraData", "info", "SpellDamageInfo");
 
 	ClassDB::bind_method(D_METHOD("_aura_sapply_passives_damage_receive", "info"), &Spell::_aura_sapply_passives_damage_receive);
 	ClassDB::bind_method(D_METHOD("_aura_sapply_passives_damage_deal", "info"), &Spell::_aura_sapply_passives_damage_deal);
@@ -2593,10 +2593,10 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("aura_calculate_initial_heal", "aura_data", "info"), &Spell::aura_calculate_initial_heal);
 	ClassDB::bind_method(D_METHOD("handle_aura_heal", "aura_data", "data"), &Spell::handle_aura_heal);
 
-	GDVIRTUAL_BIND("_aura_sapply_passives_heal_receive", "info", "SpellDamageInfo");
-	GDVIRTUAL_BIND("_aura_sapply_passives_heal_deal", "info", "SpellDamageInfo");
-	GDVIRTUAL_BIND("_aura_calculate_initial_heal", "aura_data", "AuraData", "info", "AuraApplyInfo");
-	GDVIRTUAL_BIND("_handle_aura_heal", "aura_data", "AuraData", "spell_heal_info", "SpellHealInfo");
+	//GDVIRTUAL_BIND("_aura_sapply_passives_heal_receive", "info", "SpellDamageInfo");
+	//GDVIRTUAL_BIND("_aura_sapply_passives_heal_deal", "info", "SpellDamageInfo");
+	//GDVIRTUAL_BIND("_aura_calculate_initial_heal", "aura_data", "AuraData", "info", "AuraApplyInfo");
+	//GDVIRTUAL_BIND("_handle_aura_heal", "aura_data", "AuraData", "spell_heal_info", "SpellHealInfo");
 
 	ClassDB::bind_method(D_METHOD("_aura_sapply_passives_heal_receive", "info"), &Spell::_aura_sapply_passives_heal_receive);
 	ClassDB::bind_method(D_METHOD("_aura_sapply_passives_heal_deal", "info"), &Spell::_aura_sapply_passives_heal_deal);
@@ -2696,7 +2696,7 @@ void Spell::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_learn", PROPERTY_HINT_NONE, "17/17:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "spells_cast_on_learn_set", "spells_cast_on_learn_get");
 
 	ADD_GROUP("Texts", "text");
-	GDVIRTUAL_BIND("_get_description", "class_level", "character_level");
+	//GDVIRTUAL_BIND("_get_description", "class_level", "character_level");
 
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "text_name"), "set_name", "get_name");
 
@@ -2938,7 +2938,7 @@ void Spell::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("aura_set_visual_spell_effects", "value"), &Spell::aura_set_visual_spell_effects);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "aura_visual_spell_effects", PROPERTY_HINT_RESOURCE_TYPE, "SpellEffectVisual"), "aura_set_visual_spell_effects", "aura_get_visual_spell_effects");
 
-	GDVIRTUAL_BIND("_aura_get_description", "class_level", "character_level");
+	//GDVIRTUAL_BIND("_aura_get_description", "class_level", "character_level");
 
 	ADD_GROUP("Aura Texts", "aura_text");
 	ClassDB::bind_method(D_METHOD("aura_get_text_translation_key"), &Spell::aura_get_text_translation_key);

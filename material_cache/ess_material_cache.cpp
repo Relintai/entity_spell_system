@@ -326,7 +326,7 @@ void ESSMaterialCache::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("inc_ref_count"), &ESSMaterialCache::inc_ref_count);
 	ClassDB::bind_method(D_METHOD("dec_ref_count"), &ESSMaterialCache::dec_ref_count);
 
-	GDVIRTUAL_BIND("_setup_material_albedo", "texture", "Texture");
+	//GDVIRTUAL_BIND("_setup_material_albedo", "texture", "Texture");
 
 	ClassDB::bind_method(D_METHOD("material_get", "index"), &ESSMaterialCache::material_get);
 	ClassDB::bind_method(D_METHOD("material_lod_get", "index"), &ESSMaterialCache::material_lod_get);
