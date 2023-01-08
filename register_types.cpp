@@ -279,7 +279,7 @@ void initialize_entity_spell_system_module(ModuleInitializationLevel p_level) {
 
 #ifdef TOOLS_ENABLED
 	if (p_level == MODULE_INITIALIZATION_LEVEL_EDITOR) {
-		EditorPlugins::add_by_type<ESSEditorPlugin>();
+		//EditorPlugins::add_by_type<ESSEditorPlugin>();
 	}
 #endif
 }
