@@ -165,11 +165,8 @@ void ESSMaterialCachePCM::_setup_material_albedo(Ref<Texture> texture) {
 ESSMaterialCachePCM::ESSMaterialCachePCM() {
 	_packer.instantiate();
 
-#if GODOT4
-#warning implement
-#else
-	_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
-#endif
+	#warning implement
+	//_packer->set_texture_flags(Texture::FLAG_MIPMAPS | Texture::FLAG_FILTER);
 
 	_packer->set_max_atlas_size(1024);
 	_packer->set_keep_original_atlases(false);
