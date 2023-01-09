@@ -10,13 +10,13 @@ It is a c++ engine module, which means you will need to compile it into godot. (
 
 ## Godot Version Support
 
-This module is developed with the 3.x branch of godot, usually at the newest revisions.
+This branch tries to follow godot's master branch (as much as I have time).
 
-3.2 - Will likely work, probably needs changes by now. (TODO check.)\
-3.3 - Will more likely work, might need smaller changes by now. (TODO check.)\
-3.4 - Should work without any issues. (TODO check.)\
-3.x - Works.\
-4.0 - Have been fixing support from time to time. Currently it won't build on the latest master, and it will take considerable amount of work to get it to work again after the virtual method binding rework. It will be done eventually, but it will take time. [Here](https://github.com/godotengine/godot/commit/b7e10141197fdd9b0dbc4cfa7890329510d36540)'s the last know-to-work commit.
+For different godot versions look at the other branches.
+
+Status for this branch: Update for 4.0 is still work in progress. Godot's virtual method binding rework hit this module 
+extremely hard, to the point where I'm seriously considering reworking most of the virtuals 
+to use a `_notification()`-like interface.
 
 ## Project setup tl;dr
 
