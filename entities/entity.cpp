@@ -632,8 +632,9 @@ void Entity::setup(Ref<EntityCreateInfo> info) {
 
 	sets_entity_player_type(info->get_entity_player_type());
 
-	if (info->get_network_owner() != 0)
-		set_network_master(info->get_network_owner());
+	if (info->get_network_owner() != 0) {
+		set_multiplayer_authority(info->get_network_owner());
+	}
 
 	sets_original_entity_controller(info->get_entity_controller());
 	sets_entity_controller(info->get_entity_controller());
@@ -677,7 +678,7 @@ void Entity::_setup() {
 			Ref<AuraData> ad = _s_auras.get(i);
 
 			if (!ad->get_aura()->aura_get_hide())
-				VRPCOBJ(aura_addc_rpc, JSON::print(ad->to_dict()), aura_addc, ad);
+				VRPCOBJ(aura_addc_rpc, JSON::stringify(ad->to_dict()), aura_addc, ad);
 		}
 
 		if (gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_PLAYER || gets_entity_player_type() == EntityEnums::ENTITY_PLAYER_TYPE_DISPLAY) {
@@ -939,8 +940,9 @@ void Entity::setc_entity_controller(EntityEnums::EntityController value) {
 }
 
 bool Entity::getc_is_controlled() {
-	if (is_inside_tree() && get_tree()->has_network_peer()) {
-		return (_c_entity_controller == EntityEnums::ENITIY_CONTROLLER_PLAYER) && (get_network_master() == get_tree()->get_network_unique_id());
+	Ref<MultiplayerAPI> _multiplayer_api = get_multiplayer();
+	if (_multiplayer_api.is_valid()) {
+		return (_c_entity_controller == EntityEnums::ENITIY_CONTROLLER_PLAYER) && (get_multiplayer_authority() == _multiplayer_api->get_unique_id());
 	} else {
 		return _c_entity_controller == EntityEnums::ENITIY_CONTROLLER_PLAYER;
 	}
@@ -1577,8 +1579,8 @@ void Entity::_from_dict(const Dictionary &dict) {
 
 		String class_name = dict.get("class_name", EntityDataContainer::get_class_static());
 
-		if (ClassDB::can_instance(class_name) && ClassDB::is_parent_class(class_name, EntityDataContainer::get_class_static())) {
-			Ref<EntityDataContainer> data = Ref<EntityDataContainer>(ClassDB::instance(class_name));
+		if (ClassDB::can_instantiate(class_name) && ClassDB::is_parent_class(class_name, EntityDataContainer::get_class_static())) {
+			Ref<EntityDataContainer> data = Ref<EntityDataContainer>(ClassDB::instantiate(class_name));
 
 			if (data.is_valid()) {
 				data->from_dict(entry);
@@ -1897,7 +1899,7 @@ void Entity::craft_adds_recipe_id(int id) {
 void Entity::craft_removes_recipe(Ref<CraftRecipe> craft_recipe) {
 	for (int i = 0; i < _s_craft_recipes.size(); ++i) {
 		if (_s_craft_recipes.get(i) == craft_recipe) {
-			_s_craft_recipes.remove(i);
+			_s_craft_recipes.remove_at(i);
 			break;
 		}
 	}
@@ -1913,7 +1915,7 @@ void Entity::craft_removes_recipe_id(int id) {
 		craft_recipe = _s_craft_recipes.get(i);
 
 		if (craft_recipe->get_id() == id) {
-			_s_craft_recipes.remove(i);
+			_s_craft_recipes.remove_at(i);
 			break;
 		}
 	}
@@ -1989,7 +1991,7 @@ void Entity::craft_addc_recipe_id(int id) {
 void Entity::craft_removec_recipe(Ref<CraftRecipe> craft_recipe) {
 	for (int i = 0; i < _c_craft_recipes.size(); ++i) {
 		if (_c_craft_recipes.get(i) == craft_recipe) {
-			_c_craft_recipes.remove(i);
+			_c_craft_recipes.remove_at(i);
 			break;
 		}
 	}
@@ -2003,7 +2005,7 @@ void Entity::craft_removec_recipe_id(int id) {
 		craft_recipe = _c_craft_recipes.get(i);
 
 		if (craft_recipe->get_id() == id) {
-			_c_craft_recipes.remove(i);
+			_c_craft_recipes.remove_at(i);
 			break;
 		}
 	}
@@ -2497,7 +2499,7 @@ void Entity::resource_adds(Ref<EntityResource> resource) {
 
 	notification_sentity_resource_added(resource);
 
-	VRPCOBJP(resource_addc_rpc, _s_resources.size() - 1, JSON::print(resource->to_dict()), resource_addc, _s_resources.size() - 1, resource);
+	VRPCOBJP(resource_addc_rpc, _s_resources.size() - 1, JSON::stringify(resource->to_dict()), resource_addc, _s_resources.size() - 1, resource);
 }
 int Entity::resource_gets_count() {
 	return _s_resources.size();
@@ -2687,7 +2689,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	notification_sdamage(SpellEnums::NOTIFICATION_DAMAGE_BEFORE_HIT, info);
 
 	if (info->get_immune()) {
-		VRPCOBJ12(cdamage_dealt_rpc, JSON::print(info->to_dict()), notification_cdamage, SpellEnums::NOTIFICATION_DAMAGE_DAMAGE_DEALT, info);
+		VRPCOBJ12(cdamage_dealt_rpc, JSON::stringify(info->to_dict()), notification_cdamage, SpellEnums::NOTIFICATION_DAMAGE_DAMAGE_DEALT, info);
 
 		return;
 	}
@@ -2720,7 +2722,7 @@ void Entity::stake_damage(Ref<SpellDamageInfo> info) {
 	emit_signal("son_damage_received", this, info);
 
 	//send an event to client
-	VRPCOBJ12(cdamage_dealt_rpc, JSON::print(info->to_dict()), notification_cdamage, SpellEnums::NOTIFICATION_DAMAGE_DAMAGE_DEALT, info);
+	VRPCOBJ12(cdamage_dealt_rpc, JSON::stringify(info->to_dict()), notification_cdamage, SpellEnums::NOTIFICATION_DAMAGE_DAMAGE_DEALT, info);
 
 	if (hp->get_current_value() <= 0) {
 		dies();
@@ -2741,7 +2743,7 @@ void Entity::sdeal_damage_to(Ref<SpellDamageInfo> info) {
 	notification_sdamage(SpellEnums::NOTIFICATION_DAMAGE_DEALT_DAMAGE, info);
 
 	//send an event to client
-	VRPCOBJ12(cdealt_damage_rpc, JSON::print(info->to_dict()), notification_cdamage, SpellEnums::NOTIFICATION_DAMAGE_DEALT_DAMAGE, info);
+	VRPCOBJ12(cdealt_damage_rpc, JSON::stringify(info->to_dict()), notification_cdamage, SpellEnums::NOTIFICATION_DAMAGE_DEALT_DAMAGE, info);
 
 	//signal
 	emit_signal("son_dealt_damage", this, info);
@@ -2759,7 +2761,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 	notification_sheal(SpellEnums::NOTIFICATION_HEAL_BEFORE_HIT, info);
 
 	if (info->get_immune()) {
-		VRPCOBJ12(cheal_dealt_rpc, JSON::print(info->to_dict()), notification_cheal, SpellEnums::NOTIFICATION_HEAL_HEAL_DEALT, info);
+		VRPCOBJ12(cheal_dealt_rpc, JSON::stringify(info->to_dict()), notification_cheal, SpellEnums::NOTIFICATION_HEAL_HEAL_DEALT, info);
 		return;
 	}
 
@@ -2782,7 +2784,7 @@ void Entity::stake_heal(Ref<SpellHealInfo> info) {
 	hp->set_current_value(h);
 
 	//send an event to client
-	VRPCOBJ12(cheal_dealt_rpc, JSON::print(info->to_dict()), notification_cheal, SpellEnums::NOTIFICATION_HEAL_HEAL_DEALT, info);
+	VRPCOBJ12(cheal_dealt_rpc, JSON::stringify(info->to_dict()), notification_cheal, SpellEnums::NOTIFICATION_HEAL_HEAL_DEALT, info);
 
 	//signal
 	emit_signal("son_heal_received", this, info);
@@ -2802,7 +2804,7 @@ void Entity::sdeal_heal_to(Ref<SpellHealInfo> info) {
 	info->receiver_get()->stake_heal(info);
 	notification_sheal(SpellEnums::NOTIFICATION_HEAL_HEAL_DEALT, info);
 
-	VRPCOBJ12(cdealt_heal_rpc, JSON::print(info->to_dict()), notification_cheal, SpellEnums::NOTIFICATION_HEAL_DEALT_HEAL, info);
+	VRPCOBJ12(cdealt_heal_rpc, JSON::stringify(info->to_dict()), notification_cheal, SpellEnums::NOTIFICATION_HEAL_DEALT_HEAL, info);
 
 	emit_signal("son_heal_dealt", this, info);
 }
@@ -2906,7 +2908,7 @@ bool Entity::isc_target_in_interact_range() {
 bool Entity::_iss_target_in_interact_range() {
 	Entity *t = gets_target();
 
-	if (!ObjectDB::instance_validate(t)) {
+	if (!INSTANCE_VALIDATE(t)) {
 		return false;
 	}
 
@@ -2939,7 +2941,7 @@ bool Entity::_iss_target_in_interact_range() {
 bool Entity::_isc_target_in_interact_range() {
 	Entity *t = getc_target();
 
-	if (!ObjectDB::instance_validate(t)) {
+	if (!INSTANCE_VALIDATE(t)) {
 		return false;
 	}
 
@@ -3284,7 +3286,7 @@ void Entity::aura_adds(Ref<AuraData> aura) {
 	notification_saura(SpellEnums::NOTIFICATION_AURA_ADDED, aura);
 
 	if (!aura->get_aura()->aura_get_hide())
-		VRPCOBJ(aura_addc_rpc, JSON::print(aura->to_dict()), aura_addc, aura);
+		VRPCOBJ(aura_addc_rpc, JSON::stringify(aura->to_dict()), aura_addc, aura);
 }
 
 void Entity::aura_removes(Ref<AuraData> aura) {
@@ -3299,7 +3301,7 @@ void Entity::aura_removes(Ref<AuraData> aura) {
 		a = _s_auras.get(i);
 
 		if (a->get_aura_id() == aid && a->caster_get() == caster) {
-			_s_auras.remove(i);
+			_s_auras.remove_at(i);
 			removed = true;
 			break;
 		}
@@ -3309,7 +3311,7 @@ void Entity::aura_removes(Ref<AuraData> aura) {
 		notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, a);
 
 		if (!aura->get_aura()->aura_get_hide())
-			VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
+			VRPCOBJ(aura_removec_rpc, JSON::stringify(aura->to_dict()), aura_removec, aura);
 	}
 }
 
@@ -3322,7 +3324,7 @@ void Entity::aura_removes_exact(Ref<AuraData> aura) {
 		if (ad == aura) {
 			ad->get_aura()->son_remove(ad);
 
-			_s_auras.remove(i);
+			_s_auras.remove_at(i);
 
 			break;
 		}
@@ -3331,7 +3333,7 @@ void Entity::aura_removes_exact(Ref<AuraData> aura) {
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
 	if (!aura->get_aura()->aura_get_hide())
-		VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
+		VRPCOBJ(aura_removec_rpc, JSON::stringify(aura->to_dict()), aura_removec, aura);
 }
 
 void Entity::aura_removes_expired(Ref<AuraData> aura) {
@@ -3343,7 +3345,7 @@ void Entity::aura_removes_expired(Ref<AuraData> aura) {
 		if (ad == aura) {
 			ad->get_aura()->son_remove(ad);
 
-			_s_auras.remove(i);
+			_s_auras.remove_at(i);
 
 			break;
 		}
@@ -3352,7 +3354,7 @@ void Entity::aura_removes_expired(Ref<AuraData> aura) {
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
 	if (!aura->get_aura()->aura_get_hide())
-		VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
+		VRPCOBJ(aura_removec_rpc, JSON::stringify(aura->to_dict()), aura_removec, aura);
 }
 
 void Entity::aura_removes_dispelled(Ref<AuraData> aura) {
@@ -3364,7 +3366,7 @@ void Entity::aura_removes_dispelled(Ref<AuraData> aura) {
 		if (ad == aura) {
 			ad->get_aura()->son_remove(ad);
 
-			_s_auras.remove(i);
+			_s_auras.remove_at(i);
 
 			break;
 		}
@@ -3373,7 +3375,7 @@ void Entity::aura_removes_dispelled(Ref<AuraData> aura) {
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REMOVED, aura);
 
 	if (!aura->get_aura()->aura_get_hide())
-		VRPCOBJ(aura_removec_rpc, JSON::print(aura->to_dict()), aura_removec, aura);
+		VRPCOBJ(aura_removec_rpc, JSON::stringify(aura->to_dict()), aura_removec, aura);
 }
 
 void Entity::aura_refresheds(Ref<AuraData> aura) {
@@ -3385,7 +3387,7 @@ void Entity::aura_refresheds(Ref<AuraData> aura) {
 	notification_saura(SpellEnums::NOTIFICATION_AURA_REFRESHED, aura);
 
 	if (!aura->get_aura()->aura_get_hide())
-		VRPCOBJ(aura_refreshedc_rpc, JSON::print(aura->to_dict()), aura_refreshedc, aura);
+		VRPCOBJ(aura_refreshedc_rpc, JSON::stringify(aura->to_dict()), aura_refreshedc, aura);
 }
 
 void Entity::aura_addc_rpc(String data) {
@@ -3468,7 +3470,7 @@ void Entity::aura_removec(Ref<AuraData> aura) {
 		a = _c_auras.get(i);
 
 		if (a->get_aura_id() == aid && a->caster_get() == caster) {
-			_c_auras.remove(i);
+			_c_auras.remove_at(i);
 			removed = true;
 			break;
 		}
@@ -3484,7 +3486,7 @@ void Entity::aura_removec_exact(Ref<AuraData> aura) {
 
 	for (int i = 0; i < _c_auras.size(); i++) {
 		if (_c_auras.get(i) == aura) {
-			_c_auras.remove(i);
+			_c_auras.remove_at(i);
 			break;
 		}
 	}
@@ -3497,7 +3499,7 @@ void Entity::aura_removec_dispelled(Ref<AuraData> aura) {
 
 	for (int i = 0; i < _c_auras.size(); i++) {
 		if (_c_auras.get(i) == aura) {
-			_c_auras.remove(i);
+			_c_auras.remove_at(i);
 			break;
 		}
 	}
@@ -3519,7 +3521,7 @@ void Entity::aura_removec_expired(Ref<AuraData> aura) {
 
 	for (int i = 0; i < _c_auras.size(); i++) {
 		if (_c_auras.get(i) == aura) {
-			_c_auras.remove(i);
+			_c_auras.remove_at(i);
 			break;
 		}
 	}
@@ -3746,7 +3748,7 @@ void Entity::cast_starts(Ref<SpellCastInfo> info) {
 
 	notification_scast(SpellEnums::NOTIFICATION_CAST_STARTED, info);
 
-	VRPCOBJ(cast_startc_rpc, JSON::print(info->to_dict()), cast_startc, info);
+	VRPCOBJ(cast_startc_rpc, JSON::stringify(info->to_dict()), cast_startc, info);
 }
 
 void Entity::cast_fails() {
@@ -3823,7 +3825,7 @@ void Entity::cast_interruptc() {
 void Entity::cast_spell_successs(Ref<SpellCastInfo> info) {
 	notification_scast(SpellEnums::NOTIFICATION_CAST_SUCCESS, info);
 
-	VRPCOBJ(cast_spell_successc_rpc, JSON::print(info->to_dict()), cast_spell_successc, info);
+	VRPCOBJ(cast_spell_successc_rpc, JSON::stringify(info->to_dict()), cast_spell_successc, info);
 }
 
 void Entity::cast_spell_successc_rpc(String data) {
@@ -3878,7 +3880,7 @@ void Entity::cooldown_removes(int spell_id) {
 		if (_s_cooldowns[i].id == spell_id) {
 			float cd = _s_cooldowns[i].cooldown;
 
-			_s_cooldowns.remove(i);
+			_s_cooldowns.remove_at(i);
 
 			notification_scooldown_removed(spell_id, cd);
 
@@ -3940,7 +3942,7 @@ void Entity::cooldown_removec(int spell_id) {
 		if (_c_cooldowns[i].id == spell_id) {
 			float cd = _c_cooldowns[i].cooldown;
 
-			_c_cooldowns.remove(i);
+			_c_cooldowns.remove_at(i);
 
 			notification_ccooldown_removed(spell_id, cd);
 
@@ -4032,7 +4034,7 @@ void Entity::category_cooldown_removes(int category_id) {
 	for (int i = 0; i < _s_category_cooldowns.size(); ++i) {
 		if (_s_category_cooldowns[i].id == category_id) {
 			cc = _s_category_cooldowns.get(i);
-			_s_category_cooldowns.remove(i);
+			_s_category_cooldowns.remove_at(i);
 			found = true;
 
 			break;
@@ -4100,7 +4102,7 @@ void Entity::category_cooldown_removec(int category_id) {
 	for (int i = 0; i < _c_category_cooldowns.size(); ++i) {
 		if (_c_category_cooldowns[i].id == category_id) {
 			cc = _c_category_cooldowns.get(i);
-			_c_category_cooldowns.remove(i);
+			_c_category_cooldowns.remove_at(i);
 			found = true;
 
 			break;
@@ -4266,7 +4268,7 @@ void Entity::spell_adds_id(int id) {
 void Entity::spell_removes(Ref<Spell> spell) {
 	for (int i = 0; i < _s_spells.size(); ++i) {
 		if (_s_spells.get(i) == spell) {
-			_s_spells.remove(i);
+			_s_spells.remove_at(i);
 			break;
 		}
 	}
@@ -4318,7 +4320,7 @@ void Entity::spell_addc(Ref<Spell> spell) {
 void Entity::spell_removec(Ref<Spell> spell) {
 	for (int i = 0; i < _c_spells.size(); ++i) {
 		if (_c_spells.get(i) == spell) {
-			_c_spells.remove(i);
+			_c_spells.remove_at(i);
 			break;
 		}
 	}
@@ -4391,7 +4393,7 @@ void Entity::skill_adds(Ref<EntitySkill> skill) {
 void Entity::skill_removes(Ref<EntitySkill> skill) {
 	for (int i = 0; i < _s_skills.size(); ++i) {
 		if (_s_skills.get(i) == skill) {
-			_s_skills.remove(i);
+			_s_skills.remove_at(i);
 			break;
 		}
 	}
@@ -4442,7 +4444,7 @@ void Entity::skill_addc(Ref<EntitySkill> skill) {
 void Entity::skill_removec(Ref<EntitySkill> skill) {
 	for (int i = 0; i < _c_skills.size(); ++i) {
 		if (_c_skills.get(i) == skill) {
-			_c_skills.remove(i);
+			_c_skills.remove_at(i);
 			break;
 		}
 	}
@@ -4488,7 +4490,7 @@ void Entity::skill_removec_id(int skill_id) {
 		ERR_CONTINUE(!skill.is_valid());
 
 		if (skill->get_skill_id() == skill_id) {
-			_c_skills.remove(i);
+			_c_skills.remove_at(i);
 
 			emit_signal("cskill_removed", this, skill);
 
@@ -4566,7 +4568,7 @@ void Entity::aura_removess_with_group(Ref<AuraGroup> aura_group) {
 		if (ad->get_aura()->aura_get_aura_group() == aura_group) {
 			aura_removec(ad);
 
-			_s_auras.remove(i);
+			_s_auras.remove_at(i);
 
 			emit_signal("saura_removed", ad);
 
@@ -4582,8 +4584,8 @@ void Entity::target_crequest_change(NodePath path) {
 }
 
 void Entity::target_net_sets(NodePath path) {
-	Ref<MultiplayerAPI> _multiplayer_api = get_multiplayer();
-	if (!_multiplayer_api.is_valid() && !_multiplayer_api->is_server()) {
+	Ref<MultiplayerAPI> multiplayer_api = get_multiplayer();
+	if (!multiplayer_api.is_valid() && !multiplayer_api->is_server()) {
 		return;
 	}
 
@@ -4653,7 +4655,8 @@ void Entity::sets_target(Node *p_target) {
 
 	emit_signal("starget_changed", this, original_target);
 
-	if (is_inside_tree() && !get_tree()->has_network_peer()) {
+	Ref<MultiplayerAPI> multiplayer_api = get_multiplayer();
+	if (multiplayer_api.is_valid()) {
 		setc_target(p_target);
 	}
 }
@@ -4844,7 +4847,7 @@ void Entity::class_talent_adds(int class_talent) {
 void Entity::class_talent_removes(int class_talent) {
 	for (int i = 0; i < _s_class_talents.size(); ++i) {
 		if (_s_class_talents[i] == class_talent) {
-			_s_class_talents.remove(i);
+			_s_class_talents.remove_at(i);
 
 			for (int j = 0; j < aura_gets_count(); ++j) {
 				Ref<AuraData> ad = aura_gets(j);
@@ -4899,7 +4902,7 @@ void Entity::class_talent_addc(int class_talent) {
 void Entity::class_talent_removec(int class_talent) {
 	for (int i = 0; i < _c_class_talents.size(); ++i) {
 		if (_c_class_talents[i] == class_talent) {
-			_c_class_talents.remove(i);
+			_c_class_talents.remove_at(i);
 			return;
 		}
 	}
@@ -5091,7 +5094,7 @@ void Entity::character_talent_adds(int character_talent) {
 void Entity::character_talent_removes(int character_talent) {
 	for (int i = 0; i < _s_character_talents.size(); ++i) {
 		if (_s_character_talents[i] == character_talent) {
-			_s_character_talents.remove(i);
+			_s_character_talents.remove_at(i);
 
 			for (int j = 0; j < aura_gets_count(); ++j) {
 				Ref<AuraData> ad = aura_gets(j);
@@ -5146,7 +5149,7 @@ void Entity::character_talent_addc(int character_talent) {
 void Entity::character_talent_removec(int character_talent) {
 	for (int i = 0; i < _c_character_talents.size(); ++i) {
 		if (_c_character_talents[i] == character_talent) {
-			_c_character_talents.remove(i);
+			_c_character_talents.remove_at(i);
 			return;
 		}
 	}
@@ -5227,7 +5230,7 @@ void Entity::sets_bag(const Ref<Bag> bag) {
 	emit_signal("sbag_changed", this, _s_bag);
 
 	if (_s_bag.is_valid()) {
-		ORPC(setc_bag_rpc, JSON::print(_s_bag->to_dict()));
+		ORPC(setc_bag_rpc, JSON::stringify(_s_bag->to_dict()));
 	} else {
 		ORPC(setc_bag_rpc, "");
 	}
@@ -5265,7 +5268,7 @@ void Entity::sets_target_bag(const Ref<Bag> bag) {
 	emit_signal("starget_bag_changed", this, _s_target_bag);
 
 	if (_s_target_bag.is_valid()) {
-		ORPC(setc_target_bag_rpc, JSON::print(_s_target_bag->to_dict()));
+		ORPC(setc_target_bag_rpc, JSON::stringify(_s_target_bag->to_dict()));
 	} else {
 		ORPC(setc_target_bag_rpc, "");
 	}
@@ -5316,7 +5319,7 @@ void Entity::lootc(int index) {
 }
 
 void Entity::notification_item_sadded(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
-	ORPCOBJP(item_addc_rpc, slot_id, JSON::print(item->to_dict()), item_addc, slot_id, item);
+	ORPCOBJP(item_addc_rpc, slot_id, JSON::stringify(item->to_dict()), item_addc, slot_id, item);
 }
 void Entity::item_addc_rpc(int slot_id, String item_data) {
 	Ref<ItemInstance> ii;
@@ -5387,7 +5390,7 @@ void Entity::notification_soverburden_removed(Ref<Bag> bag) {
 //Target Bag
 
 void Entity::notification_target_item_sadded(Ref<Bag> bag, Ref<ItemInstance> item, int slot_id) {
-	ORPCOBJP(target_item_addc_rpc, slot_id, JSON::print(item->to_dict()), target_item_addc, slot_id, item);
+	ORPCOBJP(target_item_addc_rpc, slot_id, JSON::stringify(item->to_dict()), target_item_addc, slot_id, item);
 }
 void Entity::target_item_addc_rpc(int slot_id, String item_data) {
 	Ref<ItemInstance> ii;
@@ -5829,15 +5832,15 @@ Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Callable::Cal
 		if (unlikely(e == NULL)) {
 #endif
 
-			_s_seen_by.remove(i);
+			_s_seen_by.remove_at(i);
 			--i;
 			continue;
 		}
 
-		int netm = e->get_network_master();
+		int netm = e->get_multiplayer_authority();
 
 		if (netm != 1)
-			rpcp(netm, false, method, &p_args[1], p_argcount - 1);
+			rpcp(netm, method, &p_args[1], p_argcount - 1);
 	}
 
 	//call(method, &p_args[1], p_argcount - 1);
@@ -5852,13 +5855,7 @@ Variant Entity::_vrpc_bind(const Variant **p_args, int p_argcount, Callable::Cal
 }
 
 Dictionary Entity::data_as_dict(String &data) {
-	Error err;
-	String err_txt;
-	int err_line;
-	Variant v;
-	err = JSON::parse(data, v, err_txt, err_line);
-
-	ERR_FAIL_COND_V(err != OK, v);
+	Variant v = JSON::parse_string(data);
 
 	Dictionary d = v;
 
@@ -6549,7 +6546,7 @@ void Entity::_notification(int p_what) {
 		case NOTIFICATION_POSTINITIALIZE: {
 			call("_initialize");
 		} break;
-		case NOTIFICATION_INSTANCED: {
+		case NOTIFICATION_SCENE_INSTANTIATED: {
 			set_body(get_node_or_null(_body_path));
 
 			if (INSTANCE_VALIDATE(_body))

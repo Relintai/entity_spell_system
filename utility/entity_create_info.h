@@ -34,6 +34,7 @@ SOFTWARE.
 class EntityData;
 class SpeciesInstance;
 class Entity;
+class Node;
 
 class EntityCreateInfo : public RefCounted {
 	GDCLASS(EntityCreateInfo, RefCounted);

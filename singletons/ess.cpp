@@ -26,6 +26,7 @@ SOFTWARE.
 #include "../material_cache/ess_material_cache.h"
 #include "../spawners/ess_entity_spawner.h"
 #include "../utility/entity_create_info.h"
+#include "core/config/project_settings.h"
 
 ESS *ESS::instance;
 
@@ -117,8 +118,6 @@ void ESS::request_entity_spawn_deferred(Ref<EntityCreateInfo> info) {
 }
 
 void ESS::load_resource_db() {
-	_Directory dir;
-
 	ERR_FAIL_COND(_ess_resource_db_path == "");
 
 	Ref<ESSResourceDB> d = load_resource(_ess_resource_db_path, "ESSResourceDB");
@@ -153,7 +152,7 @@ void ESS::stat_set_string(const String &stat_enum_string) {
 		StringName s = StringName(slice);
 
 		_stat_id_to_name.set(i, s);
-		_stat_name_to_id.set(s, i);
+		_stat_name_to_id[s] = i;
 
 		String st = slice;
 		st = st.to_lower();
@@ -161,7 +160,7 @@ void ESS::stat_set_string(const String &stat_enum_string) {
 		StringName stp = StringName(st);
 
 		_stat_id_to_property.set(i, stp);
-		_stat_property_to_id.set(stp, i);
+		_stat_property_to_id[stp] = i;
 	}
 }
 String ESS::stat_get_string() const {
@@ -227,7 +226,7 @@ void ESS::stats_set(const PoolStringArray &array) {
 		StringName s = StringName(array[i]);
 
 		_stat_id_to_name.set(i, s);
-		_stat_name_to_id.set(s, i);
+		_stat_name_to_id[s] = i;
 
 		String st = array[i];
 		st = st.to_lower();
@@ -235,7 +234,7 @@ void ESS::stats_set(const PoolStringArray &array) {
 		StringName stp = StringName(st);
 
 		_stat_id_to_property.set(i, stp);
-		_stat_property_to_id.set(stp, i);
+		_stat_property_to_id[stp] = i;
 
 		_stat_enum_string += ",";
 		_stat_enum_string += array[i];
@@ -266,7 +265,7 @@ void ESS::equip_slot_set_string(const String &equip_slot_enum_string) {
 		StringName s = StringName(slice);
 
 		_equip_slot_id_to_name.set(i, s);
-		_equip_slot_name_to_id.set(s, i);
+		_equip_slot_name_to_id[s] = i;
 
 		String st = slice;
 		st = st.to_lower();
@@ -274,7 +273,7 @@ void ESS::equip_slot_set_string(const String &equip_slot_enum_string) {
 		StringName stp = StringName(st);
 
 		_equip_slot_id_to_property.set(i, stp);
-		_equip_slot_property_to_id.set(stp, i);
+		_equip_slot_property_to_id[stp] = i;
 	}
 
 	_equip_slot_enum_string = equip_slot_enum_string + ",None";
@@ -342,7 +341,7 @@ void ESS::equip_slots_set(const PoolStringArray &array) {
 		StringName s = StringName(array[i]);
 
 		_equip_slot_id_to_name.set(i, s);
-		_equip_slot_name_to_id.set(s, i);
+		_equip_slot_name_to_id[s] = i;
 
 		String st = array[i];
 		st = st.to_lower();
@@ -350,7 +349,7 @@ void ESS::equip_slots_set(const PoolStringArray &array) {
 		StringName stp = StringName(st);
 
 		_equip_slot_id_to_property.set(i, stp);
-		_equip_slot_property_to_id.set(stp, i);
+		_equip_slot_property_to_id[stp] = i;
 
 		_equip_slot_enum_string += ",";
 		_equip_slot_enum_string += array[i];
@@ -624,7 +623,7 @@ Ref<ESSMaterialCache> ESS::material_cache_get(const uint64_t key) {
 		return m;
 	}
 
-	ESSMaterialCache *p = Object::cast_to<ESSMaterialCache>(ClassDB::instance(_default_ess_material_cache_class));
+	ESSMaterialCache *p = Object::cast_to<ESSMaterialCache>(ClassDB::instantiate(_default_ess_material_cache_class));
 
 	if (!p) {
 		ERR_PRINT("Can't instance the given ESSMaterialCache! class_name: " + String(_default_ess_material_cache_class));
@@ -660,19 +659,7 @@ void ESS::material_cache_unref(const uint64_t key) {
 }
 
 Ref<Resource> ESS::load_resource(const String &path, const String &type_hint) {
-	_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, type_hint);
-
-	ERR_FAIL_COND_V(!resl.is_valid(), Ref<Resource>());
-
-	resl->wait();
-
-	return resl->get_resource();
-#else
-	return rl->load(path, type_hint);
-#endif
+	return ResourceLoader::load(path, type_hint);
 }
 
 void ESS::_bind_methods() {

@@ -174,7 +174,7 @@ void EntityResource::add_stacking_mod(const float value) {
 void EntityResource::remove_stacking_mod(const float value) {
 	for (int i = 0; i < _stacking_mods.size(); ++i) {
 		if (Math::is_equal_approx(_stacking_mods[i], value)) {
-			_stacking_mods.remove(i);
+			_stacking_mods.remove_at(i);
 			call("_stacking_mod_removed", value);
 			return;
 		}
@@ -189,7 +189,7 @@ void EntityResource::add_non_stacking_mod(const float value) {
 void EntityResource::remove_non_stacking_mod(const float value) {
 	for (int i = 0; i < _non_stacking_mods.size(); ++i) {
 		if (Math::is_equal_approx(_non_stacking_mods[i], value)) {
-			_non_stacking_mods.remove(i);
+			_non_stacking_mods.remove_at(i);
 			call("_non_stacking_mod_removed", value);
 			return;
 		}

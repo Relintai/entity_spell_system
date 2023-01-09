@@ -28,6 +28,7 @@ SOFTWARE.
 #include "../entities/data/entity_data.h"
 #include "../entities/resources/entity_resource.h"
 #include "../entities/skills/entity_skill_data.h"
+#include "core/io/dir_access.h"
 
 bool ESSResourceDBFolders::get_automatic_load() const {
 	return _automatic_load;
@@ -65,23 +66,22 @@ void ESSResourceDBFolders::load_folders() {
 }
 
 void ESSResourceDBFolders::load_folder(const String &folder) {
-	_Directory dir;
+	Ref<DirAccess> dir = DirAccess::open(folder);
 
 	bool ew = folder.ends_with("/");
 
-	if (dir.open(folder) == OK) {
-
-		dir.list_dir_begin();
+	if (dir.is_valid()) {
+		dir->list_dir_begin();
 
 		String filename;
 
 		while (true) {
-			filename = dir.get_next();
+			filename = dir->get_next();
 
 			if (filename == "")
 				break;
 
-			if (!dir.current_is_dir()) {
+			if (!dir->current_is_dir()) {
 				String path;
 
 				if (ew)
@@ -122,19 +122,7 @@ void ESSResourceDBFolders::add_resource(const Ref<Resource> &resource) {
 }
 
 Ref<Resource> ESSResourceDBFolders::load_resource(const String &path, const String &type_hint) {
-	_ResourceLoader *rl = _ResourceLoader::get_singleton();
-
-#if VERSION_MAJOR < 4
-	Ref<ResourceInteractiveLoader> resl = rl->load_interactive(path, type_hint);
-
-	ERR_FAIL_COND_V(!resl.is_valid(), Ref<Resource>());
-
-	resl->wait();
-
-	return resl->get_resource();
-#else
-	return rl->load(path, type_hint);
-#endif
+	return ResourceLoader::load(path, type_hint);
 }
 
 ESSResourceDBFolders::ESSResourceDBFolders() {

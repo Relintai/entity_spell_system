@@ -29,10 +29,11 @@ SOFTWARE.
 #include "core/math/color.h"
 #include "core/templates/vector.h"
 
-
 #include "core/math/rect2.h"
 #include "scene/resources/material.h"
 #include "core/os/mutex.h"
+
+#include "../../texture_packer/texture_packer.h"
 
 class PropData;
 

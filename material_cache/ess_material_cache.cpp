@@ -37,6 +37,7 @@ SOFTWARE.
 #endif
 
 #include "../singletons/ess.h"
+#include "../../texture_packer/texture_packer.h"
 
 
 #define VARIANT_ARRAY_GET(arr)             \
@@ -143,7 +144,7 @@ void ESSMaterialCache::texture_add(const Ref<Texture> &texture) {
 void ESSMaterialCache::texture_remove(const Ref<Texture> &texture) {
 	for (int i = 0; i < _textures.size(); ++i) {
 		if (_textures[i] == texture) {
-			_textures.remove(i);
+			_textures.remove_at(i);
 			return;
 		}
 	}

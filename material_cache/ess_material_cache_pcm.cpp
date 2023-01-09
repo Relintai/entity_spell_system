@@ -87,7 +87,7 @@ Rect2 ESSMaterialCachePCM::texture_get_uv_rect(const Ref<Texture> &texture) {
 		return Rect2(0, 0, 1, 1);
 	}
 
-	Ref<Image> image = tex->get_data();
+	Ref<Image> image = tex->get_image();
 
 	if (!image.is_valid()) {
 		return Rect2(0, 0, 1, 1);
@@ -147,17 +147,17 @@ void ESSMaterialCachePCM::_setup_material_albedo(Ref<Texture> texture) {
 	for (int i = 0; i < count; ++i) {
 		Ref<Material> m = material_get(i);
 
-		Ref<SpatialMaterial> spmat = m;
+		Ref<StandardMaterial3D> spmat = m;
 
 		if (spmat.is_valid()) {
-			spmat->set_texture(SpatialMaterial::TEXTURE_ALBEDO, texture);
+			spmat->set_texture(StandardMaterial3D::TEXTURE_ALBEDO, texture);
 			return;
 		}
 
 		Ref<ShaderMaterial> shmat = m;
 
 		if (shmat.is_valid()) {
-			shmat->set_shader_param("texture_albedo", texture);
+			shmat->set_shader_parameter("texture_albedo", texture);
 		}
 	}
 }

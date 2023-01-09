@@ -273,7 +273,7 @@ void EntityCreateInfo::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_transform2d"), &EntityCreateInfo::get_transform2d);
 	ClassDB::bind_method(D_METHOD("set_transform2d", "value"), &EntityCreateInfo::set_transform2d);
-	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM3D2D, "transform2d"), "set_transform2d", "get_transform2d");
+	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM2D, "transform2d"), "set_transform2d", "get_transform2d");
 
 	ClassDB::bind_method(D_METHOD("get_entity_data"), &EntityCreateInfo::get_entity_data);
 	ClassDB::bind_method(D_METHOD("set_entity_data", "value"), &EntityCreateInfo::set_entity_data);

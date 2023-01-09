@@ -22,7 +22,7 @@ SOFTWARE.
 
 #include "profile_manager.h"
 #include "core/io/json.h"
-#include "core/os/file_access.h"
+#include "core/io/file_access.h"
 
 #include "core/version.h"
 
@@ -98,14 +98,14 @@ void ProfileManager::load() {
 
 void ProfileManager::_save() {
 	Error err;
-	FileAccess *f = FileAccess::open(_save_file, FileAccess::WRITE, &err);
+	Ref<FileAccess> f = FileAccess::open(_save_file, FileAccess::WRITE, &err);
 
-	if (!f) {
+	if (!f.is_valid()) {
 		ERR_FAIL_MSG("Couldn't open file: " + err);
 	}
 
-	f->store_line(JSON::print(to_dict()));
-	f->close();
+	f->store_line(JSON::stringify(to_dict()));
+	//f->close();
 }
 
 void ProfileManager::_load() {
@@ -120,14 +120,11 @@ void ProfileManager::_load() {
 			ERR_FAIL_MSG("Couldn't open file: " + err);
 		}
 
-		String err_txt;
-		int err_line;
-		Variant v;
-		err = JSON::parse(text, v, err_txt, err_line);
+		Variant v = JSON::parse_string(text);
 
-		if (err) {
+		if (v.get_type() == Variant::NIL) {
 			load_defaults();
-			ERR_FAIL_MSG("Error parsing profile: " + err);
+			ERR_FAIL_MSG("Error parsing profile");
 		}
 
 		Dictionary d = v;

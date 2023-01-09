@@ -50,7 +50,7 @@ void ESSResourceDBMap::add_entity_resource(Ref<EntityResource> cls) {
 	ERR_FAIL_COND(!cls.is_valid());
 
 	_entity_resources.push_back(cls);
-	_entity_resource_map.set(cls->get_id(), cls);
+	_entity_resource_map[cls->get_id()] = cls;
 
 	ESSResourceDB::add_entity_resource(cls);
 }
@@ -86,7 +86,7 @@ void ESSResourceDBMap::add_entity_skill(Ref<EntitySkillData> cls) {
 	ERR_FAIL_COND(!cls.is_valid());
 
 	_entity_skills.push_back(cls);
-	_entity_skill_map.set(cls->get_id(), cls);
+	_entity_skill_map[cls->get_id()] = cls;
 
 	ESSResourceDB::add_entity_skill(cls);
 }
@@ -122,7 +122,7 @@ void ESSResourceDBMap::add_entity_data(Ref<EntityData> cls) {
 	ERR_FAIL_COND(!cls.is_valid());
 
 	_entity_datas.push_back(cls);
-	_entity_data_map.set(cls->get_id(), cls);
+	_entity_data_map[cls->get_id()] = cls;
 
 	ESSResourceDB::add_entity_data(cls);
 }
@@ -159,7 +159,7 @@ void ESSResourceDBMap::add_spell(Ref<Spell> spell) {
 	ERR_FAIL_COND(!spell.is_valid());
 
 	_spells.push_back(spell);
-	_spell_map.set(spell->get_id(), spell);
+	_spell_map[spell->get_id()] = spell;
 
 	ESSResourceDB::add_spell(spell);
 }
@@ -183,7 +183,7 @@ void ESSResourceDBMap::add_craft_recipe(Ref<CraftRecipe> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_craft_recipes.push_back(cda);
-	_craft_recipe_map.set(cda->get_id(), cda);
+	_craft_recipe_map[cda->get_id()] = cda;
 
 	ESSResourceDB::add_craft_recipe(cda);
 }
@@ -223,7 +223,7 @@ void ESSResourceDBMap::add_item_template(Ref<ItemTemplate> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_item_templates.push_back(cda);
-	_item_template_map.set(cda->get_id(), cda);
+	_item_template_map[cda->get_id()] = cda;
 
 	ESSResourceDB::add_item_template(cda);
 }
@@ -262,7 +262,7 @@ void ESSResourceDBMap::add_entity_species_data(Ref<EntitySpeciesData> cda) {
 	ERR_FAIL_COND(!cda.is_valid());
 
 	_entity_species_datas.push_back(cda);
-	_entity_species_data_map.set(cda->get_id(), cda);
+	_entity_species_data_map[cda->get_id()] = cda;
 
 	ESSResourceDB::add_entity_species_data(cda);
 }

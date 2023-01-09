@@ -347,7 +347,7 @@ void CharacterSkeleton3D::remove_model_visual_entry(Ref<ModelVisual> vis, Ref<Mo
 			e->set_count(e->get_count() - 1);
 
 			if (e->get_count() <= 0) {
-				entries.remove(i);
+				entries.remove_at(i);
 
 				_model_dirty = true;
 				set_process(true);
@@ -413,15 +413,15 @@ Array CharacterSkeleton3D::merge_mesh_array(Array arr) const {
 			int rem = equals[k];
 			int remk = rem - k;
 
-			verts.remove(remk);
-			normals.remove(remk);
-			uvs.remove(remk);
-			colors.remove(remk);
+			verts.remove_at(remk);
+			normals.remove_at(remk);
+			uvs.remove_at(remk);
+			colors.remove_at(remk);
 
 			int bindex = remk * 4;
 			for (int l = 0; l < 4; ++l) {
-				bones.remove(bindex);
-				weights.remove(bindex);
+				bones.remove_at(bindex);
+				weights.remove_at(bindex);
 			}
 
 			for (int j = 0; j < indices.size(); ++j) {
@@ -451,7 +451,7 @@ Array CharacterSkeleton3D::bake_mesh_array_uv(Array arr, Ref<Texture> tex, float
 	ERR_FAIL_COND_V(arr.size() != VisualServer::ARRAY_MAX, arr);
 	ERR_FAIL_COND_V(!tex.is_valid(), arr);
 
-	Ref<Image> img = tex->get_data();
+	Ref<Image> img = tex->get_image();
 
 	ERR_FAIL_COND_V(!img.is_valid(), arr);
 
